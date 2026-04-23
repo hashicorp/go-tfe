@@ -17,19 +17,19 @@ type ItemVcsEventsRequestBuilder struct {
 // ItemVcsEventsRequestBuilderGetQueryParameters list VCS events for an organization.
 type ItemVcsEventsRequestBuilderGetQueryParameters struct {
     // RFC3339 formatted UTC timestamp. If omitted, defaults to 10 days ago.
-    Filterfrom *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"filter%5Bfrom%5D"`
+    Filterfrom *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bfrom%5D\""
     // Comma-separated list of event levels to filter by. Accepted values are "info" and "error".
-    Filterlevels *string `uriparametername:"filter%5Blevels%5D"`
+    Filterlevels *string "uriparametername:\"filter%5Blevels%5D\""
     // Comma-separated list of OAuth client external IDs to filter by.
-    Filteroauth_client_external_ids *string `uriparametername:"filter%5Boauth_client_external_ids%5D"`
+    Filteroauth_client_external_ids *string "uriparametername:\"filter%5Boauth_client_external_ids%5D\""
     // RFC3339 formatted UTC timestamp. If omitted, defaults to now.
-    Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"filter%5Bto%5D"`
+    Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bto%5D\""
     // Allows including related resource data. Only "oauth_client" is supported.
-    Include *string `uriparametername:"include"`
+    Include *string "uriparametername:\"include\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
 func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {

@@ -27,9 +27,9 @@ func NewAssessmentResultsItemRequestBuilder(rawUrl string, requestAdapter i2ae41
     return NewAssessmentResultsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get show an assessment result
-// returns a ItemAssessmentResultsGetResponseable when successful
+// returns a AssessmentResultsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AssessmentResultsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAssessmentResultsGetResponseable, error) {
+func (m *AssessmentResultsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AssessmentResultsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -37,14 +37,14 @@ func (m *AssessmentResultsItemRequestBuilder) Get(ctx context.Context, requestCo
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAssessmentResultsGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateAssessmentResultsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemAssessmentResultsGetResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AssessmentResultsEnvelopeable), nil
 }
 // JsonOutput the jsonOutput property
 // returns a *ItemJsonOutputRequestBuilder when successful

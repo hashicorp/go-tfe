@@ -16,9 +16,9 @@ type ItemQueriesRequestBuilder struct {
 // ItemQueriesRequestBuilderGetQueryParameters get list of queries for a particular workspace.
 type ItemQueriesRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemQueriesRequestBuilderInternal instantiates a new ItemQueriesRequestBuilder and sets the default values.
 func NewItemQueriesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemQueriesRequestBuilder) {

@@ -17,15 +17,15 @@ type ItemRelationshipsOrganizationMembershipsRequestBuilder struct {
 // ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for a team. Returns both active members and invited users.
 type ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Filter to include only service account members.
-    Filteris_service_account *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterIs_service_accountQueryParameterType `uriparametername:"filter%5Bis_service_account%5D"`
+    Filteris_service_account *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterIs_service_accountQueryParameterType "uriparametername:\"filter%5Bis_service_account%5D\""
     // Filter memberships by status.
-    Filterstatus *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterStatusQueryParameterType `uriparametername:"filter%5Bstatus%5D"`
+    Filterstatus *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterStatusQueryParameterType "uriparametername:\"filter%5Bstatus%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Sort memberships. Prefix with '-' for descending order (e.g. '-status').
-    Sort *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetSortQueryParameterType `uriparametername:"sort"`
+    Sort *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetSortQueryParameterType "uriparametername:\"sort\""
 }
 // NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal instantiates a new ItemRelationshipsOrganizationMembershipsRequestBuilder and sets the default values.
 func NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsOrganizationMembershipsRequestBuilder) {

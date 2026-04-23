@@ -16,9 +16,9 @@ type ItemGithubAppInstallationsRequestBuilder struct {
 // ItemGithubAppInstallationsRequestBuilderGetQueryParameters list GitHub App installations linked to an organization.
 type ItemGithubAppInstallationsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ByGithub_app_installation_id gets an item from the github.com/hashicorp/go-tfe/api.organizations.item.githubAppInstallations.item collection
 // returns a *ItemGithubAppInstallationsWithGithub_app_installation_ItemRequestBuilder when successful

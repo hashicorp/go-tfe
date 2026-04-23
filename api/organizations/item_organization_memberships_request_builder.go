@@ -17,17 +17,17 @@ type ItemOrganizationMembershipsRequestBuilder struct {
 // ItemOrganizationMembershipsRequestBuilderGetQueryParameters list all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.
 type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Filter memberships by exact email address match.
-    Filteremail *string `uriparametername:"filter%5Bemail%5D"`
+    Filteremail *string "uriparametername:\"filter%5Bemail%5D\""
     // Filter memberships by status. Can be "active" or "invited".
-    Filterstatus *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetFilterStatusQueryParameterType `uriparametername:"filter%5Bstatus%5D"`
+    Filterstatus *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetFilterStatusQueryParameterType "uriparametername:\"filter%5Bstatus%5D\""
     // Optionally side-load relationships. Can include "user" or "teams".
-    Include *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetIncludeQueryParameterType `uriparametername:"include"`
+    Include *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // A search query string. Memberships are searchable by user name or email (case-insensitive).
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
 }
 // NewItemOrganizationMembershipsRequestBuilderInternal instantiates a new ItemOrganizationMembershipsRequestBuilder and sets the default values.
 func NewItemOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOrganizationMembershipsRequestBuilder) {
@@ -67,12 +67,12 @@ func (m *ItemOrganizationMembershipsRequestBuilder) Get(ctx context.Context, req
     return res.(ItemOrganizationMembershipsGetResponseable), nil
 }
 // Post invite a user to join an organization. Users can be invited by email address.
-// returns a ItemOrganizationMembershipsPostResponseable when successful
+// returns a OrganizationMembershipsEnvelopeable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOrganizationMembershipsRequestBuilder) Post(ctx context.Context, body ItemOrganizationMembershipsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemOrganizationMembershipsPostResponseable, error) {
+func (m *ItemOrganizationMembershipsRequestBuilder) Post(ctx context.Context, body ItemOrganizationMembershipsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -83,14 +83,14 @@ func (m *ItemOrganizationMembershipsRequestBuilder) Post(ctx context.Context, bo
         "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemOrganizationMembershipsPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateOrganizationMembershipsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemOrganizationMembershipsPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsEnvelopeable), nil
 }
 // ToGetRequestInformation list all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.
 // returns a *RequestInformation when successful

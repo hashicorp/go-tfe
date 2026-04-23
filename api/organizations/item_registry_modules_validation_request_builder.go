@@ -15,9 +15,9 @@ type ItemRegistryModulesValidationRequestBuilder struct {
 // ItemRegistryModulesValidationRequestBuilderGetQueryParameters this endpoint checks if a module name and provider combination is available for use within an organization.It returns a validation result indicating whether the name is already in use.
 type ItemRegistryModulesValidationRequestBuilderGetQueryParameters struct {
     // The name of the module to validate
-    Name *string `uriparametername:"name"`
+    Name *string "uriparametername:\"name\""
     // The provider of the module to validate
-    Provider *string `uriparametername:"provider"`
+    Provider *string "uriparametername:\"provider\""
 }
 // NewItemRegistryModulesValidationRequestBuilderInternal instantiates a new ItemRegistryModulesValidationRequestBuilder and sets the default values.
 func NewItemRegistryModulesValidationRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesValidationRequestBuilder) {

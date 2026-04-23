@@ -17,11 +17,11 @@ type AuditTrailRequestBuilder struct {
 // AuditTrailRequestBuilderGetQueryParameters returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
 type AuditTrailRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Returns only audit events created after this date. Must be a UTC ISO8601 datetime string (YYYY-MM-DDTHH:MM:SS.SSSZ).
-    Since *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"since"`
+    Since *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"since\""
 }
 // NewAuditTrailRequestBuilderInternal instantiates a new AuditTrailRequestBuilder and sets the default values.
 func NewAuditTrailRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuditTrailRequestBuilder) {

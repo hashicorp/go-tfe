@@ -27,10 +27,10 @@ func NewItemActionsForceUnlockRequestBuilder(rawUrl string, requestAdapter i2ae4
     return NewItemActionsForceUnlockRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post forcibly unlock a workspace regardless of who locked it. This action requires elevated permissions and should be used with caution.
-// returns a ItemActionsForceUnlockPostResponseable when successful
+// returns a WorkspacesEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsForceUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsForceUnlockPostResponseable, error) {
+func (m *ItemActionsForceUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -39,14 +39,14 @@ func (m *ItemActionsForceUnlockRequestBuilder) Post(ctx context.Context, request
         "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsForceUnlockPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspacesEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemActionsForceUnlockPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable), nil
 }
 // ToPostRequestInformation forcibly unlock a workspace regardless of who locked it. This action requires elevated permissions and should be used with caution.
 // returns a *RequestInformation when successful

@@ -12,7 +12,7 @@ type ItemSshKeysPostResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable
+    data ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable
 }
 // NewItemSshKeysPostResponse instantiates a new ItemSshKeysPostResponse and sets the default values.
 func NewItemSshKeysPostResponse()(*ItemSshKeysPostResponse) {
@@ -32,8 +32,8 @@ func (m *ItemSshKeysPostResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a SshKeyable when successful
-func (m *ItemSshKeysPostResponse) GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable) {
+// returns a SshKeysable when successful
+func (m *ItemSshKeysPostResponse) GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -41,12 +41,12 @@ func (m *ItemSshKeysPostResponse) GetData()(ie0c034c41cc7c7bacea8ad562c1d2002775
 func (m *ItemSshKeysPostResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSshKeyFromDiscriminatorValue)
+        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSshKeysFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable))
+            m.SetData(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable))
         }
         return nil
     }
@@ -73,12 +73,12 @@ func (m *ItemSshKeysPostResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemSshKeysPostResponse) SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable)() {
+func (m *ItemSshKeysPostResponse) SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable)() {
     m.data = value
 }
 type ItemSshKeysPostResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable)
-    SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeyable)()
+    GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable)
+    SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SshKeysable)()
 }

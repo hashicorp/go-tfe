@@ -16,25 +16,25 @@ type ItemWorkspacesRequestBuilder struct {
 // ItemWorkspacesRequestBuilderGetQueryParameters list all workspaces in an organization.
 type ItemWorkspacesRequestBuilderGetQueryParameters struct {
     // Comma-separated list of run statuses to filter workspaces by.
-    FiltercurrentRunstatus *string `uriparametername:"filter%5Bcurrent%2Drun%5D%5Bstatus%5D"`
+    FiltercurrentRunstatus *string "uriparametername:\"filter%5Bcurrent%2Drun%5D%5Bstatus%5D\""
     // Filter workspaces by project external ID.
-    Filterprojectid *string `uriparametername:"filter%5Bproject%5D%5Bid%5D"`
+    Filterprojectid *string "uriparametername:\"filter%5Bproject%5D%5Bid%5D\""
     // Filter workspaces by tag names.
-    Filtertagged *string `uriparametername:"filter%5Btagged%5D"`
+    Filtertagged *string "uriparametername:\"filter%5Btagged%5D\""
     // Filter workspaces by tag key=value pairs.
-    Filtertaggedvalue *string `uriparametername:"filter%5Btagged%5D%5Bvalue%5D"`
+    Filtertaggedvalue *string "uriparametername:\"filter%5Btagged%5D%5Bvalue%5D\""
     // Comma-separated list of relationship names to side-load (e.g., current_run, readme, effective_tag_bindings).
-    Include *string `uriparametername:"include"`
+    Include *string "uriparametername:\"include\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Partial name to filter workspaces by name.
-    Searchname *string `uriparametername:"search%5Bname%5D"`
+    Searchname *string "uriparametername:\"search%5Bname%5D\""
     // Wildcard name filter for workspaces.
-    SearchwildcardName *string `uriparametername:"search%5Bwildcard%2Dname%5D"`
+    SearchwildcardName *string "uriparametername:\"search%5Bwildcard%2Dname%5D\""
     // Sort workspaces. Valid values include name, current-run.created-at. Prefix with a hyphen (e.g., -name) to sort in descending order.
-    Sort *string `uriparametername:"sort"`
+    Sort *string "uriparametername:\"sort\""
 }
 // ByWorkspace_name gets an item from the github.com/hashicorp/go-tfe/api.organizations.item.workspaces.item collection
 // returns a *ItemWorkspacesWithWorkspace_nameItemRequestBuilder when successful
@@ -84,11 +84,11 @@ func (m *ItemWorkspacesRequestBuilder) Get(ctx context.Context, requestConfigura
     return res.(ItemWorkspacesGetResponseable), nil
 }
 // Post create a new workspace in an organization.
-// returns a ItemWorkspacesPostResponseable when successful
+// returns a WorkspacesEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesRequestBuilder) Post(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWorkspacesPostResponseable, error) {
+func (m *ItemWorkspacesRequestBuilder) Post(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -98,14 +98,14 @@ func (m *ItemWorkspacesRequestBuilder) Post(ctx context.Context, body ItemWorksp
         "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWorkspacesPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspacesEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemWorkspacesPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable), nil
 }
 // ToGetRequestInformation list all workspaces in an organization.
 // returns a *RequestInformation when successful

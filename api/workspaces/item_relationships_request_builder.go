@@ -34,11 +34,6 @@ func (m *ItemRelationshipsRequestBuilder) RemoteStateConsumers()(*ItemRelationsh
 func (m *ItemRelationshipsRequestBuilder) SshKey()(*ItemRelationshipsSshKeyRequestBuilder) {
     return NewItemRelationshipsSshKeyRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// TagBindings the tagBindings property
-// returns a *ItemRelationshipsTagBindingsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) TagBindings()(*ItemRelationshipsTagBindingsRequestBuilder) {
-    return NewItemRelationshipsTagBindingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
 // Tags the tags property
 // returns a *ItemRelationshipsTagsRequestBuilder when successful
 func (m *ItemRelationshipsRequestBuilder) Tags()(*ItemRelationshipsTagsRequestBuilder) {

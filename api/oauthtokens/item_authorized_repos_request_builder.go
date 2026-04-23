@@ -16,11 +16,11 @@ type ItemAuthorizedReposRequestBuilder struct {
 // ItemAuthorizedReposRequestBuilderGetQueryParameters list all repositories that the OAuth token is authorized to access.
 type ItemAuthorizedReposRequestBuilderGetQueryParameters struct {
     // The VCS organization name to scope repositories to. Required for Azure DevOps providers.
-    Organization *string `uriparametername:"organization"`
+    Organization *string "uriparametername:\"organization\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemAuthorizedReposRequestBuilderInternal instantiates a new ItemAuthorizedReposRequestBuilder and sets the default values.
 func NewItemAuthorizedReposRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthorizedReposRequestBuilder) {

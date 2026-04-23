@@ -16,7 +16,7 @@ type WithWorkspace_ItemRequestBuilder struct {
 // WithWorkspace_ItemRequestBuilderGetQueryParameters get details of a specific workspace by its external ID.
 type WithWorkspace_ItemRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).
-    Include *string `uriparametername:"include"`
+    Include *string "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -117,11 +117,11 @@ func (m *WithWorkspace_ItemRequestBuilder) NotificationConfigurations()(*ItemNot
     return NewItemNotificationConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Patch update settings of an existing workspace.
-// returns a ItemWithWorkspace_PatchResponseable when successful
+// returns a WorkspacesEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithWorkspace_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithWorkspace_PatchResponseable, error) {
+func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithWorkspace_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -131,14 +131,14 @@ func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body ItemW
         "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_PatchResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspacesEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemWithWorkspace_PatchResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable), nil
 }
 // Queries the queries property
 // returns a *ItemQueriesRequestBuilder when successful

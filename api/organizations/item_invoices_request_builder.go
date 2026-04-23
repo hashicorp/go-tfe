@@ -16,7 +16,7 @@ type ItemInvoicesRequestBuilder struct {
 // ItemInvoicesRequestBuilderGetQueryParameters lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
 type ItemInvoicesRequestBuilderGetQueryParameters struct {
     // The ID of the invoice where the page should start. If omitted, the endpoint returns the first page.
-    Cursor *string `uriparametername:"cursor"`
+    Cursor *string "uriparametername:\"cursor\""
 }
 // NewItemInvoicesRequestBuilderInternal instantiates a new ItemInvoicesRequestBuilder and sets the default values.
 func NewItemInvoicesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesRequestBuilder) {

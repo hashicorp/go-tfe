@@ -17,15 +17,15 @@ type ItemPolicySetsRequestBuilder struct {
 // ItemPolicySetsRequestBuilderGetQueryParameters list all policy sets in an organization.
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     // Filter policy sets by kind.
-    Filterkind *ia906111a8da6eb65115f4c37de8ebd3f15c697ab149e99bd516a998bccd84c95.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
+    Filterkind *ia906111a8da6eb65115f4c37de8ebd3f15c697ab149e99bd516a998bccd84c95.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
     // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
-    Filterversioned *bool `uriparametername:"filter%5Bversioned%5D"`
+    Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Filter policy sets by name.
-    Searchname *string `uriparametername:"search%5Bname%5D"`
+    Searchname *string "uriparametername:\"search%5Bname%5D\""
 }
 // NewItemPolicySetsRequestBuilderInternal instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
 func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
@@ -61,9 +61,9 @@ func (m *ItemPolicySetsRequestBuilder) Get(ctx context.Context, requestConfigura
     return res.(ItemPolicySetsGetResponseable), nil
 }
 // Post create a new policy set in an organization.
-// returns a ItemPolicySetsPostResponseable when successful
+// returns a PolicySetsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemPolicySetsPostResponseable, error) {
+func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PolicySetsEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -71,14 +71,14 @@ func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body ItemPolicy
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetsPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreatePolicySetsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemPolicySetsPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PolicySetsEnvelopeable), nil
 }
 // ToGetRequestInformation list all policy sets in an organization.
 // returns a *RequestInformation when successful

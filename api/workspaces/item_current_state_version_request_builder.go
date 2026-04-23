@@ -16,7 +16,7 @@ type ItemCurrentStateVersionRequestBuilder struct {
 // ItemCurrentStateVersionRequestBuilderGetQueryParameters get the current state version for a workspace.
 type ItemCurrentStateVersionRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. For example, outputs or created-by.
-    Include *string `uriparametername:"include"`
+    Include *string "uriparametername:\"include\""
 }
 // NewItemCurrentStateVersionRequestBuilderInternal instantiates a new ItemCurrentStateVersionRequestBuilder and sets the default values.
 func NewItemCurrentStateVersionRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCurrentStateVersionRequestBuilder) {

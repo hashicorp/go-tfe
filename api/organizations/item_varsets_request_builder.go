@@ -17,15 +17,15 @@ type ItemVarsetsRequestBuilder struct {
 // ItemVarsetsRequestBuilderGetQueryParameters list all variable sets for an organization.
 type ItemVarsetsRequestBuilderGetQueryParameters struct {
     // When true, returns only global variable sets. When false, returns only non-global variable sets.
-    Filterglobal *bool `uriparametername:"filter%5Bglobal%5D"`
+    Filterglobal *bool "uriparametername:\"filter%5Bglobal%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // A search query string. You can search for a variable set using its name.
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
     // When set to "owned", returns only organization-owned variable sets.
-    Scope *iac3b177216630da46da7d5db721cdf6a0f8ae5a780671d3b59da413aa24e3ce4.GetScopeQueryParameterType `uriparametername:"scope"`
+    Scope *iac3b177216630da46da7d5db721cdf6a0f8ae5a780671d3b59da413aa24e3ce4.GetScopeQueryParameterType "uriparametername:\"scope\""
 }
 // NewItemVarsetsRequestBuilderInternal instantiates a new ItemVarsetsRequestBuilder and sets the default values.
 func NewItemVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsRequestBuilder) {
@@ -61,9 +61,9 @@ func (m *ItemVarsetsRequestBuilder) Get(ctx context.Context, requestConfiguratio
     return res.(ItemVarsetsGetResponseable), nil
 }
 // Post create a new variable set in an organization.
-// returns a ItemVarsetsPostResponseable when successful
+// returns a VarsetsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsRequestBuilder) Post(ctx context.Context, body ItemVarsetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsetsPostResponseable, error) {
+func (m *ItemVarsetsRequestBuilder) Post(ctx context.Context, body ItemVarsetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VarsetsEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -71,14 +71,14 @@ func (m *ItemVarsetsRequestBuilder) Post(ctx context.Context, body ItemVarsetsPo
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsetsPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateVarsetsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemVarsetsPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VarsetsEnvelopeable), nil
 }
 // ToGetRequestInformation list all variable sets for an organization.
 // returns a *RequestInformation when successful

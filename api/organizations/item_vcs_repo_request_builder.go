@@ -15,9 +15,9 @@ type ItemVcsRepoRequestBuilder struct {
 // ItemVcsRepoRequestBuilderGetQueryParameters this endpoint checks if a repository exists and is accessible to the user.
 type ItemVcsRepoRequestBuilderGetQueryParameters struct {
     // The repository identifier (e.g., "owner/repo")
-    Identifier *string `uriparametername:"identifier"`
+    Identifier *string "uriparametername:\"identifier\""
     // The OAuth token ID to authenticate with the VCS provider
-    Oauth_token_id *string `uriparametername:"oauth_token_id"`
+    Oauth_token_id *string "uriparametername:\"oauth_token_id\""
 }
 // NewItemVcsRepoRequestBuilderInternal instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
 func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {

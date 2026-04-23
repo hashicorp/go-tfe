@@ -16,15 +16,15 @@ type StateVersionsRequestBuilder struct {
 // StateVersionsRequestBuilderGetQueryParameters list state versions for a workspace, filtered by organization and workspace name.
 type StateVersionsRequestBuilderGetQueryParameters struct {
     // The name of the organization that owns the workspace.
-    Filterorganizationname *string `uriparametername:"filter%5Borganization%5D%5Bname%5D"`
+    Filterorganizationname *string "uriparametername:\"filter%5Borganization%5D%5Bname%5D\""
     // Filter state versions by status. One or more comma-separated values from pending, finalized, or discarded.
-    Filterstatus *string `uriparametername:"filter%5Bstatus%5D"`
+    Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
     // The name of the workspace to list state versions for.
-    Filterworkspacename *string `uriparametername:"filter%5Bworkspace%5D%5Bname%5D"`
+    Filterworkspacename *string "uriparametername:\"filter%5Bworkspace%5D%5Bname%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ByState_version_id gets an item from the github.com/hashicorp/go-tfe/api.stateVersions.item collection
 // returns a *WithState_version_ItemRequestBuilder when successful

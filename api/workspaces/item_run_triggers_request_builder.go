@@ -17,11 +17,11 @@ type ItemRunTriggersRequestBuilder struct {
 // ItemRunTriggersRequestBuilderGetQueryParameters list all run triggers for a workspace.
 type ItemRunTriggersRequestBuilderGetQueryParameters struct {
     // Filter by run trigger type (inbound or outbound)
-    FilterrunTriggertype *i0cde5ca9cd52e09edf6a27d501cd9f9362b3b67e024ab1c8e1e4b6cf09b18abb.GetFilterRunTriggerTypeQueryParameterType `uriparametername:"filter%5Brun%2Dtrigger%5D%5Btype%5D"`
+    FilterrunTriggertype *i0cde5ca9cd52e09edf6a27d501cd9f9362b3b67e024ab1c8e1e4b6cf09b18abb.GetFilterRunTriggerTypeQueryParameterType "uriparametername:\"filter%5Brun%2Dtrigger%5D%5Btype%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemRunTriggersRequestBuilderInternal instantiates a new ItemRunTriggersRequestBuilder and sets the default values.
 func NewItemRunTriggersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunTriggersRequestBuilder) {
@@ -57,9 +57,9 @@ func (m *ItemRunTriggersRequestBuilder) Get(ctx context.Context, requestConfigur
     return res.(ItemRunTriggersGetResponseable), nil
 }
 // Post create a new run trigger for a workspace.
-// returns a ItemRunTriggersPostResponseable when successful
+// returns a RunTriggersEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRunTriggersRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggerable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemRunTriggersPostResponseable, error) {
+func (m *ItemRunTriggersRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggersEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -67,14 +67,14 @@ func (m *ItemRunTriggersRequestBuilder) Post(ctx context.Context, body ie0c034c4
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRunTriggersPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateRunTriggersEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemRunTriggersPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggersEnvelopeable), nil
 }
 // ToGetRequestInformation list all run triggers for a workspace.
 // returns a *RequestInformation when successful
@@ -86,7 +86,7 @@ func (m *ItemRunTriggersRequestBuilder) ToGetRequestInformation(ctx context.Cont
 }
 // ToPostRequestInformation create a new run trigger for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemRunTriggersRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggerable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRunTriggersRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RunTriggersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, "{+baseurl}/workspaces/{workspace_id}/run-triggers", m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

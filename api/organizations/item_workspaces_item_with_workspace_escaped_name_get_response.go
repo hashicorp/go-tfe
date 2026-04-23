@@ -9,18 +9,15 @@ import (
 )
 
 type ItemWorkspacesItemWithWorkspace_nameGetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelope
     // The included property
     included []ItemWorkspacesItemWithWorkspace_nameGetResponse_includedable
 }
 // NewItemWorkspacesItemWithWorkspace_nameGetResponse instantiates a new ItemWorkspacesItemWithWorkspace_nameGetResponse and sets the default values.
 func NewItemWorkspacesItemWithWorkspace_nameGetResponse()(*ItemWorkspacesItemWithWorkspace_nameGetResponse) {
     m := &ItemWorkspacesItemWithWorkspace_nameGetResponse{
+        WorkspacesEnvelope: *ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.NewWorkspacesEnvelope(),
     }
-    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateItemWorkspacesItemWithWorkspace_nameGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
@@ -28,30 +25,10 @@ func NewItemWorkspacesItemWithWorkspace_nameGetResponse()(*ItemWorkspacesItemWit
 func CreateItemWorkspacesItemWithWorkspace_nameGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewItemWorkspacesItemWithWorkspace_nameGetResponse(), nil
 }
-// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-// returns a map[string]any when successful
-func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
-}
-// GetData gets the data property value. The data property
-// returns a Workspaceable when successful
-func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable) {
-    return m.data
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspaceFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable))
-        }
-        return nil
-    }
+    res := m.WorkspacesEnvelope.GetFieldDeserializers()
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(CreateItemWorkspacesItemWithWorkspace_nameGetResponse_includedFromDiscriminatorValue)
         if err != nil {
@@ -77,11 +54,9 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) GetIncluded()([]ItemWo
 }
 // Serialize serializes information the current object
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
+    err := m.WorkspacesEnvelope.Serialize(writer)
+    if err != nil {
+        return err
     }
     if m.GetIncluded() != nil {
         cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
@@ -90,36 +65,20 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) Serialize(writer i878a
                 cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
             }
         }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
+        err = writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
     }
     return nil
 }
-// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
-}
-// SetData sets the data property value. The data property
-func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)() {
-    m.data = value
-}
 // SetIncluded sets the included property value. The included property
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse) SetIncluded(value []ItemWorkspacesItemWithWorkspace_nameGetResponse_includedable)() {
     m.included = value
 }
 type ItemWorkspacesItemWithWorkspace_nameGetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspacesEnvelopeable
     GetIncluded()([]ItemWorkspacesItemWithWorkspace_nameGetResponse_includedable)
-    SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)()
     SetIncluded(value []ItemWorkspacesItemWithWorkspace_nameGetResponse_includedable)()
 }

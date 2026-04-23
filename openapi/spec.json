@@ -242,6 +242,11 @@
       }
     },
     {
+      "name": "email-recipient-statuses",
+      "x-displayName": "Email Recipient Statuses",
+      "description": "Email recipient verification and unsubscribe actions"
+    },
+    {
       "name": "plans",
       "x-displayName": "Plans",
       "description": "Plan actions",
@@ -397,6 +402,11 @@
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/change-requests"
       }
+    },
+    {
+      "name": "workspace-transfers",
+      "x-displayName": "Workspace Transfers",
+      "description": "Transfer workspaces across organizations"
     }
   ],
   "paths": {
@@ -419,22 +429,25 @@
                     "value": {
                       "data": {
                         "type": "users",
-                        "id": "user-12345678"
+                        "id": "user-12345678",
+                        "attributes": {},
+                        "relationships": {},
+                        "links": {
+                          "self": "https://app.terraform.io/api/v2/account/details"
+                        }
                       }
                     }
                   }
                 },
                 "schema": {
-                  "description": "User resource representing the account details of the authenticated user.\nFor internal reasons, HCP Terraform associates team and organization tokens\nwith a synthetic user account called service user.\n",
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/user"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/users-envelope"
+                    },
+                    {
+                      "description": "User resource representing the account details of the authenticated user.\nFor internal reasons, HCP Terraform associates team and organization tokens\nwith a synthetic user account called service user.\n"
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -476,15 +489,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
+                  "$ref": "#/components/schemas/users-envelope"
                 }
               }
             }
@@ -526,7 +531,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/user"
+                  "$ref": "#/components/schemas/users"
                 }
               }
             }
@@ -571,25 +576,26 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/hcp-organization"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/hcp-organization-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/hcp-billing-account"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/hcp-billing-account"
+                              }
+                            ]
                           }
-                        ]
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -798,12 +804,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/subscription"
-                    }
-                  }
+                  "$ref": "#/components/schemas/subscriptions-envelope"
                 }
               }
             }
@@ -974,15 +975,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/agent-pool"
-                    }
-                  }
+                  "$ref": "#/components/schemas/agent-pools-envelope"
                 }
               }
             }
@@ -1064,7 +1057,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/agent-pool"
+                        "$ref": "#/components/schemas/agent-pools"
                       }
                     },
                     "meta": {
@@ -1121,15 +1114,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/agent-pool"
-                    }
-                  }
+                  "$ref": "#/components/schemas/agent-pools-envelope"
                 }
               }
             }
@@ -1169,15 +1154,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/agent-pool"
-                  }
-                }
+                "$ref": "#/components/schemas/agent-pools-envelope"
               }
             }
           }
@@ -1188,15 +1165,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/agent-pool"
-                    }
-                  }
+                  "$ref": "#/components/schemas/agent-pools-envelope"
                 }
               }
             }
@@ -1303,7 +1272,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/agent"
+                        "$ref": "#/components/schemas/agents"
                       }
                     },
                     "meta": {
@@ -1360,7 +1329,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/agent"
+                  "$ref": "#/components/schemas/agents-envelope"
                 }
               }
             }
@@ -1481,7 +1450,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/organization"
+                        "$ref": "#/components/schemas/organizations"
                       }
                     },
                     "meta": {
@@ -1500,7 +1469,7 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/subscription"
+                            "$ref": "#/components/schemas/subscriptions"
                           }
                         ]
                       }
@@ -1534,15 +1503,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/organization"
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-envelope"
               }
             }
           }
@@ -1553,15 +1514,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization"
-                    }
-                  }
+                  "$ref": "#/components/schemas/organizations-envelope"
                 }
               }
             }
@@ -1616,25 +1569,26 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/organizations-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/subscription"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/subscriptions"
+                              }
+                            ]
                           }
-                        ]
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -1674,15 +1628,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/organization"
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-envelope"
               }
             }
           }
@@ -1693,15 +1639,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization"
-                    }
-                  }
+                  "$ref": "#/components/schemas/organizations-envelope"
                 }
               }
             }
@@ -1741,15 +1679,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/organization"
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-envelope"
               }
             }
           }
@@ -1760,15 +1690,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization"
-                    }
-                  }
+                  "$ref": "#/components/schemas/organizations-envelope"
                 }
               }
             }
@@ -1904,7 +1826,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/organization-membership"
+                        "$ref": "#/components/schemas/organization-memberships"
                       }
                     },
                     "meta": {
@@ -1923,13 +1845,13 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/user"
+                            "$ref": "#/components/schemas/users"
                           },
                           {
-                            "$ref": "#/components/schemas/team"
+                            "$ref": "#/components/schemas/teams"
                           },
                           {
-                            "$ref": "#/components/schemas/organization"
+                            "$ref": "#/components/schemas/organizations"
                           }
                         ]
                       }
@@ -2101,15 +2023,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization-membership"
-                    }
-                  }
+                  "$ref": "#/components/schemas/organization-memberships-envelope"
                 }
               }
             }
@@ -2201,7 +2115,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/organization-membership"
+                        "$ref": "#/components/schemas/organization-memberships"
                       }
                     },
                     "links": {
@@ -2220,13 +2134,13 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/user"
+                            "$ref": "#/components/schemas/users"
                           },
                           {
-                            "$ref": "#/components/schemas/team"
+                            "$ref": "#/components/schemas/teams"
                           },
                           {
-                            "$ref": "#/components/schemas/organization"
+                            "$ref": "#/components/schemas/organizations"
                           }
                         ]
                       }
@@ -2287,28 +2201,29 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/organization-membership"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/organization-memberships-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/user"
-                          },
-                          {
-                            "$ref": "#/components/schemas/team"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/users"
+                              },
+                              {
+                                "$ref": "#/components/schemas/teams"
+                              }
+                            ]
                           }
-                        ]
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -2462,7 +2377,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/project"
+                        "$ref": "#/components/schemas/projects"
                       }
                     },
                     "links": {
@@ -2558,12 +2473,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/projects-envelope"
                 }
               }
             }
@@ -2654,12 +2564,12 @@
           }
         }
       },
-      "put": {
+      "patch": {
         "operationId": "upsertTokenTtlPolicies",
         "summary": "Create or Update Token TTL Policies",
         "description": "Create or Update token TTL policies for an organization.",
         "tags": [
-          "organization-token-ttl-policies"
+          "token-ttl-policies"
         ],
         "parameters": [
           {
@@ -2679,13 +2589,51 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "token_ttl_policies"
+                  "data"
                 ],
                 "properties": {
-                  "token_ttl_policies": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/token-ttl-policy"
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organization-token-ttl-policies"
+                        ]
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "required": [
+                          "token-ttl-policies"
+                        ],
+                        "properties": {
+                          "token-ttl-policies": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "token-type",
+                                "max-ttl-ms"
+                              ],
+                              "properties": {
+                                "token-type": {
+                                  "type": "string",
+                                  "description": "The type of token (organization, team, user, or audit_trails)"
+                                },
+                                "max-ttl-ms": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "description": "The maximum time-to-live for the token in milliseconds"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -2694,16 +2642,21 @@
                 "upsert": {
                   "summary": "Upsert token TTL policies",
                   "value": {
-                    "token_ttl_policies": [
-                      {
-                        "token-type": "ORG_TOKEN",
-                        "max-ttl-ms": 3600000
-                      },
-                      {
-                        "token-type": "USER_TOKEN",
-                        "max-ttl-ms": 7200000
+                    "data": {
+                      "type": "organization-token-ttl-policies",
+                      "attributes": {
+                        "token-ttl-policies": [
+                          {
+                            "token-type": "organization",
+                            "max-ttl-ms": 5184000000
+                          },
+                          {
+                            "token-type": "user",
+                            "max-ttl-ms": 189216000000
+                          }
+                        ]
                       }
-                    ]
+                    }
                   }
                 }
               }
@@ -2711,7 +2664,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successfully created or updated token TTL policies",
             "content": {
               "application/vnd.api+json": {
@@ -2722,7 +2675,10 @@
                   ],
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/token-ttl-policy"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/token-ttl-policy"
+                      }
                     }
                   }
                 }
@@ -2797,12 +2753,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/projects-envelope"
                 }
               }
             }
@@ -2889,12 +2840,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/projects-envelope"
                 }
               }
             }
@@ -3004,167 +2950,6 @@
         "responses": {
           "204": {
             "description": "Successfully moved workspace(s)."
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/projects/{project_id}/relationships/tag-bindings": {
-      "get": {
-        "operationId": "listProjectTagBindings",
-        "summary": "List Project Tag Bindings",
-        "description": "List all tags associated with a project.",
-        "tags": [
-          "projects"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "project_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the project."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of tags",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/tag-bindings-request"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Project not found or user unauthorized to view project",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "addProjectTagBindings",
-        "summary": "Add Tag Bindings to a Project",
-        "description": "Add one or more tag bindings to a project.",
-        "tags": [
-          "projects"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "project_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the project."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/tag-bindings-request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Tags added"
-          },
-          "404": {
-            "description": "Project not found or user unauthorized to manage tags",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "replaceProjectTagBindings",
-        "summary": "Replace Tag Bindings in a Project",
-        "description": "Replace all tag bindings in a project.",
-        "tags": [
-          "projects"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "project_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the project."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/tag-bindings-request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Tag bindings replaced"
-          },
-          "404": {
-            "description": "Project not found or user unauthorized to manage tag bindings",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
           },
           "default": {
             "description": "Error details",
@@ -3290,7 +3075,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/workspace"
+                        "$ref": "#/components/schemas/workspaces"
                       }
                     },
                     "meta": {
@@ -3549,15 +3334,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -3638,21 +3415,22 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/workspaces-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -3895,15 +3673,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -4089,7 +3859,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/notification-configuration"
+                        "$ref": "#/components/schemas/notification-configurations"
                       }
                     }
                   }
@@ -4125,12 +3895,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/notification-configuration"
-                  }
-                }
+                "$ref": "#/components/schemas/notification-configurations-envelope"
               }
             }
           }
@@ -4141,12 +3906,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4196,7 +3956,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/notification-configuration"
+                        "$ref": "#/components/schemas/notification-configurations"
                       }
                     },
                     "meta": {
@@ -4250,12 +4010,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/notification-configuration"
-                  }
-                }
+                "$ref": "#/components/schemas/notification-configurations-envelope"
               }
             }
           }
@@ -4266,12 +4021,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4325,7 +4075,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/notification-configuration"
+                        "$ref": "#/components/schemas/notification-configurations"
                       }
                     },
                     "meta": {
@@ -4379,12 +4129,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/notification-configuration"
-                  }
-                }
+                "$ref": "#/components/schemas/notification-configurations-envelope"
               }
             }
           }
@@ -4395,12 +4140,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4443,12 +4183,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4488,12 +4223,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/notification-configuration"
-                  }
-                }
+                "$ref": "#/components/schemas/notification-configurations-envelope"
               }
             }
           }
@@ -4504,12 +4234,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4586,12 +4311,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
-                  }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
                 }
               }
             }
@@ -4634,12 +4354,195 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/notification-configuration"
-                    }
+                  "$ref": "#/components/schemas/notification-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email-recipient-statuses/verify": {
+      "get": {
+        "operationId": "verifyEmailRecipientStatus",
+        "summary": "Verify Email Recipient",
+        "description": "Render the email verification page using a signed token. This endpoint is public and does not require authentication.",
+        "tags": [
+          "email-recipient-statuses"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The signed token for verifying the email address"
+          },
+          {
+            "in": "query",
+            "name": "config",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The notification configuration external ID used to render the subscribable name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email verification page rendered successfully",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid or expired token",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "performEmailRecipientVerification",
+        "summary": "Perform Email Recipient Verification",
+        "description": "Verify an email recipient status using a signed token. This endpoint is public and does not require authentication.",
+        "tags": [
+          "email-recipient-statuses"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "The signed token for verifying the email address"
+                  },
+                  "config": {
+                    "type": "string",
+                    "description": "The notification configuration external ID used to render the subscribable name"
                   }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email recipient verification completed successfully",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid or expired token",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid content type",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email-recipient-statuses/unsubscribe": {
+      "get": {
+        "operationId": "unsubscribeEmailRecipient",
+        "summary": "Unsubscribe Email Recipient",
+        "description": "Unsubscribe an email recipient from notifications using a signed token. This endpoint is public and does not require authentication.",
+        "tags": [
+          "email-recipient-statuses"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The signed token for unsubscribing the email address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email recipient unsubscribed successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/email-recipient-statuses-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid or expired token",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -4696,7 +4599,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/query"
+                        "$ref": "#/components/schemas/queries"
                       }
                     },
                     "links": {
@@ -4853,66 +4756,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "type",
-                      "attributes"
-                    ],
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      },
-                      "attributes": {
-                        "type": "object",
-                        "required": [
-                          "key",
-                          "category"
-                        ],
-                        "properties": {
-                          "key": {
-                            "type": "string",
-                            "description": "The name of the variable."
-                          },
-                          "value": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The value of the variable."
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The description of the variable."
-                          },
-                          "category": {
-                            "type": "string",
-                            "enum": [
-                              "terraform",
-                              "env"
-                            ],
-                            "description": "Whether this is a Terraform or environment variable."
-                          },
-                          "hcl": {
-                            "type": "boolean",
-                            "description": "Whether to evaluate the value of the variable as a string of HCL code."
-                          },
-                          "sensitive": {
-                            "type": "boolean",
-                            "description": "Whether the value is sensitive."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/var-envelope"
               }
             }
           }
@@ -4923,15 +4767,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-var-envelope"
                 }
               }
             }
@@ -4983,15 +4819,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-var-envelope"
                 }
               }
             }
@@ -5040,65 +4868,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The ID of the variable to update."
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      },
-                      "attributes": {
-                        "type": "object",
-                        "properties": {
-                          "key": {
-                            "type": "string",
-                            "description": "The name of the variable."
-                          },
-                          "value": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The value of the variable."
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The description of the variable."
-                          },
-                          "category": {
-                            "type": "string",
-                            "enum": [
-                              "terraform",
-                              "env"
-                            ],
-                            "description": "Whether this is a Terraform or environment variable."
-                          },
-                          "hcl": {
-                            "type": "boolean",
-                            "description": "Whether to evaluate the value of the variable as a string of HCL code."
-                          },
-                          "sensitive": {
-                            "type": "boolean",
-                            "description": "Whether the value is sensitive."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/var-envelope"
               }
             }
           }
@@ -5109,15 +4879,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-var-envelope"
                 }
               }
             }
@@ -5203,15 +4965,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/varset"
-                    }
-                  }
+                  "$ref": "#/components/schemas/varsets-envelope"
                 }
               }
             }
@@ -5445,15 +5199,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/varset"
-                    }
-                  }
+                  "$ref": "#/components/schemas/varsets-envelope"
                 }
               }
             }
@@ -5687,15 +5433,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/varset"
-                    }
-                  }
+                  "$ref": "#/components/schemas/varsets-envelope"
                 }
               }
             }
@@ -5813,7 +5551,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/varset"
+                        "$ref": "#/components/schemas/varsets"
                       }
                     },
                     "links": {
@@ -6060,15 +5798,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/varset"
-                    }
-                  }
+                  "$ref": "#/components/schemas/varsets-envelope"
                 }
               }
             }
@@ -6165,66 +5895,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "type",
-                      "attributes"
-                    ],
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      },
-                      "attributes": {
-                        "type": "object",
-                        "required": [
-                          "key",
-                          "category"
-                        ],
-                        "properties": {
-                          "key": {
-                            "type": "string",
-                            "description": "The name of the variable."
-                          },
-                          "value": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The value of the variable."
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The description of the variable."
-                          },
-                          "category": {
-                            "type": "string",
-                            "enum": [
-                              "terraform",
-                              "env"
-                            ],
-                            "description": "Whether this is a Terraform or environment variable."
-                          },
-                          "hcl": {
-                            "type": "boolean",
-                            "description": "Whether to evaluate the value of the variable as a string of HCL code."
-                          },
-                          "sensitive": {
-                            "type": "boolean",
-                            "description": "Whether the value is sensitive. If true, variable is not visible in the UI."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/var-envelope"
               }
             }
           }
@@ -6235,15 +5906,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -6295,15 +5958,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -6352,61 +6007,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "type"
-                    ],
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      },
-                      "attributes": {
-                        "type": "object",
-                        "properties": {
-                          "key": {
-                            "type": "string",
-                            "description": "The name of the variable."
-                          },
-                          "value": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The value of the variable."
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The description of the variable."
-                          },
-                          "category": {
-                            "type": "string",
-                            "enum": [
-                              "terraform",
-                              "env"
-                            ],
-                            "description": "Whether this is a Terraform or environment variable."
-                          },
-                          "hcl": {
-                            "type": "boolean",
-                            "description": "Whether to evaluate the value of the variable as a string of HCL code."
-                          },
-                          "sensitive": {
-                            "type": "boolean",
-                            "description": "Whether the value is sensitive."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/var-envelope"
               }
             }
           }
@@ -6417,15 +6018,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -6529,15 +6122,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -7113,7 +6698,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/varset"
+                        "$ref": "#/components/schemas/varsets"
                       }
                     },
                     "links": {
@@ -7185,7 +6770,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/varset"
+                        "$ref": "#/components/schemas/varsets"
                       }
                     },
                     "links": {
@@ -7356,21 +6941,22 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/workspaces-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -7604,15 +7190,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -7736,15 +7314,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -7807,15 +7377,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -7878,15 +7440,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -7995,15 +7549,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -8083,7 +7629,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/workspace"
+                        "$ref": "#/components/schemas/workspaces"
                       }
                     }
                   }
@@ -8414,15 +7960,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspaces-envelope"
                 }
               }
             }
@@ -8560,167 +8098,6 @@
           },
           "422": {
             "description": "Validation error on one or more variables",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/workspaces/{workspace_id}/relationships/tag-bindings": {
-      "get": {
-        "operationId": "listWorkspaceTagBindings",
-        "summary": "List Workspace Tags",
-        "description": "List all tags associated with a workspace.",
-        "tags": [
-          "workspaces"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "workspace_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the workspace."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of tags",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/tag-bindings-request"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workspace not found or user unauthorized to view workspace",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "addWorkspaceTagBindings",
-        "summary": "Add Tag Bindings to a Workspace",
-        "description": "Add one or more tag bindings to a workspace.",
-        "tags": [
-          "workspaces"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "workspace_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The external ID of the workspace."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/tag-bindings-request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Tags added"
-          },
-          "404": {
-            "description": "Workspace not found or user unauthorized to manage tags",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "replaceWorkspaceTagBindings",
-        "summary": "Replace Tag Bindings in a Workspace",
-        "description": "Replace all tag bindings in a workspace.",
-        "tags": [
-          "workspaces"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "workspace_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the workspace."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/tag-bindings-request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Tag bindings replaced"
-          },
-          "404": {
-            "description": "Workspace not found or user unauthorized to manage tag bindings",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -9395,7 +8772,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/run"
+                "$ref": "#/components/schemas/runs-envelope"
               }
             }
           }
@@ -9406,12 +8783,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/run"
-                    }
-                  }
+                  "$ref": "#/components/schemas/runs-envelope"
                 }
               }
             }
@@ -9490,7 +8862,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/run"
+                        "$ref": "#/components/schemas/runs"
                       }
                     },
                     "meta": {
@@ -9547,12 +8919,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/run"
-                    }
-                  }
+                  "$ref": "#/components/schemas/runs-envelope"
                 }
               }
             }
@@ -9595,15 +8962,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/configuration-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/configuration-versions-envelope"
                 }
               }
             }
@@ -9701,7 +9060,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/workspace-comment"
+                        "$ref": "#/components/schemas/comments"
                       }
                     },
                     "meta": {
@@ -9755,7 +9114,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/workspace-comment"
+                "$ref": "#/components/schemas/comments-envelope"
               }
             }
           }
@@ -9766,12 +9125,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-comment"
-                    }
-                  }
+                  "$ref": "#/components/schemas/comments-envelope"
                 }
               }
             }
@@ -9814,12 +9168,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-comment"
-                    }
-                  }
+                  "$ref": "#/components/schemas/comments-envelope"
                 }
               }
             }
@@ -9943,7 +9292,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/run"
+                        "$ref": "#/components/schemas/runs"
                       }
                     },
                     "meta": {
@@ -10024,7 +9373,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/run-trigger"
+                        "$ref": "#/components/schemas/run-triggers"
                       }
                     },
                     "meta": {
@@ -10078,7 +9427,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/run-trigger"
+                "$ref": "#/components/schemas/run-triggers-envelope"
               }
             }
           }
@@ -10089,12 +9438,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/run-trigger"
-                    }
-                  }
+                  "$ref": "#/components/schemas/run-triggers-envelope"
                 }
               }
             }
@@ -10137,12 +9481,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/run-trigger"
-                    }
-                  }
+                  "$ref": "#/components/schemas/run-triggers-envelope"
                 }
               }
             }
@@ -10258,7 +9597,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/run"
+                        "$ref": "#/components/schemas/runs"
                       }
                     },
                     "meta": {
@@ -10315,12 +9654,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/plan"
-                    }
-                  }
+                  "$ref": "#/components/schemas/plans-envelope"
                 }
               }
             }
@@ -10479,12 +9813,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/plan"
-                    }
-                  }
+                  "$ref": "#/components/schemas/plans-envelope"
                 }
               }
             }
@@ -10589,7 +9918,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/policy"
+                      "$ref": "#/components/schemas/policies"
                     }
                   }
                 }
@@ -10705,7 +10034,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/policy"
+                      "$ref": "#/components/schemas/policies"
                     }
                   }
                 }
@@ -10828,7 +10157,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy"
+                        "$ref": "#/components/schemas/policies"
                       }
                     },
                     "links": {
@@ -11002,7 +10331,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/policy"
+                      "$ref": "#/components/schemas/policies"
                     }
                   }
                 }
@@ -11108,7 +10437,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/policy"
+                      "$ref": "#/components/schemas/policies"
                     }
                   }
                 }
@@ -11153,12 +10482,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-check"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-checks-envelope"
                 }
               }
             }
@@ -11265,12 +10589,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-check"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-checks-envelope"
                 }
               }
             }
@@ -11334,7 +10653,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy-check"
+                        "$ref": "#/components/schemas/policy-checks"
                       }
                     },
                     "meta": {
@@ -11459,56 +10778,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "type",
-                      "attributes"
-                    ],
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      },
-                      "attributes": {
-                        "type": "object",
-                        "required": [
-                          "key",
-                          "category"
-                        ],
-                        "properties": {
-                          "key": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "category": {
-                            "type": "string",
-                            "enum": [
-                              "policy-set"
-                            ]
-                          },
-                          "sensitive": {
-                            "type": "boolean"
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/var-envelope"
               }
             }
           }
@@ -11519,15 +10789,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -11579,15 +10841,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -11695,15 +10949,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/var"
-                    }
-                  }
+                  "$ref": "#/components/schemas/var-envelope"
                 }
               }
             }
@@ -11789,12 +11035,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-sets-envelope"
                 }
               }
             }
@@ -11987,12 +11228,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-sets-envelope"
                 }
               }
             }
@@ -12112,7 +11348,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy-set"
+                        "$ref": "#/components/schemas/policy-sets"
                       }
                     },
                     "meta": {
@@ -12380,12 +11616,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-sets-envelope"
                 }
               }
             }
@@ -12971,6 +12202,148 @@
         }
       }
     },
+    "/policy-sets/{policy_set_id}/relationships/project-exclusions": {
+      "post": {
+        "operationId": "addPolicySetProjectExclusions",
+        "summary": "Add Project Exclusions to a Policy Set",
+        "description": "Add project exclusions to a policy set. Excluded projects will not have the policy set applied to them even if the set is global.",
+        "tags": [
+          "policy-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the policy set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "projects"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Project exclusions successfully added to policy set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removePolicySetProjectExclusions",
+        "summary": "Remove Project Exclusions from a Policy Set",
+        "description": "Remove project exclusions from a policy set. project exclusions not currently in the set are ignored.",
+        "tags": [
+          "policy-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the policy set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "projects"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Project exclusions successfully removed from policy set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/policy-sets/{policy_set_id}/versions": {
       "get": {
         "operationId": "listPolicySetVersions",
@@ -13007,7 +12380,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy-set-version"
+                        "$ref": "#/components/schemas/policy-set-versions"
                       }
                     },
                     "meta": {
@@ -13062,12 +12435,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-set-versions-envelope"
                 }
               }
             }
@@ -13110,12 +12478,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-set-versions-envelope"
                 }
               }
             }
@@ -13158,12 +12521,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-evaluation"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-evaluations-envelope"
                 }
               }
             }
@@ -13217,7 +12575,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy-set-outcome"
+                        "$ref": "#/components/schemas/policy-set-outcomes"
                       }
                     },
                     "meta": {
@@ -13274,12 +12632,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/policy-set-outcome"
-                    }
-                  }
+                  "$ref": "#/components/schemas/policy-set-outcomes-envelope"
                 }
               }
             }
@@ -13333,7 +12686,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/policy-evaluation"
+                        "$ref": "#/components/schemas/policy-evaluations"
                       }
                     },
                     "meta": {
@@ -13378,7 +12731,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/plan-export"
+                "$ref": "#/components/schemas/plan-exports-envelope"
               }
             }
           }
@@ -13389,12 +12742,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/plan-export"
-                    }
-                  }
+                  "$ref": "#/components/schemas/plan-exports-envelope"
                 }
               }
             }
@@ -13437,12 +12785,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/plan-export"
-                    }
-                  }
+                  "$ref": "#/components/schemas/plan-exports-envelope"
                 }
               }
             }
@@ -13562,12 +12905,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/assessment-result"
-                    }
-                  }
+                  "$ref": "#/components/schemas/assessment-results-envelope"
                 }
               }
             }
@@ -13843,12 +13181,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/apply"
-                    }
-                  }
+                  "$ref": "#/components/schemas/applies-envelope"
                 }
               }
             }
@@ -13901,12 +13234,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/errors"
-                    }
-                  }
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -13938,12 +13266,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/cost-estimate"
-                    }
-                  }
+                  "$ref": "#/components/schemas/cost-estimates-envelope"
                 }
               }
             }
@@ -14015,7 +13338,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/state-version"
+                        "$ref": "#/components/schemas/state-versions"
                       }
                     },
                     "meta": {
@@ -14072,12 +13395,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/state-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/state-versions-envelope"
                 }
               }
             }
@@ -14131,7 +13449,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/state-version-output"
+                        "$ref": "#/components/schemas/state-version-outputs"
                       }
                     },
                     "meta": {
@@ -14298,12 +13616,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/state-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/state-versions-envelope"
                 }
               }
             }
@@ -14409,12 +13722,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/state-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/state-versions-envelope"
                 }
               }
             }
@@ -14457,12 +13765,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/state-version-output"
-                    }
-                  }
+                  "$ref": "#/components/schemas/state-version-outputs-envelope"
                 }
               }
             }
@@ -14510,7 +13813,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/state-version-output"
+                        "$ref": "#/components/schemas/state-version-outputs"
                       }
                     }
                   }
@@ -14576,7 +13879,7 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -14616,6 +13919,16 @@
             "description": "ID - Can be a token ID or a team ID, depending on the token type"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Authentication token created",
@@ -14632,7 +13945,7 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -14714,15 +14027,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
+                  "$ref": "#/components/schemas/users-envelope"
                 }
               }
             }
@@ -14844,7 +14149,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/authentication-token"
+                        "$ref": "#/components/schemas/authentication-tokens"
                       }
                     },
                     "links": {
@@ -14893,21 +14198,23 @@
             "description": "User ID"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "User token created",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/authentication-token"
-                    }
-                  }
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -14961,7 +14268,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/authentication-token"
+                        "$ref": "#/components/schemas/authentication-tokens"
                       }
                     },
                     "links": {
@@ -15010,21 +14317,23 @@
             "description": "The ID of the Agent Pool"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Agent token created",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/authentication-token"
-                    }
-                  }
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -15107,7 +14416,7 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -15147,6 +14456,16 @@
             "description": "ID - Can be a token ID or a team ID, depending on the token type"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Authentication token created",
@@ -15163,7 +14482,7 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -15422,7 +14741,7 @@
                       "items": {
                         "oneOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -15462,8 +14781,18 @@
             "description": "Organization name"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": "Organization token created",
             "content": {
               "application/vnd.api+json": {
@@ -15478,7 +14807,7 @@
                       "items": {
                         "oneOf": [
                           {
-                            "$ref": "#/components/schemas/authentication-token"
+                            "$ref": "#/components/schemas/authentication-tokens"
                           }
                         ]
                       }
@@ -15571,7 +14900,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/authentication-token"
+                        "$ref": "#/components/schemas/authentication-tokens"
                       }
                     },
                     "links": {
@@ -15673,7 +15002,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/team"
+                        "$ref": "#/components/schemas/teams"
                       }
                     },
                     "meta": {
@@ -15692,10 +15021,10 @@
                       "items": {
                         "anyOf": [
                           {
-                            "$ref": "#/components/schemas/user"
+                            "$ref": "#/components/schemas/users"
                           },
                           {
-                            "$ref": "#/components/schemas/organization-membership"
+                            "$ref": "#/components/schemas/organization-memberships"
                           }
                         ]
                       }
@@ -15760,7 +15089,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team"
+                "$ref": "#/components/schemas/teams-envelope"
               }
             }
           }
@@ -15771,15 +15100,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team"
-                    }
-                  }
+                  "$ref": "#/components/schemas/teams-envelope"
                 }
               }
             }
@@ -15865,28 +15186,29 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/teams-envelope"
                     },
-                    "included": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/user"
-                          },
-                          {
-                            "$ref": "#/components/schemas/organization-membership"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/users"
+                              },
+                              {
+                                "$ref": "#/components/schemas/organization-memberships"
+                              }
+                            ]
                           }
-                        ]
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -15946,7 +15268,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team"
+                "$ref": "#/components/schemas/teams-envelope"
               }
             }
           }
@@ -15957,15 +15279,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team"
-                    }
-                  }
+                  "$ref": "#/components/schemas/teams-envelope"
                 }
               }
             }
@@ -16339,7 +15653,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/organization-membership"
+                        "$ref": "#/components/schemas/organization-memberships"
                       }
                     },
                     "meta": {
@@ -16638,7 +15952,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/team-project"
+                        "$ref": "#/components/schemas/team-projects"
                       }
                     },
                     "meta": {
@@ -16691,7 +16005,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team-project"
+                "$ref": "#/components/schemas/team-projects-envelope"
               }
             }
           }
@@ -16702,12 +16016,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-projects-envelope"
                 }
               }
             }
@@ -16770,12 +16079,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-projects-envelope"
                 }
               }
             }
@@ -16825,7 +16129,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team-project"
+                "$ref": "#/components/schemas/team-projects-envelope"
               }
             }
           }
@@ -16836,12 +16140,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-project"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-projects-envelope"
                 }
               }
             }
@@ -16968,7 +16267,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/team-workspace"
+                        "$ref": "#/components/schemas/team-workspaces"
                       }
                     },
                     "meta": {
@@ -17021,7 +16320,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team-workspace"
+                "$ref": "#/components/schemas/team-workspaces-envelope"
               }
             }
           }
@@ -17032,12 +16331,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-workspaces-envelope"
                 }
               }
             }
@@ -17100,12 +16394,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-workspaces-envelope"
                 }
               }
             }
@@ -17155,7 +16444,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/team-workspace"
+                "$ref": "#/components/schemas/team-workspaces-envelope"
               }
             }
           }
@@ -17166,12 +16455,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/team-workspace"
-                    }
-                  }
+                  "$ref": "#/components/schemas/team-workspaces-envelope"
                 }
               }
             }
@@ -17343,7 +16627,7 @@
             }
           },
           "422": {
-            "description": "Unprocessable Entity",
+            "description": "Unprocessable Content",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -17394,7 +16678,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/configuration-version"
+                        "$ref": "#/components/schemas/configuration-versions"
                       }
                     },
                     "meta": {
@@ -17448,15 +16732,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/configuration-version"
-                  }
-                }
+                "$ref": "#/components/schemas/configuration-versions-envelope"
               }
             }
           }
@@ -17467,15 +16743,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/configuration-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/configuration-versions-envelope"
                 }
               }
             }
@@ -17518,15 +16786,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/configuration-version"
-                    }
-                  }
+                  "$ref": "#/components/schemas/configuration-versions-envelope"
                 }
               }
             }
@@ -18108,7 +17368,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/ssh-key"
+                        "$ref": "#/components/schemas/ssh-keys"
                       }
                     },
                     "links": {
@@ -18215,7 +17475,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/ssh-key"
+                      "$ref": "#/components/schemas/ssh-keys"
                     }
                   }
                 }
@@ -18233,7 +17493,7 @@
             }
           },
           "422": {
-            "description": "Unprocessable Entity",
+            "description": "Unprocessable Content",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -18273,7 +17533,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/ssh-key"
+                      "$ref": "#/components/schemas/ssh-keys"
                     }
                   }
                 }
@@ -18362,7 +17622,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/ssh-key"
+                      "$ref": "#/components/schemas/ssh-keys"
                     }
                   }
                 }
@@ -18380,7 +17640,7 @@
             }
           },
           "422": {
-            "description": "Unprocessable Entity",
+            "description": "Unprocessable Content",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -18471,7 +17731,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/change-request"
+                        "$ref": "#/components/schemas/workspace-change-requests"
                       }
                     },
                     "meta": {
@@ -18528,12 +17788,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/change-request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-change-requests-envelope"
                 }
               }
             }
@@ -18576,12 +17831,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/change-request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-change-requests-envelope"
                 }
               }
             }
@@ -18622,12 +17872,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/change-request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-change-requests-envelope"
                 }
               }
             }
@@ -18689,15 +17934,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/oauth-client"
-                    }
-                  }
+                  "$ref": "#/components/schemas/oauth-clients-envelope"
                 }
               }
             }
@@ -18737,15 +17974,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/oauth-client"
-                  }
-                }
+                "$ref": "#/components/schemas/oauth-clients-envelope"
               }
             }
           }
@@ -18756,15 +17985,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/oauth-client"
-                    }
-                  }
+                  "$ref": "#/components/schemas/oauth-clients-envelope"
                 }
               }
             }
@@ -18829,15 +18050,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/oauth-client"
-                  }
-                }
+                "$ref": "#/components/schemas/oauth-clients-envelope"
               }
             }
           }
@@ -18848,15 +18061,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/oauth-client"
-                    }
-                  }
+                  "$ref": "#/components/schemas/oauth-clients-envelope"
                 }
               }
             }
@@ -18919,7 +18124,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/oauth-client"
+                        "$ref": "#/components/schemas/oauth-clients"
                       }
                     },
                     "meta": {
@@ -18973,15 +18178,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/oauth-client"
-                  }
-                }
+                "$ref": "#/components/schemas/oauth-clients-envelope"
               }
             }
           }
@@ -18992,15 +18189,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/oauth-client"
-                    }
-                  }
+                  "$ref": "#/components/schemas/oauth-clients-envelope"
                 }
               }
             }
@@ -19189,7 +18378,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/oauth-token"
+                      "$ref": "#/components/schemas/oauth-tokens"
                     }
                   }
                 }
@@ -19276,7 +18465,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/oauth-token"
+                      "$ref": "#/components/schemas/oauth-tokens"
                     }
                   }
                 }
@@ -19294,7 +18483,7 @@
             }
           },
           "422": {
-            "description": "Unprocessable Entity",
+            "description": "Unprocessable Content",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -19388,7 +18577,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/oauth-token"
+                        "$ref": "#/components/schemas/oauth-tokens"
                       }
                     },
                     "links": {
@@ -19457,7 +18646,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/oauth-token"
+                        "$ref": "#/components/schemas/oauth-tokens"
                       }
                     },
                     "links": {
@@ -19663,7 +18852,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/github-app-installation"
+                        "$ref": "#/components/schemas/github-app-installations"
                       }
                     },
                     "meta": {
@@ -19788,12 +18977,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/github-app-installation"
-                    }
-                  }
+                  "$ref": "#/components/schemas/github-app-installations-envelope"
                 }
               }
             }
@@ -19856,7 +19040,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/github-app-installation"
+                        "$ref": "#/components/schemas/github-app-installations"
                       }
                     },
                     "meta": {
@@ -19924,7 +19108,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/github-app-installation"
+                        "$ref": "#/components/schemas/github-app-installations"
                       }
                     },
                     "meta": {
@@ -20112,15 +19296,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/tasks-envelope"
                 }
               }
             }
@@ -20160,15 +19336,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/task"
-                  }
-                }
+                "$ref": "#/components/schemas/tasks-envelope"
               }
             }
           }
@@ -20179,15 +19347,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/tasks-envelope"
                 }
               }
             }
@@ -20284,7 +19444,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/task"
+                        "$ref": "#/components/schemas/tasks"
                       }
                     },
                     "meta": {
@@ -20338,15 +19498,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/task"
-                  }
-                }
+                "$ref": "#/components/schemas/tasks-envelope"
               }
             }
           }
@@ -20357,15 +19509,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/tasks-envelope"
                 }
               }
             }
@@ -20419,7 +19563,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/workspace-task"
+                        "$ref": "#/components/schemas/workspace-tasks"
                       }
                     },
                     "meta": {
@@ -20487,7 +19631,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/workspace-task"
+                        "$ref": "#/components/schemas/workspace-tasks"
                       }
                     },
                     "meta": {
@@ -20541,15 +19685,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/workspace-task"
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-tasks-envelope"
               }
             }
           }
@@ -20560,15 +19696,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-tasks-envelope"
                 }
               }
             }
@@ -20620,15 +19748,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-tasks-envelope"
                 }
               }
             }
@@ -20677,15 +19797,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/workspace-task"
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-tasks-envelope"
               }
             }
           }
@@ -20696,15 +19808,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/workspace-task"
-                    }
-                  }
+                  "$ref": "#/components/schemas/workspace-tasks-envelope"
                 }
               }
             }
@@ -20799,12 +19903,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task-stage"
-                    }
-                  }
+                  "$ref": "#/components/schemas/task-stages-envelope"
                 }
               }
             }
@@ -20847,12 +19946,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task-stage"
-                    }
-                  }
+                  "$ref": "#/components/schemas/task-stages-envelope"
                 }
               }
             }
@@ -20916,7 +20010,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/task-stage"
+                        "$ref": "#/components/schemas/task-stages"
                       }
                     },
                     "meta": {
@@ -20973,12 +20067,62 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task-result"
-                    }
-                  }
+                  "$ref": "#/components/schemas/task-results-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task-results/{task_result_id}/body": {
+      "get": {
+        "operationId": "getTaskResultBody",
+        "summary": "Download Task Result Body",
+        "description": "Download the body content of a native task result. This endpoint redirects to a \npre-signed URL for downloading the task result data stored in object storage.\n",
+        "tags": [
+          "task-stages"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_result_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the task result."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to download URL",
+            "headers": {
+              "Location": {
+                "description": "Pre-signed URL for downloading the task result body",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task result not found or has no body content",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -21139,12 +20283,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/task-result"
-                    }
-                  }
+                  "$ref": "#/components/schemas/task-results-envelope"
                 }
               }
             }
@@ -21218,7 +20357,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/task-result-outcome"
+                        "$ref": "#/components/schemas/task-result-outcomes"
                       }
                     },
                     "meta": {
@@ -21275,12 +20414,281 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
+                  "$ref": "#/components/schemas/task-result-outcomes-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace-transfers": {
+      "get": {
+        "operationId": "listWorkspaceTransfers",
+        "summary": "List Workspace Transfers",
+        "description": "List all workspace transfers you have access to.",
+        "tags": [
+          "workspace-transfers"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of workspace transfers",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/task-result-outcome"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/workspace-transfers"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWorkspaceTransfer",
+        "summary": "Create a Workspace Transfer",
+        "description": "Queue a new workspace transfer across organizations.",
+        "tags": [
+          "workspace-transfers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspace-transfers-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Workspace transfer created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workspace-transfers-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace-transfers/{workspace_transfer_id}": {
+      "get": {
+        "operationId": "getWorkspaceTransfer",
+        "summary": "Get Workspace Transfer details",
+        "description": "Get details about a workspace transfer.",
+        "tags": [
+          "workspace-transfers"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_transfer_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Workspace Transfer ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Related resources to include (e.g., operations)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workspace transfer details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workspace-transfers-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace transfer not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace-transfers/{workspace_transfer_id}/actions/resume": {
+      "post": {
+        "operationId": "resumeWorkspaceTransfer",
+        "summary": "Resume a Workspace Transfer",
+        "description": "Resume a paused workspace transfer. A transfer pauses automatically:\n- After data migration completes, awaiting approval before source workspace deletion (`awaiting_approval`)\n- If source workspace deletion times out (`source_workspace_deletion_stuck`)\nOnce resumed, the transfer proceeds with the remaining operations.\n",
+        "tags": [
+          "workspace-transfers"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_transfer_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Workspace Transfer ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workspace transfer resumed",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workspace-transfers-envelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transfer is not paused",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace-transfers/{workspace_transfer_id}/actions/cancel": {
+      "post": {
+        "operationId": "cancelWorkspaceTransfer",
+        "summary": "Cancel a Workspace Transfer",
+        "description": "Cancel a workspace transfer before the source workspace deletion begins.\nOnce the `remove_source_workspace` operation starts, the transfer cannot be canceled.\nCanceling leaves the source workspace intact but locked. You cannot resume a canceled transfer.\n",
+        "tags": [
+          "workspace-transfers"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_transfer_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Workspace Transfer ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workspace transfer canceled",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workspace-transfers-envelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transfer cannot be canceled (already started source workspace deletion, completed, or already canceled)",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -21353,7 +20761,7 @@
           }
         }
       },
-      "user": {
+      "users": {
         "type": "object",
         "required": [
           "id",
@@ -21567,6 +20975,17 @@
           }
         }
       },
+      "users-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/users"
+          }
+        }
+      },
       "account_update": {
         "type": "object",
         "required": [
@@ -21751,6 +21170,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "hcp-organization-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hcp-organization"
           }
         }
       },
@@ -22127,7 +21557,7 @@
           }
         }
       },
-      "subscription": {
+      "subscriptions": {
         "type": "object",
         "required": [
           "type",
@@ -22272,6 +21702,17 @@
           }
         }
       },
+      "subscriptions-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/subscriptions"
+          }
+        }
+      },
       "billing-invoice": {
         "type": "object",
         "properties": {
@@ -22318,7 +21759,7 @@
           }
         }
       },
-      "agent-pool": {
+      "agent-pools": {
         "type": "object",
         "required": [
           "type",
@@ -22424,7 +21865,18 @@
           }
         }
       },
-      "agent": {
+      "agent-pools-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/agent-pools"
+          }
+        }
+      },
+      "agents": {
         "type": "object",
         "properties": {
           "id": {
@@ -22459,6 +21911,17 @@
                 "readOnly": true
               }
             }
+          }
+        }
+      },
+      "agents-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/agents"
           }
         }
       },
@@ -22534,7 +21997,7 @@
           }
         }
       },
-      "organization": {
+      "organizations": {
         "type": "object",
         "required": [
           "type",
@@ -22788,6 +22251,12 @@
                   "public-beta"
                 ]
               },
+              "recoverable-items-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "public-beta"
+                ]
+              },
               "over-stacks-resource-limit": {
                 "type": "boolean",
                 "readOnly": true,
@@ -22800,6 +22269,13 @@
                 "enum": [
                   "remote",
                   "local",
+                  "agent"
+                ]
+              },
+              "stacks-default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
                   "agent"
                 ]
               },
@@ -22819,6 +22295,9 @@
             "type": "object",
             "properties": {
               "default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              },
+              "stacks-default-agent-pool": {
                 "$ref": "#/components/schemas/agent-pools-id"
               },
               "oauth-tokens": {
@@ -22846,6 +22325,17 @@
           }
         }
       },
+      "organizations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/organizations"
+          }
+        }
+      },
       "status-counts": {
         "type": "object",
         "properties": {
@@ -22860,7 +22350,7 @@
           }
         }
       },
-      "organization-membership": {
+      "organization-memberships": {
         "type": "object",
         "required": [
           "type",
@@ -23003,7 +22493,7 @@
           }
         }
       },
-      "team": {
+      "teams": {
         "type": "object",
         "required": [
           "type",
@@ -23130,6 +22620,10 @@
                   },
                   "manage-policy-overrides": {
                     "type": "boolean"
+                  },
+                  "delegate-policy-overrides": {
+                    "type": "boolean",
+                    "description": "Whether the team can delegate policy override permissions. This field is available only when the `TEAM_OVERRIDE_POLICY_CHECKS` feature flag is enabled."
                   },
                   "manage-modules": {
                     "type": "boolean"
@@ -23271,6 +22765,17 @@
           }
         }
       },
+      "organization-memberships-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/organization-memberships"
+          }
+        }
+      },
       "effective-tag-bindings-id": {
         "type": "object",
         "required": [
@@ -23298,7 +22803,7 @@
           }
         }
       },
-      "project": {
+      "projects": {
         "type": "object",
         "required": [
           "type",
@@ -23332,6 +22837,23 @@
               "auto-destroy-activity-duration": {
                 "type": "string",
                 "nullable": true
+              },
+              "default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "local",
+                  "agent",
+                  "default"
+                ]
+              },
+              "stacks-default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "agent",
+                  "default"
+                ]
               },
               "permissions": {
                 "type": "object",
@@ -23463,6 +22985,12 @@
                     }
                   }
                 }
+              },
+              "default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              },
+              "stacks-default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
               }
             }
           },
@@ -23473,6 +23001,17 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "projects-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/projects"
           }
         }
       },
@@ -23527,63 +23066,6 @@
           }
         }
       },
-      "tag-binding": {
-        "type": "object",
-        "required": [
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true,
-            "example": "tb-7AHdkTVXrmxiB8vQ"
-          },
-          "type": {
-            "type": "string",
-            "readOnly": true,
-            "enum": [
-              "tag-bindings"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "key"
-            ],
-            "properties": {
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "key": {
-                "type": "string"
-              },
-              "value": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "tag-bindings-request": {
-        "x-helperify": {
-          "jsonapitype": "tag-bindings"
-        },
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/tag-binding"
-            }
-          }
-        }
-      },
       "runs-id": {
         "type": "object",
         "properties": {
@@ -23623,7 +23105,7 @@
           }
         }
       },
-      "workspace": {
+      "workspaces": {
         "type": "object",
         "required": [
           "type",
@@ -24126,7 +23608,18 @@
           }
         }
       },
-      "notification-configuration": {
+      "workspaces-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/workspaces"
+          }
+        }
+      },
+      "notification-configurations": {
         "type": "object",
         "required": [
           "type",
@@ -24204,6 +23697,15 @@
                 "readOnly": true,
                 "description": "Email addresses of users associated with this notification."
               },
+              "external-email-addresses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true,
+                "readOnly": true,
+                "description": "External email addresses (not associated with users) for this notification."
+              },
               "delivery-responses": {
                 "type": "array",
                 "items": {
@@ -24276,6 +23778,83 @@
           }
         }
       },
+      "notification-configurations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/notification-configurations"
+          }
+        }
+      },
+      "email-recipient-statuses": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "email-recipient-statuses"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "The email address of the recipient"
+              },
+              "verified-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "The timestamp when the email was verified"
+              },
+              "unsubscribed-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "The timestamp when the email was unsubscribed"
+              },
+              "delivery-failures-count": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "The number of delivery failures for this email"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          }
+        }
+      },
+      "email-recipient-statuses-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/email-recipient-statuses"
+          }
+        }
+      },
       "workspaces-id": {
         "type": "object",
         "properties": {
@@ -24339,7 +23918,7 @@
           }
         }
       },
-      "query": {
+      "queries": {
         "type": "object",
         "required": [
           "type",
@@ -24758,7 +24337,29 @@
           }
         }
       },
-      "varset": {
+      "var-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/var"
+          }
+        }
+      },
+      "workspace-var-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/workspace-var"
+          }
+        }
+      },
+      "varsets": {
         "type": "object",
         "properties": {
           "id": {
@@ -24952,6 +24553,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "varsets-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/varsets"
           }
         }
       },
@@ -25183,7 +24795,7 @@
           }
         }
       },
-      "run": {
+      "runs": {
         "type": "object",
         "required": [
           "type",
@@ -25605,6 +25217,17 @@
           }
         }
       },
+      "runs-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/runs"
+          }
+        }
+      },
       "ingress-attributes-id": {
         "type": "object",
         "properties": {
@@ -25628,7 +25251,7 @@
           }
         }
       },
-      "configuration-version": {
+      "configuration-versions": {
         "type": "object",
         "required": [
           "type",
@@ -25749,7 +25372,18 @@
           }
         }
       },
-      "workspace-comment": {
+      "configuration-versions-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/configuration-versions"
+          }
+        }
+      },
+      "comments": {
         "type": "object",
         "required": [
           "type",
@@ -25784,7 +25418,18 @@
           }
         }
       },
-      "run-trigger": {
+      "comments-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/comments"
+          }
+        }
+      },
+      "run-triggers": {
         "type": "object",
         "required": [
           "type",
@@ -25833,6 +25478,17 @@
           }
         }
       },
+      "run-triggers-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/run-triggers"
+          }
+        }
+      },
       "pagination-without-totals": {
         "type": "object",
         "properties": {
@@ -25852,7 +25508,7 @@
           }
         }
       },
-      "plan": {
+      "plans": {
         "type": "object",
         "required": [
           "id",
@@ -26151,6 +25807,17 @@
           }
         }
       },
+      "plans-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/plans"
+          }
+        }
+      },
       "policy-sets-id": {
         "type": "object",
         "properties": {
@@ -26173,7 +25840,7 @@
           }
         }
       },
-      "policy": {
+      "policies": {
         "type": "object",
         "required": [
           "type",
@@ -26275,7 +25942,7 @@
           }
         }
       },
-      "policy-check": {
+      "policy-checks": {
         "type": "object",
         "required": [
           "type",
@@ -26429,6 +26096,17 @@
           }
         }
       },
+      "policy-checks-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-checks"
+          }
+        }
+      },
       "policy-set-versions-id": {
         "type": "object",
         "properties": {
@@ -26474,7 +26152,7 @@
           }
         }
       },
-      "policy-set": {
+      "policy-sets": {
         "type": "object",
         "required": [
           "type",
@@ -26687,7 +26365,18 @@
           }
         }
       },
-      "policy-set-version": {
+      "policy-sets-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-sets"
+          }
+        }
+      },
+      "policy-set-versions": {
         "type": "object",
         "required": [
           "type",
@@ -26807,7 +26496,18 @@
           }
         }
       },
-      "policy-evaluation": {
+      "policy-set-versions-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-set-versions"
+          }
+        }
+      },
+      "policy-evaluations": {
         "type": "object",
         "required": [
           "type",
@@ -26986,6 +26686,17 @@
           }
         }
       },
+      "policy-evaluations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-evaluations"
+          }
+        }
+      },
       "policy-evaluations-id": {
         "type": "object",
         "properties": {
@@ -27008,7 +26719,7 @@
           }
         }
       },
-      "policy-set-outcome": {
+      "policy-set-outcomes": {
         "type": "object",
         "required": [
           "type",
@@ -27112,7 +26823,18 @@
           }
         }
       },
-      "plan-export": {
+      "policy-set-outcomes-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-set-outcomes"
+          }
+        }
+      },
+      "plan-exports": {
         "type": "object",
         "required": [
           "type",
@@ -27212,7 +26934,18 @@
           }
         }
       },
-      "assessment-result": {
+      "plan-exports-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/plan-exports"
+          }
+        }
+      },
+      "assessment-results": {
         "type": "object",
         "required": [
           "id",
@@ -27354,6 +27087,17 @@
           }
         }
       },
+      "assessment-results-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/assessment-results"
+          }
+        }
+      },
       "state-versions-id": {
         "type": "object",
         "required": [
@@ -27372,7 +27116,7 @@
           }
         }
       },
-      "apply": {
+      "applies": {
         "type": "object",
         "properties": {
           "id": {
@@ -27512,7 +27256,18 @@
           }
         }
       },
-      "cost-estimate": {
+      "applies-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/applies"
+          }
+        }
+      },
+      "cost-estimates": {
         "type": "object",
         "required": [
           "type",
@@ -27632,7 +27387,18 @@
           }
         }
       },
-      "state-version": {
+      "cost-estimates-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/cost-estimates"
+          }
+        }
+      },
+      "state-versions": {
         "type": "object",
         "required": [
           "type"
@@ -27906,7 +27672,18 @@
           }
         }
       },
-      "state-version-output": {
+      "state-versions-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/state-versions"
+          }
+        }
+      },
+      "state-version-outputs": {
         "type": "object",
         "properties": {
           "id": {
@@ -27933,8 +27710,7 @@
                 "description": "The Terraform type of the output value (e.g. \"string\", \"number\", \"bool\", \"list\", \"map\", \"set\", \"object\", \"tuple\")."
               },
               "value": {
-                "description": "The output value. Null when the output is sensitive and the caller does not have permission to reveal sensitive values.",
-                "nullable": true
+                "description": "The output value. Null when the output is sensitive and the caller does not have permission to reveal sensitive values."
               },
               "detailed-type": {
                 "description": "A detailed representation of the output type. May be a string for simple types or an array for complex types such as tuples and objects."
@@ -27946,7 +27722,18 @@
           }
         }
       },
-      "authentication-token": {
+      "state-version-outputs-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/state-version-outputs"
+          }
+        }
+      },
+      "authentication-tokens": {
         "type": "object",
         "required": [
           "type",
@@ -27972,7 +27759,8 @@
               "expired-at": {
                 "type": "string",
                 "format": "date-time",
-                "nullable": true
+                "nullable": true,
+                "description": "The UTC date and time that the token will expire, in ISO 8601 format. If omitted or set to null the token will never expire."
               },
               "last-used-at": {
                 "type": "string",
@@ -28028,6 +27816,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "authentication-tokens-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/authentication-tokens"
           }
         }
       },
@@ -28091,6 +27890,17 @@
           }
         }
       },
+      "teams-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/teams"
+          }
+        }
+      },
       "teams-id": {
         "type": "object",
         "properties": {
@@ -28113,7 +27923,7 @@
           }
         }
       },
-      "team-project": {
+      "team-projects": {
         "type": "object",
         "required": [
           "type",
@@ -28235,6 +28045,10 @@
                   "run-tasks": {
                     "type": "boolean",
                     "description": "Whether the team can manage run tasks within the project's workspaces."
+                  },
+                  "policy-overrides": {
+                    "type": "boolean",
+                    "description": "Whether the team can override policy checks within the project's workspaces. This field is available only when the `TEAM_OVERRIDE_POLICY_CHECKS` feature flag is enabled."
                   }
                 }
               }
@@ -28261,7 +28075,18 @@
           }
         }
       },
-      "team-workspace": {
+      "team-projects-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/team-projects"
+          }
+        }
+      },
+      "team-workspaces": {
         "type": "object",
         "required": [
           "type",
@@ -28338,6 +28163,10 @@
               "run-tasks": {
                 "type": "boolean",
                 "description": "Whether the team can manage run tasks within the workspace. Can only be used when access is custom."
+              },
+              "policy-overrides": {
+                "type": "boolean",
+                "description": "Whether the team can override policy checks for the workspace. This field is available only when the `TEAM_OVERRIDE_POLICY_CHECKS` feature flag is enabled."
               }
             }
           },
@@ -28354,6 +28183,17 @@
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "team-workspaces-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/team-workspaces"
           }
         }
       },
@@ -28406,28 +28246,66 @@
                 ]
               },
               "params": {
-                "type": "object",
-                "description": "Configuration parameters required by the integration.",
-                "additionalProperties": {
+                "type": "array",
+                "description": "Ordered list of configuration parameters required by the integration.",
+                "items": {
                   "type": "object",
                   "properties": {
+                    "paramId": {
+                      "type": "string",
+                      "description": "Unique identifier for the parameter.",
+                      "example": "api-url"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name for the parameter.",
+                      "example": "API URL"
+                    },
                     "kind": {
                       "type": "string",
-                      "description": "The type of the parameter."
+                      "description": "The type of the parameter.",
+                      "example": "url"
                     },
                     "sensitive": {
                       "type": "boolean",
-                      "description": "Whether the parameter contains sensitive data."
+                      "description": "Whether the parameter contains sensitive data.",
+                      "example": false
                     },
                     "required": {
                       "type": "boolean",
-                      "description": "Whether the parameter is required."
+                      "description": "Whether the parameter is required.",
+                      "example": true
                     },
                     "description": {
                       "type": "string",
-                      "description": "Description of the parameter."
+                      "description": "Description of the parameter.",
+                      "example": "Provide the API URL from Cloudability"
+                    },
+                    "placeholder": {
+                      "type": "string",
+                      "description": "Optional placeholder shown in the input field.",
+                      "example": "url.example.com"
+                    },
+                    "helpLinkText": {
+                      "type": "string",
+                      "description": "Optional helper link text shown alongside the parameter.",
+                      "example": "Find out more"
+                    },
+                    "helpLinkUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Optional helper link target.",
+                      "example": "https://ibm.com/docs/en/cloudability-commercial/"
                     }
-                  }
+                  },
+                  "required": [
+                    "paramId",
+                    "name",
+                    "kind",
+                    "required",
+                    "sensitive",
+                    "description"
+                  ]
                 }
               }
             },
@@ -28634,7 +28512,7 @@
           }
         }
       },
-      "ssh-key": {
+      "ssh-keys": {
         "type": "object",
         "properties": {
           "id": {
@@ -28683,7 +28561,7 @@
           "links"
         ]
       },
-      "change-request": {
+      "workspace-change-requests": {
         "type": "object",
         "required": [
           "type",
@@ -28779,7 +28657,18 @@
           }
         }
       },
-      "oauth-client": {
+      "workspace-change-requests-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/workspace-change-requests"
+          }
+        }
+      },
+      "oauth-clients": {
         "type": "object",
         "required": [
           "type",
@@ -28947,7 +28836,18 @@
           }
         }
       },
-      "oauth-token": {
+      "oauth-clients-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/oauth-clients"
+          }
+        }
+      },
+      "oauth-tokens": {
         "type": "object",
         "required": [
           "type",
@@ -29073,7 +28973,7 @@
           }
         }
       },
-      "github-app-installation": {
+      "github-app-installations": {
         "type": "object",
         "required": [
           "type",
@@ -29157,6 +29057,17 @@
           }
         }
       },
+      "github-app-installations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/github-app-installations"
+          }
+        }
+      },
       "workspace-tasks-id": {
         "type": "object",
         "properties": {
@@ -29171,7 +29082,7 @@
           }
         }
       },
-      "task": {
+      "tasks": {
         "type": "object",
         "required": [
           "type",
@@ -29268,6 +29179,17 @@
           }
         }
       },
+      "tasks-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tasks"
+          }
+        }
+      },
       "tasks-id": {
         "type": "object",
         "properties": {
@@ -29290,7 +29212,7 @@
           }
         }
       },
-      "workspace-task": {
+      "workspace-tasks": {
         "type": "object",
         "required": [
           "type",
@@ -29355,6 +29277,17 @@
           }
         }
       },
+      "workspace-tasks-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/workspace-tasks"
+          }
+        }
+      },
       "task-results-id": {
         "type": "object",
         "properties": {
@@ -29377,7 +29310,7 @@
           }
         }
       },
-      "task-stage": {
+      "task-stages": {
         "type": "object",
         "properties": {
           "id": {
@@ -29513,7 +29446,18 @@
           }
         }
       },
-      "task-result": {
+      "task-stages-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-stages"
+          }
+        }
+      },
+      "task-results": {
         "type": "object",
         "properties": {
           "id": {
@@ -29636,7 +29580,18 @@
           }
         }
       },
-      "task-result-outcome": {
+      "task-results-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-results"
+          }
+        }
+      },
+      "task-result-outcomes": {
         "type": "object",
         "properties": {
           "id": {
@@ -29720,6 +29675,173 @@
                 "description": "URL to download the outcome body. Only present when the run task integration uploaded a body for this outcome."
               }
             }
+          }
+        }
+      },
+      "task-result-outcomes-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-result-outcomes"
+          }
+        }
+      },
+      "workspace-transfers": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-transfers"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "in_progress",
+                  "paused",
+                  "completed",
+                  "failed",
+                  "canceled"
+                ],
+                "readOnly": true
+              },
+              "pause-reason": {
+                "type": "string",
+                "enum": [
+                  "awaiting_approval",
+                  "source_workspace_deletion_stuck"
+                ],
+                "readOnly": true,
+                "nullable": true
+              },
+              "approval-mode": {
+                "type": "string",
+                "enum": [
+                  "required",
+                  "auto"
+                ],
+                "default": "required"
+              },
+              "cleanup-on-failure": {
+                "type": "boolean",
+                "default": false,
+                "description": "Auto-delete partial destination workspace on failure"
+              },
+              "history-cutoff": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "Copy runs and state versions after this date. Null copies all history."
+              },
+              "policy-set-mode": {
+                "type": "string",
+                "enum": [
+                  "attach",
+                  "skip"
+                ],
+                "default": "attach"
+              },
+              "variable-mode": {
+                "type": "string",
+                "enum": [
+                  "copy",
+                  "skip"
+                ],
+                "default": "copy"
+              },
+              "workspace-prefix": {
+                "type": "string",
+                "nullable": true,
+                "description": "Prepended to workspace name in destination"
+              },
+              "workspace-suffix": {
+                "type": "string",
+                "nullable": true,
+                "description": "Appended to workspace name in destination"
+              },
+              "source-workspace-id": {
+                "type": "string",
+                "readOnly": true
+              },
+              "destination-workspace-id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "source-organization-id": {
+                "type": "string",
+                "readOnly": true
+              },
+              "destination-organization-id": {
+                "type": "string"
+              },
+              "destination-project-id": {
+                "type": "string"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "events": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "workspace-transfer-events"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "workspace-transfers-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/workspace-transfers"
           }
         }
       }

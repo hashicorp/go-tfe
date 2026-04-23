@@ -16,13 +16,13 @@ type GithubAppInstallationsRequestBuilder struct {
 // GithubAppInstallationsRequestBuilderGetQueryParameters list GitHub App installations available to the current user.
 type GithubAppInstallationsRequestBuilderGetQueryParameters struct {
     // Filter by GitHub installation ID.
-    Filterinstallation_id *string `uriparametername:"filter%5Binstallation_id%5D"`
+    Filterinstallation_id *string "uriparametername:\"filter%5Binstallation_id%5D\""
     // Filter by GitHub organization or login name.
-    Filtername *string `uriparametername:"filter%5Bname%5D"`
+    Filtername *string "uriparametername:\"filter%5Bname%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ByGithub_app_installation_id gets an item from the github.com/hashicorp/go-tfe/api.githubAppInstallations.item collection
 // returns a *WithGithub_app_installation_ItemRequestBuilder when successful

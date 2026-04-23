@@ -9,18 +9,15 @@ import (
 )
 
 type HcpOrganizationsItemWithHcp_organization_GetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationEnvelope
     // The included property
     included []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpBillingAccountable
 }
 // NewHcpOrganizationsItemWithHcp_organization_GetResponse instantiates a new HcpOrganizationsItemWithHcp_organization_GetResponse and sets the default values.
 func NewHcpOrganizationsItemWithHcp_organization_GetResponse()(*HcpOrganizationsItemWithHcp_organization_GetResponse) {
     m := &HcpOrganizationsItemWithHcp_organization_GetResponse{
+        HcpOrganizationEnvelope: *ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.NewHcpOrganizationEnvelope(),
     }
-    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateHcpOrganizationsItemWithHcp_organization_GetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
@@ -28,30 +25,10 @@ func NewHcpOrganizationsItemWithHcp_organization_GetResponse()(*HcpOrganizations
 func CreateHcpOrganizationsItemWithHcp_organization_GetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewHcpOrganizationsItemWithHcp_organization_GetResponse(), nil
 }
-// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-// returns a map[string]any when successful
-func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
-}
-// GetData gets the data property value. The data property
-// returns a HcpOrganizationable when successful
-func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable) {
-    return m.data
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateHcpOrganizationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable))
-        }
-        return nil
-    }
+    res := m.HcpOrganizationEnvelope.GetFieldDeserializers()
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateHcpBillingAccountFromDiscriminatorValue)
         if err != nil {
@@ -77,11 +54,9 @@ func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) GetIncluded()([]i
 }
 // Serialize serializes information the current object
 func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
+    err := m.HcpOrganizationEnvelope.Serialize(writer)
+    if err != nil {
+        return err
     }
     if m.GetIncluded() != nil {
         cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
@@ -90,36 +65,20 @@ func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) Serialize(writer 
                 cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
             }
         }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
+        err = writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
     }
     return nil
 }
-// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
-}
-// SetData sets the data property value. The data property
-func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable)() {
-    m.data = value
-}
 // SetIncluded sets the included property value. The included property
 func (m *HcpOrganizationsItemWithHcp_organization_GetResponse) SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpBillingAccountable)() {
     m.included = value
 }
 type HcpOrganizationsItemWithHcp_organization_GetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationEnvelopeable
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable)
     GetIncluded()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpBillingAccountable)
-    SetData(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpOrganizationable)()
     SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.HcpBillingAccountable)()
 }

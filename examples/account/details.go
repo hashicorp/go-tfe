@@ -2,6 +2,7 @@ package account
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -45,7 +46,7 @@ func (accountDetailsCommand) Run(args []string) int {
 	response, err := client.API.Account().Details().Get(ctx, nil)
 
 	if err != nil {
-		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
+		log.Fatalf("API returned an error %T status: is unauthorized? %v", err, errors.Is(err, tfe.ErrUnauthorized))
 		return 1
 	}
 

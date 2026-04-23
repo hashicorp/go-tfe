@@ -17,15 +17,15 @@ type ItemPoliciesRequestBuilder struct {
 // ItemPoliciesRequestBuilderGetQueryParameters list all policies for an organization.
 type ItemPoliciesRequestBuilderGetQueryParameters struct {
     // Filter policies by kind. Valid values are sentinel and opa.
-    Filterkind *i29ed60ffada51fea9c66680f62ab8824b02e11b84346bfd017c990c54eec3585.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
+    Filterkind *i29ed60ffada51fea9c66680f62ab8824b02e11b84346bfd017c990c54eec3585.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Allows searching the organization's policies by name.
-    Searchname *string `uriparametername:"search%5Bname%5D"`
+    Searchname *string "uriparametername:\"search%5Bname%5D\""
     // Sort policies by the specified field. Valid values are name, -name, updated-at, and -updated-at. Prefix with - for descending order.
-    Sort *string `uriparametername:"sort"`
+    Sort *string "uriparametername:\"sort\""
 }
 // NewItemPoliciesRequestBuilderInternal instantiates a new ItemPoliciesRequestBuilder and sets the default values.
 func NewItemPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPoliciesRequestBuilder) {

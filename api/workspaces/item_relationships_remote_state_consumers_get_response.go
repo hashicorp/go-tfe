@@ -12,7 +12,7 @@ type ItemRelationshipsRemoteStateConsumersGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable
 }
 // NewItemRelationshipsRemoteStateConsumersGetResponse instantiates a new ItemRelationshipsRemoteStateConsumersGetResponse and sets the default values.
 func NewItemRelationshipsRemoteStateConsumersGetResponse()(*ItemRelationshipsRemoteStateConsumersGetResponse) {
@@ -32,8 +32,8 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetAdditionalData()(m
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []Workspaceable when successful
-func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable) {
+// returns a []Workspacesable when successful
+func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -41,15 +41,15 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]ie0c034c4
 func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspaceFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspacesFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable, len(val))
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable)
                 }
             }
             m.SetData(res)
@@ -85,12 +85,12 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetAdditionalData(val
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)() {
+func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable)() {
     m.data = value
 }
 type ItemRelationshipsRemoteStateConsumersGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)
-    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspaceable)()
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable)
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Workspacesable)()
 }

@@ -16,15 +16,15 @@ type ItemAgentPoolsRequestBuilder struct {
 // ItemAgentPoolsRequestBuilderGetQueryParameters list agent pools, their agents, and their tokens for an organization.
 type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
     // Filters agent pools to those associated with the given workspace. The workspace must have permission to use the agent pool.
-    FilterallowedWorkspacesname *string `uriparametername:"filter%5Ballowed%2Dworkspaces%5D%5Bname%5D"`
+    FilterallowedWorkspacesname *string "uriparametername:\"filter%5Ballowed%2Dworkspaces%5D%5Bname%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // A search query string. Agent pools are searchable by name.
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
     // Allows sorting the returned agents pools. Valid values are "name" and "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
-    Sort *string `uriparametername:"sort"`
+    Sort *string "uriparametername:\"sort\""
 }
 // NewItemAgentPoolsRequestBuilderInternal instantiates a new ItemAgentPoolsRequestBuilder and sets the default values.
 func NewItemAgentPoolsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentPoolsRequestBuilder) {
@@ -60,9 +60,9 @@ func (m *ItemAgentPoolsRequestBuilder) Get(ctx context.Context, requestConfigura
     return res.(ItemAgentPoolsGetResponseable), nil
 }
 // Post create an agent pool for an organization.
-// returns a ItemAgentPoolsPostResponseable when successful
+// returns a AgentPoolsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAgentPoolsRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAgentPoolsPostResponseable, error) {
+func (m *ItemAgentPoolsRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AgentPoolsEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -70,14 +70,14 @@ func (m *ItemAgentPoolsRequestBuilder) Post(ctx context.Context, requestConfigur
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAgentPoolsPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateAgentPoolsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemAgentPoolsPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AgentPoolsEnvelopeable), nil
 }
 // ToGetRequestInformation list agent pools, their agents, and their tokens for an organization.
 // returns a *RequestInformation when successful

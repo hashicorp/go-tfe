@@ -15,13 +15,13 @@ type ItemVcsTreeRequestBuilder struct {
 // ItemVcsTreeRequestBuilderGetQueryParameters this endpoint returns a list of directories in a repository at the root or at a specific reference (branch, tag, or commit SHA).Note: This endpoint only returns directories, not files.
 type ItemVcsTreeRequestBuilderGetQueryParameters struct {
     // The branch, tag, or commit SHA to list directories for. If not provided, the default branch will be used.
-    Branch *string `uriparametername:"branch"`
+    Branch *string "uriparametername:\"branch\""
     // The GitHub App installation ID (only needed when using GitHub App authentication)
-    GithubAppInstallationId *string `uriparametername:"githubAppInstallationId"`
+    GithubAppInstallationId *string "uriparametername:\"githubAppInstallationId\""
     // The repository identifier (e.g., "owner/repo")
-    Identifier *string `uriparametername:"identifier"`
+    Identifier *string "uriparametername:\"identifier\""
     // The OAuth token ID to authenticate with the VCS provider
-    Oauth_token_id *string `uriparametername:"oauth_token_id"`
+    Oauth_token_id *string "uriparametername:\"oauth_token_id\""
 }
 // NewItemVcsTreeRequestBuilderInternal instantiates a new ItemVcsTreeRequestBuilder and sets the default values.
 func NewItemVcsTreeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsTreeRequestBuilder) {

@@ -16,17 +16,17 @@ type ItemProjectsRequestBuilder struct {
 // ItemProjectsRequestBuilderGetQueryParameters list all projects in an organization.
 type ItemProjectsRequestBuilderGetQueryParameters struct {
     // Comma-separated list of project names to filter by.
-    Filternames *string `uriparametername:"filter%5Bnames%5D"`
+    Filternames *string "uriparametername:\"filter%5Bnames%5D\""
     // If present, returns a list of projects that the authenticated user can create workspaces in.
-    FilterpermissionscreateWorkspace *bool `uriparametername:"filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D"`
+    FilterpermissionscreateWorkspace *bool "uriparametername:\"filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D\""
     // If present, returns a list of projects that the authenticated user can update.
-    Filterpermissionsupdate *bool `uriparametername:"filter%5Bpermissions%5D%5Bupdate%5D"`
+    Filterpermissionsupdate *bool "uriparametername:\"filter%5Bpermissions%5D%5Bupdate%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Optional. Allows sorting the organization's projects by "name". Prepending a hyphen to the sort parameter reverses the order. For example, "-name" sorts by name in reverse alphabetical order. If omitted, the default sort order is arbitrary but stable.
-    Sort *string `uriparametername:"sort"`
+    Sort *string "uriparametername:\"sort\""
 }
 // NewItemProjectsRequestBuilderInternal instantiates a new ItemProjectsRequestBuilder and sets the default values.
 func NewItemProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProjectsRequestBuilder) {
@@ -62,9 +62,9 @@ func (m *ItemProjectsRequestBuilder) Get(ctx context.Context, requestConfigurati
     return res.(ItemProjectsGetResponseable), nil
 }
 // Post create a new project in an organization.
-// returns a ItemProjectsPostResponseable when successful
+// returns a ProjectsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemProjectsRequestBuilder) Post(ctx context.Context, body ItemProjectsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemProjectsPostResponseable, error) {
+func (m *ItemProjectsRequestBuilder) Post(ctx context.Context, body ItemProjectsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ProjectsEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -72,14 +72,14 @@ func (m *ItemProjectsRequestBuilder) Post(ctx context.Context, body ItemProjects
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemProjectsPostResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateProjectsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemProjectsPostResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ProjectsEnvelopeable), nil
 }
 // ToGetRequestInformation list all projects in an organization.
 // returns a *RequestInformation when successful

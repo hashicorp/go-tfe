@@ -16,8 +16,8 @@ type Integration_attributes struct {
     homepage *string
     // The name of the integration.
     name *string
-    // Configuration parameters required by the integration.
-    params Integration_attributes_paramsable
+    // Ordered list of configuration parameters required by the integration.
+    params []Integration_attributes_paramsable
     // The provider identifier for the integration.
     provider *string
     // The run stages where this integration can be used.
@@ -80,12 +80,18 @@ func (m *Integration_attributes) GetFieldDeserializers()(map[string]func(i878a80
         return nil
     }
     res["params"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateIntegration_attributes_paramsFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateIntegration_attributes_paramsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetParams(val.(Integration_attributes_paramsable))
+            res := make([]Integration_attributes_paramsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Integration_attributes_paramsable)
+                }
+            }
+            m.SetParams(res)
         }
         return nil
     }
@@ -127,9 +133,9 @@ func (m *Integration_attributes) GetHomepage()(*string) {
 func (m *Integration_attributes) GetName()(*string) {
     return m.name
 }
-// GetParams gets the params property value. Configuration parameters required by the integration.
-// returns a Integration_attributes_paramsable when successful
-func (m *Integration_attributes) GetParams()(Integration_attributes_paramsable) {
+// GetParams gets the params property value. Ordered list of configuration parameters required by the integration.
+// returns a []Integration_attributes_paramsable when successful
+func (m *Integration_attributes) GetParams()([]Integration_attributes_paramsable) {
     return m.params
 }
 // GetProvider gets the provider property value. The provider identifier for the integration.
@@ -162,8 +168,14 @@ func (m *Integration_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
             return err
         }
     }
-    {
-        err := writer.WriteObjectValue("params", m.GetParams())
+    if m.GetParams() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetParams()))
+        for i, v := range m.GetParams() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("params", cast)
         if err != nil {
             return err
         }
@@ -204,8 +216,8 @@ func (m *Integration_attributes) SetHomepage(value *string)() {
 func (m *Integration_attributes) SetName(value *string)() {
     m.name = value
 }
-// SetParams sets the params property value. Configuration parameters required by the integration.
-func (m *Integration_attributes) SetParams(value Integration_attributes_paramsable)() {
+// SetParams sets the params property value. Ordered list of configuration parameters required by the integration.
+func (m *Integration_attributes) SetParams(value []Integration_attributes_paramsable)() {
     m.params = value
 }
 // SetProvider sets the provider property value. The provider identifier for the integration.
@@ -222,13 +234,13 @@ type Integration_attributesable interface {
     GetDescription()(*string)
     GetHomepage()(*string)
     GetName()(*string)
-    GetParams()(Integration_attributes_paramsable)
+    GetParams()([]Integration_attributes_paramsable)
     GetProvider()(*string)
     GetStages()([]string)
     SetDescription(value *string)()
     SetHomepage(value *string)()
     SetName(value *string)()
-    SetParams(value Integration_attributes_paramsable)()
+    SetParams(value []Integration_attributes_paramsable)()
     SetProvider(value *string)()
     SetStages(value []string)()
 }

@@ -28,4 +28,4 @@ openapi/spec.json:
 	cp ../atlas/openapi/bundled/hcpt_v2_public_beta.json openapi/spec.json
 
 api: openapi/spec.json
-	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.25.1 generate --exclude-backward-compatible --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api
+	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api

@@ -6,6 +6,7 @@ package applies
 import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
 // ItemErroredStateRequestBuilder builds and executes requests for operations under \applies\{id}\errored-state
@@ -26,16 +27,14 @@ func NewItemErroredStateRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     return NewItemErroredStateRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get recover a failed state upload after applying
-// returns a ItemErroredState4XXError error when the service returns a 4XX status code
-// returns a ItemErroredState5XXError error when the service returns a 5XX status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemErroredStateRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "4XX": CreateItemErroredState4XXErrorFromDiscriminatorValue,
-        "5XX": CreateItemErroredState5XXErrorFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
     err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
     if err != nil {

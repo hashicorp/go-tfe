@@ -16,13 +16,13 @@ type InstallationsRequestBuilder struct {
 // InstallationsRequestBuilderGetQueryParameters list GitHub App installations accessible to the current authenticated user.
 type InstallationsRequestBuilderGetQueryParameters struct {
     // Filter by GitHub installation ID.
-    Filterinstallation_id *string `uriparametername:"filter%5Binstallation_id%5D"`
+    Filterinstallation_id *string "uriparametername:\"filter%5Binstallation_id%5D\""
     // Filter by GitHub organization or login name.
-    Filtername *string `uriparametername:"filter%5Bname%5D"`
+    Filtername *string "uriparametername:\"filter%5Bname%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewInstallationsRequestBuilderInternal instantiates a new InstallationsRequestBuilder and sets the default values.
 func NewInstallationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InstallationsRequestBuilder) {

@@ -27,9 +27,9 @@ func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl string, re
     return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get show details of a variable in a variable set, with overwrite context from the specified workspace.
-// returns a ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable when successful
+// returns a VarEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable, error) {
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VarEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -37,14 +37,14 @@ func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsetsItemRelationshipsVarsItemVarsGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateVarEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VarEnvelopeable), nil
 }
 // ToGetRequestInformation show details of a variable in a variable set, with overwrite context from the specified workspace.
 // returns a *RequestInformation when successful

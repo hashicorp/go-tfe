@@ -16,11 +16,11 @@ type OrganizationMembershipsRequestBuilder struct {
 // OrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for the currently authenticated user.
 type OrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. Can include "user", "teams", or "organization".
-    Include *GetIncludeQueryParameterType `uriparametername:"include"`
+    Include *GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ByOrganization_membership_id gets an item from the github.com/hashicorp/go-tfe/api.organizationMemberships.item collection
 // returns a *WithOrganization_membership_ItemRequestBuilder when successful

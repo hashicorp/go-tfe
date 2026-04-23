@@ -12,7 +12,7 @@ type ItemCurrentStateVersionOutputsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable
 }
 // NewItemCurrentStateVersionOutputsGetResponse instantiates a new ItemCurrentStateVersionOutputsGetResponse and sets the default values.
 func NewItemCurrentStateVersionOutputsGetResponse()(*ItemCurrentStateVersionOutputsGetResponse) {
@@ -32,8 +32,8 @@ func (m *ItemCurrentStateVersionOutputsGetResponse) GetAdditionalData()(map[stri
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []StateVersionOutputable when successful
-func (m *ItemCurrentStateVersionOutputsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable) {
+// returns a []StateVersionOutputsable when successful
+func (m *ItemCurrentStateVersionOutputsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -41,15 +41,15 @@ func (m *ItemCurrentStateVersionOutputsGetResponse) GetData()([]ie0c034c41cc7c7b
 func (m *ItemCurrentStateVersionOutputsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateStateVersionOutputFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateStateVersionOutputsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable, len(val))
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable)
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable)
                 }
             }
             m.SetData(res)
@@ -85,12 +85,12 @@ func (m *ItemCurrentStateVersionOutputsGetResponse) SetAdditionalData(value map[
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemCurrentStateVersionOutputsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable)() {
+func (m *ItemCurrentStateVersionOutputsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable)() {
     m.data = value
 }
 type ItemCurrentStateVersionOutputsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable)
-    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputable)()
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable)
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.StateVersionOutputsable)()
 }

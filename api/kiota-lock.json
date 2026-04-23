@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "A2FA49845E5D6291DF588EE391D690F528C330760838779BDB590E6D5F6F3D9A471CC73C1D49174B1870473DB2C0AC1F45B9405938865DE9DF5A47B36F78B126",
+  "descriptionHash": "39D32EE47EEFB5CC0CB1FDBA8728565B049F1A1B061AB09EDF06C6BC1B4FEF81FC1DD9A3B2A0511C06A23398B655DFB900712C9C23F053975CACCA17F2E5B4E4",
   "descriptionLocation": "../openapi.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.25.1",
+  "kiotaVersion": "1.31.1",
   "clientClassName": "ApiClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "github.com/hashicorp/go-tfe/api",

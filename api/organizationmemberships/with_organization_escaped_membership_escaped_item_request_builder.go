@@ -17,7 +17,7 @@ type WithOrganization_membership_ItemRequestBuilder struct {
 // WithOrganization_membership_ItemRequestBuilderGetQueryParameters get details about a specific organization membership.
 type WithOrganization_membership_ItemRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. Can include "user" or "teams".
-    Include *i0006e30e7356a99e2bbb446235a687e64505aaa5bfcfc5fbfa4f0e90d1d46c9d.GetIncludeQueryParameterType `uriparametername:"include"`
+    Include *i0006e30e7356a99e2bbb446235a687e64505aaa5bfcfc5fbfa4f0e90d1d46c9d.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithOrganization_membership_ItemRequestBuilderInternal instantiates a new WithOrganization_membership_ItemRequestBuilder and sets the default values.
 func NewWithOrganization_membership_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOrganization_membership_ItemRequestBuilder) {

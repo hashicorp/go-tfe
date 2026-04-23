@@ -12,7 +12,7 @@ type ItemTeamsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable
     // The included property
     included []ItemTeamsGetResponse_TeamsGetResponse_includedable
     // The links property
@@ -20,12 +20,12 @@ type ItemTeamsGetResponse struct {
     // The meta property
     meta ItemTeamsGetResponse_metaable
 }
-// ItemTeamsGetResponse_TeamsGetResponse_included composed type wrapper for classes ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
+// ItemTeamsGetResponse_TeamsGetResponse_included composed type wrapper for classes ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
 type ItemTeamsGetResponse_TeamsGetResponse_included struct {
-    // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable
-    organizationMembership ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable
-    // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
-    user ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
+    // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable
+    organizationMemberships ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable
+    // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
+    users ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
 }
 // NewItemTeamsGetResponse_TeamsGetResponse_included instantiates a new ItemTeamsGetResponse_TeamsGetResponse_included and sets the default values.
 func NewItemTeamsGetResponse_TeamsGetResponse_included()(*ItemTeamsGetResponse_TeamsGetResponse_included) {
@@ -38,19 +38,19 @@ func NewItemTeamsGetResponse_TeamsGetResponse_included()(*ItemTeamsGetResponse_T
 func CreateItemTeamsGetResponse_TeamsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     result := NewItemTeamsGetResponse_TeamsGetResponse_included()
     if parseNode != nil {
-        if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateOrganizationMembershipFromDiscriminatorValue); val != nil {
+        if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateOrganizationMembershipsFromDiscriminatorValue); val != nil {
             if err != nil {
                 return nil, err
             }
-            if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable); ok {
-                result.SetOrganizationMembership(cast)
+            if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable); ok {
+                result.SetOrganizationMemberships(cast)
             }
-        } else if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateUserFromDiscriminatorValue); val != nil {
+        } else if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateUsersFromDiscriminatorValue); val != nil {
             if err != nil {
                 return nil, err
             }
-            if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable); ok {
-                result.SetUser(cast)
+            if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable); ok {
+                result.SetUsers(cast)
             }
         }
     }
@@ -66,45 +66,45 @@ func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetFieldDeserializers()
 func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetIsComposedType()(bool) {
     return true
 }
-// GetOrganizationMembership gets the organizationMembership property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable
-// returns a OrganizationMembershipable when successful
-func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetOrganizationMembership()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable) {
-    return m.organizationMembership
+// GetOrganizationMemberships gets the organizationMemberships property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable
+// returns a OrganizationMembershipsable when successful
+func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetOrganizationMemberships()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable) {
+    return m.organizationMemberships
 }
-// GetUser gets the user property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
-// returns a Userable when successful
-func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetUser()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable) {
-    return m.user
+// GetUsers gets the users property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
+// returns a Usersable when successful
+func (m *ItemTeamsGetResponse_TeamsGetResponse_included) GetUsers()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable) {
+    return m.users
 }
 // Serialize serializes information the current object
 func (m *ItemTeamsGetResponse_TeamsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetOrganizationMembership() != nil {
-        err := writer.WriteObjectValue("", m.GetOrganizationMembership())
+    if m.GetOrganizationMemberships() != nil {
+        err := writer.WriteObjectValue("", m.GetOrganizationMemberships())
         if err != nil {
             return err
         }
-    } else if m.GetUser() != nil {
-        err := writer.WriteObjectValue("", m.GetUser())
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
         if err != nil {
             return err
         }
     }
     return nil
 }
-// SetOrganizationMembership sets the organizationMembership property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable
-func (m *ItemTeamsGetResponse_TeamsGetResponse_included) SetOrganizationMembership(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable)() {
-    m.organizationMembership = value
+// SetOrganizationMemberships sets the organizationMemberships property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable
+func (m *ItemTeamsGetResponse_TeamsGetResponse_included) SetOrganizationMemberships(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable)() {
+    m.organizationMemberships = value
 }
-// SetUser sets the user property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
-func (m *ItemTeamsGetResponse_TeamsGetResponse_included) SetUser(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable)() {
-    m.user = value
+// SetUsers sets the users property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
+func (m *ItemTeamsGetResponse_TeamsGetResponse_included) SetUsers(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable)() {
+    m.users = value
 }
 type ItemTeamsGetResponse_TeamsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganizationMembership()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable)
-    GetUser()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable)
-    SetOrganizationMembership(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable)()
-    SetUser(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable)()
+    GetOrganizationMemberships()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable)
+    GetUsers()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable)
+    SetOrganizationMemberships(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsable)()
+    SetUsers(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable)()
 }
 // NewItemTeamsGetResponse instantiates a new ItemTeamsGetResponse and sets the default values.
 func NewItemTeamsGetResponse()(*ItemTeamsGetResponse) {
@@ -124,8 +124,8 @@ func (m *ItemTeamsGetResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []Teamable when successful
-func (m *ItemTeamsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable) {
+// returns a []Teamsable when successful
+func (m *ItemTeamsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -133,15 +133,15 @@ func (m *ItemTeamsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757
 func (m *ItemTeamsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateTeamFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateTeamsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable, len(val))
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable)
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)
                 }
             }
             m.SetData(res)
@@ -252,7 +252,7 @@ func (m *ItemTeamsGetResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemTeamsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable)() {
+func (m *ItemTeamsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)() {
     m.data = value
 }
 // SetIncluded sets the included property value. The included property
@@ -270,11 +270,11 @@ func (m *ItemTeamsGetResponse) SetMeta(value ItemTeamsGetResponse_metaable)() {
 type ItemTeamsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable)
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)
     GetIncluded()([]ItemTeamsGetResponse_TeamsGetResponse_includedable)
     GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)
     GetMeta()(ItemTeamsGetResponse_metaable)
-    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable)()
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)()
     SetIncluded(value []ItemTeamsGetResponse_TeamsGetResponse_includedable)()
     SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)()
     SetMeta(value ItemTeamsGetResponse_metaable)()

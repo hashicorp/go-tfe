@@ -16,11 +16,11 @@ type ItemLogOutputRequestBuilder struct {
 // ItemLogOutputRequestBuilderGetQueryParameters this endpoint returns the log output for the assessment result.Supports both JSON and plain text formats based on the Accept header.Query parameters allow for pagination of log output.
 type ItemLogOutputRequestBuilderGetQueryParameters struct {
     // Maximum number of bytes to return
-    Limit *int32 `uriparametername:"limit"`
+    Limit *int32 "uriparametername:\"limit\""
     // Byte offset to start reading from
-    Offset *int32 `uriparametername:"offset"`
+    Offset *int32 "uriparametername:\"offset\""
     // If true, return the last N bytes instead of the first N bytes
-    Tail *bool `uriparametername:"tail"`
+    Tail *bool "uriparametername:\"tail\""
 }
 // NewItemLogOutputRequestBuilderInternal instantiates a new ItemLogOutputRequestBuilder and sets the default values.
 func NewItemLogOutputRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemLogOutputRequestBuilder) {

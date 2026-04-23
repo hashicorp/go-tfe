@@ -12,12 +12,14 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i003fa0288892e8dbba545865bd8a974a7c5bea8f641fb511605990ee02ab6b8a "github.com/hashicorp/go-tfe/api/policysetoutcomes"
     i02e4b2db5ddeba90c612fb21e076eab573cb510e753756e4456d4ac0f37efc30 "github.com/hashicorp/go-tfe/api/organizationmemberships"
+    i09489d7dd7b39968cd4219fc822b036031639803fb23dba60550525403e65377 "github.com/hashicorp/go-tfe/api/workspacetransfers"
     i0c9dd52fbe92381dc0c16a43be34f4daded22424b9e8c73a7632565805ac598b "github.com/hashicorp/go-tfe/api/configurationversions"
     i0f1368098fa35b0e38ad11d0111dd08796fa846784e62034bcf547728717bd0d "github.com/hashicorp/go-tfe/api/assessmentresults"
     i14de273b0d2a43e9ddae3007adb08a8ff5649e0c23ef00430458ccbd977d8d2f "github.com/hashicorp/go-tfe/api/policysetversions"
     i21980416ea4ff0be8fbe2c24dfe88e8cfe07538f71f8871e9231acec0ac13016 "github.com/hashicorp/go-tfe/api/authenticationtokens"
     i2b670c90ec2bdb1267327bd2faf088df36fa7ce229d78b135e7bcfc133fa084c "github.com/hashicorp/go-tfe/api/policychecks"
     i32e1448dc183bf015592ec865d0123cce316dfad6b11ffcd0c01d211f305fee1 "github.com/hashicorp/go-tfe/api/organization"
+    i33551ced51c92db4dd4e31c15c6cccc5cbdc661694c2ea06ef6ee67621e3f3cb "github.com/hashicorp/go-tfe/api/emailrecipientstatuses"
     i36a3ec5d650543e4919787940a09d63fd7ff309f36d0ea5f3470a275b8ffb1c1 "github.com/hashicorp/go-tfe/api/agents"
     i3c264813f0b6bce885d8b454d892e647fa130da6c8e1a101afb9965072cdbc7d "github.com/hashicorp/go-tfe/api/policies"
     i3d9eea30fcf68077e32a41ed8589e2e9a53a4eafc1606e50d455dfa24d654574 "github.com/hashicorp/go-tfe/api/notificationconfigurations"
@@ -127,6 +129,11 @@ func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa52901
 // returns a *CostEstimatesRequestBuilder when successful
 func (m *ApiClient) CostEstimates()(*idb9762071316d801888013b2af72e088e1da92e3090ce4df4f9dc70fecd823fa.CostEstimatesRequestBuilder) {
     return idb9762071316d801888013b2af72e088e1da92e3090ce4df4f9dc70fecd823fa.NewCostEstimatesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// EmailRecipientStatuses the emailRecipientStatuses property
+// returns a *EmailRecipientStatusesRequestBuilder when successful
+func (m *ApiClient) EmailRecipientStatuses()(*i33551ced51c92db4dd4e31c15c6cccc5cbdc661694c2ea06ef6ee67621e3f3cb.EmailRecipientStatusesRequestBuilder) {
+    return i33551ced51c92db4dd4e31c15c6cccc5cbdc661694c2ea06ef6ee67621e3f3cb.NewEmailRecipientStatusesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // FeatureSets the featureSets property
 // returns a *FeatureSetsRequestBuilder when successful
@@ -297,4 +304,9 @@ func (m *ApiClient) Varsets()(*i75231cd9ccdd3a374272bf7946c3dc38fe4fc242cfb7f357
 // returns a *WorkspacesRequestBuilder when successful
 func (m *ApiClient) Workspaces()(*ic4d2a74a1c75b8062366a20b2ff0652bfd0a55f95e3ae19856954d66887e915c.WorkspacesRequestBuilder) {
     return ic4d2a74a1c75b8062366a20b2ff0652bfd0a55f95e3ae19856954d66887e915c.NewWorkspacesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// WorkspaceTransfers the workspaceTransfers property
+// returns a *WorkspaceTransfersRequestBuilder when successful
+func (m *ApiClient) WorkspaceTransfers()(*i09489d7dd7b39968cd4219fc822b036031639803fb23dba60550525403e65377.WorkspaceTransfersRequestBuilder) {
+    return i09489d7dd7b39968cd4219fc822b036031639803fb23dba60550525403e65377.NewWorkspaceTransfersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

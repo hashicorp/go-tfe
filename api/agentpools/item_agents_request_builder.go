@@ -17,13 +17,13 @@ type ItemAgentsRequestBuilder struct {
 // ItemAgentsRequestBuilderGetQueryParameters list all agents in the specified agent pool.
 type ItemAgentsRequestBuilderGetQueryParameters struct {
     // Accepts a date in ISO8601 format (ex. `2020-08-11T10:41:23Z`).
-    FilterlastPingSince *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"filter%5Blast%2Dping%2Dsince%5D"`
+    FilterlastPingSince *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Blast%2Dping%2Dsince%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Allows sorting the returned agents. Valid value is "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
-    Sort *string `uriparametername:"sort"`
+    Sort *string "uriparametername:\"sort\""
 }
 // NewItemAgentsRequestBuilderInternal instantiates a new ItemAgentsRequestBuilder and sets the default values.
 func NewItemAgentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentsRequestBuilder) {

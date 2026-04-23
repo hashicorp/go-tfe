@@ -16,11 +16,11 @@ type ItemApplicableVarsetsRequestBuilder struct {
 // ItemApplicableVarsetsRequestBuilderGetQueryParameters list the variable sets that can be applied to a workspace. This returns variable sets from the workspace's organization that are not already applied to the workspace, filtered by project scope.
 type ItemApplicableVarsetsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Optional search query to filter variable sets by name.
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
 }
 // NewItemApplicableVarsetsRequestBuilderInternal instantiates a new ItemApplicableVarsetsRequestBuilder and sets the default values.
 func NewItemApplicableVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemApplicableVarsetsRequestBuilder) {

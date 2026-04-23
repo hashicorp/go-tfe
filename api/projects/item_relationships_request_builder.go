@@ -24,11 +24,6 @@ func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     urlParams["request-raw-url"] = rawUrl
     return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// TagBindings the tagBindings property
-// returns a *ItemRelationshipsTagBindingsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) TagBindings()(*ItemRelationshipsTagBindingsRequestBuilder) {
-    return NewItemRelationshipsTagBindingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
 // Workspaces the workspaces property
 // returns a *ItemRelationshipsWorkspacesRequestBuilder when successful
 func (m *ItemRelationshipsRequestBuilder) Workspaces()(*ItemRelationshipsWorkspacesRequestBuilder) {

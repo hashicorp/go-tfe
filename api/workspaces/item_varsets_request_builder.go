@@ -16,11 +16,11 @@ type ItemVarsetsRequestBuilder struct {
 // ItemVarsetsRequestBuilderGetQueryParameters list all variable sets for a workspace. This includes global variable sets from the workspace's organization and variable sets attached to the project this workspace is contained within.
 type ItemVarsetsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // A search query string. You can search for a variable set using its name.
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
 }
 // ByVarset_id gets an item from the github.com/hashicorp/go-tfe/api.workspaces.item.varsets.item collection
 // returns a *ItemVarsetsWithVarset_ItemRequestBuilder when successful

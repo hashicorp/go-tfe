@@ -17,13 +17,13 @@ type ItemResourcesRequestBuilder struct {
 // ItemResourcesRequestBuilderGetQueryParameters list all resources in a workspace's current state.
 type ItemResourcesRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Optional search query to filter resources by address pattern.
-    Q *string `uriparametername:"q"`
+    Q *string "uriparametername:\"q\""
     // Optional sort parameter. Allows sorting workspace resources by name, nameIndex, provider,  providerType, module, or updatedAt. Format is "field:order" where order is "asc" or "desc".
-    Sort *ia046148a76e9397934e325e52da2cbad0f04264533cdfc939d01bac8c7839f50.GetSortQueryParameterType `uriparametername:"sort"`
+    Sort *ia046148a76e9397934e325e52da2cbad0f04264533cdfc939d01bac8c7839f50.GetSortQueryParameterType "uriparametername:\"sort\""
 }
 // NewItemResourcesRequestBuilderInternal instantiates a new ItemResourcesRequestBuilder and sets the default values.
 func NewItemResourcesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemResourcesRequestBuilder) {

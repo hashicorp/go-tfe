@@ -17,15 +17,15 @@ type IntegrationsRequestBuilder struct {
 // IntegrationsRequestBuilderGetQueryParameters list all available integrations that can be used with tasks. By default, only active integrations are returned.
 type IntegrationsRequestBuilderGetQueryParameters struct {
     // Filter integrations by category.
-    Category *string `uriparametername:"category"`
+    Category *string "uriparametername:\"category\""
     // Include inactive integrations in the results.
-    Include_inactive *i632972f047352c20aac85b198e26bbfedaa582888a1695d4860f9aa7128d1ea5.GetInclude_inactiveQueryParameterType `uriparametername:"include_inactive"`
+    Include_inactive *i632972f047352c20aac85b198e26bbfedaa582888a1695d4860f9aa7128d1ea5.GetInclude_inactiveQueryParameterType "uriparametername:\"include_inactive\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // Search integrations by name (case-insensitive, partial match).
-    Search *string `uriparametername:"search"`
+    Search *string "uriparametername:\"search\""
 }
 // NewIntegrationsRequestBuilderInternal instantiates a new IntegrationsRequestBuilder and sets the default values.
 func NewIntegrationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*IntegrationsRequestBuilder) {

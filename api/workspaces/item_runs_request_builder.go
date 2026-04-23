@@ -16,13 +16,13 @@ type ItemRunsRequestBuilder struct {
 // ItemRunsRequestBuilderGetQueryParameters list all runs in a workspace.
 type ItemRunsRequestBuilderGetQueryParameters struct {
     // Filter by run operation.
-    Filteroperation *string `uriparametername:"filter%5Boperation%5D"`
+    Filteroperation *string "uriparametername:\"filter%5Boperation%5D\""
     // Filter by run status.
-    Filterstatus *string `uriparametername:"filter%5Bstatus%5D"`
+    Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemRunsRequestBuilderInternal instantiates a new ItemRunsRequestBuilder and sets the default values.
 func NewItemRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunsRequestBuilder) {

@@ -29,6 +29,11 @@ func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
 func (m *ItemRelationshipsRequestBuilder) Policies()(*ItemRelationshipsPoliciesRequestBuilder) {
     return NewItemRelationshipsPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// ProjectExclusions the projectExclusions property
+// returns a *ItemRelationshipsProjectExclusionsRequestBuilder when successful
+func (m *ItemRelationshipsRequestBuilder) ProjectExclusions()(*ItemRelationshipsProjectExclusionsRequestBuilder) {
+    return NewItemRelationshipsProjectExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Projects the projects property
 // returns a *ItemRelationshipsProjectsRequestBuilder when successful
 func (m *ItemRelationshipsRequestBuilder) Projects()(*ItemRelationshipsProjectsRequestBuilder) {

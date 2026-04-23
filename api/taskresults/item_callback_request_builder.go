@@ -16,7 +16,7 @@ type ItemCallbackRequestBuilder struct {
 // ItemCallbackRequestBuilderPatchQueryParameters update a run task result with status, message, and optional outcome data. This endpoint is used by run task integrations to report execution results back to HCP Terraform. Requires a url_code query parameter for authentication.
 type ItemCallbackRequestBuilderPatchQueryParameters struct {
     // The callback authentication token issued to the run task integration. Required for run task integrations; not required for token-authenticated requests.
-    Url_code *string `uriparametername:"url_code"`
+    Url_code *string "uriparametername:\"url_code\""
 }
 // NewItemCallbackRequestBuilderInternal instantiates a new ItemCallbackRequestBuilder and sets the default values.
 func NewItemCallbackRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCallbackRequestBuilder) {
@@ -32,11 +32,11 @@ func NewItemCallbackRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewItemCallbackRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Patch update a run task result with status, message, and optional outcome data. This endpoint is used by run task integrations to report execution results back to HCP Terraform. Requires a url_code query parameter for authentication.
-// returns a ItemCallbackPatchResponseable when successful
+// returns a TaskResultsEnvelopeable when successful
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemCallbackRequestBuilder) Patch(ctx context.Context, body ItemCallbackPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCallbackRequestBuilderPatchQueryParameters])(ItemCallbackPatchResponseable, error) {
+func (m *ItemCallbackRequestBuilder) Patch(ctx context.Context, body ItemCallbackPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCallbackRequestBuilderPatchQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TaskResultsEnvelopeable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -46,14 +46,14 @@ func (m *ItemCallbackRequestBuilder) Patch(ctx context.Context, body ItemCallbac
         "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemCallbackPatchResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateTaskResultsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemCallbackPatchResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TaskResultsEnvelopeable), nil
 }
 // ToPatchRequestInformation update a run task result with status, message, and optional outcome data. This endpoint is used by run task integrations to report execution results back to HCP Terraform. Requires a url_code query parameter for authentication.
 // returns a *RequestInformation when successful

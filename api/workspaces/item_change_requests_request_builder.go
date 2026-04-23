@@ -16,11 +16,11 @@ type ItemChangeRequestsRequestBuilder struct {
 // ItemChangeRequestsRequestBuilderGetQueryParameters list all change requests for a workspace.
 type ItemChangeRequestsRequestBuilderGetQueryParameters struct {
     // When true, returns only archived change requests. When false, returns only unarchived change requests. When omitted, returns all change requests ordered by creation date.
-    Archive *bool `uriparametername:"archive"`
+    Archive *bool "uriparametername:\"archive\""
     // The page number to retrieve.
-    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // NewItemChangeRequestsRequestBuilderInternal instantiates a new ItemChangeRequestsRequestBuilder and sets the default values.
 func NewItemChangeRequestsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemChangeRequestsRequestBuilder) {
