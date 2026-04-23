@@ -10,6 +10,7 @@
 * Adds `AdminSCIMToken` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
 * Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
 * Add BETA support for `TFPolicyEvaluationOutcome` listing api by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
+* Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
 
 # v1.103.0
 
