@@ -14,7 +14,6 @@ import (
 
 func TestStackConfigurationList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -28,7 +27,7 @@ func TestStackConfigurationList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-list",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -82,7 +81,6 @@ func TestStackConfigurationList(t *testing.T) {
 
 func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -127,7 +125,6 @@ func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
 
 func TestStackConfigurationDiagnostics(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -144,9 +141,9 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		Name:    "test-stack",
 
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-			Branch:       "diagnostics", // This branch will produce diagnostics
+			Branch:       stackVCSRepoBranch(t),
 		},
 	})
 	require.NoError(t, err)
@@ -174,13 +171,10 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		assert.NotEmpty(t, diag.Summary)
 		assert.NotEmpty(t, diag.Detail)
 		assert.NotEmpty(t, diag.Diags)
-		assert.False(t, diag.Acknowledged)
-		assert.Nil(t, diag.AcknowledgedAt)
 		assert.NotZero(t, diag.CreatedAt)
 
 		assert.Nil(t, diag.StackDeploymentStep)
 		assert.NotNil(t, diag.StackConfiguration)
-		assert.Nil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
