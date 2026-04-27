@@ -196,6 +196,21 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.False(t, ps.Global)
 	})
 
+	t.Run("OPA policy set with policy update patterns", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:                 String(randomString(t)),
+			Kind:                 OPA,
+			PolicyUpdatePatterns: []string{"*.rego", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Kind, OPA)
+		assert.Equal(t, options.PolicyUpdatePatterns, ps.PolicyUpdatePatterns)
+	})
+
 	t.Run("with pinned policy runtime version valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:              String(randomString(t)),
@@ -729,6 +744,17 @@ func TestPolicySetsUpdate(t *testing.T) {
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
 		assert.True(t, *ps.Overridable)
+	})
+
+	t.Run("with policy update patterns", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			PolicyUpdatePatterns: []string{"*.rego", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest2.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, options.PolicyUpdatePatterns, ps.PolicyUpdatePatterns)
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {

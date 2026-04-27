@@ -162,7 +162,9 @@ func TestStackReadUpdateDelete(t *testing.T) {
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
-		AgentPool: initialPool,
+		AgentPool:        initialPool,
+		WorkingDirectory: String("envs"),
+		TriggerPatterns:  []string{"/**/*"},
 	})
 
 	require.NoError(t, err)
@@ -173,12 +175,15 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.False(t, stack.SpeculativeEnabled)
 
 	stackRead, err := client.Stacks.Read(ctx, stack.ID)
+
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
 	require.Equal(t, stack.VCSRepo.Branch, stackRead.VCSRepo.Branch)
 	require.Equal(t, stack.AgentPool.ID, stackRead.AgentPool.ID)
 	assert.Equal(t, stack, stackRead)
+	assert.Equal(t, stackRead.WorkingDirectory, "envs")
+	assert.Equal(t, stackRead.TriggerPatterns, []string{"/**/*"})
 	assert.False(t, stackRead.SpeculativeEnabled)
 
 	updatedPool, err := client.AgentPools.Create(ctx, orgTest.Name, AgentPoolCreateOptions{
@@ -195,6 +200,8 @@ func TestStackReadUpdateDelete(t *testing.T) {
 		},
 		AgentPool:          updatedPool,
 		SpeculativeEnabled: Bool(true),
+		WorkingDirectory:   String(""),
+		TriggerPatterns:    []string{""},
 	})
 
 	require.NoError(t, err)
@@ -205,6 +212,8 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
+	require.Equal(t, stackUpdated.WorkingDirectory, "")
+	require.Equal(t, stackUpdated.TriggerPatterns, []string{""})
 
 	err = client.Stacks.Delete(ctx, stack.ID)
 	require.NoError(t, err)

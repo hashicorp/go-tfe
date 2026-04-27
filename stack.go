@@ -95,6 +95,8 @@ type Stack struct {
 	InputsCount        int           `jsonapi:"attr,inputs-count"`
 	OutputsCount       int           `jsonapi:"attr,outputs-count"`
 	CreationSource     string        `jsonapi:"attr,creation-source"`
+	WorkingDirectory   string        `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string      `jsonapi:"attr,trigger-patterns,omitempty"`
 
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
@@ -166,6 +168,8 @@ type StackCreateOptions struct {
 	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	Project            *Project             `jsonapi:"relation,project"`
 	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
+	WorkingDirectory   *string              `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string             `jsonapi:"attr,trigger-patterns"`
 }
 
 // StackUpdateOptions represents the options for updating a stack.
@@ -175,6 +179,8 @@ type StackUpdateOptions struct {
 	SpeculativeEnabled *bool                `jsonapi:"attr,speculative-enabled,omitempty"`
 	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
+	WorkingDirectory   *string              `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string             `jsonapi:"attr,trigger-patterns"`
 }
 
 // WaitForStatusResult is the data structure that is sent over the channel
