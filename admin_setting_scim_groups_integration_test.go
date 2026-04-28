@@ -161,7 +161,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			expectedPrevPage   int
 		}{
 			{
-				name:               "default page size (20) returns first page",
+				name:               fmt.Sprintf("default page size (%d) returns first page", defaultPageSize),
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
 				expectedGroupCount: defaultPageSize,
 				expectedTotalCount: maxGroupsToCreate,
@@ -171,7 +171,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPrevPage:   0,
 			},
 			{
-				name:               "default page size (20) returns second page",
+				name:               fmt.Sprintf("default page size (%d) returns second page", defaultPageSize),
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 2}},
 				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
 				expectedGroupCount: maxGroupsToCreate - defaultPageSize,
