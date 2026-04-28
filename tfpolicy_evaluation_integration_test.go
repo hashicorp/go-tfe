@@ -46,7 +46,7 @@ func TestTFPolicyEvaluationOutcomes_List(t *testing.T) {
 	_, err := client.PolicySets.Create(ctx, orgTest.Name, options)
 	require.NoError(t, err)
 
-	_, rTestCleanup := createRun(t, client, ws)
+	rTest, rTestCleanup := createRun(t, client, ws)
 	defer rTestCleanup()
 
 	// NOTE: TFEvaluations for run ID is not yet supported,
@@ -55,7 +55,7 @@ func TestTFPolicyEvaluationOutcomes_List(t *testing.T) {
 	// working as expected.
 
 	t.Run("with no params", func(t *testing.T) {
-		rData, err := client.Runs.List(ctx, ws.ID, &RunListOptions{
+		rData, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
 			Include: []RunIncludeOpt{
 				RunTFPolicyEvaluation,
 			},
@@ -63,13 +63,10 @@ func TestTFPolicyEvaluationOutcomes_List(t *testing.T) {
 
 		require.NoError(t, err)
 
-		require.NotEmpty(t, rData.Items)
-		assert.NotEmpty(t, rData.Items[0].ID)
-		assert.NotEmpty(t, rData.Items[0].TFPolicyEvaluations)
+		require.NotEmpty(t, rData.TFPolicyEvaluations)
+		assert.NotEmpty(t, rData.TFPolicyEvaluations[0].ID)
 
-		assert.NotEmpty(t, rData.Items[0].TFPolicyEvaluations[0].ID)
-
-		evaluationOutcome, err := client.TFPolicyEvaluationOutcomes.List(ctx, rData.Items[0].TFPolicyEvaluations[0].ID, nil)
+		evaluationOutcome, err := client.TFPolicyEvaluationOutcomes.List(ctx, rData.TFPolicyEvaluations[0].ID, nil)
 		require.NoError(t, err)
 
 		require.NotEmpty(t, evaluationOutcome.Items)
