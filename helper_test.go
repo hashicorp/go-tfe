@@ -307,9 +307,9 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 	)
 
 	go func() {
-		_, err := cmd.CombinedOutput()
+		output, err := cmd.CombinedOutput()
 		if err != nil {
-			t.Logf("Could not run container: %s", err)
+			t.Logf("Could not run container: %s\nOutput: %s", err, string(output))
 		}
 	}()
 
