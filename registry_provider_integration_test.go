@@ -460,6 +460,71 @@ func TestRegistryProvidersDelete(t *testing.T) {
 	}
 }
 
+func TestRegistryProvidersUpdate_Beta(t *testing.T) {
+	t.Parallel()
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		// Create project tags
+		_, projectTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name: "project-with-tags",
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "production"},
+			},
+		})
+		t.Cleanup(projectTestCleanup)
+
+		pBefore, pTestCleanup := createRegistryProvider(t, client, orgTest, PublicRegistry)
+		t.Cleanup(pTestCleanup)
+
+		// Update the provider with tag_bindings
+		updateOptions := &RegistryProviderUpdateOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "production"},
+			},
+		}
+
+		pAfter, err := client.RegistryProviders.Update(ctx, RegistryProviderID{
+			OrganizationName: orgTest.Name,
+			RegistryName:     pBefore.RegistryName,
+			Namespace:        pBefore.Namespace,
+			Name:             pBefore.Name,
+		}, updateOptions)
+		require.NoError(t, err)
+
+		// Verify the provider has the new tag bindings
+		bindings, err := client.RegistryProviders.ListTagBindings(ctx, pAfter.ID)
+		require.NoError(t, err)
+
+		require.Len(t, bindings, 1)
+		assert.Equal(t, "env", bindings[0].Key)
+		assert.Equal(t, "production", bindings[0].Value)
+
+		// Delete the tag_bindings
+		deleteOptions := &RegistryProviderUpdateOptions{
+			TagBindings: []*TagBinding{},
+		}
+
+		pAfterDelete, err := client.RegistryProviders.Update(ctx, RegistryProviderID{
+			OrganizationName: orgTest.Name,
+			RegistryName:     pBefore.RegistryName,
+			Namespace:        pBefore.Namespace,
+			Name:             pBefore.Name,
+		}, deleteOptions)
+		require.NoError(t, err)
+
+		// Verify the provider has the no tag bindings
+		bindingsAfterDelete, err := client.RegistryProviders.ListTagBindings(ctx, pAfterDelete.ID)
+		require.NoError(t, err)
+		require.Empty(t, bindingsAfterDelete)
+	})
+}
+
 func TestRegistryProvidersIDValidation(t *testing.T) {
 	t.Parallel()
 	orgName := "orgName"
