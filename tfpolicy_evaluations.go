@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+// NOTE: TFpolicy is still a beta feature and is subject to change.
+
 type TFPolicyEvaluationStatus string
 
 const (
