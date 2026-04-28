@@ -25,6 +25,11 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 	scimToken, err := scimClient.Tokens.Create(ctx, "integration-test-token")
 	require.NoError(t, err)
 
+	const (
+		defaultPageSize   = 20
+		maxGroupsToCreate = defaultPageSize + defaultPageSize/2
+	)
+
 	t.Run("basic list operations", func(t *testing.T) {
 		t.Run("empty list immediately after enabling SCIM", func(t *testing.T) {
 			scimGroups, err := scimClient.Groups.List(ctx, nil)
@@ -136,8 +141,9 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 		})
 
 		prefix := randomStringWithoutSpecialChar(t) + "-"
-		// Create 30 groups to test default page size of 20
-		for range 30 {
+
+		// Create groups to test default page size
+		for range maxGroupsToCreate {
 			groupName := prefix + randomStringWithoutSpecialChar(t)
 			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 			groupIDs = append(groupIDs, id)
@@ -157,8 +163,8 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			{
 				name:               "default page size (20) returns first page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
-				expectedGroupCount: 20,
-				expectedTotalCount: 30,
+				expectedGroupCount: defaultPageSize,
+				expectedTotalCount: maxGroupsToCreate,
 				expectedTotalPages: 2,
 				expectedPage:       1,
 				expectedNextPage:   2,
@@ -168,8 +174,8 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				name:               "default page size (20) returns second page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 2}},
 				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
-				expectedGroupCount: 10,
-				expectedTotalCount: 30,
+				expectedGroupCount: maxGroupsToCreate - defaultPageSize,
+				expectedTotalCount: maxGroupsToCreate,
 				expectedTotalPages: 2,
 				expectedPage:       2,
 				expectedNextPage:   0,
@@ -181,7 +187,10 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			t.Run(tc.name, func(t *testing.T) {
 				scimGroups, err := scimClient.Groups.List(ctx, &tc.options)
 				require.NoError(t, err)
-				assert.Len(t, scimGroups.Items, tc.expectedGroupCount)
+				assert.Len(
+					t, scimGroups.Items, tc.expectedGroupCount,
+					"expected default page size to be 20; if this fails, the API default page size may have changed",
+				)
 				assert.Equal(t, tc.expectedTotalCount, scimGroups.TotalCount)
 				assert.Equal(t, tc.expectedTotalPages, scimGroups.TotalPages)
 				assert.Equal(t, tc.expectedPage, scimGroups.CurrentPage)
