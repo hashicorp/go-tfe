@@ -4,6 +4,7 @@
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
 
 ## Enhancements
+* Update `tfc-agent` version used in integration tests from `1.3.0` to `1.28.7` by @shwetamurali [#1317](https://github.com/hashicorp/go-tfe/pull/1317)
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
 * Adds `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
 * Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
