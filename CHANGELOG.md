@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
+* Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
 
 # v1.104.0
 
