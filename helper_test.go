@@ -2212,6 +2212,38 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 	}
 }
 
+func createRegistryComponent(t *testing.T, client *Client, org *Organization) (*RegistryComponent, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	options := RegistryComponentCreateOptions{
+		Name: "test-registry-component-" + randomString(t),
+		Type: "registry-components",
+	}
+
+	rc, err := client.RegistryComponents.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rc, func() {
+		if err := client.RegistryComponents.Delete(ctx, rc.ID); err != nil {
+			t.Errorf("Error destroying registry component! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Component: %s\nError: %s", rc.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion, targetOS, arch string) (*RegistryProviderPlatform, func()) {
 	var providerCleanup func()
 	var versionCleanup func()
