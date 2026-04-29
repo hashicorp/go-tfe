@@ -1,12 +1,15 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
 
 // SCIMResource groups the SCIM related resources together.
+// This struct should be constructed with keyed fields only or obtained via the client
+// to prevent breakages when new fields are added.
 type SCIMResource struct {
 	SCIMSettings
 	Tokens AdminSCIMTokens
+	Groups AdminSCIMGroups
 }
 
 // AdminSettings describes all the admin settings related methods that the Terraform Enterprise API supports.
@@ -36,6 +39,7 @@ func newAdminSettings(client *Client) *AdminSettings {
 		SCIM: &SCIMResource{
 			SCIMSettings: &adminSCIMSettings{client: client},
 			Tokens:       &adminSCIMTokens{client: client},
+			Groups:       &adminSCIMGroups{client: client},
 		},
 	}
 }
