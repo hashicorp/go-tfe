@@ -217,7 +217,7 @@ func (r *registryProviders) Update(ctx context.Context, providerID RegistryProvi
 
 func (r *registryProviders) ListTagBindings(ctx context.Context, providerID string) ([]*TagBinding, error) {
 	if !validStringID(&providerID) {
-		return nil, ErrInvalidProjectID
+		return nil, ErrInvalidRegistryProviderID
 	}
 
 	u := fmt.Sprintf("registry-providers/%s/tag-bindings", url.PathEscape(providerID))

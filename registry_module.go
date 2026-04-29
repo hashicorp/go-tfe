@@ -595,7 +595,7 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 
 func (r *registryModules) ListTagBindings(ctx context.Context, moduleID string) ([]*TagBinding, error) {
 	if !validStringID(&moduleID) {
-		return nil, ErrInvalidProjectID
+		return nil, ErrInvalidModuleID
 	}
 
 	u := fmt.Sprintf("registry-modules/%s/tag-bindings", url.PathEscape(moduleID))

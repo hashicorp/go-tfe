@@ -124,6 +124,12 @@ var (
 
 	ErrInvalidProjectID = errors.New("invalid value for project ID")
 
+	ErrInvalidRegistryComponentID = errors.New("invalid value for registry component ID")
+
+	ErrInvalidRegistryModuleID = errors.New("invalid value for registry module ID")
+
+	ErrInvalidRegistryProviderID = errors.New("invalid value for registry provider ID")
+
 	ErrInvalidPagination = errors.New("invalid value for page size or number")
 
 	ErrInvalidReservedTagKeyID = errors.New("invalid value for reserved tag key ID")
@@ -370,6 +376,8 @@ var (
 	ErrRequiredOPAVerCreateOps = errors.New("version, URL and sha is required for AdminOPAVersionCreateOptions")
 
 	ErrRequiredSentinelVerCreateOps = errors.New("version, URL and sha is required for AdminSentinelVersionCreateOptions")
+
+	ErrRequiredRegistryComponentCreateOps = errors.New("type and name is required for RegistryComponentCreateOptions")
 
 	ErrRequiredSerial = errors.New("serial is required")
 
