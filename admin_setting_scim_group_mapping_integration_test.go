@@ -375,24 +375,37 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 	}
 }
 
-// SCIM group mapping API wrappers. Each one sleeps for `delay` before
-// invoking the underlying call to stay under the server-side rate limit
-// (10 req/min) and to avoid 429 (Too Many Requests) errors.
+// SCIM group mapping API wrappers. Sleep only for calls that are expected
+// to reach the API, so validation-only failures don't incur unnecessary
+// delay in test cases while still throttling real Create/Update/Delete
+// requests to avoid 429s from the server-side rate limit (10 req/min).
 
 // createSCIMGroupMapping links teamID to groupID.
 func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
+	if teamID == "" || groupID == "" {
+		return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
+	}
+
 	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
 }
 
 // updateSCIMGroupMapping updates the mapping for teamID with the provided options.
 func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string, opts *AdminSCIMGroupMappingUpdateOptions) error {
+	if teamID == "" || opts == nil {
+		return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
+	}
+
 	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
 }
 
 // deleteSCIMGroupMapping unlinks any SCIM group mapping for teamID.
 func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string) error {
+	if teamID == "" {
+		return scim.SCIMGroupMappings.Delete(ctx, teamID)
+	}
+
 	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Delete(ctx, teamID)
 }
