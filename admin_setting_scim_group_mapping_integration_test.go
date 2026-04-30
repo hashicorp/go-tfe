@@ -3,6 +3,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"testing"
 	"time"
 
@@ -11,9 +12,7 @@ import (
 )
 
 // delay throttles SCIM group-mapping Create/Update/Delete calls to avoid 429s
-// from the server-side rate limit (10 req/min).
-// 1.5s was chosen empirically (trial-and-error) as an optimal stable value;
-// a strict 6s/request delay was reliable but significantly slower.
+// 1.5s was chosen empirically (trial-and-error) as an optimal stable value.
 const delay = 1500 * time.Millisecond
 
 func TestAdminSCIMGroupMappings_Create(t *testing.T) {
@@ -46,7 +45,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			for i, team := range createTeams(t, client, 2) {
 				group := tc.groupFor(i)
 				linkSCIMGroupMapping(ctx, t, scimClient, team.ID, group.ID)
-				scimAttr := getScimAttributeValues(t, client, team.ID)
+				scimAttr := getScimAttributeValues(ctx, t, client, team.ID)
 				assert.True(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be true after creating mapping")
 				assert.Equal(t, group.Name, scimAttr.SCIMGroupName, "Expected SCIMGroupName to match the linked group")
 				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after creating mapping")
@@ -60,7 +59,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 		require.NoError(t, deleteSCIMGroupMapping(ctx, scimClient, teamID))
 		linkSCIMGroupMapping(ctx, t, scimClient, teamID, scimGroups[1].ID)
 
-		scimAttr := getScimAttributeValues(t, client, teamID)
+		scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 		assert.True(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be true after re-linking")
 		assert.Equal(t, scimGroups[1].Name, scimAttr.SCIMGroupName, "Expected SCIMGroupName to match the re-linked group")
 	})
@@ -121,6 +120,10 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				teamID := createSingleTeam(t, client)
 				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: &siteAdminGroupID})
 				require.NoError(t, err, "Failed to set site admin group")
+				t.Cleanup(func() {
+					_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: nil})
+					require.NoError(t, err, "Failed to clear site admin group")
+				})
 				return teamID, siteAdminGroupID
 			},
 			expectedErr: ErrSCIMGroupMappingSiteAdminGroup,
@@ -137,7 +140,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			setup: func(t *testing.T) (string, string) {
 				return createSingleTeam(t, client), "this is an invalid scim group id"
 			},
-			expectedErr: ErrSCIMGroupID,
+			expectedErr: ErrInvalidSCIMGroupID,
 		},
 	}
 
@@ -189,7 +192,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			setup:   linkedTeamSetup,
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.True(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be true after pausing sync")
 			},
 		},
@@ -202,7 +205,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(false)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after unpausing sync")
 			},
 		},
@@ -243,7 +246,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.True(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to remain true after re-pausing")
 			},
 		},
@@ -252,7 +255,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			setup:   linkedTeamSetup,
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(false)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to remain false after unpausing")
 			},
 		},
@@ -320,7 +323,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.False(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be false after deleting mapping")
 				assert.Empty(t, scimAttr.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting mapping")
 			},
@@ -352,7 +355,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(t, client, teamID)
+				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
 				assert.False(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be false after deleting paused mapping")
 				assert.Empty(t, scimAttr.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting paused mapping")
 			},
@@ -470,12 +473,12 @@ type teamSCIMAttributes struct {
 }
 
 // getScimAttributeValues retrieves the SCIM-related attributes for the team with teamID.
-func getScimAttributeValues(t *testing.T, client *Client, teamID string) teamSCIMAttributes {
-	req, err := client.NewRequest("GET", fmt.Sprintf("teams/%s", teamID), nil)
+func getScimAttributeValues(ctx context.Context, t *testing.T, client *Client, teamID string) teamSCIMAttributes {
+	req, err := client.NewRequest("GET", fmt.Sprintf("teams/%s", url.PathEscape(teamID)), nil)
 	require.NoError(t, err)
 
 	var attrs teamSCIMAttributes
-	err = req.Do(context.Background(), &attrs)
+	err = req.Do(ctx, &attrs)
 	require.NoError(t, err)
 
 	return attrs

@@ -475,7 +475,7 @@ var (
 
 	ErrSCIMTokenDescription = errors.New("SCIM token description cannot be blank")
 
-	ErrSCIMGroupID = errors.New("invalid value for SCIM group ID")
+	ErrInvalidSCIMGroupID = errors.New("invalid value for SCIM group ID")
 
 	ErrSCIMSyncPausedNil = errors.New("SCIMSyncPaused cannot be nil")
 

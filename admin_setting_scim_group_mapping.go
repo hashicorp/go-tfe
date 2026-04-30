@@ -3,6 +3,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 var _ AdminSCIMGroupMappings = (*adminSCIMGroupMappings)(nil)
@@ -48,10 +49,10 @@ func (a *adminSCIMGroupMappings) Create(ctx context.Context, teamID string, opti
 		return ErrRequiredSCIMGroupMappingCreateOps
 	}
 	if !validStringID(&options.SCIMGroupID) {
-		return ErrSCIMGroupID
+		return ErrInvalidSCIMGroupID
 	}
 
-	req, err := a.client.NewRequest("POST", fmt.Sprintf(AdminSCIMGroupMappingPath, teamID), options)
+	req, err := a.client.NewRequest("POST", fmt.Sprintf(AdminSCIMGroupMappingPath, url.PathEscape(teamID)), options)
 	if err != nil {
 		return err
 	}
@@ -73,7 +74,7 @@ func (a *adminSCIMGroupMappings) Update(ctx context.Context, teamID string, opti
 		return ErrSCIMSyncPausedNil
 	}
 
-	req, err := a.client.NewRequest("PATCH", fmt.Sprintf(AdminSCIMGroupMappingPath, teamID), options)
+	req, err := a.client.NewRequest("PATCH", fmt.Sprintf(AdminSCIMGroupMappingPath, url.PathEscape(teamID)), options)
 	if err != nil {
 		return err
 	}
@@ -87,7 +88,7 @@ func (a *adminSCIMGroupMappings) Delete(ctx context.Context, teamID string) erro
 		return ErrInvalidTeamID
 	}
 
-	req, err := a.client.NewRequest("DELETE", fmt.Sprintf(AdminSCIMGroupMappingPath, teamID), nil)
+	req, err := a.client.NewRequest("DELETE", fmt.Sprintf(AdminSCIMGroupMappingPath, url.PathEscape(teamID)), nil)
 	if err != nil {
 		return err
 	}
