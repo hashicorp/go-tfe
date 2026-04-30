@@ -460,7 +460,7 @@ func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMRe
 	for range 2 {
 		randomGroupName := randomStringWithoutSpecialChar(t)
 		scimGroupID := createSCIMGroup(ctx, t, client, randomGroupName, scimToken.Token)
-		scimGroups = append(scimGroups, AdminSCIMGroup{scimGroupID, randomGroupName})
+		scimGroups = append(scimGroups, AdminSCIMGroup{ID: scimGroupID, Name: randomGroupName})
 	}
 	return client.Admin.Settings.SCIM, scimGroups
 }
