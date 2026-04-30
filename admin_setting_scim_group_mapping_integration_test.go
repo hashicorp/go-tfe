@@ -425,7 +425,10 @@ func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID stri
 func linkSCIMGroupMapping(ctx context.Context, t *testing.T, scim *SCIMResource, teamID, groupID string) {
 	t.Helper()
 	require.NoError(t, createSCIMGroupMapping(ctx, scim, teamID, groupID))
-	t.Cleanup(func() { _ = deleteSCIMGroupMapping(ctx, scim, teamID) })
+	t.Cleanup(func() {
+		err := deleteSCIMGroupMapping(ctx, scim, teamID)
+		require.NoError(t, err)
+	})
 }
 
 // createSingleTeam returns the ID of one freshly created team.
