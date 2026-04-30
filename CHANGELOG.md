@@ -11,6 +11,7 @@
 * Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
 * Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
 * Adds `AdminSCIMGroups` to support fetching SCIM groups provisioned in Terraform Enterprise via an IdP by @skj-skj [#1314](https://github.com/hashicorp/go-tfe/pull/1314)
+* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1342](https://github.com/hashicorp/go-tfe/pull/1342)
 
 # v1.103.0
 
