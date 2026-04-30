@@ -381,7 +381,8 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 // SCIM group mapping API wrappers. Sleep only for calls that are expected
 // to reach the API, so validation-only failures don't incur unnecessary
 // delay in test cases while still throttling real Create/Update/Delete
-// requests to avoid 429s from the server-side rate limit (10 req/min).
+// requests to avoid 429s. The delay is an empirically chosen stable value,
+// not a precise encoding of a specific requests-per-minute limit.
 
 // createSCIMGroupMapping links teamID to groupID.
 func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
