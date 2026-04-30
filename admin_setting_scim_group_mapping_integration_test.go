@@ -1,3 +1,6 @@
+// Copyright IBM Corp. 2018, 2026
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -396,7 +399,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 // createSCIMGroupMapping links teamID to groupID.
 func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
 	if validStringID(&teamID) && validStringID(&groupID) {
-		time.Sleep(delay)
+		time.Sleep(scimGroupMappingDelay)
 	}
 	return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
 }
@@ -404,7 +407,7 @@ func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, gro
 // updateSCIMGroupMapping updates the mapping for teamID with the provided options.
 func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string, opts *AdminSCIMGroupMappingUpdateOptions) error {
 	if validStringID(&teamID) && opts != nil && opts.SCIMSyncPaused != nil {
-		time.Sleep(delay)
+		time.Sleep(scimGroupMappingDelay)
 	}
 	return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
 }
@@ -412,7 +415,7 @@ func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID stri
 // deleteSCIMGroupMapping unlinks any SCIM group mapping for teamID.
 func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string) error {
 	if validStringID(&teamID) {
-		time.Sleep(delay)
+		time.Sleep(scimGroupMappingDelay)
 	}
 	return scim.SCIMGroupMappings.Delete(ctx, teamID)
 }
