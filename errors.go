@@ -92,6 +92,22 @@ var (
 
 	// ErrHYOKCannotBeDisabled is returned when attempting to disable HYOK on a workspace that already has it enabled.
 	ErrHYOKCannotBeDisabled = errors.New("bad request\n\nhyok may not be disabled once it has been turned on for a workspace")
+
+	// ErrSCIMTeamAlreadyMapped is returned when attempting to create a SCIM group mapping
+	// for a team that is already mapped to a SCIM group.
+	ErrSCIMTeamAlreadyMapped = errors.New("conflict\n\nTeam is already linked to a SCIM group")
+
+	// ErrSCIMGroupMappingOwnersTeam is returned when attempting to link the owners team
+	// to a SCIM group, which is not yet supported.
+	ErrSCIMGroupMappingOwnersTeam = errors.New("unprocessable entity\n\nOwners team SCIM linking is not yet supported")
+
+	// ErrSCIMGroupMappingSiteAdminGroup is returned when attempting to link a team to the
+	// site admin SCIM group, which is not allowed.
+	ErrSCIMGroupMappingSiteAdminGroup = errors.New("unprocessable entity\n\nThe site admin group cannot be linked to a team")
+
+	// ErrSCIMGroupMappingTeamNotLinked is returned when attempting to update a SCIM
+	// group mapping for a team that is not linked to a SCIM group.
+	ErrSCIMGroupMappingTeamNotLinked = errors.New("conflict\n\nTeam is not linked to a SCIM group")
 )
 
 // Invalid values for resources/struct fields
@@ -457,5 +473,13 @@ var (
 
 	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
 
-	ErrSCIMTokenDescription = errors.New("SCIM token description can't be blank")
+	ErrSCIMTokenDescription = errors.New("SCIM token description cannot be blank")
+
+	ErrSCIMGroupID = errors.New("invalid value for SCIM group ID")
+
+	ErrSCIMSyncPausedNil = errors.New("SCIMSyncPaused cannot be nil")
+
+	ErrRequiredSCIMGroupMappingCreateOps = errors.New("AdminSCIMGroupMappingCreateOptions is required")
+
+	ErrRequiredSCIMGroupMappingUpdateOps = errors.New("AdminSCIMGroupMappingUpdateOptions is required")
 )
