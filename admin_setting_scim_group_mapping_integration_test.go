@@ -439,10 +439,21 @@ func createSingleTeam(t *testing.T, client *Client) string {
 // createTeams creates n teams and returns their details.
 // It also registers cleanup functions to delete the teams after the test finishes.
 func createTeams(t *testing.T, client *Client, n int) []*Team {
+	if n <= 0 {
+		return nil
+	}
+
 	var testTeams []*Team
 	var teamCleanupFuncs []func()
-	for range n {
-		testTeam, teamCleanup := createTeam(t, client, nil)
+
+	firstTeam, firstTeamCleanup := createTeam(t, client, nil)
+	teamCleanupFuncs = append(teamCleanupFuncs, firstTeamCleanup)
+	testTeams = append(testTeams, firstTeam)
+
+	require.NotNil(t, firstTeam.Organization)
+
+	for i := 1; i < n; i++ {
+		testTeam, teamCleanup := createTeam(t, client, firstTeam.Organization)
 		teamCleanupFuncs = append(teamCleanupFuncs, teamCleanup)
 		testTeams = append(testTeams, testTeam)
 	}
