@@ -467,13 +467,21 @@ func createTeams(t *testing.T, client *Client, n int) []*Team {
 // setupSCIMGroups creates a SCIM token, creates two SCIM groups, and returns the SCIM resource and the created groups.
 func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMResource, []AdminSCIMGroup) {
 	var scimGroups []AdminSCIMGroup
+	var createdGroupIDs []string
 
 	scimToken, err := client.Admin.Settings.SCIM.Tokens.Create(ctx, "integration-test-token")
 	require.NoError(t, err)
 
+	t.Cleanup(func() {
+		for i := len(createdGroupIDs) - 1; i >= 0; i-- {
+			deleteSCIMGroup(ctx, t, client, createdGroupIDs[i], scimToken.Token)
+		}
+	})
+
 	for range 2 {
 		randomGroupName := randomStringWithoutSpecialChar(t)
 		scimGroupID := createSCIMGroup(ctx, t, client, randomGroupName, scimToken.Token)
+		createdGroupIDs = append(createdGroupIDs, scimGroupID)
 		scimGroups = append(scimGroups, AdminSCIMGroup{ID: scimGroupID, Name: randomGroupName})
 	}
 	return client.Admin.Settings.SCIM, scimGroups
