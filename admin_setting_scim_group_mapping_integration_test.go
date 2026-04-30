@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// delay throttles SCIM group-mapping Create/Update/Delete calls to avoid 429s
+// scimGroupMappingDelay throttles SCIM group-mapping Create/Update/Delete calls to avoid 429s
 // 1.5s was chosen empirically (trial-and-error) as an optimal stable value.
-const delay = 1500 * time.Millisecond
+const scimGroupMappingDelay = 1500 * time.Millisecond
 
 func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 	skipUnlessEnterprise(t)
