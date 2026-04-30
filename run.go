@@ -83,6 +83,8 @@ const (
 	RunPostPlanAwaitingDecision RunStatus = "post_plan_awaiting_decision"
 	RunPostPlanCompleted        RunStatus = "post_plan_completed"
 	RunPostPlanRunning          RunStatus = "post_plan_running"
+	RunPostApplyRunning         RunStatus = "post_apply_running"
+	RunPostApplyCompleted       RunStatus = "post_apply_completed"
 	RunPreApplyRunning          RunStatus = "pre_apply_running"
 	RunPreApplyCompleted        RunStatus = "pre_apply_completed"
 	RunPrePlanCompleted         RunStatus = "pre_plan_completed"
