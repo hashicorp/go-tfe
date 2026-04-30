@@ -446,14 +446,10 @@ func createTeams(t *testing.T, client *Client, n int) []*Team {
 	var testTeams []*Team
 	var teamCleanupFuncs []func()
 
-	firstTeam, firstTeamCleanup := createTeam(t, client, nil)
-	teamCleanupFuncs = append(teamCleanupFuncs, firstTeamCleanup)
-	testTeams = append(testTeams, firstTeam)
+	org, orgCleanup := createOrganization(t, client)
 
-	require.NotNil(t, firstTeam.Organization)
-
-	for i := 1; i < n; i++ {
-		testTeam, teamCleanup := createTeam(t, client, firstTeam.Organization)
+	for range n {
+		testTeam, teamCleanup := createTeam(t, client, org)
 		teamCleanupFuncs = append(teamCleanupFuncs, teamCleanup)
 		testTeams = append(testTeams, testTeam)
 	}
@@ -462,6 +458,7 @@ func createTeams(t *testing.T, client *Client, n int) []*Team {
 		for _, teamCleanupFunc := range teamCleanupFuncs {
 			teamCleanupFunc()
 		}
+		orgCleanup()
 	})
 
 	return testTeams
