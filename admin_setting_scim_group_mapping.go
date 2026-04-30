@@ -30,12 +30,20 @@ type adminSCIMGroupMappings struct {
 
 // AdminSCIMGroupMappingCreateOptions represents the options for creating a SCIM group mapping
 type AdminSCIMGroupMappingCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
 	Type        string `jsonapi:"primary,scim-group-mappings"`
 	SCIMGroupID string `jsonapi:"attr,scim-group-id"`
 }
 
 // AdminSCIMGroupMappingUpdateOptions represents the options for updating a SCIM group mapping
 type AdminSCIMGroupMappingUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
 	Type           string `jsonapi:"primary,scim-group-mappings"`
 	SCIMSyncPaused *bool  `jsonapi:"attr,scim-sync-paused"`
 }

@@ -67,7 +67,10 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 	errorCases := []struct {
 		name string
 		// setup returns the teamID and scimGroupID to use for the Create call.
-		setup       func(t *testing.T) (teamID, scimGroupID string)
+		setup func(t *testing.T) (teamID, scimGroupID string)
+		// nilOptions, when true, calls Create directly with nil options instead of
+		// going through the createSCIMGroupMapping wrapper.
+		nilOptions  bool
 		expectedErr error
 	}{
 		{
@@ -142,22 +145,28 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			},
 			expectedErr: ErrInvalidSCIMGroupID,
 		},
+		{
+			name: "nil options",
+			setup: func(t *testing.T) (string, string) {
+				return createSingleTeam(t, client), ""
+			},
+			nilOptions:  true,
+			expectedErr: ErrRequiredSCIMGroupMappingCreateOps,
+		},
 	}
 
 	for _, tc := range errorCases {
 		t.Run(tc.name, func(t *testing.T) {
 			teamID, scimGroupID := tc.setup(t)
-			err := createSCIMGroupMapping(ctx, scimClient, teamID, scimGroupID)
+			var err error
+			if tc.nilOptions {
+				err = scimClient.SCIMGroupMappings.Create(ctx, teamID, nil)
+			} else {
+				err = createSCIMGroupMapping(ctx, scimClient, teamID, scimGroupID)
+			}
 			require.EqualError(t, err, tc.expectedErr.Error())
 		})
 	}
-
-	t.Run("nil options", func(t *testing.T) {
-		teamID := createSingleTeam(t, client)
-		time.Sleep(delay)
-		err := scimClient.SCIMGroupMappings.Create(ctx, teamID, nil)
-		require.EqualError(t, err, ErrRequiredSCIMGroupMappingCreateOps.Error())
-	})
 }
 
 func TestAdminSCIMGroupMappings_Update(t *testing.T) {
@@ -271,6 +280,13 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			shouldError: true,
 			expectedErr: ErrSCIMGroupMappingTeamNotLinked,
 		},
+		{
+			name:        "nil options",
+			setup:       func(t *testing.T) string { return createSingleTeam(t, client) },
+			options:     nil,
+			shouldError: true,
+			expectedErr: ErrRequiredSCIMGroupMappingUpdateOps,
+		},
 	}
 
 	for _, tc := range testcases {
@@ -287,13 +303,6 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			}
 		})
 	}
-
-	t.Run("nil options", func(t *testing.T) {
-		teamID := createSingleTeam(t, client)
-		time.Sleep(delay)
-		err := scimClient.SCIMGroupMappings.Update(ctx, teamID, nil)
-		require.EqualError(t, err, ErrRequiredSCIMGroupMappingUpdateOps.Error())
-	})
 }
 
 func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
@@ -386,31 +395,25 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 
 // createSCIMGroupMapping links teamID to groupID.
 func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
-	if teamID == "" || groupID == "" {
-		return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
+	if validStringID(&teamID) && validStringID(&groupID) {
+		time.Sleep(delay)
 	}
-
-	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
 }
 
 // updateSCIMGroupMapping updates the mapping for teamID with the provided options.
 func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string, opts *AdminSCIMGroupMappingUpdateOptions) error {
-	if teamID == "" || opts == nil {
-		return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
+	if validStringID(&teamID) && opts != nil && opts.SCIMSyncPaused != nil {
+		time.Sleep(delay)
 	}
-
-	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
 }
 
 // deleteSCIMGroupMapping unlinks any SCIM group mapping for teamID.
 func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string) error {
-	if teamID == "" {
-		return scim.SCIMGroupMappings.Delete(ctx, teamID)
+	if validStringID(&teamID) {
+		time.Sleep(delay)
 	}
-
-	time.Sleep(delay)
 	return scim.SCIMGroupMappings.Delete(ctx, teamID)
 }
 
