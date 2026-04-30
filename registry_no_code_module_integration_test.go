@@ -417,6 +417,23 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		)
 		r.Error(err)
 	})
+
+	t.Run("test creating a workspace with a specified terraform version", func(t *testing.T) {
+		wn := fmt.Sprintf("foo-%s", randomString(t))
+		tfVersion := "1.3.0"
+		w, err := client.RegistryNoCodeModules.CreateWorkspace(
+			ctx,
+			ncm.ID,
+			&RegistryNoCodeModuleCreateWorkspaceOptions{
+				Name:             wn,
+				ExecutionMode:    String("remote"),
+				TerraformVersion: String(tfVersion),
+			},
+		)
+		r.NoError(err)
+		r.Equal(wn, w.Name)
+		r.Equal(tfVersion, w.TerraformVersion)
+	})
 }
 
 func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
