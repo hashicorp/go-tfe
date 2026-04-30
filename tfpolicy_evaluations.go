@@ -14,15 +14,16 @@ import (
 type TFPolicyEvaluationStatus string
 
 const (
-	TFPolicyEvaluationStatusCanceled    TFPolicyEvaluationStatus = "canceled"
-	TFPolicyEvaluationStatusCreated     TFPolicyEvaluationStatus = "created"
-	TFPolicyEvaluationStatusErrored     TFPolicyEvaluationStatus = "errored"
-	TFPolicyEvaluationStatusFinished    TFPolicyEvaluationStatus = "finished"
-	TFPolicyEvaluationStatusMFAWaiting  TFPolicyEvaluationStatus = "mfa_waiting"
-	TFPolicyEvaluationStatusPending     TFPolicyEvaluationStatus = "pending"
-	TFPolicyEvaluationStatusQueued      TFPolicyEvaluationStatus = "queued"
-	TFPolicyEvaluationStatusRunning     TFPolicyEvaluationStatus = "running"
-	TFPolicyEvaluationStatusUnreachable TFPolicyEvaluationStatus = "unreachable"
+	TFPolicyEvaluationStatusPending          TFPolicyEvaluationStatus = "pending"
+	TFPolicyEvaluationStatusQueued           TFPolicyEvaluationStatus = "queued"
+	TFPolicyEvaluationStatusRunning          TFPolicyEvaluationStatus = "running"
+	TFPolicyEvaluationStatusAwaitingOverride TFPolicyEvaluationStatus = "awaiting_override"
+	TFPolicyEvaluationStatusPassed           TFPolicyEvaluationStatus = "passed"
+	TFPolicyEvaluationStatusFailed           TFPolicyEvaluationStatus = "failed"
+	TFPolicyEvaluationStatusOverridden       TFPolicyEvaluationStatus = "overridden"
+	TFPolicyEvaluationStatusErrored          TFPolicyEvaluationStatus = "errored"
+	TFPolicyEvaluationStatusCanceled         TFPolicyEvaluationStatus = "canceled"
+	TFPolicyEvaluationStatusUnreachable      TFPolicyEvaluationStatus = "unreachable"
 )
 
 type TFPolicyEvaluationStageType string
@@ -33,12 +34,15 @@ const (
 )
 
 type TFPolicyEvaluationStatusTimestamps struct {
-	CanceledAt      time.Time `jsonapi:"attr,canceled-at,rfc3339"`
-	ErroredAt       time.Time `jsonapi:"attr,errored-at,rfc3339"`
-	FinishedAt      time.Time `jsonapi:"attr,finished-at,rfc3339"`
-	ForceCanceledAt time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
-	QueuedAt        time.Time `jsonapi:"attr,queued-at,rfc3339"`
-	StartedAt       time.Time `jsonapi:"attr,started-at,rfc3339"`
+	PendingAt          time.Time `jsonapi:"attr,pending-at,rfc3339"`
+	QueuedAt           time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	RunningAt          time.Time `jsonapi:"attr,running-at,rfc3339"`
+	AwaitingOverrideAt time.Time `jsonapi:"attr,awaiting-override-at,rfc3339"`
+	PassedAt           time.Time `jsonapi:"attr,passed-at,rfc3339"`
+	FailedAt           time.Time `jsonapi:"attr,failed-at,rfc3339"`
+	OverridenAt        time.Time `jsonapi:"attr,overridden-at,rfc3339"`
+	ErroredAt          time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	CanceledAt         time.Time `jsonapi:"attr,canceled-at,rfc3339"`
 }
 
 type TFPolicyEvaluationResultCount struct {
@@ -114,12 +118,14 @@ type TFPolicyEvaluationOutcomeDiagnostic struct {
 	Context         string                               `jsonapi:"attr,context"`
 	StartLine       int                                  `jsonapi:"attr,start_line"`
 	Summary         string                               `jsonapi:"attr,summary"`
-	Resource        *[]TFPolicyEvaluationOutcomeResource `jsonapi:"relation,resources,omitempty"`
+	Resources       *[]TFPolicyEvaluationOutcomeResource `jsonapi:"relation,resources,omitempty"`
+	ErrorMessage    string                               `jsonapi:"attr,error_message,omitempty"`
 	PassedResources []*TFPolicyEvaluationOutcomeResource `jsonapi:"relation,passed_resources,omitempty"`
 }
 
 type TFPolicyEvaluationOutcomeResource struct {
 	ResourceName string   `jsonapi:"attr,resource_name"`
+	ErrorMessage string   `jsonapi:"attr,error_message,omitempty"`
 	InfoMessage  string   `jsonapi:"attr,info_message"`
 	InfoMessages []string `jsonapi:"attr,info_messages,omitempty"`
 	Code         string   `jsonapi:"attr,code,omitempty"`
@@ -149,9 +155,10 @@ type TFPolicyEvaluationOutcomeOutput struct {
 
 type TFPolicyEvaluationOutcomeOutcome struct {
 	EnforcementLevel TFPolicyEvaluationOutcomeEnforcementLevel `jsonapi:"attr,enforcement_level"`
-	Status           TFPolicyEvaluationOutcomeStatus           `jsonapi:"attr,status"`
+	Status           string                                    `jsonapi:"attr,status"`
 	Description      string                                    `jsonapi:"attr,description"`
 	FileName         string                                    `jsonapi:"attr,file_name"`
+	PolicyName       string                                    `jsonapi:"attr,policy_name"`
 	Output           []*TFPolicyEvaluationOutcomeOutput        `jsonapi:"attr,output,omitempty"`
 	Diagnostics      []*TFPolicyEvaluationOutcomeDiagnostic    `jsonapi:"attr,diagnostics,omitempty"`
 }
