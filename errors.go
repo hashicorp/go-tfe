@@ -473,7 +473,7 @@ var (
 
 	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
 
-	ErrSCIMTokenDescription = errors.New("SCIM token description cannot be blank")
+	ErrSCIMTokenDescription = errors.New("SCIM token description can't be blank")
 
 	ErrInvalidSCIMGroupID = errors.New("invalid value for SCIM group ID")
 
