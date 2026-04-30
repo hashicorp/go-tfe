@@ -15,8 +15,8 @@ import (
 )
 
 // scimGroupMappingDelay throttles SCIM group-mapping Create/Update/Delete calls to avoid 429s
-// 1.5s was chosen empirically (trial-and-error) as an optimal stable value.
-const scimGroupMappingDelay = 1500 * time.Millisecond
+// 1.8s was chosen empirically (trial-and-error) as an optimal stable value.
+const scimGroupMappingDelay = 1800 * time.Millisecond
 
 func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 	skipUnlessEnterprise(t)
@@ -24,7 +24,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 	ctx := context.Background()
 
 	enableSCIM(ctx, t, client, true)
-	defer enableSCIM(ctx, t, client, false)
+	t.Cleanup(func() { enableSCIM(ctx, t, client, false) })
 
 	scimClient, scimGroups := setupSCIMGroups(ctx, t, client)
 
@@ -178,7 +178,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 	ctx := context.Background()
 
 	enableSCIM(ctx, t, client, true)
-	defer enableSCIM(ctx, t, client, false)
+	t.Cleanup(func() { enableSCIM(ctx, t, client, false) })
 
 	scimClient, scimGroups := setupSCIMGroups(ctx, t, client)
 
@@ -314,7 +314,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 	ctx := context.Background()
 
 	enableSCIM(ctx, t, client, true)
-	defer enableSCIM(ctx, t, client, false)
+	t.Cleanup(func() { enableSCIM(ctx, t, client, false) })
 
 	scimClient, scimGroups := setupSCIMGroups(ctx, t, client)
 
@@ -474,6 +474,7 @@ func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMRe
 
 	t.Cleanup(func() {
 		for i := len(createdGroupIDs) - 1; i >= 0; i-- {
+			time.Sleep(scimGroupMappingDelay)
 			deleteSCIMGroup(ctx, t, client, createdGroupIDs[i], scimToken.Token)
 		}
 	})
