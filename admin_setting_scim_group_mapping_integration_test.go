@@ -450,7 +450,7 @@ func createTeams(t *testing.T, client *Client, n int) []*Team {
 	return testTeams
 }
 
-// setupSCIMGroups enables SCIM, creates two SCIM groups, and returns the SCIM resource and the created groups.
+// setupSCIMGroups creates a SCIM token, creates two SCIM groups, and returns the SCIM resource and the created groups.
 func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMResource, []AdminSCIMGroup) {
 	var scimGroups []AdminSCIMGroup
 
