@@ -305,19 +305,21 @@ type WorkspaceActions struct {
 
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
-	CanDestroy        bool  `jsonapi:"attr,can-destroy"`
-	CanForceUnlock    bool  `jsonapi:"attr,can-force-unlock"`
-	CanLock           bool  `jsonapi:"attr,can-lock"`
-	CanManageRunTasks bool  `jsonapi:"attr,can-manage-run-tasks"`
-	CanManageHYOK     bool  `jsonapi:"attr,can-manage-hyok"`
-	CanQueueApply     bool  `jsonapi:"attr,can-queue-apply"`
-	CanQueueDestroy   bool  `jsonapi:"attr,can-queue-destroy"`
-	CanQueueRun       bool  `jsonapi:"attr,can-queue-run"`
-	CanReadSettings   bool  `jsonapi:"attr,can-read-settings"`
-	CanUnlock         bool  `jsonapi:"attr,can-unlock"`
-	CanUpdate         bool  `jsonapi:"attr,can-update"`
-	CanUpdateVariable bool  `jsonapi:"attr,can-update-variable"`
-	CanForceDelete    *bool `jsonapi:"attr,can-force-delete"` // pointer b/c it will be useful to check if this property exists, as opposed to having it default to false
+	CanDestroy           bool  `jsonapi:"attr,can-destroy"`
+	CanForceUnlock       bool  `jsonapi:"attr,can-force-unlock"`
+	CanLock              bool  `jsonapi:"attr,can-lock"`
+	CanManageRunTasks    bool  `jsonapi:"attr,can-manage-run-tasks"`
+	CanManageHYOK        bool  `jsonapi:"attr,can-manage-hyok"`
+	CanQueueApply        bool  `jsonapi:"attr,can-queue-apply"`
+	CanQueueDestroy      bool  `jsonapi:"attr,can-queue-destroy"`
+	CanQueueRun          bool  `jsonapi:"attr,can-queue-run"`
+	CanReadSettings      bool  `jsonapi:"attr,can-read-settings"`
+	CanReadStateVersions bool  `jsonapi:"attr,can-read-state-versions"`
+	CanReadVariable      bool  `jsonapi:"attr,can-read-variable"`
+	CanUnlock            bool  `jsonapi:"attr,can-unlock"`
+	CanUpdate            bool  `jsonapi:"attr,can-update"`
+	CanUpdateVariable    bool  `jsonapi:"attr,can-update-variable"`
+	CanForceDelete       *bool `jsonapi:"attr,can-force-delete"` // pointer b/c it will be useful to check if this property exists, as opposed to having it default to false
 }
 
 // WSIncludeOpt represents the available options for include query params.
