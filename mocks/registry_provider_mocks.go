@@ -84,6 +84,21 @@ func (mr *MockRegistryProvidersMockRecorder) List(ctx, organization, options any
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockRegistryProviders)(nil).List), ctx, organization, options)
 }
 
+// ListTagBindings mocks base method.
+func (m *MockRegistryProviders) ListTagBindings(ctx context.Context, providerID string) ([]*tfe.TagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTagBindings", ctx, providerID)
+	ret0, _ := ret[0].([]*tfe.TagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagBindings indicates an expected call of ListTagBindings.
+func (mr *MockRegistryProvidersMockRecorder) ListTagBindings(ctx, providerID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagBindings", reflect.TypeOf((*MockRegistryProviders)(nil).ListTagBindings), ctx, providerID)
+}
+
 // Read mocks base method.
 func (m *MockRegistryProviders) Read(ctx context.Context, providerID tfe.RegistryProviderID, options *tfe.RegistryProviderReadOptions) (*tfe.RegistryProvider, error) {
 	m.ctrl.T.Helper()
@@ -97,4 +112,19 @@ func (m *MockRegistryProviders) Read(ctx context.Context, providerID tfe.Registr
 func (mr *MockRegistryProvidersMockRecorder) Read(ctx, providerID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryProviders)(nil).Read), ctx, providerID, options)
+}
+
+// Update mocks base method.
+func (m *MockRegistryProviders) Update(ctx context.Context, providerID tfe.RegistryProviderID, options *tfe.RegistryProviderUpdateOptions) (*tfe.RegistryProvider, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, providerID, options)
+	ret0, _ := ret[0].(*tfe.RegistryProvider)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockRegistryProvidersMockRecorder) Update(ctx, providerID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRegistryProviders)(nil).Update), ctx, providerID, options)
 }

@@ -172,6 +172,21 @@ func (mr *MockRegistryModulesMockRecorder) ListCommits(ctx, moduleID any) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCommits", reflect.TypeOf((*MockRegistryModules)(nil).ListCommits), ctx, moduleID)
 }
 
+// ListTagBindings mocks base method.
+func (m *MockRegistryModules) ListTagBindings(ctx context.Context, moduleID string) ([]*tfe.TagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTagBindings", ctx, moduleID)
+	ret0, _ := ret[0].([]*tfe.TagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagBindings indicates an expected call of ListTagBindings.
+func (mr *MockRegistryModulesMockRecorder) ListTagBindings(ctx, moduleID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagBindings", reflect.TypeOf((*MockRegistryModules)(nil).ListTagBindings), ctx, moduleID)
+}
+
 // Read mocks base method.
 func (m *MockRegistryModules) Read(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()

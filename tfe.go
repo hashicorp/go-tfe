@@ -163,6 +163,7 @@ type Client struct {
 	RegistryProviders               RegistryProviders
 	RegistryProviderPlatforms       RegistryProviderPlatforms
 	RegistryProviderVersions        RegistryProviderVersions
+	RegistryComponents              RegistryComponents
 	ReservedTagKeys                 ReservedTagKeys
 	Runs                            Runs
 	RunEvents                       RunEvents
@@ -508,6 +509,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
 	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
+	client.RegistryComponents = &registryComponents{client: client}
 	client.ReservedTagKeys = &reservedTagKeys{client: client}
 	client.Runs = &runs{client: client}
 	client.RunEvents = &runEvents{client: client}

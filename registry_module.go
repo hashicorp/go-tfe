@@ -90,6 +90,9 @@ type RegistryModules interface {
 
 	// Upload a tar gzip archive to the specified configuration version upload URL.
 	UploadTarGzip(ctx context.Context, url string, r io.Reader) error
+
+	// ListTagBindings lists all tag bindings associated with the module.
+	ListTagBindings(ctx context.Context, moduleID string) ([]*TagBinding, error)
 }
 
 // TerraformRegistryModule contains data about a module from the Terraform Registry.
@@ -235,6 +238,7 @@ type RegistryModule struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
+	TagBindings  []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 
 	RegistryNoCodeModule []*RegistryNoCodeModule `jsonapi:"relation,no-code-modules"`
 }
@@ -387,6 +391,10 @@ type RegistryModuleUpdateOptions struct {
 	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
 
 	VCSRepo *RegistryModuleVCSRepoUpdateOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// Optional: Tag bindings for the registry provider. Note that this
+	// will replace all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
 }
 
 type RegistryModuleTestConfigOptions struct {
@@ -583,6 +591,30 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 	}
 
 	return rm, nil
+}
+
+func (r *registryModules) ListTagBindings(ctx context.Context, moduleID string) ([]*TagBinding, error) {
+	if !validStringID(&moduleID) {
+		return nil, ErrInvalidModuleID
+	}
+
+	u := fmt.Sprintf("registry-modules/%s/tag-bindings", url.PathEscape(moduleID))
+	req, err := r.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
 }
 
 // CreateVersion creates a new registry module version
