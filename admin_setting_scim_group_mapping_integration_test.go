@@ -8,15 +8,10 @@ import (
 	"fmt"
 	"net/url"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-// scimGroupMappingDelay throttles SCIM group-mapping Create/Update/Delete calls to avoid 429s
-// 1.8s was chosen empirically (trial-and-error) as an optimal stable value.
-const scimGroupMappingDelay = 1800 * time.Millisecond
 
 func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 	skipUnlessEnterprise(t)
@@ -398,25 +393,16 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 
 // createSCIMGroupMapping links teamID to groupID.
 func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
-	if validStringID(&teamID) && validStringID(&groupID) {
-		time.Sleep(scimGroupMappingDelay)
-	}
 	return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
 }
 
 // updateSCIMGroupMapping updates the mapping for teamID with the provided options.
 func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string, opts *AdminSCIMGroupMappingUpdateOptions) error {
-	if validStringID(&teamID) && opts != nil && opts.SCIMSyncPaused != nil {
-		time.Sleep(scimGroupMappingDelay)
-	}
 	return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
 }
 
 // deleteSCIMGroupMapping unlinks any SCIM group mapping for teamID.
 func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string) error {
-	if validStringID(&teamID) {
-		time.Sleep(scimGroupMappingDelay)
-	}
 	return scim.SCIMGroupMappings.Delete(ctx, teamID)
 }
 
@@ -474,7 +460,6 @@ func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMRe
 
 	t.Cleanup(func() {
 		for i := len(createdGroupIDs) - 1; i >= 0; i-- {
-			time.Sleep(scimGroupMappingDelay)
 			deleteSCIMGroup(ctx, t, client, createdGroupIDs[i], scimToken.Token)
 		}
 	})
