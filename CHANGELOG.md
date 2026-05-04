@@ -14,7 +14,7 @@
 * Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
 * Adds `AdminSCIMGroups` to support fetching SCIM groups provisioned in Terraform Enterprise via an IdP by @skj-skj [#1314](https://github.com/hashicorp/go-tfe/pull/1314)
 * Adds `TerraformVersion` field to `RegistryNoCodeModuleCreateWorkspaceOptions` to allow specifying the Terraform version when creating a workspace from a no-code module by @chrisarcand [#1322](https://github.com/hashicorp/go-tfe/pull/1322)
-* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1342](https://github.com/hashicorp/go-tfe/pull/1342)
+* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
 
 # v1.103.0
 
