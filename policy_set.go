@@ -20,6 +20,7 @@ type PolicyKind string
 const (
 	OPA      PolicyKind = "opa"
 	Sentinel PolicyKind = "sentinel"
+	TFPolicy PolicyKind = "tfpolicy"
 )
 
 // PolicySets describes all the policy set related methods that the Terraform
@@ -88,6 +89,13 @@ type PolicySetList struct {
 	*Pagination
 	Items []*PolicySet
 }
+
+type PolicySetEvaluationStage string
+
+const (
+	AT_PLAN  PolicySetEvaluationStage = "at_plan"
+	AT_APPLY PolicySetEvaluationStage = "at_apply"
+)
 
 // PolicySet represents a Terraform Enterprise policy set.
 type PolicySet struct {
@@ -216,6 +224,9 @@ type PolicySetCreateOptions struct {
 	// this option is mutually exclusive with the Policies option and
 	// both cannot be used at the same time.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// Optional: TFpolicy evaluation stage. It is only used for tfpolicy and controls when the policies in the policy set are evaluated.
+	EvaluationStages []PolicySetEvaluationStage `jsonapi:"attr,evaluation-stages,omitempty"`
 
 	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`

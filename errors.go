@@ -257,6 +257,8 @@ var (
 	ErrInvalidRemoteStateOptions = errors.New("invalid attribute\n\nProject remote state cannot be enabled when global remote state sharing is enabled")
 
 	ErrInvalidSAMLProviderType = errors.New("invalid SAML provider type")
+
+	ErrInvalidTFPolicyEvaluationID = errors.New("invalid value for tfpolicy evaluation ID")
 )
 
 var (

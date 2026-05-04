@@ -11,6 +11,7 @@
 * Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
 * Adds `AdminSCIMTokens` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
 * Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
+* Add BETA support for `TFPolicyEvaluationOutcome` listing api by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
 * Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
 * Adds `AdminSCIMGroups` to support fetching SCIM groups provisioned in Terraform Enterprise via an IdP by @skj-skj [#1314](https://github.com/hashicorp/go-tfe/pull/1314)
 * Adds `TerraformVersion` field to `RegistryNoCodeModuleCreateWorkspaceOptions` to allow specifying the Terraform version when creating a workspace from a no-code module by @chrisarcand [#1322](https://github.com/hashicorp/go-tfe/pull/1322)
