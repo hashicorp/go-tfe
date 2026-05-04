@@ -481,5 +481,5 @@ var (
 
 	ErrRequiredSCIMGroupMappingCreateOps = errors.New("Create Options are required to create a SCIM Group Mapping")
 
-	ErrRequiredSCIMGroupMappingUpdateOps = errors.New("AdminSCIMGroupMappingUpdateOptions is required")
+	ErrRequiredSCIMGroupMappingUpdateOps = errors.New("Update Options are required to update SCIM Group Mapping")
 )
