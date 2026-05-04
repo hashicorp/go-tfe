@@ -479,7 +479,7 @@ var (
 
 	ErrSCIMSyncPausedNil = errors.New("SCIM Sync can either be paused or unpaused, can not be nil")
 
-	ErrRequiredSCIMGroupMappingCreateOps = errors.New("AdminSCIMGroupMappingCreateOptions is required")
+	ErrRequiredSCIMGroupMappingCreateOps = errors.New("Create Options are required to create a SCIM Group Mapping")
 
 	ErrRequiredSCIMGroupMappingUpdateOps = errors.New("AdminSCIMGroupMappingUpdateOptions is required")
 )
