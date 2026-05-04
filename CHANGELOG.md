@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
+
 # v1.104.0
 
 ## Bug Fixes
