@@ -138,20 +138,6 @@ type TFPolicySetOutcomeResource struct {
 	} `jsonapi:"attr,values,omitempty"`
 }
 
-type TFPolicySetOutcomeOutputPolicy struct {
-	Code    string `jsonapi:"attr,code"`
-	Context string `jsonapi:"attr,context"`
-	Start   int    `jsonapi:"attr,start"`
-	Values  any    `jsonapi:"attr,values"`
-}
-
-type TFPolicySetOutcomeOutput struct {
-	Message  string                         `jsonapi:"attr,message"`
-	Policy   TFPolicySetOutcomeOutputPolicy `jsonapi:"attr,policy"`
-	Resource TFPolicySetOutcomeResource     `jsonapi:"attr,resource,omitempty"`
-	Severity string                         `jsonapi:"attr,severity,omitempty"`
-}
-
 type TFPolicySetPolicyOutcome struct {
 	EnforcementLevel TFPolicyEvaluationOutcomeEnforcementLevel `jsonapi:"attr,enforcement_level"`
 	Status           string                                    `jsonapi:"attr,status"`
