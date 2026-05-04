@@ -29,6 +29,7 @@ type retryableFn func() (any, error)
 type updateFeatureSetOptions struct {
 	Type                          string     `jsonapi:"primary,subscription"`
 	RunsCeiling                   *int       `jsonapi:"attr,runs-ceiling,omitempty"`
+	AgentsCeiling                 *int       `jsonapi:"attr,agents-ceiling,omitempty"`
 	ContractStartAt               *time.Time `jsonapi:"attr,contract-start-at,iso8601,omitempty"`
 	EndAt                         *time.Time `jsonapi:"attr,end-at,iso8601,omitempty"`
 	ContractUserLimit             *int       `jsonapi:"attr,contract-user-limit,omitempty"`
@@ -55,12 +56,14 @@ func (b *organizationSubscriptionUpdater) WithBusinessPlan() *organizationSubscr
 	b.planName = "Business"
 
 	ceiling := 10
+	agentsCeiling := 10
 	start := time.Now()
 	end := time.Now().AddDate(1, 0, 0) // 1 year from now
 	userLimit := 1000
 	applyLimit := 5000
 
 	b.updateOpts.RunsCeiling = &ceiling
+	b.updateOpts.AgentsCeiling = &agentsCeiling
 	b.updateOpts.ContractStartAt = &start
 	b.updateOpts.EndAt = &end
 	b.updateOpts.ContractUserLimit = &userLimit

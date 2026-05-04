@@ -118,6 +118,11 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 	// This is required when execution mode is set to "agent".
 	// This must not be specified when execution mode is set to "remote".
 	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
+	// TerraformVersion is the version of Terraform to use for this workspace.
+	// Must be a valid semver string, such as "1.5.0". If not specified, the
+	// workspace will use the latest Terraform version available on the platform.
+	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
 }
 
 type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
