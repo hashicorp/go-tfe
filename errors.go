@@ -477,7 +477,7 @@ var (
 
 	ErrInvalidSCIMGroupID = errors.New("invalid value for SCIM group ID")
 
-	ErrSCIMSyncPausedNil = errors.New("SCIMSyncPaused cannot be nil")
+	ErrSCIMSyncPausedNil = errors.New("SCIM Sync can either be paused or unpaused, can not be nil")
 
 	ErrRequiredSCIMGroupMappingCreateOps = errors.New("AdminSCIMGroupMappingCreateOptions is required")
 
