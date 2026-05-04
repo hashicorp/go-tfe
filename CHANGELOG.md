@@ -4,6 +4,7 @@
 
 ## Bug Fixes
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
 
 ## Enhancements
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
