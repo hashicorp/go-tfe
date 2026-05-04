@@ -80,14 +80,14 @@ type TFPolicyEvaluation struct {
 	StageType        TFPolicyEvaluationStageType         `jsonapi:"attr,stage-type"`
 	StatusTimestamps *TFPolicyEvaluationStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	ResultCount      *TFPolicyEvaluationResultCount      `jsonapi:"attr,result-count"`
-	Errors           *TFPolicyEvaluationError            `jsonapi:"relation,errors,omitempty"`
+	Error            *TFPolicyEvaluationError            `jsonapi:"attr,error,omitempty"`
 	OrganizedLog     bool                                `jsonapi:"attr,organized-log"`
-	Permissions      *TFPolicyEvaluationPermissions      `jsonapi:"relation,permissions,omitempty"`
-	Actions          *TFPolicyEvaluationActions          `jsonapi:"relation,actions,omitempty"`
+	Permissions      *TFPolicyEvaluationPermissions      `jsonapi:"attr,permissions,omitempty"`
+	Actions          *TFPolicyEvaluationActions          `jsonapi:"attr,actions,omitempty"`
 
 	// Relations
-	Run                        *Run                         `jsonapi:"relation,run,omitempty"`
-	TFPolicyEvaluationOutcomes []*TFPolicyEvaluationOutcome `jsonapi:"relation,outcomes,omitempty"`
+	Run                        *Run                  `jsonapi:"relation,run,omitempty"`
+	TFPolicyEvaluationOutcomes []*TFPolicySetOutcome `jsonapi:"relation,outcomes,omitempty"`
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
@@ -113,17 +113,16 @@ const (
 	TFPolicyEvaluationOutcomeStatusUnknown TFPolicyEvaluationOutcomeStatus = "unknown"
 )
 
-type TFPolicyEvaluationOutcomeDiagnostic struct {
-	Code            string                               `jsonapi:"attr,code"`
-	Context         string                               `jsonapi:"attr,context"`
-	StartLine       int                                  `jsonapi:"attr,start_line"`
-	Summary         string                               `jsonapi:"attr,summary"`
-	Resources       *[]TFPolicyEvaluationOutcomeResource `jsonapi:"relation,resources,omitempty"`
-	ErrorMessage    string                               `jsonapi:"attr,error_message,omitempty"`
-	PassedResources []*TFPolicyEvaluationOutcomeResource `jsonapi:"relation,passed_resources,omitempty"`
+type TFPolicySetOutcomeDiagnostic struct {
+	Code         string                        `jsonapi:"attr,code"`
+	Context      string                        `jsonapi:"attr,context"`
+	StartLine    int                           `jsonapi:"attr,start_line"`
+	Summary      string                        `jsonapi:"attr,summary"`
+	Resources    []*TFPolicySetOutcomeResource `jsonapi:"attr,resources,omitempty"`
+	ErrorMessage string                        `jsonapi:"attr,error_message,omitempty"`
 }
 
-type TFPolicyEvaluationOutcomeResource struct {
+type TFPolicySetOutcomeResource struct {
 	ResourceName string   `jsonapi:"attr,resource_name"`
 	ErrorMessage string   `jsonapi:"attr,error_message,omitempty"`
 	InfoMessage  string   `jsonapi:"attr,info_message"`
@@ -136,41 +135,41 @@ type TFPolicyEvaluationOutcomeResource struct {
 	Values       []*struct {
 		Traversal string `jsonapi:"attr,traversal"`
 		Statement string `jsonapi:"attr,statement"`
-	}
+	} `jsonapi:"attr,values,omitempty"`
 }
 
-type TFPolicyEvaluationOutcomeOutputPolicy struct {
+type TFPolicySetOutcomeOutputPolicy struct {
 	Code    string `jsonapi:"attr,code"`
 	Context string `jsonapi:"attr,context"`
 	Start   int    `jsonapi:"attr,start"`
 	Values  any    `jsonapi:"attr,values"`
 }
 
-type TFPolicyEvaluationOutcomeOutput struct {
-	Message  string                                `jsonapi:"attr,message"`
-	Policy   TFPolicyEvaluationOutcomeOutputPolicy `jsonapi:"attr,policy"`
-	Resource TFPolicyEvaluationOutcomeResource     `jsonapi:"attr,resource,omitempty"`
-	Severity string                                `jsonapi:"attr,severity,omitempty"`
+type TFPolicySetOutcomeOutput struct {
+	Message  string                         `jsonapi:"attr,message"`
+	Policy   TFPolicySetOutcomeOutputPolicy `jsonapi:"attr,policy"`
+	Resource TFPolicySetOutcomeResource     `jsonapi:"attr,resource,omitempty"`
+	Severity string                         `jsonapi:"attr,severity,omitempty"`
 }
 
-type TFPolicyEvaluationOutcomeOutcome struct {
+type TFPolicySetPolicyOutcome struct {
 	EnforcementLevel TFPolicyEvaluationOutcomeEnforcementLevel `jsonapi:"attr,enforcement_level"`
 	Status           string                                    `jsonapi:"attr,status"`
 	Description      string                                    `jsonapi:"attr,description"`
 	FileName         string                                    `jsonapi:"attr,file_name"`
 	PolicyName       string                                    `jsonapi:"attr,policy_name"`
-	Output           []*TFPolicyEvaluationOutcomeOutput        `jsonapi:"attr,output,omitempty"`
-	Diagnostics      []*TFPolicyEvaluationOutcomeDiagnostic    `jsonapi:"attr,diagnostics,omitempty"`
+	Diagnostics      []*TFPolicySetOutcomeDiagnostic           `jsonapi:"attr,diagnostics,omitempty"`
+	PassedResources  []*TFPolicySetOutcomeResource             `jsonapi:"attr,passed_resources,omitempty"`
 }
 
-type TFPolicyEvaluationOutcome struct {
-	ID                   string                              `jsonapi:"primary,tf-policy-set-outcomes"`
-	Outcomes             []*TFPolicyEvaluationOutcomeOutcome `jsonapi:"attr,outcomes,omitempty"`
-	Error                *TFPolicyEvaluationError            `jsonapi:"attr,error,omitempty"`
-	Overriable           bool                                `jsonapi:"attr,overridable"`
-	PolicySetName        string                              `jsonapi:"attr,policy-set-name"`
-	PolicySetDescription string                              `jsonapi:"attr,policy-set-description"`
-	ResultCount          *TFPolicyEvaluationResultCount      `jsonapi:"attr,result-count,omitempty"`
+type TFPolicySetOutcome struct {
+	ID                   string                         `jsonapi:"primary,tf-policy-set-outcomes"`
+	Outcomes             []*TFPolicySetPolicyOutcome    `jsonapi:"attr,outcomes,omitempty"`
+	Error                *TFPolicyEvaluationError       `jsonapi:"attr,error,omitempty"`
+	Overridable          bool                           `jsonapi:"attr,overridable"`
+	PolicySetName        string                         `jsonapi:"attr,policy-set-name"`
+	PolicySetDescription string                         `jsonapi:"attr,policy-set-description"`
+	ResultCount          *TFPolicyEvaluationResultCount `jsonapi:"attr,result-count,omitempty"`
 
 	// Relations
 	TFPolicyEvaluation *TFPolicyEvaluation `jsonapi:"relation,tf-policy-evaluation,omitempty"`
@@ -185,7 +184,7 @@ type TFPolicyEvaluationListOptions struct {
 
 type TFPolicyEvaluationOutcomeList struct {
 	*Pagination
-	Items []*TFPolicyEvaluationOutcome
+	Items []*TFPolicySetOutcome
 }
 
 type tfPolicyEvaluationOutcomes struct {
