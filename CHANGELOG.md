@@ -1,5 +1,8 @@
 # Unreleased
 
+## Bug Fixes
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
+
 ## Enhancements
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
