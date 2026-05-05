@@ -18,6 +18,7 @@ the other, if applicable (rare).
 
 ## Version Information
 
+test
 Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
 ## Example Usage
