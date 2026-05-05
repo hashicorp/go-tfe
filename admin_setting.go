@@ -8,8 +8,9 @@ package tfe
 // to prevent breakages when new fields are added.
 type SCIMResource struct {
 	SCIMSettings
-	Tokens AdminSCIMTokens
-	Groups AdminSCIMGroups
+	Tokens            AdminSCIMTokens
+	Groups            AdminSCIMGroups
+	SCIMGroupMappings AdminSCIMGroupMappings
 }
 
 // AdminSettings describes all the admin settings related methods that the Terraform Enterprise API supports.
@@ -37,9 +38,10 @@ func newAdminSettings(client *Client) *AdminSettings {
 		Customization:  &adminCustomizationSettings{client: client},
 		OIDC:           &adminOIDCSettings{client: client},
 		SCIM: &SCIMResource{
-			SCIMSettings: &adminSCIMSettings{client: client},
-			Tokens:       &adminSCIMTokens{client: client},
-			Groups:       &adminSCIMGroups{client: client},
+			SCIMSettings:      &adminSCIMSettings{client: client},
+			Tokens:            &adminSCIMTokens{client: client},
+			Groups:            &adminSCIMGroups{client: client},
+			SCIMGroupMappings: &adminSCIMGroupMappings{client: client},
 		},
 	}
 }

@@ -3,6 +3,7 @@
 ## Enhancements
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
+* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
 
 # v1.104.0
 
@@ -10,7 +11,7 @@
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
 
 ## Enhancements
-* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
 * Adds `SCIMSettings` / `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
 * Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
 * Adds `AdminSCIMTokens` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
