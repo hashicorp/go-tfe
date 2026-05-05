@@ -409,6 +409,60 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, rm.NoCode)
 	})
+
+	t.Run("with tag bindings", func(t *testing.T) {
+		// Create project tags
+		_, projectTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name: "project-with-tags",
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "production"},
+			},
+		})
+		t.Cleanup(projectTestCleanup)
+
+		// Update the provider with tag_bindings
+		updateOptions := RegistryModuleUpdateOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "production"},
+			},
+		}
+
+		rmAfter, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			RegistryName: rm.RegistryName,
+			Namespace:    rm.Namespace,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+		}, updateOptions)
+		require.NoError(t, err)
+
+		// Verify the provider has the new tag bindings
+		bindings, err := client.RegistryModules.ListTagBindings(ctx, rmAfter.ID)
+		require.NoError(t, err)
+
+		require.Len(t, bindings, 1)
+		assert.Equal(t, "env", bindings[0].Key)
+		assert.Equal(t, "production", bindings[0].Value)
+
+		// Delete the tag_bindings
+		deleteOptions := RegistryModuleUpdateOptions{
+			TagBindings: []*TagBinding{},
+		}
+
+		rmAfterDelete, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			RegistryName: rm.RegistryName,
+			Namespace:    rm.Namespace,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+		}, deleteOptions)
+		require.NoError(t, err)
+
+		// Verify the provider has the no tag bindings
+		bindingsAfterDelete, err := client.RegistryModules.ListTagBindings(ctx, rmAfterDelete.ID)
+		require.NoError(t, err)
+		require.Empty(t, bindingsAfterDelete)
+	})
 }
 
 func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
