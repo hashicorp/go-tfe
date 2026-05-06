@@ -119,6 +119,7 @@ type Organization struct {
 	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
 	EnforceHYOK                                       bool                     `jsonapi:"attr,enforce-hyok"`
 	UserTokensEnabled                                 *bool                    `jsonapi:"attr,user-tokens-enabled"`
+	MaxTTLEnabled                                     bool                     `jsonapi:"attr,max-ttl-enabled"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
@@ -275,6 +276,9 @@ type OrganizationCreateOptions struct {
 
 	// Optional: UserTokensEnabled toggles whether user tokens may be used to access resources in this organization.
 	UserTokensEnabled *bool `jsonapi:"attr,user-tokens-enabled,omitempty"`
+
+	// Optional: MaxTTLEnabled toggles whether maximum TTL enforcement is enabled for API tokens in this organization.
+	MaxTTLEnabled *bool `jsonapi:"attr,max-ttl-enabled,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -339,6 +343,9 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: UserTokensEnabled toggles whether user tokens may be used to access resources in this organization.
 	UserTokensEnabled *bool `jsonapi:"attr,user-tokens-enabled,omitempty"`
+
+	// Optional: MaxTTLEnabled toggles whether maximum TTL enforcement is enabled for API tokens in this organization.
+	MaxTTLEnabled *bool `jsonapi:"attr,max-ttl-enabled,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
