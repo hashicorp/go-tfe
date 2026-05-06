@@ -133,6 +133,11 @@ func String(v string) *string {
 	return &v
 }
 
+// SAMLProvider returns a pointer to the given SAML provider type.
+func SAMLProvider(v SAMLProviderType) *SAMLProviderType {
+	return &v
+}
+
 func NullableBool(v bool) jsonapi.NullableAttr[bool] {
 	return jsonapi.NewNullableAttrWithValue[bool](v)
 }
@@ -147,4 +152,9 @@ func NullableTime(v time.Time) jsonapi.NullableAttr[time.Time] {
 
 func NullTime() jsonapi.NullableAttr[time.Time] {
 	return jsonapi.NewNullNullableAttr[time.Time]()
+}
+
+// Ptr returns a pointer to the given value of any type.
+func Ptr[T any](v T) *T {
+	return &v
 }

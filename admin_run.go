@@ -190,6 +190,8 @@ func validateAdminRunFilterParams(runStatus string) error {
 				string(RunPreApplyCompleted),
 				string(RunPrePlanCompleted),
 				string(RunPrePlanRunning),
+				string(RunPostApplyCompleted),
+				string(RunPostApplyRunning),
 				string(RunQueuing),
 				string(RunQueuingApply),
 				"":

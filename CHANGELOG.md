@@ -1,6 +1,29 @@
 # Unreleased
 
+## Bug Fixes
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
+
+## Enhancements
+* Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
+* Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
+* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
+* Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
 * Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
+
+# v1.104.0
+
+## Bug Fixes
+* Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
+
+## Enhancements
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
+* Adds `SCIMSettings` / `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
+* Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
+* Adds `AdminSCIMTokens` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
+* Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
+* Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
+* Adds `AdminSCIMGroups` to support fetching SCIM groups provisioned in Terraform Enterprise via an IdP by @skj-skj [#1314](https://github.com/hashicorp/go-tfe/pull/1314)
+* Adds `TerraformVersion` field to `RegistryNoCodeModuleCreateWorkspaceOptions` to allow specifying the Terraform version when creating a workspace from a no-code module by @chrisarcand [#1322](https://github.com/hashicorp/go-tfe/pull/1322)
 
 # v1.103.0
 

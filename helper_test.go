@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -19,6 +19,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -30,6 +31,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	uuid "github.com/hashicorp/go-uuid"
 )
 
@@ -2210,6 +2212,38 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 	}
 }
 
+func createRegistryComponent(t *testing.T, client *Client, org *Organization) (*RegistryComponent, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	options := RegistryComponentCreateOptions{
+		Name: "test-registry-component-" + randomString(t),
+		Type: "registry-components",
+	}
+
+	rc, err := client.RegistryComponents.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rc, func() {
+		if err := client.RegistryComponents.Delete(ctx, rc.ID); err != nil {
+			t.Errorf("Error destroying registry component! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Component: %s\nError: %s", rc.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion, targetOS, arch string) (*RegistryProviderPlatform, func()) {
 	var providerCleanup func()
 	var versionCleanup func()
@@ -2424,10 +2458,11 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
 		Name: String(randomString(t)),
 		OrganizationAccess: &OrganizationAccessOptions{
-			ManagePolicies:        Bool(true),
-			ManagePolicyOverrides: Bool(true),
-			ManageProviders:       Bool(true),
-			ManageModules:         Bool(true),
+			ManagePolicies:          Bool(true),
+			ManagePolicyOverrides:   Bool(true),
+			DelegatePolicyOverrides: Bool(true),
+			ManageProviders:         Bool(true),
+			ManageModules:           Bool(true),
 		},
 	})
 	if err != nil {
@@ -3429,6 +3464,122 @@ func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
 			t.Fatalf("unexpected user agent header: %q", r.Header.Get("User-Agent"))
 		}
 	}))
+}
+
+func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+	var options AdminSAMLSettingsUpdateOptions
+	if enable {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled:        Bool(true),
+			SLOEndpointURL: String("https://example.com/slo"),
+			SSOEndpointURL: String("https://example.com/sso"),
+			Certificate:    String("testCert"),
+			IDPCert:        String("testCert"),
+		}
+	} else {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled: Bool(false),
+		}
+	}
+	_, err := client.Admin.Settings.SAML.Update(ctx, options)
+	require.NoError(t, err)
+}
+
+func enableSCIM(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+
+	if enable {
+		enableSAML(ctx, t, client, true)
+
+		err := setSAMLProviderType(ctx, t, client, true)
+		require.NoError(t, err, "error setting SAML provider type")
+
+		_, err = client.Admin.Settings.SCIM.Update(ctx, AdminSCIMSettingUpdateOptions{
+			Enabled: Bool(true),
+		})
+		require.NoError(t, err, "error enabling SCIM")
+	} else {
+		err := client.Admin.Settings.SCIM.Delete(ctx)
+		require.NoError(t, err, "error disabling SCIM")
+
+		err = setSAMLProviderType(ctx, t, client, false)
+		require.NoError(t, err, "error clearing SAML provider type")
+
+		enableSAML(ctx, t, client, false)
+	}
+}
+
+func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setProvider bool) error {
+	t.Helper()
+	var provider SAMLProviderType
+	if setProvider {
+		provider = SAMLProviderTypeGeneric
+	} else {
+		provider = SAMLProviderTypeUnknown
+	}
+
+	_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{ProviderType: &provider})
+	return err
+}
+
+func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupName, scimToken string) string {
+	t.Helper()
+
+	payload := struct {
+		DisplayName string   `json:"displayName"`
+		Schemas     []string `json:"schemas"`
+	}{
+		DisplayName: groupName,
+		Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
+	}
+
+	body, err := serializeRequestBody(&payload)
+	require.NoError(t, err)
+
+	u := client.BaseURL()
+	u.Path = "/scim/v2/Groups"
+
+	req, err := retryablehttp.NewRequest("POST", u.String(), body)
+	require.NoError(t, err)
+	req.Header = client.headers.Clone()
+	req.Header.Set("Authorization", "Bearer "+scimToken)
+	req.Header.Set("Accept", "application/scim+json")
+	req.Header.Set("Content-Type", "application/scim+json; charset=utf-8")
+
+	var res struct {
+		ID string `json:"id"`
+	}
+	err = (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).DoJSON(ctx, &res)
+	require.NoError(t, err)
+	require.NotEmpty(t, res.ID)
+
+	return res.ID
+}
+
+func deleteSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupID, scimToken string) {
+	t.Helper()
+
+	u := client.BaseURL()
+	u.Path = "/scim/v2/Groups/" + url.PathEscape(groupID)
+
+	req, err := retryablehttp.NewRequest("DELETE", u.String(), nil)
+	require.NoError(t, err)
+	req.Header = client.headers.Clone()
+	req.Header.Set("Authorization", "Bearer "+scimToken)
+
+	err = (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).Do(ctx, nil)
+	require.NoError(t, err)
 }
 
 // Useless key but enough to pass validation in the API

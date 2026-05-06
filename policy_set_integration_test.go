@@ -159,11 +159,11 @@ func TestPolicySetsCreate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
 	defer func() {
 		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
 		require.NoError(t, err)
 	}()
-	require.NoError(t, err)
 
 	var vcsPolicyID string
 
@@ -194,6 +194,21 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Description, "")
 		assert.Equal(t, ps.Kind, OPA)
 		assert.False(t, ps.Global)
+	})
+
+	t.Run("OPA policy set with policy update patterns", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:                 String(randomString(t)),
+			Kind:                 OPA,
+			PolicyUpdatePatterns: []string{"*.rego", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Kind, OPA)
+		assert.Equal(t, options.PolicyUpdatePatterns, ps.PolicyUpdatePatterns)
 	})
 
 	t.Run("with pinned policy runtime version valid attributes", func(t *testing.T) {
@@ -677,11 +692,11 @@ func TestPolicySetsUpdate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
 	defer func() {
 		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
 		require.NoError(t, err)
 	}()
-	require.NoError(t, err)
 
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
@@ -729,6 +744,17 @@ func TestPolicySetsUpdate(t *testing.T) {
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
 		assert.True(t, *ps.Overridable)
+	})
+
+	t.Run("with policy update patterns", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			PolicyUpdatePatterns: []string{"*.rego", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest2.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, options.PolicyUpdatePatterns, ps.PolicyUpdatePatterns)
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {

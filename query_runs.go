@@ -66,6 +66,12 @@ type QueryRunCreateOptions struct {
 	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
+
+	// Specifies whether the Terraform query CLI execution passes the
+	// -generate-config-out= flag. When set to true, Terraform generates resource configuration
+	// output as a side effect of the query run. Defaults to true when omitted from the request.
+	// **Note: This option is still in BETA and subject to change.**
+	GenerateConfigOut *bool `jsonapi:"attr,generate-config-out,omitempty"`
 }
 
 // QueryRunStatusTimestamps holds the timestamps for individual run statuses.
@@ -139,7 +145,12 @@ type QueryRun struct {
 	StatusTimestamps *QueryRunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TerraformVersion string                    `jsonapi:"attr,terraform-version"`
 	Variables        []*RunVariableAttr        `jsonapi:"attr,variables"`
-	LogReadURL       string                    `jsonapi:"attr,log-read-url"`
+	// GenerateConfigOut indicates whether the Terraform query CLI execution passed the
+	// -generate-config-out= flag during this run. When true, Terraform generated resource
+	// configuration output as a side effect of the query run.
+	// **Note: This API is still in BETA and subject to change.**
+	GenerateConfigOut bool   `jsonapi:"attr,generate-config-out"`
+	LogReadURL        string `jsonapi:"attr,log-read-url"`
 
 	// Relations
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`

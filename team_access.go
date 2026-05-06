@@ -102,6 +102,8 @@ type TeamAccess struct {
 	SentinelMocks    SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks"`
 	WorkspaceLocking bool                        `jsonapi:"attr,workspace-locking"`
 	RunTasks         bool                        `jsonapi:"attr,run-tasks"`
+	// **Note: This API is still in BETA and subject to change.**
+	PolicyOverrides bool `jsonapi:"attr,policy-overrides"`
 
 	// Relations
 	Team      *Team      `jsonapi:"relation,team"`
@@ -133,6 +135,8 @@ type TeamAccessAddOptions struct {
 	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
 	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
 	RunTasks         *bool                        `jsonapi:"attr,run-tasks,omitempty"`
+	// **Note: This API is still in BETA and subject to change.**
+	PolicyOverrides *bool `jsonapi:"attr,policy-overrides,omitempty"`
 
 	// The team to add to the workspace
 	Team *Team `jsonapi:"relation,team"`
@@ -160,6 +164,8 @@ type TeamAccessUpdateOptions struct {
 	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
 	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
 	RunTasks         *bool                        `jsonapi:"attr,run-tasks,omitempty"`
+	// **Note: This API is still in BETA and subject to change.**
+	PolicyOverrides *bool `jsonapi:"attr,policy-overrides,omitempty"`
 }
 
 // List all the team accesses for a given workspace.
