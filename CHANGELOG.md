@@ -8,6 +8,7 @@
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
 * Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
+* Removes BETA designation from `GenerateConfigOut` field in `QueryRun` and `QueryRunCreateOptions` by @mjyocca [#1333](https://github.com/hashicorp/go-tfe/pull/1333)
 
 # v1.104.0
 
