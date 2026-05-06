@@ -142,8 +142,6 @@ func TestQueryRunsCreate_RunDependent(t *testing.T) {
 	})
 
 	t.Run("with generate-config-out set to false", func(t *testing.T) {
-		skipUnlessBeta(t)
-
 		options := QueryRunCreateOptions{
 			Workspace:         wTest,
 			Source:            QueryRunSourceAPI,
