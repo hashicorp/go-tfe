@@ -116,6 +116,8 @@ func TestQueryRunsCreate_RunDependent(t *testing.T) {
 		assert.NotNil(t, qr.CreatedAt)
 		assert.NotNil(t, qr.Source)
 		require.NotNil(t, qr.StatusTimestamps)
+		// GenerateConfigOut defaults to true when omitted from the create options.
+		assert.True(t, qr.GenerateConfigOut)
 	})
 
 	t.Run("with a configuration version", func(t *testing.T) {
@@ -137,6 +139,20 @@ func TestQueryRunsCreate_RunDependent(t *testing.T) {
 		})
 		assert.Nil(t, qr)
 		assert.Equal(t, err, ErrRequiredWorkspace)
+	})
+
+	t.Run("with generate-config-out set to false", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		options := QueryRunCreateOptions{
+			Workspace:         wTest,
+			Source:            QueryRunSourceAPI,
+			GenerateConfigOut: Bool(false),
+		}
+
+		qr, err := client.QueryRuns.Create(ctx, options)
+		require.NoError(t, err)
+		assert.False(t, qr.GenerateConfigOut)
 	})
 
 	t.Run("with variables", func(t *testing.T) {
