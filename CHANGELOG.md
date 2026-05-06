@@ -3,6 +3,7 @@
 ## Enhancements
 * Add support for reading a registry provider by its unique identifier by  @mrinalirao [#1340](https://github.com/hashicorp/go-tfe/pull/1340)
 * Add `ProviderSet` resources with `Read`, `Update`, `Delete` and `Create` methods @mogrogan [#1346](https://github.com/hashicorp/go-tfe/pull/1346)
+* Adds `SourceModuleID` field to `Workspace` so callers can read the no-code source module identifier (e.g. `private/<org>/<name>/<provider>/<version>`) returned by the API by @a9logic
 
 # v1.106.0
 
