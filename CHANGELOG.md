@@ -10,6 +10,7 @@
 * Adds `Output` field to `Outcome` struct by @straubt1 [#1330](https://github.com/hashicorp/go-tfe/pull/1330)
 * Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
 * Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
+* Removes BETA designation from `GenerateConfigOut` field in `QueryRun` and `QueryRunCreateOptions` by @mjyocca [#1333](https://github.com/hashicorp/go-tfe/pull/1333)
 
 # v1.104.0
 

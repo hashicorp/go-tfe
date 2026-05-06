@@ -70,7 +70,6 @@ type QueryRunCreateOptions struct {
 	// Specifies whether the Terraform query CLI execution passes the
 	// -generate-config-out= flag. When set to true, Terraform generates resource configuration
 	// output as a side effect of the query run. Defaults to true when omitted from the request.
-	// **Note: This option is still in BETA and subject to change.**
 	GenerateConfigOut *bool `jsonapi:"attr,generate-config-out,omitempty"`
 }
 
@@ -148,7 +147,6 @@ type QueryRun struct {
 	// GenerateConfigOut indicates whether the Terraform query CLI execution passed the
 	// -generate-config-out= flag during this run. When true, Terraform generated resource
 	// configuration output as a side effect of the query run.
-	// **Note: This API is still in BETA and subject to change.**
 	GenerateConfigOut bool   `jsonapi:"attr,generate-config-out"`
 	LogReadURL        string `jsonapi:"attr,log-read-url"`
 
