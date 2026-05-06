@@ -9,6 +9,7 @@
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
 * Adds `Output` field to `Outcome` struct by @straubt1 [#1330](https://github.com/hashicorp/go-tfe/pull/1330)
 * Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
+* Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
 
 # v1.104.0
 
