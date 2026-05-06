@@ -1,13 +1,14 @@
 # Unreleased
 
 ## Bug Fixes
-* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
+* Fixes an issue where stack creation panics if no project is provided in the `StackCreateOptions` creation options structure by @arybolovlev [#1284](https://github.com/hashicorp/go-tfe/pull/1284)
 
 ## Enhancements
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
 * Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
 
 # v1.104.0
 
