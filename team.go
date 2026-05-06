@@ -64,8 +64,10 @@ type Team struct {
 
 // OrganizationAccess represents the team's permissions on its organization
 type OrganizationAccess struct {
-	ManagePolicies           bool `jsonapi:"attr,manage-policies"`
-	ManagePolicyOverrides    bool `jsonapi:"attr,manage-policy-overrides"`
+	ManagePolicies        bool `jsonapi:"attr,manage-policies"`
+	ManagePolicyOverrides bool `jsonapi:"attr,manage-policy-overrides"`
+	// **Note: This API is still in BETA and subject to change.**
+	DelegatePolicyOverrides  bool `jsonapi:"attr,delegate-policy-overrides"`
 	ManageWorkspaces         bool `jsonapi:"attr,manage-workspaces"`
 	ManageVCSSettings        bool `jsonapi:"attr,manage-vcs-settings"`
 	ManageProviders          bool `jsonapi:"attr,manage-providers"`
@@ -160,8 +162,10 @@ type TeamUpdateOptions struct {
 
 // OrganizationAccessOptions represents the organization access options of a team.
 type OrganizationAccessOptions struct {
-	ManagePolicies           *bool `json:"manage-policies,omitempty"`
-	ManagePolicyOverrides    *bool `json:"manage-policy-overrides,omitempty"`
+	ManagePolicies        *bool `json:"manage-policies,omitempty"`
+	ManagePolicyOverrides *bool `json:"manage-policy-overrides,omitempty"`
+	// **Note: This API is still in BETA and subject to change.**
+	DelegatePolicyOverrides  *bool `json:"delegate-policy-overrides,omitempty"`
 	ManageWorkspaces         *bool `json:"manage-workspaces,omitempty"`
 	ManageVCSSettings        *bool `json:"manage-vcs-settings,omitempty"`
 	ManageProviders          *bool `json:"manage-providers,omitempty"`

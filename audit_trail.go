@@ -132,7 +132,7 @@ func (s *auditTrails) List(ctx context.Context, options *AuditTrailListOptions) 
 			return nil, err
 		}
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if err := checkResponseCode(resp); err != nil {
 		return nil, err

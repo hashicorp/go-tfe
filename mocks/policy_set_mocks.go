@@ -54,6 +54,20 @@ func (mr *MockPolicySetsMockRecorder) AddPolicies(ctx, policySetID, options any)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddPolicies", reflect.TypeOf((*MockPolicySets)(nil).AddPolicies), ctx, policySetID, options)
 }
 
+// AddProjectExclusions mocks base method.
+func (m *MockPolicySets) AddProjectExclusions(ctx context.Context, policySetID string, options tfe.PolicySetAddProjectExclusionsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddProjectExclusions", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddProjectExclusions indicates an expected call of AddProjectExclusions.
+func (mr *MockPolicySetsMockRecorder) AddProjectExclusions(ctx, policySetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProjectExclusions", reflect.TypeOf((*MockPolicySets)(nil).AddProjectExclusions), ctx, policySetID, options)
+}
+
 // AddProjects mocks base method.
 func (m *MockPolicySets) AddProjects(ctx context.Context, policySetID string, options tfe.PolicySetAddProjectsOptions) error {
 	m.ctrl.T.Helper()
@@ -182,6 +196,20 @@ func (m *MockPolicySets) RemovePolicies(ctx context.Context, policySetID string,
 func (mr *MockPolicySetsMockRecorder) RemovePolicies(ctx, policySetID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemovePolicies", reflect.TypeOf((*MockPolicySets)(nil).RemovePolicies), ctx, policySetID, options)
+}
+
+// RemoveProjectExclusions mocks base method.
+func (m *MockPolicySets) RemoveProjectExclusions(ctx context.Context, policySetID string, options tfe.PolicySetRemoveProjectExclusionsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveProjectExclusions", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveProjectExclusions indicates an expected call of RemoveProjectExclusions.
+func (mr *MockPolicySetsMockRecorder) RemoveProjectExclusions(ctx, policySetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProjectExclusions", reflect.TypeOf((*MockPolicySets)(nil).RemoveProjectExclusions), ctx, policySetID, options)
 }
 
 // RemoveProjects mocks base method.

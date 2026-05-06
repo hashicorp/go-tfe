@@ -86,6 +86,8 @@ type TeamProjectAccessWorkspacePermissions struct {
 	WorkspaceMovePermission          bool                                 `jsonapi:"attr,move"`
 	WorkspaceDeletePermission        bool                                 `jsonapi:"attr,delete"`
 	WorkspaceRunTasksPermission      bool                                 `jsonapi:"attr,run-tasks"`
+	// **Note: This API is still in BETA and subject to change.**
+	WorkspacePolicyOverridesPermission bool `jsonapi:"attr,policy-overrides"`
 }
 
 // ProjectSettingsPermissionType represents the permissiontype to a project's settings
@@ -167,6 +169,8 @@ type TeamProjectAccessWorkspacePermissionsOptions struct {
 	Move          *bool                                 `json:"move,omitempty"`
 	Delete        *bool                                 `json:"delete,omitempty"`
 	RunTasks      *bool                                 `json:"run-tasks,omitempty"`
+	// **Note: This API is still in BETA and subject to change.**
+	PolicyOverrides *bool `json:"policy-overrides,omitempty"`
 }
 
 // TeamProjectAccessListOptions represents the options for listing team project accesses

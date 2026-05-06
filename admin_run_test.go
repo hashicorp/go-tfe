@@ -40,6 +40,8 @@ func Test_validateAdminRunFilterParams(t *testing.T) {
 		"post_plan_running",
 		"pre_apply_running",
 		"pre_apply_completed",
+		"post_apply_running",
+		"post_apply_completed",
 		"pre_plan_completed",
 		"pre_plan_running",
 		"queuing",
