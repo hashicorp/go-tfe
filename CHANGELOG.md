@@ -7,7 +7,8 @@
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
-* Adds `Output` field to `Outcome` struct by @straubt1 [#XXXX](https://github.com/hashicorp/go-tfe/pull/XXXX)
+* Adds `Output` field to `Outcome` struct by @straubt1 [#1330](https://github.com/hashicorp/go-tfe/pull/1330)
+* Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
 
 # v1.104.0
 
