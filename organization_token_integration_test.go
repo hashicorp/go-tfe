@@ -78,7 +78,10 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
-		assert.Empty(t, ot.ExpiredAt)
+		assert.NotZero(t, ot.ExpiredAt)
+		expectedExpiry := ot.CreatedAt.AddDate(defaultTokenExpirationYears, 0, 0)
+		// Allow a small buffer (1 minute) for timestamp precision differences.
+		assert.WithinDuration(t, expectedExpiry, ot.ExpiredAt, time.Minute)
 		tkToken = ot.Token
 	})
 

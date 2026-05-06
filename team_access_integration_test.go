@@ -110,14 +110,14 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
+		require.NoError(t, err)
+
 		defer func() {
 			err := client.TeamAccess.Remove(ctx, ta.ID)
 			if err != nil {
 				t.Logf("error removing team access (%s): %s", ta.ID, err)
 			}
 		}()
-
-		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.TeamAccess.Read(ctx, ta.ID)
@@ -142,14 +142,14 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
+		require.NoError(t, err)
+
 		defer func() {
 			err := client.TeamAccess.Remove(ctx, ta.ID)
 			if err != nil {
 				t.Logf("error removing team access (%s): %s", ta.ID, err)
 			}
 		}()
-
-		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.TeamAccess.Read(ctx, ta.ID)
@@ -395,5 +395,53 @@ func TestTeamAccessesUpdateRunTasks(t *testing.T) {
 
 		assert.Equal(t, AccessCustom, ta.Access)
 		assert.Equal(t, newAccess, ta.RunTasks)
+	})
+}
+
+func TestTeamAccessesAddPolicyOverrides(t *testing.T) {
+	skipUnlessBeta(t)
+	t.Parallel()
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	t.Run("with valid custom options", func(t *testing.T) {
+		options := TeamAccessAddOptions{
+			Access:          Access(AccessCustom),
+			PolicyOverrides: Bool(true),
+			Team:            tmTest,
+			Workspace:       wTest,
+		}
+
+		ta, err := client.TeamAccess.Add(ctx, options)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
+
+		require.NoError(t, err)
+
+		refreshed, err := client.TeamAccess.Read(ctx, ta.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*TeamAccess{
+			ta,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Access, item.Access)
+			assert.Equal(t, true, item.PolicyOverrides)
+		}
 	})
 }

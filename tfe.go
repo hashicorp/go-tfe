@@ -163,6 +163,7 @@ type Client struct {
 	RegistryProviders               RegistryProviders
 	RegistryProviderPlatforms       RegistryProviderPlatforms
 	RegistryProviderVersions        RegistryProviderVersions
+	RegistryComponents              RegistryComponents
 	ReservedTagKeys                 ReservedTagKeys
 	Runs                            Runs
 	RunEvents                       RunEvents
@@ -508,6 +509,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
 	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
+	client.RegistryComponents = &registryComponents{client: client}
 	client.ReservedTagKeys = &reservedTagKeys{client: client}
 	client.Runs = &runs{client: client}
 	client.RunEvents = &runEvents{client: client}
@@ -759,7 +761,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	if err != nil {
 		return meta, err
 	}
-	resp.Body.Close()
+	resp.Body.Close() //nolint:errcheck
 
 	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
 	meta.RateLimit = resp.Header.Get(_headerRateLimit)
@@ -1099,22 +1101,33 @@ func checkResponseCode(r *http.Response) error {
 func decodeErrorPayload(r *http.Response) ([]string, error) {
 	// Decode the error payload.
 	var errs []string
-	errPayload := &jsonapi.ErrorsPayload{}
-	err := json.NewDecoder(r.Body).Decode(errPayload)
-	if err != nil || len(errPayload.Errors) == 0 {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
 		return errs, errors.New(r.Status)
 	}
 
-	// Parse and format the errors.
-	for _, e := range errPayload.Errors {
-		if e.Detail == "" {
-			errs = append(errs, e.Title)
-		} else {
-			errs = append(errs, fmt.Sprintf("%s\n\n%s", e.Title, e.Detail))
+	// attempt JSON:API error payloads unwrapping
+	errPayload := &jsonapi.ErrorsPayload{}
+	if err := json.Unmarshal(body, errPayload); err == nil && len(errPayload.Errors) > 0 {
+		for _, e := range errPayload.Errors {
+			if e.Detail == "" {
+				errs = append(errs, e.Title)
+			} else {
+				errs = append(errs, fmt.Sprintf("%s\n\n%s", e.Title, e.Detail))
+			}
 		}
+		return errs, nil
 	}
 
-	return errs, nil
+	// attempt JSON error payloads unwrapping: like {"errors":["..."]}.
+	var rawErrs struct {
+		Errors []string `json:"errors"`
+	}
+	if err := json.Unmarshal(body, &rawErrs); err == nil && len(rawErrs.Errors) > 0 {
+		return rawErrs.Errors, nil
+	}
+
+	return errs, errors.New(r.Status)
 }
 
 func errorPayloadContains(payloadErrors []string, match string) bool {

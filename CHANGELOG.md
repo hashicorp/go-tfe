@@ -1,16 +1,46 @@
 # Unreleased
 
 ## Bug Fixes
+* Fixes an issue where stack creation panics if no project is provided in the `StackCreateOptions` creation options structure by @arybolovlev [#1284](https://github.com/hashicorp/go-tfe/pull/1284)
 
-Fix an issue where stack creation panics if no project is provided in the `StackCreateOptions` creation options structure by @arybolovlev [#1284](https://github.com/hashicorp/go-tfe/pull/1284)
+## Enhancements
+* Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
+* Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
+* Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
+* Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
+
+# v1.104.0
+
+## Bug Fixes
+* Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
+
+## Enhancements
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
+* Adds `SCIMSettings` / `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
+* Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
+* Adds `AdminSCIMTokens` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
+* Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
+* Adds `PolicyUpdatePatterns` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns` by @nithishravindra [#1306](https://github.com/hashicorp/go-tfe/pull/1306/)
+* Adds `AdminSCIMGroups` to support fetching SCIM groups provisioned in Terraform Enterprise via an IdP by @skj-skj [#1314](https://github.com/hashicorp/go-tfe/pull/1314)
+* Adds `TerraformVersion` field to `RegistryNoCodeModuleCreateWorkspaceOptions` to allow specifying the Terraform version when creating a workspace from a no-code module by @chrisarcand [#1322](https://github.com/hashicorp/go-tfe/pull/1322)
+
+# v1.103.0
+
+## Enhancements
+* Adds the `ProjectExclusions` field to the `PolicySet` struct to support project level exclusions of policy sets by @subhro-acharjee-1 [#1290](https://github.com/hashicorp/go-tfe/pull/1290)
+
+# v1.102.0
+
+## Enhancements
+* Adds the `Size` field to `StateVersion` by @shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
+* Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
 
 # v1.101.0
 
 ## Enhancements
 * Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs by @arunatibm [1279](https://github.com/hashicorp/go-tfe/pull/1279)
 * Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
-* Adds the `Size` field to `StateVersion` by @Shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
-
 
 # v1.100.0
 
@@ -119,7 +149,7 @@ Fix an issue where stack creation panics if no project is provided in the `Stack
 * Fixes issue [1061](https://github.com/hashicorp/go-tfe/issues/1061), validation accepts all RunStatus including `"cost_estimated"` by @KenCox-Hashicorp [#1171](https://github.com/hashicorp/go-tfe/pull/1171)
 
 ## Enhancements
-* Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1179](https://github.com/hashicorp/go-tfe/pull/1179) 
+* Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1179](https://github.com/hashicorp/go-tfe/pull/1179)
 * Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
 * Adds endpoint for reruning a stack deployment by @hwatkins05-hashicorp/@Maed223 [#1176](https://github.com/hashicorp/go-tfe/pull/1176)
 * Adds `ReadByName` for `StackDeploymentGroup` by @Maed223 [#1181](https://github.com/hashicorp/go-tfe/pull/1181)

@@ -3083,8 +3083,10 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 				"created-at":     "2020-07-15T23:38:43.821Z",
 				"resource-count": 2,
 				"permissions": map[string]interface{}{
-					"can-update": true,
-					"can-lock":   true,
+					"can-update":              true,
+					"can-lock":                true,
+					"can-read-state-versions": true,
+					"can-read-variable":       true,
 				},
 				"vcs-repo": map[string]interface{}{
 					"branch":              "main",
@@ -3124,6 +3126,8 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	assert.Equal(t, ws.ResourceCount, 2)
 	assert.Equal(t, ws.Permissions.CanUpdate, true)
 	assert.Equal(t, ws.Permissions.CanLock, true)
+	assert.Equal(t, ws.Permissions.CanReadStateVersions, true)
+	assert.Equal(t, ws.Permissions.CanReadVariable, true)
 	assert.Equal(t, ws.VCSRepo.Branch, "main")
 	assert.Equal(t, ws.VCSRepo.DisplayIdentifier, "repo-name")
 	assert.Equal(t, ws.VCSRepo.Identifier, "hashicorp/repo-name")

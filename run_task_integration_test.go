@@ -356,13 +356,12 @@ func TestRunTasksAttachToWorkspace(t *testing.T) {
 
 	t.Run("to a valid workspace", func(t *testing.T) {
 		wr, err := client.RunTasks.AttachToWorkspace(ctx, wkspaceTest.ID, runTaskTest.ID, Advisory)
+		require.NoError(t, err)
 
 		defer func() {
 			err = client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
 			require.NoError(t, err)
 		}()
-
-		require.NoError(t, err)
 		require.NotNil(t, wr.ID)
 	})
 }
