@@ -17,6 +17,7 @@ mockgen -source=admin_setting_saml.go -destination=mocks/admin_setting_saml_mock
 mockgen -source=admin_setting_scim.go -destination=mocks/admin_setting_scim_mocks.go -package=mocks
 mockgen -source=admin_setting_scim_token.go -destination=mocks/admin_setting_scim_token_mocks.go -package=mocks
 mockgen -source=admin_setting_scim_groups.go -destination=mocks/admin_setting_scim_groups_mocks.go -package=mocks
+mockgen -source=admin_setting_scim_group_mapping.go -destination=mocks/admin_setting_scim_group_mapping_mocks.go -package=mocks
 mockgen -source=admin_setting_smtp.go -destination=mocks/admin_setting_smtp_mocks.go -package=mocks
 mockgen -source=admin_setting_twilio.go -destination=mocks/admin_setting_twilio_mocks.go -package=mocks
 mockgen -source=admin_terraform_version.go -destination=mocks/admin_terraform_version_mocks.go -package=mocks
