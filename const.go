@@ -12,4 +12,7 @@ const (
 
 	// AdminSCIMGroupsPath is the API path for admin SCIM groups.
 	AdminSCIMGroupsPath = "admin/scim-groups"
+
+	// AdminSCIMGroupMappingPath is the API path for admin SCIM group mapping.
+	AdminSCIMGroupMappingPath = "admin/teams/%s/scim-group-mapping"
 )

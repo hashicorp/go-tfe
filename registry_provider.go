@@ -23,11 +23,17 @@ type RegistryProviders interface {
 	// Create a registry provider.
 	Create(ctx context.Context, organization string, options RegistryProviderCreateOptions) (*RegistryProvider, error)
 
+	// Update a registry provider. Only tag bindings can be updated on a provider, so the update options are limited to that field.
+	Update(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderUpdateOptions) (*RegistryProvider, error)
+
 	// Read a registry provider.
 	Read(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderReadOptions) (*RegistryProvider, error)
 
 	// Delete a registry provider.
 	Delete(ctx context.Context, providerID RegistryProviderID) error
+
+	// ListTagBindings lists all tag bindings associated with the provider.
+	ListTagBindings(ctx context.Context, providerID string) ([]*TagBinding, error)
 }
 
 // registryProviders implements RegistryProviders.
@@ -65,6 +71,7 @@ type RegistryProvider struct {
 	// Relations
 	Organization             *Organization              `jsonapi:"relation,organization"`
 	RegistryProviderVersions []*RegistryProviderVersion `jsonapi:"relation,registry-provider-versions"`
+	TagBindings              []*TagBinding              `jsonapi:"relation,tag-bindings,omitempty"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -121,6 +128,13 @@ type RegistryProviderCreateOptions struct {
 	RegistryName RegistryName `jsonapi:"attr,registry-name"`
 }
 
+// RegistryProviderUpdateOptions is used when creating a registry provider
+type RegistryProviderUpdateOptions struct {
+	// Optional: Tag bindings for the registry provider. Note that this
+	// will replace all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+}
+
 type RegistryProviderReadOptions struct {
 	// Optional: Include related jsonapi relationships
 	Include []RegistryProviderIncludeOps `url:"include,omitempty"`
@@ -174,6 +188,55 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 	}
 
 	return prv, nil
+}
+
+func (r *registryProviders) Update(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderUpdateOptions) (*RegistryProvider, error) {
+	if err := providerID.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/registry-providers/%s/%s/%s",
+		url.PathEscape(providerID.OrganizationName),
+		url.PathEscape(string(providerID.RegistryName)),
+		url.PathEscape(providerID.Namespace),
+		url.PathEscape(providerID.Name),
+	)
+	req, err := r.client.NewRequest("PATCH", u, options)
+	if err != nil {
+		return nil, err
+	}
+	prv := &RegistryProvider{}
+	err = req.Do(ctx, prv)
+	if err != nil {
+		return nil, err
+	}
+
+	return prv, nil
+}
+
+func (r *registryProviders) ListTagBindings(ctx context.Context, providerID string) ([]*TagBinding, error) {
+	if !validStringID(&providerID) {
+		return nil, ErrInvalidRegistryProviderID
+	}
+
+	u := fmt.Sprintf("registry-providers/%s/tag-bindings", url.PathEscape(providerID))
+	req, err := r.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
 }
 
 func (r *registryProviders) Read(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderReadOptions) (*RegistryProvider, error) {
