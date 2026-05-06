@@ -7,7 +7,7 @@
 * Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
-* Adds `SourceModuleID` field to `Workspace` so callers can read the no-code source module identifier (e.g. `private/<org>/<name>/<provider>/<version>`) returned by the API by @a9logic
+* Adds `SourceModuleID` field to `Workspace` so callers can read the no-code source module identifier (e.g. `private/<org>/<name>/<provider>/<version>`) returned by the API by @a9logic [#1329](https://github.com/hashicorp/go-tfe/pull/1329)
 
 # v1.104.0
 
