@@ -11,6 +11,8 @@ import (
 
 // NOTE: TFpolicy is still a beta feature and is subject to change.
 
+var _ TFPolicyEvaluationOutcomes = (*tfPolicyEvaluationOutcomes)(nil)
+
 type TFPolicyEvaluationStatus string
 
 const (
@@ -40,24 +42,24 @@ type TFPolicyEvaluationStatusTimestamps struct {
 	AwaitingOverrideAt time.Time `jsonapi:"attr,awaiting-override-at,rfc3339"`
 	PassedAt           time.Time `jsonapi:"attr,passed-at,rfc3339"`
 	FailedAt           time.Time `jsonapi:"attr,failed-at,rfc3339"`
-	OverridenAt        time.Time `jsonapi:"attr,overridden-at,rfc3339"`
+	OverriddenAt       time.Time `jsonapi:"attr,overridden-at,rfc3339"`
 	ErroredAt          time.Time `jsonapi:"attr,errored-at,rfc3339"`
 	CanceledAt         time.Time `jsonapi:"attr,canceled-at,rfc3339"`
 }
 
 type TFPolicyEvaluationResultCount struct {
-	AdvisoryFailed int `jsonapi:"attr,advisory-failed"`
-	MadatoryFailed int `jsonapi:"attr,mandatory-failed"`
-	Passed         int `jsonapi:"attr,passed"`
-	Errored        int `jsonapi:"attr,errored"`
-	Unknown        int `jsonapi:"attr,unknown"`
+	AdvisoryFailed  int `jsonapi:"attr,advisory-failed"`
+	MandatoryFailed int `jsonapi:"attr,mandatory-failed"`
+	Passed          int `jsonapi:"attr,passed"`
+	Errored         int `jsonapi:"attr,errored"`
+	Unknown         int `jsonapi:"attr,unknown"`
 }
 
 type TFPolicyEvaluationErrorType string
 
 const (
-	TFPolicyEvaluationErrorTypeSetupError               TFPolicyEvaluationErrorType = "setup_error"
-	TFPolicyEvaluationErrorTypeIncompaitbleAgentVersion TFPolicyEvaluationErrorType = "incompatible_agent_version"
+	TFPolicyEvaluationErrorTypeSetupError              TFPolicyEvaluationErrorType = "setup_error"
+	TFPolicyEvaluationErrorTypeIncompatbleAgentVersion TFPolicyEvaluationErrorType = "incompatible_agent_version"
 )
 
 type TFPolicyEvaluationError struct {
@@ -105,13 +107,6 @@ const (
 )
 
 type TFPolicyEvaluationOutcomeStatus string
-
-const (
-	TFPolicyEvaluationOutcomeStatusPassed  TFPolicyEvaluationOutcomeStatus = "passed"
-	TFPolicyEvaluationOutcomeStatusFailed  TFPolicyEvaluationOutcomeStatus = "failed"
-	TFPolicyEvaluationOutcomeStatusErrored TFPolicyEvaluationOutcomeStatus = "errored"
-	TFPolicyEvaluationOutcomeStatusUnknown TFPolicyEvaluationOutcomeStatus = "unknown"
-)
 
 type TFPolicySetOutcomeDiagnostic struct {
 	Code         string                        `jsonapi:"attr,code"`
@@ -182,10 +177,6 @@ func (s *tfPolicyEvaluationOutcomes) List(ctx context.Context, tfPolicyEvaluatio
 		return nil, ErrInvalidTFPolicyEvaluationID
 	}
 
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
 	u := fmt.Sprintf("tf-policy-evaluations/%s/tf-policy-set-outcomes", url.PathEscape(tfPolicyEvaluationID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -199,8 +190,4 @@ func (s *tfPolicyEvaluationOutcomes) List(ctx context.Context, tfPolicyEvaluatio
 	}
 
 	return tfpo, nil
-}
-
-func (s *TFPolicyEvaluationListOptions) valid() error {
-	return nil
 }

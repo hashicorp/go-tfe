@@ -93,8 +93,8 @@ type PolicySetList struct {
 type PolicySetEvaluationStage string
 
 const (
-	AT_PLAN  PolicySetEvaluationStage = "at_plan"
-	AT_APPLY PolicySetEvaluationStage = "at_apply"
+	PolicySetEvaluationStagePlan  PolicySetEvaluationStage = "at_plan"
+	PolicySetEvaluationStageApply PolicySetEvaluationStage = "at_apply"
 )
 
 // PolicySet represents a Terraform Enterprise policy set.
