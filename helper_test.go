@@ -3523,6 +3523,31 @@ func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setP
 	return err
 }
 
+func scimReq(t *testing.T, client *Client, method, path, scimToken string, body any) *retryablehttp.Request {
+	t.Helper()
+
+	u := client.BaseURL()
+	u.Path = path
+
+	var serializedBody any
+	if body != nil {
+		b, err := serializeRequestBody(body)
+		require.NoError(t, err)
+		serializedBody = b
+	}
+
+	req, err := retryablehttp.NewRequest(method, u.String(), serializedBody)
+	require.NoError(t, err)
+	req.Header = client.headers.Clone()
+	req.Header.Set("Authorization", "Bearer "+scimToken)
+	req.Header.Set("Accept", "application/scim+json")
+	if body != nil {
+		req.Header.Set("Content-Type", "application/scim+json; charset=utf-8")
+	}
+
+	return req
+}
+
 func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupName, scimToken string) string {
 	t.Helper()
 
@@ -3534,23 +3559,12 @@ func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupNam
 		Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
 	}
 
-	body, err := serializeRequestBody(&payload)
-	require.NoError(t, err)
-
-	u := client.BaseURL()
-	u.Path = "/scim/v2/Groups"
-
-	req, err := retryablehttp.NewRequest("POST", u.String(), body)
-	require.NoError(t, err)
-	req.Header = client.headers.Clone()
-	req.Header.Set("Authorization", "Bearer "+scimToken)
-	req.Header.Set("Accept", "application/scim+json")
-	req.Header.Set("Content-Type", "application/scim+json; charset=utf-8")
+	req := scimReq(t, client, "POST", "/scim/v2/Groups", scimToken, &payload)
 
 	var res struct {
 		ID string `json:"id"`
 	}
-	err = (&ClientRequest{
+	err := (&ClientRequest{
 		retryableRequest: req,
 		http:             client.http,
 		limiter:          client.limiter,
@@ -3565,15 +3579,75 @@ func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupNam
 func deleteSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupID, scimToken string) {
 	t.Helper()
 
-	u := client.BaseURL()
-	u.Path = "/scim/v2/Groups/" + url.PathEscape(groupID)
+	req := scimReq(t, client, "DELETE", "/scim/v2/Groups/"+url.PathEscape(groupID), scimToken, nil)
 
-	req, err := retryablehttp.NewRequest("DELETE", u.String(), nil)
+	err := (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).Do(ctx, nil)
 	require.NoError(t, err)
-	req.Header = client.headers.Clone()
-	req.Header.Set("Authorization", "Bearer "+scimToken)
+}
 
-	err = (&ClientRequest{
+type scimUserEmail struct {
+	Primary bool   `json:"primary"`
+	Value   string `json:"value"`
+}
+
+type scimUserCreateRequest struct {
+	UserName    string          `json:"userName"`
+	DisplayName string          `json:"displayName"`
+	Emails      []scimUserEmail `json:"emails"`
+	Active      bool            `json:"active"`
+}
+
+func createSCIMUser(ctx context.Context, t *testing.T, client *Client, scimToken, userName string) (string, string) {
+	t.Helper()
+	if strings.TrimSpace(userName) == "" {
+		userName = randomStringWithoutSpecialChar(t)
+	}
+
+	if !strings.Contains(userName, "@") {
+		userName += "@test.com"
+	}
+
+	payload := scimUserCreateRequest{
+		UserName:    userName,
+		DisplayName: userName,
+		Emails: []scimUserEmail{
+			{
+				Primary: true,
+				Value:   userName,
+			},
+		},
+		Active: true,
+	}
+
+	req := scimReq(t, client, "POST", "/scim/v2/Users", scimToken, &payload)
+
+	var res struct {
+		ID string `json:"id"`
+	}
+
+	err := (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).DoJSON(ctx, &res)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, res.ID)
+
+	return res.ID, payload.UserName
+}
+
+func deleteSCIMUser(ctx context.Context, t *testing.T, client *Client, scimToken, userID string) {
+	t.Helper()
+
+	req := scimReq(t, client, "DELETE", "/scim/v2/Users/"+url.PathEscape(userID), scimToken, nil)
+	err := (&ClientRequest{
 		retryableRequest: req,
 		http:             client.http,
 		limiter:          client.limiter,
