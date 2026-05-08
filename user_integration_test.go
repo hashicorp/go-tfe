@@ -12,7 +12,6 @@ import (
 )
 
 func TestUsersReadCurrent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

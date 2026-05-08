@@ -13,7 +13,6 @@ import (
 )
 
 func TestAdminUsers_List(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

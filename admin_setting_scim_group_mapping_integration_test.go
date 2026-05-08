@@ -43,6 +43,9 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				linkSCIMGroupMapping(ctx, t, scimClient, team.ID, group.ID)
 				linkedTeam, err := client.Teams.Read(ctx, team.ID)
 				require.NoError(t, err)
+				require.NotNil(t, linkedTeam.SCIMLinked, "Expected SCIMLinked to be non-nil after creating mapping")
+				require.NotNil(t, linkedTeam.SCIMGroupName, "Expected SCIMGroupName to be non-nil after creating mapping")
+				require.NotNil(t, linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be non-nil after creating mapping")
 				assert.True(t, *linkedTeam.SCIMLinked, "Expected SCIMLinked to be true after creating mapping")
 				assert.Equal(t, group.Name, *linkedTeam.SCIMGroupName, "Expected SCIMGroupName to match the linked group")
 				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after creating mapping")
@@ -58,6 +61,8 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 
 		linkedTeam, err := client.Teams.Read(ctx, teamID)
 		require.NoError(t, err)
+		require.NotNil(t, linkedTeam.SCIMLinked, "Expected SCIMLinked to be non-nil after re-linking")
+		require.NotNil(t, linkedTeam.SCIMGroupName, "Expected SCIMGroupName to be non-nil after re-linking")
 		assert.True(t, *linkedTeam.SCIMLinked, "Expected SCIMLinked to be true after re-linking")
 		assert.Equal(t, scimGroups[1].Name, *linkedTeam.SCIMGroupName, "Expected SCIMGroupName to match the re-linked group")
 	})
@@ -201,6 +206,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				linkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be non-nil after pausing sync")
 				assert.True(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be true after pausing sync")
 			},
 		},
@@ -215,6 +221,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				linkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be non-nil after unpausing sync")
 				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after unpausing sync")
 			},
 		},
@@ -257,6 +264,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				linkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be non-nil after re-pausing")
 				assert.True(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to remain true after re-pausing")
 			},
 		},
@@ -267,6 +275,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				linkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be non-nil after unpausing")
 				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to remain false after unpausing")
 			},
 		},
@@ -336,6 +345,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				unlinkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be non-nil after deleting mapping")
 				assert.False(t, *unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be false after deleting mapping")
 				assert.Nil(t, unlinkedTeam.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting mapping")
 			},
@@ -369,6 +379,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 			assertAfter: func(t *testing.T, teamID string) {
 				unlinkedTeam, err := client.Teams.Read(ctx, teamID)
 				require.NoError(t, err)
+				require.NotNil(t, unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be non-nil after deleting paused mapping")
 				assert.False(t, *unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be false after deleting paused mapping")
 				assert.Nil(t, unlinkedTeam.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting paused mapping")
 			},

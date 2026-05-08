@@ -176,7 +176,6 @@ func TestTeamsCreate(t *testing.T) {
 }
 
 func TestTeamsRead(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -255,7 +254,8 @@ func TestTeamsRead(t *testing.T) {
 		scimToken, err := client.Admin.Settings.SCIM.Tokens.Create(ctx, "team read test")
 		require.NoError(t, err)
 		t.Cleanup(func() {
-			client.Admin.Settings.SCIM.Tokens.Delete(ctx, scimToken.ID)
+			err = client.Admin.Settings.SCIM.Tokens.Delete(ctx, scimToken.ID)
+			require.NoError(t, err)
 		})
 
 		scimGroupName := randomStringWithoutSpecialChar(t)
@@ -269,6 +269,11 @@ func TestTeamsRead(t *testing.T) {
 
 		linkedTeam, err := client.Teams.Read(ctx, team.ID)
 		require.NoError(t, err)
+
+		require.NotNil(t, linkedTeam.SCIMLinked, "team's SCIM linked flag should not be nil")
+		require.NotNil(t, linkedTeam.SCIMGroupName, "team's SCIM group name should not be nil")
+		require.NotNil(t, linkedTeam.SCIMSyncPaused, "team's SCIM sync paused flag should not be nil")
+		require.NotNil(t, linkedTeam.SCIMUpdatedAt, "team's SCIM updated at should not be nil")
 
 		assert.True(t, *linkedTeam.SCIMLinked, "team should be linked to a SCIM group")
 		assert.Equal(t, scimGroupName, *linkedTeam.SCIMGroupName, "team's SCIM group name should match the created SCIM group name")
