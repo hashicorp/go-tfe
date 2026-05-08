@@ -103,7 +103,6 @@ func TestAdminUsers_List(t *testing.T) {
 	})
 
 	t.Run("with scim attributes", func(t *testing.T) {
-		skipUnlessEnterprise(t)
 		enableSCIM(ctx, t, client, true)
 		t.Cleanup(func() {
 			enableSCIM(ctx, t, client, false)
