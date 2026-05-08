@@ -109,7 +109,7 @@ func TestAdminUsers_List(t *testing.T) {
 
 		scimToken, err := client.Admin.Settings.SCIM.Tokens.Create(ctx, "user integration test")
 		require.NoError(t, err)
-		require.NotNil(t, scimToken.Token)
+		require.NotEmpty(t, scimToken.Token)
 		t.Cleanup(func() {
 			err = client.Admin.Settings.SCIM.Tokens.Delete(ctx, scimToken.ID)
 			require.NoError(t, err)
