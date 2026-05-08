@@ -1,7 +1,7 @@
 # Unreleased
 
 ## Enhancements
-* Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj
+* Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj [#1335](https://github.com/hashicorp/go-tfe/pull/1335)
 
 # v1.105.0
 
