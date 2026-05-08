@@ -266,6 +266,10 @@ func TestTeamsRead(t *testing.T) {
 
 		err = client.Admin.Settings.SCIM.SCIMGroupMappings.Create(ctx, team.ID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroupID})
 		require.NoError(t, err)
+		t.Cleanup(func() {
+			err = client.Admin.Settings.SCIM.SCIMGroupMappings.Delete(ctx, team.ID)
+			require.NoError(t, err)
+		})
 
 		linkedTeam, err := client.Teams.Read(ctx, team.ID)
 		require.NoError(t, err)
