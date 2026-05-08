@@ -30,6 +30,36 @@ func TestUsersReadCurrent(t *testing.T) {
 	t.Run("permissions are decoded", func(t *testing.T) {
 		assert.NotNil(t, u.Permissions)
 	})
+
+	t.Run("with no scim attributes", func(t *testing.T) {
+		skipUnlessEnterprise(t)
+		// When SCIM is disabled, the API omits all SCIM attributes from the response.
+		assert.Nil(t, u.IsSCIMManaged)
+		assert.Nil(t, u.SCIMUsername)
+		assert.Nil(t, u.SCIMUpdatedAt)
+	})
+
+	t.Run("with scim attributes", func(t *testing.T) {
+		skipUnlessEnterprise(t)
+		enableSCIM(ctx, t, client, true)
+		t.Cleanup(func() {
+			enableSCIM(ctx, t, client, false)
+		})
+
+		user, err := client.Users.ReadCurrent(ctx)
+		require.NoError(t, err)
+
+		// The current user (test runner) is not a SCIM-managed user, so we can
+		// only verify that IsSCIMManaged is populated (and false) when SCIM is
+		// enabled. Verifying the SCIM-managed path requires authenticating as
+		// the SCIM-provisioned user, which isn't possible here. See
+		// TestAdminUsers_List/with_scim_attributes for coverage of a
+		// SCIM-managed user via the admin API.
+		assert.NotNil(t, user.IsSCIMManaged)
+		assert.False(t, *user.IsSCIMManaged)
+		assert.Nil(t, user.SCIMUsername)
+		assert.Nil(t, user.SCIMUpdatedAt)
+	})
 }
 
 func TestUsersUpdate(t *testing.T) {

@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -59,6 +60,11 @@ type AdminUser struct {
 
 	// Relations
 	Organizations []*Organization `jsonapi:"relation,organizations"`
+
+	// SCIM Attributes
+	IsSCIMManaged *bool      `jsonapi:"attr,is-scim-managed"`
+	SCIMUsername  *string    `jsonapi:"attr,scim-username"`
+	SCIMUpdatedAt *time.Time `jsonapi:"attr,scim-updated-at,iso8601"`
 }
 
 // AdminUserList represents a list of users.

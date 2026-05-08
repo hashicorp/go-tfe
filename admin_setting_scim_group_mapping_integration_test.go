@@ -5,8 +5,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
-	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -43,10 +41,11 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			for i, team := range createTeams(t, client, 2) {
 				group := tc.groupFor(i)
 				linkSCIMGroupMapping(ctx, t, scimClient, team.ID, group.ID)
-				scimAttr := getScimAttributeValues(ctx, t, client, team.ID)
-				assert.True(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be true after creating mapping")
-				assert.Equal(t, group.Name, scimAttr.SCIMGroupName, "Expected SCIMGroupName to match the linked group")
-				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after creating mapping")
+				linkedTeam, err := client.Teams.Read(ctx, team.ID)
+				require.NoError(t, err)
+				assert.True(t, *linkedTeam.SCIMLinked, "Expected SCIMLinked to be true after creating mapping")
+				assert.Equal(t, group.Name, *linkedTeam.SCIMGroupName, "Expected SCIMGroupName to match the linked group")
+				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after creating mapping")
 			}
 		})
 	}
@@ -57,9 +56,10 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 		require.NoError(t, deleteSCIMGroupMapping(ctx, scimClient, teamID))
 		linkSCIMGroupMapping(ctx, t, scimClient, teamID, scimGroups[1].ID)
 
-		scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-		assert.True(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be true after re-linking")
-		assert.Equal(t, scimGroups[1].Name, scimAttr.SCIMGroupName, "Expected SCIMGroupName to match the re-linked group")
+		linkedTeam, err := client.Teams.Read(ctx, teamID)
+		require.NoError(t, err)
+		assert.True(t, *linkedTeam.SCIMLinked, "Expected SCIMLinked to be true after re-linking")
+		assert.Equal(t, scimGroups[1].Name, *linkedTeam.SCIMGroupName, "Expected SCIMGroupName to match the re-linked group")
 	})
 
 	errorCases := []struct {
@@ -199,8 +199,9 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			setup:   linkedTeamSetup,
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.True(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be true after pausing sync")
+				linkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.True(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be true after pausing sync")
 			},
 		},
 		{
@@ -212,8 +213,9 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(false)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after unpausing sync")
+				linkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to be false after unpausing sync")
 			},
 		},
 		{
@@ -253,8 +255,9 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.True(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to remain true after re-pausing")
+				linkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.True(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to remain true after re-pausing")
 			},
 		},
 		{
@@ -262,8 +265,9 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			setup:   linkedTeamSetup,
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(false)},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.False(t, scimAttr.SCIMSyncPaused, "Expected SCIMSyncPaused to remain false after unpausing")
+				linkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.False(t, *linkedTeam.SCIMSyncPaused, "Expected SCIMSyncPaused to remain false after unpausing")
 			},
 		},
 		{
@@ -330,9 +334,10 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.False(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be false after deleting mapping")
-				assert.Empty(t, scimAttr.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting mapping")
+				unlinkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.False(t, *unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be false after deleting mapping")
+				assert.Nil(t, unlinkedTeam.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting mapping")
 			},
 		},
 		{
@@ -362,9 +367,10 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
-				scimAttr := getScimAttributeValues(ctx, t, client, teamID)
-				assert.False(t, scimAttr.SCIMLinked, "Expected SCIMLinked to be false after deleting paused mapping")
-				assert.Empty(t, scimAttr.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting paused mapping")
+				unlinkedTeam, err := client.Teams.Read(ctx, teamID)
+				require.NoError(t, err)
+				assert.False(t, *unlinkedTeam.SCIMLinked, "Expected SCIMLinked to be false after deleting paused mapping")
+				assert.Nil(t, unlinkedTeam.SCIMGroupName, "Expected SCIMGroupName to be empty after deleting paused mapping")
 			},
 		},
 	}
@@ -471,27 +477,4 @@ func setupSCIMGroups(ctx context.Context, t *testing.T, client *Client) (*SCIMRe
 		scimGroups = append(scimGroups, AdminSCIMGroup{ID: scimGroupID, Name: randomGroupName})
 	}
 	return client.Admin.Settings.SCIM, scimGroups
-}
-
-// teamSCIMAttributes is a temporary helper used until the Team struct exposes
-// SCIM attributes natively via the Team Read API. At that point this helper
-// can be removed
-// TODO(TF-35675): Expose SCIM attributes natively via the Team Read API so
-// this helper can be removed. https://hashicorp.atlassian.net/browse/TF-35675
-type teamSCIMAttributes struct {
-	SCIMGroupName  string `jsonapi:"attr,scim-group-name"`
-	SCIMLinked     bool   `jsonapi:"attr,scim-linked"`
-	SCIMSyncPaused bool   `jsonapi:"attr,scim-sync-paused"`
-}
-
-// getScimAttributeValues retrieves the SCIM-related attributes for the team with teamID.
-func getScimAttributeValues(ctx context.Context, t *testing.T, client *Client, teamID string) teamSCIMAttributes {
-	req, err := client.NewRequest("GET", fmt.Sprintf("teams/%s", url.PathEscape(teamID)), nil)
-	require.NoError(t, err)
-
-	var attrs teamSCIMAttributes
-	err = req.Do(ctx, &attrs)
-	require.NoError(t, err)
-
-	return attrs
 }

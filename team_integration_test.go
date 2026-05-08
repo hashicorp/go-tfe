@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"testing"
+	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
@@ -238,6 +239,42 @@ func TestTeamsRead(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
 		assert.Equal(t, err, ErrInvalidTeamID)
+	})
+
+	t.Run("with scim attributes", func(t *testing.T) {
+		skipUnlessEnterprise(t)
+
+		team, teamCleanup := createTeam(t, client, nil)
+		t.Cleanup(teamCleanup)
+
+		enableSCIM(ctx, t, client, true)
+		t.Cleanup(func() {
+			enableSCIM(ctx, t, client, false)
+		})
+
+		scimToken, err := client.Admin.Settings.SCIM.Tokens.Create(ctx, "team read test")
+		require.NoError(t, err)
+		t.Cleanup(func() {
+			client.Admin.Settings.SCIM.Tokens.Delete(ctx, scimToken.ID)
+		})
+
+		scimGroupName := randomStringWithoutSpecialChar(t)
+		scimGroupID := createSCIMGroup(ctx, t, client, scimGroupName, scimToken.Token)
+		t.Cleanup(func() {
+			deleteSCIMGroup(ctx, t, client, scimGroupID, scimToken.Token)
+		})
+
+		err = client.Admin.Settings.SCIM.SCIMGroupMappings.Create(ctx, team.ID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroupID})
+		require.NoError(t, err)
+
+		linkedTeam, err := client.Teams.Read(ctx, team.ID)
+		require.NoError(t, err)
+
+		assert.True(t, *linkedTeam.SCIMLinked, "team should be linked to a SCIM group")
+		assert.Equal(t, scimGroupName, *linkedTeam.SCIMGroupName, "team's SCIM group name should match the created SCIM group name")
+		assert.False(t, *linkedTeam.SCIMSyncPaused, "team's SCIM sync should not be paused")
+		assert.NotNil(t, linkedTeam.SCIMUpdatedAt, "team's SCIM updated at should not be nil")
+		assert.WithinDuration(t, time.Now(), *linkedTeam.SCIMUpdatedAt, 10*time.Second, "team's SCIM updated at should be recent")
 	})
 }
 
