@@ -282,7 +282,6 @@ func TestTeamsRead(t *testing.T) {
 		assert.True(t, *linkedTeam.SCIMLinked, "team should be linked to a SCIM group")
 		assert.Equal(t, scimGroupName, *linkedTeam.SCIMGroupName, "team's SCIM group name should match the created SCIM group name")
 		assert.False(t, *linkedTeam.SCIMSyncPaused, "team's SCIM sync should not be paused")
-		assert.NotNil(t, linkedTeam.SCIMUpdatedAt, "team's SCIM updated at should not be nil")
 		assert.WithinDuration(t, time.Now(), *linkedTeam.SCIMUpdatedAt, 10*time.Second, "team's SCIM updated at should be recent")
 	})
 }
