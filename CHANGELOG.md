@@ -1,14 +1,22 @@
 # Unreleased
 
-## Bug Fixes
-* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
+## Enhancements
+* Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj [#1335](https://github.com/hashicorp/go-tfe/pull/1335)
+* Add BETA support for `TFPolicyEvaluationOutcome` listing api which is **EXPERIMENTAL, SUBJECT TO CHANGE**, and may not be available to all users by by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
+
+# v1.105.0
 
 ## Enhancements
-* Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
+* Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
 * Adds Registry Tagging support for registry modules, providers and component configurations by  @mrinalirao [#1318](https://github.com/hashicorp/go-tfe/pull/1318)
+* Adds `RunPostApplyRunning`,`RunPostApplyCompleted` run status by @jose-kunnel [#1323](https://github.com/hashicorp/go-tfe/pull/1323)
 * Adds `AdminSCIMGroupMappings` to support mapping teams to SCIM groups by @skj-skj [#1324](https://github.com/hashicorp/go-tfe/pull/1324)
+* Adds `CanReadStateVersions` and `CanReadVariable` fields to `WorkspacePermissions` by @jondavidjohn [#1325](https://github.com/hashicorp/go-tfe/pull/1325)
 * Adds BETA `GenerateConfigOut` field to `QueryRun` and `QueryRunCreateOptions` @mjyocca [#1327](https://github.com/hashicorp/go-tfe/pull/1327)
-* Add BETA support for `TFPolicyEvaluationOutcome` listing api which is **EXPERIMENTAL, SUBJECT TO CHANGE**, and may not be available to all users by by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
+* Adds `Output` field to `Outcome` struct by @straubt1 [#1330](https://github.com/hashicorp/go-tfe/pull/1330)
+* Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
+* Removes BETA designation from `GenerateConfigOut` field in `QueryRun` and `QueryRunCreateOptions` by @mjyocca [#1333](https://github.com/hashicorp/go-tfe/pull/1333)
 
 # v1.104.0
 
@@ -16,7 +24,6 @@
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
 
 ## Enhancements
-* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
 * Adds `SCIMSettings` / `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
 * Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
 * Adds `AdminSCIMTokens` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
