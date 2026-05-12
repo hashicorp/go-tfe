@@ -1300,10 +1300,158 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	}
 
 	return org, func() {
-		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
-			t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
-				"may exist! The full error is shown below.\n\n"+
-				"Organization: %s\nError: %s", org.Name, err)
+		cleanupOrganization(t, client, org.Name)
+	}
+}
+
+// cleanupOrganization force-deletes all stacks, force-cancels any remaining
+// active runs, waits for runs to reach a terminal state, then deletes the org.
+// This prevents zombie runs from accumulating on the server after test cleanup.
+func cleanupOrganization(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	// Force-delete all stacks in the org so their deployment runs get canceled.
+	forceDeleteOrgStacks(t, client, orgName)
+
+	// Force-cancel any remaining active runs across all workspaces.
+	forceCanelOrgRuns(t, client, orgName)
+
+	// Wait for all runs to reach a terminal state before deleting the org,
+	// so we don't leave zombie runs in the server's queue.
+	waitForOrgRunsToFinish(t, client, orgName)
+
+	if err := client.Organizations.Delete(ctx, orgName); err != nil {
+		t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
+			"may exist! The full error is shown below.\n\n"+
+			"Organization: %s\nError: %s", orgName, err)
+	}
+}
+
+func forceDeleteOrgStacks(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	stackList, err := client.Stacks.List(ctx, orgName, &StackListOptions{
+		ListOptions: ListOptions{PageSize: 100},
+	})
+	if err != nil {
+		t.Logf("Warning: failed to list stacks for org %s during cleanup: %s", orgName, err)
+		return
+	}
+
+	for _, stack := range stackList.Items {
+		if err := client.Stacks.ForceDelete(ctx, stack.ID); err != nil {
+			t.Logf("Warning: failed to force-delete stack %s: %s", stack.ID, err)
+		}
+	}
+}
+
+// activeRunStatuses are non-terminal run statuses that indicate a run is still in progress.
+var activeRunStatuses = []string{
+	string(RunPending),
+	string(RunPlanQueued),
+	string(RunPlanning),
+	string(RunApplying),
+	string(RunApplyQueued),
+	string(RunConfirmed),
+	string(RunCostEstimating),
+	string(RunFetching),
+	string(RunQueuing),
+	string(RunQueuingApply),
+	string(RunPrePlanRunning),
+	string(RunPostPlanRunning),
+	string(RunPreApplyRunning),
+	string(RunPostApplyRunning),
+	string(RunPolicyChecking),
+}
+
+func forceCanelOrgRuns(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	wsList, err := client.Workspaces.List(ctx, orgName, &WorkspaceListOptions{
+		ListOptions: ListOptions{PageSize: 100},
+	})
+	if err != nil {
+		t.Logf("Warning: failed to list workspaces for org %s during cleanup: %s", orgName, err)
+		return
+	}
+
+	for _, ws := range wsList.Items {
+		runList, err := client.Runs.List(ctx, ws.ID, &RunListOptions{
+			ListOptions: ListOptions{PageSize: 100},
+		})
+		if err != nil {
+			t.Logf("Warning: failed to list runs for workspace %s: %s", ws.ID, err)
+			continue
+		}
+
+		for _, run := range runList.Items {
+			if isRunActive(run.Status) {
+				if err := client.Runs.ForceCancel(ctx, run.ID, RunForceCancelOptions{}); err != nil {
+					t.Logf("Warning: failed to force-cancel run %s: %s", run.ID, err)
+				}
+			}
+		}
+	}
+}
+
+func isRunActive(status RunStatus) bool {
+	for _, s := range activeRunStatuses {
+		if string(status) == s {
+			return true
+		}
+	}
+	return false
+}
+
+func waitForOrgRunsToFinish(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	deadline := time.Now().Add(2 * time.Minute)
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			if time.Now().After(deadline) {
+				t.Logf("Warning: timed out waiting for runs to finish in org %s", orgName)
+				return
+			}
+
+			active := false
+			wsList, err := client.Workspaces.List(ctx, orgName, &WorkspaceListOptions{
+				ListOptions: ListOptions{PageSize: 100},
+			})
+			if err != nil {
+				t.Logf("Warning: failed to list workspaces for org %s while waiting: %s", orgName, err)
+				return
+			}
+
+			for _, ws := range wsList.Items {
+				runList, err := client.Runs.List(ctx, ws.ID, &RunListOptions{
+					ListOptions: ListOptions{PageSize: 10},
+				})
+				if err != nil {
+					continue
+				}
+				for _, run := range runList.Items {
+					if isRunActive(run.Status) {
+						active = true
+						break
+					}
+				}
+				if active {
+					break
+				}
+			}
+
+			if !active {
+				return
+			}
 		}
 	}
 }
