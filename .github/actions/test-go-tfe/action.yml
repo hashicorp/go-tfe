@@ -94,6 +94,18 @@ runs:
         api_key: ${{ inputs.datadog-workflow-token }}
         site: datadoghq.com
 
+    - name: Disable API rate limiting
+      shell: bash
+      env:
+        TFE_ADDRESS: ${{ inputs.address }}
+        TFE_ADMIN_SITE_ADMIN_TOKEN: ${{ inputs.admin_site_admin_token }}
+      run: |
+        curl -s -X PATCH \
+          -H "Authorization: Bearer $TFE_ADMIN_SITE_ADMIN_TOKEN" \
+          -H "Content-Type: application/vnd.api+json" \
+          "$TFE_ADDRESS/api/v2/admin/general-settings" \
+          -d '{"data":{"type":"general-settings","attributes":{"api-rate-limiting-enabled":false}}}'
+
     - name: Run integration tests
       shell: bash
       env:
