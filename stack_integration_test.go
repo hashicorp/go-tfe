@@ -14,7 +14,6 @@ import (
 
 func TestStackCreateAndList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -33,7 +32,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -50,7 +49,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -138,7 +137,6 @@ func TestStackCreateAndList(t *testing.T) {
 
 func TestStackReadUpdateDelete(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -157,7 +155,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -196,7 +194,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -227,7 +225,6 @@ func TestStackReadUpdateDelete(t *testing.T) {
 
 func TestStackRemoveVCSBacking(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -241,7 +238,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -274,7 +271,6 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 
 func TestStackReadUpdateForceDelete(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -288,7 +284,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -314,7 +310,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -438,6 +434,45 @@ func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Cli
 			}
 		}
 	}
+}
+
+func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) (steps *StackDeploymentStepList) {
+	t.Helper()
+
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack deployment run %q for deployment steps with deadline of %s", stackDeploymentRunID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment run %q had no deployment steps at deadline", stackDeploymentRunID)
+		case <-ticker.C:
+			var err error
+			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, nil)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment steps for run %q: %s", stackDeploymentRunID, err)
+			}
+
+			count := 0
+			if steps != nil {
+				count = len(steps.Items)
+			}
+
+			t.Logf("Stack deployment run %q had %d deployment steps", stackDeploymentRunID, count)
+			if count > 0 {
+				finished = true
+			}
+		}
+	}
+
+	return steps
 }
 
 func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {

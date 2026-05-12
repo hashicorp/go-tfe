@@ -13,7 +13,6 @@ import (
 
 func TestStackDeploymentGroupsList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -27,7 +26,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -80,7 +79,6 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -94,7 +92,7 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -133,7 +131,6 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 
 func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -147,7 +144,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -181,7 +178,6 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 
 func TestStackDeploymentGroupsRerun(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -195,7 +191,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},

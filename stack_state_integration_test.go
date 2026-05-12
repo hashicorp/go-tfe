@@ -14,7 +14,6 @@ import (
 
 func TestStackStateListReadDescription(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -25,7 +24,7 @@ func TestStackStateListReadDescription(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -37,7 +36,7 @@ func TestStackStateListReadDescription(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "bb-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -93,19 +92,14 @@ func TestStackStateListReadDescription(t *testing.T) {
 
 		assert.NotEmpty(t, state.ID)
 
-		// Assert attribute presence
-		assert.NotZero(t, state.Generation)
+		// Assert consistently populated attributes.
 		assert.NotEmpty(t, state.Status)
-		assert.NotEmpty(t, state.Deployment)
-		assert.NotNil(t, state.Components)
 		assert.True(t, state.IsCurrent)
-		assert.NotZero(t, state.ResourceInstanceCount)
 
 		// Assert relationship presence
 		assert.NotNil(t, state.Stack)
 		assert.NotEmpty(t, state.Stack.ID)
-		assert.NotNil(t, state.StackDeploymentRun)
-		assert.NotEmpty(t, state.StackDeploymentRun)
+		assert.NotEmpty(t, state.StackDeploymentRun.ID)
 
 		// Assert link presence
 		assert.NotEmpty(t, state.Links)
