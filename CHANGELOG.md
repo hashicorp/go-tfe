@@ -1,6 +1,6 @@
 # Unreleased
 
-## Breaking Changes
+## BREAKING CHANGES
 * Changes `AdminSCIMSettingUpdateOptions.SiteAdminGroupSCIMID` from `*string` to `jsonapi.NullableAttr[string]` so callers can explicitly unlink the site admin group with `NullString()` by @skj-skj [#1337](https://github.com/hashicorp/go-tfe/pull/1337)
 
 ## Enhancements
