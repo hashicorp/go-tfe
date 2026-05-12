@@ -124,10 +124,10 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			setup: func(t *testing.T) (string, string) {
 				siteAdminGroupID := scimGroups[0].ID
 				teamID := createSingleTeam(t, client)
-				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: &siteAdminGroupID})
+				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: NullableString(siteAdminGroupID)})
 				require.NoError(t, err, "Failed to set site admin group")
 				t.Cleanup(func() {
-					_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: nil})
+					_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: NullString()})
 					require.NoError(t, err, "Failed to clear site admin group")
 				})
 				return teamID, siteAdminGroupID

@@ -154,6 +154,16 @@ func NullTime() jsonapi.NullableAttr[time.Time] {
 	return jsonapi.NewNullNullableAttr[time.Time]()
 }
 
+// NullableString returns a NullableAttr wrapping the given string value.
+func NullableString(v string) jsonapi.NullableAttr[string] {
+	return jsonapi.NewNullableAttrWithValue[string](v)
+}
+
+// NullString returns a NullableAttr that explicitly serializes as null.
+func NullString() jsonapi.NullableAttr[string] {
+	return jsonapi.NewNullNullableAttr[string]()
+}
+
 // Ptr returns a pointer to the given value of any type.
 func Ptr[T any](v T) *T {
 	return &v

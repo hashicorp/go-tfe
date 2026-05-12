@@ -102,7 +102,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: &tc.scimGroupID})
+				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: NullableString(tc.scimGroupID)})
 				if tc.raiseError {
 					require.Error(t, err)
 					return
@@ -114,6 +114,52 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 				assert.Equal(t, "foo", scimSettings.SiteAdminGroupDisplayName)
 			})
 		}
+	})
+
+	t.Run("link and unlink site admin group", func(t *testing.T) {
+		err := setSAMLProviderType(ctx, t, client, true)
+		require.NoErrorf(t, err, "failed to set SAML provider type")
+		t.Cleanup(func() {
+			cleanupSCIMSettings(ctx, t, client)
+		})
+
+		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
+		require.NoError(t, err)
+
+		scimToken, err := scimClient.Tokens.Create(ctx, "scim integration test token")
+		require.NoError(t, err)
+		require.NotEmpty(t, scimToken.Token)
+		t.Cleanup(func() {
+			deleteErr := scimClient.Tokens.Delete(ctx, scimToken.ID)
+			require.NoError(t, deleteErr, "failed to delete scim token")
+		})
+
+		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken.Token)
+		t.Cleanup(func() {
+			deleteSCIMGroup(ctx, t, client, scimGroupID, scimToken.Token)
+		})
+
+		// link scim group to site admin role
+		scimSettings, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: NullableString(scimGroupID)})
+		require.NoError(t, err)
+		assert.Equal(t, scimGroupID, scimSettings.SiteAdminGroupSCIMID)
+
+		// updating an unrelated field should not clear the site admin group
+		scimSettings, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Paused: Bool(true)})
+		require.NoError(t, err)
+		assert.Equal(t, scimGroupID, scimSettings.SiteAdminGroupSCIMID)
+		t.Cleanup(func() {
+			// unpause SCIM provisioning before other cleanups run: while SCIM is paused,
+			// deleting the SCIM group returns an error, so we must unpause first.
+			_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Paused: Bool(false)})
+			require.NoError(t, err)
+		})
+
+		// unlink scim group from site admin role by explicitly setting null
+		scimSettings, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: NullString()})
+		require.NoError(t, err)
+		assert.Empty(t, scimSettings.SiteAdminGroupSCIMID)
+		assert.Empty(t, scimSettings.SiteAdminGroupDisplayName)
 	})
 }
 
