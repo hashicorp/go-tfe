@@ -266,9 +266,7 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 
 	run := runList.Items[0]
 
-	steps, err := client.StackDeploymentSteps.List(ctx, run.ID, nil)
-	require.NoError(t, err)
-	require.NotNil(t, steps)
+	steps := pollStackDeploymentSteps(t, ctx, client, run.ID)
 	require.NotEmpty(t, steps.Items)
 
 	step := steps.Items[0]
