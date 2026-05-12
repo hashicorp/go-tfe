@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -19,6 +19,12 @@ const (
 	// A token which can only access the Audit Trails of an HCP Terraform Organization.
 	// See https://developer.hashicorp.com/terraform/cloud-docs/api-docs/audit-trails-tokens
 	AuditTrailToken TokenType = "audit-trails"
+
+	// Token types for TTL policies
+	TokenTypeOrganization TokenType = "organization"
+	TokenTypeTeam         TokenType = "team"
+	TokenTypeUser         TokenType = "user"
+	TokenTypeAuditTrails  TokenType = "audit_trails"
 )
 
 // OrganizationTokens describes all the organization token related methods

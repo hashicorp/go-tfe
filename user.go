@@ -1,10 +1,11 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
 
 import (
 	"context"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -45,6 +46,11 @@ type User struct {
 
 	// Relations
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
+
+	// SCIM Attributes
+	IsSCIMManaged *bool      `jsonapi:"attr,is-scim-managed"`
+	SCIMUsername  *string    `jsonapi:"attr,scim-username"`
+	SCIMUpdatedAt *time.Time `jsonapi:"attr,scim-updated-at,iso8601"`
 }
 
 // UserPermissions represents the user permissions.

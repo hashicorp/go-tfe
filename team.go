@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -60,6 +61,12 @@ type Team struct {
 	// Relations
 	Users                   []*User                   `jsonapi:"relation,users"`
 	OrganizationMemberships []*OrganizationMembership `jsonapi:"relation,organization-memberships"`
+
+	// SCIM Attributes
+	SCIMLinked     *bool      `jsonapi:"attr,scim-linked"`
+	SCIMSyncPaused *bool      `jsonapi:"attr,scim-sync-paused"`
+	SCIMGroupName  *string    `jsonapi:"attr,scim-group-name"`
+	SCIMUpdatedAt  *time.Time `jsonapi:"attr,scim-updated-at,iso8601"`
 }
 
 // OrganizationAccess represents the team's permissions on its organization

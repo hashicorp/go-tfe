@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -6,13 +6,13 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAdminUsers_List(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -99,6 +99,44 @@ func TestAdminUsers_List(t *testing.T) {
 		// the tests, there could be multiple admins, depending on the
 		// ordering of the test runs.
 		assert.Equal(t, true, includesEmail(currentUser.Email, ul.Items))
+	})
+
+	t.Run("with scim attributes", func(t *testing.T) {
+		enableSCIM(ctx, t, client, true)
+		t.Cleanup(func() {
+			enableSCIM(ctx, t, client, false)
+		})
+
+		scimToken, err := client.Admin.Settings.SCIM.Tokens.Create(ctx, "user integration test")
+		require.NoError(t, err)
+		require.NotEmpty(t, scimToken.Token)
+		t.Cleanup(func() {
+			err = client.Admin.Settings.SCIM.Tokens.Delete(ctx, scimToken.ID)
+			require.NoError(t, err)
+		})
+
+		userSCIMID, username := createSCIMUser(ctx, t, client, scimToken.Token, "")
+		t.Cleanup(func() {
+			deleteSCIMUser(ctx, t, client, scimToken.Token, userSCIMID)
+		})
+
+		users, err := client.Admin.Users.List(ctx, &AdminUserListOptions{Query: username})
+		require.NoError(t, err)
+		require.NotEmpty(t, users.Items)
+
+		var user *AdminUser
+		for _, u := range users.Items {
+			if u.SCIMUsername != nil && *u.SCIMUsername == username {
+				user = u
+				break
+			}
+		}
+		require.NotNil(t, user, "expected to find SCIM user %q in admin users list", username)
+		assert.Equal(t, username, *user.SCIMUsername)
+		require.NotNil(t, user.IsSCIMManaged)
+		assert.True(t, *user.IsSCIMManaged)
+		require.NotNil(t, user.SCIMUpdatedAt)
+		assert.WithinDuration(t, time.Now(), *user.SCIMUpdatedAt, 10*time.Second)
 	})
 }
 
