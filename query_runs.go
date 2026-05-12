@@ -71,6 +71,9 @@ type QueryRunCreateOptions struct {
 	// -generate-config-out= flag. When set to true, Terraform generates resource configuration
 	// output as a side effect of the query run. Defaults to true when omitted from the request.
 	GenerateConfigOut *bool `jsonapi:"attr,generate-config-out,omitempty"`
+
+	// PolicyPaths specifies relative directory paths pointing to TFPolicy policy files.
+	PolicyPaths []string `jsonapi:"attr,policy-paths,omitempty"`
 }
 
 // QueryRunStatusTimestamps holds the timestamps for individual run statuses.
@@ -147,8 +150,9 @@ type QueryRun struct {
 	// GenerateConfigOut indicates whether the Terraform query CLI execution passed the
 	// -generate-config-out= flag during this run. When true, Terraform generated resource
 	// configuration output as a side effect of the query run.
-	GenerateConfigOut bool   `jsonapi:"attr,generate-config-out"`
-	LogReadURL        string `jsonapi:"attr,log-read-url"`
+	GenerateConfigOut bool     `jsonapi:"attr,generate-config-out"`
+	LogReadURL        string   `jsonapi:"attr,log-read-url"`
+	PolicyPaths       []string `jsonapi:"attr,policy-paths"`
 
 	// Relations
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
