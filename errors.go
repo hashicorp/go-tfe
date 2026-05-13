@@ -98,12 +98,20 @@ var (
 	ErrSCIMTeamAlreadyMapped = errors.New("conflict\n\nTeam is already linked to a SCIM group")
 
 	// ErrSCIMGroupMappingOwnersTeam is returned when attempting to link the owners team
-	// to a SCIM group, which is not yet supported.
-	ErrSCIMGroupMappingOwnersTeam = errors.New("unprocessable entity\n\nOwners team SCIM linking is not yet supported")
+	// to a SCIM group, which is not yet supported. The HTTP status-code title is
+	// omitted from the message because different TFE releases may render it
+	// differently; pair with require.ErrorContains in tests. The leading capital
+	// matches the server's response verbatim so substring assertions work as-is.
+	//nolint:staticcheck // ST1005: server response begins with a capital letter; preserved for verbatim substring matching.
+	ErrSCIMGroupMappingOwnersTeam = errors.New("Owners team SCIM linking is not yet supported")
 
 	// ErrSCIMGroupMappingSiteAdminGroup is returned when attempting to link a team to the
-	// site admin SCIM group, which is not allowed.
-	ErrSCIMGroupMappingSiteAdminGroup = errors.New("unprocessable entity\n\nThe site admin group cannot be linked to a team")
+	// site admin SCIM group, which is not allowed. The HTTP status-code title is
+	// omitted from the message because different TFE releases may render it
+	// differently; pair with require.ErrorContains in tests. The leading capital
+	// matches the server's response verbatim so substring assertions work as-is.
+	//nolint:staticcheck // ST1005: server response begins with a capital letter; preserved for verbatim substring matching.
+	ErrSCIMGroupMappingSiteAdminGroup = errors.New("The site admin group cannot be linked to a team")
 
 	// ErrSCIMGroupMappingTeamNotLinked is returned when attempting to update a SCIM
 	// group mapping for a team that is not linked to a SCIM group.
