@@ -104,6 +104,8 @@ type RegistryProviderList struct {
 
 // RegistryProviderID is the multi key ID for addressing a provider
 type RegistryProviderID struct {
+	// The unique ID of the provider. If given, the other fields are ignored.
+	ID               string
 	OrganizationName string
 	RegistryName     RegistryName
 	Namespace        string
@@ -244,13 +246,19 @@ func (r *registryProviders) Read(ctx context.Context, providerID RegistryProvide
 		return nil, err
 	}
 
-	u := fmt.Sprintf(
-		"organizations/%s/registry-providers/%s/%s/%s",
-		url.PathEscape(providerID.OrganizationName),
-		url.PathEscape(string(providerID.RegistryName)),
-		url.PathEscape(providerID.Namespace),
-		url.PathEscape(providerID.Name),
-	)
+	var u string
+	if providerID.ID == "" {
+		u = fmt.Sprintf(
+			"organizations/%s/registry-providers/%s/%s/%s",
+			url.PathEscape(providerID.OrganizationName),
+			url.PathEscape(string(providerID.RegistryName)),
+			url.PathEscape(providerID.Namespace),
+			url.PathEscape(providerID.Name),
+		)
+	} else {
+		u = fmt.Sprintf("registry-providers/%s", url.PathEscape(providerID.ID))
+	}
+
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -296,6 +304,9 @@ func (o RegistryProviderCreateOptions) valid() error {
 }
 
 func (id RegistryProviderID) valid() error {
+	if validString(&id.ID) && validStringID(&id.ID) {
+		return nil
+	}
 	if !validStringID(&id.OrganizationName) {
 		return ErrInvalidOrg
 	}

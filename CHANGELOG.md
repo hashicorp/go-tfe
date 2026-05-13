@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Add support for reading a registry provider by its unique identifier by  @mrinalirao [#1340](https://github.com/hashicorp/go-tfe/pull/1340)
+
 # v1.106.0
 
 ## BREAKING CHANGES
