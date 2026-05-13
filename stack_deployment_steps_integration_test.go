@@ -66,9 +66,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 	t.Run("List without options", func(t *testing.T) {
 		t.Parallel()
 
-		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-		require.NoError(t, err)
-		require.NotNil(t, steps)
+		steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
 		require.NotEmpty(t, steps.Items)
 
 		step := steps.Items[0]
