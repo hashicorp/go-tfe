@@ -5,6 +5,11 @@ on:
     # Monday-Friday at 7:30AM UTC (90 minutes after infrastructure rebuild)
     - cron: '30 7 * * 1-5'
 
+# TFE infra provisioning uses TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN; tests just
+# checkout + run go test.
+permissions:
+  contents: read
+
 jobs:
   instance:
     runs-on: ubuntu-latest

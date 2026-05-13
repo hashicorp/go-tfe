@@ -6,6 +6,12 @@ on:
   issue_comment:
     types: [created]
 
+# Reusable Jira sync only reads issue metadata; writes go to Jira via the
+# inherited Jira API token secret.
+permissions:
+  contents: read
+  issues: read
+
 jobs:
   call-workflow:
     uses: hashicorp/terraform-provider-tfe/.github/workflows/jira-issue-sync.yml@main
