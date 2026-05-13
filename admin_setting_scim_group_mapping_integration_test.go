@@ -75,6 +75,9 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 		// nil-options validation path.
 		nilOptions  bool
 		expectedErr error
+		// apiError is true when expectedErr is a substring of an API-derived error
+		// whose title varies across TFE releases. Use ErrorContains in that case
+		apiError bool
 	}{
 		{
 			name: "team already mapped",
@@ -118,6 +121,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				return teamList.Items[0].ID, scimGroups[0].ID
 			},
 			expectedErr: ErrSCIMGroupMappingOwnersTeam,
+			apiError:    true,
 		},
 		{
 			name: "site admin group not allowed",
@@ -133,6 +137,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				return teamID, siteAdminGroupID
 			},
 			expectedErr: ErrSCIMGroupMappingSiteAdminGroup,
+			apiError:    true,
 		},
 		{
 			name: "invalid team ID",
@@ -167,7 +172,11 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			} else {
 				err = scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroupID})
 			}
-			require.ErrorContains(t, err, tc.expectedErr.Error())
+			if tc.apiError {
+				require.ErrorContains(t, err, tc.expectedErr.Error())
+			} else {
+				require.EqualError(t, err, tc.expectedErr.Error())
+			}
 		})
 	}
 }

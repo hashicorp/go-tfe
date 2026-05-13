@@ -97,19 +97,22 @@ var (
 	// for a team that is already mapped to a SCIM group.
 	ErrSCIMTeamAlreadyMapped = errors.New("conflict\n\nTeam is already linked to a SCIM group")
 
-	// ErrSCIMGroupMappingOwnersTeam is returned when attempting to link the owners team
-	// to a SCIM group, which is not yet supported. The HTTP status-code title is
-	// omitted from the message because different TFE releases may render it
-	// differently; pair with require.ErrorContains in tests. The leading capital
-	// matches the server's response verbatim so substring assertions work as-is.
+	// ErrSCIMGroupMappingOwnersTeam is the stable detail substring of the API error
+	// returned when attempting to link the owners team to a SCIM group. The HTTP
+	// status-code title (e.g., "unprocessable entity" vs "unprocessable content")
+	// varies across TFE releases, so the title is intentionally omitted and this
+	// value is meant for substring matching only — use require.ErrorContains, not
+	// errors.Is or require.EqualError. The leading capital matches the server's response verbatim.
 	//nolint:staticcheck // ST1005: server response begins with a capital letter; preserved for verbatim substring matching.
 	ErrSCIMGroupMappingOwnersTeam = errors.New("Owners team SCIM linking is not yet supported")
 
-	// ErrSCIMGroupMappingSiteAdminGroup is returned when attempting to link a team to the
-	// site admin SCIM group, which is not allowed. The HTTP status-code title is
-	// omitted from the message because different TFE releases may render it
-	// differently; pair with require.ErrorContains in tests. The leading capital
-	// matches the server's response verbatim so substring assertions work as-is.
+	// ErrSCIMGroupMappingSiteAdminGroup is the stable detail substring of the API error
+	// returned when attempting to link a team to the site admin SCIM group, which is
+	// not allowed. The HTTP status-code title (e.g., "unprocessable entity" vs
+	// "unprocessable content") varies across TFE releases, so the title is
+	// intentionally omitted and this value is meant for substring matching only —
+	// use require.ErrorContains, not errors.Is or require.EqualError. The leading
+	// capital matches the server's response verbatim.
 	//nolint:staticcheck // ST1005: server response begins with a capital letter; preserved for verbatim substring matching.
 	ErrSCIMGroupMappingSiteAdminGroup = errors.New("The site admin group cannot be linked to a team")
 
