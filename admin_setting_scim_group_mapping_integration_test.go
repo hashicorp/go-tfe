@@ -314,7 +314,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			teamID := tc.setup(t)
 			err := scimClient.SCIMGroupMappings.Update(ctx, teamID, tc.options)
 			if tc.shouldError {
-				require.ErrorContains(t, err, tc.expectedErr.Error())
+				require.EqualError(t, err, tc.expectedErr.Error())
 				return
 			}
 			require.NoError(t, err)
@@ -400,7 +400,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 			teamID := tc.setup(t)
 			err := scimClient.SCIMGroupMappings.Delete(ctx, teamID)
 			if tc.shouldError {
-				require.ErrorContains(t, err, tc.expectedErr.Error())
+				require.EqualError(t, err, tc.expectedErr.Error())
 				return
 			}
 			require.NoError(t, err)
