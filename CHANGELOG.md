@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `TaskCategory` field to `TaskResult` struct to distinguish between different task types (run tasks, native tasks, hooks) by @sagarp [#XXXX](https://github.com/hashicorp/go-tfe/pull/XXXX)
+
 # v1.106.0
 
 ## BREAKING CHANGES
