@@ -10,6 +10,7 @@
 
 ## Enhancements
 * Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj [#1335](https://github.com/hashicorp/go-tfe/pull/1335)
+* Adds `SourceModuleID` field to `Workspace` so callers can read the no-code source module identifier (e.g. `private/<org>/<name>/<provider>/<version>`) returned by the API by @a9logic [#1331](https://github.com/hashicorp/go-tfe/pull/1331)
 
 # v1.105.0
 

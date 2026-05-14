@@ -404,6 +404,11 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		r.Equal(sn, w.SourceName)
 		r.Equal(su, w.SourceURL)
 		r.Equal("remote", w.ExecutionMode)
+		r.NotEmpty(w.SourceModuleID)
+
+		read, err := client.Workspaces.Read(ctx, org.Name, w.Name)
+		r.NoError(err)
+		r.Equal(w.SourceModuleID, read.SourceModuleID)
 	})
 
 	t.Run("fail to create a workspace with a bad module ID", func(t *testing.T) {
