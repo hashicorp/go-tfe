@@ -55,8 +55,8 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 
 	t.Run("re-link after delete on same team", func(t *testing.T) {
 		teamID := createSingleTeam(t, client)
-		require.NoError(t, createSCIMGroupMapping(ctx, scimClient, teamID, scimGroups[0].ID))
-		require.NoError(t, deleteSCIMGroupMapping(ctx, scimClient, teamID))
+		require.NoError(t, scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroups[0].ID}))
+		require.NoError(t, scimClient.SCIMGroupMappings.Delete(ctx, teamID))
 		linkSCIMGroupMapping(ctx, t, scimClient, teamID, scimGroups[1].ID)
 
 		linkedTeam, err := client.Teams.Read(ctx, teamID)
@@ -71,10 +71,13 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 		name string
 		// setup returns the teamID and scimGroupID to use for the Create call.
 		setup func(t *testing.T) (teamID, scimGroupID string)
-		// nilOptions, when true, calls Create directly with nil options instead of
-		// going through the createSCIMGroupMapping wrapper.
+		// nilOptions, when true, calls Create with nil options to exercise the
+		// nil-options validation path.
 		nilOptions  bool
 		expectedErr error
+		// apiError is true when expectedErr is a substring of an API-derived error
+		// whose title varies across TFE releases. Use ErrorContains in that case
+		apiError bool
 	}{
 		{
 			name: "team already mapped",
@@ -118,6 +121,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				return teamList.Items[0].ID, scimGroups[0].ID
 			},
 			expectedErr: ErrSCIMGroupMappingOwnersTeam,
+			apiError:    true,
 		},
 		{
 			name: "site admin group not allowed",
@@ -133,6 +137,7 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 				return teamID, siteAdminGroupID
 			},
 			expectedErr: ErrSCIMGroupMappingSiteAdminGroup,
+			apiError:    true,
 		},
 		{
 			name: "invalid team ID",
@@ -165,9 +170,13 @@ func TestAdminSCIMGroupMappings_Create(t *testing.T) {
 			if tc.nilOptions {
 				err = scimClient.SCIMGroupMappings.Create(ctx, teamID, nil)
 			} else {
-				err = createSCIMGroupMapping(ctx, scimClient, teamID, scimGroupID)
+				err = scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroupID})
 			}
-			require.EqualError(t, err, tc.expectedErr.Error())
+			if tc.apiError {
+				require.ErrorContains(t, err, tc.expectedErr.Error())
+			} else {
+				require.EqualError(t, err, tc.expectedErr.Error())
+			}
 		})
 	}
 }
@@ -214,7 +223,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			name: "unpause sync",
 			setup: func(t *testing.T) string {
 				teamID := linkedTeamSetup(t)
-				require.NoError(t, updateSCIMGroupMapping(ctx, scimClient, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
+				require.NoError(t, scimClient.SCIMGroupMappings.Update(ctx, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
 				return teamID
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(false)},
@@ -257,7 +266,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			name: "idempotent pause - already paused",
 			setup: func(t *testing.T) string {
 				teamID := linkedTeamSetup(t)
-				require.NoError(t, updateSCIMGroupMapping(ctx, scimClient, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
+				require.NoError(t, scimClient.SCIMGroupMappings.Update(ctx, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
 				return teamID
 			},
 			options: &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
@@ -283,8 +292,8 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 			name: "team linked then unlinked",
 			setup: func(t *testing.T) string {
 				teamID := createSingleTeam(t, client)
-				require.NoError(t, createSCIMGroupMapping(ctx, scimClient, teamID, scimGroups[0].ID))
-				require.NoError(t, deleteSCIMGroupMapping(ctx, scimClient, teamID))
+				require.NoError(t, scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroups[0].ID}))
+				require.NoError(t, scimClient.SCIMGroupMappings.Delete(ctx, teamID))
 				return teamID
 			},
 			options:     &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)},
@@ -303,7 +312,7 @@ func TestAdminSCIMGroupMappings_Update(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			teamID := tc.setup(t)
-			err := updateSCIMGroupMapping(ctx, scimClient, teamID, tc.options)
+			err := scimClient.SCIMGroupMappings.Update(ctx, teamID, tc.options)
 			if tc.shouldError {
 				require.EqualError(t, err, tc.expectedErr.Error())
 				return
@@ -339,7 +348,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 			name: "unlink mapped team",
 			setup: func(t *testing.T) string {
 				teamID := createSingleTeam(t, client)
-				require.NoError(t, createSCIMGroupMapping(ctx, scimClient, teamID, scimGroups[0].ID))
+				require.NoError(t, scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroups[0].ID}))
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
@@ -372,8 +381,8 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 			name: "delete after pause",
 			setup: func(t *testing.T) string {
 				teamID := createSingleTeam(t, client)
-				require.NoError(t, createSCIMGroupMapping(ctx, scimClient, teamID, scimGroups[0].ID))
-				require.NoError(t, updateSCIMGroupMapping(ctx, scimClient, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
+				require.NoError(t, scimClient.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: scimGroups[0].ID}))
+				require.NoError(t, scimClient.SCIMGroupMappings.Update(ctx, teamID, &AdminSCIMGroupMappingUpdateOptions{SCIMSyncPaused: Bool(true)}))
 				return teamID
 			},
 			assertAfter: func(t *testing.T, teamID string) {
@@ -389,7 +398,7 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
 			teamID := tc.setup(t)
-			err := deleteSCIMGroupMapping(ctx, scimClient, teamID)
+			err := scimClient.SCIMGroupMappings.Delete(ctx, teamID)
 			if tc.shouldError {
 				require.EqualError(t, err, tc.expectedErr.Error())
 				return
@@ -402,35 +411,13 @@ func TestAdminSCIMGroupMappings_Delete(t *testing.T) {
 	}
 }
 
-// SCIM group mapping API wrappers. Sleep only for calls that are expected
-// to reach the API, so validation-only failures don't incur unnecessary
-// delay in test cases while still throttling real Create/Update/Delete
-// requests to avoid 429s. The delay is an empirically chosen stable value,
-// not a precise encoding of a specific requests-per-minute limit.
-
-// createSCIMGroupMapping links teamID to groupID.
-func createSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID, groupID string) error {
-	return scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID})
-}
-
-// updateSCIMGroupMapping updates the mapping for teamID with the provided options.
-func updateSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string, opts *AdminSCIMGroupMappingUpdateOptions) error {
-	return scim.SCIMGroupMappings.Update(ctx, teamID, opts)
-}
-
-// deleteSCIMGroupMapping unlinks any SCIM group mapping for teamID.
-func deleteSCIMGroupMapping(ctx context.Context, scim *SCIMResource, teamID string) error {
-	return scim.SCIMGroupMappings.Delete(ctx, teamID)
-}
-
 // linkSCIMGroupMapping links teamID to groupID, and registers a
 // cleanup function that deletes the mapping after the test finishes.
 func linkSCIMGroupMapping(ctx context.Context, t *testing.T, scim *SCIMResource, teamID, groupID string) {
 	t.Helper()
-	require.NoError(t, createSCIMGroupMapping(ctx, scim, teamID, groupID))
+	require.NoError(t, scim.SCIMGroupMappings.Create(ctx, teamID, &AdminSCIMGroupMappingCreateOptions{SCIMGroupID: groupID}))
 	t.Cleanup(func() {
-		err := deleteSCIMGroupMapping(ctx, scim, teamID)
-		require.NoError(t, err)
+		require.NoError(t, scim.SCIMGroupMappings.Delete(ctx, teamID))
 	})
 }
 
