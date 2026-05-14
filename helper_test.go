@@ -2226,6 +2226,7 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 
 	return prv, func() {
 		id := RegistryProviderID{
+			ID:               prv.ID,
 			OrganizationName: org.Name,
 			RegistryName:     prv.RegistryName,
 			Namespace:        prv.Namespace,
