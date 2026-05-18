@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -13,7 +13,6 @@ import (
 
 func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -27,7 +26,7 @@ func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -39,7 +38,7 @@ func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "bb-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{

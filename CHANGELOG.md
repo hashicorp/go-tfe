@@ -1,6 +1,14 @@
 # Unreleased
 
 ## Enhancements
+* Add support for reading a registry provider by its unique identifier by  @mrinalirao [#1340](https://github.com/hashicorp/go-tfe/pull/1340)
+
+# v1.106.0
+
+## BREAKING CHANGES
+* Changes `AdminSCIMSettingUpdateOptions.SiteAdminGroupSCIMID` from `*string` to `jsonapi.NullableAttr[string]` so callers can explicitly unlink the site admin group with `NullString()` by @skj-skj [#1337](https://github.com/hashicorp/go-tfe/pull/1337)
+
+## Enhancements
 * Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj [#1335](https://github.com/hashicorp/go-tfe/pull/1335)
 * Add BETA support for `TFPolicyEvaluationOutcome` listing api which is **EXPERIMENTAL, SUBJECT TO CHANGE**, and may not be available to all users by by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
 
@@ -42,6 +50,7 @@
 ## Enhancements
 * Adds the `Size` field to `StateVersion` by @shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
 * Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
+* Unskip stacks integration tests and remove diagnostics#acknowledge in preparation for stacks tfe release by @aaabdelgany [#1298](https://github.com/hashicorp/go-tfe/pull/1298)
 
 # v1.101.0
 

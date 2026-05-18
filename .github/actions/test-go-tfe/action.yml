@@ -1,4 +1,4 @@
-# Copyright (c) HashiCorp, Inc.
+# Copyright IBM Corp. 2018, 2026
 # SPDX-License-Identifier: MPL-2.0
 
 name: Test
@@ -94,6 +94,18 @@ runs:
         api_key: ${{ inputs.datadog-workflow-token }}
         site: datadoghq.com
 
+    - name: Disable API rate limiting
+      shell: bash
+      env:
+        TFE_ADDRESS: ${{ inputs.address }}
+        TFE_ADMIN_SITE_ADMIN_TOKEN: ${{ inputs.admin_site_admin_token }}
+      run: |
+        curl -s -X PATCH \
+          -H "Authorization: Bearer $TFE_ADMIN_SITE_ADMIN_TOKEN" \
+          -H "Content-Type: application/vnd.api+json" \
+          "$TFE_ADDRESS/api/v2/admin/general-settings" \
+          -d '{"data":{"type":"general-settings","attributes":{"api-rate-limiting-enabled":false}}}'
+
     - name: Run integration tests
       shell: bash
       env:
@@ -110,6 +122,8 @@ runs:
         GITHUB_POLICY_SET_IDENTIFIER: "svc-team-tf-core-cloud/test-policy-set"
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "svc-team-tf-core-cloud/terraform-random-module"
         GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
+        GITHUB_STACK_IDENTIFIER: "svc-team-tf-core-cloud/tf-stacks-pet-nulls"
+        GITHUB_STACK_REPO_BRANCH: "diags"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
         SKIP_HYOK_INTEGRATION_TESTS: "${{ inputs.skip-hyok-integration-tests }}"
         HYOK_ORGANIZATION_NAME: "${{ inputs.hyok-organization-name }}"
@@ -122,7 +136,7 @@ runs:
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose --rerun-fails=3 --packages=./ -- -parallel=2 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" ${{ inputs.skip-statement }}
+        gotestsum --junitfile summary.xml --format standard-verbose --rerun-fails=3 --packages=./ -- -parallel=8 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" ${{ inputs.skip-statement }}
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
