@@ -1300,10 +1300,42 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	}
 
 	return org, func() {
-		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
-			t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
-				"may exist! The full error is shown below.\n\n"+
-				"Organization: %s\nError: %s", org.Name, err)
+		cleanupOrganization(t, client, org.Name)
+	}
+}
+
+// cleanupOrganization force-deletes all stacks in the org before deleting it.
+// This is necessary because stacks must be explicitly removed before an org
+// can be deleted, and ForceDelete handles any active deployment runs.
+func cleanupOrganization(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	// Force-delete all stacks in the org so their deployment runs get canceled.
+	forceDeleteOrgStacks(t, client, orgName)
+
+	if err := client.Organizations.Delete(ctx, orgName); err != nil {
+		t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
+			"may exist! The full error is shown below.\n\n"+
+			"Organization: %s\nError: %s", orgName, err)
+	}
+}
+
+func forceDeleteOrgStacks(t *testing.T, client *Client, orgName string) {
+	t.Helper()
+	ctx := context.Background()
+
+	stackList, err := client.Stacks.List(ctx, orgName, &StackListOptions{
+		ListOptions: ListOptions{PageSize: 100},
+	})
+	if err != nil {
+		t.Logf("Warning: failed to list stacks for org %s during cleanup: %s", orgName, err)
+		return
+	}
+
+	for _, stack := range stackList.Items {
+		if err := client.Stacks.ForceDelete(ctx, stack.ID); err != nil {
+			t.Logf("Warning: failed to force-delete stack %s: %s", stack.ID, err)
 		}
 	}
 }
@@ -2194,6 +2226,7 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 
 	return prv, func() {
 		id := RegistryProviderID{
+			ID:               prv.ID,
 			OrganizationName: org.Name,
 			RegistryName:     prv.RegistryName,
 			Namespace:        prv.Namespace,

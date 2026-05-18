@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -572,8 +572,6 @@ func TestVariableSetsApplyToAndRemoveFromProjects(t *testing.T) {
 }
 
 func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -589,7 +587,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	stackTest1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-1",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -610,7 +608,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	stackTest2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-2",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -749,7 +747,6 @@ func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 
 func TestVariableSetsUpdateStacks(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -766,7 +763,7 @@ func TestVariableSetsUpdateStacks(t *testing.T) {
 	stackTest, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{

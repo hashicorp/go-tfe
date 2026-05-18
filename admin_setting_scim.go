@@ -5,6 +5,8 @@ package tfe
 
 import (
 	"context"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -40,10 +42,20 @@ type AdminSCIMSetting struct {
 }
 
 // AdminSCIMSettingUpdateOptions represents the options for updating an admin SCIM setting.
+//
+// SiteAdminGroupSCIMID is a nullable attribute. Use NullableString(value) to set the
+// site admin group, or NullString() to explicitly clear (unlink) it. Leaving the
+// field as its zero value omits it from the request so the existing value on
+// the server is preserved.
 type AdminSCIMSettingUpdateOptions struct {
-	Enabled              *bool   `jsonapi:"attr,enabled,omitempty"`
-	Paused               *bool   `jsonapi:"attr,paused,omitempty"`
-	SiteAdminGroupSCIMID *string `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
+	// Enabled toggles SCIM provisioning on or off.
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+	// Paused toggles whether SCIM provisioning is paused.
+	Paused *bool `jsonapi:"attr,paused,omitempty"`
+	// SiteAdminGroupSCIMID sets the SCIM group linked to the site admin role.
+	// Use NullableString(value) to link a group, or NullString() to explicitly unlink it.
+	// Leaving it as the zero value omits the field so the server-side value is preserved.
+	SiteAdminGroupSCIMID jsonapi.NullableAttr[string] `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
 }
 
 // Read scim setting.

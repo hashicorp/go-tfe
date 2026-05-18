@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -341,6 +341,34 @@ func TestRegistryProvidersRead(t *testing.T) {
 				})
 			})
 
+			t.Run("with a unique ID field for the provider", func(t *testing.T) {
+				registryProviderTest, providerTestCleanup := createRegistryProvider(t, client, orgTest, prvCtx.RegistryName)
+				defer providerTestCleanup()
+
+				id := RegistryProviderID{
+					ID: registryProviderTest.ID,
+				}
+
+				prv, err := client.RegistryProviders.Read(ctx, id, nil)
+				require.NoError(t, err)
+
+				assert.NotEmpty(t, prv.ID)
+				assert.Equal(t, registryProviderTest.ID, prv.ID)
+
+				t.Run("permissions are properly decoded", func(t *testing.T) {
+					assert.True(t, prv.Permissions.CanDelete)
+				})
+
+				t.Run("relationships are properly decoded", func(t *testing.T) {
+					assert.Equal(t, orgTest.Name, prv.Organization.Name)
+				})
+
+				t.Run("timestamps are properly decoded", func(t *testing.T) {
+					assert.NotEmpty(t, prv.CreatedAt)
+					assert.NotEmpty(t, prv.UpdatedAt)
+				})
+			})
+
 			t.Run("when the registry provider does not exist", func(t *testing.T) {
 				id := RegistryProviderID{
 					OrganizationName: orgTest.Name,
@@ -536,6 +564,13 @@ func TestRegistryProvidersIDValidation(t *testing.T) {
 			RegistryName:     registryName,
 			Namespace:        "namespace",
 			Name:             "name",
+		}
+		require.NoError(t, id.valid())
+	})
+
+	t.Run("valid ID", func(t *testing.T) {
+		id := RegistryProviderID{
+			ID: "prv_12345678",
 		}
 		require.NoError(t, id.valid())
 	})

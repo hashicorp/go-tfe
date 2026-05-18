@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -152,6 +152,16 @@ func NullableTime(v time.Time) jsonapi.NullableAttr[time.Time] {
 
 func NullTime() jsonapi.NullableAttr[time.Time] {
 	return jsonapi.NewNullNullableAttr[time.Time]()
+}
+
+// NullableString returns a NullableAttr wrapping the given string value.
+func NullableString(v string) jsonapi.NullableAttr[string] {
+	return jsonapi.NewNullableAttrWithValue[string](v)
+}
+
+// NullString returns a NullableAttr that explicitly serializes as null.
+func NullString() jsonapi.NullableAttr[string] {
+	return jsonapi.NewNullNullableAttr[string]()
 }
 
 // Ptr returns a pointer to the given value of any type.
