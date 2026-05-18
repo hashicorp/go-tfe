@@ -28,6 +28,13 @@ const (
 	TFPolicyEvaluationStatusUnreachable      TFPolicyEvaluationStatus = "unreachable"
 )
 
+type TFPolicyEvaluationStageType string
+
+const (
+	TFPolicyEvaluationStageTypePlan  TFPolicyEvaluationStageType = "Plan"
+	TFPolicyEvaluationStageTypeApply TFPolicyEvaluationStageType = "Apply"
+)
+
 type TFPolicyEvaluationStatusTimestamps struct {
 	PendingAt          time.Time `jsonapi:"attr,pending-at,rfc3339"`
 	QueuedAt           time.Time `jsonapi:"attr,queued-at,rfc3339"`
@@ -72,6 +79,7 @@ type TFPolicyEvaluationActions struct {
 type TFPolicyEvaluation struct {
 	ID               string                              `jsonapi:"primary,tf-policy-evaluations"`
 	Status           TFPolicyEvaluationStatus            `jsonapi:"attr,status"`
+	StageType        TFPolicyEvaluationStageType         `jsonapi:"attr,stage-type"`
 	StatusTimestamps *TFPolicyEvaluationStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	ResultCount      *TFPolicyEvaluationResultCount      `jsonapi:"attr,result-count"`
 	Error            *TFPolicyEvaluationError            `jsonapi:"attr,error,omitempty"`

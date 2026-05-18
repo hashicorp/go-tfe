@@ -90,13 +90,6 @@ type PolicySetList struct {
 	Items []*PolicySet
 }
 
-type PolicySetEvaluationStage string
-
-const (
-    PolicySetEvaluationStagePlan  PolicySetEvaluationStage = "at_plan"
-    PolicySetEvaluationStageApply PolicySetEvaluationStage = "at_apply"
-)
-
 // PolicySet represents a Terraform Enterprise policy set.
 type PolicySet struct {
 	ID           string     `jsonapi:"primary,policy-sets"`
@@ -224,9 +217,6 @@ type PolicySetCreateOptions struct {
 	// this option is mutually exclusive with the Policies option and
 	// both cannot be used at the same time.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
-
-	// Optional: TFpolicy evaluation stage. It is only used for tfpolicy and controls when the policies in the policy set are evaluated.
-	EvaluationStages []PolicySetEvaluationStage `jsonapi:"attr,evaluation-stages,omitempty"`
 
 	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
