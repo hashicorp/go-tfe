@@ -10,6 +10,7 @@
 
 ## Enhancements
 * Adds SCIM attribute fields (`IsSCIMManaged`, `SCIMUsername`, `SCIMUpdatedAt`) to `User` and `AdminUser`, and (`SCIMLinked`, `SCIMSyncPaused`, `SCIMGroupName`, `SCIMUpdatedAt`) to `Team` by @skj-skj [#1335](https://github.com/hashicorp/go-tfe/pull/1335)
+* Add BETA support for `TFPolicyEvaluationOutcome` listing api which is **EXPERIMENTAL, SUBJECT TO CHANGE**, and may not be available to all users by by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
 
 # v1.105.0
 

@@ -205,6 +205,7 @@ type Client struct {
 	WorkspaceResources              WorkspaceResources
 	WorkspaceRunTasks               WorkspaceRunTasks
 	Projects                        Projects
+	TFPolicyEvaluationOutcomes      TFPolicyEvaluationOutcomes
 
 	Meta Meta
 }
@@ -551,6 +552,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 	client.Workspaces = &workspaces{client: client}
 	client.WorkspaceResources = &workspaceResources{client: client}
+	client.TFPolicyEvaluationOutcomes = &tfPolicyEvaluationOutcomes{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},
