@@ -23,11 +23,11 @@ type TFERequestAdapter struct {
 }
 
 func NewHTTPClient(options []middleware.MiddlewareOption) (*nethttp.Client, error) {
-	middleware, err := middleware.GetForKiota(version, options...)
+	mw, err := middleware.GetForKiota(version, options...)
 	if err != nil {
 		return nil, err
 	}
-	httpClient := khttp.GetDefaultClient(middleware...)
+	httpClient := khttp.GetDefaultClient(mw...)
 	return httpClient, nil
 }
 
