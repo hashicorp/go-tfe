@@ -50,7 +50,11 @@ func deserializeStringArray(n serialization.ParseNode) ([]string, error) {
 	if val != nil {
 		result := make([]string, len(val))
 		for i, v := range val {
-			result[i] = *v.(*string)
+			s, ok := v.(*string)
+			if !ok {
+				return nil, fmt.Errorf("unexpected type in string array at index %d", i)
+			}
+			result[i] = *s
 		}
 		return result, nil
 	}
@@ -94,7 +98,7 @@ func (m *IPRange) GetFieldDeserializers() map[string]func(serialization.ParseNod
 	}
 }
 
-func firstError(todo ...(func() error)) error {
+func firstError(todo ...func() error) error {
 	for _, fn := range todo {
 		if err := fn(); err != nil {
 			return err
@@ -158,6 +162,9 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, er
 	if err != nil {
 		return nil, err
 	}
-	ir := resp.(*IPRange)
+	ir, ok := resp.(*IPRange)
+	if !ok {
+		return nil, fmt.Errorf("unexpected response type: %T", resp)
+	}
 	return ir, nil
 }
