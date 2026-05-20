@@ -13,11 +13,33 @@ import (
 
 const maxRedirectHops = 10
 
+// ErrRedirectLoop is returned when a redirect cycle is detected or the
+// maximum number of redirect hops is exceeded.
 var ErrRedirectLoop = errors.New("redirect loop detected")
 
+// FollowAPIRedirect follows the redirect chain from an API response until it
+// reaches the final response body, returning it as an io.ReadCloser. The caller
+// is responsible for closing the returned body and for limiting the amount of
+// data read (the response may be arbitrarily large).
+//
+// This is intended for API endpoints that return a 302 redirect to an Archivist
+// presigned URL, which may in turn issue a 307 redirect to a storage backend
+// (e.g., S3). The method intentionally does NOT reuse the client's own HTTP
+// transport or send the Authorization header on follow-up requests, because the
+// redirect targets are presigned URLs that are self-authenticating and must not
+// receive the bearer token.
+//
+// Returns ErrRedirectLoop if a cycle is detected or more than 10 hops occur.
+// Returns an error if the final response status is not 200.
 func (c *Client) FollowAPIRedirect(ctx context.Context, resp *http.Response) (io.ReadCloser, error) {
 	if resp == nil {
 		return nil, errors.New("response must not be nil")
+	}
+
+	httpClient := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
 	}
 
 	visited := make(map[string]struct{})
@@ -53,12 +75,6 @@ func (c *Client) FollowAPIRedirect(ctx context.Context, resp *http.Response) (io
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create redirect request: %w", err)
-		}
-
-		httpClient := &http.Client{
-			CheckRedirect: func(req *http.Request, via []*http.Request) error {
-				return http.ErrUseLastResponse
-			},
 		}
 
 		currentResp, err = httpClient.Do(req)
