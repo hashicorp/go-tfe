@@ -193,6 +193,8 @@ var (
 
 	ErrInvalidPolicySetID = errors.New("invalid value for policy set ID")
 
+	ErrInvalidPolicySetScope = errors.New("invalid value for policy set scope")
+
 	ErrInvalidPolicyCheckID = errors.New("invalid value for policy check ID")
 
 	ErrInvalidPolicyEvaluationID = errors.New("invalid value for policy evaluation ID")

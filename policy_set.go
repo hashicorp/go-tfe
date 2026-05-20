@@ -20,6 +20,7 @@ type PolicyKind string
 const (
 	OPA      PolicyKind = "opa"
 	Sentinel PolicyKind = "sentinel"
+	TFPolicy PolicyKind = "tfpolicy"
 )
 
 // PolicySets describes all the policy set related methods that the Terraform
@@ -76,6 +77,13 @@ type PolicySets interface {
 
 	// Delete a policy set by its ID.
 	Delete(ctx context.Context, policyID string) error
+
+	// Still in beta
+	// Add exclusion based on a specific tag to a policy set.
+	AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagExclusionsOptions) error
+
+	// Remove Tag Exclusion
+	RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagExclusionsOptions) error
 }
 
 // policySets implements PolicySets.
@@ -228,6 +236,9 @@ type PolicySetCreateOptions struct {
 
 	// Optional: The initial list of project exclusions for which the policy set should be enforced.
 	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions,omitempty"`
+
+	// Optional: A list of tag selectors for enforcement/exclusion based on tags
+	TagSelectors []*PolicySetTagSelectors `jsonapi:"relation,tag-selectors,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -338,6 +349,16 @@ type PolicySetAddProjectsOptions struct {
 type PolicySetRemoveProjectsOptions struct {
 	// The projects to remove from the policy set.
 	Projects []*Project
+}
+
+type PolicySetAddTagExclusionsOptions struct {
+	Tags []*PolicySetTagSelectors
+}
+
+type PolicySetTagSelectors struct {
+	Key       string `jsonapi:"attr,key"`
+	Value     string `jsonapi:"attr,value,omitempty"`
+	IsExclude bool   `jsonapi:"attr,is-exclude"`
 }
 
 // List all the policies for a given organization.
@@ -612,6 +633,36 @@ func (s *policySets) RemoveProjectExclusions(ctx context.Context, policySetID st
 
 	u := fmt.Sprintf("policy-sets/%s/relationships/project-exclusions", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, options.ProjectExclusions)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// AddTagExclusion implements [
+func (s *policySets) AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagExclusionsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+
+	u := fmt.Sprintf("/policy-sets/%s/tag-selectors", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("POST", u, options.Tags)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveTagExclusion implements [PolicySets].
+func (s *policySets) RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagExclusionsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+
+	u := fmt.Sprintf("/policy-sets/%s/remove-tag-selectors", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("DELETE", u, options.Tags)
 	if err != nil {
 		return err
 	}
