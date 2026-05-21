@@ -2,16 +2,17 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
-// The status of the organization membership. Can be "active" or "invited".
+// The status of the organization membership. Can be "active", "invited", or "inactive".
 type OrganizationMemberships_attributes_status int
 
 const (
     ACTIVE_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS OrganizationMemberships_attributes_status = iota
     INVITED_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
+    INACTIVE_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
 )
 
 func (i OrganizationMemberships_attributes_status) String() string {
-    return []string{"active", "invited"}[i]
+    return []string{"active", "invited", "inactive"}[i]
 }
 func ParseOrganizationMemberships_attributes_status(v string) (any, error) {
     result := ACTIVE_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
@@ -20,6 +21,8 @@ func ParseOrganizationMemberships_attributes_status(v string) (any, error) {
             result = ACTIVE_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
         case "invited":
             result = INVITED_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
+        case "inactive":
+            result = INACTIVE_ORGANIZATIONMEMBERSHIPS_ATTRIBUTES_STATUS
         default:
             return nil, nil
     }

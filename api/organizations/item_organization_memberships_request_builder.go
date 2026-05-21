@@ -14,11 +14,11 @@ import (
 type ItemOrganizationMembershipsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemOrganizationMembershipsRequestBuilderGetQueryParameters list all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.
+// ItemOrganizationMembershipsRequestBuilderGetQueryParameters list all memberships in an organization. This includes active/inactive members and invited users who have not yet accepted their invitation.
 type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Filter memberships by exact email address match.
     Filteremail *string "uriparametername:\"filter%5Bemail%5D\""
-    // Filter memberships by status. Can be "active" or "invited".
+    // Filter memberships by status. Can be "active", "invited", or "inactive".
     Filterstatus *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetFilterStatusQueryParameterType "uriparametername:\"filter%5Bstatus%5D\""
     // Optionally side-load relationships. Can include "user" or "teams".
     Include *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetIncludeQueryParameterType "uriparametername:\"include\""
@@ -42,7 +42,7 @@ func NewItemOrganizationMembershipsRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewItemOrganizationMembershipsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.
+// Get list all memberships in an organization. This includes active/inactive members and invited users who have not yet accepted their invitation.
 // returns a ItemOrganizationMembershipsGetResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 404 status code
@@ -92,7 +92,7 @@ func (m *ItemOrganizationMembershipsRequestBuilder) Post(ctx context.Context, bo
     }
     return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipsEnvelopeable), nil
 }
-// ToGetRequestInformation list all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.
+// ToGetRequestInformation list all memberships in an organization. This includes active/inactive members and invited users who have not yet accepted their invitation.
 // returns a *RequestInformation when successful
 func (m *ItemOrganizationMembershipsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemOrganizationMembershipsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

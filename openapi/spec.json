@@ -1783,7 +1783,7 @@
       "get": {
         "operationId": "listOrganizationMemberships",
         "summary": "List Organization Memberships",
-        "description": "List all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.",
+        "description": "List all memberships in an organization. This includes active/inactive members and invited users who have not yet accepted their invitation.",
         "tags": [
           "organization-memberships"
         ],
@@ -1813,11 +1813,12 @@
               "type": "string",
               "enum": [
                 "active",
-                "invited"
+                "invited",
+                "inactive"
               ]
             },
             "required": false,
-            "description": "Filter memberships by status. Can be \"active\" or \"invited\"."
+            "description": "Filter memberships by status. Can be \"active\", \"invited\", or \"inactive\"."
           },
           {
             "in": "query",
@@ -2256,6 +2257,340 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/recoverable-items": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listRecoverableItems",
+        "summary": "List Recoverable Items",
+        "description": "List all recoverable items (soft-deleted resources) in an organization.",
+        "tags": [
+          "recoverable-items"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "recoverable",
+                "deleted_by",
+                "project"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships of the specified name. Multiple values can be comma-separated."
+          },
+          {
+            "in": "query",
+            "name": "filter[search]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Search term to filter recoverable items by name or project name."
+          },
+          {
+            "in": "query",
+            "name": "filter[having_managed_resources]",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true, filter recoverable items that have managed resources. False has no effect."
+          },
+          {
+            "in": "query",
+            "name": "filter[expires_after]",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "description": "Filter recoverable items that expire after the specified date and time."
+          },
+          {
+            "in": "query",
+            "name": "filter[recoverable_type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "workspaces",
+                "stacks"
+              ]
+            },
+            "required": false,
+            "description": "Filter recoverable items by recoverable type."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "expires_at",
+                "-expires_at",
+                "recoverable_name",
+                "-recoverable_name",
+                "unmanaged_resources",
+                "-unmanaged_resources"
+              ]
+            },
+            "required": false,
+            "description": "Sort recoverable items by specified field. Prefix with '-' for descending order."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of recoverable items",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/recoverable-items"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found or not entitled to this feature",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recoverable-items/{id}/actions/recover": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "put": {
+        "operationId": "recoverRecoverableItem",
+        "summary": "Recover a Recoverable Item",
+        "description": "Recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.",
+        "tags": [
+          "recoverable-items"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the recoverable item."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully recovered the item. No content returned."
+          },
+          "422": {
+            "description": "Recoverable item cannot be recovered due to its current state",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                },
+                "examples": {
+                  "expired": {
+                    "summary": "Item has expired",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has expired and is no longer eligible for recovery"
+                        }
+                      ]
+                    }
+                  },
+                  "permanently_deleted": {
+                    "summary": "Item has been permanently deleted",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has been manually permanently deleted, and is no longer eligible for recovery"
+                        }
+                      ]
+                    }
+                  },
+                  "already_recovered": {
+                    "summary": "Item has already been recovered",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has already been recovered"
+                        }
+                      ]
+                    }
+                  },
+                  "recovery_failed": {
+                    "summary": "Recovery operation failed",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recovery failed"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recoverable-items/{id}/actions/permanently-delete": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "put": {
+        "operationId": "permanentlyDeleteRecoverableItem",
+        "summary": "Permanently Delete a Recoverable Item",
+        "description": "Permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.",
+        "tags": [
+          "recoverable-items"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the recoverable item."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully permanently deleted the item. No content returned."
+          },
+          "422": {
+            "description": "Recoverable item cannot be permanently deleted due to its current state",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                },
+                "examples": {
+                  "already_expired": {
+                    "summary": "Item has already expired",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has already expired and been permanently deleted"
+                        }
+                      ]
+                    }
+                  },
+                  "already_permanently_deleted": {
+                    "summary": "Item has already been permanently deleted",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has already been manually permanently deleted"
+                        }
+                      ]
+                    }
+                  },
+                  "already_recovered": {
+                    "summary": "Item has been recovered",
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "422",
+                          "title": "unprocessable content",
+                          "detail": "Recoverable item has been recovered, and is no longer eligible for permanent deletion"
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -2785,6 +3120,167 @@
         }
       }
     },
+    "/projects/{project_id}/relationships/tag-bindings": {
+      "get": {
+        "operationId": "listProjectTagBindings",
+        "summary": "List Project Tag Bindings",
+        "description": "List all tags associated with a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tag-bindings-collection"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to view project",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addProjectTagBindings",
+        "summary": "Add Tag Bindings to a Project",
+        "description": "Add one or more tag bindings to a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-collection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tags added"
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to manage tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "replaceProjectTagBindings",
+        "summary": "Replace Tag Bindings in a Project",
+        "description": "Replace all tag bindings in a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-collection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag bindings replaced"
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to manage tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organization_name}/workspaces": {
       "get": {
         "operationId": "listWorkspaces",
@@ -2856,6 +3352,26 @@
             },
             "required": false,
             "description": "Filter workspaces by tag key=value pairs."
+          },
+          {
+            "in": "query",
+            "name": "filter[tag-union]",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "Use OR logic for filter[tagged] across effective tag bindings when any provided tag key/value pair may match. By default, filtering uses intersection semantics, so all provided tags must match."
+          },
+          {
+            "in": "query",
+            "name": "filter[tag-value-default-null]",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "description": "Treat omitted filter[tagged][value] fields as NULL for effective tag bindings."
           },
           {
             "in": "query",
@@ -6542,6 +7058,167 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/relationships/tag-bindings": {
+      "get": {
+        "operationId": "listWorkspaceTagBindings",
+        "summary": "List Workspace Tags",
+        "description": "List all tags associated with a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tag-bindings-collection"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to view workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addWorkspaceTagBindings",
+        "summary": "Add Tag Bindings to a Workspace",
+        "description": "Add one or more tag bindings to a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-collection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tags added"
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to manage tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "replaceWorkspaceTagBindings",
+        "summary": "Replace Tag Bindings in a Workspace",
+        "description": "Replace all tag bindings in a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-collection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag bindings replaced"
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to manage tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/relationships/tags": {
       "get": {
         "operationId": "listWorkspaceTags",
@@ -8560,16 +9237,13 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No output available yet for this policy check."
-          },
-          "302": {
-            "description": "Temporary URL generated; follow the redirect to download the output log.",
-            "headers": {
-              "Location": {
-                "description": "Presigned URL pointing to the Sentinel output log.",
+          "200": {
+            "description": "Output log retrieved successfully.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -12711,7 +13385,8 @@
               "type": "string",
               "enum": [
                 "active",
-                "invited"
+                "invited",
+                "inactive"
               ]
             },
             "required": false,
@@ -17923,10 +18598,6 @@
                 "type": "boolean",
                 "description": "Whether the feature set includes change requests"
               },
-              "concurrency-override": {
-                "type": "boolean",
-                "description": "Whether concurrency can be overridden for this feature set"
-              },
               "cost": {
                 "type": "number",
                 "description": "The cost of the feature set in cents"
@@ -18042,6 +18713,13 @@
                 "type": "number",
                 "nullable": true,
                 "description": "Maximum number of run tasks (null means unlimited)"
+              },
+              "recoverable-items": {
+                "type": "boolean",
+                "description": "Whether the feature set allows enabling of recoverable items",
+                "x-vis": [
+                  "public-beta"
+                ]
               },
               "run-task-mandatory-enforcement-limit": {
                 "type": "number",
@@ -18861,6 +19539,12 @@
                     "x-vis": [
                       "hcpt"
                     ]
+                  },
+                  "can-manage-recoverable-items": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "public-beta"
+                    ]
                   }
                 }
               },
@@ -19019,10 +19703,11 @@
                 "type": "string",
                 "enum": [
                   "active",
-                  "invited"
+                  "invited",
+                  "inactive"
                 ],
                 "readOnly": true,
-                "description": "The status of the organization membership. Can be \"active\" or \"invited\"."
+                "description": "The status of the organization membership. Can be \"active\", \"invited\", or \"inactive\"."
               },
               "email": {
                 "type": "string",
@@ -19419,6 +20104,113 @@
           }
         }
       },
+      "recoverable-items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The ID of the recoverable item"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "recoverable-items"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "recoverable-name",
+              "deleted-at",
+              "expires-at",
+              "unmanaged-resources"
+            ],
+            "properties": {
+              "recoverable-name": {
+                "type": "string",
+                "description": "The name of the recoverable resource"
+              },
+              "deleted-at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The timestamp when the resource was deleted (soft-deleted)"
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The timestamp when the recoverable item will be permanently deleted"
+              },
+              "unmanaged-resources": {
+                "type": "integer",
+                "description": "The number of unmanaged resources (RUM) associated with the recoverable item"
+              },
+              "permanently-deleted-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "The timestamp when the resource was permanently deleted, if applicable"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "project",
+              "recoverable"
+            ],
+            "properties": {
+              "project": {
+                "type": "object",
+                "description": "The project this recoverable item belongs to",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/projects-id"
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              },
+              "recoverable": {
+                "type": "object",
+                "description": "The recoverable resource (can be a workspace or stack.)",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the recoverable resource (e.g., workspaces, stacks)",
+                        "enum": [
+                          "workspaces",
+                          "stacks"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "effective-tag-bindings-id": {
         "type": "object",
         "required": [
@@ -19486,17 +20278,32 @@
                 "enum": [
                   "remote",
                   "local",
-                  "agent",
-                  "default"
+                  "agent"
                 ]
               },
               "stacks-default-execution-mode": {
                 "type": "string",
                 "enum": [
                   "remote",
-                  "agent",
-                  "default"
+                  "agent"
                 ]
+              },
+              "setting-overwrites": {
+                "type": "object",
+                "properties": {
+                  "default-execution-mode": {
+                    "type": "boolean"
+                  },
+                  "default-agent-pool": {
+                    "type": "boolean"
+                  },
+                  "stacks-default-execution-mode": {
+                    "type": "boolean"
+                  },
+                  "stacks-default-agent-pool": {
+                    "type": "boolean"
+                  }
+                }
               },
               "permissions": {
                 "type": "object",
@@ -19799,6 +20606,59 @@
           }
         }
       },
+      "tag-bindings": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "example": "tb-7AHdkTVXrmxiB8vQ"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tag-bindings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "key"
+            ],
+            "properties": {
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "tag-bindings-collection": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tag-bindings"
+            }
+          }
+        }
+      },
       "runs-id": {
         "type": "object",
         "properties": {
@@ -19963,6 +20823,17 @@
                   "agent"
                 ]
               },
+              "setting-overwrites": {
+                "type": "object",
+                "properties": {
+                  "execution-mode": {
+                    "type": "boolean"
+                  },
+                  "agent-pool": {
+                    "type": "boolean"
+                  }
+                }
+              },
               "vcs-repo": {
                 "type": "object",
                 "nullable": true,
@@ -20125,17 +20996,6 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                }
-              },
-              "setting-overwrites": {
-                "type": "object",
-                "properties": {
-                  "execution-mode": {
-                    "type": "boolean"
-                  },
-                  "agent-pool": {
-                    "type": "boolean"
-                  }
                 }
               }
             }
@@ -20704,6 +21564,9 @@
               },
               "source": {
                 "type": "string"
+              },
+              "generate-config-out": {
+                "type": "boolean"
               },
               "status-timestamps": {
                 "type": "object",
@@ -22187,6 +23050,9 @@
                 "type": "string",
                 "format": "date-time",
                 "readOnly": true
+              },
+              "debugging-mode": {
+                "type": "boolean"
               },
               "has-changes": {
                 "type": "boolean"

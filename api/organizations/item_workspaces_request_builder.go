@@ -23,6 +23,10 @@ type ItemWorkspacesRequestBuilderGetQueryParameters struct {
     Filtertagged *string "uriparametername:\"filter%5Btagged%5D\""
     // Filter workspaces by tag key=value pairs.
     Filtertaggedvalue *string "uriparametername:\"filter%5Btagged%5D%5Bvalue%5D\""
+    // Use OR logic for filter[tagged] across effective tag bindings when any provided tag key/value pair may match. By default, filtering uses intersection semantics, so all provided tags must match.
+    FiltertagUnion *bool "uriparametername:\"filter%5Btag%2Dunion%5D\""
+    // Treat omitted filter[tagged][value] fields as NULL for effective tag bindings.
+    FiltertagValueDefaultNull *bool "uriparametername:\"filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D\""
     // Comma-separated list of relationship names to side-load (e.g., current_run, readme, effective_tag_bindings).
     Include *string "uriparametername:\"include\""
     // The page number to retrieve.
@@ -51,7 +55,7 @@ func (m *ItemWorkspacesRequestBuilder) ByWorkspace_name(workspace_name string)(*
 // NewItemWorkspacesRequestBuilderInternal instantiates a new ItemWorkspacesRequestBuilder and sets the default values.
 func NewItemWorkspacesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesRequestBuilder) {
     m := &ItemWorkspacesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces{?filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btagged%5D*,filter%5Btagged%5D%5Bvalue%5D*,include*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces{?filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btag%2Dunion%5D*,filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D*,filter%5Btagged%5D*,filter%5Btagged%5D%5Bvalue%5D*,include*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
     }
     return m
 }

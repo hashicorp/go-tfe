@@ -18,8 +18,6 @@ type FeatureSets_attributes struct {
     canSelfServiceDowngrade *bool
     // Whether the feature set includes change requests
     changeRequests *bool
-    // Whether concurrency can be overridden for this feature set
-    concurrencyOverride *bool
     // The cost of the feature set in cents
     cost *float64
     // Whether the feature set includes cost estimation
@@ -72,6 +70,8 @@ type FeatureSets_attributes struct {
     privateRunTasks *bool
     // Whether the feature set includes private VCS
     privateVcs *bool
+    // Whether the feature set allows enabling of recoverable items
+    recoverableItems *bool
     // Maximum number of run tasks (null means unlimited)
     runTaskLimit *float64
     // Maximum number of mandatory enforcement run tasks (null means unlimited)
@@ -140,11 +140,6 @@ func (m *FeatureSets_attributes) GetCanSelfServiceDowngrade()(*bool) {
 func (m *FeatureSets_attributes) GetChangeRequests()(*bool) {
     return m.changeRequests
 }
-// GetConcurrencyOverride gets the concurrency-override property value. Whether concurrency can be overridden for this feature set
-// returns a *bool when successful
-func (m *FeatureSets_attributes) GetConcurrencyOverride()(*bool) {
-    return m.concurrencyOverride
-}
 // GetCost gets the cost property value. The cost of the feature set in cents
 // returns a *float64 when successful
 func (m *FeatureSets_attributes) GetCost()(*float64) {
@@ -211,16 +206,6 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetChangeRequests(val)
-        }
-        return nil
-    }
-    res["concurrency-override"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConcurrencyOverride(val)
         }
         return nil
     }
@@ -484,6 +469,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["recoverable-items"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRecoverableItems(val)
+        }
+        return nil
+    }
     res["run-task-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetFloat64Value()
         if err != nil {
@@ -741,6 +736,11 @@ func (m *FeatureSets_attributes) GetPrivateRunTasks()(*bool) {
 func (m *FeatureSets_attributes) GetPrivateVcs()(*bool) {
     return m.privateVcs
 }
+// GetRecoverableItems gets the recoverable-items property value. Whether the feature set allows enabling of recoverable items
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetRecoverableItems()(*bool) {
+    return m.recoverableItems
+}
 // GetRunTaskLimit gets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
 // returns a *float64 when successful
 func (m *FeatureSets_attributes) GetRunTaskLimit()(*float64) {
@@ -838,12 +838,6 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
     }
     {
         err := writer.WriteBoolValue("change-requests", m.GetChangeRequests())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("concurrency-override", m.GetConcurrencyOverride())
         if err != nil {
             return err
         }
@@ -1005,6 +999,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("recoverable-items", m.GetRecoverableItems())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteFloat64Value("run-task-limit", m.GetRunTaskLimit())
         if err != nil {
             return err
@@ -1122,10 +1122,6 @@ func (m *FeatureSets_attributes) SetCanSelfServiceDowngrade(value *bool)() {
 func (m *FeatureSets_attributes) SetChangeRequests(value *bool)() {
     m.changeRequests = value
 }
-// SetConcurrencyOverride sets the concurrency-override property value. Whether concurrency can be overridden for this feature set
-func (m *FeatureSets_attributes) SetConcurrencyOverride(value *bool)() {
-    m.concurrencyOverride = value
-}
 // SetCost sets the cost property value. The cost of the feature set in cents
 func (m *FeatureSets_attributes) SetCost(value *float64)() {
     m.cost = value
@@ -1230,6 +1226,10 @@ func (m *FeatureSets_attributes) SetPrivateRunTasks(value *bool)() {
 func (m *FeatureSets_attributes) SetPrivateVcs(value *bool)() {
     m.privateVcs = value
 }
+// SetRecoverableItems sets the recoverable-items property value. Whether the feature set allows enabling of recoverable items
+func (m *FeatureSets_attributes) SetRecoverableItems(value *bool)() {
+    m.recoverableItems = value
+}
 // SetRunTaskLimit sets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
 func (m *FeatureSets_attributes) SetRunTaskLimit(value *float64)() {
     m.runTaskLimit = value
@@ -1297,7 +1297,6 @@ type FeatureSets_attributesable interface {
     GetAuditLogging()(*bool)
     GetCanSelfServiceDowngrade()(*bool)
     GetChangeRequests()(*bool)
-    GetConcurrencyOverride()(*bool)
     GetCost()(*float64)
     GetCostEstimation()(*bool)
     GetDefaultAgentsCeiling()(*float64)
@@ -1324,6 +1323,7 @@ type FeatureSets_attributesable interface {
     GetPrivatePolicyAgents()(*bool)
     GetPrivateRunTasks()(*bool)
     GetPrivateVcs()(*bool)
+    GetRecoverableItems()(*bool)
     GetRunTaskLimit()(*float64)
     GetRunTaskMandatoryEnforcementLimit()(*float64)
     GetRunTasks()(*bool)
@@ -1343,7 +1343,6 @@ type FeatureSets_attributesable interface {
     SetAuditLogging(value *bool)()
     SetCanSelfServiceDowngrade(value *bool)()
     SetChangeRequests(value *bool)()
-    SetConcurrencyOverride(value *bool)()
     SetCost(value *float64)()
     SetCostEstimation(value *bool)()
     SetDefaultAgentsCeiling(value *float64)()
@@ -1370,6 +1369,7 @@ type FeatureSets_attributesable interface {
     SetPrivatePolicyAgents(value *bool)()
     SetPrivateRunTasks(value *bool)()
     SetPrivateVcs(value *bool)()
+    SetRecoverableItems(value *bool)()
     SetRunTaskLimit(value *float64)()
     SetRunTaskMandatoryEnforcementLimit(value *float64)()
     SetRunTasks(value *bool)()

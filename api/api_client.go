@@ -50,6 +50,7 @@ import (
     id345a85a433a8aa95b248e8eab6ea273b24fb87e9a32cc796a8a30b19cdd8337 "github.com/hashicorp/go-tfe/api/subscriptions"
     id7553685f3a8f95cdd99241ab3a472c8f29dff524e9e3a988f816cfabc0ed4f9 "github.com/hashicorp/go-tfe/api/applies"
     idb9762071316d801888013b2af72e088e1da92e3090ce4df4f9dc70fecd823fa "github.com/hashicorp/go-tfe/api/costestimates"
+    idd14c426b78ab2ea92d8a199cb253c5d8ed26d607fb9024a75485d975ad416b9 "github.com/hashicorp/go-tfe/api/recoverableitems"
     idd57b1a49340c574fef6bd24dd845bcb720e047f0808d48dfd4a03ba59068e43 "github.com/hashicorp/go-tfe/api/stateversionoutputs"
     if878d8d6e4d95d471164248cbd85e74ce4931aa5676f43f549ea9f2bb9d5b829 "github.com/hashicorp/go-tfe/api/runtriggers"
     ifb7da758d38f55b7366921567d0a6806e9b8d23de5e80e1df859a4fc4574859b "github.com/hashicorp/go-tfe/api/runs"
@@ -224,6 +225,11 @@ func (m *ApiClient) PolicySetVersions()(*i14de273b0d2a43e9ddae3007adb08a8ff5649e
 // returns a *ProjectsRequestBuilder when successful
 func (m *ApiClient) Projects()(*icc00dba9969ac503bbba866de398cc5c7a124e6bf8108c1cc5edfed3d17b5618.ProjectsRequestBuilder) {
     return icc00dba9969ac503bbba866de398cc5c7a124e6bf8108c1cc5edfed3d17b5618.NewProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// RecoverableItems the recoverableItems property
+// returns a *RecoverableItemsRequestBuilder when successful
+func (m *ApiClient) RecoverableItems()(*idd14c426b78ab2ea92d8a199cb253c5d8ed26d607fb9024a75485d975ad416b9.RecoverableItemsRequestBuilder) {
+    return idd14c426b78ab2ea92d8a199cb253c5d8ed26d607fb9024a75485d975ad416b9.NewRecoverableItemsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Runs the runs property
 // returns a *RunsRequestBuilder when successful

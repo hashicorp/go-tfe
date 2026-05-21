@@ -163,6 +163,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Put(ctx context.Context, body 
     }
     return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationsEnvelopeable), nil
 }
+// RecoverableItems the recoverableItems property
+// returns a *ItemRecoverableItemsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) RecoverableItems()(*ItemRecoverableItemsRequestBuilder) {
+    return NewItemRecoverableItemsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // RegistryModules the registryModules property
 // returns a *ItemRegistryModulesRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) RegistryModules()(*ItemRegistryModulesRequestBuilder) {

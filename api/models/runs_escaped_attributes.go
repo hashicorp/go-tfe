@@ -25,6 +25,8 @@ type Runs_attributes struct {
     comment *string
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The debuggingMode property
+    debuggingMode *bool
     // The forceCancelAvailableAt property
     forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The hasChanges property
@@ -120,6 +122,11 @@ func (m *Runs_attributes) GetComment()(*string) {
 func (m *Runs_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.createdAt
 }
+// GetDebuggingMode gets the debugging-mode property value. The debuggingMode property
+// returns a *bool when successful
+func (m *Runs_attributes) GetDebuggingMode()(*bool) {
+    return m.debuggingMode
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Runs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -191,6 +198,16 @@ func (m *Runs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e8
         }
         if val != nil {
             m.SetCreatedAt(val)
+        }
+        return nil
+    }
+    res["debugging-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDebuggingMode(val)
         }
         return nil
     }
@@ -574,6 +591,12 @@ func (m *Runs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0
         }
     }
     {
+        err := writer.WriteBoolValue("debugging-mode", m.GetDebuggingMode())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("has-changes", m.GetHasChanges())
         if err != nil {
             return err
@@ -734,6 +757,10 @@ func (m *Runs_attributes) SetComment(value *string)() {
 func (m *Runs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
+// SetDebuggingMode sets the debugging-mode property value. The debuggingMode property
+func (m *Runs_attributes) SetDebuggingMode(value *bool)() {
+    m.debuggingMode = value
+}
 // SetForceCancelAvailableAt sets the force-cancel-available-at property value. The forceCancelAvailableAt property
 func (m *Runs_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.forceCancelAvailableAt = value
@@ -828,6 +855,7 @@ type Runs_attributesable interface {
     GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetComment()(*string)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetDebuggingMode()(*bool)
     GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetHasChanges()(*bool)
     GetInvokeActionAddrs()([]string)
@@ -856,6 +884,7 @@ type Runs_attributesable interface {
     SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetComment(value *string)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetDebuggingMode(value *bool)()
     SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetHasChanges(value *bool)()
     SetInvokeActionAddrs(value []string)()

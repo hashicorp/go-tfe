@@ -17,7 +17,7 @@ type OrganizationMemberships_attributes struct {
     email *string
     // Whether two-factor authentication is required for the organization. Only present for invited users.
     isOrgTwoFactorRequired *bool
-    // The status of the organization membership. Can be "active" or "invited".
+    // The status of the organization membership. Can be "active", "invited", or "inactive".
     status *OrganizationMemberships_attributes_status
 }
 // NewOrganizationMemberships_attributes instantiates a new OrganizationMemberships_attributes and sets the default values.
@@ -98,7 +98,7 @@ func (m *OrganizationMemberships_attributes) GetFieldDeserializers()(map[string]
 func (m *OrganizationMemberships_attributes) GetIsOrgTwoFactorRequired()(*bool) {
     return m.isOrgTwoFactorRequired
 }
-// GetStatus gets the status property value. The status of the organization membership. Can be "active" or "invited".
+// GetStatus gets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 // returns a *OrganizationMemberships_attributes_status when successful
 func (m *OrganizationMemberships_attributes) GetStatus()(*OrganizationMemberships_attributes_status) {
     return m.status
@@ -135,7 +135,7 @@ func (m *OrganizationMemberships_attributes) SetEmail(value *string)() {
 func (m *OrganizationMemberships_attributes) SetIsOrgTwoFactorRequired(value *bool)() {
     m.isOrgTwoFactorRequired = value
 }
-// SetStatus sets the status property value. The status of the organization membership. Can be "active" or "invited".
+// SetStatus sets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 func (m *OrganizationMemberships_attributes) SetStatus(value *OrganizationMemberships_attributes_status)() {
     m.status = value
 }

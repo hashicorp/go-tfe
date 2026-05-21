@@ -7,11 +7,10 @@ type Projects_attributes_stacksDefaultExecutionMode int
 const (
     REMOTE_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE Projects_attributes_stacksDefaultExecutionMode = iota
     AGENT_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
-    DEFAULT_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
 )
 
 func (i Projects_attributes_stacksDefaultExecutionMode) String() string {
-    return []string{"remote", "agent", "default"}[i]
+    return []string{"remote", "agent"}[i]
 }
 func ParseProjects_attributes_stacksDefaultExecutionMode(v string) (any, error) {
     result := REMOTE_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
@@ -20,8 +19,6 @@ func ParseProjects_attributes_stacksDefaultExecutionMode(v string) (any, error) 
             result = REMOTE_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
         case "agent":
             result = AGENT_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
-        case "default":
-            result = DEFAULT_PROJECTS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
         default:
             return nil, nil
     }

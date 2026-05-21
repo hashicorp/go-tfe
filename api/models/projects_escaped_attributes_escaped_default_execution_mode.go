@@ -8,11 +8,10 @@ const (
     REMOTE_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE Projects_attributes_defaultExecutionMode = iota
     LOCAL_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
     AGENT_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
-    DEFAULT_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
 )
 
 func (i Projects_attributes_defaultExecutionMode) String() string {
-    return []string{"remote", "local", "agent", "default"}[i]
+    return []string{"remote", "local", "agent"}[i]
 }
 func ParseProjects_attributes_defaultExecutionMode(v string) (any, error) {
     result := REMOTE_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
@@ -23,8 +22,6 @@ func ParseProjects_attributes_defaultExecutionMode(v string) (any, error) {
             result = LOCAL_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
         case "agent":
             result = AGENT_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
-        case "default":
-            result = DEFAULT_PROJECTS_ATTRIBUTES_DEFAULTEXECUTIONMODE
         default:
             return nil, nil
     }

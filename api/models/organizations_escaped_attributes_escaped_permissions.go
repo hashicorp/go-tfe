@@ -46,6 +46,8 @@ type Organizations_attributes_permissions struct {
     canManagePublicModules *bool
     // The canManagePublicProviders property
     canManagePublicProviders *bool
+    // The canManageRecoverableItems property
+    canManageRecoverableItems *bool
     // The canManageRunTasks property
     canManageRunTasks *bool
     // The canManageSso property
@@ -191,6 +193,11 @@ func (m *Organizations_attributes_permissions) GetCanManagePublicModules()(*bool
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManagePublicProviders()(*bool) {
     return m.canManagePublicProviders
+}
+// GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanManageRecoverableItems()(*bool) {
+    return m.canManageRecoverableItems
 }
 // GetCanManageRunTasks gets the can-manage-run-tasks property value. The canManageRunTasks property
 // returns a *bool when successful
@@ -468,6 +475,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         if val != nil {
             m.SetCanManagePublicProviders(val)
+        }
+        return nil
+    }
+    res["can-manage-recoverable-items"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanManageRecoverableItems(val)
         }
         return nil
     }
@@ -774,6 +791,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-manage-recoverable-items", m.GetCanManageRecoverableItems())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-manage-run-tasks", m.GetCanManageRunTasks())
         if err != nil {
             return err
@@ -971,6 +994,10 @@ func (m *Organizations_attributes_permissions) SetCanManagePublicModules(value *
 func (m *Organizations_attributes_permissions) SetCanManagePublicProviders(value *bool)() {
     m.canManagePublicProviders = value
 }
+// SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+func (m *Organizations_attributes_permissions) SetCanManageRecoverableItems(value *bool)() {
+    m.canManageRecoverableItems = value
+}
 // SetCanManageRunTasks sets the can-manage-run-tasks property value. The canManageRunTasks property
 func (m *Organizations_attributes_permissions) SetCanManageRunTasks(value *bool)() {
     m.canManageRunTasks = value
@@ -1068,6 +1095,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanManageOrgPublicProviders()(*bool)
     GetCanManagePublicModules()(*bool)
     GetCanManagePublicProviders()(*bool)
+    GetCanManageRecoverableItems()(*bool)
     GetCanManageRunTasks()(*bool)
     GetCanManageSso()(*bool)
     GetCanManageSubscription()(*bool)
@@ -1105,6 +1133,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanManageOrgPublicProviders(value *bool)()
     SetCanManagePublicModules(value *bool)()
     SetCanManagePublicProviders(value *bool)()
+    SetCanManageRecoverableItems(value *bool)()
     SetCanManageRunTasks(value *bool)()
     SetCanManageSso(value *bool)()
     SetCanManageSubscription(value *bool)()

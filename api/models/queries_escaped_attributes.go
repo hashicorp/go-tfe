@@ -19,6 +19,8 @@ type Queries_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The forceCancelAvailableAt property
     forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The generateConfigOut property
+    generateConfigOut *bool
     // The logReadUrl property
     logReadUrl *string
     // The permissions property
@@ -108,6 +110,16 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["generate-config-out"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetGenerateConfigOut(val)
+        }
+        return nil
+    }
     res["log-read-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -175,6 +187,11 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
 func (m *Queries_attributes) GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.forceCancelAvailableAt
 }
+// GetGenerateConfigOut gets the generate-config-out property value. The generateConfigOut property
+// returns a *bool when successful
+func (m *Queries_attributes) GetGenerateConfigOut()(*bool) {
+    return m.generateConfigOut
+}
 // GetLogReadUrl gets the log-read-url property value. The logReadUrl property
 // returns a *string when successful
 func (m *Queries_attributes) GetLogReadUrl()(*string) {
@@ -209,6 +226,12 @@ func (m *Queries_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6
 func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("actions", m.GetActions())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("generate-config-out", m.GetGenerateConfigOut())
         if err != nil {
             return err
         }
@@ -266,6 +289,10 @@ func (m *Queries_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97
 func (m *Queries_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.forceCancelAvailableAt = value
 }
+// SetGenerateConfigOut sets the generate-config-out property value. The generateConfigOut property
+func (m *Queries_attributes) SetGenerateConfigOut(value *bool)() {
+    m.generateConfigOut = value
+}
 // SetLogReadUrl sets the log-read-url property value. The logReadUrl property
 func (m *Queries_attributes) SetLogReadUrl(value *string)() {
     m.logReadUrl = value
@@ -297,6 +324,7 @@ type Queries_attributesable interface {
     GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetGenerateConfigOut()(*bool)
     GetLogReadUrl()(*string)
     GetPermissions()(Queries_attributes_permissionsable)
     GetSource()(*string)
@@ -307,6 +335,7 @@ type Queries_attributesable interface {
     SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetGenerateConfigOut(value *bool)()
     SetLogReadUrl(value *string)()
     SetPermissions(value Queries_attributes_permissionsable)()
     SetSource(value *string)()

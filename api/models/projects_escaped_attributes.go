@@ -27,6 +27,8 @@ type Projects_attributes struct {
     name *string
     // The permissions property
     permissions Projects_attributes_permissionsable
+    // The settingOverwrites property
+    settingOverwrites Projects_attributes_settingOverwritesable
     // The stacksDefaultExecutionMode property
     stacksDefaultExecutionMode *Projects_attributes_stacksDefaultExecutionMode
     // The teamCount property
@@ -155,6 +157,16 @@ func (m *Projects_attributes) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateProjects_attributes_settingOverwritesFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSettingOverwrites(val.(Projects_attributes_settingOverwritesable))
+        }
+        return nil
+    }
     res["stacks-default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseProjects_attributes_stacksDefaultExecutionMode)
         if err != nil {
@@ -206,6 +218,11 @@ func (m *Projects_attributes) GetName()(*string) {
 // returns a Projects_attributes_permissionsable when successful
 func (m *Projects_attributes) GetPermissions()(Projects_attributes_permissionsable) {
     return m.permissions
+}
+// GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
+// returns a Projects_attributes_settingOverwritesable when successful
+func (m *Projects_attributes) GetSettingOverwrites()(Projects_attributes_settingOverwritesable) {
+    return m.settingOverwrites
 }
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Projects_attributes_stacksDefaultExecutionMode when successful
@@ -263,6 +280,12 @@ func (m *Projects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef
     }
     {
         err := writer.WriteObjectValue("permissions", m.GetPermissions())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
         if err != nil {
             return err
         }
@@ -330,6 +353,10 @@ func (m *Projects_attributes) SetName(value *string)() {
 func (m *Projects_attributes) SetPermissions(value Projects_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
+func (m *Projects_attributes) SetSettingOverwrites(value Projects_attributes_settingOverwritesable)() {
+    m.settingOverwrites = value
+}
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 func (m *Projects_attributes) SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)() {
     m.stacksDefaultExecutionMode = value
@@ -353,6 +380,7 @@ type Projects_attributesable interface {
     GetIsUnified()(*bool)
     GetName()(*string)
     GetPermissions()(Projects_attributes_permissionsable)
+    GetSettingOverwrites()(Projects_attributes_settingOverwritesable)
     GetStacksDefaultExecutionMode()(*Projects_attributes_stacksDefaultExecutionMode)
     GetTeamCount()(*int32)
     GetWorkspaceCount()(*int32)
@@ -364,6 +392,7 @@ type Projects_attributesable interface {
     SetIsUnified(value *bool)()
     SetName(value *string)()
     SetPermissions(value Projects_attributes_permissionsable)()
+    SetSettingOverwrites(value Projects_attributes_settingOverwritesable)()
     SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)()
     SetTeamCount(value *int32)()
     SetWorkspaceCount(value *int32)()

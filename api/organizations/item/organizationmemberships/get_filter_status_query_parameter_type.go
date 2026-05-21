@@ -7,10 +7,11 @@ type GetFilterStatusQueryParameterType int
 const (
     ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE GetFilterStatusQueryParameterType = iota
     INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
+    INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
 )
 
 func (i GetFilterStatusQueryParameterType) String() string {
-    return []string{"active", "invited"}[i]
+    return []string{"active", "invited", "inactive"}[i]
 }
 func ParseGetFilterStatusQueryParameterType(v string) (any, error) {
     result := ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
@@ -19,6 +20,8 @@ func ParseGetFilterStatusQueryParameterType(v string) (any, error) {
             result = ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
         case "invited":
             result = INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
+        case "inactive":
+            result = INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
         default:
             return nil, nil
     }
