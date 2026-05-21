@@ -82,6 +82,20 @@ func (mr *MockPolicySetsMockRecorder) AddProjects(ctx, policySetID, options any)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProjects", reflect.TypeOf((*MockPolicySets)(nil).AddProjects), ctx, policySetID, options)
 }
 
+// AddTagSelectors mocks base method.
+func (m *MockPolicySets) AddTagSelectors(ctx context.Context, policySetID string, options tfe.PolicySetAddTagSelectorsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddTagSelectors", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddTagSelectors indicates an expected call of AddTagSelectors.
+func (mr *MockPolicySetsMockRecorder) AddTagSelectors(ctx, policySetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTagSelectors", reflect.TypeOf((*MockPolicySets)(nil).AddTagSelectors), ctx, policySetID, options)
+}
+
 // AddWorkspaceExclusions mocks base method.
 func (m *MockPolicySets) AddWorkspaceExclusions(ctx context.Context, policySetID string, options tfe.PolicySetAddWorkspaceExclusionsOptions) error {
 	m.ctrl.T.Helper()
@@ -224,6 +238,20 @@ func (m *MockPolicySets) RemoveProjects(ctx context.Context, policySetID string,
 func (mr *MockPolicySetsMockRecorder) RemoveProjects(ctx, policySetID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProjects", reflect.TypeOf((*MockPolicySets)(nil).RemoveProjects), ctx, policySetID, options)
+}
+
+// RemoveTagSelectors mocks base method.
+func (m *MockPolicySets) RemoveTagSelectors(ctx context.Context, policySetID string, options tfe.PolicySetRemoveTagSelectorsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveTagSelectors", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveTagSelectors indicates an expected call of RemoveTagSelectors.
+func (mr *MockPolicySetsMockRecorder) RemoveTagSelectors(ctx, policySetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveTagSelectors", reflect.TypeOf((*MockPolicySets)(nil).RemoveTagSelectors), ctx, policySetID, options)
 }
 
 // RemoveWorkspaceExclusions mocks base method.

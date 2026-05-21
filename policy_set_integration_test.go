@@ -1470,3 +1470,244 @@ func TestPolicySetsDelete(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 }
+
+func TestPolicySetsAddTagSelectors(t *testing.T) {
+	t.Parallel()
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	// upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("with exclusion tag selectors on global policy set", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "prod"},
+				{Key: "team"},
+			},
+		})
+		require.NoError(t, err)
+
+		psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, PolicySetCreateOptions{
+			Global: Bool(true),
+		})
+		defer psTestCleanup()
+
+		err = client.PolicySets.AddTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetAddTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("prod"), IsExclude: true},
+					{Key: "team", Value: nil, IsExclude: true},
+				},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 2, len(ps.TagSelectors))
+
+		selectorsByKey := map[string]*PolicySetTagSelectorAttr{}
+		for _, ts := range ps.TagSelectors {
+			selectorsByKey[ts.Key] = ts
+		}
+
+		require.Contains(t, selectorsByKey, "env")
+		require.Contains(t, selectorsByKey, "team")
+
+		assert.Equal(t, "prod", *selectorsByKey["env"].Value)
+		assert.True(t, selectorsByKey["env"].IsExclude)
+
+		assert.Nil(t, selectorsByKey["team"].Value)
+		assert.True(t, selectorsByKey["team"].IsExclude)
+	})
+
+	t.Run("with inclusion tag selectors on non-global policy set", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "staging"},
+				{Key: "region"},
+			},
+		})
+		require.NoError(t, err)
+
+		psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, PolicySetCreateOptions{
+			Global: Bool(false),
+		})
+		defer psTestCleanup()
+
+		err = client.PolicySets.AddTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetAddTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("staging"), IsExclude: false},
+					{Key: "region", Value: nil, IsExclude: false},
+				},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 2, len(ps.TagSelectors))
+
+		selectorsByKey := map[string]*PolicySetTagSelectorAttr{}
+		for _, ts := range ps.TagSelectors {
+			selectorsByKey[ts.Key] = ts
+		}
+
+		require.Contains(t, selectorsByKey, "env")
+		require.Contains(t, selectorsByKey, "region")
+
+		assert.Equal(t, "staging", *selectorsByKey["env"].Value)
+		assert.False(t, selectorsByKey["env"].IsExclude)
+
+		assert.Nil(t, selectorsByKey["region"].Value)
+		assert.False(t, selectorsByKey["region"].IsExclude)
+	})
+
+	t.Run("without tag selectors provided", func(t *testing.T) {
+		psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+		defer psTestCleanup()
+
+		err := client.PolicySets.AddTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetAddTagSelectorsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredTagSelectors)
+	})
+
+	t.Run("with empty tag selectors slice", func(t *testing.T) {
+		psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+		defer psTestCleanup()
+
+		err := client.PolicySets.AddTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetAddTagSelectorsOptions{TagSelectors: []*PolicySetTagSelectors{}},
+		)
+		assert.Equal(t, err, ErrTagSelectorMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.AddTagSelectors(
+			ctx,
+			badIdentifier,
+			PolicySetAddTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("prod"), IsExclude: true},
+				},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
+func TestPolicySetsRemoveTagSelectors(t *testing.T) {
+	t.Parallel()
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("with tag selectors provided", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "prod"},
+				{Key: "team"},
+			},
+		})
+		require.NoError(t, err)
+
+		psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, PolicySetCreateOptions{
+			Global: Bool(true),
+		})
+		defer psTestCleanup()
+
+		err = client.PolicySets.AddTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetAddTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("prod"), IsExclude: true},
+					{Key: "team", Value: nil, IsExclude: true},
+				},
+			},
+		)
+		require.NoError(t, err)
+
+		err = client.PolicySets.RemoveTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("prod"), IsExclude: true},
+					{Key: "team", Value: nil, IsExclude: true},
+				},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(ps.TagSelectors))
+		assert.Empty(t, ps.TagSelectors)
+	})
+
+	t.Run("without tag selectors provided", func(t *testing.T) {
+		psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+		defer psTestCleanup()
+
+		err := client.PolicySets.RemoveTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveTagSelectorsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredTagSelectors)
+	})
+
+	t.Run("with empty tag selectors slice", func(t *testing.T) {
+		psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+		defer psTestCleanup()
+
+		err := client.PolicySets.RemoveTagSelectors(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveTagSelectorsOptions{TagSelectors: []*PolicySetTagSelectors{}},
+		)
+		assert.Equal(t, err, ErrTagSelectorMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.RemoveTagSelectors(
+			ctx,
+			badIdentifier,
+			PolicySetRemoveTagSelectorsOptions{
+				TagSelectors: []*PolicySetTagSelectors{
+					{Key: "env", Value: String("prod"), IsExclude: true},
+				},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}

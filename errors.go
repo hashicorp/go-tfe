@@ -193,8 +193,6 @@ var (
 
 	ErrInvalidPolicySetID = errors.New("invalid value for policy set ID")
 
-	ErrInvalidPolicySetScope = errors.New("invalid value for policy set scope")
-
 	ErrInvalidPolicyCheckID = errors.New("invalid value for policy check ID")
 
 	ErrInvalidPolicyEvaluationID = errors.New("invalid value for policy evaluation ID")
@@ -377,6 +375,10 @@ var (
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
 
 	ErrProjectMinLimit = errors.New("must provide at least one project")
+
+	ErrRequiredTagSelectors = errors.New("tag selectors is required")
+
+	ErrTagSelectorMinLimit = errors.New("must provide at least one tag selector")
 
 	ErrRequiredPlan = errors.New("plan is required")
 
