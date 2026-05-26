@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.107.0
+
 ## Enhancements
 * Add support for reading a registry provider by its unique identifier by  @mrinalirao [#1340](https://github.com/hashicorp/go-tfe/pull/1340)
 * Add `ProviderSet` resources with `Read`, `Update`, `Delete` and `Create` methods @mogrogan [#1346](https://github.com/hashicorp/go-tfe/pull/1346)
