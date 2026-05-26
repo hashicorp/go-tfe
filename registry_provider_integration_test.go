@@ -342,6 +342,7 @@ func TestRegistryProvidersRead(t *testing.T) {
 			})
 
 			t.Run("with a unique ID field for the provider", func(t *testing.T) {
+				skipUnlessBeta(t)
 				registryProviderTest, providerTestCleanup := createRegistryProvider(t, client, orgTest, prvCtx.RegistryName)
 				defer providerTestCleanup()
 
