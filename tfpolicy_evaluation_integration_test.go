@@ -31,7 +31,8 @@ func TestTFPolicyEvaluationOutcomes_List(t *testing.T) {
 		t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 	}
 
-	oc, _ := createOAuthToken(t, client, orgTest)
+	oc, ocCleanup := createOAuthToken(t, client, orgTest)
+	defer ocCleanup()
 
 	options := PolicySetCreateOptions{
 		Name: String("tfpolicy-policy-set"),
