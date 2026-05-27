@@ -27,7 +27,7 @@ func TestOpenAPIRead(t *testing.T) {
 			w.Header().Set("Last-Modified", time.Now().Format(http.TimeFormat))
 			w.WriteHeader(200)
 
-			file, err := os.OpenFile("openapi/spec.json", os.O_RDONLY, 0644)
+			file, err := os.OpenFile("openapi/spec.json", os.O_RDONLY, 0o644)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				return

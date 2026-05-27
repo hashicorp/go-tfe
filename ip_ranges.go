@@ -44,7 +44,6 @@ type IPRange struct {
 
 // Read an IPRange that was not modified since the specified date.
 func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRange, error) {
-
 	reqHeaders := http.Header{}
 	reqHeaders.Add("Accept", "application/json, */*")
 
