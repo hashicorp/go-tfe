@@ -31,6 +31,7 @@ const (
 type TFPolicyEvaluationStageType string
 
 const (
+	TFPolicyEvaluationStageTypeInit  TFPolicyEvaluationStageType = "Init"
 	TFPolicyEvaluationStageTypePlan  TFPolicyEvaluationStageType = "Plan"
 	TFPolicyEvaluationStageTypeApply TFPolicyEvaluationStageType = "Apply"
 )
@@ -65,7 +66,7 @@ const (
 type TFPolicyEvaluationError struct {
 	Type    TFPolicyEvaluationErrorType `jsonapi:"attr,type"`
 	Summary string                      `jsonapi:"attr,summary"`
-	Details string                      `jsonapi:"attr,details"`
+	Details string                      `jsonapi:"attr,detail"`
 }
 
 type TFPolicyEvaluationPermissions struct {
