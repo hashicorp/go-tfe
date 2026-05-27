@@ -1472,15 +1472,15 @@ func TestPolicySetsDelete(t *testing.T) {
 }
 
 func TestPolicySetsAddTagSelectors(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	// upgradeOrganizationSubscription(t, client, orgTest)
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("with exclusion tag selectors on global policy set", func(t *testing.T) {
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
@@ -1617,8 +1617,8 @@ func TestPolicySetsAddTagSelectors(t *testing.T) {
 }
 
 func TestPolicySetsRemoveTagSelectors(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
