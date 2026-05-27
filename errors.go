@@ -211,6 +211,8 @@ var (
 
 	ErrInvalidProvider = errors.New("invalid value for provider")
 
+	ErrInvalidProviderSetID = errors.New("invalid value for provider set ID")
+
 	ErrInvalidVersion = errors.New("invalid value for version")
 
 	ErrInvalidRunTriggerID = errors.New("invalid value for run trigger ID")
@@ -320,6 +322,8 @@ var (
 
 	ErrConflictingEnforceEnforcementLevel = errors.New("enforce and enforcement-level may not both be specified together")
 
+	ErrProviderSetGlobalRelationships = errors.New("global provider set cannot be assigned to workspace or project")
+
 	ErrRequiredEnforcementPath = errors.New("enforcement path is required")
 
 	ErrRequiredEnforcementMode = errors.New("enforcement mode is required")
@@ -327,6 +331,10 @@ var (
 	ErrRequiredEmail = errors.New("email is required")
 
 	ErrRequiredM5 = errors.New("MD5 is required")
+
+	ErrRequiredProviderSource = errors.New("provider source is required")
+
+	ErrRequiredConfigurationHcl = errors.New("configuration HCL is required")
 
 	ErrRequiredURL = errors.New("url is required")
 
