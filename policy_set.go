@@ -20,6 +20,7 @@ type PolicyKind string
 const (
 	OPA      PolicyKind = "opa"
 	Sentinel PolicyKind = "sentinel"
+	TFPolicy PolicyKind = "tfpolicy"
 )
 
 // PolicySets describes all the policy set related methods that the Terraform
