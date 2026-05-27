@@ -244,8 +244,8 @@ type PolicySetCreateOptions struct {
 	// Optional: The initial list of project exclusions for which the policy set should be enforced.
 	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions,omitempty"`
 
-	// Optional: A list of tag selectors for enforcement/exclusion based on tags
-	TagSelectors []*PolicySetTagSelectors `jsonapi:"relation,tag-selectors,omitempty"`
+	// BETA: Optional: A list of tag selectors for enforcement/exclusion based on tags
+	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -362,14 +362,14 @@ type PolicySetRemoveProjectsOptions struct {
 // tag selectors to a policy set.
 type PolicySetAddTagSelectorsOptions struct {
 	// The tag selectors to add to the policy set.
-	TagSelectors []*PolicySetTagSelectors
+	TagSelectors []*PolicySetTagSelector
 }
 
 // PolicySetRemoveTagSelectorsOptions represents the options for removing
 // tag selectors from a policy set.
 type PolicySetRemoveTagSelectorsOptions struct {
 	// The tag selectors to remove from the policy set.
-	TagSelectors []*PolicySetTagSelectors
+	TagSelectors []*PolicySetTagSelector
 }
 
 // PolicySetTagSelectors represents a tag selector for a policy set.
@@ -378,7 +378,7 @@ type PolicySetRemoveTagSelectorsOptions struct {
 // The IsExclude field determines the behavior: false means inclusion,
 // true means exclusion. For tags that have only a key and no value,
 // set Value to nil.
-type PolicySetTagSelectors struct {
+type PolicySetTagSelector struct {
 	Key       string  `json:"tag-key"`
 	Value     *string `json:"tag-value"`
 	IsExclude bool    `json:"is-exclude"`
@@ -387,7 +387,7 @@ type PolicySetTagSelectors struct {
 // policySetTagSelectorsRequest is the wire format for the tag-selectors
 // POST and DELETE endpoints, which expect {"data": [...]}.
 type policySetTagSelectorsRequest struct {
-	Data []*PolicySetTagSelectors `json:"data"`
+	Data []*PolicySetTagSelector `json:"data"`
 }
 
 // List all the policies for a given organization.

@@ -1503,7 +1503,7 @@ func TestPolicySetsAddTagSelectors(t *testing.T) {
 			ctx,
 			psTest.ID,
 			PolicySetAddTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("prod"), IsExclude: true},
 					{Key: "team", Value: nil, IsExclude: true},
 				},
@@ -1551,7 +1551,7 @@ func TestPolicySetsAddTagSelectors(t *testing.T) {
 			ctx,
 			psTest.ID,
 			PolicySetAddTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("staging"), IsExclude: false},
 					{Key: "region", Value: nil, IsExclude: false},
 				},
@@ -1597,7 +1597,7 @@ func TestPolicySetsAddTagSelectors(t *testing.T) {
 		err := client.PolicySets.AddTagSelectors(
 			ctx,
 			psTest.ID,
-			PolicySetAddTagSelectorsOptions{TagSelectors: []*PolicySetTagSelectors{}},
+			PolicySetAddTagSelectorsOptions{TagSelectors: []*PolicySetTagSelector{}},
 		)
 		assert.Equal(t, err, ErrTagSelectorMinLimit)
 	})
@@ -1607,7 +1607,7 @@ func TestPolicySetsAddTagSelectors(t *testing.T) {
 			ctx,
 			badIdentifier,
 			PolicySetAddTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("prod"), IsExclude: true},
 				},
 			},
@@ -1648,7 +1648,7 @@ func TestPolicySetsRemoveTagSelectors(t *testing.T) {
 			ctx,
 			psTest.ID,
 			PolicySetAddTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("prod"), IsExclude: true},
 					{Key: "team", Value: nil, IsExclude: true},
 				},
@@ -1660,7 +1660,7 @@ func TestPolicySetsRemoveTagSelectors(t *testing.T) {
 			ctx,
 			psTest.ID,
 			PolicySetRemoveTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("prod"), IsExclude: true},
 					{Key: "team", Value: nil, IsExclude: true},
 				},
@@ -1693,7 +1693,7 @@ func TestPolicySetsRemoveTagSelectors(t *testing.T) {
 		err := client.PolicySets.RemoveTagSelectors(
 			ctx,
 			psTest.ID,
-			PolicySetRemoveTagSelectorsOptions{TagSelectors: []*PolicySetTagSelectors{}},
+			PolicySetRemoveTagSelectorsOptions{TagSelectors: []*PolicySetTagSelector{}},
 		)
 		assert.Equal(t, err, ErrTagSelectorMinLimit)
 	})
@@ -1703,11 +1703,67 @@ func TestPolicySetsRemoveTagSelectors(t *testing.T) {
 			ctx,
 			badIdentifier,
 			PolicySetRemoveTagSelectorsOptions{
-				TagSelectors: []*PolicySetTagSelectors{
+				TagSelectors: []*PolicySetTagSelector{
 					{Key: "env", Value: String("prod"), IsExclude: true},
 				},
 			},
 		)
 		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
+func TestPolicySetsCreateWithTagSelectors(t *testing.T) {
+	skipUnlessBeta(t)
+	t.Parallel()
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("with tag selectors on non-global policy set", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{Key: "env", Value: "prod"},
+				{Key: "team"},
+			},
+		})
+		require.NoError(t, err)
+
+		options := PolicySetCreateOptions{
+			Name:   String("tag-selector-policy-set"),
+			Kind:   OPA,
+			Global: Bool(false),
+			TagSelectors: []*PolicySetTagSelector{
+				{Key: "env", Value: String("prod"), IsExclude: false},
+				{Key: "team", Value: nil, IsExclude: false},
+			},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		psRead, err := client.PolicySets.Read(ctx, ps.ID)
+		require.NoError(t, err)
+		require.Equal(t, 2, len(psRead.TagSelectors))
+
+		selectorsByKey := map[string]*PolicySetTagSelectorAttr{}
+		for _, ts := range psRead.TagSelectors {
+			selectorsByKey[ts.Key] = ts
+		}
+
+		require.Contains(t, selectorsByKey, "env")
+		require.Contains(t, selectorsByKey, "team")
+
+		assert.Equal(t, "prod", *selectorsByKey["env"].Value)
+		assert.False(t, selectorsByKey["env"].IsExclude)
+
+		assert.Nil(t, selectorsByKey["team"].Value)
+		assert.False(t, selectorsByKey["team"].IsExclude)
 	})
 }
