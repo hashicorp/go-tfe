@@ -3,7 +3,6 @@
 ## Enhancements
 * Adds BETA support for listing `TFPolicyEvaluationOutcome`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
 
-
 # v1.107.0
 
 ## Enhancements
