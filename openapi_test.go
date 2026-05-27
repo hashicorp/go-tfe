@@ -5,7 +5,9 @@ package tfe
 
 import (
 	"context"
+	"io"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -13,9 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestIPRangesRead(t *testing.T) {
+func TestOpenAPIRead(t *testing.T) {
 	server, client := testServerWithClient(t, map[string]http.HandlerFunc{
-		"/api/meta/ip-ranges": func(w http.ResponseWriter, r *http.Request) {
+		"/api/meta/openapi": func(w http.ResponseWriter, r *http.Request) {
 			if r.Header.Get("If-Modified-Since") != "" {
 				w.WriteHeader(http.StatusNotModified)
 				return
@@ -24,37 +26,33 @@ func TestIPRangesRead(t *testing.T) {
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("Last-Modified", time.Now().Format(http.TimeFormat))
 			w.WriteHeader(200)
-			w.Write([]byte(`{
-				"api": [
-					"192.168.1.10"
-				],
-				"notifications": [
-					"192.168.1.11"
-				],
-				"sentinel": [
-					"192.168.1.12"
-				],
-				"vcs": [
-					"192.168.1.13"
-				]
-			}`))
+
+			file, err := os.OpenFile("openapi/spec.json", os.O_RDONLY, 0644)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			defer file.Close()
+
+			_, err = io.Copy(w, file)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
 		},
 	})
 	defer server.Close()
 	ctx := context.Background()
 
 	t.Run("without modifiedSince", func(t *testing.T) {
-		r, err := client.Meta.IPRanges.Read(ctx, nil)
+		r, err := client.Meta.OpenAPI.Read(ctx, false, nil)
 		require.NoError(t, err)
-		assert.NotEmpty(t, r.API)
-		assert.NotEmpty(t, r.Notifications)
-		assert.NotEmpty(t, r.Sentinel)
-		assert.NotEmpty(t, r.VCS)
+		assert.NotEmpty(t, r)
 	})
 
 	t.Run("with modifiedSince", func(t *testing.T) {
 		modifiedSince := time.Now().Add(-1 * time.Hour)
-		r, err := client.Meta.IPRanges.Read(ctx, &modifiedSince)
+		r, err := client.Meta.OpenAPI.Read(ctx, false, &modifiedSince)
 		require.NoError(t, err)
 		assert.Nil(t, r)
 	})

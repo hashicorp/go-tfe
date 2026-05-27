@@ -16,6 +16,8 @@ import (
 func TestGetStream(t *testing.T) {
 	expectedOutput := "Sentinel policy check output: all policies passed."
 
+	xCustomHeaderCount := 0
+
 	ts, client := testServerWithClient(t, map[string]http.HandlerFunc{
 		"GET /api/v2/policy-checks/{id}/output": func(w http.ResponseWriter, r *http.Request) {
 			// Verify auth middleware applied the Bearer token
@@ -24,6 +26,11 @@ func TestGetStream(t *testing.T) {
 			// Verify User-Agent header contains the default client user agent
 			assert.Contains(t, r.Header.Get("User-Agent"), DefaultUserAgent)
 
+			if r.Header.Get("X-Custom-Header") != "" {
+				xCustomHeaderCount++
+				assert.Equal(t, "CustomValue", r.Header.Get("X-Custom-Header"))
+			}
+
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte(expectedOutput))
@@ -31,8 +38,9 @@ func TestGetStream(t *testing.T) {
 	})
 
 	cases := []struct {
-		name string
-		uri  string
+		name    string
+		uri     string
+		headers http.Header
 	}{
 		{
 			name: "With base URL",
@@ -54,11 +62,18 @@ func TestGetStream(t *testing.T) {
 			name: "No leading slash, no base path",
 			uri:  "policy-checks/polchk-123/output",
 		},
+		{
+			name: "With headers",
+			uri:  "/api/v2/policy-checks/polchk-123/output",
+			headers: http.Header{
+				"X-Custom-Header": []string{"CustomValue"},
+			},
+		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			resp, err := client.GetStream(context.Background(), tc.uri)
+			resp, err := client.GetStream(context.Background(), tc.uri, tc.headers)
 			require.NoError(t, err)
 			defer resp.Body.Close()
 
@@ -69,4 +84,6 @@ func TestGetStream(t *testing.T) {
 			assert.Equal(t, expectedOutput, string(body))
 		})
 	}
+
+	assert.Equal(t, 1, xCustomHeaderCount)
 }

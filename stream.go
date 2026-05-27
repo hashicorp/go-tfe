@@ -24,14 +24,14 @@ import (
 // or buffered []byte slice. However, for endpoints that return large responses, you can
 // choose to use GetStream to get the raw *http.Response and stream the body directly without
 // buffering it in memory.
-func (c *Client) GetStream(ctx context.Context, uriOrPath string) (*http.Response, error) {
+func (c *Client) GetStream(ctx context.Context, uriOrPath string, headers http.Header) (*http.Response, error) {
 	req := abs.NewRequestInformation()
 	u, err := url.Parse(uriOrPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse URL: %w", err)
 	}
 
-	if !strings.HasPrefix(u.Path, c.baseURL.Path) {
+	if !strings.HasPrefix(u.Path, "/api") {
 		u.Path = path.Join(c.baseURL.Path, u.Path)
 	}
 
@@ -41,6 +41,13 @@ func (c *Client) GetStream(ctx context.Context, uriOrPath string) (*http.Respons
 	}
 
 	req.SetUri(*u)
+
+	// Add custom headers if provided
+	for k, v := range headers {
+		for _, vv := range v {
+			req.Headers.Add(k, vv)
+		}
+	}
 
 	nativeRequest, err := c.adapter.ConvertToNativeRequest(ctx, req)
 	if err != nil {

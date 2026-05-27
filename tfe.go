@@ -94,6 +94,7 @@ type Client struct {
 // Meta contains any HCP Terraform APIs which provide data about the API itself.
 type Meta struct {
 	IPRanges IPRanges
+	OpenAPI  OpenAPI
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -174,6 +175,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.API = api.NewApiClient(adapter)
 	client.Meta = Meta{
 		IPRanges: &ipRanges{
+			client: client,
+		},
+		OpenAPI: &openAPI{
 			client: client,
 		},
 	}
