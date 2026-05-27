@@ -59,14 +59,14 @@ type TFPolicyEvaluationResultCount struct {
 type TFPolicyEvaluationErrorType string
 
 const (
-	TFPolicyEvaluationErrorTypeSetupError              TFPolicyEvaluationErrorType = "setup_error"
-	TFPolicyEvaluationErrorTypeIncompatbleAgentVersion TFPolicyEvaluationErrorType = "incompatible_agent_version"
+	TFPolicyEvaluationErrorTypeSetupError               TFPolicyEvaluationErrorType = "setup_error"
+	TFPolicyEvaluationErrorTypeIncompatibleAgentVersion TFPolicyEvaluationErrorType = "incompatible_agent_version"
 )
 
 type TFPolicyEvaluationError struct {
 	Type    TFPolicyEvaluationErrorType `jsonapi:"attr,type"`
 	Summary string                      `jsonapi:"attr,summary"`
-	Details string                      `jsonapi:"attr,detail"`
+	Detail  string                      `jsonapi:"attr,detail"`
 }
 
 type TFPolicyEvaluationPermissions struct {
