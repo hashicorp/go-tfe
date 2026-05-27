@@ -14,7 +14,8 @@ var _ ProviderSets = (*providerSets)(nil)
 // ProviderSets describes all the Provider Set related methods that the
 // Terraform Enterprise API supports.
 //
-// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/provider-sets
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 type ProviderSets interface {
 	// Create is used to create a new provider set.
 	Create(ctx context.Context, organization string, options ProviderSetCreateOptions) (*ProviderSet, error)
@@ -29,7 +30,10 @@ type ProviderSets interface {
 	Delete(ctx context.Context, providerSetID string) error
 }
 
-// ProviderSet describes all the Provider Set related methods that the
+// ProviderSet represents a Terraform enterprise provider set.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 type ProviderSet struct {
 	ID               string `jsonapi:"primary,provider-sets"`
 	Name             string `jsonapi:"attr,name"`
@@ -50,6 +54,9 @@ type providerSets struct {
 }
 
 // ProviderSetCreateOptions represents the options for creating a new provider set.
+
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 type ProviderSetCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
@@ -79,7 +86,10 @@ type ProviderSetCreateOptions struct {
 	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 }
 
-// ProviderSetUpdateOptions represents the options for creating a new provider set.
+// ProviderSetUpdateOptions represents the options for updating a new provider set.
+
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 type ProviderSetUpdateOptions struct {
 	// Optional: Name of the provider set.
 	Name *string
@@ -163,6 +173,9 @@ func (o ProviderSetUpdateOptions) payload() *providerSetUpdatePayload {
 }
 
 // Create is used to create a new provider set.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 func (p *providerSets) Create(ctx context.Context, organization string, options ProviderSetCreateOptions) (*ProviderSet, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -187,6 +200,9 @@ func (p *providerSets) Create(ctx context.Context, organization string, options 
 }
 
 // Read a provider set by its ID.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 func (p *providerSets) Read(ctx context.Context, providerSetID string) (*ProviderSet, error) {
 	if !validStringID(&providerSetID) {
 		return nil, ErrInvalidProviderSetID
@@ -208,6 +224,9 @@ func (p *providerSets) Read(ctx context.Context, providerSetID string) (*Provide
 }
 
 // Update values of an existing provider set.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 func (p *providerSets) Update(ctx context.Context, providerSetID string, options ProviderSetUpdateOptions) (*ProviderSet, error) {
 	if !validStringID(&providerSetID) {
 		return nil, ErrInvalidProviderSetID
@@ -231,6 +250,9 @@ func (p *providerSets) Update(ctx context.Context, providerSetID string, options
 }
 
 // Delete a provider set by its ID.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
 func (p *providerSets) Delete(ctx context.Context, providerSetID string) error {
 	if !validStringID(&providerSetID) {
 		return ErrInvalidProviderSetID
