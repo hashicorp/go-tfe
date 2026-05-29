@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Adds BETA support for listing `TFPolicyEvaluationOutcome`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @subhro-acharjee-1 [#1313](https://github.com/hashicorp/go-tfe/pull/1313)
+* Adds `Identifier`, `OAuthTokenID`, and `GHAInstallationID` fields to `RegistryModuleVCSRepoUpdateOptions` so callers can update a registry module's VCS repository identifier and connection (OAuth token or GitHub App installation) via the `Update` method; setting both `OAuthTokenID` and `GHAInstallationID` in the same call returns `ErrMutuallyExclusiveOAuthTokenAndGHAInstallation` [#TF-37919]
 
 # v1.107.0
 

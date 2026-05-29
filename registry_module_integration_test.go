@@ -622,6 +622,68 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, false, rm.VCSRepo.Tags)
 		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
 	})
+
+	t.Run("change repo identifier", func(t *testing.T) {
+		alternateIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_ALTERNATE_IDENTIFIER")
+		if alternateIdentifier == "" {
+			t.Skip("Export a valid GITHUB_REGISTRY_MODULE_ALTERNATE_IDENTIFIER before running this test")
+		}
+
+		options := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Identifier: String(alternateIdentifier),
+			},
+		}
+		rmUpdated, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.Equal(t, alternateIdentifier, rmUpdated.VCSRepo.Identifier)
+	})
+
+	t.Run("swap connection from OAuth token to GitHub App installation", func(t *testing.T) {
+		gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+		if gHAInstallationID == "" {
+			t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test")
+		}
+
+		options := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Identifier:        String(githubIdentifier),
+				GHAInstallationID: String(gHAInstallationID),
+			},
+		}
+		rmUpdated, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.Equal(t, gHAInstallationID, rmUpdated.VCSRepo.GHAInstallationID)
+
+		// Swap back to OAuth token
+		optionsBack := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Identifier:   String(githubIdentifier),
+				OAuthTokenID: String(oauthTokenTest.ID),
+			},
+		}
+		rmRestored, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, optionsBack)
+		require.NoError(t, err)
+		assert.Equal(t, githubIdentifier, rmRestored.VCSRepo.Identifier)
+	})
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
