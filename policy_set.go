@@ -77,6 +77,12 @@ type PolicySets interface {
 
 	// Delete a policy set by its ID.
 	Delete(ctx context.Context, policyID string) error
+
+	// BETA: AddTagSelectors adds tag selectors (i.e. tag inclusion / exclusion) to a policy set.
+	AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagSelectorsOptions) error
+
+	// BETA: RemoveTagSelectors removes tag selectors (i.e. tag inclusion / exclusion) from a policy set.
+	RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetRemoveTagSelectorsOptions) error
 }
 
 // policySets implements PolicySets.
@@ -110,6 +116,8 @@ type PolicySet struct {
 	PolicyToolVersion string    `jsonapi:"attr,policy-tool-version"`
 
 	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns"`
+	// BETA: The tag selectors for this policy set.
+	TagSelectors []*PolicySetTagSelectorAttr `jsonapi:"attr,tag-selectors"`
 
 	// Relations
 	// The organization to which the policy set belongs to.
@@ -130,6 +138,13 @@ type PolicySet struct {
 	Projects []*Project `jsonapi:"relation,projects"`
 	// The project exclusions to which the policy set applies.
 	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions"`
+}
+
+// PolicySetTagSelectorAttr represents a tag selector as returned by the read API.
+type PolicySetTagSelectorAttr struct {
+	Key       string  `jsonapi:"attr,tag-key"`
+	Value     *string `jsonapi:"attr,tag-value"`
+	IsExclude bool    `jsonapi:"attr,is-exclude"`
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
@@ -229,6 +244,9 @@ type PolicySetCreateOptions struct {
 
 	// Optional: The initial list of project exclusions for which the policy set should be enforced.
 	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions,omitempty"`
+
+	// BETA: Optional: A list of tag selectors for enforcement/exclusion based on tags
+	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -339,6 +357,38 @@ type PolicySetAddProjectsOptions struct {
 type PolicySetRemoveProjectsOptions struct {
 	// The projects to remove from the policy set.
 	Projects []*Project
+}
+
+// PolicySetAddTagSelectorsOptions represents the options for adding
+// tag selectors to a policy set.
+type PolicySetAddTagSelectorsOptions struct {
+	// The tag selectors to add to the policy set.
+	TagSelectors []*PolicySetTagSelector
+}
+
+// PolicySetRemoveTagSelectorsOptions represents the options for removing
+// tag selectors from a policy set.
+type PolicySetRemoveTagSelectorsOptions struct {
+	// The tag selectors to remove from the policy set.
+	TagSelectors []*PolicySetTagSelector
+}
+
+// PolicySetTagSelectors represents a tag selector for a policy set.
+// Tag selectors control whether a policy set applies to (includes) or
+// is exempted from (excludes) workspaces that carry a matching tag.
+// The IsExclude field determines the behavior: false means inclusion,
+// true means exclusion. For tags that have only a key and no value,
+// set Value to nil.
+type PolicySetTagSelector struct {
+	Key       string  `json:"tag-key"`
+	Value     *string `json:"tag-value"`
+	IsExclude bool    `json:"is-exclude"`
+}
+
+// policySetTagSelectorsRequest is the wire format for the tag-selectors
+// POST and DELETE endpoints, which expect {"data": [...]}.
+type policySetTagSelectorsRequest struct {
+	Data []*PolicySetTagSelector `json:"data"`
 }
 
 // List all the policies for a given organization.
@@ -620,6 +670,42 @@ func (s *policySets) RemoveProjectExclusions(ctx context.Context, policySetID st
 	return req.Do(ctx, nil)
 }
 
+// BETA: AddTagSelectors adds tag selectors to a policy set.
+func (s *policySets) AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagSelectorsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/tag-selectors", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("POST", u, &policySetTagSelectorsRequest{Data: options.TagSelectors})
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// BETA: RemoveTagSelectors removes tag selectors from a policy set.
+func (s *policySets) RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetRemoveTagSelectorsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/tag-selectors", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("DELETE", u, &policySetTagSelectorsRequest{Data: options.TagSelectors})
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Delete a policy set by its ID.
 func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	if !validStringID(&policySetID) {
@@ -748,6 +834,26 @@ func (o PolicySetRemoveProjectExclusionsOptions) valid() error {
 	}
 	if len(o.ProjectExclusions) == 0 {
 		return ErrProjectMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetAddTagSelectorsOptions) valid() error {
+	if o.TagSelectors == nil {
+		return ErrRequiredTagSelectors
+	}
+	if len(o.TagSelectors) == 0 {
+		return ErrTagSelectorMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetRemoveTagSelectorsOptions) valid() error {
+	if o.TagSelectors == nil {
+		return ErrRequiredTagSelectors
+	}
+	if len(o.TagSelectors) == 0 {
+		return ErrTagSelectorMinLimit
 	}
 	return nil
 }

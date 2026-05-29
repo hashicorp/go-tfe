@@ -378,6 +378,10 @@ var (
 
 	ErrProjectMinLimit = errors.New("must provide at least one project")
 
+	ErrRequiredTagSelectors = errors.New("tag selectors is required")
+
+	ErrTagSelectorMinLimit = errors.New("must provide at least one tag selector")
+
 	ErrRequiredPlan = errors.New("plan is required")
 
 	ErrRequiredPolicies = errors.New("policies is required")
