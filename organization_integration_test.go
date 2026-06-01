@@ -619,6 +619,8 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 		assert.True(t, entitlements.VCSIntegrations)
 		assert.False(t, entitlements.WaypointActions)
 		assert.True(t, entitlements.WaypointTemplatesAndAddons)
+		assert.True(t, entitlements.Infragraph)
+		assert.False(t, entitlements.InfragraphWithNRTU)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {

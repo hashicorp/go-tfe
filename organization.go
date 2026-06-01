@@ -179,6 +179,8 @@ type Entitlements struct {
 	VCSIntegrations            bool   `jsonapi:"attr,vcs-integrations"`
 	WaypointActions            bool   `jsonapi:"attr,waypoint-actions"`
 	WaypointTemplatesAndAddons bool   `jsonapi:"attr,waypoint-templates-and-addons"`
+	Infragraph                  bool   `jsonapi:"attr,infragraph"`
+	InfragraphWithNRTU          bool   `jsonapi:"attr,infragraph-with-nrtu"`
 }
 
 // RunQueue represents the current run queue of an organization.
