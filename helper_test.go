@@ -962,6 +962,53 @@ func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Tea
 	}
 }
 
+func createProjectNotificationConfiguration(t *testing.T, client *Client, project *Project, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
+	var pCleanup func()
+
+	if project == nil {
+		project, pCleanup = createProject(t, client, nil)
+	}
+
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	if options == nil {
+		options = &NotificationConfigurationCreateOptions{
+			DestinationType:    NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:            Bool(false),
+			Name:               String(randomString(t)),
+			Token:              String(randomString(t)),
+			URL:                String(runTaskURL),
+			Triggers:           []NotificationTriggerType{NotificationTriggerCreated},
+			SubscribableChoice: &NotificationConfigurationSubscribableChoice{Project: project},
+		}
+	}
+
+	ctx := context.Background()
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		project.ID,
+		*options,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return nc, func() {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+			t.Errorf("Error destroying project notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
+		}
+
+		if pCleanup != nil {
+			pCleanup()
+		}
+	}
+}
+
 func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*PolicySetParameter, func()) {
 	var psCleanup func()
 
