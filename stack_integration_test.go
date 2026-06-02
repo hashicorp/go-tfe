@@ -540,6 +540,12 @@ func pollStackConfigurationDiagnostics(t *testing.T, ctx context.Context, client
 			}
 
 			t.Logf("Stack configuration %q had %d diagnostics", stackConfigID, count)
+			// for debug purpose only TODO: remove after debugging
+			if diags != nil {
+				for i, item := range diags.Items {
+					t.Logf("DEBUG diagnostics[%d]: severity=%q summary=%q nestedDiags=%d", i, item.Severity, item.Summary, len(item.Diags))
+				}
+			}
 			if count > 0 {
 				finished = true
 			}
