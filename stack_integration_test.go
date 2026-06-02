@@ -436,7 +436,7 @@ func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Cli
 	}
 }
 
-func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) (steps *StackDeploymentStepList) {
+func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string, options *StackDeploymentStepsListOptions) (steps *StackDeploymentStepList) {
 	t.Helper()
 
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
@@ -455,7 +455,7 @@ func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client,
 			t.Fatalf("Stack deployment run %q had no deployment steps at deadline", stackDeploymentRunID)
 		case <-ticker.C:
 			var err error
-			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, nil)
+			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, options)
 			if err != nil {
 				t.Fatalf("Failed to read stack deployment steps for run %q: %s", stackDeploymentRunID, err)
 			}
@@ -500,39 +500,6 @@ func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Cli
 
 			t.Logf("Stack configuration %q had status %q", stackConfigID, stackConfig.Status)
 			if stackConfig.Status.String() == status {
-				finished = true
-			}
-		}
-	}
-
-	return
-}
-
-func pollNewStackConfiguration(t *testing.T, ctx context.Context, client *Client, stackID string) (stackConfig *StackConfiguration) {
-	// pollNewStackConfiguration can be used after a new configuration is fetched
-	// to ensure a non-nil configuration is returned.
-	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
-	defer cancel()
-
-	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack %s for new stack configuration with deadline of %s", stackID, deadline)
-
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	for finished := false; !finished; {
-		t.Log("...")
-		select {
-		case <-ctx.Done():
-			t.Fatalf("Stack %q had no new configuration at deadline", stackID)
-		case <-ticker.C:
-			stackConfigs, err := client.StackConfigurations.List(ctx, stackID, nil)
-			if err != nil {
-				t.Fatalf("Failed to list stack configurations for stack %q: %s", stackID, err)
-			}
-
-			if len(stackConfigs.Items) > 0 {
-				stackConfig = stackConfigs.Items[0]
 				finished = true
 			}
 		}
