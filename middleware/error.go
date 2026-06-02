@@ -31,7 +31,7 @@ func (m *ErrorMiddleware) Intercept(pipeline khttp.Pipeline, middlewareindex int
 	if err != nil {
 		if response != nil && response.StatusCode >= 400 {
 			if apiErr := m.errFactory(response, err); apiErr != nil {
-				return response, apiErr
+				return nil, apiErr
 			}
 		}
 		return response, err
@@ -39,7 +39,7 @@ func (m *ErrorMiddleware) Intercept(pipeline khttp.Pipeline, middlewareindex int
 
 	if response.StatusCode >= 400 {
 		if apiErr := m.errFactory(response, err); apiErr != nil {
-			return response, apiErr
+			return nil, apiErr
 		}
 	}
 

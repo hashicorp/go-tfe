@@ -33,7 +33,7 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 				retryOpts.Hook = opts.Hook
 			}
 		case "ErrorInterceptor":
-			// error interception now handled in GetStream after retries
+			// handled in GetStream after retries
 		}
 	}
 
