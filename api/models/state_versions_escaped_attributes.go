@@ -39,6 +39,8 @@ type StateVersions_attributes struct {
     md5 *string
     // The modules property
     modules StateVersions_attributes_modulesable
+    // The permissions property
+    permissions StateVersions_attributes_permissionsable
     // The providers property
     providers StateVersions_attributes_providersable
     // The resources property
@@ -242,6 +244,16 @@ func (m *StateVersions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStateVersions_attributes_permissionsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPermissions(val.(StateVersions_attributes_permissionsable))
+        }
+        return nil
+    }
     res["providers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateStateVersions_attributes_providersFromDiscriminatorValue)
         if err != nil {
@@ -435,6 +447,11 @@ func (m *StateVersions_attributes) GetMd5()(*string) {
 func (m *StateVersions_attributes) GetModules()(StateVersions_attributes_modulesable) {
     return m.modules
 }
+// GetPermissions gets the permissions property value. The permissions property
+// returns a StateVersions_attributes_permissionsable when successful
+func (m *StateVersions_attributes) GetPermissions()(StateVersions_attributes_permissionsable) {
+    return m.permissions
+}
 // GetProviders gets the providers property value. The providers property
 // returns a StateVersions_attributes_providersable when successful
 func (m *StateVersions_attributes) GetProviders()(StateVersions_attributes_providersable) {
@@ -612,6 +629,10 @@ func (m *StateVersions_attributes) SetMd5(value *string)() {
 func (m *StateVersions_attributes) SetModules(value StateVersions_attributes_modulesable)() {
     m.modules = value
 }
+// SetPermissions sets the permissions property value. The permissions property
+func (m *StateVersions_attributes) SetPermissions(value StateVersions_attributes_permissionsable)() {
+    m.permissions = value
+}
 // SetProviders sets the providers property value. The providers property
 func (m *StateVersions_attributes) SetProviders(value StateVersions_attributes_providersable)() {
     m.providers = value
@@ -681,6 +702,7 @@ type StateVersions_attributesable interface {
     GetLineage()(*string)
     GetMd5()(*string)
     GetModules()(StateVersions_attributes_modulesable)
+    GetPermissions()(StateVersions_attributes_permissionsable)
     GetProviders()(StateVersions_attributes_providersable)
     GetResources()([]StateVersions_attributes_resourcesable)
     GetResourcesProcessed()(*bool)
@@ -708,6 +730,7 @@ type StateVersions_attributesable interface {
     SetLineage(value *string)()
     SetMd5(value *string)()
     SetModules(value StateVersions_attributes_modulesable)()
+    SetPermissions(value StateVersions_attributes_permissionsable)()
     SetProviders(value StateVersions_attributes_providersable)()
     SetResources(value []StateVersions_attributes_resourcesable)()
     SetResourcesProcessed(value *bool)()

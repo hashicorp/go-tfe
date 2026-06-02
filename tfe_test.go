@@ -34,12 +34,13 @@ func testServer(t *testing.T, handlers map[string]http.HandlerFunc) *httptest.Se
 	return ts
 }
 
-func testServerWithClient(t *testing.T, handlers map[string]http.HandlerFunc) (*httptest.Server, *Client) {
+func testServerWithClient(t *testing.T, basePath string, handlers map[string]http.HandlerFunc) (*httptest.Server, *Client) {
 	ts := testServer(t, handlers)
 
 	client, err := NewClient(&Config{
-		Address: ts.URL,
-		Token:   "test-token",
+		Address:  ts.URL,
+		Token:    "test-token",
+		BasePath: basePath,
 	})
 
 	if err != nil {

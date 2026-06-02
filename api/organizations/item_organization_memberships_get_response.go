@@ -20,10 +20,12 @@ type ItemOrganizationMembershipsGetResponse struct {
     // The meta property
     meta ItemOrganizationMembershipsGetResponse_metaable
 }
-// ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included composed type wrapper for classes ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
+// ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included composed type wrapper for classes ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
 type ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included struct {
     // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable
     organizations ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable
+    // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable
+    scimIdentities ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable
     // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable
     teams ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable
     // Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable
@@ -46,6 +48,13 @@ func CreateItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResp
             }
             if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable); ok {
                 result.SetOrganizations(cast)
+            }
+        } else if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateScimIdentitiesFromDiscriminatorValue); val != nil {
+            if err != nil {
+                return nil, err
+            }
+            if cast, ok := val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable); ok {
+                result.SetScimIdentities(cast)
             }
         } else if val, err := parseNode.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateTeamsFromDiscriminatorValue); val != nil {
             if err != nil {
@@ -80,6 +89,11 @@ func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetRespon
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) GetOrganizations()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable) {
     return m.organizations
 }
+// GetScimIdentities gets the scimIdentities property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable
+// returns a ScimIdentitiesable when successful
+func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) GetScimIdentities()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable) {
+    return m.scimIdentities
+}
 // GetTeams gets the teams property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable
 // returns a Teamsable when successful
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) GetTeams()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable) {
@@ -94,6 +108,11 @@ func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetRespon
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetOrganizations() != nil {
         err := writer.WriteObjectValue("", m.GetOrganizations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetScimIdentities() != nil {
+        err := writer.WriteObjectValue("", m.GetScimIdentities())
         if err != nil {
             return err
         }
@@ -114,6 +133,10 @@ func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetRespon
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) SetOrganizations(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable)() {
     m.organizations = value
 }
+// SetScimIdentities sets the scimIdentities property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable
+func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) SetScimIdentities(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable)() {
+    m.scimIdentities = value
+}
 // SetTeams sets the teams property value. Composed type representation for type ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) SetTeams(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)() {
     m.teams = value
@@ -125,9 +148,11 @@ func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetRespon
 type ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetOrganizations()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable)
+    GetScimIdentities()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable)
     GetTeams()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)
     GetUsers()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable)
     SetOrganizations(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationsable)()
+    SetScimIdentities(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.ScimIdentitiesable)()
     SetTeams(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamsable)()
     SetUsers(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Usersable)()
 }

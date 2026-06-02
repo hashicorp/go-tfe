@@ -16,8 +16,8 @@ import (
 )
 
 func TestOpenAPIRead(t *testing.T) {
-	server, client := testServerWithClient(t, map[string]http.HandlerFunc{
-		"/api/meta/openapi": func(w http.ResponseWriter, r *http.Request) {
+	server, client := testServerWithClient(t, "/", map[string]http.HandlerFunc{
+		"/openapi/stable.json": func(w http.ResponseWriter, r *http.Request) {
 			if r.Header.Get("If-Modified-Since") != "" {
 				w.WriteHeader(http.StatusNotModified)
 				return

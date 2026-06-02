@@ -7,10 +7,11 @@ type GetIncludeQueryParameterType int
 const (
     USER_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
     TEAMS_GETINCLUDEQUERYPARAMETERTYPE
+    SCIMIDENTITY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"user", "teams"}[i]
+    return []string{"user", "teams", "scim-identity"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := USER_GETINCLUDEQUERYPARAMETERTYPE
@@ -19,6 +20,8 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = USER_GETINCLUDEQUERYPARAMETERTYPE
         case "teams":
             result = TEAMS_GETINCLUDEQUERYPARAMETERTYPE
+        case "scim-identity":
+            result = SCIMIDENTITY_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

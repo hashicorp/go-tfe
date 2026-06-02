@@ -33,6 +33,10 @@ type Workspaces_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The description property
     description *string
+    // Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+    effectiveRunDataRetentionDesc *string
+    // Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+    effectiveStateVersionRetentionDesc *string
     // The environment property
     environment *string
     // The executionMode property
@@ -172,6 +176,16 @@ func (m *Workspaces_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a
 func (m *Workspaces_attributes) GetDescription()(*string) {
     return m.description
 }
+// GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+// returns a *string when successful
+func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc()(*string) {
+    return m.effectiveRunDataRetentionDesc
+}
+// GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+// returns a *string when successful
+func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc()(*string) {
+    return m.effectiveStateVersionRetentionDesc
+}
 // GetEnvironment gets the environment property value. The environment property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEnvironment()(*string) {
@@ -293,6 +307,26 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetDescription(val)
+        }
+        return nil
+    }
+    res["effective-run-data-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveRunDataRetentionDesc(val)
+        }
+        return nil
+    }
+    res["effective-state-version-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveStateVersionRetentionDesc(val)
         }
         return nil
     }
@@ -864,6 +898,18 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteStringValue("effective-run-data-retention-desc", m.GetEffectiveRunDataRetentionDesc())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("effective-state-version-retention-desc", m.GetEffectiveStateVersionRetentionDesc())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("environment", m.GetEnvironment())
         if err != nil {
             return err
@@ -1112,6 +1158,14 @@ func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3a
 func (m *Workspaces_attributes) SetDescription(value *string)() {
     m.description = value
 }
+// SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string)() {
+    m.effectiveRunDataRetentionDesc = value
+}
+// SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string)() {
+    m.effectiveStateVersionRetentionDesc = value
+}
 // SetEnvironment sets the environment property value. The environment property
 func (m *Workspaces_attributes) SetEnvironment(value *string)() {
     m.environment = value
@@ -1258,6 +1312,8 @@ type Workspaces_attributesable interface {
     GetAutoDestroyStatus()(*string)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDescription()(*string)
+    GetEffectiveRunDataRetentionDesc()(*string)
+    GetEffectiveStateVersionRetentionDesc()(*string)
     GetEnvironment()(*string)
     GetExecutionMode()(*Workspaces_attributes_executionMode)
     GetFileTriggersEnabled()(*bool)
@@ -1302,6 +1358,8 @@ type Workspaces_attributesable interface {
     SetAutoDestroyStatus(value *string)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDescription(value *string)()
+    SetEffectiveRunDataRetentionDesc(value *string)()
+    SetEffectiveStateVersionRetentionDesc(value *string)()
     SetEnvironment(value *string)()
     SetExecutionMode(value *Workspaces_attributes_executionMode)()
     SetFileTriggersEnabled(value *bool)()

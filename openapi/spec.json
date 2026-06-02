@@ -13,11 +13,6 @@
       "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs"
     }
   },
-  "servers": [
-    {
-      "url": "https://app.terraform.io/api/v2"
-    }
-  ],
   "security": [
     {
       "bearerAuth": []
@@ -1837,11 +1832,12 @@
               "type": "string",
               "enum": [
                 "user",
-                "teams"
+                "teams",
+                "scim-identity"
               ]
             },
             "required": false,
-            "description": "Optionally side-load relationships. Can include \"user\" or \"teams\"."
+            "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"scim-identity\".\nNote: \"scim-identity\" is only available on HCP Terraform (not Terraform Enterprise).\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -1890,6 +1886,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/organizations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/scim-identities"
                           }
                         ]
                       }
@@ -7910,13 +7909,13 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Temporary download URL generated",
-            "headers": {
-              "Location": {
-                "description": "Storage URL to .tar.gz file containing the configuration version",
+          "200": {
+            "description": ".tar.gz file containing the configuration version.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -9094,13 +9093,13 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Redirect to the temporary download URL for the policy code",
-            "headers": {
-              "Location": {
-                "description": "Temporary storage URL for the policy code",
+          "200": {
+            "description": ".tar.gz file containing the policy code.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -10911,13 +10910,13 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Temporary download URL generated",
-            "headers": {
-              "Location": {
-                "description": "Storage URL to .tar.gz archive containing the exported plan data",
+          "200": {
+            "description": ".tar.gz file containing the exported plan data.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -14646,13 +14645,13 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Temporary download URL generated",
-            "headers": {
-              "Location": {
-                "description": "Storage URL to .tar.gz file containing the configuration version",
+          "200": {
+            "description": ".tar.gz file containing the configuration version.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -17600,13 +17599,13 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Redirect to download URL",
-            "headers": {
-              "Location": {
-                "description": "Pre-signed URL for downloading the task result body",
+          "200": {
+            "description": "File containing the task result body.",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -19802,6 +19801,30 @@
                     "$ref": "#/components/schemas/related"
                   }
                 }
+              },
+              "scim-identity": {
+                "type": "object",
+                "description": "The SCIM identity associated with this organization membership.\nOnly available on HCP Terraform when SCIM is enabled.\nReturns null if the user has no SCIM identity for this organization.\n",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "scim-identities"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
               }
             }
           },
@@ -20088,6 +20111,40 @@
               },
               "authentication-tokens": {
                 "$ref": "#/components/schemas/links_related"
+              }
+            }
+          }
+        }
+      },
+      "scim-identities": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the SCIM identity"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scim-identities"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "provisioned",
+                  "claimed"
+                ],
+                "readOnly": true,
+                "description": "The provisioning status of the user.\n- \"provisioned\": User was created via SCIM provisioning\n- \"claimed\": User claimed their account or existed before SCIM\n"
               }
             }
           }
@@ -20997,6 +21054,16 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "effective-state-version-retention-desc": {
+                "type": "string",
+                "nullable": true,
+                "description": "Terraform Enterprise only. A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n"
+              },
+              "effective-run-data-retention-desc": {
+                "type": "string",
+                "nullable": true,
+                "description": "Terraform Enterprise only. A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n"
               }
             }
           },
@@ -22538,6 +22605,16 @@
                 "type": "integer",
                 "nullable": true,
                 "readOnly": true
+              },
+              "permissions": {
+                "type": "object",
+                "readOnly": true,
+                "properties": {
+                  "can-restore-backing-data": {
+                    "type": "boolean",
+                    "readOnly": true
+                  }
+                }
               }
             }
           },

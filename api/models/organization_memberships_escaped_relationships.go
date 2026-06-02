@@ -12,6 +12,8 @@ type OrganizationMemberships_relationships struct {
     additionalData map[string]any
     // The organization this membership belongs to.
     organization OrganizationMemberships_relationships_organizationable
+    // The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
+    scimIdentity OrganizationMemberships_relationships_scimIdentityable
     // The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
     teams OrganizationMemberships_relationships_teamsable
     // The user associated with this organization membership.
@@ -48,6 +50,16 @@ func (m *OrganizationMemberships_relationships) GetFieldDeserializers()(map[stri
         }
         return nil
     }
+    res["scim-identity"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_scimIdentityFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimIdentity(val.(OrganizationMemberships_relationships_scimIdentityable))
+        }
+        return nil
+    }
     res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_teamsFromDiscriminatorValue)
         if err != nil {
@@ -75,6 +87,11 @@ func (m *OrganizationMemberships_relationships) GetFieldDeserializers()(map[stri
 func (m *OrganizationMemberships_relationships) GetOrganization()(OrganizationMemberships_relationships_organizationable) {
     return m.organization
 }
+// GetScimIdentity gets the scim-identity property value. The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
+// returns a OrganizationMemberships_relationships_scimIdentityable when successful
+func (m *OrganizationMemberships_relationships) GetScimIdentity()(OrganizationMemberships_relationships_scimIdentityable) {
+    return m.scimIdentity
+}
 // GetTeams gets the teams property value. The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
 // returns a OrganizationMemberships_relationships_teamsable when successful
 func (m *OrganizationMemberships_relationships) GetTeams()(OrganizationMemberships_relationships_teamsable) {
@@ -89,6 +106,12 @@ func (m *OrganizationMemberships_relationships) GetUser()(OrganizationMembership
 func (m *OrganizationMemberships_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("scim-identity", m.GetScimIdentity())
         if err != nil {
             return err
         }
@@ -121,6 +144,10 @@ func (m *OrganizationMemberships_relationships) SetAdditionalData(value map[stri
 func (m *OrganizationMemberships_relationships) SetOrganization(value OrganizationMemberships_relationships_organizationable)() {
     m.organization = value
 }
+// SetScimIdentity sets the scim-identity property value. The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
+func (m *OrganizationMemberships_relationships) SetScimIdentity(value OrganizationMemberships_relationships_scimIdentityable)() {
+    m.scimIdentity = value
+}
 // SetTeams sets the teams property value. The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
 func (m *OrganizationMemberships_relationships) SetTeams(value OrganizationMemberships_relationships_teamsable)() {
     m.teams = value
@@ -133,9 +160,11 @@ type OrganizationMemberships_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetOrganization()(OrganizationMemberships_relationships_organizationable)
+    GetScimIdentity()(OrganizationMemberships_relationships_scimIdentityable)
     GetTeams()(OrganizationMemberships_relationships_teamsable)
     GetUser()(OrganizationMemberships_relationships_userable)
     SetOrganization(value OrganizationMemberships_relationships_organizationable)()
+    SetScimIdentity(value OrganizationMemberships_relationships_scimIdentityable)()
     SetTeams(value OrganizationMemberships_relationships_teamsable)()
     SetUser(value OrganizationMemberships_relationships_userable)()
 }

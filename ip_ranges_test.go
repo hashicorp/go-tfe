@@ -14,7 +14,7 @@ import (
 )
 
 func TestIPRangesRead(t *testing.T) {
-	server, client := testServerWithClient(t, map[string]http.HandlerFunc{
+	server, client := testServerWithClient(t, "/", map[string]http.HandlerFunc{
 		"/api/meta/ip-ranges": func(w http.ResponseWriter, r *http.Request) {
 			if r.Header.Get("If-Modified-Since") != "" {
 				w.WriteHeader(http.StatusNotModified)

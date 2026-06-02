@@ -33,9 +33,11 @@ func (i *openAPI) Read(ctx context.Context, prerelease bool, modifiedSince *time
 		reqHeaders.Add("If-Modified-Since", modifiedSince.Format(http.TimeFormat))
 	}
 
-	url := "/api/meta/openapi"
+	url := "/openapi"
 	if prerelease {
-		url += "?version=prerelease"
+		url += "/prerelease.json"
+	} else {
+		url += "/stable.json"
 	}
 
 	resp, err := i.client.GetStream(ctx, url, reqHeaders)

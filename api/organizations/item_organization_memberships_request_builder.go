@@ -20,7 +20,7 @@ type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     Filteremail *string "uriparametername:\"filter%5Bemail%5D\""
     // Filter memberships by status. Can be "active", "invited", or "inactive".
     Filterstatus *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetFilterStatusQueryParameterType "uriparametername:\"filter%5Bstatus%5D\""
-    // Optionally side-load relationships. Can include "user" or "teams".
+    // Optionally side-load relationships. Can include "user", "teams", or "scim-identity".Note: "scim-identity" is only available on HCP Terraform (not Terraform Enterprise).
     Include *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

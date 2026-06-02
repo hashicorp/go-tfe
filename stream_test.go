@@ -18,7 +18,7 @@ func TestGetStream(t *testing.T) {
 
 	xCustomHeaderCount := 0
 
-	ts, client := testServerWithClient(t, map[string]http.HandlerFunc{
+	ts, client := testServerWithClient(t, "/api/v2", map[string]http.HandlerFunc{
 		"GET /api/v2/policy-checks/{id}/output": func(w http.ResponseWriter, r *http.Request) {
 			// Verify auth middleware applied the Bearer token
 			assert.Equal(t, "Bearer test-token", r.Header.Get("Authorization"))
