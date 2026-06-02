@@ -507,3 +507,44 @@ func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Cli
 
 	return
 }
+
+func pollStackConfigurationDiagnostics(t *testing.T, ctx context.Context, client *Client, stackConfigID string) (diags *StackDiagnosticsList) {
+	t.Helper()
+
+	// pollStackConfigurationDiagnostics will poll the given stack configuration
+	// until it has diagnostics or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack configuration %q for diagnostics with deadline of %s", stackConfigID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack configuration %q had no diagnostics at deadline", stackConfigID)
+		case <-ticker.C:
+			var err error
+			diags, err = client.StackConfigurations.Diagnostics(ctx, stackConfigID)
+			if err != nil {
+				t.Fatalf("Failed to read diagnostics for stack configuration %q: %s", stackConfigID, err)
+			}
+
+			count := 0
+			if diags != nil {
+				count = len(diags.Items)
+			}
+
+			t.Logf("Stack configuration %q had %d diagnostics", stackConfigID, count)
+			if count > 0 {
+				finished = true
+			}
+		}
+	}
+
+	return diags
+}

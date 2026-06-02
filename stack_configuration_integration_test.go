@@ -160,8 +160,7 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 	pollStackConfigurationStatus(t, ctx, client, stackUpdated.LatestStackConfiguration.ID, "failed")
 
 	t.Run("Diagnostics with valid ID", func(t *testing.T) {
-		diags, err := client.StackConfigurations.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID)
-		assert.NoError(t, err)
+		diags := pollStackConfigurationDiagnostics(t, ctx, client, stackUpdated.LatestStackConfiguration.ID)
 		require.NotEmpty(t, diags.Items)
 
 		diag := diags.Items[0]
