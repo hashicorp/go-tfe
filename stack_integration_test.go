@@ -436,7 +436,7 @@ func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Cli
 	}
 }
 
-func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) (steps *StackDeploymentStepList) {
+func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string, options *StackDeploymentStepsListOptions) (steps *StackDeploymentStepList) {
 	t.Helper()
 
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
@@ -455,7 +455,7 @@ func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client,
 			t.Fatalf("Stack deployment run %q had no deployment steps at deadline", stackDeploymentRunID)
 		case <-ticker.C:
 			var err error
-			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, nil)
+			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, options)
 			if err != nil {
 				t.Fatalf("Failed to read stack deployment steps for run %q: %s", stackDeploymentRunID, err)
 			}
@@ -508,14 +508,16 @@ func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Cli
 	return
 }
 
-func pollNewStackConfiguration(t *testing.T, ctx context.Context, client *Client, stackID string) (stackConfig *StackConfiguration) {
-	// pollNewStackConfiguration can be used after a new configuration is fetched
-	// to ensure a non-nil configuration is returned.
+func pollStackConfigurationDiagnostics(t *testing.T, ctx context.Context, client *Client, stackConfigID string) (diags *StackDiagnosticsList) {
+	t.Helper()
+
+	// pollStackConfigurationDiagnostics will poll the given stack configuration
+	// until it has diagnostics or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
 	defer cancel()
 
 	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack %s for new stack configuration with deadline of %s", stackID, deadline)
+	t.Logf("Polling stack configuration %q for diagnostics with deadline of %s", stackConfigID, deadline)
 
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
@@ -524,19 +526,25 @@ func pollNewStackConfiguration(t *testing.T, ctx context.Context, client *Client
 		t.Log("...")
 		select {
 		case <-ctx.Done():
-			t.Fatalf("Stack %q had no new configuration at deadline", stackID)
+			t.Fatalf("Stack configuration %q had no diagnostics at deadline", stackConfigID)
 		case <-ticker.C:
-			stackConfigs, err := client.StackConfigurations.List(ctx, stackID, nil)
+			var err error
+			diags, err = client.StackConfigurations.Diagnostics(ctx, stackConfigID)
 			if err != nil {
-				t.Fatalf("Failed to list stack configurations for stack %q: %s", stackID, err)
+				t.Fatalf("Failed to read diagnostics for stack configuration %q: %s", stackConfigID, err)
 			}
 
-			if len(stackConfigs.Items) > 0 {
-				stackConfig = stackConfigs.Items[0]
+			count := 0
+			if diags != nil {
+				count = len(diags.Items)
+			}
+
+			t.Logf("Stack configuration %q had %d diagnostics", stackConfigID, count)
+			if count > 0 {
 				finished = true
 			}
 		}
 	}
 
-	return
+	return diags
 }
