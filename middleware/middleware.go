@@ -17,6 +17,7 @@ func nilErrorFactory(_ *nethttp.Response, _ error) error {
 // GetForKiota uses the provided options to configure the default middlewares used by kiota
 // as well as the custom middleware supplied by the SDK.
 func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Middleware, error) {
+	var errFactory APIErrorFactory = nilErrorFactory
 	var retryOpts = RetryOptions{
 		Enabled:    false,
 		Hook:       func(retryCount int, response *nethttp.Response) {},
@@ -33,7 +34,7 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 				retryOpts.Hook = opts.Hook
 			}
 		case "ErrorInterceptor":
-			// handled in GetStream after retries
+			errFactory = option.value.(APIErrorFactory)
 		}
 	}
 
@@ -77,6 +78,7 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		return nil, err
 	}
 
+	defaultMiddleware = append([]khttp.Middleware{NewErrorMiddleware(errFactory)}, defaultMiddleware...)
 	defaultMiddleware = append(defaultMiddleware, NewRateLimitMiddleware())
 	return defaultMiddleware, nil
 }

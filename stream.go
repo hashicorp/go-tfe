@@ -68,9 +68,5 @@ func (c *Client) GetStream(ctx context.Context, uriOrPath string, headers http.H
 		return nil, err
 	}
 
-	if httpResp.StatusCode >= 400 {
-		return nil, APIErrorFactory(httpResp, nil)
-	}
-
 	return httpResp, nil
 }
