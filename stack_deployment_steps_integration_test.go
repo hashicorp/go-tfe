@@ -66,8 +66,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 	t.Run("List without options", func(t *testing.T) {
 		t.Parallel()
 
-		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-		require.NoError(t, err)
+		steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID, nil)
 		require.NotNil(t, steps)
 		require.NotEmpty(t, steps.Items)
 
@@ -84,13 +83,12 @@ func TestStackDeploymentStepsList(t *testing.T) {
 	t.Run("List with pagination", func(t *testing.T) {
 		t.Parallel()
 
-		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, &StackDeploymentStepsListOptions{
+		steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID, &StackDeploymentStepsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   10,
 			},
 		})
-		require.NoError(t, err)
 		require.NotNil(t, steps)
 		require.NotEmpty(t, steps.Items)
 
@@ -148,7 +146,7 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 
 	sdr := stackDeploymentRuns.Items[0]
 
-	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID, nil)
 
 	step := steps.Items[0]
 
@@ -209,7 +207,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 
 	sdr := stackDeploymentRuns.Items[0]
 
-	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID, nil)
 
 	step := steps.Items[0]
 	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
@@ -310,7 +308,7 @@ func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 	require.NotEmpty(t, stackDeploymentRuns)
 
 	sdr := stackDeploymentRuns.Items[0]
-	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID, nil)
 
 	step := steps.Items[0]
 	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
