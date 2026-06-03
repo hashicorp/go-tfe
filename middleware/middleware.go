@@ -78,6 +78,7 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		return nil, err
 	}
 
-	defaultMiddleware = append(defaultMiddleware, NewRateLimitMiddleware(), NewErrorMiddleware(errFactory))
+	defaultMiddleware = append([]khttp.Middleware{NewErrorMiddleware(errFactory)}, defaultMiddleware...)
+	defaultMiddleware = append(defaultMiddleware, NewRateLimitMiddleware())
 	return defaultMiddleware, nil
 }

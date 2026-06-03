@@ -5,6 +5,8 @@ go 1.25.5
 require (
 	github.com/hashicorp/cli v1.1.7
 	github.com/hashicorp/go-tfe v1.78.0
+	github.com/microsoft/kiota-abstractions-go v1.9.2
+	github.com/microsoft/kiota-http-go v1.5.3
 )
 
 require (
@@ -18,18 +20,12 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
-	github.com/hashicorp/jsonapi v1.4.3-0.20250220162346-81a76b606f3e // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/microsoft/kiota-abstractions-go v1.9.2 // indirect
-	github.com/microsoft/kiota-http-go v1.5.3 // indirect
 	github.com/microsoft/kiota-serialization-form-go v1.1.2 // indirect
 	github.com/microsoft/kiota-serialization-json-go v1.1.2 // indirect
 	github.com/microsoft/kiota-serialization-multipart-go v1.1.2 // indirect
@@ -48,7 +44,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	golang.org/x/crypto v0.46.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/time v0.10.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
