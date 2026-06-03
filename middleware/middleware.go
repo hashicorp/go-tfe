@@ -3,6 +3,7 @@
 package middleware
 
 import (
+	"errors"
 	"time"
 
 	nethttp "net/http"
@@ -26,7 +27,10 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 	for _, option := range options {
 		switch option.key {
 		case "RetryOptions":
-			opts := option.value.(RetryOptions)
+			opts, ok := option.value.(RetryOptions)
+			if !ok {
+				return nil, errors.New("invalid type for RetryOptions")
+			}
 			retryOpts.Enabled = opts.Enabled
 			retryOpts.RetryServerErrors = opts.RetryServerErrors
 			retryOpts.MaxRetries = opts.MaxRetries
@@ -34,7 +38,11 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 				retryOpts.Hook = opts.Hook
 			}
 		case "ErrorInterceptor":
-			errFactory = option.value.(APIErrorFactory)
+			opts, ok := option.value.(APIErrorFactory)
+			if !ok {
+				return nil, errors.New("invalid type for ErrorInterceptor")
+			}
+			errFactory = opts
 		}
 	}
 

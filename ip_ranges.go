@@ -22,12 +22,17 @@ type IPRanges interface {
 	// then it will only return the IP ranges changes since that date.
 	// The format for `modifiedSince` can be found here:
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since
-	Read(ctx context.Context, modifiedSince *time.Time) (*IPRange, error)
+	Read(ctx context.Context, modifiedSince *time.Time) (*IPRangesResponse, error)
 }
 
 // ipRanges implements IPRanges interface.
 type ipRanges struct {
 	client *Client
+}
+
+type IPRangesResponse struct {
+	WithLastModified
+	IPRange *IPRange
 }
 
 // IPRange represents a list of HCP Terraform's IP ranges
@@ -43,7 +48,7 @@ type IPRange struct {
 }
 
 // Read an IPRange that was not modified since the specified date.
-func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRange, error) {
+func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRangesResponse, error) {
 	reqHeaders := http.Header{}
 	reqHeaders.Add("Accept", "application/json, */*")
 
@@ -57,7 +62,7 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRange
 	}
 
 	if resp.StatusCode == http.StatusNotModified {
-		return nil, nil
+		return &IPRangesResponse{}, nil
 	}
 
 	ipRanges, err := io.ReadAll(resp.Body)
@@ -72,5 +77,15 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRange
 		return nil, err
 	}
 
-	return &ir, nil
+	var lastModified *time.Time
+	if lm := resp.Header.Get("Last-Modified"); lm != "" {
+		if t, err := time.Parse(http.TimeFormat, lm); err == nil {
+			lastModified = &t
+		}
+	}
+
+	return &IPRangesResponse{
+		IPRange:          &ir,
+		WithLastModified: WithLastModified{LastModified: lastModified},
+	}, nil
 }

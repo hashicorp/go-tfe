@@ -46,16 +46,18 @@ func TestIPRangesRead(t *testing.T) {
 	t.Run("without modifiedSince", func(t *testing.T) {
 		r, err := client.Meta.IPRanges.Read(ctx, nil)
 		require.NoError(t, err)
-		assert.NotEmpty(t, r.API)
-		assert.NotEmpty(t, r.Notifications)
-		assert.NotEmpty(t, r.Sentinel)
-		assert.NotEmpty(t, r.VCS)
+		assert.False(t, r.IsNotModified())
+		require.NotNil(t, r.IPRange)
+		assert.NotEmpty(t, r.IPRange.API)
+		assert.NotEmpty(t, r.IPRange.Notifications)
+		assert.NotEmpty(t, r.IPRange.Sentinel)
+		assert.NotEmpty(t, r.IPRange.VCS)
 	})
 
 	t.Run("with modifiedSince", func(t *testing.T) {
 		modifiedSince := time.Now().Add(-1 * time.Hour)
 		r, err := client.Meta.IPRanges.Read(ctx, &modifiedSince)
 		require.NoError(t, err)
-		assert.Nil(t, r)
+		assert.True(t, r.IsNotModified())
 	})
 }

@@ -27,9 +27,8 @@ func (m *RateLimitMiddleware) Intercept(pipeline khttp.Pipeline, index int, req 
 	// if rate limited, translate the custom header into Retry-After, which Kiota will use internally
 	resetHeader := resp.Header.Get(rateLimitResetHeader)
 	if resetHeader != "" {
-		val, _ := strconv.ParseFloat(resetHeader, 64)
-
-		if val > 0 {
+		val, err := strconv.ParseFloat(resetHeader, 64)
+		if err == nil && val > 0 {
 			// Inject the standard header that Kiota's RetryHandler understands
 			resp.Header.Set("Retry-After", fmt.Sprintf("%.3f", val))
 		}

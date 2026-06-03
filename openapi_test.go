@@ -47,13 +47,15 @@ func TestOpenAPIRead(t *testing.T) {
 	t.Run("without modifiedSince", func(t *testing.T) {
 		r, err := client.Meta.OpenAPI.Read(ctx, false, nil)
 		require.NoError(t, err)
-		assert.NotEmpty(t, r)
+		require.NotNil(t, r)
+		assert.NotEmpty(t, r.Bytes)
 	})
 
 	t.Run("with modifiedSince", func(t *testing.T) {
 		modifiedSince := time.Now().Add(-1 * time.Hour)
 		r, err := client.Meta.OpenAPI.Read(ctx, false, &modifiedSince)
 		require.NoError(t, err)
-		assert.Nil(t, r)
+		require.NotNil(t, r)
+		require.True(t, r.IsNotModified())
 	})
 }
