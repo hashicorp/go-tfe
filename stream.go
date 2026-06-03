@@ -31,7 +31,7 @@ func (c *Client) GetStream(ctx context.Context, uriOrPath string, headers http.H
 		return nil, fmt.Errorf("failed to parse URL: %w", err)
 	}
 
-	if !strings.HasPrefix(u.Path, "/api") {
+	if !strings.HasPrefix(u.Path, "/api/v2") && !strings.HasPrefix(u.Path, "/openapi") {
 		u.Path = path.Join(c.baseURL.Path, u.Path)
 	}
 
