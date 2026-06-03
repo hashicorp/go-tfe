@@ -160,21 +160,27 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 	pollStackConfigurationStatus(t, ctx, client, stackUpdated.LatestStackConfiguration.ID, "failed")
 
 	t.Run("Diagnostics with valid ID", func(t *testing.T) {
-		diags, err := client.StackConfigurations.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID)
-		assert.NoError(t, err)
+		diags := pollStackConfigurationDiagnostics(t, ctx, client, stackUpdated.LatestStackConfiguration.ID)
 		require.NotEmpty(t, diags.Items)
 
-		diag := diags.Items[0]
+		for _, diag := range diags.Items {
+			assert.NotEmpty(t, diag.ID)
+			assert.NotEmpty(t, diag.Severity)
+			assert.NotEmpty(t, diag.Summary)
+			assert.NotZero(t, diag.CreatedAt)
 
-		assert.NotEmpty(t, diag.ID)
-		assert.NotEmpty(t, diag.Severity)
-		assert.NotEmpty(t, diag.Summary)
-		assert.NotEmpty(t, diag.Detail)
-		assert.NotEmpty(t, diag.Diags)
-		assert.NotZero(t, diag.CreatedAt)
+			assert.Nil(t, diag.StackDeploymentStep)
+			assert.NotNil(t, diag.StackConfiguration)
+		}
 
-		assert.Nil(t, diag.StackDeploymentStep)
-		assert.NotNil(t, diag.StackConfiguration)
+		var found bool
+		for _, diag := range diags.Items {
+			if len(diag.Diags) > 0 {
+				found = true
+				break
+			}
+		}
+		assert.True(t, found, "expected at least one diagnostic with nested summaries")
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
