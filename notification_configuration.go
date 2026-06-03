@@ -85,6 +85,7 @@ type NotificationConfigurationList struct {
 // within a polymorphic relation. If a value is available, exactly one field
 // will be non-nil.
 type NotificationConfigurationSubscribableChoice struct {
+	Project   *Project
 	Team      *Team
 	Workspace *Workspace
 }
@@ -165,7 +166,7 @@ type NotificationConfigurationCreateOptions struct {
 	// Optional: The list of users belonging to the organization that will receive notification emails.
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
 
-	// Required: The workspace or team that the notification configuration is associated with.
+	// Required: The workspace, team, or project that the notification configuration is associated with.
 	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable,omitempty"`
 }
 
@@ -203,7 +204,6 @@ type NotificationConfigurationUpdateOptions struct {
 
 // List all the notification configurations associated with a workspace.
 func (s *notificationConfigurations) List(ctx context.Context, subscribableID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
-	var u string
 	if options == nil {
 		options = &NotificationConfigurationListOptions{
 			SubscribableChoice: &NotificationConfigurationSubscribableChoice{
@@ -216,16 +216,9 @@ func (s *notificationConfigurations) List(ctx context.Context, subscribableID st
 		}
 	}
 
-	if options.SubscribableChoice.Team != nil {
-		if !validStringID(&subscribableID) {
-			return nil, ErrInvalidTeamID
-		}
-		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
-	} else {
-		if !validStringID(&subscribableID) {
-			return nil, ErrInvalidWorkspaceID
-		}
-		u = fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID))
+	u, err := notificationSubscribableURL(subscribableID, options.SubscribableChoice)
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, options)
@@ -248,17 +241,20 @@ func (s *notificationConfigurations) List(ctx context.Context, subscribableID st
 
 // Create a notification configuration with the given options.
 func (s *notificationConfigurations) Create(ctx context.Context, subscribableID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
-	var u string
-	var subscribableChoice *NotificationConfigurationSubscribableChoice
-	if options.SubscribableChoice == nil || options.SubscribableChoice.Team == nil {
-		u = fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID))
-		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
-	} else {
-		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
+	if options.SubscribableChoice != nil && options.SubscribableChoice.Team != nil {
 		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Team: &Team{ID: subscribableID}}
+	} else if options.SubscribableChoice != nil && options.SubscribableChoice.Project != nil {
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Project: &Project{ID: subscribableID}}
+	} else {
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
 	}
 
 	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u, err := notificationSubscribableURL(subscribableID, options.SubscribableChoice)
+	if err != nil {
 		return nil, err
 	}
 
@@ -267,7 +263,7 @@ func (s *notificationConfigurations) Create(ctx context.Context, subscribableID 
 		return nil, err
 	}
 
-	nc := &NotificationConfiguration{SubscribableChoice: subscribableChoice}
+	nc := &NotificationConfiguration{}
 	err = req.Do(ctx, nc)
 
 	if err != nil {
@@ -368,14 +364,8 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 }
 
 func (o NotificationConfigurationCreateOptions) valid() error {
-	if o.SubscribableChoice == nil || o.SubscribableChoice.Workspace != nil {
-		if !validStringID(&o.SubscribableChoice.Workspace.ID) {
-			return ErrInvalidWorkspaceID
-		}
-	} else {
-		if !validStringID(&o.SubscribableChoice.Team.ID) {
-			return ErrInvalidTeamID
-		}
+	if err := validateSubscribableChoice(o.SubscribableChoice); err != nil {
+		return err
 	}
 
 	if o.DestinationType == nil {
@@ -422,6 +412,44 @@ func backfillDeprecatedSubscribable(notification *NotificationConfiguration) {
 	if notification.SubscribableChoice.Workspace != nil {
 		notification.Subscribable = notification.SubscribableChoice.Workspace
 	}
+}
+
+func notificationSubscribableURL(subscribableID string, choice *NotificationConfigurationSubscribableChoice) (string, error) {
+	if choice != nil && choice.Team != nil {
+		if !validStringID(&subscribableID) {
+			return "", ErrInvalidTeamID
+		}
+		return fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID)), nil
+	}
+	if choice != nil && choice.Project != nil {
+		if !validStringID(&subscribableID) {
+			return "", ErrInvalidProjectID
+		}
+		return fmt.Sprintf("projects/%s/notification-configurations", url.PathEscape(subscribableID)), nil
+	}
+	if choice == nil || !validStringID(&subscribableID) {
+		return "", ErrInvalidWorkspaceID
+	}
+	return fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID)), nil
+}
+
+func validateSubscribableChoice(choice *NotificationConfigurationSubscribableChoice) error {
+	if choice != nil && choice.Team != nil {
+		if !validStringID(&choice.Team.ID) {
+			return ErrInvalidTeamID
+		}
+		return nil
+	}
+	if choice != nil && choice.Project != nil {
+		if !validStringID(&choice.Project.ID) {
+			return ErrInvalidProjectID
+		}
+		return nil
+	}
+	if choice == nil || !validStringID(&choice.Workspace.ID) {
+		return ErrInvalidWorkspaceID
+	}
+	return nil
 }
 
 func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
