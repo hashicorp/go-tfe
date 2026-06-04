@@ -28,39 +28,96 @@ func TestProviderSetsRead(t *testing.T) {
 	// likely a NOOP but added for consistency and future-proofing
 	defer workspaceCleanup()
 
-	createOptions := providerSetTestCreateOptionsWithRelationships(t,
+	createOptions := providerSetTestCreateOptionsWithRelationships(
+		t,
 		[]*Project{project},
 		[]*Workspace{workspace},
 	)
 	ps, err := client.ProviderSets.Create(ctx, orgTest.Name, createOptions)
 	require.NoError(t, err)
 
-	t.Run("with valid provider id", func(t *testing.T) {
-		psRead, err := client.ProviderSets.Read(ctx, ps.ID)
-		require.NoError(t, err)
+	t.Run("ReadById", func(t *testing.T) {
+		t.Run("with valid provider set id", func(t *testing.T) {
+			psRead, err := client.ProviderSets.Read(ctx, ps.ID)
+			require.NoError(t, err)
 
-		assert.Equal(t, ps.ID, psRead.ID)
-		assert.Equal(t, ps.Name, psRead.Name)
-		assert.Equal(t, ps.Description, psRead.Description)
-		assert.Equal(t, ps.ProviderSource, psRead.ProviderSource)
-		assert.Equal(t, ps.ConfigurationHcl, psRead.ConfigurationHcl)
+			assert.Equal(t, ps.ID, psRead.ID)
+			assert.Equal(t, ps.Name, psRead.Name)
+			assert.Equal(t, ps.Description, psRead.Description)
+			assert.Equal(t, ps.ProviderSource, psRead.ProviderSource)
+			assert.Equal(t, ps.ConfigurationHcl, psRead.ConfigurationHcl)
 
-		require.Len(t, ps.Projects, 1)
-		require.Len(t, ps.Workspaces, 1)
-		assert.Equal(t, ps.Projects[0].ID, createOptions.Projects[0].ID)
-		assert.Equal(t, ps.Workspaces[0].ID, createOptions.Workspaces[0].ID)
+			require.Len(t, psRead.Projects, 1)
+			require.Len(t, psRead.Workspaces, 1)
+			assert.Equal(t, psRead.Projects[0].ID, createOptions.Projects[0].ID)
+			assert.Equal(t, psRead.Workspaces[0].ID, createOptions.Workspaces[0].ID)
+		})
+
+		t.Run("with invalid provider set ID", func(t *testing.T) {
+			psRead, err := client.ProviderSets.Read(ctx, "invalid/id")
+			assert.EqualError(t, err, ErrInvalidProviderSetID.Error())
+			assert.Nil(t, psRead)
+		})
+
+		t.Run("with unexisting provider set ID", func(t *testing.T) {
+			psRead, err := client.ProviderSets.Read(ctx, "unexisting-id")
+			assert.EqualError(t, err, ErrResourceNotFound.Error())
+			assert.Nil(t, psRead)
+		})
+
+		t.Run("with empty provider set id", func(t *testing.T) {
+			ps, err := client.ProviderSets.Read(ctx, "")
+			assert.EqualError(t, err, ErrRequiredProviderSetID.Error())
+			assert.Nil(t, ps)
+		})
 	})
 
-	t.Run("with invalid provider set ID", func(t *testing.T) {
-		psRead, err := client.ProviderSets.Read(ctx, "invalid/id")
-		assert.EqualError(t, err, ErrInvalidProviderSetID.Error())
-		assert.Nil(t, psRead)
-	})
+	t.Run("ReadByName", func(t *testing.T) {
+		t.Run("with valid provider set name", func(t *testing.T) {
+			psRead, err := client.ProviderSets.ReadByName(ctx, orgTest.Name, createOptions.Name)
+			require.NoError(t, err)
 
-	t.Run("with unexisting provider set ID", func(t *testing.T) {
-		psRead, err := client.ProviderSets.Read(ctx, "unexisting-id")
-		assert.EqualError(t, err, ErrResourceNotFound.Error())
-		assert.Nil(t, psRead)
+			assert.Equal(t, ps.ID, psRead.ID)
+			assert.Equal(t, ps.Name, psRead.Name)
+			assert.Equal(t, ps.Description, psRead.Description)
+			assert.Equal(t, ps.ProviderSource, psRead.ProviderSource)
+			assert.Equal(t, ps.ConfigurationHcl, psRead.ConfigurationHcl)
+
+			require.Len(t, psRead.Projects, 1)
+			require.Len(t, psRead.Workspaces, 1)
+			assert.Equal(t, psRead.Projects[0].ID, createOptions.Projects[0].ID)
+			assert.Equal(t, psRead.Workspaces[0].ID, createOptions.Workspaces[0].ID)
+		})
+
+		t.Run("with unexisting org ID", func(t *testing.T) {
+			psRead, err := client.ProviderSets.ReadByName(ctx, "unexisting-id", createOptions.Name)
+			assert.EqualError(t, err, ErrResourceNotFound.Error())
+			assert.Nil(t, psRead)
+		})
+
+		t.Run("with unexisting provider set", func(t *testing.T) {
+			psRead, err := client.ProviderSets.ReadByName(ctx, orgTest.Name, "unexisting-provider-set")
+			assert.EqualError(t, err, ErrResourceNotFound.Error())
+			assert.Nil(t, psRead)
+		})
+
+		t.Run("with invalid org ID", func(t *testing.T) {
+			ps, err := client.ProviderSets.ReadByName(ctx, "invalid/org", createOptions.Name)
+			assert.EqualError(t, err, ErrInvalidOrg.Error())
+			assert.Nil(t, ps)
+		})
+
+		t.Run("with invalid provider set name", func(t *testing.T) {
+			ps, err := client.ProviderSets.ReadByName(ctx, orgTest.Name, "invalid/name")
+			assert.EqualError(t, err, ErrInvalidName.Error())
+			assert.Nil(t, ps)
+		})
+
+		t.Run("with empty provider set name", func(t *testing.T) {
+			ps, err := client.ProviderSets.ReadByName(ctx, orgTest.Name, "")
+			assert.EqualError(t, err, ErrRequiredName.Error())
+			assert.Nil(t, ps)
+		})
 	})
 }
 
@@ -191,7 +248,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with relationships", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			[]*Project{project},
 			[]*Workspace{workspace},
 		)
@@ -207,7 +265,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with relationships on a global provider set", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			[]*Project{project},
 			[]*Workspace{workspace},
 		)
@@ -219,7 +278,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with missing project ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			[]*Project{{ID: ""}},
 			nil,
 		)
@@ -230,7 +290,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with invalid project ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			[]*Project{{ID: "invalid id"}},
 			nil,
 		)
@@ -241,7 +302,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with unexisting project ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			[]*Project{{ID: "unexisting-id"}},
 			nil,
 		)
@@ -252,7 +314,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with missing workspace ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			nil,
 			[]*Workspace{{ID: ""}},
 		)
@@ -263,7 +326,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with invalid workspace ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			nil,
 			[]*Workspace{{ID: "invalid id"}},
 		)
@@ -274,7 +338,8 @@ func TestProviderSetsCreate(t *testing.T) {
 	})
 
 	t.Run("with unexisting workspace ID", func(t *testing.T) {
-		options := providerSetTestCreateOptionsWithRelationships(t,
+		options := providerSetTestCreateOptionsWithRelationships(
+			t,
 			nil,
 			[]*Workspace{{ID: "unexisting-id"}},
 		)
@@ -445,7 +510,8 @@ func TestProviderSetsUpdate(t *testing.T) {
 		},
 		"with empty relationships when has initial relationships": {
 			initial: func(t *testing.T) ProviderSetCreateOptions {
-				return providerSetTestCreateOptionsWithRelationships(t,
+				return providerSetTestCreateOptionsWithRelationships(
+					t,
 					[]*Project{{ID: project.ID}},
 					[]*Workspace{{ID: workspace.ID}},
 				)
@@ -462,7 +528,8 @@ func TestProviderSetsUpdate(t *testing.T) {
 		},
 		"with nil relationships when has initial relationships": {
 			initial: func(t *testing.T) ProviderSetCreateOptions {
-				return providerSetTestCreateOptionsWithRelationships(t,
+				return providerSetTestCreateOptionsWithRelationships(
+					t,
 					[]*Project{{ID: project.ID}},
 					[]*Workspace{{ID: workspace.ID}},
 				)
@@ -539,7 +606,7 @@ func TestProviderSetsUpdate(t *testing.T) {
 		t.Run(desc, func(t *testing.T) {
 			initial := providerSetTestCreateOptions(t)
 			if testCase.initial != nil {
-				initial = (testCase.initial)(t)
+				initial = testCase.initial(t)
 			}
 			ps, err := client.ProviderSets.Create(ctx, orgTest.Name, initial)
 			require.NoError(t, err)

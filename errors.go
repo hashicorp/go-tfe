@@ -348,6 +348,8 @@ var (
 
 	ErrRequiredProvider = errors.New("provider is required")
 
+	ErrRequiredProviderSetID = errors.New("provider set ID is required")
+
 	ErrRequiredOauthToken = errors.New("OAuth token is required")
 
 	ErrRequiredOauthTokenOrGithubAppInstallationID = errors.New("either oauth token ID or github app installation ID is required")

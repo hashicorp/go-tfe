@@ -84,6 +84,21 @@ func (mr *MockProviderSetsMockRecorder) Read(ctx, providerSetID any) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockProviderSets)(nil).Read), ctx, providerSetID)
 }
 
+// ReadByName mocks base method.
+func (m *MockProviderSets) ReadByName(ctx context.Context, organization, name string) (*tfe.ProviderSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadByName", ctx, organization, name)
+	ret0, _ := ret[0].(*tfe.ProviderSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadByName indicates an expected call of ReadByName.
+func (mr *MockProviderSetsMockRecorder) ReadByName(ctx, organization, name any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadByName", reflect.TypeOf((*MockProviderSets)(nil).ReadByName), ctx, organization, name)
+}
+
 // Update mocks base method.
 func (m *MockProviderSets) Update(ctx context.Context, providerSetID string, options tfe.ProviderSetUpdateOptions) (*tfe.ProviderSet, error) {
 	m.ctrl.T.Helper()
