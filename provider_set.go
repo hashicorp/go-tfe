@@ -23,6 +23,9 @@ type ProviderSets interface {
 	// Read a provider set by its ID.
 	Read(ctx context.Context, providerSetID string) (*ProviderSet, error)
 
+	// Read a provider set by its name.
+	ReadByName(ctx context.Context, organization string, name string) (*ProviderSet, error)
+
 	// Update values of an existing provider set.
 	Update(ctx context.Context, providerSetID string, options ProviderSetUpdateOptions) (*ProviderSet, error)
 
@@ -204,11 +207,45 @@ func (p *providerSets) Create(ctx context.Context, organization string, options 
 // Note: This API is experimental and intended for internal use only. It is
 // subject to change or removal without notice.
 func (p *providerSets) Read(ctx context.Context, providerSetID string) (*ProviderSet, error) {
+	if !validString(&providerSetID) {
+		return nil, ErrRequiredProviderSetID
+	}
 	if !validStringID(&providerSetID) {
 		return nil, ErrInvalidProviderSetID
 	}
 
 	u := fmt.Sprintf("provider-sets/%s", url.PathEscape(providerSetID))
+	req, err := p.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	ps := &ProviderSet{}
+	err = req.Do(ctx, ps)
+	if err != nil {
+		return nil, err
+	}
+
+	return ps, nil
+}
+
+// ReadByName is used to read a provider set by its name.
+//
+// Note: This API is experimental and intended for internal use only. It is
+// subject to change or removal without notice.
+func (p *providerSets) ReadByName(ctx context.Context, organization, name string) (*ProviderSet, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+	if !validString(&name) {
+		return nil, ErrRequiredName
+	}
+	if !validStringID(&name) {
+		return nil, ErrInvalidName
+	}
+
+	u := fmt.Sprintf("organizations/%s/provider-sets/%s",
+		url.PathEscape(organization), url.PathEscape(name))
 	req, err := p.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
