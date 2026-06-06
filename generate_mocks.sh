@@ -31,6 +31,7 @@ mockgen -source=audit_trail.go -destination=mocks/audit_trail_mocks.go -package=
 mockgen -source=comment.go -destination=mocks/comment_mocks.go -package=mocks
 mockgen -source=configuration_version.go -destination=mocks/configuration_version_mocks.go -package=mocks
 mockgen -source=cost_estimate.go -destination=mocks/cost_estimate_mocks.go -package=mocks
+mockgen -source=explorer.go -destination=mocks/explorer_mocks.go -package=mocks
 mockgen -source=github_app_installation.go -destination=mocks/github_app_installation_mocks.go -package=mocks
 mockgen -source=gpg_key.go -destination=mocks/gpg_key_mocks.go -package=mocks
 mockgen -source=ip_ranges.go -destination=mocks/ip_ranges_mocks.go -package=mocks

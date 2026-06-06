@@ -294,6 +294,12 @@ var (
 	ErrInvalidSAMLProviderType = errors.New("invalid SAML provider type")
 
 	ErrInvalidTFPolicyEvaluationID = errors.New("invalid value for tfpolicy evaluation ID")
+
+	ErrInvalidExplorerViewType = errors.New("explorer query type is required")
+
+	ErrInvalidExplorerFilterField = errors.New("explorer filter field is required")
+
+	ErrInvalidExplorerFilterOperator = errors.New("explorer filter operator is required")
 )
 
 var (

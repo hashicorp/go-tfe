@@ -138,6 +138,7 @@ type Client struct {
 	Comments                        Comments
 	ConfigurationVersions           ConfigurationVersions
 	CostEstimates                   CostEstimates
+	Explorer                        Explorer
 	GHAInstallations                GHAInstallations
 	GPGKeys                         GPGKeys
 	NotificationConfigurations      NotificationConfigurations
@@ -486,6 +487,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
+	client.Explorer = &explorer{client: client}
 	client.GHAInstallations = &gHAInstallations{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
 	client.RegistryNoCodeModules = &registryNoCodeModules{client: client}
