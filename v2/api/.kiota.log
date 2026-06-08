@@ -1,0 +1,4 @@
+Warning: KiotaBuilder OpenAPI warning: #/ - A servers entry (v3) or host + basePath + schemes properties (v2) was not present in the OpenAPI description. The root URL will need to be set manually with the request adapter.
+Warning: KiotaBuilder OpenAPI warning: #/paths/~1organizations~1{organization_name}~1organization-memberships/get/parameters/3/schema - The format email is not supported by Kiota and the string type will be used.
+Warning: KiotaBuilder OpenAPI warning: #/components/schemas/organization-memberships/properties/attributes/properties/email - The format email is not supported by Kiota and the string type will be used.
+Warning: KiotaBuilder No server url found in the OpenAPI document. The base url will need to be set when using the client.

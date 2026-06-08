@@ -1,11 +1,5 @@
 .PHONY: vet fmt lint test mocks envvars generate
 
-# Make target to generate resource scaffolding for specified RESOURCE
-generate: check-resource
-	@cd ./scripts/generate_resource; \
-	go mod tidy; \
-	go run . $(RESOURCE) ;
-
 vet:
 	go vet
 
@@ -19,23 +13,12 @@ lint:
 	golangci-lint run .
 
 test:
-	go test ./... $(TESTARGS) -timeout=30m
+	go test ./v2 $(TESTARGS)
 
-# Make target to generate mocks for specified FILENAME
-mocks: check-filename
-	@echo "mockgen -source=$(FILENAME) -destination=mocks/$(subst .go,_mocks.go,$(FILENAME)) -package=mocks" >> generate_mocks.sh
-	./generate_mocks.sh
+openapi/spec.json:
+	mkdir -p v2/openapi
+	mkdir -p v2/api
+	cp ../atlas/openapi/bundled/hcpt_v2_public_beta.json v2/openapi/spec.json
 
-envvars:
-	./scripts/setup-test-envvars.sh
-
-check-filename:
-ifndef FILENAME
-	$(error Missing FILENAME param. Example usage: FILENAME=example_resource.go make mocks)
-endif
-
-check-resource:
-ifndef RESOURCE
-	$(error Missing RESOURCE param. Example usage: RESOURCE=foo_bar make generate)
-endif
-
+api: openapi/spec.json
+	docker run -v ./v2/api:/app/output -v ./v2/openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/v2/api
