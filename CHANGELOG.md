@@ -4,7 +4,7 @@
 * Adds support for `NotificationConfigurationSubscribableChoice` type `Project` to support Project Level Notifications by @jillirami [#1350](https://github.com/hashicorp/go-tfe/pull/1350)
 
 ## Bug Fixes
-* Don't block s390x tool versions
+* Adds support for s390x tool versions, which were previously blocked by @JenGoldstrich [#1357](https://github.com/hashicorp/go-tfe/pull/1357)
 
 # v1.108.0
 
