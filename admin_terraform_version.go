@@ -18,6 +18,7 @@ const (
 	linux = "linux"
 	amd64 = "amd64"
 	arm64 = "arm64"
+	s390x = "s390x"
 )
 
 // AdminTerraformVersions describes all the admin terraform versions related methods that
@@ -237,5 +238,5 @@ func (o AdminTerraformVersionCreateOptions) validArchs() bool {
 }
 
 func validArch(a *ToolVersionArchitecture) bool {
-	return a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64)
+	return a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64 || a.Arch == s390x)
 }

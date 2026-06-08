@@ -130,7 +130,14 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
-				}},
+				},
+				{
+					URL:  url,
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: s390x,
+				},
+			},
 		}
 		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
 		require.NoError(t, err)
