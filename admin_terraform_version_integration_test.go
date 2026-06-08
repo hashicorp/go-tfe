@@ -129,7 +129,14 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 					Sha:  genSha(t),
 					OS:   linux,
 					Arch: arm64,
-				}},
+				},
+				{
+					URL:  url,
+					Sha:  genSha(t),
+					OS:   linux,
+					Arch: s390x,
+				},
+			},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -280,7 +287,8 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
-				}},
+				},
+			},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
