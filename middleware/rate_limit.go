@@ -30,9 +30,8 @@ func (m *RateLimitMiddleware) Intercept(pipeline khttp.Pipeline, index int, req 
 	// If rate limited, translate the custom header into Retry-After for the retry middleware.
 	resetHeader := resp.Header.Get(rateLimitResetHeader)
 	if resetHeader != "" {
-		val, _ := strconv.ParseFloat(resetHeader, 64)
-
-		if val > 0 {
+		val, err := strconv.ParseFloat(resetHeader, 64)
+		if err == nil && val > 0 {
 			resp.Header.Set("Retry-After", fmt.Sprintf("%.3f", val))
 		}
 	}

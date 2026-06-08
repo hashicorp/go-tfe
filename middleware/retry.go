@@ -15,10 +15,10 @@ const (
 	retryAttemptHeader = "Retry-Attempt"
 	retryAfterHeader   = "Retry-After"
 
-	defaultMaxRetries        = 3
-	absoluteMaxRetries       = 10
-	defaultDelaySeconds      = 3
-	absoluteMaxDelaySeconds  = 180
+	defaultMaxRetries       = 3
+	absoluteMaxRetries      = 10
+	defaultDelaySeconds     = 3
+	absoluteMaxDelaySeconds = 180
 )
 
 // ShouldRetryFunc determines whether a request should be retried based on the response.
@@ -118,7 +118,9 @@ func (m *RetryMiddleware) retryRequest(
 	// Reset body for retry if possible
 	if req.Body != nil {
 		if seeker, ok := req.Body.(io.Seeker); ok {
-			seeker.Seek(0, io.SeekStart)
+			if _, err := seeker.Seek(0, io.SeekStart); err != nil {
+				return resp, err
+			}
 		}
 	}
 
@@ -152,22 +154,26 @@ func (m *RetryMiddleware) isRetriableRequest(req *nethttp.Request) bool {
 // getRetryDelay calculates the delay before the next retry attempt.
 // It respects the Retry-After header if present, otherwise uses exponential backoff.
 func (m *RetryMiddleware) getRetryDelay(resp *nethttp.Response, executionCount int) time.Duration {
-	if resp != nil {
-		retryAfter := resp.Header.Get(retryAfterHeader)
-		if retryAfter != "" {
-			// Try parsing as seconds (float)
-			if seconds, err := strconv.ParseFloat(retryAfter, 64); err == nil && seconds > 0 {
-				return time.Duration(seconds * float64(time.Second))
-			}
-			// Try parsing as HTTP-date
-			if t, err := time.Parse(time.RFC1123, retryAfter); err == nil {
-				if d := time.Until(t); d > 0 {
-					return d
-				}
-			}
+	if resp == nil {
+		return time.Duration(math.Pow(float64(m.delaySeconds), float64(executionCount))) * time.Second
+	}
+
+	retryAfter := resp.Header.Get(retryAfterHeader)
+	if retryAfter == "" {
+		return time.Duration(math.Pow(float64(m.delaySeconds), float64(executionCount))) * time.Second
+	}
+
+	// Try parsing as seconds (float)
+	if seconds, err := strconv.ParseFloat(retryAfter, 64); err == nil && seconds > 0 {
+		return time.Duration(seconds * float64(time.Second))
+	}
+
+	// Try parsing as HTTP-date
+	if t, err := time.Parse(time.RFC1123, retryAfter); err == nil {
+		if d := time.Until(t); d > 0 {
+			return d
 		}
 	}
 
-	// Exponential backoff: delaySeconds^executionCount
 	return time.Duration(math.Pow(float64(m.delaySeconds), float64(executionCount))) * time.Second
 }
