@@ -129,7 +129,14 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
-				}},
+				},
+				{
+					URL:  url,
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: s390x,
+				},
+			},
 		}
 		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 		require.NoError(t, err)
