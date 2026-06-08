@@ -4,13 +4,16 @@ import (
 	nethttp "net/http"
 )
 
+// MiddlewareOption is a functional option for configuring the middleware pipeline.
 type MiddlewareOption struct {
 	key   string
 	value any
 }
 
+// RetryHookCallback is called before each retry attempt with the attempt number and response.
 type RetryHookCallback func(retryCount int, response *nethttp.Response)
 
+// RetryOptions configures the retry behavior for the middleware pipeline.
 type RetryOptions struct {
 	Enabled           bool
 	MaxRetries        int
@@ -18,6 +21,7 @@ type RetryOptions struct {
 	Hook              RetryHookCallback
 }
 
+// WithRetryOptions creates a middleware option that configures retry behavior.
 func WithRetryOptions(enabled, enabledForServerErrors bool, maxRetries int, hook RetryHookCallback) MiddlewareOption {
 	return MiddlewareOption{key: "RetryOptions", value: RetryOptions{
 		Enabled:           enabled,
@@ -27,6 +31,7 @@ func WithRetryOptions(enabled, enabledForServerErrors bool, maxRetries int, hook
 	}}
 }
 
+// WithErrorInterceptorOption creates a middleware option that configures error interception.
 func WithErrorInterceptorOption(errorFactory APIErrorFactory) MiddlewareOption {
 	return MiddlewareOption{key: "ErrorInterceptor", value: errorFactory}
 }
