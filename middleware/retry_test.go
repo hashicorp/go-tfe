@@ -450,7 +450,7 @@ func TestGetForKiota_RetryDisabled(t *testing.T) {
 	defer server.Close()
 
 	middlewares, err := GetForKiota("1.0.0",
-		WithRetryOptions(false, true, 3, nil),
+		WithRetryOptions(false, false, 3, nil),
 	)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -481,5 +481,55 @@ func TestGetForKiota_RetryDisabled(t *testing.T) {
 	// Should not retry when disabled
 	if atomic.LoadInt32(&attempts) != 1 {
 		t.Fatalf("expected 1 attempt (retry disabled), got %d", atomic.LoadInt32(&attempts))
+	}
+}
+
+func TestGetForKiota_ServerErrorRetriesIndependentOfRateLimitFlag(t *testing.T) {
+	var attempts int32
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		count := atomic.AddInt32(&attempts, 1)
+		if count == 1 {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+
+	pipeline, server := newTestPipeline(handler)
+	defer server.Close()
+
+	// RetryRateLimited=false, RetryServerErrors=true
+	// Server error retries should work even when rate limit retries are disabled
+	middlewares, err := GetForKiota("1.0.0",
+		WithRetryOptions(false, true, 3, nil),
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var retryMW khttp.Middleware
+	for _, mw := range middlewares {
+		if _, ok := mw.(*RetryMiddleware); ok {
+			retryMW = mw
+			break
+		}
+	}
+	if retryMW == nil {
+		t.Fatal("RetryMiddleware not found in pipeline")
+	}
+
+	req, _ := http.NewRequest("GET", server.URL+"/test", nil)
+	resp, err := retryMW.Intercept(pipeline, 0, req)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	if atomic.LoadInt32(&attempts) != 2 {
+		t.Fatalf("expected 2 attempts (retry on 500), got %d", atomic.LoadInt32(&attempts))
 	}
 }

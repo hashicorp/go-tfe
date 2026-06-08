@@ -55,15 +55,12 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		MaxRetries:   retryOpts.MaxRetries,
 		DelaySeconds: 1,
 		ShouldRetry: func(executionCount int, request *nethttp.Request, response *nethttp.Response) bool {
-			if !retryOpts.Enabled {
-				return false
-			}
-			// Retry on 429 (rate limited) and 425 (too early)
-			if response.StatusCode == 429 || response.StatusCode == 425 {
+			// Retry on 429 (rate limited) and 425 (too early) when rate limit retries are enabled
+			if retryOpts.Enabled && (response.StatusCode == 429 || response.StatusCode == 425) {
 				retryOpts.Hook(executionCount, response)
 				return true
 			}
-			// Retry on all 5xx if RetryServerErrors is enabled
+			// Retry on all 5xx if RetryServerErrors is enabled (independent of rate limit setting)
 			if retryOpts.RetryServerErrors && response.StatusCode >= 500 {
 				retryOpts.Hook(executionCount, response)
 				return true
