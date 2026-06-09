@@ -121,6 +121,50 @@ See the [examples directory](https://github.com/hashicorp/go-tfe/tree/main/examp
 
 See [TESTS.md](docs/TESTS.md).
 
+## Deployment-free API exploration (steel-thread)
+
+go-tfe includes an in-memory test API server under `testserver` for local
+exploration and deployment-free acceptance-style testing.
+
+Run the example explorer:
+
+```sh
+go run ./examples/testserver
+```
+
+This prints a local URL and bearer token, seeds a demo organization/workspace,
+and keeps the server running so you can call endpoints with curl or wire a
+go-tfe client to it.
+
+Current steel-thread endpoints:
+
+- `GET /api/v2/ping`
+- `GET|POST /api/v2/organizations`
+- `GET|PATCH|DELETE /api/v2/organizations/{organization}`
+- `GET|POST /api/v2/organizations/{organization}/workspaces`
+- `GET|PATCH|DELETE /api/v2/organizations/{organization}/workspaces/{workspace}`
+- `GET|PATCH|DELETE /api/v2/workspaces/{workspace_id}`
+
+Example programmatic usage:
+
+```go
+import (
+  tfe "github.com/hashicorp/go-tfe"
+  "github.com/hashicorp/go-tfe/testserver"
+)
+
+srv := testserver.New()
+defer srv.Close()
+
+client, err := tfe.NewClient(srv.ClientConfig())
+if err != nil {
+  panic(err)
+}
+
+// use client.Organizations / client.Workspaces as usual
+_ = client
+```
+
 ## Issues and Contributing
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
