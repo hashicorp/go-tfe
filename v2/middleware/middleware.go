@@ -1,3 +1,5 @@
+// Copyright IBM Corp. 2018, 2026
+
 // Package middleware contains the custom middleware used by the go-tfe SDK, as well as options
 // for configuring the default middlewares.
 package middleware
