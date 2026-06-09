@@ -10,6 +10,8 @@ done using the `NewClient` function.
 
 The v2 package no longer makes an initial request in order to decode and store platform configuration.
 
+The v2 package does not include any up-to-date mocks. Old mocks may be found in the v1 `mocks` package.
+
 To upgrade, get the module
 
 ```bash
