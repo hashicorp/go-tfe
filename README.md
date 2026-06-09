@@ -84,4 +84,4 @@ Copy the JSON OpenAPI specification to the `openapi/spec.json` directory and run
 
 ## Releases
 
-See [RELEASES.md](docs/RELEASES.md)
+Releases are automated and are updated around once per week, pending platform API changes.
