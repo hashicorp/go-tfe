@@ -69,7 +69,7 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince *time.Time) (*IPRange
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	var ir IPRange
 	err = json.Unmarshal(ipRanges, &ir)

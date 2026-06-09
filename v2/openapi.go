@@ -70,7 +70,7 @@ func (i *openAPI) Read(ctx context.Context, prerelease bool, modifiedSince *time
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	var lastModified *time.Time = nil
 	if lm := resp.Header.Get("Last-Modified"); lm != "" {

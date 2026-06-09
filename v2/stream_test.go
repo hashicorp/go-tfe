@@ -75,7 +75,7 @@ func TestGetStream(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			resp, err := client.GetStream(context.Background(), tc.uri, tc.headers)
 			require.NoError(t, err)
-			defer resp.Body.Close()
+			defer resp.Body.Close() //nolint:errcheck
 
 			assert.Equal(t, http.StatusOK, resp.StatusCode)
 
