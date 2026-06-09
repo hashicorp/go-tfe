@@ -17,35 +17,84 @@ client supports both HCP Terraform and Terraform Enterprise use cases.
 
 Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
-## Basic Usage
+## Reference Documentation
 
-Construct a new TFE client, then use the various endpoints on the client to
-access different parts of the Terraform Enterprise API. The following example lists
-all organizations.
+```go
+# All configuration is done using the NewClient interface
+client, err := tfe.NewClient(&tfe.Config{
+  Token:   os.Getenv("TFE_TOKEN"),
+  Address: os.Getenv("TFE_ADDRESS"),
+})
+```
+
+### Path-based Interface
+
+Every client interface starting with `API` uses a path-based naming convention followed by the
+method of the operation on that path. Let's take a look at some examples:
+
+```go
+# Simple, unparameterized path GET /account/details
+response, err := client.API.Account().Details().Get(ctx, nil)
+
+# Parameterized path POST /organizations/{organization_name}/projects
+response, err := client.API.Organizations().ByOrganization_name("foo").Projects().Post(ctx, newProjectRequestBody(), nil)
+```
+
+Use the [API reference](https://developer.hashicorp.com/terraform/cloud-docs/api-docs) to explore
+all the available paths and operations.
+
+### Query Parameters
+
+Sometimes, you'll want to add query parmeters to a GET request, such as `include=subscription` when
+fetching organizations. Each operation defines their available parameters in a package based on
+its path:
 
 ```go
 import (
-	"context"
-	"log"
+	"github.com/hashicorp/go-tfe/v2/api/organizations"
 
-	"github.com/hashicorp/go-tfe/v2"
+	abstractions "github.com/microsoft/kiota-abstractions-go"
 )
 
-config := &tfe.Config{
-	Token: "insert-your-token-here",   // Required
-	Address: "https://tfe.local",      // Defaults to app.terraform.io
-	RetryServerErrors: true,           // Defaults to false
+// Include subscriptions in the response by setting the include query parameter
+includeSubscriptions := organizations.SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
+req := abstractions.RequestConfiguration[organizations.OrganizationsRequestBuilderGetQueryParameters]{
+	QueryParameters: &organizations.OrganizationsRequestBuilderGetQueryParameters{
+		Include: &includeSubscriptions,
+	},
 }
 
-client, err := tfe.NewClient(config)
-if err != nil {
-	log.Fatal(err)
+response, err := client.API.Organizations().Get(ctx, &req)
+```
+
+### Inspecting Response Headers
+
+```go
+import (
+	abstractions "github.com/microsoft/kiota-abstractions-go"
+	khttp "github.com/microsoft/kiota-http-go"
+)
+
+// 1. Create the HeadersInspectionRequestOption
+inspectionOptions := khttp.NewHeadersInspectionOptions()
+inspectionOptions.InspectResponseHeaders = true
+
+// 2. Create/add the option to the RequestInformation object for the request
+req := abstractions.RequestConfiguration[abstractions.DefaultQueryParameters]{
+	Options: []abstractions.RequestOption{inspectionOptions},
 }
 
-org, err := client.API.Organizations().GetAsOrganizationsGetResponse(ctx, nil)
+// 3. Execute the request
+_, err = client.API.Account().Details().Get(ctx, &req)
 if err != nil {
-	log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
+	log.Fatalf("Error getting account details: %s", err)
 	return 1
+}
+
+// 4. Access the response headers from the HeadersInspectionRequestOption
+headers := inspectionOptions.GetResponseHeaders()
+for _, key := range headers.ListKeys() {
+	log.Printf("%s: %v", key, headers.Get(key))
 }
 ```
 
@@ -80,7 +129,7 @@ API client, see [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## Updating the SDK Client from Spec
 
-Copy the JSON OpenAPI specification to the `openapi/spec.json` directory and run `make api`
+Run `make api`
 
 ## Releases
 

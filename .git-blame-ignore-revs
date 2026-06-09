@@ -1,0 +1,4 @@
+# This file lists commits that should be ignored by git-blame.
+
+# 1. Consolidated all v1 code into a single file.
+9adc584c24e49191c51076ac9ec40c1f83b3dc60

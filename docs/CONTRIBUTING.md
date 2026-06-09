@@ -1,37 +1,27 @@
 # Contributing to go-tfe
 
-If you find an issue with this package, please create an issue in GitHub. If you'd like, we welcome any contributions. Fork this repository and submit a pull request.
+### Adding or Updating HCP Terraform v2 API
 
-## Linting
+To add functionality to go-tfe/v2, edit the OpenAPI specification in the Terraform Platform code.
+The github.com/hashicorp/go-tfe/v2 package will be generated from that specification nightly and
+will include the new functionality. Please note that endpoints and attributes labelled as
+"public-beta" will appear in this client.
 
-After opening a PR, our CI system will perform a series of code checks, one of which is linting. Linting is not strictly required for a change to be merged, but it helps smooth the review process and catch common mistakes early. If you'd like to run the linters manually, follow these steps:
+### v1 package (root directory) Contributions
 
-1. Ensure you have [installed golangci-lint](https://golangci-lint.run/welcome/install/#local-installation)
-2. Format your code by running `make fmt`
-3. Run lint checks using `make lint`
+v1.go contains the final version of the go-tfe (v1) package. You may add critical fixes or security
+updates to v1.go, but the functionality is NO LONGER TESTED and SHOULD NOT BE EXTENDED except for
+in uncommon situations as determined by @hashicorp/tf-core-cloud.
 
-## Editor Settings
+### go-tfe Core Contributions
 
-We've included VSCode settings to assist with configuring the go extension. For other editors that integrate with the [Go Language Server](https://github.com/golang/tools/tree/master/gopls), the main thing to do is to add the `integration` build tags so that the test files are found by the language server. See `.vscode/settings.json` for more details.
+Everything outside of the `v2/api` directory is maintained as the core go-tfe wrapper code and
+handles the following features and functionality:
 
-## Rebasing a fork to trigger CI (Maintainers Only)
-
-Pull requests that originate from a fork will not have access to this repository's secrets, thus resulting in the inability to test against our CI instance. In order to trigger the CI action workflow, there is a handy script `./scripts/rebase-fork.sh` that automates the steps for you. It will:
-
-* Checkout the fork PR locally onto your machine and create a new branch prefixed as follows: `local/{name_of_fork_branch}`
-* Push your newly created branch to Github, appending an empty commit stating the original branch that was rebased.
-* Copy the contents of the fork's pull request (title and description) and create a new pull request, triggering the CI workflow.
-
-**Important**: This script does not handle subsequent commits to the original PR and would require you to rebase them manually. Therefore, it is important that authors include test results in their description and changes are approved before this script is executed.
-
-This script depends on `gh` and `jq`. It also requires you to `gh auth login`, providing a SSO-authorized personal access token with the following scopes enabled:
-
-- repo
-- read:org
-- read:discussion
-
-### Example Usage
-
-```sh
-./scripts/rebase-fork.sh 557
-```
+- Configuration
+- Authentication
+- Meta APIs (IPRanges and OpenAPI)
+- Decompression
+- Automatic retries
+- Error handling
+- Streaming downloads by URL or path (undecoded bodies)
