@@ -26,11 +26,12 @@ runs:
 
     - name: get dependencies
       shell: bash
-      run: go mod download
-
-    - name: verify go.mod and go.sum are consistent
-      shell: bash
-      run : go mod tidy
+      run: |
+        go mod download
+        go mod tidy
+        cd v2
+        go mod download
+        go mod tidy
 
     - name: verify no changes
       shell: bash
