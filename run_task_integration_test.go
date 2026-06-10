@@ -109,7 +109,7 @@ func TestRunTasksCreateWithoutGlobalEntitlement(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	newSubscriptionUpdater(orgTest).WithTrialPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithFreePlan().Update(t)
 
 	if v, err := hasGlobalRunTasks(client, orgTest.Name); err != nil {
 		t.Fatalf("Could not retrieve the entitlements for the test organization.: %s", err)
