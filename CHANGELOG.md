@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.109.0
+
 ## Enhancements
 * Adds support for `NotificationConfigurationSubscribableChoice` type `Project` to support Project Level Notifications by @jillirami [#1350](https://github.com/hashicorp/go-tfe/pull/1350)
 
