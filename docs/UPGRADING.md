@@ -20,4 +20,4 @@ $ go get github.com/hashicorp/go-tfe/v2@v2.0.0-beta1
 
 ...and import as `github.com/hashicorp/go-tfe/v2`
 
-Ree the [Reference Documentation in README.md](../README.md) for full usage.
+See the [Reference Documentation in README.md](../README.md) for full usage.

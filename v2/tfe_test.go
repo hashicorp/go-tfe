@@ -7,6 +7,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -188,4 +189,74 @@ func TestClient_defaultConfig(t *testing.T) {
 		assert.Equal(t, config.Address, DefaultAddress)
 		assert.Equal(t, config.Token, "")
 	})
+}
+
+func TestConfigHeadersAppliedToAPIRequests(t *testing.T) {
+	sawHeader := false
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/api/v2/account/details" {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(`{"errors":[{"status":"404","title":"not found"}]}`))
+			return
+		}
+		if r.Header.Get("X-Test-Header") == "expected" {
+			sawHeader = true
+		}
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data":{"id":"usr-1234","type":"users","attributes":{"email":"test@example.com"}}}`))
+	}))
+	defer server.Close()
+	client, err := NewClient(&Config{
+		Address: server.URL,
+		Token:   "test-token",
+		Headers: http.Header{"X-Test-Header": []string{"expected"}},
+	})
+	if err != nil {
+		t.Fatalf("unexpected NewClient error: %v", err)
+	}
+	_, err = client.API.Account().Details().Get(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("unexpected API error: %v", err)
+	}
+	if !sawHeader {
+		t.Fatal("expected configured header to be present on API request")
+	}
+}
+
+func TestDefaultRetryMaxWhenUnspecified(t *testing.T) {
+	var attempts int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/api/v2/account/details" {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(`{"errors":[{"status":"404","title":"not found"}]}`))
+			return
+		}
+		count := atomic.AddInt32(&attempts, 1)
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		if count <= 4 {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"errors":[{"status":"500","title":"server error"}]}`))
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data":{"id":"usr-1234","type":"users","attributes":{"email":"test@example.com"}}}`))
+	}))
+	defer server.Close()
+	client, err := NewClient(&Config{
+		Address:           server.URL,
+		Token:             "test-token",
+		RetryServerErrors: true,
+		// RetryMaxRetries intentionally omitted.
+	})
+	if err != nil {
+		t.Fatalf("unexpected NewClient error: %v", err)
+	}
+	_, err = client.API.Account().Details().Get(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("expected success with default retry budget, got error after %d attempts: %v", atomic.LoadInt32(&attempts), err)
+	}
+	if atomic.LoadInt32(&attempts) != 5 {
+		t.Fatalf("expected 5 attempts (1 + 4 retries), got %d", atomic.LoadInt32(&attempts))
+	}
 }

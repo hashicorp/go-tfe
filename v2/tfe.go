@@ -17,10 +17,8 @@ import (
 const (
 	DefaultUserAgent = "go-tfe"
 
-	DefaultAddress  = "https://app.terraform.io"
-	DefaultBasePath = "/api/v2"
-	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
-	PingEndpoint       = "ping"
+	DefaultAddress     = "https://app.terraform.io"
+	DefaultBasePath    = "/api/v2"
 	ContentTypeJSONAPI = "application/vnd.api+json"
 	ContentTypeJSON    = "application/json"
 )
@@ -120,7 +118,10 @@ func NewClient(cfg *Config) (*Client, error) {
 		}
 		config.RetryServerErrors = cfg.RetryServerErrors
 		config.RetryRateLimited = cfg.RetryRateLimited
-		config.RetryMaxRetries = cfg.RetryMaxRetries
+
+		if cfg.RetryMaxRetries != 0 {
+			config.RetryMaxRetries = cfg.RetryMaxRetries
+		}
 
 		if cfg.UserAgent != "" {
 			config.UserAgent = cfg.UserAgent
@@ -159,6 +160,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	adapter, err := NewRequestAdapter(baseURL.String(), []middleware.MiddlewareOption{
 		middleware.WithErrorInterceptorOption(APIErrorFactory),
 		middleware.WithRetryOptions(config.RetryRateLimited, config.RetryServerErrors, config.RetryMaxRetries, config.RetryHook),
+		middleware.WithHeaders(config.Headers),
 	}, authProvider)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request adapter: %w", err)

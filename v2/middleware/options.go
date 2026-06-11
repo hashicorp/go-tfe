@@ -37,3 +37,8 @@ func WithRetryOptions(enabled, enabledForServerErrors bool, maxRetries int, hook
 func WithErrorInterceptorOption(errorFactory APIErrorFactory) MiddlewareOption {
 	return MiddlewareOption{key: "ErrorInterceptor", value: errorFactory}
 }
+
+// WithHeaders creates a middleware option that adds the provided headers to each request.
+func WithHeaders(headers nethttp.Header) MiddlewareOption {
+	return MiddlewareOption{key: "Headers", value: headers}
+}

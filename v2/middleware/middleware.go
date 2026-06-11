@@ -5,6 +5,7 @@
 package middleware
 
 import (
+	"fmt"
 	nethttp "net/http"
 
 	khttp "github.com/microsoft/kiota-http-go"
@@ -29,8 +30,15 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		Hook:       func(retryCount int, response *nethttp.Response) {},
 		MaxRetries: 5,
 	}
+	var headerOpts nethttp.Header
 	for _, option := range options {
 		switch option.key {
+		case "Headers":
+			var ok bool
+			headerOpts, ok = option.value.(nethttp.Header)
+			if !ok {
+				return nil, fmt.Errorf("invalid type for Headers option: expected net/http.Header, got %T", option.value)
+			}
 		case "RetryOptions":
 			opts, ok := option.value.(RetryOptions)
 			if !ok {
@@ -71,6 +79,8 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		},
 	})
 
+	headersMiddleware := NewHeadersMiddleware(headerOpts)
+
 	// Build the middleware pipeline explicitly rather than using
 	// khttp.GetDefaultMiddlewaresWithOptions (which always injects Kiota's
 	// RetryHandler that we can't fully control).
@@ -90,6 +100,7 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 			ProductName:    "go-tfe",
 			ProductVersion: tfeSDKVersion,
 		}),
+		headersMiddleware,
 		khttp.NewHeadersInspectionHandlerWithOptions(func() khttp.HeadersInspectionOptions {
 			opts := *khttp.NewHeadersInspectionOptions()
 			opts.InspectRequestHeaders = false
