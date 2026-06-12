@@ -1,10 +1,4 @@
-.PHONY: vet fmt lint test mocks envvars generate
-
-# Make target to generate resource scaffolding for specified RESOURCE
-generate: check-resource
-	@cd ./scripts/generate_resource; \
-	go mod tidy; \
-	go run . $(RESOURCE) ;
+.PHONY: vet fmt lint test spec api
 
 vet:
 	go vet
@@ -16,26 +10,16 @@ fmtcheck:
 	./scripts/gofmtcheck.sh
 
 lint:
-	golangci-lint run .
+	cd v2 && golangci-lint run
 
 test:
-	go test ./... $(TESTARGS) -timeout=30m
+	cd v2 && go test ./... $(TESTARGS)
 
-# Make target to generate mocks for specified FILENAME
-mocks: check-filename
-	@echo "mockgen -source=$(FILENAME) -destination=mocks/$(subst .go,_mocks.go,$(FILENAME)) -package=mocks" >> generate_mocks.sh
-	./generate_mocks.sh
+spec:
+	mkdir -p v2/openapi
+	mkdir -p v2/api
 
-envvars:
-	./scripts/setup-test-envvars.sh
+	curl -o ./v2/openapi/spec.json https://app.terraform.io/openapi/prerelease.json
 
-check-filename:
-ifndef FILENAME
-	$(error Missing FILENAME param. Example usage: FILENAME=example_resource.go make mocks)
-endif
-
-check-resource:
-ifndef RESOURCE
-	$(error Missing RESOURCE param. Example usage: RESOURCE=foo_bar make generate)
-endif
-
+api: spec
+	docker run -v ./v2/api:/app/output -v ./v2/openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/v2/api
