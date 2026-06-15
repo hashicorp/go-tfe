@@ -191,6 +191,71 @@ func TestClient_defaultConfig(t *testing.T) {
 	})
 }
 
+func TestDefaultConfig_UserAgent(t *testing.T) {
+	sawUserAgent := ""
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/api/v2/account/details" {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(`{"errors":[{"status":"404","title":"not found"}]}`))
+			return
+		}
+
+		sawUserAgent = r.Header.Get("User-Agent")
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data":{"id":"usr-1234","type":"users","attributes":{"email":"test@example.com"}}}`))
+	}))
+	defer server.Close()
+
+	client, err := NewClient(&Config{
+		Address: server.URL,
+		Token:   "test-token",
+	})
+	if err != nil {
+		t.Fatalf("unexpected NewClient error: %v", err)
+	}
+
+	_, err = client.API.Account().Details().Get(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("unexpected API error: %v", err)
+	}
+
+	assert.Equal(t, "go-tfe/"+version, sawUserAgent)
+}
+
+func TestNewClient_ConfigurableUserAgentHeader(t *testing.T) {
+	sawUserAgent := ""
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/api/v2/account/details" {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(`{"errors":[{"status":"404","title":"not found"}]}`))
+			return
+		}
+
+		sawUserAgent = r.Header.Get("User-Agent")
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data":{"id":"usr-1234","type":"users","attributes":{"email":"test@example.com"}}}`))
+	}))
+	defer server.Close()
+
+	client, err := NewClient(&Config{
+		Address: server.URL,
+		Token:   "test-token",
+		Headers: http.Header{"User-Agent": []string{"header-user-agent/9.9.9"}},
+	})
+	if err != nil {
+		t.Fatalf("unexpected NewClient error: %v", err)
+	}
+
+	_, err = client.API.Account().Details().Get(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("unexpected API error: %v", err)
+	}
+
+	assert.Equal(t, "header-user-agent/9.9.9", sawUserAgent)
+}
+
 func TestConfigHeadersAppliedToAPIRequests(t *testing.T) {
 	sawHeader := false
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

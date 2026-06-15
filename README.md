@@ -140,15 +140,16 @@ for _, key := range headers.ListKeys() {
 
 All configuration fields defined by `tfe.Config`
 
-| Option              | Description                                                                               | Default            |
-|---------------------|-------------------------------------------------------------------------------------------|--------------------|
-| `Token`             | (Required) The API token used for authentication                                          |                    |
-| `Address`           | The address URI of the TFE/HCPT service                                                   | `api.terraform.io` |
-| `BasePath`          | The base endpoint path                                                                    | `/api/v2`          |
-| `Headers`           | `net/http` Header values to send with every request.                                      |                    |
-| `RetryServerErrors` | Whether or not to retry 5XX errors automatically, up to 5 times.                          | `false`            |
-| `RetryRateLimited`  | Whether or not to retry 429 errors automatically, at the interval specified by the server | `false`            |
-| `RetryHook`         | A callback invoked _before_ the next retry after a server error.                          |                    |
+| Option              | Description                                                                               | Default                    |
+|---------------------|-------------------------------------------------------------------------------------------|----------------------------|
+| `Token`             | (Required) The API token used for authentication                                          |                            |
+| `Address`           | The address URI of the TFE/HCPT service                                                   | `https://app.terraform.io` |
+| `BasePath`          | The base endpoint path                                                                    | `/api/v2`                  |
+| `Headers`           | `net/http` Header values to send with every request.                                      |                            |
+| `RetryServerErrors` | Whether or not to retry 5XX errors automatically, up to RetryMaxRetries times.            | `false`                    |
+| `RetryMaxRetries`   | The number of times to retry server errors.                                               | `5`                        |
+| `RetryRateLimited`  | Whether or not to retry 429 errors automatically, at the interval specified by the server | `false`                    |
+| `RetryHook`         | A callback invoked _before_ the next retry after a server error.                          |                            |
 
 ## Reference Examples
 

@@ -95,12 +95,12 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 			},
 		}),
 		khttp.NewCompressionHandlerWithOptions(*khttp.NewCompressionOptionsReference(false)),
+		headersMiddleware,
 		khttp.NewUserAgentHandlerWithOptions(&khttp.UserAgentHandlerOptions{
-			Enabled:        true,
+			Enabled:        headerOpts.Get("User-Agent") == "",
 			ProductName:    "go-tfe",
 			ProductVersion: tfeSDKVersion,
 		}),
-		headersMiddleware,
 		khttp.NewHeadersInspectionHandlerWithOptions(func() khttp.HeadersInspectionOptions {
 			opts := *khttp.NewHeadersInspectionOptions()
 			opts.InspectRequestHeaders = false

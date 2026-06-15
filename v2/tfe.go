@@ -15,8 +15,6 @@ import (
 )
 
 const (
-	DefaultUserAgent = "go-tfe v2"
-
 	DefaultAddress     = "https://app.terraform.io"
 	DefaultBasePath    = "/api/v2"
 	ContentTypeJSONAPI = "application/vnd.api+json"
@@ -51,10 +49,6 @@ type Config struct {
 
 	// RetryMaxRetries sets the maximum number of retries for a request before giving up.
 	RetryMaxRetries int
-
-	// UserAgent is the User-Agent header value sent with each request.
-	// If not set, a default value ("go-tfe") will be used.
-	UserAgent string
 }
 
 // DefaultConfig returns a default config structure.
@@ -68,11 +62,7 @@ func DefaultConfig() *Config {
 		RetryServerErrors: false,
 		RetryMaxRetries:   5,
 		RetryHook:         func(retryCount int, response *http.Response) {},
-		UserAgent:         DefaultUserAgent,
 	}
-
-	// Set the default user agent.
-	config.Headers.Set("User-Agent", config.UserAgent)
 
 	return config
 }
@@ -121,11 +111,6 @@ func NewClient(cfg *Config) (*Client, error) {
 
 		if cfg.RetryMaxRetries != 0 {
 			config.RetryMaxRetries = cfg.RetryMaxRetries
-		}
-
-		if cfg.UserAgent != "" {
-			config.UserAgent = cfg.UserAgent
-			config.Headers.Set("User-Agent", config.UserAgent)
 		}
 	}
 
