@@ -19,8 +19,11 @@ Almost always, minor version changes will indicate backwards-compatible features
 
 ## Reference Documentation
 
+### Client Configuration
+
+All configuration is done using the NewClient interface. See [Configuration Options Reference](#configuration-options-reference) for all options and defaults.
+
 ```go
-# All configuration is done using the NewClient interface
 client, err := tfe.NewClient(&tfe.Config{
   Token:   os.Getenv("TFE_TOKEN"),
   Address: os.Getenv("TFE_ADDRESS"),
@@ -139,9 +142,9 @@ All configuration fields defined by `tfe.Config`
 
 | Option              | Description                                                                               | Default            |
 |---------------------|-------------------------------------------------------------------------------------------|--------------------|
+| `Token`             | (Required) The API token used for authentication                                          |                    |
 | `Address`           | The address URI of the TFE/HCPT service                                                   | `api.terraform.io` |
 | `BasePath`          | The base endpoint path                                                                    | `/api/v2`          |
-| `Token`             | The API token used for authentication.                                                    |                    |
 | `Headers`           | `net/http` Header values to send with every request.                                      |                    |
 | `RetryServerErrors` | Whether or not to retry 5XX errors automatically, up to 5 times.                          | `false`            |
 | `RetryRateLimited`  | Whether or not to retry 429 errors automatically, at the interval specified by the server | `false`            |

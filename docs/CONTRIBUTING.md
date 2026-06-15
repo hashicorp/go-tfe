@@ -3,9 +3,9 @@
 ### Adding or Updating HCP Terraform v2 API
 
 To add functionality to go-tfe/v2, edit the OpenAPI specification in the Terraform Platform code.
-The github.com/hashicorp/go-tfe/v2 package will be generated from that specification nightly and
-will include the new functionality. Please note that endpoints and attributes labelled as
-"public-beta" will appear in this client.
+The github.com/hashicorp/go-tfe/v2 package will be generated from the
+[US production OpenAPI endpoint](https://app.terraform.io/openapi/prerelease.json) specification
+nightly and will include the new functionality.
 
 ### v1 package (root directory) Contributions
 

@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	DefaultUserAgent = "go-tfe"
+	DefaultUserAgent = "go-tfe v2"
 
 	DefaultAddress     = "https://app.terraform.io"
 	DefaultBasePath    = "/api/v2"
