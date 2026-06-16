@@ -22,4 +22,8 @@ spec:
 	curl -o ./v2/openapi/spec.json https://app.terraform.io/openapi/prerelease.json
 
 api: spec
-	docker run -v ./v2/api:/app/output -v ./v2/openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/v2/api
+	docker run --rm \
+		--user "$$(id -u):$$(id -g)" \
+		-v "$$(pwd)/v2/api:/app/output" \
+		-v "$$(pwd)/v2/openapi:/app/openapi:ro" \
+		mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
