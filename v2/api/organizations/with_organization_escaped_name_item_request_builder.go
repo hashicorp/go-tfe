@@ -203,6 +203,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Teams()(*ItemTeamsRequestBuild
 func (m *WithOrganization_nameItemRequestBuilder) TeamTokens()(*ItemTeamTokensRequestBuilder) {
     return NewItemTeamTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Tests the tests property
+// returns a *ItemTestsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Tests()(*ItemTestsRequestBuilder) {
+    return NewItemTestsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ToDeleteRequestInformation delete an organization.
 // returns a *RequestInformation when successful
 func (m *WithOrganization_nameItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {

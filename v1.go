@@ -11913,9 +11913,6 @@ type QueryRuns interface {
 
 	// Cancel a query run by its ID.
 	Cancel(ctx context.Context, runID string) error
-
-	// Force-cancel a query run by its ID.
-	ForceCancel(ctx context.Context, runID string) error
 }
 
 // QueryRunCreateOptions represents the options for creating a new run.
@@ -12165,23 +12162,6 @@ func (r *queryRuns) Cancel(ctx context.Context, queryRunID string) error {
 	return req.Do(ctx, nil)
 }
 
-func (r *queryRuns) ForceCancel(ctx context.Context, queryRunID string) error {
-	if queryRunID == "" {
-		return ErrInvalidQueryRunID
-	}
-
-	u := fmt.Sprintf("queries/%s/actions/force-cancel", url.PathEscape(queryRunID))
-	req, err := r.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
-}
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ RegistryComponents = (*registryComponents)(nil)
 
@@ -12338,9 +12318,6 @@ func (r *registryComponents) Delete(ctx context.Context, componentID string) err
 
 	return req.Do(ctx, nil)
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 type AgentExecutionMode string
 
@@ -13471,9 +13448,6 @@ func NewPrivateRegistryModuleID(organization, name, provider string) RegistryMod
 	}
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ RegistryNoCodeModules = (*registryNoCodeModules)(nil)
 
@@ -13931,9 +13905,6 @@ func (o *RegistryNoCodeModuleCreateWorkspaceOptions) valid() error {
 func (o *RegistryNoCodeModuleUpgradeWorkspaceOptions) valid() error {
 	return nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation
 var _ RegistryProviderPlatforms = (*registryProviderPlatforms)(nil)
@@ -14429,9 +14400,6 @@ func (o RegistryProviderVersionCreateOptions) valid() error {
 	return nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ RegistryProviders = (*registryProviders)(nil)
 
@@ -14807,9 +14775,6 @@ type contextResponseHeaderHookKeyType struct{}
 // contextResponseHeaderHookKey is the internal key used to store the callback
 // for [ContextWithResponseHeaderHook] inside a [context.Context] object.
 var contextResponseHeaderHookKey contextResponseHeaderHookKeyType
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // ClientRequest encapsulates a request sent by the Client
 type ClientRequest struct {
@@ -15728,9 +15693,6 @@ func (o *TaskResultCallbackRequestOptions) valid() error {
 	return nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ RunTriggers = (*runTriggers)(nil)
 
@@ -15969,9 +15931,6 @@ func validateRunTriggerFilterParam(filterParam RunTriggerFilterOp, includeParams
 
 	return nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ Runs = (*runs)(nil)
@@ -17108,9 +17067,6 @@ func (s stackConfigurations) Diagnostics(ctx context.Context, stackConfiguration
 	return diagnostics, nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 type StackDeploymentGroupSummaries interface {
 	// List lists all the stack deployment group summaries for a stack.
 	List(ctx context.Context, configurationID string, options *StackDeploymentGroupSummaryListOptions) (*StackDeploymentGroupSummaryList, error)
@@ -17654,9 +17610,6 @@ func (s stackDeploymentSteps) Artifacts(ctx context.Context, stackDeploymentStep
 	return req.DoRaw(ctx)
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 type StackDeployments interface {
 	// List returns a list of stack deployments for a given stack.
 	List(ctx context.Context, stackID string, opts *StackDeploymentListOptions) (*StackDeploymentList, error)
@@ -17702,9 +17655,6 @@ func (s stackDeployments) List(ctx context.Context, stackID string, opts *StackD
 
 	return &deployments, nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 type StackDiagnostics interface {
 	// Read retrieves a stack diagnostic associated with a stack configuration by its ID.
@@ -17888,9 +17838,6 @@ func (s stackStates) Description(ctx context.Context, stackStateID string) (io.R
 
 	return req.DoRaw(ctx)
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Stacks describes all the stacks-related methods that the HCP Terraform API supports.
 type Stacks interface {
@@ -18198,7 +18145,7 @@ func (s StackCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 
-	if s.Project.ID == "" {
+	if s.Project == nil || s.Project.ID == "" {
 		return ErrRequiredProject
 	}
 
@@ -18330,9 +18277,6 @@ func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*State
 
 	return so, nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ StateVersions = (*stateVersions)(nil)
@@ -19129,9 +19073,6 @@ func (o *TaskStageReadOptions) valid() error {
 	return nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ TeamAccesses = (*teamAccesses)(nil)
 
@@ -19655,9 +19596,6 @@ func (o *TeamMemberRemoveOptions) valid() error {
 	}
 	return nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ TeamProjectAccesses = (*teamProjectAccesses)(nil)
@@ -20211,9 +20149,6 @@ func (s *teamTokens) DeleteByID(ctx context.Context, tokenID string) error {
 	return req.Do(ctx, nil)
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ Teams = (*teams)(nil)
 
@@ -20530,9 +20465,6 @@ type TestConfig struct {
 	AgentExecutionMode *string `jsonapi:"attr,agent-execution-mode,omitempty"`
 	AgentPoolID        *string `jsonapi:"attr,agent-pool-id,omitempty"`
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ TestRuns = (*testRuns)(nil)
@@ -20857,9 +20789,6 @@ func testRunsPath(moduleID RegistryModuleID) string {
 		url.PathEscape(moduleID.Provider))
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ TestVariables = (*testVariables)(nil)
 
@@ -21008,9 +20937,6 @@ func testVarsPath(moduleID RegistryModuleID) string {
 		url.PathEscape(moduleID.Name),
 		url.PathEscape(moduleID.Provider))
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 const (
 	_userAgent               = "go-tfe"
@@ -22337,9 +22263,6 @@ func (s *tfPolicyEvaluationOutcomes) List(ctx context.Context, tfPolicyEvaluatio
 	return tfpo, nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Access returns a pointer to the given team access type.
 func Access(v AccessType) *AccessType {
 	return &v
@@ -22500,9 +22423,6 @@ func Ptr[T any](v T) *T {
 	return &v
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ UserTokens = (*userTokens)(nil)
 
@@ -22642,9 +22562,6 @@ func (s *userTokens) Delete(ctx context.Context, tokenID string) error {
 	return req.Do(ctx, nil)
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ Users = (*users)(nil)
 
@@ -22753,9 +22670,6 @@ func (s *users) UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*
 	return u, nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // A regular expression used to validate common string ID patterns.
 var reStringID = regexp.MustCompile(`^[^/\s]+$`)
 
@@ -22781,9 +22695,6 @@ func validVersion(v string) bool {
 	_, err := version.NewVersion(v)
 	return err == nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ VariableSetVariables = (*variableSetVariables)(nil)
@@ -23019,9 +22930,6 @@ func (s *variableSetVariables) Delete(ctx context.Context, variableSetID, variab
 
 	return req.Do(ctx, nil)
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ VariableSets = (*variableSets)(nil)
@@ -23676,9 +23584,6 @@ func (o *VariableSetUpdateStacksOptions) valid() error {
 	return nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ Variables = (*variables)(nil)
 
@@ -23931,9 +23836,6 @@ func (o VariableCreateOptions) valid() error {
 	return nil
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // VaultOIDCConfigurations describes all the Vault OIDC configuration related methods that the HCP Terraform API supports.
 // HCP Terraform API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/oidc-configurations/vault
@@ -24076,9 +23978,6 @@ func (voc *vaultOIDCConfigurations) Delete(ctx context.Context, oidcID string) e
 	return req.Do(ctx, nil)
 }
 
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
-
 // Compile-time proof of interface implementation.
 var _ WorkspaceResources = (*workspaceResources)(nil)
 
@@ -24147,9 +24046,6 @@ func (s *workspaceResources) List(ctx context.Context, workspaceID string, optio
 func (o *WorkspaceResourceListOptions) valid() error {
 	return nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation
 var _ WorkspaceRunTasks = (*workspaceRunTasks)(nil)
@@ -24357,9 +24253,6 @@ func (o *WorkspaceRunTaskCreateOptions) valid() error {
 
 	return nil
 }
-
-// Copyright IBM Corp. 2018, 2026
-// SPDX-License-Identifier: MPL-2.0
 
 // Compile-time proof of interface implementation.
 var _ Workspaces = (*workspaces)(nil)

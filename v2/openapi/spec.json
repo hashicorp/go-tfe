@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "7317b80d",
+    "version": "b88df3c1",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -15436,6 +15436,113 @@
         }
       }
     },
+    "/organizations/{organization_name}/tests/registry-modules/{registry_name}/{namespace}/{name}/{provider}/test-runs/{test_run_id}/cleanups/{id}": {
+      "get": {
+        "operationId": "getTestRunCleanup",
+        "summary": "Get a Test Run Cleanup",
+        "description": "Get details about a specific cleanup attempt associated with a test run.\n",
+        "tags": [
+          "registry"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the organization."
+          },
+          {
+            "in": "path",
+            "name": "registry_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The registry host name."
+          },
+          {
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The namespace of the registry module."
+          },
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the registry module."
+          },
+          {
+            "in": "path",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The provider of the registry module."
+          },
+          {
+            "in": "path",
+            "name": "test_run_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the test run."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the test run cleanup."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test run cleanup details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-run-cleanups-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Test run cleanup not found or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organization_name}/ssh-keys": {
       "get": {
         "operationId": "listSshKeys",
@@ -27042,6 +27149,139 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/registry-module-address-validations"
+          }
+        }
+      },
+      "test-runs-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "test-runs"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "test-run-cleanups-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "test-run-cleanups"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "test-run-cleanups": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "test-run-cleanups"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "queued",
+                  "running",
+                  "finished",
+                  "canceled",
+                  "errored"
+                ]
+              },
+              "status-timestamps": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "repair-mode": {
+                "type": "boolean"
+              },
+              "filters": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "result-summary": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "test-run": {
+                "$ref": "#/components/schemas/test-runs-id"
+              },
+              "created-by": {
+                "$ref": "#/components/schemas/users-id"
+              },
+              "previous-test-run-cleanup": {
+                "$ref": "#/components/schemas/test-run-cleanups-id"
+              }
+            }
+          }
+        }
+      },
+      "test-run-cleanups-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/test-run-cleanups"
           }
         }
       },

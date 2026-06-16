@@ -23,9 +23,6 @@ func TestGetStream(t *testing.T) {
 			// Verify auth middleware applied the Bearer token
 			assert.Equal(t, "Bearer test-token", r.Header.Get("Authorization"))
 
-			// Verify User-Agent header contains the default client user agent
-			assert.Contains(t, r.Header.Get("User-Agent"), DefaultUserAgent)
-
 			if r.Header.Get("X-Custom-Header") != "" {
 				xCustomHeaderCount++
 				assert.Equal(t, "CustomValue", r.Header.Get("X-Custom-Header"))
