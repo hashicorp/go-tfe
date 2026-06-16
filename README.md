@@ -1,5 +1,4 @@
-HCP Terraform and Terraform Enterprise Go SDK Client 2.0
-==============================
+# HCP Terraform and Terraform Enterprise Go SDK Client 2.0
 
 [![Tests](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml/badge.svg)](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml)
 [![GitHub license](https://img.shields.io/github/license/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/blob/main/LICENSE)
@@ -13,6 +12,58 @@ This client supports the [HCP Terraform V2 API](https://developer.hashicorp.com/
 As Terraform Enterprise is a self-hosted distribution of HCP Terraform, this
 client supports both HCP Terraform and Terraform Enterprise use cases.
 
+## Quick Start
+
+### Installation
+
+To install the client, use `go get`:
+
+```bash
+go get github.com/hashicorp/go-tfe/v2
+```
+
+### Basic Usage
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/hashicorp/go-tfe/v2"
+	"github.com/microsoft/kiota-abstractions-go/serialization"
+)
+
+func main() {
+	client, err := tfe.NewClient(&tfe.Config{
+		Token:   os.Getenv("TFE_TOKEN"),
+		Address: os.Getenv("TFE_ADDRESS"),
+	})
+	if err != nil {
+		log.Fatalf("Error creating client: %v", err)
+	}
+
+	ctx := context.Background()
+
+	// Get a list of organizations
+	response, err := client.API.Organizations().Get(ctx, nil)
+	if err != nil {
+		log.Fatalf("Error getting organizations: %v", err)
+	}
+
+	// Serialize the response to JSON for display
+	buffer, err := serialization.SerializeToJson(response)
+	if err != nil {
+		log.Fatalf("Error serializing response: %s", err)
+	}
+
+	fmt.Println(string(buffer))
+}
+```
+
 ## Version Information
 
 Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
@@ -21,7 +72,7 @@ Almost always, minor version changes will indicate backwards-compatible features
 
 ### Client Configuration
 
-All configuration is done using the NewClient interface. See [Configuration Options Reference](#configuration-options-reference) for all options and defaults.
+All configuration is done using the `NewClient` function. See [Configuration Options Reference](#configuration-options-reference) for all options and defaults.
 
 ```go
 client, err := tfe.NewClient(&tfe.Config{
@@ -36,10 +87,10 @@ Every client interface starting with `API` uses a path-based naming convention f
 method of the operation on that path. Let's take a look at some examples:
 
 ```go
-# Simple, unparameterized path GET /account/details
+// Simple, unparameterized path GET /account/details
 response, err := client.API.Account().Details().Get(ctx, nil)
 
-# Parameterized path POST /organizations/{organization_name}/projects
+// Parameterized path POST /organizations/{organization_name}/projects
 response, err := client.API.Organizations().ByOrganization_name("foo").Projects().Post(ctx, newProjectRequestBody(), nil)
 ```
 
@@ -109,7 +160,7 @@ response, err := client.API.Organizations().Get(ctx, &req)
 
 ```go
 import (
-	abstractions "github.com/microsoft/kiota-abstractions-go"
+	"github.com/microsoft/kiota-abstractions-go"
 	khttp "github.com/microsoft/kiota-http-go"
 )
 
@@ -151,7 +202,7 @@ All configuration fields defined by `tfe.Config`
 | `RetryRateLimited`  | Whether or not to retry 429 errors automatically, at the interval specified by the server | `false`                    |
 | `RetryHook`         | A callback invoked _before_ the next retry after a server error.                          |                            |
 
-## Reference Examples
+## Examples
 
 See the [examples/ directory](https://github.com/hashicorp/go-tfe/tree/main/v2/examples) for runnable
 example code.
