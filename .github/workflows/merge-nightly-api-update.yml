@@ -15,9 +15,11 @@ jobs:
   merge-latest:
     name: Merge Latest Nightly API PR
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' && startsWith(github.event.workflow_run.head_branch, 'automation/nightly-api-update/')) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.head_repository.full_name == github.repository && startsWith(github.event.workflow_run.head_branch, 'automation/nightly-api-update/')) }}
     env:
       BRANCH_PREFIX: automation/nightly-api-update/
+      NIGHTLY_LABEL: nightly-api-update
+      NIGHTLY_AUTHOR: github-actions[bot]
     steps:
       - name: Close older nightly PRs
         id: close_older_nightly_prs
@@ -25,6 +27,8 @@ jobs:
         with:
           script: |
             const branchPrefix = process.env.BRANCH_PREFIX;
+            const nightlyLabel = process.env.NIGHTLY_LABEL;
+            const nightlyAuthor = process.env.NIGHTLY_AUTHOR;
             const { owner, repo } = context.repo;
 
             const prs = await github.paginate(github.rest.pulls.list, {
@@ -36,7 +40,12 @@ jobs:
               per_page: 100,
             });
 
-            const nightlyPrs = prs.filter((pr) => pr.head.ref.startsWith(branchPrefix));
+            const nightlyPrs = prs.filter((pr) =>
+              pr.head.ref.startsWith(branchPrefix) &&
+              pr.head.repo.full_name === `${owner}/${repo}` &&
+              pr.user.login === nightlyAuthor &&
+              pr.labels.some((label) => label.name === nightlyLabel)
+            );
 
             if (nightlyPrs.length === 0) {
               core.info('No open nightly API PRs found');
@@ -68,7 +77,19 @@ jobs:
                   pullRequest(number: $number) {
                     id
                     number
+                    headRefName
+                    headRepository {
+                      nameWithOwner
+                    }
                     mergeable
+                    author {
+                      login
+                    }
+                    labels(first: 20) {
+                      nodes {
+                        name
+                      }
+                    }
                     reviewDecision
                     statusCheckRollup {
                       state
@@ -85,6 +106,26 @@ jobs:
             });
 
             const pr = result.repository.pullRequest;
+
+            if (pr.author?.login !== process.env.NIGHTLY_AUTHOR) {
+              core.info(`Skipping merge for PR #${latestPrNumber}: author is ${pr.author?.login ?? 'unknown'}`);
+              return;
+            }
+
+            if (pr.headRefName == null || !pr.headRefName.startsWith(process.env.BRANCH_PREFIX)) {
+              core.info(`Skipping merge for PR #${latestPrNumber}: branch is ${pr.headRefName ?? 'unknown'}`);
+              return;
+            }
+
+            if (pr.headRepository?.nameWithOwner !== `${owner}/${repo}`) {
+              core.info(`Skipping merge for PR #${latestPrNumber}: head repository is ${pr.headRepository?.nameWithOwner ?? 'unknown'}`);
+              return;
+            }
+
+            if (!pr.labels.nodes.some((label) => label.name === process.env.NIGHTLY_LABEL)) {
+              core.info(`Skipping merge for PR #${latestPrNumber}: missing ${process.env.NIGHTLY_LABEL} label`);
+              return;
+            }
 
             if (pr.statusCheckRollup?.state !== 'SUCCESS') {
               core.info(`Skipping merge for PR #${latestPrNumber}: checks are ${pr.statusCheckRollup?.state ?? 'not available'}`);
