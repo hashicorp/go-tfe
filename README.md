@@ -97,7 +97,8 @@ response, err := client.API.Organizations().ByOrganization_name("foo").Projects(
 ```
 
 Use the [API reference](https://developer.hashicorp.com/terraform/cloud-docs/api-docs) to explore
-all the available paths and operations.
+all the available paths and operations. Oftentimes, resource index and create endpoints will be nested in a path
+that does not begin with the resource name, like the Projects example above.
 
 ### Request Bodies
 
