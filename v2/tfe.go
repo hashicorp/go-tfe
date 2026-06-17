@@ -128,7 +128,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	validator, err := auth.NewAllowedHostsValidatorErrorCheck([]string{
-		baseURL.Host,
+		baseURL.Hostname(),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("invalid host configuration: %w", err)
@@ -137,7 +137,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	tokenProvider := &accessTokenProvider{
 		allowedHosts: validator,
 		accessToken:  config.Token,
-		host:         baseURL.Host,
+		host:         baseURL.Hostname(),
 	}
 
 	authProvider := auth.NewBaseBearerTokenAuthenticationProvider(tokenProvider)

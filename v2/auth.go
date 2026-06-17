@@ -27,5 +27,9 @@ func (c *accessTokenProvider) GetAuthorizationToken(ctx context.Context, url *u.
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
+	if c.allowedHosts != nil && !c.allowedHosts.IsUrlHostValid(url) {
+		return "", nil
+	}
+
 	return c.accessToken, nil
 }
