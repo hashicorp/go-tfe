@@ -54,13 +54,15 @@ func main() {
 		log.Fatalf("Error getting organizations: %v", err)
 	}
 
+	fmt.Fprintf(os.Stderr, "[LOG] Fetched %d organizations\n", len(response.GetData()))
+
 	// Serialize the response to JSON for display
 	buffer, err := serialization.SerializeToJson(response)
 	if err != nil {
 		log.Fatalf("Error serializing response: %s", err)
 	}
 
-	fmt.Println(string(buffer))
+	fmt.Fprintln(os.Stdout, string(buffer))
 }
 ```
 

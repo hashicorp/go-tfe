@@ -1,4 +1,4 @@
-# v2.0.0-beta1
+# v2.0.0
 
 The go-tfe v2 package has been added to this repository and contains substantial breaking changes
 and improvements to the v1 package.

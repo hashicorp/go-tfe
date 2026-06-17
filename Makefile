@@ -12,6 +12,9 @@ fmtcheck:
 lint:
 	cd v2 && golangci-lint run
 
+lint_v1:
+	golangci-lint run
+
 test:
 	cd v2 && go test ./... $(TESTARGS)
 

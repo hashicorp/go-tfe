@@ -9,33 +9,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint
+  lint-test:
+    name: Lint/Test
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       - uses: ./.github/actions/lint-go-tfe
-
-  tests:
-    name: Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - uses: ./.github/actions/test-go-tfe
 
   tests-summarize:
     name: Summarize Tests
-    needs: [tests]
+    needs: [lint-test]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
       - name: Check tests Status
         run: |
-          if [ "${{ needs.tests.result }}" = "success" ]; then
+          if [ "${{ needs.lint-test.result }}" = "success" ]; then
             exit 0
           fi
           exit 1
