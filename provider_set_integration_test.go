@@ -11,6 +11,70 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestProviderSetsList(t *testing.T) {
+	skipUnlessBeta(t)
+	t.Parallel()
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	newSubscriptionUpdater(orgTest)
+
+	project := orgTest.DefaultProject
+	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
+	defer workspaceCleanup()
+
+	createOptions := providerSetTestCreateOptionsWithRelationships(
+		t,
+		[]*Project{project},
+		[]*Workspace{workspace},
+	)
+	ps, err := client.ProviderSets.Create(ctx, orgTest.Name, createOptions)
+	require.NoError(t, err)
+
+	t.Run("with valid organization", func(t *testing.T) {
+		psList, err := client.ProviderSets.List(ctx, orgTest.Name, nil)
+		require.NoError(t, err)
+		require.NotNil(t, psList)
+		require.NotNil(t, psList.Items)
+		require.NotEmpty(t, psList.Items)
+
+		var found *ProviderSet
+		for _, item := range psList.Items {
+			if item.ID == ps.ID {
+				found = item
+				break
+			}
+		}
+
+		require.NotNil(t, found)
+		assert.Equal(t, ps.ID, found.ID)
+		assert.Equal(t, ps.Name, found.Name)
+		assert.Equal(t, ps.Description, found.Description)
+		assert.Equal(t, ps.ProviderSource, found.ProviderSource)
+		assert.Equal(t, ps.ConfigurationHcl, found.ConfigurationHcl)
+
+		require.Len(t, found.Projects, 1)
+		require.Len(t, found.Workspaces, 1)
+		assert.Equal(t, createOptions.Projects[0].ID, found.Projects[0].ID)
+		assert.Equal(t, createOptions.Workspaces[0].ID, found.Workspaces[0].ID)
+	})
+
+	t.Run("with invalid organization", func(t *testing.T) {
+		psList, err := client.ProviderSets.List(ctx, "invalid/org", nil)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.Nil(t, psList)
+	})
+
+	t.Run("with unexisting organization", func(t *testing.T) {
+		psList, err := client.ProviderSets.List(ctx, "unexisting-id", nil)
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
+		assert.Nil(t, psList)
+	})
+}
+
 func TestProviderSetsRead(t *testing.T) {
 	skipUnlessBeta(t)
 	t.Parallel()

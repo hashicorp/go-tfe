@@ -17,6 +17,9 @@ var _ ProviderSets = (*providerSets)(nil)
 // Note: This API is experimental and intended for internal use only. It is
 // subject to change or removal without notice.
 type ProviderSets interface {
+	// List all the provider sets for a given organization
+	List(ctx context.Context, organization string, options *ProviderSetListOptions) (*ProviderSetList, error)
+
 	// Create is used to create a new provider set.
 	Create(ctx context.Context, organization string, options ProviderSetCreateOptions) (*ProviderSet, error)
 
@@ -54,6 +57,17 @@ type ProviderSet struct {
 // providerSets implements ProviderSets.
 type providerSets struct {
 	client *Client
+}
+
+// ProviderSetList represents a list of provider sets.
+type ProviderSetList struct {
+	*Pagination
+	Items []*ProviderSet
+}
+
+// ProviderSetListOptions represents the options for listing provider sets.
+type ProviderSetListOptions struct {
+	ListOptions
 }
 
 // ProviderSetCreateOptions represents the options for creating a new provider set.
@@ -173,6 +187,27 @@ func (o ProviderSetUpdateOptions) payload() *providerSetUpdatePayload {
 	}
 
 	return &payload
+}
+
+// List all the provider sets for a given organization
+func (p *providerSets) List(ctx context.Context, organization string, options *ProviderSetListOptions) (*ProviderSetList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/provider-sets", url.PathEscape(organization))
+	req, err := p.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	pl := &ProviderSetList{}
+	err = req.Do(ctx, pl)
+	if err != nil {
+		return nil, err
+	}
+
+	return pl, nil
 }
 
 // Create is used to create a new provider set.
