@@ -6,6 +6,7 @@ type Queries_attributes_status int
 
 const (
     PENDING_QUERIES_ATTRIBUTES_STATUS Queries_attributes_status = iota
+    QUEUED_QUERIES_ATTRIBUTES_STATUS
     RUNNING_QUERIES_ATTRIBUTES_STATUS
     FINISHED_QUERIES_ATTRIBUTES_STATUS
     CANCELED_QUERIES_ATTRIBUTES_STATUS
@@ -13,13 +14,15 @@ const (
 )
 
 func (i Queries_attributes_status) String() string {
-    return []string{"pending", "running", "finished", "canceled", "errored"}[i]
+    return []string{"pending", "queued", "running", "finished", "canceled", "errored"}[i]
 }
 func ParseQueries_attributes_status(v string) (any, error) {
     result := PENDING_QUERIES_ATTRIBUTES_STATUS
     switch v {
         case "pending":
             result = PENDING_QUERIES_ATTRIBUTES_STATUS
+        case "queued":
+            result = QUEUED_QUERIES_ATTRIBUTES_STATUS
         case "running":
             result = RUNNING_QUERIES_ATTRIBUTES_STATUS
         case "finished":

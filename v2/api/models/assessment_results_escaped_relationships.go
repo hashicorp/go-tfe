@@ -10,6 +10,8 @@ import (
 type AssessmentResults_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The source assessment or plan that produced this result.
+    source AssessmentResults_relationships_sourceable
     // The workspace this assessment result belongs to
     workspace AssessmentResults_relationships_workspaceable
 }
@@ -34,6 +36,16 @@ func (m *AssessmentResults_relationships) GetAdditionalData()(map[string]any) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *AssessmentResults_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateAssessmentResults_relationships_sourceFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSource(val.(AssessmentResults_relationships_sourceable))
+        }
+        return nil
+    }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateAssessmentResults_relationships_workspaceFromDiscriminatorValue)
         if err != nil {
@@ -46,6 +58,11 @@ func (m *AssessmentResults_relationships) GetFieldDeserializers()(map[string]fun
     }
     return res
 }
+// GetSource gets the source property value. The source assessment or plan that produced this result.
+// returns a AssessmentResults_relationships_sourceable when successful
+func (m *AssessmentResults_relationships) GetSource()(AssessmentResults_relationships_sourceable) {
+    return m.source
+}
 // GetWorkspace gets the workspace property value. The workspace this assessment result belongs to
 // returns a AssessmentResults_relationships_workspaceable when successful
 func (m *AssessmentResults_relationships) GetWorkspace()(AssessmentResults_relationships_workspaceable) {
@@ -53,6 +70,12 @@ func (m *AssessmentResults_relationships) GetWorkspace()(AssessmentResults_relat
 }
 // Serialize serializes information the current object
 func (m *AssessmentResults_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("source", m.GetSource())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("workspace", m.GetWorkspace())
         if err != nil {
@@ -71,6 +94,10 @@ func (m *AssessmentResults_relationships) Serialize(writer i878a80d2330e89d26896
 func (m *AssessmentResults_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetSource sets the source property value. The source assessment or plan that produced this result.
+func (m *AssessmentResults_relationships) SetSource(value AssessmentResults_relationships_sourceable)() {
+    m.source = value
+}
 // SetWorkspace sets the workspace property value. The workspace this assessment result belongs to
 func (m *AssessmentResults_relationships) SetWorkspace(value AssessmentResults_relationships_workspaceable)() {
     m.workspace = value
@@ -78,6 +105,8 @@ func (m *AssessmentResults_relationships) SetWorkspace(value AssessmentResults_r
 type AssessmentResults_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetSource()(AssessmentResults_relationships_sourceable)
     GetWorkspace()(AssessmentResults_relationships_workspaceable)
+    SetSource(value AssessmentResults_relationships_sourceable)()
     SetWorkspace(value AssessmentResults_relationships_workspaceable)()
 }

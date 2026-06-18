@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "b88df3c1",
+    "version": "8abfcded",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -22240,7 +22240,14 @@
                 "readOnly": true
               },
               "source": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "tfe-api",
+                  "tfe-ui",
+                  "tfe-module",
+                  "tfe-no-code-query",
+                  "terraform"
+                ]
               },
               "generate-config-out": {
                 "type": "boolean"
@@ -22278,6 +22285,7 @@
                 "type": "string",
                 "enum": [
                   "pending",
+                  "queued",
                   "running",
                   "finished",
                   "canceled",
@@ -23471,6 +23479,32 @@
                         "type": "string",
                         "enum": [
                           "workspaces"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "type": "object",
+                "description": "The source assessment or plan that produced this result.",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "asmt-8F5JFydVYAmtTjET"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "assessments",
+                          "plans"
                         ]
                       }
                     }

@@ -26,7 +26,7 @@ type Queries_attributes struct {
     // The permissions property
     permissions Queries_attributes_permissionsable
     // The source property
-    source *string
+    source *Queries_attributes_source
     // The status property
     status *Queries_attributes_status
     // The statusTimestamps property
@@ -141,12 +141,12 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         return nil
     }
     res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+        val, err := n.GetEnumValue(ParseQueries_attributes_source)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetSource(val)
+            m.SetSource(val.(*Queries_attributes_source))
         }
         return nil
     }
@@ -203,8 +203,8 @@ func (m *Queries_attributes) GetPermissions()(Queries_attributes_permissionsable
     return m.permissions
 }
 // GetSource gets the source property value. The source property
-// returns a *string when successful
-func (m *Queries_attributes) GetSource()(*string) {
+// returns a *Queries_attributes_source when successful
+func (m *Queries_attributes) GetSource()(*Queries_attributes_source) {
     return m.source
 }
 // GetStatus gets the status property value. The status property
@@ -242,8 +242,9 @@ func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
             return err
         }
     }
-    {
-        err := writer.WriteStringValue("source", m.GetSource())
+    if m.GetSource() != nil {
+        cast := (*m.GetSource()).String()
+        err := writer.WriteStringValue("source", &cast)
         if err != nil {
             return err
         }
@@ -302,7 +303,7 @@ func (m *Queries_attributes) SetPermissions(value Queries_attributes_permissions
     m.permissions = value
 }
 // SetSource sets the source property value. The source property
-func (m *Queries_attributes) SetSource(value *string)() {
+func (m *Queries_attributes) SetSource(value *Queries_attributes_source)() {
     m.source = value
 }
 // SetStatus sets the status property value. The status property
@@ -327,7 +328,7 @@ type Queries_attributesable interface {
     GetGenerateConfigOut()(*bool)
     GetLogReadUrl()(*string)
     GetPermissions()(Queries_attributes_permissionsable)
-    GetSource()(*string)
+    GetSource()(*Queries_attributes_source)
     GetStatus()(*Queries_attributes_status)
     GetStatusTimestamps()(Queries_attributes_statusTimestampsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -338,7 +339,7 @@ type Queries_attributesable interface {
     SetGenerateConfigOut(value *bool)()
     SetLogReadUrl(value *string)()
     SetPermissions(value Queries_attributes_permissionsable)()
-    SetSource(value *string)()
+    SetSource(value *Queries_attributes_source)()
     SetStatus(value *Queries_attributes_status)()
     SetStatusTimestamps(value Queries_attributes_statusTimestampsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
