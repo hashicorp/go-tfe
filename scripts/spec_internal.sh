@@ -38,7 +38,7 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
     echo "and try again. Do not push internal-beta API changes to"
     echo "the public repository."
     echo ""
-    echo "Otherwise, use 'git reset --hard' to discard all changes."
+    echo "Use 'git reset --hard' to discard all changes."
     exit 1
 fi
 EOF

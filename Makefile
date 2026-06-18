@@ -39,4 +39,4 @@ api_internal: spec_internal
 		--user "$$(id -u):$$(id -g)" \
 		-v "$$(pwd)/v2/api:/app/output" \
 		-v "$$(pwd)/v2/openapi:/app/openapi:ro" \
-		mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/internal/api
+		mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
