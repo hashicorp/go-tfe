@@ -25,3 +25,9 @@ handles the following features and functionality:
 - Automatic retries
 - Error handling
 - Streaming downloads by URL or path (undecoded bodies)
+
+### HashiCorp Employees: Internal Development
+
+If you have the latest HCP platform code in an adjacent directory, you can use the `make api_internal`
+task to copy the unpublished `internal-beta` specification and build the SDK from it. The results should
+not be committed and pushed to this repo, but can serve as a local package to develop tools against.
