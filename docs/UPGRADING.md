@@ -12,7 +12,7 @@ done using the `NewClient` function.
 To upgrade, get the module and import as `github.com/hashicorp/go-tfe/v2`
 
 ```bash
-$ go get github.com/hashicorp/go-tfe/v2@v2.0.0-beta1
+$ go get github.com/hashicorp/go-tfe/v2@VERSION
 ```
 
 See the [Reference Documentation in README.md](../README.md) for full usage.
