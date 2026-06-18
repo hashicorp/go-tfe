@@ -19,8 +19,8 @@ Everything outside of the `v2/api` directory is maintained as the core go-tfe wr
 handles the following features and functionality:
 
 - Configuration
-- Authentication
-- Meta APIs (IPRanges and OpenAPI)
+- Authentication and token host allow list
+- Meta APIs like IPRanges and OpenAPI
 - Decompression
 - Automatic retries
 - Error handling
@@ -31,3 +31,5 @@ handles the following features and functionality:
 If you have the latest HCP platform code in an adjacent directory, you can use the `make api_internal`
 task to copy the unpublished `internal-beta` specification and build the SDK from it. The results should
 not be committed and pushed to this repo, but can serve as a local package to develop tools against.
+`make api_internal` creates a pre-commit hook to prevent accidentally committing changes. You can
+remove this hook using `rm .git/hooks/pre-commit`.
