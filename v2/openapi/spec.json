@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "8abfcded",
+    "version": "04db0eed",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -147,6 +147,14 @@
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/registry"
       }
+    },
+    {
+      "name": "hyok",
+      "x-vis": [
+        "hcpt"
+      ],
+      "x-displayName": "HYOK",
+      "description": "HYOK Configuration actions and key data"
     },
     {
       "name": "runs",
@@ -12178,6 +12186,810 @@
         }
       }
     },
+    "/organizations/{organization_name}/hyok-configurations": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "listHyokConfigurations",
+        "summary": "List HYOK Configurations",
+        "description": "List all HYOK configurations in an organization",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/hyok-configurations"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Organization not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createHyokConfiguration",
+        "summary": "Create HYOK Configuration",
+        "description": "Create a new HYOK configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/hyok-configurations-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "HYOK Configuration created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/hyok-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/hyok-configurations/test": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "testUnpersistedHyokConfiguration",
+        "summary": "Test new HYOK configuration",
+        "description": "Test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "hyok-configuration",
+                  "oidc-configuration"
+                ],
+                "properties": {
+                  "hyok-configuration": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/hyok-configurations"
+                      }
+                    }
+                  },
+                  "oidc-configuration": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/aws-oidc-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/gcp-oidc-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/azure-oidc-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/vault-oidc-configurations"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "HYOK Configuration successfully tested and verified"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/oidc-configurations": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "createOidcConfiguration",
+        "summary": "Create OIDC Configuration",
+        "description": "Create a new OIDC configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/oidc-configuration-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OIDC Configuration created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oidc-configuration-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-configurations/{hyok_configuration_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getHyokConfiguration",
+        "summary": "Get HYOK configuration details",
+        "description": "Get details about an HYOK configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Configuration ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HYOK Configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/hyok-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateHyokConfiguration",
+        "summary": "Update HYOK Configuration",
+        "description": "Update an HYOK configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK configuration ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/hyok-configurations-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "HYOK configuration updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/hyok-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteHyokConfiguration",
+        "summary": "Delete HYOK Configuration",
+        "description": "Delete an HYOK configuration. Can only be performed on unused configurations.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Configuration ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "HYOK configuration deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-configurations/{hyok_configuration_id}/hyok-customer-key-versions": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "listHyokCustomerKeyVersions",
+        "summary": "List HYOK Customer Key Versions",
+        "description": "List all HYOK Customer Key Versions for an HYOK Configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Configuration ID"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/hyok-customer-key-versions"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-configurations/{hyok_configuration_id}/actions/revoke": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "revokeHyokConfiguration",
+        "summary": "Revoke HYOK configuration",
+        "description": "Revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Configuration ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "HYOK Configuration revocation initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-configurations/{hyok_configuration_id}/actions/test": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "testHyokConfiguration",
+        "summary": "Test HYOK configuration",
+        "description": "Test an HYOK configuration to ensure that it is set up correctly to connect to the specified KMS.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Configuration ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "HYOK Configuration successfully tested and verified"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-customer-key-versions/{hyok_customer_key_version_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getHyokCustomerKeyVersion",
+        "summary": "Get HYOK Customer Key Version details",
+        "description": "Get details about a HYOK Customer Key Version",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_customer_key_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Customer Key Version ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HYOK Customer Key Version details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/hyok-customer-key-versions-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteHyokCustomerKeyVersion",
+        "summary": "Delete HYOK Customer Key Version",
+        "description": "Delete a HYOK Customer Key Version. Can only be performed on unused key versions.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_customer_key_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Customer Key Version ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "HYOK Customer Key Version deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-customer-key-versions/{hyok_customer_key_version_id}/actions/revoke": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "revokeHyokCustomerKeyVersion",
+        "summary": "Revoke HYOK Customer Key Version",
+        "description": "Revoke a HYOK Customer Key Version.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_customer_key_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Customer Key Version ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "HYOK Key Version revocation initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hyok-encrypted-data-keys/{hyok_encrypted_data_key_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getHyokEncryptedDataKey",
+        "summary": "Get HYOK Encrypted Data Key details",
+        "description": "Get details about a HYOK Encrypted Data Key",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hyok_encrypted_data_key_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "HYOK Encrypted Data Key ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HYOK Encrypted Data Key details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/hyok-encrypted-data-keys-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oidc-configurations/{oidc_configuration_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getOidcConfiguration",
+        "summary": "Get OIDC Configuration details",
+        "description": "Get details about an OIDC configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oidc_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "OIDC Configuration ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OIDC Configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oidc-configuration-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateOidcConfiguration",
+        "summary": "Update OIDC Configuration",
+        "description": "Update an OIDC configuration",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oidc_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "OIDC Configuration ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/oidc-configuration-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OIDC Configuration updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oidc-configuration-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/authentication-tokens/{id}": {
       "get": {
         "operationId": "getAuthenticationToken",
@@ -19929,6 +20741,25 @@
           }
         }
       },
+      "hyok-configurations-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "hyok-configurations"
+                ]
+              }
+            }
+          }
+        }
+      },
       "organizations": {
         "type": "object",
         "required": [
@@ -20150,6 +20981,12 @@
                       "hcpt"
                     ]
                   },
+                  "can-update-hyok-configuration": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
                   "can-manage-recoverable-items": {
                     "type": "boolean",
                     "x-vis": [
@@ -20258,6 +21095,12 @@
               },
               "default-project": {
                 "$ref": "#/components/schemas/projects-id"
+              },
+              "primary-hyok-configuration": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "$ref": "#/components/schemas/hyok-configurations-id"
               }
             }
           }
@@ -24670,7 +25513,7 @@
                 "description": "HYOK encrypted data key associated with this plan",
                 "nullable": true,
                 "x-vis": [
-                  "public-beta"
+                  "hcpt"
                 ],
                 "properties": {
                   "data": {
@@ -26266,6 +27109,505 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/state-version-outputs"
+          }
+        }
+      },
+      "hyok-customer-key-versions-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "hyok-customer-key-versions"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "oidc-configurations-id": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "aws-oidc-configurations",
+                  "azure-oidc-configurations",
+                  "gcp-oidc-configurations",
+                  "vault-oidc-configurations"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "hyok-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "kek-id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "primary": {
+                "type": "boolean"
+              },
+              "kms-options": {
+                "type": "object",
+                "properties": {
+                  "key-region": {
+                    "type": "string",
+                    "description": "Only required with AWS KMS"
+                  },
+                  "key-location": {
+                    "type": "string",
+                    "description": "Only required with GCP KMS"
+                  },
+                  "key-ring-id": {
+                    "type": "string",
+                    "description": "Only required with GCP KMS"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "readOnly": true,
+                "$ref": "#/components/schemas/organizations-id"
+              },
+              "agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              },
+              "hyok-customer-key-versions": {
+                "readOnly": true,
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/hyok-customer-key-versions-id"
+                    }
+                  }
+                }
+              },
+              "oidc-configuration": {
+                "readOnly": true,
+                "$ref": "#/components/schemas/oidc-configurations-id",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "aws-oidc-configurations",
+                          "gcp-oidc-configurations",
+                          "azure-oidc-configurations",
+                          "vault-oidc-configurations"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "hyok-configurations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hyok-configurations"
+          }
+        }
+      },
+      "aws-oidc-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "aws-oidc-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "role-arn": {
+                "type": "string"
+              },
+              "region": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              }
+            }
+          }
+        }
+      },
+      "gcp-oidc-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "gcp-oidc-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "service-account-email": {
+                "type": "string"
+              },
+              "region": {
+                "type": "string"
+              },
+              "workload-provider-name": {
+                "type": "string",
+                "description": "Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided"
+              },
+              "project-number": {
+                "type": "string"
+              },
+              "workload-pool-id": {
+                "type": "string",
+                "description": "Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided"
+              },
+              "workload-provider-id": {
+                "type": "string",
+                "description": "Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              }
+            }
+          }
+        }
+      },
+      "azure-oidc-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "azure-oidc-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "client-id": {
+                "type": "string"
+              },
+              "subscription-id": {
+                "type": "string"
+              },
+              "tenant-id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              }
+            }
+          }
+        }
+      },
+      "vault-oidc-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "vault-oidc-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "namespace": {
+                "type": "string"
+              },
+              "auth-path": {
+                "type": "string"
+              },
+              "encoded-ca-cert": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              }
+            }
+          }
+        }
+      },
+      "oidc-configuration-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/aws-oidc-configurations"
+              },
+              {
+                "$ref": "#/components/schemas/gcp-oidc-configurations"
+              },
+              {
+                "$ref": "#/components/schemas/azure-oidc-configurations"
+              },
+              {
+                "$ref": "#/components/schemas/vault-oidc-configurations"
+              }
+            ]
+          }
+        }
+      },
+      "hyok-customer-key-versions": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-customer-key-versions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "key-version": {
+                "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "workspaces-secured": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "available",
+                  "revoking",
+                  "revoked",
+                  "revocation_failed"
+                ]
+              },
+              "error": {
+                "type": "string",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "hyok-configuration": {
+                "readOnly": true,
+                "$ref": "#/components/schemas/hyok-configurations-id"
+              }
+            }
+          }
+        }
+      },
+      "hyok-customer-key-versions-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hyok-customer-key-versions"
+          }
+        }
+      },
+      "hyok-encrypted-data-keys": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-encrypted-data-keys"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "encrypted-dek": {
+                "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "customer-key-name": {
+                "type": "string",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "hyok-customer-key-version": {
+                "readOnly": true,
+                "$ref": "#/components/schemas/hyok-customer-key-versions-id"
+              }
+            }
+          }
+        }
+      },
+      "hyok-encrypted-data-keys-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hyok-encrypted-data-keys"
           }
         }
       },

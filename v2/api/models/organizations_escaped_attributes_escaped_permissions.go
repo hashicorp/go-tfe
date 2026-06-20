@@ -76,6 +76,8 @@ type Organizations_attributes_permissions struct {
     canUpdateApiToken *bool
     // The canUpdateAuthenticationToken property
     canUpdateAuthenticationToken *bool
+    // The canUpdateHyokConfiguration property
+    canUpdateHyokConfiguration *bool
     // The canUpdateOauth property
     canUpdateOauth *bool
     // The canUpdateSentinel property
@@ -268,6 +270,11 @@ func (m *Organizations_attributes_permissions) GetCanUpdateApiToken()(*bool) {
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateAuthenticationToken()(*bool) {
     return m.canUpdateAuthenticationToken
+}
+// GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanUpdateHyokConfiguration()(*bool) {
+    return m.canUpdateHyokConfiguration
 }
 // GetCanUpdateOauth gets the can-update-oauth property value. The canUpdateOauth property
 // returns a *bool when successful
@@ -628,6 +635,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["can-update-hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanUpdateHyokConfiguration(val)
+        }
+        return nil
+    }
     res["can-update-oauth"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -881,6 +898,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-update-hyok-configuration", m.GetCanUpdateHyokConfiguration())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-update-oauth", m.GetCanUpdateOauth())
         if err != nil {
             return err
@@ -1054,6 +1077,10 @@ func (m *Organizations_attributes_permissions) SetCanUpdateApiToken(value *bool)
 func (m *Organizations_attributes_permissions) SetCanUpdateAuthenticationToken(value *bool)() {
     m.canUpdateAuthenticationToken = value
 }
+// SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+func (m *Organizations_attributes_permissions) SetCanUpdateHyokConfiguration(value *bool)() {
+    m.canUpdateHyokConfiguration = value
+}
 // SetCanUpdateOauth sets the can-update-oauth property value. The canUpdateOauth property
 func (m *Organizations_attributes_permissions) SetCanUpdateOauth(value *bool)() {
     m.canUpdateOauth = value
@@ -1110,6 +1137,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanUpdateAgentPools()(*bool)
     GetCanUpdateApiToken()(*bool)
     GetCanUpdateAuthenticationToken()(*bool)
+    GetCanUpdateHyokConfiguration()(*bool)
     GetCanUpdateOauth()(*bool)
     GetCanUpdateSentinel()(*bool)
     GetCanUpdateSshKeys()(*bool)
@@ -1148,6 +1176,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanUpdateAgentPools(value *bool)()
     SetCanUpdateApiToken(value *bool)()
     SetCanUpdateAuthenticationToken(value *bool)()
+    SetCanUpdateHyokConfiguration(value *bool)()
     SetCanUpdateOauth(value *bool)()
     SetCanUpdateSentinel(value *bool)()
     SetCanUpdateSshKeys(value *bool)()
