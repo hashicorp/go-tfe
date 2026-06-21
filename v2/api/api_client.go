@@ -20,8 +20,10 @@ import (
     i3300e5ec3dcdd21657ef64edbd7f5515b6a740b0e311496d0dcd07a497597df0 "github.com/hashicorp/go-tfe/v2/api/account"
     i390d7d3aa2f956072121cd387d359478b4fa952fdc05a88e1bb0846233f1f798 "github.com/hashicorp/go-tfe/v2/api/configurationversions"
     i3b5eed2f99b34576eec4b0e4f2cfa8ac7165e6054005d261091195786417f292 "github.com/hashicorp/go-tfe/v2/api/policysetoutcomes"
+    i3db271aef5726aeecd3987af65d23c89e74ca0092161ab6e3e00ca596b81b37d "github.com/hashicorp/go-tfe/v2/api/hyokencrypteddatakeys"
     i3f015b3de16a05679a59c27a98c9372435f6c1fdb001c4673be835dc61fd854c "github.com/hashicorp/go-tfe/v2/api/organization"
     i40cf176abd7a958d47ad56708262a3db390a6ba0d83434f718593db0b457ab3a "github.com/hashicorp/go-tfe/v2/api/featuresets"
+    i42e837d9487358845d2439197b2d5d28c01021696da80abbb6649672763fb416 "github.com/hashicorp/go-tfe/v2/api/hyokcustomerkeyversions"
     i4865434068dff9574c876d79b3056aec81e487ad4f267d6900085f4d61636487 "github.com/hashicorp/go-tfe/v2/api/teamworkspaces"
     i525577aa7fb32a9c53b1cbf123d003d3ddd83214724c3d4df685e451b75961e3 "github.com/hashicorp/go-tfe/v2/api/workspaces"
     i55ad988dad1596070ac3a3b391f698551c7a1139fdc41b0e5ae1af201b098b33 "github.com/hashicorp/go-tfe/v2/api/varsets"
@@ -55,6 +57,8 @@ import (
     ie7f103338a127a9846f577d50b43931980f000c0d8edc3ae070082b7b7bba397 "github.com/hashicorp/go-tfe/v2/api/policies"
     ieb79cb648e16b8204e44d31953cbeb69ce4431321cb3895fc1e167f241b3e60b "github.com/hashicorp/go-tfe/v2/api/policysetversions"
     if00db4a554f0df47f70e810f5d47a4fbcb78fee344e4c731136fe1b04279c101 "github.com/hashicorp/go-tfe/v2/api/policysets"
+    if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94 "github.com/hashicorp/go-tfe/v2/api/oidcconfigurations"
+    if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations"
     if98345fbfcbf35d9802ff0f86c47b887991578f3c045956773765f5ed9880f45 "github.com/hashicorp/go-tfe/v2/api/taskresultoutcomes"
     ifdc5f7656139cba3d476719e11926e5c5420f749e4486c10560f10ea71688721 "github.com/hashicorp/go-tfe/v2/api/organizationmemberships"
 )
@@ -147,6 +151,21 @@ func (m *ApiClient) GithubApp()(*i5652aa595d2c493dc7af26a8ebfcb2cab3b0e56c3384b3
 func (m *ApiClient) GithubAppInstallations()(*i7a5f736e1df88248f9b5b3a07e6f1f005fff8f5f64b203c9b45b93571284fba0.GithubAppInstallationsRequestBuilder) {
     return i7a5f736e1df88248f9b5b3a07e6f1f005fff8f5f64b203c9b45b93571284fba0.NewGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// HyokConfigurations the hyokConfigurations property
+// returns a *HyokConfigurationsRequestBuilder when successful
+func (m *ApiClient) HyokConfigurations()(*if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59.HyokConfigurationsRequestBuilder) {
+    return if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59.NewHyokConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// HyokCustomerKeyVersions the hyokCustomerKeyVersions property
+// returns a *HyokCustomerKeyVersionsRequestBuilder when successful
+func (m *ApiClient) HyokCustomerKeyVersions()(*i42e837d9487358845d2439197b2d5d28c01021696da80abbb6649672763fb416.HyokCustomerKeyVersionsRequestBuilder) {
+    return i42e837d9487358845d2439197b2d5d28c01021696da80abbb6649672763fb416.NewHyokCustomerKeyVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// HyokEncryptedDataKeys the hyokEncryptedDataKeys property
+// returns a *HyokEncryptedDataKeysRequestBuilder when successful
+func (m *ApiClient) HyokEncryptedDataKeys()(*i3db271aef5726aeecd3987af65d23c89e74ca0092161ab6e3e00ca596b81b37d.HyokEncryptedDataKeysRequestBuilder) {
+    return i3db271aef5726aeecd3987af65d23c89e74ca0092161ab6e3e00ca596b81b37d.NewHyokEncryptedDataKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NotificationConfigurations the notificationConfigurations property
 // returns a *NotificationConfigurationsRequestBuilder when successful
 func (m *ApiClient) NotificationConfigurations()(*ibb8d499b34c4bca94204af48f3f4635fe10412328fe1ed7d751c182be70884ea.NotificationConfigurationsRequestBuilder) {
@@ -161,6 +180,11 @@ func (m *ApiClient) OauthClients()(*i9f9da2e77dc194747c8849bf5f23201976b7405a862
 // returns a *OauthTokensRequestBuilder when successful
 func (m *ApiClient) OauthTokens()(*ice175c2bc5dca7fd242eaf5d94389218212237a00a32175e232d6873e8576627.OauthTokensRequestBuilder) {
     return ice175c2bc5dca7fd242eaf5d94389218212237a00a32175e232d6873e8576627.NewOauthTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OidcConfigurations the oidcConfigurations property
+// returns a *OidcConfigurationsRequestBuilder when successful
+func (m *ApiClient) OidcConfigurations()(*if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94.OidcConfigurationsRequestBuilder) {
+    return if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94.NewOidcConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Organization the organization property
 // returns a *OrganizationRequestBuilder when successful
