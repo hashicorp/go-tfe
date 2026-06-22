@@ -7,11 +7,18 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripperFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
 
 func setDefaultServerHeaders(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", ContentTypeJSONAPI)
@@ -324,4 +331,54 @@ func TestDefaultRetryMaxWhenUnspecified(t *testing.T) {
 	if atomic.LoadInt32(&attempts) != 5 {
 		t.Fatalf("expected 5 attempts (1 + 4 retries), got %d", atomic.LoadInt32(&attempts))
 	}
+}
+
+func TestGetStream_OnlySendsAuthorizationHeaderToAllowedHosts(t *testing.T) {
+	allowedAuthHeader := ""
+	disallowedAuthHeader := ""
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Query().Get("case") {
+		case "allowed":
+			allowedAuthHeader = r.Header.Get("Authorization")
+		case "disallowed":
+			disallowedAuthHeader = r.Header.Get("Authorization")
+		}
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	serverURL, err := url.Parse(server.URL)
+	if err != nil {
+		t.Fatalf("unexpected server URL parse error: %v", err)
+	}
+
+	client, err := NewClient(&Config{
+		Address: "http://allowed.example",
+		Token:   "test-token",
+	})
+	if err != nil {
+		t.Fatalf("unexpected NewClient error: %v", err)
+	}
+
+	client.adapter.Client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		clone := req.Clone(req.Context())
+		clone.URL.Scheme = serverURL.Scheme
+		clone.URL.Host = serverURL.Host
+		return http.DefaultTransport.RoundTrip(clone)
+	})
+
+	response, err := client.GetStream(context.Background(), "/api/v2/account/details?case=allowed", nil)
+	if err != nil {
+		t.Fatalf("unexpected allowed host error: %v", err)
+	}
+	response.Body.Close() //nolint:errcheck
+
+	response, err = client.GetStream(context.Background(), "http://disallowed.example/api/v2/account/details?case=disallowed", nil)
+	if err != nil {
+		t.Fatalf("unexpected disallowed host error: %v", err)
+	}
+	response.Body.Close() //nolint:errcheck
+
+	assert.Equal(t, "Bearer test-token", allowedAuthHeader)
+	assert.Empty(t, disallowedAuthHeader)
 }

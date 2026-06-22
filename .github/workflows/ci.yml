@@ -9,33 +9,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint
+  lint-test:
+    name: Lint/Test
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - uses: ./.github/actions/lint-go-tfe
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
-  tests:
-    name: Test
-    runs-on: ubuntu-latest
+      - name: Set up Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: go.mod
+          cache: true
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - uses: ./.github/actions/test-go-tfe
+      - run: make fmtcheck
 
-  tests-summarize:
-    name: Summarize Tests
-    needs: [tests]
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    steps:
-      - name: Check tests Status
+      - name: install golangci-lint
+        run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/6008b81b81c690c046ffc3fd5bce896da715d5fd/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCILINT_VERSION
+        env:
+          GOLANGCILINT_VERSION: v2.11.3
+
+      - run: make lint
+
+      - run: make lint_v1
+
+      - name: get dependencies
         run: |
-          if [ "${{ needs.tests.result }}" = "success" ]; then
-            exit 0
-          fi
-          exit 1
+          go mod download
+          go mod tidy
+          cd v2
+          go mod download
+          go mod tidy
+
+      - name: verify no changes
+        run: git diff --exit-code
+
+      - name: run tests
+        run: |
+          make test
+
+      - name: build v1
+        run: |
+          go build .

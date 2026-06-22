@@ -62,13 +62,15 @@ func (organizationListCommand) Run(args []string) int {
 		return 1
 	}
 
+	fmt.Fprintf(os.Stderr, "[LOG] Fetched %d organizations\n", len(response.GetData()))
+
 	// Serialize the response to JSON for display
 	buffer, err := serialization.SerializeToJson(response)
 	if err != nil {
 		log.Fatalf("Error serializing response: %s", err)
-		return 1
 	}
 
-	fmt.Println(string(buffer))
+	fmt.Fprintln(os.Stdout, string(buffer))
+
 	return 0
 }

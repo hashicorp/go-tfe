@@ -13038,12 +13038,12 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 }
 
 // ReadTerraformRegistryModule fetches a registry module from the Terraform Registry.
-func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
+func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, ver string) (*TerraformRegistryModule, error) {
 	u := fmt.Sprintf("/api/registry/v1/modules/%s/%s/%s/%s",
 		moduleID.Namespace,
 		moduleID.Name,
 		moduleID.Provider,
-		version,
+		ver,
 	)
 
 	if moduleID.RegistryName == PublicRegistry {
@@ -13051,7 +13051,7 @@ func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, modul
 			moduleID.Namespace,
 			moduleID.Name,
 			moduleID.Provider,
-			version,
+			ver,
 		)
 	}
 	req, err := r.client.NewRequest("GET", u, nil)
@@ -13067,14 +13067,14 @@ func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, modul
 	return trm, nil
 }
 
-func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error) {
+func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModuleID, modVersion string) (*RegistryModuleVersion, error) {
 	if err := moduleID.valid(); err != nil {
 		return nil, err
 	}
-	if !validString(&version) {
+	if !validString(&modVersion) {
 		return nil, ErrRequiredVersion
 	}
-	if !validStringID(&version) {
+	if !validStringID(&modVersion) {
 		return nil, ErrInvalidVersion
 	}
 	u := fmt.Sprintf(
@@ -13083,7 +13083,7 @@ func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModu
 		url.PathEscape(moduleID.Organization),
 		url.PathEscape(moduleID.Name),
 		url.PathEscape(moduleID.Provider),
-		url.PathEscape(version),
+		url.PathEscape(modVersion),
 	)
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -13173,14 +13173,14 @@ func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryM
 }
 
 // Delete a specified version for the given provider of the module
-func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error {
+func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryModuleID, modVersion string) error {
 	if err := moduleID.valid(); err != nil {
 		return err
 	}
-	if !validString(&version) {
+	if !validString(&modVersion) {
 		return ErrRequiredVersion
 	}
-	if !validVersion(version) {
+	if !validVersion(modVersion) {
 		return ErrInvalidVersion
 	}
 
@@ -13191,11 +13191,11 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 		url.PathEscape(moduleID.Namespace),
 		url.PathEscape(moduleID.Name),
 		url.PathEscape(moduleID.Provider),
-		url.PathEscape(version),
+		url.PathEscape(modVersion),
 	)
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil && errors.Is(err, ErrResourceNotFound) {
-		return r.deprecatedDeleteVersion(ctx, moduleID, version)
+		return r.deprecatedDeleteVersion(ctx, moduleID, modVersion)
 	}
 
 	return req.Do(ctx, nil)
@@ -13408,14 +13408,14 @@ func (r *registryModules) deprecatedDeleteProvider(ctx context.Context, moduleID
 	return req.Do(ctx, nil)
 }
 
-func (r *registryModules) deprecatedDeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error {
+func (r *registryModules) deprecatedDeleteVersion(ctx context.Context, moduleID RegistryModuleID, modVersion string) error {
 	if err := moduleID.valid(); err != nil {
 		return err
 	}
-	if !validString(&version) {
+	if !validString(&modVersion) {
 		return ErrRequiredVersion
 	}
-	if !validVersion(version) {
+	if !validVersion(modVersion) {
 		return ErrInvalidVersion
 	}
 
@@ -13424,7 +13424,7 @@ func (r *registryModules) deprecatedDeleteVersion(ctx context.Context, moduleID 
 		url.PathEscape(moduleID.Organization),
 		url.PathEscape(moduleID.Name),
 		url.PathEscape(moduleID.Provider),
-		url.PathEscape(version),
+		url.PathEscape(modVersion),
 	)
 	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -21780,11 +21780,11 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 	switch bodyType.Kind() {
 	case reflect.Slice:
 		sliceElem := bodyType.Elem()
-		if sliceElem.Kind() != reflect.Ptr {
+		if sliceElem.Kind() != reflect.Pointer {
 			return nil, ErrInvalidRequestBody
 		}
 		modelType = sliceElem.Elem()
-	case reflect.Ptr:
+	case reflect.Pointer:
 		modelType = reflect.ValueOf(v).Elem().Type()
 	default:
 		return nil, ErrInvalidRequestBody
