@@ -22,6 +22,8 @@ type Organizations_relationships struct {
     entitlementSet EntitlementSetsIdable
     // The oauthTokens property
     oauthTokens Links_relatedable
+    // The primaryHyokConfiguration property
+    primaryHyokConfiguration HyokConfigurationsIdable
     // The stacksDefaultAgentPool property
     stacksDefaultAgentPool AgentPoolsIdable
     // The subscription property
@@ -133,6 +135,16 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["primary-hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateHyokConfigurationsIdFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPrimaryHyokConfiguration(val.(HyokConfigurationsIdable))
+        }
+        return nil
+    }
     res["stacks-default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
         if err != nil {
@@ -159,6 +171,11 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
 // returns a Links_relatedable when successful
 func (m *Organizations_relationships) GetOauthTokens()(Links_relatedable) {
     return m.oauthTokens
+}
+// GetPrimaryHyokConfiguration gets the primary-hyok-configuration property value. The primaryHyokConfiguration property
+// returns a HyokConfigurationsIdable when successful
+func (m *Organizations_relationships) GetPrimaryHyokConfiguration()(HyokConfigurationsIdable) {
+    return m.primaryHyokConfiguration
 }
 // GetStacksDefaultAgentPool gets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 // returns a AgentPoolsIdable when successful
@@ -204,6 +221,12 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
     }
     {
         err := writer.WriteObjectValue("oauth-tokens", m.GetOauthTokens())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("primary-hyok-configuration", m.GetPrimaryHyokConfiguration())
         if err != nil {
             return err
         }
@@ -256,6 +279,10 @@ func (m *Organizations_relationships) SetEntitlementSet(value EntitlementSetsIda
 func (m *Organizations_relationships) SetOauthTokens(value Links_relatedable)() {
     m.oauthTokens = value
 }
+// SetPrimaryHyokConfiguration sets the primary-hyok-configuration property value. The primaryHyokConfiguration property
+func (m *Organizations_relationships) SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)() {
+    m.primaryHyokConfiguration = value
+}
 // SetStacksDefaultAgentPool sets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 func (m *Organizations_relationships) SetStacksDefaultAgentPool(value AgentPoolsIdable)() {
     m.stacksDefaultAgentPool = value
@@ -273,6 +300,7 @@ type Organizations_relationshipsable interface {
     GetDefaultProject()(ProjectsIdable)
     GetEntitlementSet()(EntitlementSetsIdable)
     GetOauthTokens()(Links_relatedable)
+    GetPrimaryHyokConfiguration()(HyokConfigurationsIdable)
     GetStacksDefaultAgentPool()(AgentPoolsIdable)
     GetSubscription()(SubscriptionsIdable)
     SetAuditTrailsAuthenticationToken(value Links_relatedable)()
@@ -281,6 +309,7 @@ type Organizations_relationshipsable interface {
     SetDefaultProject(value ProjectsIdable)()
     SetEntitlementSet(value EntitlementSetsIdable)()
     SetOauthTokens(value Links_relatedable)()
+    SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)()
     SetStacksDefaultAgentPool(value AgentPoolsIdable)()
     SetSubscription(value SubscriptionsIdable)()
 }
