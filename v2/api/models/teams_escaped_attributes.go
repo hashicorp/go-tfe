@@ -4,6 +4,7 @@
 package models
 
 import (
+    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -26,6 +27,14 @@ type Teams_attributes struct {
     organizationAccess Teams_attributes_organizationAccessable
     // Permissions for the current user on this team.
     permissions Teams_attributes_permissionsable
+    // The display name of the linked SCIM group. Only available when SCIM is enabled.
+    scimGroupName *string
+    // Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+    scimLinked *bool
+    // Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+    scimSyncPaused *bool
+    // The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+    scimUpdatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The unique identifier of the team from the SAML MemberOf attribute.
     ssoTeamId *string
     // The number of active users in the team.
@@ -144,6 +153,46 @@ func (m *Teams_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         return nil
     }
+    res["scim-group-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimGroupName(val)
+        }
+        return nil
+    }
+    res["scim-linked"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimLinked(val)
+        }
+        return nil
+    }
+    res["scim-sync-paused"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimSyncPaused(val)
+        }
+        return nil
+    }
+    res["scim-updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimUpdatedAt(val)
+        }
+        return nil
+    }
     res["sso-team-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -205,6 +254,26 @@ func (m *Teams_attributes) GetOrganizationAccess()(Teams_attributes_organization
 // returns a Teams_attributes_permissionsable when successful
 func (m *Teams_attributes) GetPermissions()(Teams_attributes_permissionsable) {
     return m.permissions
+}
+// GetScimGroupName gets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.
+// returns a *string when successful
+func (m *Teams_attributes) GetScimGroupName()(*string) {
+    return m.scimGroupName
+}
+// GetScimLinked gets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+// returns a *bool when successful
+func (m *Teams_attributes) GetScimLinked()(*bool) {
+    return m.scimLinked
+}
+// GetScimSyncPaused gets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+// returns a *bool when successful
+func (m *Teams_attributes) GetScimSyncPaused()(*bool) {
+    return m.scimSyncPaused
+}
+// GetScimUpdatedAt gets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+// returns a *Time when successful
+func (m *Teams_attributes) GetScimUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.scimUpdatedAt
 }
 // GetSsoTeamId gets the sso-team-id property value. The unique identifier of the team from the SAML MemberOf attribute.
 // returns a *string when successful
@@ -304,6 +373,22 @@ func (m *Teams_attributes) SetOrganizationAccess(value Teams_attributes_organiza
 func (m *Teams_attributes) SetPermissions(value Teams_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetScimGroupName sets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.
+func (m *Teams_attributes) SetScimGroupName(value *string)() {
+    m.scimGroupName = value
+}
+// SetScimLinked sets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+func (m *Teams_attributes) SetScimLinked(value *bool)() {
+    m.scimLinked = value
+}
+// SetScimSyncPaused sets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+func (m *Teams_attributes) SetScimSyncPaused(value *bool)() {
+    m.scimSyncPaused = value
+}
+// SetScimUpdatedAt sets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+func (m *Teams_attributes) SetScimUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.scimUpdatedAt = value
+}
 // SetSsoTeamId sets the sso-team-id property value. The unique identifier of the team from the SAML MemberOf attribute.
 func (m *Teams_attributes) SetSsoTeamId(value *string)() {
     m.ssoTeamId = value
@@ -327,6 +412,10 @@ type Teams_attributesable interface {
     GetNonServiceUsersCount()(*int32)
     GetOrganizationAccess()(Teams_attributes_organizationAccessable)
     GetPermissions()(Teams_attributes_permissionsable)
+    GetScimGroupName()(*string)
+    GetScimLinked()(*bool)
+    GetScimSyncPaused()(*bool)
+    GetScimUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetSsoTeamId()(*string)
     GetUsersCount()(*int32)
     GetVisibility()(*Teams_attributes_visibility)
@@ -338,6 +427,10 @@ type Teams_attributesable interface {
     SetNonServiceUsersCount(value *int32)()
     SetOrganizationAccess(value Teams_attributes_organizationAccessable)()
     SetPermissions(value Teams_attributes_permissionsable)()
+    SetScimGroupName(value *string)()
+    SetScimLinked(value *bool)()
+    SetScimSyncPaused(value *bool)()
+    SetScimUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetSsoTeamId(value *string)()
     SetUsersCount(value *int32)()
     SetVisibility(value *Teams_attributes_visibility)()
