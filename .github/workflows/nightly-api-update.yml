@@ -52,13 +52,17 @@ jobs:
           echo "name=${BRANCH_PREFIX}/$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
 
       - name: Close older nightly PRs
+        if: steps.changes.outputs.has_changes == 'true'
         id: close_older_nightly_prs
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CURRENT_BRANCH_NAME: ${{ steps.branch.outputs.name }}
         with:
           script: |
             const branchPrefix = process.env.BRANCH_PREFIX;
             const nightlyLabel = process.env.NIGHTLY_LABEL;
             const nightlyAuthor = process.env.NIGHTLY_AUTHOR;
+            const currentBranchName = process.env.CURRENT_BRANCH_NAME;
             const { owner, repo } = context.repo;
 
             const prs = await github.paginate(github.rest.pulls.list, {
@@ -78,14 +82,12 @@ jobs:
             );
 
             if (nightlyPrs.length === 0) {
-              core.info('No open nightly API PRs found');
               return;
             }
 
-            const [latestPr, ...olderPrs] = nightlyPrs;
-            core.setOutput('latest_pr_number', String(latestPr.number));
+            const prsToClose = nightlyPrs.filter((pr) => pr.head.ref !== currentBranchName);
 
-            for (const pr of olderPrs) {
+            for (const pr of prsToClose) {
               await github.rest.pulls.update({
                 owner,
                 repo,
