@@ -46,13 +46,11 @@ jobs:
           echo "has_changes=false" >> "$GITHUB_OUTPUT"
 
       - name: Create update branch name
-        if: steps.changes.outputs.has_changes == 'true'
         id: branch
         run: |
           echo "name=${BRANCH_PREFIX}/$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
 
       - name: Close older nightly PRs
-        if: steps.changes.outputs.has_changes == 'true'
         id: close_older_nightly_prs
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
