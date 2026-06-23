@@ -4782,6 +4782,8 @@ var (
 
 	ErrRequiredOauthTokenOrGithubAppInstallationID = errors.New("either oauth token ID or github app installation ID is required")
 
+	ErrMutuallyExclusiveOAuthTokenAndGHAInstallation = errors.New("oauth token ID and github app installation ID are mutually exclusive")
+
 	ErrRequiredTestNumber = errors.New("TestNumber is required")
 
 	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
@@ -12745,6 +12747,18 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	// Optional: If set, the registry module will be branch-based or tag-based
 	SourceDirectory *string `json:"source-directory,omitempty"`
 	TagPrefix       *string `json:"tag-prefix,omitempty"`
+
+	// Optional: The repository identifier (e.g. "org/repo"). When provided,
+	// the module's VCS connection is re-pointed to this repository.
+	Identifier *string `json:"identifier,omitempty"`
+
+	// Optional: The OAuth token ID to use for the VCS connection. Mutually
+	// exclusive with GHAInstallationID.
+	OAuthTokenID *string `json:"oauth-token-id,omitempty"`
+
+	// Optional: The GitHub App installation ID to use for the VCS connection.
+	// Mutually exclusive with OAuthTokenID.
+	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
 }
 
 // List all the registry modules within an organization.
@@ -12875,6 +12889,9 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 	if options.VCSRepo != nil {
 		if options.VCSRepo.Tags != nil && *options.VCSRepo.Tags && validString(options.VCSRepo.Branch) {
 			return nil, ErrBranchMustBeEmptyWhenTagsEnabled
+		}
+		if validString(options.VCSRepo.OAuthTokenID) && validString(options.VCSRepo.GHAInstallationID) {
+			return nil, ErrMutuallyExclusiveOAuthTokenAndGHAInstallation
 		}
 	}
 
