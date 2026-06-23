@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0fc12f18",
+    "version": "60b3c75e",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -21351,6 +21351,41 @@
               "allow-member-token-management": {
                 "type": "boolean",
                 "description": "Whether team members are allowed to manage their own authentication tokens."
+              },
+              "scim-linked": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether this team is linked to a SCIM group. Only available when SCIM is enabled.",
+                "x-vis": [
+                  "public-beta"
+                ]
+              },
+              "scim-group-name": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The display name of the linked SCIM group. Only available when SCIM is enabled.",
+                "x-vis": [
+                  "public-beta"
+                ]
+              },
+              "scim-updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.",
+                "x-vis": [
+                  "public-beta"
+                ]
+              },
+              "scim-sync-paused": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether SCIM sync is paused for this team. Only available when SCIM is enabled.",
+                "x-vis": [
+                  "public-beta"
+                ]
               },
               "hcp-resource-name": {
                 "type": "string",
