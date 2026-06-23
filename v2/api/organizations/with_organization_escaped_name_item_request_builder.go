@@ -88,6 +88,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Get(ctx context.Context, reque
 func (m *WithOrganization_nameItemRequestBuilder) GithubAppInstallations()(*ItemGithubAppInstallationsRequestBuilder) {
     return NewItemGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// HyokConfigurations the hyokConfigurations property
+// returns a *ItemHyokConfigurationsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) HyokConfigurations()(*ItemHyokConfigurationsRequestBuilder) {
+    return NewItemHyokConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Invoices the invoices property
 // returns a *ItemInvoicesRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Invoices()(*ItemInvoicesRequestBuilder) {
@@ -107,6 +112,11 @@ func (m *WithOrganization_nameItemRequestBuilder) OauthClients()(*ItemOauthClien
 // returns a *ItemOauthTokensRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) OauthTokens()(*ItemOauthTokensRequestBuilder) {
     return NewItemOauthTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OidcConfigurations the oidcConfigurations property
+// returns a *ItemOidcConfigurationsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) OidcConfigurations()(*ItemOidcConfigurationsRequestBuilder) {
+    return NewItemOidcConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // OrganizationMemberships the organizationMemberships property
 // returns a *ItemOrganizationMembershipsRequestBuilder when successful
