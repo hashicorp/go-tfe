@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "60b3c75e",
+    "version": "d8779e44",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -16248,6 +16248,172 @@
         }
       }
     },
+    "/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}": {
+      "get": {
+        "operationId": "getRegistryModule",
+        "summary": "Show a registry module",
+        "description": "Returns details for a registry module, including its status, publishing\nmechanism, version statuses, and VCS settings when available to the\nrequesting organization.\n",
+        "tags": [
+          "registry"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization requesting the module."
+          },
+          {
+            "in": "path",
+            "name": "registry_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The registry the module belongs to (e.g. \"private\" or \"public\")."
+          },
+          {
+            "in": "path",
+            "name": "namespace",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The namespace of the module."
+          },
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the module."
+          },
+          {
+            "in": "path",
+            "name": "provider",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The provider of the module."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The registry module was found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry-modules-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateRegistryModule",
+        "summary": "Update a registry module",
+        "description": "When updating a VCS-backed private registry module, you can change the publishing\nmechanism (branch, tags, or tag prefix) and the VCS connection itself.\nChanging the connection re-validates the new VCS source and re-ingests the\nmodule.\n",
+        "tags": [
+          "registry"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization that owns the module."
+          },
+          {
+            "in": "path",
+            "name": "registry_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The registry the module belongs to (e.g. \"private\")."
+          },
+          {
+            "in": "path",
+            "name": "namespace",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The namespace of the module."
+          },
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the module."
+          },
+          {
+            "in": "path",
+            "name": "provider",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The provider of the module."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry-modules-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The registry module was updated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry-modules-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organization_name}/tests/registry-modules/{registry_name}/{namespace}/{name}/{provider}/test-runs/{test_run_id}/cleanups/{id}": {
       "get": {
         "operationId": "getTestRunCleanup",
@@ -28560,6 +28726,161 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/registry-module-address-validations"
+          }
+        }
+      },
+      "registry-modules": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-modules"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "readOnly": true
+              },
+              "namespace": {
+                "type": "string",
+                "readOnly": true
+              },
+              "provider": {
+                "type": "string",
+                "readOnly": true
+              },
+              "registry-name": {
+                "type": "string",
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true
+              },
+              "publishing-mechanism": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "branch",
+                  "git_tag",
+                  "non_vcs"
+                ]
+              },
+              "no-code": {
+                "type": "boolean",
+                "description": "Whether the module is a no-code module."
+              },
+              "version-statuses": {
+                "type": "array",
+                "readOnly": true,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "vcs-repo": {
+                "type": "object",
+                "description": "The VCS connection and publishing settings for the module. Supplying a\nchanged `identifier`, `oauth-token-id`, or `github-app-installation-id`\nre-points the module to a different VCS source; supplying only\n`branch`, `tags`, or `tag-prefix` changes the publishing mechanism in\nplace.\n",
+                "properties": {
+                  "identifier": {
+                    "type": "string",
+                    "description": "The repository from which to ingress the configuration, e.g. \"org/repo\"."
+                  },
+                  "display-identifier": {
+                    "type": "string",
+                    "description": "The display identifier for the repository. For most VCS providers\noutside of Bitbucket Cloud, this matches `identifier`.\n"
+                  },
+                  "oauth-token-id": {
+                    "type": "string",
+                    "description": "The VCS Connection (OAuth Connection + Token) to use, obtained from\nthe oauth-tokens endpoint. Mutually exclusive with\n`github-app-installation-id`.\n"
+                  },
+                  "github-app-installation-id": {
+                    "type": "string",
+                    "description": "The VCS Connection GitHub App Installation to use. Mutually\nexclusive with `oauth-token-id`.\n"
+                  },
+                  "branch": {
+                    "type": "string",
+                    "description": "The repository branch to publish the module from (branch-based publishing)."
+                  },
+                  "tags": {
+                    "type": "boolean",
+                    "description": "Whether the module uses the tag-based publishing workflow."
+                  },
+                  "tag-prefix": {
+                    "type": "string",
+                    "description": "An optional prefix used to filter tags for tag-based publishing."
+                  },
+                  "ingress-submodules": {
+                    "type": "boolean",
+                    "description": "Whether submodules should be fetched when cloning the repository."
+                  },
+                  "source-directory": {
+                    "type": "string",
+                    "description": "The directory within the repository where the module is located."
+                  }
+                }
+              },
+              "permissions": {
+                "type": "object",
+                "readOnly": true,
+                "properties": {
+                  "can-delete": {
+                    "type": "boolean"
+                  },
+                  "can-resync": {
+                    "type": "boolean"
+                  },
+                  "can-retry": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "no-code-modules": {
+                "$ref": "#/components/schemas/links_related"
+              }
+            }
+          }
+        }
+      },
+      "registry-modules-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/registry-modules"
           }
         }
       },
