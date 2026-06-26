@@ -9991,10 +9991,10 @@ type PolicySets interface {
 	// Delete a policy set by its ID.
 	Delete(ctx context.Context, policyID string) error
 
-	// BETA: AddTagSelectors adds tag selectors (i.e. tag inclusion / exclusion) to a policy set.
+	// AddTagSelectors adds tag selectors (i.e. tag inclusion / exclusion) to a policy set.
 	AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagSelectorsOptions) error
 
-	// BETA: RemoveTagSelectors removes tag selectors (i.e. tag inclusion / exclusion) from a policy set.
+	// RemoveTagSelectors removes tag selectors (i.e. tag inclusion / exclusion) from a policy set.
 	RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetRemoveTagSelectorsOptions) error
 }
 
@@ -10029,7 +10029,7 @@ type PolicySet struct {
 	PolicyToolVersion string    `jsonapi:"attr,policy-tool-version"`
 
 	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns"`
-	// BETA: The tag selectors for this policy set.
+	// The tag selectors for this policy set.
 	TagSelectors []*PolicySetTagSelectorAttr `jsonapi:"attr,tag-selectors"`
 
 	// Relations
@@ -10158,7 +10158,7 @@ type PolicySetCreateOptions struct {
 	// Optional: The initial list of project exclusions for which the policy set should be enforced.
 	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions,omitempty"`
 
-	// BETA: Optional: A list of tag selectors for enforcement/exclusion based on tags
+	// Optional: A list of tag selectors for enforcement/exclusion based on tags
 	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
 }
 
@@ -10583,7 +10583,7 @@ func (s *policySets) RemoveProjectExclusions(ctx context.Context, policySetID st
 	return req.Do(ctx, nil)
 }
 
-// BETA: AddTagSelectors adds tag selectors to a policy set.
+// AddTagSelectors adds tag selectors to a policy set.
 func (s *policySets) AddTagSelectors(ctx context.Context, policySetID string, options PolicySetAddTagSelectorsOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
@@ -10601,7 +10601,7 @@ func (s *policySets) AddTagSelectors(ctx context.Context, policySetID string, op
 	return req.Do(ctx, nil)
 }
 
-// BETA: RemoveTagSelectors removes tag selectors from a policy set.
+// RemoveTagSelectors removes tag selectors from a policy set.
 func (s *policySets) RemoveTagSelectors(ctx context.Context, policySetID string, options PolicySetRemoveTagSelectorsOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
