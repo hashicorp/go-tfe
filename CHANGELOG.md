@@ -1,3 +1,7 @@
+# v2.1.0
+
+The latest public endpoints are available
+
 # v2.0.0
 
 The go-tfe v2 package has been added to this repository and contains substantial breaking changes
