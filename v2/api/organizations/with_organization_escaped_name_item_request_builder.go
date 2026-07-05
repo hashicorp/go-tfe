@@ -198,6 +198,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Runs()(*ItemRunsRequestBuilder
 func (m *WithOrganization_nameItemRequestBuilder) SshKeys()(*ItemSshKeysRequestBuilder) {
     return NewItemSshKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Subscription the subscription property
+// returns a *ItemSubscriptionRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Subscription()(*ItemSubscriptionRequestBuilder) {
+    return NewItemSubscriptionRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Tasks the tasks property
 // returns a *ItemTasksRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Tasks()(*ItemTasksRequestBuilder) {
