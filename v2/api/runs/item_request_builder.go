@@ -13,6 +13,11 @@ import (
 type ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemRequestBuilderGetQueryParameters get details about a run.
+type ItemRequestBuilderGetQueryParameters struct {
+    // Available side-load related resources. Multiple values can be comma-separated.Available includes:- `plan` - The plan for this run- `apply` - The apply for this run- `created_by` - The user who created this run- `configuration_version` - The configuration version used- `configuration_version.ingress_attributes` - VCS ingress details- `cost_estimate` - Cost estimation for this run- `workspace` - The workspace this run belongs to- `task_stages` - Run task stages- `tf_policy_evaluations` - Terraform Policy evaluations *(internal-beta)*
+    Include *string "uriparametername:\"include\""
+}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -31,7 +36,7 @@ func (m *ItemRequestBuilder) ConfigurationVersion()(*ItemConfigurationVersionReq
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
 func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
     m := &ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}{?include*}", pathParameters),
     }
     return m
 }
@@ -44,7 +49,7 @@ func NewItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1
 // Get get details about a run.
 // returns a RunsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RunsEnvelopeable, error) {
+func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RunsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -78,7 +83,7 @@ func (m *ItemRequestBuilder) TaskStages()(*ItemTaskStagesRequestBuilder) {
 }
 // ToGetRequestInformation get details about a run.
 // returns a *RequestInformation when successful
-func (m *ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
