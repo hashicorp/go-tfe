@@ -49,6 +49,8 @@ type Subscriptions_attributes struct {
     policyMandatoryEnforcementLimit *int32
     // The policySetLimit property
     policySetLimit *int32
+    // The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
+    rumAlertThreshold *int32
     // The runsCeiling property
     runsCeiling *int32
     // The runTaskLimit property
@@ -303,6 +305,16 @@ func (m *Subscriptions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["rum-alert-threshold"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRumAlertThreshold(val)
+        }
+        return nil
+    }
     res["runs-ceiling"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -429,6 +441,11 @@ func (m *Subscriptions_attributes) GetPolicyMandatoryEnforcementLimit()(*int32) 
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetPolicySetLimit()(*int32) {
     return m.policySetLimit
+}
+// GetRumAlertThreshold gets the rum-alert-threshold property value. The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
+// returns a *int32 when successful
+func (m *Subscriptions_attributes) GetRumAlertThreshold()(*int32) {
+    return m.rumAlertThreshold
 }
 // GetRunsCeiling gets the runs-ceiling property value. The runsCeiling property
 // returns a *int32 when successful
@@ -577,6 +594,12 @@ func (m *Subscriptions_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteInt32Value("rum-alert-threshold", m.GetRumAlertThreshold())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteInt32Value("runs-ceiling", m.GetRunsCeiling())
         if err != nil {
             return err
@@ -700,6 +723,10 @@ func (m *Subscriptions_attributes) SetPolicyMandatoryEnforcementLimit(value *int
 func (m *Subscriptions_attributes) SetPolicySetLimit(value *int32)() {
     m.policySetLimit = value
 }
+// SetRumAlertThreshold sets the rum-alert-threshold property value. The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
+func (m *Subscriptions_attributes) SetRumAlertThreshold(value *int32)() {
+    m.rumAlertThreshold = value
+}
 // SetRunsCeiling sets the runs-ceiling property value. The runsCeiling property
 func (m *Subscriptions_attributes) SetRunsCeiling(value *int32)() {
     m.runsCeiling = value
@@ -746,6 +773,7 @@ type Subscriptions_attributesable interface {
     GetPolicyLimit()(*int32)
     GetPolicyMandatoryEnforcementLimit()(*int32)
     GetPolicySetLimit()(*int32)
+    GetRumAlertThreshold()(*int32)
     GetRunsCeiling()(*int32)
     GetRunTaskLimit()(*int32)
     GetRunTaskMandatoryEnforcementLimit()(*int32)
@@ -771,6 +799,7 @@ type Subscriptions_attributesable interface {
     SetPolicyLimit(value *int32)()
     SetPolicyMandatoryEnforcementLimit(value *int32)()
     SetPolicySetLimit(value *int32)()
+    SetRumAlertThreshold(value *int32)()
     SetRunsCeiling(value *int32)()
     SetRunTaskLimit(value *int32)()
     SetRunTaskMandatoryEnforcementLimit(value *int32)()
