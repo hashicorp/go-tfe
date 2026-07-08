@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "d8779e44",
+    "version": "52426757",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -867,6 +867,93 @@
           },
           "default": {
             "description": "Subscription not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/subscription": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "patch": {
+        "operationId": "updateOrganizationSubscription",
+        "summary": "Update organization subscription",
+        "description": "Update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.\n",
+        "tags": [
+          "subscriptions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "subscriptions"
+                        ]
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "properties": {
+                          "rum-alert-threshold": {
+                            "type": "integer",
+                            "nullable": true,
+                            "minimum": 0,
+                            "description": "The RUM usage alert threshold. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Send null or 0 to clear the threshold and disable alerting.\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subscription updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscriptions-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -8124,6 +8211,15 @@
             },
             "required": true,
             "description": "Run ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Available side-load related resources. Multiple values can be comma-separated.\n\nAvailable includes:\n- `plan` - The plan for this run\n- `apply` - The apply for this run\n- `created_by` - The user who created this run\n- `configuration_version` - The configuration version used\n- `configuration_version.ingress_attributes` - VCS ingress details\n- `cost_estimate` - Cost estimation for this run\n- `workspace` - The workspace this run belongs to\n- `task_stages` - Run task stages\n- `tf_policy_evaluations` - Terraform Policy evaluations *(internal-beta)*\n"
           }
         ],
         "responses": {
@@ -20534,6 +20630,11 @@
               "free-resource-under-management-monthly-limit": {
                 "type": "integer",
                 "nullable": true
+              },
+              "rum-alert-threshold": {
+                "type": "integer",
+                "nullable": true,
+                "description": "The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.\n"
               }
             }
           },
@@ -21052,6 +21153,9 @@
                     "type": "boolean"
                   },
                   "can-manage-users": {
+                    "type": "boolean"
+                  },
+                  "can-view-users": {
                     "type": "boolean"
                   },
                   "can-manage-subscription": {
@@ -23231,6 +23335,28 @@
           }
         }
       },
+      "no-code-queries-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "no-code-queries"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "queries": {
         "type": "object",
         "required": [
@@ -23296,6 +23422,11 @@
               "generate-config-out": {
                 "type": "boolean"
               },
+              "resources-discovered": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "The number of resources discovered by the query run."
+              },
               "status-timestamps": {
                 "type": "object",
                 "properties": {
@@ -23355,6 +23486,13 @@
                 "type": "string",
                 "format": "date-time",
                 "readOnly": true
+              },
+              "policy-paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
               }
             }
           },
@@ -23376,6 +23514,10 @@
               },
               "created-by": {
                 "$ref": "#/components/schemas/users-id"
+              },
+              "no-code-query": {
+                "$ref": "#/components/schemas/no-code-queries-id",
+                "description": "The no-code query that triggered this query run, if any."
               }
             }
           }
@@ -24977,6 +25119,7 @@
               },
               "status": {
                 "type": "string",
+                "description": "The current status of the run.\n\n**Note:** The following status values are in internal-beta:\n- `tf_policy_checked` - Terraform Policy evaluation completed\n- `tf_policy_override` - Terraform Policy evaluation was overridden\n",
                 "enum": [
                   "pending",
                   "fetching",
@@ -24987,6 +25130,8 @@
                   "plan_queued",
                   "planning",
                   "planned",
+                  "tf_policy_checked",
+                  "tf_policy_override",
                   "post_plan_running",
                   "post_plan_completed",
                   "cost_estimating",
@@ -26239,13 +26384,6 @@
               },
               "policy-update-patterns": {
                 "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "evaluation-stages": {
-                "type": "array",
-                "nullable": true,
                 "items": {
                   "type": "string"
                 }

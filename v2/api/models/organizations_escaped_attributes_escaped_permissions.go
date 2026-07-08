@@ -88,6 +88,8 @@ type Organizations_attributes_permissions struct {
     canViewExplorer *bool
     // The canViewUsage property
     canViewUsage *bool
+    // The canViewUsers property
+    canViewUsers *bool
 }
 // NewOrganizations_attributes_permissions instantiates a new Organizations_attributes_permissions and sets the default values.
 func NewOrganizations_attributes_permissions()(*Organizations_attributes_permissions) {
@@ -300,6 +302,11 @@ func (m *Organizations_attributes_permissions) GetCanViewExplorer()(*bool) {
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewUsage()(*bool) {
     return m.canViewUsage
+}
+// GetCanViewUsers gets the can-view-users property value. The canViewUsers property
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanViewUsers()(*bool) {
+    return m.canViewUsers
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -695,6 +702,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["can-view-users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanViewUsers(val)
+        }
+        return nil
+    }
     return res
 }
 // Serialize serializes information the current object
@@ -934,6 +951,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-view-users", m.GetCanViewUsers())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -1101,6 +1124,10 @@ func (m *Organizations_attributes_permissions) SetCanViewExplorer(value *bool)()
 func (m *Organizations_attributes_permissions) SetCanViewUsage(value *bool)() {
     m.canViewUsage = value
 }
+// SetCanViewUsers sets the can-view-users property value. The canViewUsers property
+func (m *Organizations_attributes_permissions) SetCanViewUsers(value *bool)() {
+    m.canViewUsers = value
+}
 type Organizations_attributes_permissionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -1143,6 +1170,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanUpdateSshKeys()(*bool)
     GetCanViewExplorer()(*bool)
     GetCanViewUsage()(*bool)
+    GetCanViewUsers()(*bool)
     SetCanAccessViaTeams(value *bool)()
     SetCanCreateModule(value *bool)()
     SetCanCreateProject(value *bool)()
@@ -1182,4 +1210,5 @@ type Organizations_attributes_permissionsable interface {
     SetCanUpdateSshKeys(value *bool)()
     SetCanViewExplorer(value *bool)()
     SetCanViewUsage(value *bool)()
+    SetCanViewUsers(value *bool)()
 }
