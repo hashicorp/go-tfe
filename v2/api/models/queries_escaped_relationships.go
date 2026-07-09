@@ -16,6 +16,8 @@ type Queries_relationships struct {
     configurationVersion ConfigurationVersionsIdable
     // The createdBy property
     createdBy UsersIdable
+    // The noCodeQuery property
+    noCodeQuery NoCodeQueriesIdable
     // The workspace property
     workspace WorkspacesIdable
 }
@@ -85,6 +87,16 @@ func (m *Queries_relationships) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["no-code-query"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateNoCodeQueriesIdFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNoCodeQuery(val.(NoCodeQueriesIdable))
+        }
+        return nil
+    }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
         if err != nil {
@@ -96,6 +108,11 @@ func (m *Queries_relationships) GetFieldDeserializers()(map[string]func(i878a80d
         return nil
     }
     return res
+}
+// GetNoCodeQuery gets the no-code-query property value. The noCodeQuery property
+// returns a NoCodeQueriesIdable when successful
+func (m *Queries_relationships) GetNoCodeQuery()(NoCodeQueriesIdable) {
+    return m.noCodeQuery
 }
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesIdable when successful
@@ -118,6 +135,12 @@ func (m *Queries_relationships) Serialize(writer i878a80d2330e89d26896388a3f487e
     }
     {
         err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("no-code-query", m.GetNoCodeQuery())
         if err != nil {
             return err
         }
@@ -152,6 +175,10 @@ func (m *Queries_relationships) SetConfigurationVersion(value ConfigurationVersi
 func (m *Queries_relationships) SetCreatedBy(value UsersIdable)() {
     m.createdBy = value
 }
+// SetNoCodeQuery sets the no-code-query property value. The noCodeQuery property
+func (m *Queries_relationships) SetNoCodeQuery(value NoCodeQueriesIdable)() {
+    m.noCodeQuery = value
+}
 // SetWorkspace sets the workspace property value. The workspace property
 func (m *Queries_relationships) SetWorkspace(value WorkspacesIdable)() {
     m.workspace = value
@@ -162,9 +189,11 @@ type Queries_relationshipsable interface {
     GetCanceledBy()(UsersIdable)
     GetConfigurationVersion()(ConfigurationVersionsIdable)
     GetCreatedBy()(UsersIdable)
+    GetNoCodeQuery()(NoCodeQueriesIdable)
     GetWorkspace()(WorkspacesIdable)
     SetCanceledBy(value UsersIdable)()
     SetConfigurationVersion(value ConfigurationVersionsIdable)()
     SetCreatedBy(value UsersIdable)()
+    SetNoCodeQuery(value NoCodeQueriesIdable)()
     SetWorkspace(value WorkspacesIdable)()
 }

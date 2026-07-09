@@ -19,8 +19,6 @@ type PolicySets_attributes struct {
     description *string
     // The enforcementLevel property
     enforcementLevel *string
-    // The evaluationStages property
-    evaluationStages []string
     // The global property
     global *bool
     // The kind property
@@ -85,11 +83,6 @@ func (m *PolicySets_attributes) GetDescription()(*string) {
 func (m *PolicySets_attributes) GetEnforcementLevel()(*string) {
     return m.enforcementLevel
 }
-// GetEvaluationStages gets the evaluation-stages property value. The evaluationStages property
-// returns a []string when successful
-func (m *PolicySets_attributes) GetEvaluationStages()([]string) {
-    return m.evaluationStages
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -131,22 +124,6 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetEnforcementLevel(val)
-        }
-        return nil
-    }
-    res["evaluation-stages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetEvaluationStages(res)
         }
         return nil
     }
@@ -373,12 +350,6 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
             return err
         }
     }
-    if m.GetEvaluationStages() != nil {
-        err := writer.WriteCollectionOfStringValues("evaluation-stages", m.GetEvaluationStages())
-        if err != nil {
-            return err
-        }
-    }
     {
         err := writer.WriteBoolValue("global", m.GetGlobal())
         if err != nil {
@@ -456,10 +427,6 @@ func (m *PolicySets_attributes) SetDescription(value *string)() {
 func (m *PolicySets_attributes) SetEnforcementLevel(value *string)() {
     m.enforcementLevel = value
 }
-// SetEvaluationStages sets the evaluation-stages property value. The evaluationStages property
-func (m *PolicySets_attributes) SetEvaluationStages(value []string)() {
-    m.evaluationStages = value
-}
 // SetGlobal sets the global property value. The global property
 func (m *PolicySets_attributes) SetGlobal(value *bool)() {
     m.global = value
@@ -519,7 +486,6 @@ type PolicySets_attributesable interface {
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDescription()(*string)
     GetEnforcementLevel()(*string)
-    GetEvaluationStages()([]string)
     GetGlobal()(*bool)
     GetKind()(*PolicySets_attributes_kind)
     GetName()(*string)
@@ -537,7 +503,6 @@ type PolicySets_attributesable interface {
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDescription(value *string)()
     SetEnforcementLevel(value *string)()
-    SetEvaluationStages(value []string)()
     SetGlobal(value *bool)()
     SetKind(value *PolicySets_attributes_kind)()
     SetName(value *string)()
