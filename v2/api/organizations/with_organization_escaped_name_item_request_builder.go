@@ -29,6 +29,11 @@ func (m *WithOrganization_nameItemRequestBuilder) AgentPools()(*ItemAgentPoolsRe
 func (m *WithOrganization_nameItemRequestBuilder) AuthenticationToken()(*ItemAuthenticationTokenRequestBuilder) {
     return NewItemAuthenticationTokenRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// CidrRangeLists the cidrRangeLists property
+// returns a *ItemCidrRangeListsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) CidrRangeLists()(*ItemCidrRangeListsRequestBuilder) {
+    return NewItemCidrRangeListsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewWithOrganization_nameItemRequestBuilderInternal instantiates a new WithOrganization_nameItemRequestBuilder and sets the default values.
 func NewWithOrganization_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOrganization_nameItemRequestBuilder) {
     m := &WithOrganization_nameItemRequestBuilder{
@@ -197,6 +202,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Runs()(*ItemRunsRequestBuilder
 // returns a *ItemSshKeysRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) SshKeys()(*ItemSshKeysRequestBuilder) {
     return NewItemSshKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Subscription the subscription property
+// returns a *ItemSubscriptionRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Subscription()(*ItemSubscriptionRequestBuilder) {
+    return NewItemSubscriptionRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Tasks the tasks property
 // returns a *ItemTasksRequestBuilder when successful
