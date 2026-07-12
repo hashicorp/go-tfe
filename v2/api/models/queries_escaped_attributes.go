@@ -25,6 +25,10 @@ type Queries_attributes struct {
     logReadUrl *string
     // The permissions property
     permissions Queries_attributes_permissionsable
+    // The policyPaths property
+    policyPaths []string
+    // The number of resources discovered by the query run.
+    resourcesDiscovered *int32
     // The source property
     source *Queries_attributes_source
     // The status property
@@ -140,6 +144,32 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["policy-paths"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetPolicyPaths(res)
+        }
+        return nil
+    }
+    res["resources-discovered"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetResourcesDiscovered(val)
+        }
+        return nil
+    }
     res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseQueries_attributes_source)
         if err != nil {
@@ -202,6 +232,16 @@ func (m *Queries_attributes) GetLogReadUrl()(*string) {
 func (m *Queries_attributes) GetPermissions()(Queries_attributes_permissionsable) {
     return m.permissions
 }
+// GetPolicyPaths gets the policy-paths property value. The policyPaths property
+// returns a []string when successful
+func (m *Queries_attributes) GetPolicyPaths()([]string) {
+    return m.policyPaths
+}
+// GetResourcesDiscovered gets the resources-discovered property value. The number of resources discovered by the query run.
+// returns a *int32 when successful
+func (m *Queries_attributes) GetResourcesDiscovered()(*int32) {
+    return m.resourcesDiscovered
+}
 // GetSource gets the source property value. The source property
 // returns a *Queries_attributes_source when successful
 func (m *Queries_attributes) GetSource()(*Queries_attributes_source) {
@@ -238,6 +278,12 @@ func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
     }
     {
         err := writer.WriteObjectValue("permissions", m.GetPermissions())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetPolicyPaths() != nil {
+        err := writer.WriteCollectionOfStringValues("policy-paths", m.GetPolicyPaths())
         if err != nil {
             return err
         }
@@ -302,6 +348,14 @@ func (m *Queries_attributes) SetLogReadUrl(value *string)() {
 func (m *Queries_attributes) SetPermissions(value Queries_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetPolicyPaths sets the policy-paths property value. The policyPaths property
+func (m *Queries_attributes) SetPolicyPaths(value []string)() {
+    m.policyPaths = value
+}
+// SetResourcesDiscovered sets the resources-discovered property value. The number of resources discovered by the query run.
+func (m *Queries_attributes) SetResourcesDiscovered(value *int32)() {
+    m.resourcesDiscovered = value
+}
 // SetSource sets the source property value. The source property
 func (m *Queries_attributes) SetSource(value *Queries_attributes_source)() {
     m.source = value
@@ -328,6 +382,8 @@ type Queries_attributesable interface {
     GetGenerateConfigOut()(*bool)
     GetLogReadUrl()(*string)
     GetPermissions()(Queries_attributes_permissionsable)
+    GetPolicyPaths()([]string)
+    GetResourcesDiscovered()(*int32)
     GetSource()(*Queries_attributes_source)
     GetStatus()(*Queries_attributes_status)
     GetStatusTimestamps()(Queries_attributes_statusTimestampsable)
@@ -339,6 +395,8 @@ type Queries_attributesable interface {
     SetGenerateConfigOut(value *bool)()
     SetLogReadUrl(value *string)()
     SetPermissions(value Queries_attributes_permissionsable)()
+    SetPolicyPaths(value []string)()
+    SetResourcesDiscovered(value *int32)()
     SetSource(value *Queries_attributes_source)()
     SetStatus(value *Queries_attributes_status)()
     SetStatusTimestamps(value Queries_attributes_statusTimestampsable)()

@@ -84,10 +84,14 @@ type Organizations_attributes_permissions struct {
     canUpdateSentinel *bool
     // The canUpdateSshKeys property
     canUpdateSshKeys *bool
+    // The canViewAuthentication property
+    canViewAuthentication *bool
     // The canViewExplorer property
     canViewExplorer *bool
     // The canViewUsage property
     canViewUsage *bool
+    // The canViewUsers property
+    canViewUsers *bool
 }
 // NewOrganizations_attributes_permissions instantiates a new Organizations_attributes_permissions and sets the default values.
 func NewOrganizations_attributes_permissions()(*Organizations_attributes_permissions) {
@@ -291,6 +295,11 @@ func (m *Organizations_attributes_permissions) GetCanUpdateSentinel()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanUpdateSshKeys()(*bool) {
     return m.canUpdateSshKeys
 }
+// GetCanViewAuthentication gets the can-view-authentication property value. The canViewAuthentication property
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanViewAuthentication()(*bool) {
+    return m.canViewAuthentication
+}
 // GetCanViewExplorer gets the can-view-explorer property value. The canViewExplorer property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewExplorer()(*bool) {
@@ -300,6 +309,11 @@ func (m *Organizations_attributes_permissions) GetCanViewExplorer()(*bool) {
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewUsage()(*bool) {
     return m.canViewUsage
+}
+// GetCanViewUsers gets the can-view-users property value. The canViewUsers property
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanViewUsers()(*bool) {
+    return m.canViewUsers
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -675,6 +689,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["can-view-authentication"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanViewAuthentication(val)
+        }
+        return nil
+    }
     res["can-view-explorer"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -692,6 +716,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         if val != nil {
             m.SetCanViewUsage(val)
+        }
+        return nil
+    }
+    res["can-view-users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanViewUsers(val)
         }
         return nil
     }
@@ -922,6 +956,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-view-authentication", m.GetCanViewAuthentication())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-view-explorer", m.GetCanViewExplorer())
         if err != nil {
             return err
@@ -929,6 +969,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
     }
     {
         err := writer.WriteBoolValue("can-view-usage", m.GetCanViewUsage())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("can-view-users", m.GetCanViewUsers())
         if err != nil {
             return err
         }
@@ -1093,6 +1139,10 @@ func (m *Organizations_attributes_permissions) SetCanUpdateSentinel(value *bool)
 func (m *Organizations_attributes_permissions) SetCanUpdateSshKeys(value *bool)() {
     m.canUpdateSshKeys = value
 }
+// SetCanViewAuthentication sets the can-view-authentication property value. The canViewAuthentication property
+func (m *Organizations_attributes_permissions) SetCanViewAuthentication(value *bool)() {
+    m.canViewAuthentication = value
+}
 // SetCanViewExplorer sets the can-view-explorer property value. The canViewExplorer property
 func (m *Organizations_attributes_permissions) SetCanViewExplorer(value *bool)() {
     m.canViewExplorer = value
@@ -1100,6 +1150,10 @@ func (m *Organizations_attributes_permissions) SetCanViewExplorer(value *bool)()
 // SetCanViewUsage sets the can-view-usage property value. The canViewUsage property
 func (m *Organizations_attributes_permissions) SetCanViewUsage(value *bool)() {
     m.canViewUsage = value
+}
+// SetCanViewUsers sets the can-view-users property value. The canViewUsers property
+func (m *Organizations_attributes_permissions) SetCanViewUsers(value *bool)() {
+    m.canViewUsers = value
 }
 type Organizations_attributes_permissionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
@@ -1141,8 +1195,10 @@ type Organizations_attributes_permissionsable interface {
     GetCanUpdateOauth()(*bool)
     GetCanUpdateSentinel()(*bool)
     GetCanUpdateSshKeys()(*bool)
+    GetCanViewAuthentication()(*bool)
     GetCanViewExplorer()(*bool)
     GetCanViewUsage()(*bool)
+    GetCanViewUsers()(*bool)
     SetCanAccessViaTeams(value *bool)()
     SetCanCreateModule(value *bool)()
     SetCanCreateProject(value *bool)()
@@ -1180,6 +1236,8 @@ type Organizations_attributes_permissionsable interface {
     SetCanUpdateOauth(value *bool)()
     SetCanUpdateSentinel(value *bool)()
     SetCanUpdateSshKeys(value *bool)()
+    SetCanViewAuthentication(value *bool)()
     SetCanViewExplorer(value *bool)()
     SetCanViewUsage(value *bool)()
+    SetCanViewUsers(value *bool)()
 }
