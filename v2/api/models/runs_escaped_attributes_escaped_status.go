@@ -2,6 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+// The current status of the run.**Note:** The following status values are in internal-beta:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
 type Runs_attributes_status int
 
 const (
@@ -14,6 +15,8 @@ const (
     PLAN_QUEUED_RUNS_ATTRIBUTES_STATUS
     PLANNING_RUNS_ATTRIBUTES_STATUS
     PLANNED_RUNS_ATTRIBUTES_STATUS
+    TF_POLICY_CHECKED_RUNS_ATTRIBUTES_STATUS
+    TF_POLICY_OVERRIDE_RUNS_ATTRIBUTES_STATUS
     POST_PLAN_RUNNING_RUNS_ATTRIBUTES_STATUS
     POST_PLAN_COMPLETED_RUNS_ATTRIBUTES_STATUS
     COST_ESTIMATING_RUNS_ATTRIBUTES_STATUS
@@ -41,7 +44,7 @@ const (
 )
 
 func (i Runs_attributes_status) String() string {
-    return []string{"pending", "fetching", "fetching_completed", "pre_plan_running", "pre_plan_completed", "queuing", "plan_queued", "planning", "planned", "post_plan_running", "post_plan_completed", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "confirmed", "pre_apply_running", "pre_apply_completed", "queuing_apply", "apply_queued", "applying", "post_apply_running", "post_apply_completed", "applied", "discarded", "errored", "canceled", "planned_and_finished", "planned_and_saved", "assessing", "assessed"}[i]
+    return []string{"pending", "fetching", "fetching_completed", "pre_plan_running", "pre_plan_completed", "queuing", "plan_queued", "planning", "planned", "tf_policy_checked", "tf_policy_override", "post_plan_running", "post_plan_completed", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "confirmed", "pre_apply_running", "pre_apply_completed", "queuing_apply", "apply_queued", "applying", "post_apply_running", "post_apply_completed", "applied", "discarded", "errored", "canceled", "planned_and_finished", "planned_and_saved", "assessing", "assessed"}[i]
 }
 func ParseRuns_attributes_status(v string) (any, error) {
     result := PENDING_RUNS_ATTRIBUTES_STATUS
@@ -64,6 +67,10 @@ func ParseRuns_attributes_status(v string) (any, error) {
             result = PLANNING_RUNS_ATTRIBUTES_STATUS
         case "planned":
             result = PLANNED_RUNS_ATTRIBUTES_STATUS
+        case "tf_policy_checked":
+            result = TF_POLICY_CHECKED_RUNS_ATTRIBUTES_STATUS
+        case "tf_policy_override":
+            result = TF_POLICY_OVERRIDE_RUNS_ATTRIBUTES_STATUS
         case "post_plan_running":
             result = POST_PLAN_RUNNING_RUNS_ATTRIBUTES_STATUS
         case "post_plan_completed":
