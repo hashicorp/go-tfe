@@ -29,8 +29,10 @@ import (
     i55ad988dad1596070ac3a3b391f698551c7a1139fdc41b0e5ae1af201b098b33 "github.com/hashicorp/go-tfe/v2/api/varsets"
     i56237a61b835ea700b8287ca786bb035d37377a3f2b323fd8c325f3af009f712 "github.com/hashicorp/go-tfe/v2/api/recoverableitems"
     i5652aa595d2c493dc7af26a8ebfcb2cab3b0e56c3384b37f1d643c825e5364d0 "github.com/hashicorp/go-tfe/v2/api/githubapp"
+    i5cbc52761797b09d13704ac9ec8f5b4e6773d0e7766708262a8db34b51e048a3 "github.com/hashicorp/go-tfe/v2/api/cidrranges"
     i685720f6545b16a4aeb91ea7f227b3487f6f5392e8ee9966c03bdd9987df6dbc "github.com/hashicorp/go-tfe/v2/api/teams"
     i69974089fcc59cc8dd4a4c196d6662b0a0ecbf463756ad5b59990cc5bfa93941 "github.com/hashicorp/go-tfe/v2/api/planexports"
+    i6ad87ee3ef3106c6472068d25921fc73e150b6ce5e0df0bc84963f3386e50035 "github.com/hashicorp/go-tfe/v2/api/cidrrangelists"
     i6deddaa1c7f639a3972e6e85d970773ee131b52cfe7b6df0e9888ecf5fe79337 "github.com/hashicorp/go-tfe/v2/api/applies"
     i79327cbcdc2f3f24a4f101b27d947e7e656f6977e65952ac2b6b41bc920f0fe9 "github.com/hashicorp/go-tfe/v2/api/taskstages"
     i7a5f736e1df88248f9b5b3a07e6f1f005fff8f5f64b203c9b45b93571284fba0 "github.com/hashicorp/go-tfe/v2/api/githubappinstallations"
@@ -101,6 +103,16 @@ func (m *ApiClient) AuthenticationTokens()(*i0ae2ae9d88057585bfca3fdbf34a0ec8417
 // returns a *ChangeRequestsRequestBuilder when successful
 func (m *ApiClient) ChangeRequests()(*ia14dfa99771434ac181f57e417b736a27476422badf4c601913115c290aa5d51.ChangeRequestsRequestBuilder) {
     return ia14dfa99771434ac181f57e417b736a27476422badf4c601913115c290aa5d51.NewChangeRequestsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// CidrRangeLists the cidrRangeLists property
+// returns a *CidrRangeListsRequestBuilder when successful
+func (m *ApiClient) CidrRangeLists()(*i6ad87ee3ef3106c6472068d25921fc73e150b6ce5e0df0bc84963f3386e50035.CidrRangeListsRequestBuilder) {
+    return i6ad87ee3ef3106c6472068d25921fc73e150b6ce5e0df0bc84963f3386e50035.NewCidrRangeListsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// CidrRanges the cidrRanges property
+// returns a *CidrRangesRequestBuilder when successful
+func (m *ApiClient) CidrRanges()(*i5cbc52761797b09d13704ac9ec8f5b4e6773d0e7766708262a8db34b51e048a3.CidrRangesRequestBuilder) {
+    return i5cbc52761797b09d13704ac9ec8f5b4e6773d0e7766708262a8db34b51e048a3.NewCidrRangesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Comments the comments property
 // returns a *CommentsRequestBuilder when successful
