@@ -49,6 +49,11 @@ type Config struct {
 
 	// RetryMaxRetries sets the maximum number of retries for a request before giving up.
 	RetryMaxRetries int
+
+	// HTTPTransport is an optional parent transport for the HTTP client. When set,
+	// it is used as the base transport for the kiota middleware pipeline via
+	// khttp.NewCustomTransportWithParentTransport. If nil, the kiota default transport is used.
+	HTTPTransport http.RoundTripper
 }
 
 // DefaultConfig returns a default config structure.
@@ -112,6 +117,7 @@ func NewClient(cfg *Config) (*Client, error) {
 		if cfg.RetryMaxRetries != 0 {
 			config.RetryMaxRetries = cfg.RetryMaxRetries
 		}
+		config.HTTPTransport = cfg.HTTPTransport
 	}
 
 	// Parse the address to make sure its a valid URL.
@@ -143,6 +149,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	authProvider := auth.NewBaseBearerTokenAuthenticationProvider(tokenProvider)
 
 	adapter, err := NewRequestAdapter(baseURL.String(), []middleware.MiddlewareOption{
+		middleware.WithHTTPTransport(config.HTTPTransport),
 		middleware.WithErrorInterceptorOption(APIErrorFactory),
 		middleware.WithRetryOptions(config.RetryRateLimited, config.RetryServerErrors, config.RetryMaxRetries, config.RetryHook),
 		middleware.WithHeaders(config.Headers),

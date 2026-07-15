@@ -29,7 +29,20 @@ func NewHTTPClient(options []middleware.MiddlewareOption) (*nethttp.Client, erro
 	if err != nil {
 		return nil, err
 	}
+
+	var parentTransport nethttp.RoundTripper
+	for _, opt := range options {
+		if t, ok := opt.Value("HTTPTransport").(nethttp.RoundTripper); ok {
+			parentTransport = t
+		}
+	}
+
 	httpClient := khttp.GetDefaultClient(mw...)
+
+	if parentTransport != nil {
+		httpClient.Transport = khttp.NewCustomTransportWithParentTransport(parentTransport, mw...)
+	}
+
 	return httpClient, nil
 }
 

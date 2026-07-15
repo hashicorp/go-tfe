@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"crypto/tls"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -381,4 +382,57 @@ func TestGetStream_OnlySendsAuthorizationHeaderToAllowedHosts(t *testing.T) {
 
 	assert.Equal(t, "Bearer test-token", allowedAuthHeader)
 	assert.Empty(t, disallowedAuthHeader)
+}
+
+func TestHTTPTransport(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/v2/account/details", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data":{"id":"usr-1234","type":"users","attributes":{"email":"test@example.com"}}}`))
+	})
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(`{"errors":[{"status":"404","title":"not found"}]}`))
+	})
+
+	ts := httptest.NewTLSServer(mux)
+	defer ts.Close()
+
+	t.Run("fails without a custom transport", func(t *testing.T) {
+		client, err := NewClient(&Config{
+			Address: ts.URL,
+			Token:   "test-token",
+		})
+		if err != nil {
+			t.Fatalf("unexpected NewClient error: %v", err)
+		}
+
+		_, err = client.API.Account().Details().Get(context.Background(), nil)
+		if err == nil {
+			t.Fatal("expected TLS error, got nil")
+		}
+		var certErr *tls.CertificateVerificationError
+		assert.ErrorAs(t, err, &certErr, "expected a TLS certificate verification error")
+	})
+
+	t.Run("succeeds with a custom transport that skips TLS verification", func(t *testing.T) {
+		insecureTransport := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //nolint:gosec
+		}
+		client, err := NewClient(&Config{
+			Address:       ts.URL,
+			Token:         "test-token",
+			HTTPTransport: insecureTransport,
+		})
+		if err != nil {
+			t.Fatalf("unexpected NewClient error: %v", err)
+		}
+
+		resp, err := client.API.Account().Details().Get(context.Background(), nil)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		assert.Equal(t, "test@example.com", *resp.GetData().GetAttributes().GetEmail())
+	})
 }

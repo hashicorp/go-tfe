@@ -12,6 +12,14 @@ type MiddlewareOption struct {
 	value any
 }
 
+// Value returns the option's value if the key matches, otherwise nil.
+func (o MiddlewareOption) Value(key string) any {
+	if o.key == key {
+		return o.value
+	}
+	return nil
+}
+
 // RetryHookCallback is called before each retry attempt with the attempt number and response.
 type RetryHookCallback func(retryCount int, response *nethttp.Response)
 
@@ -41,4 +49,11 @@ func WithErrorInterceptorOption(errorFactory APIErrorFactory) MiddlewareOption {
 // WithHeaders creates a middleware option that adds the provided headers to each request.
 func WithHeaders(headers nethttp.Header) MiddlewareOption {
 	return MiddlewareOption{key: "Headers", value: headers}
+}
+
+// WithHTTPTransport creates a middleware option that sets a custom parent transport for the HTTP
+// client. When set, it is used as the base RoundTripper for the kiota middleware pipeline via
+// khttp.NewCustomTransportWithParentTransport. If nil, the kiota default transport is used.
+func WithHTTPTransport(transport nethttp.RoundTripper) MiddlewareOption {
+	return MiddlewareOption{key: "HTTPTransport", value: transport}
 }

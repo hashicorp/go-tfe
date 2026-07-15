@@ -1,3 +1,8 @@
+# Unreleased
+
+* Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
+customize many more aspects of every request round trip.
+
 # v2.2.0
 
 The latest public endpoints are available
