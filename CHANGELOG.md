@@ -1,6 +1,6 @@
 # Unreleased
 
-* Enhancement: NewClient configuration now supports a parent `http.RoundTripper`, allowing you to
+* Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
 customize many more aspects of every request round trip.
 
 # v2.2.0
