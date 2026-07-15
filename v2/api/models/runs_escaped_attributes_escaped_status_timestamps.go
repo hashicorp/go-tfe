@@ -71,6 +71,10 @@ type Runs_attributes_statusTimestamps struct {
     queuingApplyAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The queuingAt property
     queuingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The tfPolicyCheckedAt property
+    tfPolicyCheckedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The tfPolicyOverrideAt property
+    tfPolicyOverrideAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 }
 // NewRuns_attributes_statusTimestamps instantiates a new Runs_attributes_statusTimestamps and sets the default values.
 func NewRuns_attributes_statusTimestamps()(*Runs_attributes_statusTimestamps) {
@@ -453,6 +457,26 @@ func (m *Runs_attributes_statusTimestamps) GetFieldDeserializers()(map[string]fu
         }
         return nil
     }
+    res["tf-policy-checked-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyCheckedAt(val)
+        }
+        return nil
+    }
+    res["tf-policy-override-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyOverrideAt(val)
+        }
+        return nil
+    }
     return res
 }
 // GetForceCanceledAt gets the force-canceled-at property value. The forceCanceledAt property
@@ -544,6 +568,16 @@ func (m *Runs_attributes_statusTimestamps) GetQueuingApplyAt()(*i336074805fc8539
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetQueuingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.queuingAt
+}
+// GetTfPolicyCheckedAt gets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
+// returns a *Time when successful
+func (m *Runs_attributes_statusTimestamps) GetTfPolicyCheckedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.tfPolicyCheckedAt
+}
+// GetTfPolicyOverrideAt gets the tf-policy-override-at property value. The tfPolicyOverrideAt property
+// returns a *Time when successful
+func (m *Runs_attributes_statusTimestamps) GetTfPolicyOverrideAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.tfPolicyOverrideAt
 }
 // Serialize serializes information the current object
 func (m *Runs_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -728,6 +762,18 @@ func (m *Runs_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d2689
         }
     }
     {
+        err := writer.WriteTimeValue("tf-policy-checked-at", m.GetTfPolicyCheckedAt())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteTimeValue("tf-policy-override-at", m.GetTfPolicyOverrideAt())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -859,6 +905,14 @@ func (m *Runs_attributes_statusTimestamps) SetQueuingApplyAt(value *i336074805fc
 func (m *Runs_attributes_statusTimestamps) SetQueuingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.queuingAt = value
 }
+// SetTfPolicyCheckedAt sets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
+func (m *Runs_attributes_statusTimestamps) SetTfPolicyCheckedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.tfPolicyCheckedAt = value
+}
+// SetTfPolicyOverrideAt sets the tf-policy-override-at property value. The tfPolicyOverrideAt property
+func (m *Runs_attributes_statusTimestamps) SetTfPolicyOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.tfPolicyOverrideAt = value
+}
 type Runs_attributes_statusTimestampsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -892,6 +946,8 @@ type Runs_attributes_statusTimestampsable interface {
     GetPrePlanRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetQueuingApplyAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetQueuingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetTfPolicyCheckedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetTfPolicyOverrideAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetAppliedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetApplyingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetApplyQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
@@ -922,4 +978,6 @@ type Runs_attributes_statusTimestampsable interface {
     SetPrePlanRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetQueuingApplyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetQueuingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetTfPolicyCheckedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetTfPolicyOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
 }

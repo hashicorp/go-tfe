@@ -45,6 +45,7 @@ import (
     i9f9da2e77dc194747c8849bf5f23201976b7405a8621a452cbd633269aee2779 "github.com/hashicorp/go-tfe/v2/api/oauthclients"
     ia14dfa99771434ac181f57e417b736a27476422badf4c601913115c290aa5d51 "github.com/hashicorp/go-tfe/v2/api/changerequests"
     ia1674df6ad2f27dff7825753af17f524107b9492ec48709646162c2f89c834b2 "github.com/hashicorp/go-tfe/v2/api/agentpools"
+    iabe579aca73193e5d8305da5a47b206ec58ca6b25283768d2ed2062b6e55d772 "github.com/hashicorp/go-tfe/v2/api/tfpolicyevaluations"
     ib16403bde4e14a6aebbed947a047e503a09a66da273f5f8fdd4fe6ffa5481608 "github.com/hashicorp/go-tfe/v2/api/subscriptions"
     ib34380899cf476e13801e0bb16000b24ea1f9a3278548c86404fae039c2dbdfc "github.com/hashicorp/go-tfe/v2/api/policyevaluations"
     ibb8d499b34c4bca94204af48f3f4635fe10412328fe1ed7d751c182be70884ea "github.com/hashicorp/go-tfe/v2/api/notificationconfigurations"
@@ -60,6 +61,7 @@ import (
     ieb79cb648e16b8204e44d31953cbeb69ce4431321cb3895fc1e167f241b3e60b "github.com/hashicorp/go-tfe/v2/api/policysetversions"
     if00db4a554f0df47f70e810f5d47a4fbcb78fee344e4c731136fe1b04279c101 "github.com/hashicorp/go-tfe/v2/api/policysets"
     if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94 "github.com/hashicorp/go-tfe/v2/api/oidcconfigurations"
+    if79c79bd91715cf771fcf71d144e7813d4a746ac43c33fe4d933a83cbd521b8f "github.com/hashicorp/go-tfe/v2/api/tfpolicysetoutcomes"
     if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations"
     if98345fbfcbf35d9802ff0f86c47b887991578f3c045956773765f5ed9880f45 "github.com/hashicorp/go-tfe/v2/api/taskresultoutcomes"
     ifdc5f7656139cba3d476719e11926e5c5420f749e4486c10560f10ea71688721 "github.com/hashicorp/go-tfe/v2/api/organizationmemberships"
@@ -327,6 +329,16 @@ func (m *ApiClient) Teams()(*i685720f6545b16a4aeb91ea7f227b3487f6f5392e8ee9966c0
 // returns a *TeamWorkspacesRequestBuilder when successful
 func (m *ApiClient) TeamWorkspaces()(*i4865434068dff9574c876d79b3056aec81e487ad4f267d6900085f4d61636487.TeamWorkspacesRequestBuilder) {
     return i4865434068dff9574c876d79b3056aec81e487ad4f267d6900085f4d61636487.NewTeamWorkspacesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TfPolicyEvaluations the tfPolicyEvaluations property
+// returns a *TfPolicyEvaluationsRequestBuilder when successful
+func (m *ApiClient) TfPolicyEvaluations()(*iabe579aca73193e5d8305da5a47b206ec58ca6b25283768d2ed2062b6e55d772.TfPolicyEvaluationsRequestBuilder) {
+    return iabe579aca73193e5d8305da5a47b206ec58ca6b25283768d2ed2062b6e55d772.NewTfPolicyEvaluationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TfPolicySetOutcomes the tfPolicySetOutcomes property
+// returns a *TfPolicySetOutcomesRequestBuilder when successful
+func (m *ApiClient) TfPolicySetOutcomes()(*if79c79bd91715cf771fcf71d144e7813d4a746ac43c33fe4d933a83cbd521b8f.TfPolicySetOutcomesRequestBuilder) {
+    return if79c79bd91715cf771fcf71d144e7813d4a746ac43c33fe4d933a83cbd521b8f.NewTfPolicySetOutcomesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Users the users property
 // returns a *UsersRequestBuilder when successful
