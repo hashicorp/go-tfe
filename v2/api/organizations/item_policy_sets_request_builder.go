@@ -16,7 +16,7 @@ type ItemPolicySetsRequestBuilder struct {
 }
 // ItemPolicySetsRequestBuilderGetQueryParameters list all policy sets in an organization.
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
-    // Filter policy sets by kind.
+    // Filter policy sets by kind.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
     Filterkind *i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
     // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
     Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""

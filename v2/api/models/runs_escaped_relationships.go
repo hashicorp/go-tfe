@@ -34,6 +34,8 @@ type Runs_relationships struct {
     runTriggerSnapshots Relatedable
     // The taskStages property
     taskStages Runs_relationships_taskStagesable
+    // The tfPolicyEvaluations property
+    tfPolicyEvaluations Runs_relationships_tfPolicyEvaluationsable
     // The triggeringRun property
     triggeringRun RunsIdable
     // The triggeringSource property
@@ -217,6 +219,16 @@ func (m *Runs_relationships) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["tf-policy-evaluations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRuns_relationships_tfPolicyEvaluationsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyEvaluations(val.(Runs_relationships_tfPolicyEvaluationsable))
+        }
+        return nil
+    }
     res["triggering-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateRunsIdFromDiscriminatorValue)
         if err != nil {
@@ -273,6 +285,11 @@ func (m *Runs_relationships) GetRunTriggerSnapshots()(Relatedable) {
 // returns a Runs_relationships_taskStagesable when successful
 func (m *Runs_relationships) GetTaskStages()(Runs_relationships_taskStagesable) {
     return m.taskStages
+}
+// GetTfPolicyEvaluations gets the tf-policy-evaluations property value. The tfPolicyEvaluations property
+// returns a Runs_relationships_tfPolicyEvaluationsable when successful
+func (m *Runs_relationships) GetTfPolicyEvaluations()(Runs_relationships_tfPolicyEvaluationsable) {
+    return m.tfPolicyEvaluations
 }
 // GetTriggeringRun gets the triggering-run property value. The triggeringRun property
 // returns a RunsIdable when successful
@@ -364,6 +381,12 @@ func (m *Runs_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef2
         }
     }
     {
+        err := writer.WriteObjectValue("tf-policy-evaluations", m.GetTfPolicyEvaluations())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("triggering-run", m.GetTriggeringRun())
         if err != nil {
             return err
@@ -441,6 +464,10 @@ func (m *Runs_relationships) SetRunTriggerSnapshots(value Relatedable)() {
 func (m *Runs_relationships) SetTaskStages(value Runs_relationships_taskStagesable)() {
     m.taskStages = value
 }
+// SetTfPolicyEvaluations sets the tf-policy-evaluations property value. The tfPolicyEvaluations property
+func (m *Runs_relationships) SetTfPolicyEvaluations(value Runs_relationships_tfPolicyEvaluationsable)() {
+    m.tfPolicyEvaluations = value
+}
 // SetTriggeringRun sets the triggering-run property value. The triggeringRun property
 func (m *Runs_relationships) SetTriggeringRun(value RunsIdable)() {
     m.triggeringRun = value
@@ -468,6 +495,7 @@ type Runs_relationshipsable interface {
     GetRunEvents()(Runs_relationships_runEventsable)
     GetRunTriggerSnapshots()(Relatedable)
     GetTaskStages()(Runs_relationships_taskStagesable)
+    GetTfPolicyEvaluations()(Runs_relationships_tfPolicyEvaluationsable)
     GetTriggeringRun()(RunsIdable)
     GetTriggeringSource()(WorkspacesIdable)
     GetWorkspace()(WorkspacesIdable)
@@ -483,6 +511,7 @@ type Runs_relationshipsable interface {
     SetRunEvents(value Runs_relationships_runEventsable)()
     SetRunTriggerSnapshots(value Relatedable)()
     SetTaskStages(value Runs_relationships_taskStagesable)()
+    SetTfPolicyEvaluations(value Runs_relationships_tfPolicyEvaluationsable)()
     SetTriggeringRun(value RunsIdable)()
     SetTriggeringSource(value WorkspacesIdable)()
     SetWorkspace(value WorkspacesIdable)()

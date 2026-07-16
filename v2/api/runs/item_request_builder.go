@@ -15,7 +15,7 @@ type ItemRequestBuilder struct {
 }
 // ItemRequestBuilderGetQueryParameters get details about a run.
 type ItemRequestBuilderGetQueryParameters struct {
-    // Available side-load related resources. Multiple values can be comma-separated.Available includes:- `plan` - The plan for this run- `apply` - The apply for this run- `created_by` - The user who created this run- `configuration_version` - The configuration version used- `configuration_version.ingress_attributes` - VCS ingress details- `cost_estimate` - Cost estimation for this run- `workspace` - The workspace this run belongs to- `task_stages` - Run task stages- `tf_policy_evaluations` - Terraform Policy evaluations *(internal-beta)*
+    // Available side-load related resources. Multiple values can be comma-separated.Available includes:- `plan` - The plan for this run- `apply` - The apply for this run- `created_by` - The user who created this run- `configuration_version` - The configuration version used- `configuration_version.ingress_attributes` - VCS ingress details- `cost_estimate` - Cost estimation for this run- `workspace` - The workspace this run belongs to- `task_stages` - Run task stages- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*
     Include *string "uriparametername:\"include\""
 }
 // Actions the actions property
@@ -80,6 +80,11 @@ func (m *ItemRequestBuilder) PolicyChecks()(*ItemPolicyChecksRequestBuilder) {
 // returns a *ItemTaskStagesRequestBuilder when successful
 func (m *ItemRequestBuilder) TaskStages()(*ItemTaskStagesRequestBuilder) {
     return NewItemTaskStagesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TfPolicyEvaluations the tfPolicyEvaluations property
+// returns a *ItemTfPolicyEvaluationsRequestBuilder when successful
+func (m *ItemRequestBuilder) TfPolicyEvaluations()(*ItemTfPolicyEvaluationsRequestBuilder) {
+    return NewItemTfPolicyEvaluationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ToGetRequestInformation get details about a run.
 // returns a *RequestInformation when successful

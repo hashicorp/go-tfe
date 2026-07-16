@@ -163,6 +163,11 @@ func (m *WithOrganization_nameItemRequestBuilder) PolicySets()(*ItemPolicySetsRe
 func (m *WithOrganization_nameItemRequestBuilder) Projects()(*ItemProjectsRequestBuilder) {
     return NewItemProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// ProviderSets the providerSets property
+// returns a *ItemProviderSetsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
+    return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Put update an organization.
 // returns a OrganizationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code

@@ -87,6 +87,11 @@ func (m *WithProject_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProjectsEnvelopeable), nil
 }
+// ProviderSets the providerSets property
+// returns a *ItemProviderSetsRequestBuilder when successful
+func (m *WithProject_ItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
+    return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Relationships the relationships property
 // returns a *ItemRelationshipsRequestBuilder when successful
 func (m *WithProject_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {

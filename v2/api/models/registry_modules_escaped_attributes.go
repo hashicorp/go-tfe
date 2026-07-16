@@ -29,6 +29,8 @@ type RegistryModules_attributes struct {
     registryName *string
     // The status property
     status *string
+    // Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
+    testConfig RegistryModules_attributes_testConfigable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
@@ -152,6 +154,16 @@ func (m *RegistryModules_attributes) GetFieldDeserializers()(map[string]func(i87
         }
         return nil
     }
+    res["test-config"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModules_attributes_testConfigFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTestConfig(val.(RegistryModules_attributes_testConfigable))
+        }
+        return nil
+    }
     res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -230,6 +242,11 @@ func (m *RegistryModules_attributes) GetRegistryName()(*string) {
 func (m *RegistryModules_attributes) GetStatus()(*string) {
     return m.status
 }
+// GetTestConfig gets the test-config property value. Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
+// returns a RegistryModules_attributes_testConfigable when successful
+func (m *RegistryModules_attributes) GetTestConfig()(RegistryModules_attributes_testConfigable) {
+    return m.testConfig
+}
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *RegistryModules_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -249,6 +266,12 @@ func (m *RegistryModules_attributes) GetVersionStatuses()([]RegistryModules_attr
 func (m *RegistryModules_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteBoolValue("no-code", m.GetNoCode())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("test-config", m.GetTestConfig())
         if err != nil {
             return err
         }
@@ -307,6 +330,10 @@ func (m *RegistryModules_attributes) SetRegistryName(value *string)() {
 func (m *RegistryModules_attributes) SetStatus(value *string)() {
     m.status = value
 }
+// SetTestConfig sets the test-config property value. Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
+func (m *RegistryModules_attributes) SetTestConfig(value RegistryModules_attributes_testConfigable)() {
+    m.testConfig = value
+}
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *RegistryModules_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
@@ -331,6 +358,7 @@ type RegistryModules_attributesable interface {
     GetPublishingMechanism()(*RegistryModules_attributes_publishingMechanism)
     GetRegistryName()(*string)
     GetStatus()(*string)
+    GetTestConfig()(RegistryModules_attributes_testConfigable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(RegistryModules_attributes_vcsRepoable)
     GetVersionStatuses()([]RegistryModules_attributes_versionStatusesable)
@@ -343,6 +371,7 @@ type RegistryModules_attributesable interface {
     SetPublishingMechanism(value *RegistryModules_attributes_publishingMechanism)()
     SetRegistryName(value *string)()
     SetStatus(value *string)()
+    SetTestConfig(value RegistryModules_attributes_testConfigable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value RegistryModules_attributes_vcsRepoable)()
     SetVersionStatuses(value []RegistryModules_attributes_versionStatusesable)()

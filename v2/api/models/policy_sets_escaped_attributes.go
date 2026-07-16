@@ -17,11 +17,9 @@ type PolicySets_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The description property
     description *string
-    // The enforcementLevel property
-    enforcementLevel *string
     // The global property
     global *bool
-    // The kind property
+    // The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
     kind *PolicySets_attributes_kind
     // The name property
     name *string
@@ -37,6 +35,10 @@ type PolicySets_attributes struct {
     policyUpdatePatterns []string
     // The projectCount property
     projectCount *int32
+    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+    scopingType *PolicySets_attributes_scopingType
+    // The tagSelectors property
+    tagSelectors []PolicySets_attributes_tagSelectorsable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The vcsRepo property
@@ -78,11 +80,6 @@ func (m *PolicySets_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a
 func (m *PolicySets_attributes) GetDescription()(*string) {
     return m.description
 }
-// GetEnforcementLevel gets the enforcement-level property value. The enforcementLevel property
-// returns a *string when successful
-func (m *PolicySets_attributes) GetEnforcementLevel()(*string) {
-    return m.enforcementLevel
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -114,16 +111,6 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetDescription(val)
-        }
-        return nil
-    }
-    res["enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val)
         }
         return nil
     }
@@ -223,6 +210,32 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["scoping-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParsePolicySets_attributes_scopingType)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScopingType(val.(*PolicySets_attributes_scopingType))
+        }
+        return nil
+    }
+    res["tag-selectors"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreatePolicySets_attributes_tagSelectorsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]PolicySets_attributes_tagSelectorsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(PolicySets_attributes_tagSelectorsable)
+                }
+            }
+            m.SetTagSelectors(res)
+        }
+        return nil
+    }
     res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -270,7 +283,7 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
 func (m *PolicySets_attributes) GetGlobal()(*bool) {
     return m.global
 }
-// GetKind gets the kind property value. The kind property
+// GetKind gets the kind property value. The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
 // returns a *PolicySets_attributes_kind when successful
 func (m *PolicySets_attributes) GetKind()(*PolicySets_attributes_kind) {
     return m.kind
@@ -310,6 +323,16 @@ func (m *PolicySets_attributes) GetPolicyUpdatePatterns()([]string) {
 func (m *PolicySets_attributes) GetProjectCount()(*int32) {
     return m.projectCount
 }
+// GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+// returns a *PolicySets_attributes_scopingType when successful
+func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
+    return m.scopingType
+}
+// GetTagSelectors gets the tag-selectors property value. The tagSelectors property
+// returns a []PolicySets_attributes_tagSelectorsable when successful
+func (m *PolicySets_attributes) GetTagSelectors()([]PolicySets_attributes_tagSelectorsable) {
+    return m.tagSelectors
+}
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *PolicySets_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -340,12 +363,6 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
     }
     {
         err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("enforcement-level", m.GetEnforcementLevel())
         if err != nil {
             return err
         }
@@ -393,6 +410,25 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
             return err
         }
     }
+    if m.GetScopingType() != nil {
+        cast := (*m.GetScopingType()).String()
+        err := writer.WriteStringValue("scoping-type", &cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetTagSelectors() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTagSelectors()))
+        for i, v := range m.GetTagSelectors() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("tag-selectors", cast)
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
         if err != nil {
@@ -423,15 +459,11 @@ func (m *PolicySets_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3a
 func (m *PolicySets_attributes) SetDescription(value *string)() {
     m.description = value
 }
-// SetEnforcementLevel sets the enforcement-level property value. The enforcementLevel property
-func (m *PolicySets_attributes) SetEnforcementLevel(value *string)() {
-    m.enforcementLevel = value
-}
 // SetGlobal sets the global property value. The global property
 func (m *PolicySets_attributes) SetGlobal(value *bool)() {
     m.global = value
 }
-// SetKind sets the kind property value. The kind property
+// SetKind sets the kind property value. The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
 func (m *PolicySets_attributes) SetKind(value *PolicySets_attributes_kind)() {
     m.kind = value
 }
@@ -463,6 +495,14 @@ func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string)() {
 func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
     m.projectCount = value
 }
+// SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
+    m.scopingType = value
+}
+// SetTagSelectors sets the tag-selectors property value. The tagSelectors property
+func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
+    m.tagSelectors = value
+}
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *PolicySets_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
@@ -485,7 +525,6 @@ type PolicySets_attributesable interface {
     GetAgentEnabled()(*bool)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDescription()(*string)
-    GetEnforcementLevel()(*string)
     GetGlobal()(*bool)
     GetKind()(*PolicySets_attributes_kind)
     GetName()(*string)
@@ -495,6 +534,8 @@ type PolicySets_attributesable interface {
     GetPolicyToolVersion()(*string)
     GetPolicyUpdatePatterns()([]string)
     GetProjectCount()(*int32)
+    GetScopingType()(*PolicySets_attributes_scopingType)
+    GetTagSelectors()([]PolicySets_attributes_tagSelectorsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(PolicySets_attributes_vcsRepoable)
     GetVersioned()(*bool)
@@ -502,7 +543,6 @@ type PolicySets_attributesable interface {
     SetAgentEnabled(value *bool)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDescription(value *string)()
-    SetEnforcementLevel(value *string)()
     SetGlobal(value *bool)()
     SetKind(value *PolicySets_attributes_kind)()
     SetName(value *string)()
@@ -512,6 +552,8 @@ type PolicySets_attributesable interface {
     SetPolicyToolVersion(value *string)()
     SetPolicyUpdatePatterns(value []string)()
     SetProjectCount(value *int32)()
+    SetScopingType(value *PolicySets_attributes_scopingType)()
+    SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value PolicySets_attributes_vcsRepoable)()
     SetVersioned(value *bool)()

@@ -53,7 +53,7 @@ type Runs_attributes struct {
     savePlan *bool
     // The source property
     source *string
-    // The current status of the run.**Note:** The following status values are in internal-beta:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
+    // The current status of the run.**Note:** The following status values are in public-beta:- `tf_policy_checked` - Terraform Policy evaluation completed at plan stage- `tf_policy_override` - Terraform Policy evaluation was overridden at plan stage
     status *Runs_attributes_status
     // The statusTimestamps property
     statusTimestamps Runs_attributes_statusTimestampsable
@@ -518,7 +518,7 @@ func (m *Runs_attributes) GetSavePlan()(*bool) {
 func (m *Runs_attributes) GetSource()(*string) {
     return m.source
 }
-// GetStatus gets the status property value. The current status of the run.**Note:** The following status values are in internal-beta:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
+// GetStatus gets the status property value. The current status of the run.**Note:** The following status values are in public-beta:- `tf_policy_checked` - Terraform Policy evaluation completed at plan stage- `tf_policy_override` - Terraform Policy evaluation was overridden at plan stage
 // returns a *Runs_attributes_status when successful
 func (m *Runs_attributes) GetStatus()(*Runs_attributes_status) {
     return m.status
@@ -813,7 +813,7 @@ func (m *Runs_attributes) SetSavePlan(value *bool)() {
 func (m *Runs_attributes) SetSource(value *string)() {
     m.source = value
 }
-// SetStatus sets the status property value. The current status of the run.**Note:** The following status values are in internal-beta:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
+// SetStatus sets the status property value. The current status of the run.**Note:** The following status values are in public-beta:- `tf_policy_checked` - Terraform Policy evaluation completed at plan stage- `tf_policy_override` - Terraform Policy evaluation was overridden at plan stage
 func (m *Runs_attributes) SetStatus(value *Runs_attributes_status)() {
     m.status = value
 }
