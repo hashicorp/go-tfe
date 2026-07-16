@@ -92,6 +92,11 @@ func (m *WithPolicy_set_ItemRequestBuilder) Patch(ctx context.Context, body i05d
 func (m *WithPolicy_set_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
     return NewItemRelationshipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// TagSelectors the tagSelectors property
+// returns a *ItemTagSelectorsRequestBuilder when successful
+func (m *WithPolicy_set_ItemRequestBuilder) TagSelectors()(*ItemTagSelectorsRequestBuilder) {
+    return NewItemTagSelectorsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ToDeleteRequestInformation delete a policy set. Deleting a policy set does not delete the policies it contains.
 // returns a *RequestInformation when successful
 func (m *WithPolicy_set_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {

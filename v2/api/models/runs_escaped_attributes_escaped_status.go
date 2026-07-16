@@ -2,7 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
-// The current status of the run.**Note:** The following status values are in internal-beta:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
+// The current status of the run.**Note:** The following status values are in public-beta:- `tf_policy_checked` - Terraform Policy evaluation completed at plan stage- `tf_policy_override` - Terraform Policy evaluation was overridden at plan stage
 type Runs_attributes_status int
 
 const (

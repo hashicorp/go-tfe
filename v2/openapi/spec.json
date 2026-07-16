@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "4e8569d6",
+    "version": "997e6918",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -133,6 +133,14 @@
       }
     },
     {
+      "name": "provider-sets",
+      "x-displayName": "Provider Sets",
+      "description": "Provider set management for organizations, projects, and workspaces",
+      "x-vis": [
+        "public-beta"
+      ]
+    },
+    {
       "name": "varsets",
       "x-displayName": "Variable Sets",
       "description": "Variable set management for organizations, projects, and workspaces",
@@ -195,6 +203,14 @@
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks"
       }
+    },
+    {
+      "name": "tf-policy-evaluations",
+      "x-vis": [
+        "public-beta"
+      ],
+      "x-displayName": "Terraform Policy Evaluations",
+      "description": "Terraform Policy evaluation actions and outcomes for runs.\n\n**Note:** These APIs are in public beta and are available in HCP Terraform only.\n"
     },
     {
       "name": "policy-set-params",
@@ -5921,6 +5937,486 @@
         }
       }
     },
+    "/provider-sets/{provider_set_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "showProviderSet",
+        "summary": "Show a Provider Set",
+        "description": "Fetch details about the specified provider set.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider set details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/provider-sets-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateProviderSet",
+        "summary": "Update a Provider Set",
+        "description": "Update attributes of an existing provider set.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/provider-sets-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Provider set updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/provider-sets-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteProviderSet",
+        "summary": "Delete a Provider Set",
+        "description": "Delete an existing provider set.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Provider set deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/provider-sets": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getProviderSets",
+        "summary": "Get Provider Sets",
+        "description": "Fetch details about all the provider sets in an organization.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider sets' details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/provider-sets"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProviderSet",
+        "summary": "Create a Provider Set",
+        "description": "Create a provider set belonging to an organization.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/provider-sets-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Provider set created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/provider-sets-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "batchDeleteProviderSets",
+        "summary": "Batch Delete Provider Sets",
+        "description": "Delete multiple provider sets in a single request.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "provider-sets"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Provider sets deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/provider-sets/{provider_set_name}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "showProviderSetByName",
+        "summary": "Show a Provider Set by name",
+        "description": "Fetch details about the specified provider set.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "path",
+            "name": "provider_set_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the provider_set."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider set details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/provider-sets-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/provider-sets": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getProjectProviderSets",
+        "summary": "Get Provider Sets",
+        "description": "Fetch details about all the provider sets assigned to a project.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The id of a project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider sets' details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/provider-sets"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/provider-sets": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getWorkspaceProviderSets",
+        "summary": "Get Provider Sets",
+        "description": "Fetch details about all the provider sets assigned to a workspace.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The id of a workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider sets' details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/provider-sets"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/varsets/{varset_id}": {
       "get": {
         "operationId": "showVarset",
@@ -8818,7 +9314,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Available side-load related resources. Multiple values can be comma-separated.\n\nAvailable includes:\n- `plan` - The plan for this run\n- `apply` - The apply for this run\n- `created_by` - The user who created this run\n- `configuration_version` - The configuration version used\n- `configuration_version.ingress_attributes` - VCS ingress details\n- `cost_estimate` - Cost estimation for this run\n- `workspace` - The workspace this run belongs to\n- `task_stages` - Run task stages\n- `tf_policy_evaluations` - Terraform Policy evaluations *(internal-beta)*\n"
+            "description": "Available side-load related resources. Multiple values can be comma-separated.\n\nAvailable includes:\n- `plan` - The plan for this run\n- `apply` - The apply for this run\n- `created_by` - The user who created this run\n- `configuration_version` - The configuration version used\n- `configuration_version.ingress_attributes` - VCS ingress details\n- `cost_estimate` - Cost estimation for this run\n- `workspace` - The workspace this run belongs to\n- `task_stages` - Run task stages\n- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*\n"
           }
         ],
         "responses": {
@@ -10530,6 +11026,386 @@
         }
       }
     },
+    "/runs/{run_id}/tf-policy-evaluations": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listRunTfPolicyEvaluations",
+        "summary": "List Terraform Policy Evaluations for a Run",
+        "description": "List the Terraform Policy evaluations associated with a run.",
+        "tags": [
+          "tf-policy-evaluations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run to list Terraform Policy evaluations for."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Terraform Policy evaluations",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tf-policy-evaluation"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tf-policy-evaluations/{id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getTfPolicyEvaluation",
+        "summary": "Show a Terraform Policy Evaluation",
+        "description": "Get details about a specific Terraform Policy evaluation.",
+        "tags": [
+          "tf-policy-evaluations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Terraform Policy evaluation to show."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Comma-separated list of related resources to include. Valid values are `tf_policy_set_outcomes`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Terraform Policy evaluation details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/tf-policy-evaluations-envelope"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "included": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/tf-policy-set-outcome"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tf-policy-evaluations/{id}/actions/override": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "overrideTfPolicyEvaluation",
+        "summary": "Override a Terraform Policy Evaluation",
+        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.",
+        "tags": [
+          "tf-policy-evaluations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Terraform Policy evaluation to override."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "An optional comment explaining the reason for overriding the Terraform Policy evaluation."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Terraform Policy evaluation successfully overridden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tf-policy-evaluations-envelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The Terraform Policy evaluation is not in an overridable state.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tf-policy-evaluations/{tf_policy_evaluation_id}/tf-policy-set-outcomes": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listTfPolicyEvaluationTfPolicySetOutcomes",
+        "summary": "List Terraform Policy Set Outcomes for a Terraform Policy Evaluation",
+        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.",
+        "tags": [
+          "tf-policy-evaluations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tf_policy_evaluation_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Terraform Policy evaluation to list Terraform Policy set outcomes for."
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "style": "deepObject",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "passed",
+                      "failed",
+                      "errored",
+                      "unknown"
+                    ],
+                    "description": "Filter outcomes by status."
+                  },
+                  "enforcement_level": {
+                    "type": "string",
+                    "enum": [
+                      "advisory",
+                      "mandatory",
+                      "mandatory_overridable"
+                    ],
+                    "description": "Filter outcomes by enforcement level."
+                  }
+                }
+              }
+            },
+            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample — return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Terraform Policy set outcomes",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tf-policy-set-outcome"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filter provided",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tf-policy-set-outcomes/{id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getTfPolicySetOutcome",
+        "summary": "Show a Terraform Policy Set Outcome",
+        "description": "Get details about a specific Terraform Policy set outcome.",
+        "tags": [
+          "tf-policy-evaluations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Terraform Policy set outcome to show."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Terraform Policy set outcome details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tf-policy-set-outcomes-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/policy-sets/{policy_set_id}/parameters": {
       "get": {
         "operationId": "listPolicySetParams",
@@ -10974,7 +11850,7 @@
               ]
             },
             "required": false,
-            "description": "Filter policy sets by kind."
+            "description": "Filter policy sets by kind.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n"
           },
           {
             "in": "query",
@@ -11522,6 +12398,185 @@
         "responses": {
           "204": {
             "description": "Project exclusions successfully removed from policy set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policy-sets/{policy_set_id}/tag-selectors": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addPolicySetTagSelectors",
+        "summary": "Add Tag Selectors to a Policy Set",
+        "description": "Add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.",
+        "tags": [
+          "policy-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the policy set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tag-key": {
+                          "type": "string",
+                          "description": "The tag key to match."
+                        },
+                        "tag-value": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "The tag value to match."
+                        },
+                        "is-exclude": {
+                          "type": "boolean",
+                          "description": "Whether this selector excludes matching workspaces."
+                        }
+                      },
+                      "required": [
+                        "tag-key",
+                        "tag-value",
+                        "is-exclude"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag selectors successfully added to policy set."
+          },
+          "404": {
+            "description": "Policy set not found or feature not enabled.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error, e.g. tag-based scoping conflicts with explicit associations.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removePolicySetTagSelectors",
+        "summary": "Remove Tag Selectors from a Policy Set",
+        "description": "Remove tag selectors from a policy set by their tag key and value.",
+        "tags": [
+          "policy-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the policy set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tag-key": {
+                          "type": "string",
+                          "description": "The tag key to match."
+                        },
+                        "tag-value": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "The tag value to match."
+                        },
+                        "is-exclude": {
+                          "type": "boolean",
+                          "description": "Whether this selector excludes matching workspaces."
+                        }
+                      },
+                      "required": [
+                        "tag-key",
+                        "tag-value",
+                        "is-exclude"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag selectors successfully removed from policy set."
+          },
+          "404": {
+            "description": "Policy set not found or feature not enabled.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "default": {
             "description": "Error details",
@@ -24604,6 +25659,139 @@
           }
         }
       },
+      "provider-sets": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "provider-sets"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "global": {
+                "type": "boolean"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "priority": {
+                "type": "boolean"
+              },
+              "provider-source": {
+                "type": "string",
+                "description": "Accepts either `{namespace}/{provider]` or `{hostname}/{namespace}/{provider}` Values are normalized to the fully qualified form.",
+                "pattern": "^(?:[A-Za-z0-9.-]+/)?[A-Za-z0-9-]+/[A-Za-z0-9-]+$",
+                "example": "registry.terraform.io/hashicorp/hcp"
+              },
+              "configuration-hcl": {
+                "type": "string",
+                "example": "provider \"hcp\" {\n  client_id = var.hcp_client_id\n}\n"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organizations"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "workspaces": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "workspaces"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "projects": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "projects"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "provider-sets-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/provider-sets"
+          }
+        }
+      },
       "varsets": {
         "type": "object",
         "properties": {
@@ -25779,6 +26967,28 @@
           }
         }
       },
+      "tf-policy-evaluations-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "tf-policy-evaluations"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "runs": {
         "type": "object",
         "required": [
@@ -25905,6 +27115,20 @@
                     "type": "string",
                     "format": "date-time"
                   },
+                  "tf-policy-checked-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "x-vis": [
+                      "public-beta"
+                    ]
+                  },
+                  "tf-policy-override-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "x-vis": [
+                      "public-beta"
+                    ]
+                  },
                   "post-plan-running-at": {
                     "type": "string",
                     "format": "date-time"
@@ -26001,7 +27225,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The current status of the run.\n\n**Note:** The following status values are in internal-beta:\n- `tf_policy_checked` - Terraform Policy evaluation completed\n- `tf_policy_override` - Terraform Policy evaluation was overridden\n",
+                "description": "The current status of the run.\n\n**Note:** The following status values are in public-beta:\n- `tf_policy_checked` - Terraform Policy evaluation completed at plan stage\n- `tf_policy_override` - Terraform Policy evaluation was overridden at plan stage\n",
                 "enum": [
                   "pending",
                   "fetching",
@@ -26199,6 +27423,20 @@
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/comments-id"
+                    }
+                  }
+                }
+              },
+              "tf-policy-evaluations": {
+                "type": "object",
+                "x-vis": [
+                  "public-beta"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/tf-policy-evaluations-id"
                     }
                   }
                 }
@@ -27111,6 +28349,527 @@
           }
         }
       },
+      "tf-policy-evaluation": {
+        "type": "object",
+        "description": "Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tf-policy-evaluations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "Current status of the Terraform policy evaluation. Status values:\n- `pending`: Initial state, not yet queued for evaluation\n- `queued`: Queued and waiting to be evaluated\n- `running`: Actively being evaluated\n- `awaiting_override`: Failed with overridable policies, awaiting manual override\n- `passed`: All policies passed (final state)\n- `failed`: Failed with mandatory policies (final state)\n- `overridden`: Failed evaluation manually overridden (final state)\n- `errored`: System error during processing (final state)\n- `canceled`: Canceled before completion (final state)\n- `unreachable`: Pseudo-state derived from run state\n",
+                "enum": [
+                  "pending",
+                  "queued",
+                  "running",
+                  "awaiting_override",
+                  "passed",
+                  "failed",
+                  "overridden",
+                  "errored",
+                  "canceled",
+                  "unreachable"
+                ]
+              },
+              "stage-type": {
+                "type": "string",
+                "description": "The type of stage this evaluation is associated with (e.g., 'Plan', 'Apply', 'Init')"
+              },
+              "status-timestamps": {
+                "type": "object",
+                "description": "Timestamps for each status transition during the evaluation lifecycle",
+                "properties": {
+                  "pending-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation entered pending status"
+                  },
+                  "queued-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation was queued for processing"
+                  },
+                  "running-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation started running"
+                  },
+                  "awaiting-override-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation entered awaiting override status (for failed mandatory policies)"
+                  },
+                  "passed-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation passed successfully"
+                  },
+                  "failed-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation failed"
+                  },
+                  "overridden-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When a failed evaluation was overridden"
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation encountered an error"
+                  },
+                  "canceled-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "When the evaluation was canceled"
+                  }
+                }
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "When the evaluation was created"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "When the evaluation was last updated"
+              },
+              "result-count": {
+                "type": "object",
+                "description": "Aggregated counts of policy results across all policy sets in this evaluation",
+                "properties": {
+                  "advisory-failed": {
+                    "type": "integer",
+                    "description": "Total number of policies with advisory enforcement level that failed across all policy sets"
+                  },
+                  "mandatory-failed": {
+                    "type": "integer",
+                    "description": "Total number of policies with mandatory or mandatory-overridable enforcement level that failed across all policy sets"
+                  },
+                  "passed": {
+                    "type": "integer",
+                    "description": "Total number of policies that passed across all policy sets"
+                  },
+                  "errored": {
+                    "type": "integer",
+                    "description": "Total number of policies that encountered errors during evaluation across all policy sets"
+                  },
+                  "unknown": {
+                    "type": "integer",
+                    "description": "Total number of policies with unknown evaluation results across all policy sets"
+                  }
+                }
+              },
+              "error": {
+                "type": "object",
+                "nullable": true,
+                "description": "Error information if the entire evaluation failed (not policy-specific errors)",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "setup_error",
+                      "incompatible_agent_version"
+                    ],
+                    "description": "Error type identifier indicating the category of failure"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "Brief error summary for display"
+                  },
+                  "detail": {
+                    "type": "string",
+                    "description": "Detailed error message with additional context"
+                  }
+                }
+              },
+              "organized-log": {
+                "type": "boolean",
+                "deprecated": true,
+                "description": "Deprecated. Always `true`."
+              },
+              "permissions": {
+                "type": "object",
+                "description": "User permissions for this evaluation",
+                "properties": {
+                  "can-override": {
+                    "type": "boolean",
+                    "description": "Whether the current user has permission to override failed policies"
+                  }
+                }
+              },
+              "actions": {
+                "type": "object",
+                "description": "Available actions for this evaluation",
+                "properties": {
+                  "is-overridable": {
+                    "type": "boolean",
+                    "description": "Whether this evaluation can be overridden (based on policy enforcement levels and current status)"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "run": {
+                "type": "object",
+                "description": "The run that this policy evaluation belongs to",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The run's external ID"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "runs"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "tf-policy-set-outcomes": {
+                "type": "object",
+                "description": "The Terraform policy set outcomes that are part of this evaluation",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "description": "List of Terraform policy set outcome resource identifiers",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The Terraform policy set outcome's external ID"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "tf-policy-set-outcomes"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "description": "URL to fetch the related Terraform policy set outcomes"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "tf-policy-evaluations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tf-policy-evaluation"
+          }
+        }
+      },
+      "tf-policy-set-outcome": {
+        "type": "object",
+        "description": "Represents the outcome of evaluating a Terraform Policy set against resources in a run. Contains detailed diagnostics organized by policy and enforce block, including information about resources that passed or failed policy evaluation.",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tf-policy-set-outcomes"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "outcomes": {
+                "type": "array",
+                "nullable": true,
+                "description": "List of policy outcomes, each representing the evaluation result of a single policy within the policy set",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "policy_name": {
+                      "type": "string",
+                      "description": "The name of the policy"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The description of the policy"
+                    },
+                    "file_name": {
+                      "type": "string",
+                      "description": "The filename of the policy"
+                    },
+                    "enforcement_level": {
+                      "type": "string",
+                      "enum": [
+                        "advisory",
+                        "mandatory",
+                        "mandatory_overridable"
+                      ],
+                      "description": "The enforcement level of the policy"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "passed",
+                        "failed",
+                        "errored",
+                        "unknown"
+                      ],
+                      "description": "The evaluation status of the policy"
+                    },
+                    "diagnostics": {
+                      "type": "array",
+                      "nullable": true,
+                      "description": "List of diagnostic entries grouped by enforce block",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "description": "Code snippet from the policy file showing the enforce block that was evaluated"
+                          },
+                          "context": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "The policy declaration context (e.g., 'resource_policy \"aws_s3_bucket\" \"test\"')"
+                          },
+                          "start_line": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Line number where the enforce block starts in the policy file"
+                          },
+                          "summary": {
+                            "type": "string",
+                            "description": "Human-readable summary of the diagnostic, typically the policy declaration"
+                          },
+                          "error_message": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Error message for the enforce block when not specific to a resource"
+                          },
+                          "resources": {
+                            "type": "array",
+                            "nullable": true,
+                            "description": "List of Terraform resources that failed this enforce block's condition",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "resource_name": {
+                                  "type": "string",
+                                  "description": "The Terraform resource address (e.g., 'aws_s3_bucket.example')"
+                                },
+                                "error_message": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "description": "Specific error message explaining why this resource failed the policy check"
+                                },
+                                "info_message": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "description": "Policy-provided informational log message for debugging about this resource's evaluation"
+                                },
+                                "file_name": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "description": "Terraform configuration file containing this resource (e.g., 'main.tf')"
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "description": "Code snippet from the Terraform configuration showing the resource declaration"
+                                },
+                                "start_line": {
+                                  "type": "integer",
+                                  "nullable": true,
+                                  "description": "Line number where the resource is defined in the Terraform configuration file"
+                                },
+                                "values": {
+                                  "type": "array",
+                                  "nullable": true,
+                                  "description": "List of attribute evaluations showing the actual values that caused the policy failure",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "traversal": {
+                                        "type": "string",
+                                        "description": "The attribute path that was evaluated"
+                                      },
+                                      "statement": {
+                                        "type": "string",
+                                        "description": "The actual value of the attribute that was evaluated"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "passed_resources": {
+                      "type": "array",
+                      "nullable": true,
+                      "description": "List of Terraform resources that passed all enforce blocks in this policy",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "resource_name": {
+                            "type": "string",
+                            "description": "The Terraform resource address (e.g., 'aws_s3_bucket.compliant')"
+                          },
+                          "info_messages": {
+                            "type": "array",
+                            "nullable": true,
+                            "description": "List of informational messages from enforce blocks that this resource passed",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "overridable": {
+                "type": "boolean",
+                "description": "Indicates if the policy set outcome can be overridden when policies fail"
+              },
+              "policy-set-name": {
+                "type": "string",
+                "description": "Name of the policy set that was evaluated"
+              },
+              "policy-set-description": {
+                "type": "string",
+                "nullable": true,
+                "description": "Optional description of the policy set"
+              },
+              "result-count": {
+                "type": "object",
+                "properties": {
+                  "advisory-failed": {
+                    "type": "integer",
+                    "description": "Number of policies with advisory enforcement level that failed"
+                  },
+                  "mandatory-failed": {
+                    "type": "integer",
+                    "description": "Number of policies with mandatory or mandatory-overridable enforcement level that failed"
+                  },
+                  "passed": {
+                    "type": "integer",
+                    "description": "Number of policies that passed"
+                  },
+                  "errored": {
+                    "type": "integer",
+                    "description": "Number of policies that encountered errors during evaluation"
+                  },
+                  "unknown": {
+                    "type": "integer",
+                    "description": "Number of policies with unknown evaluation results (e.g., due to unknown Terraform values)"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "tf-policy-evaluation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "tf-policy-evaluations"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tf-policy-set-outcomes-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tf-policy-set-outcome"
+          }
+        }
+      },
       "policy-set-versions-id": {
         "type": "object",
         "properties": {
@@ -27199,6 +28958,7 @@
               },
               "kind": {
                 "type": "string",
+                "description": "The kind of policies contained in this policy set.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n",
                 "enum": [
                   "sentinel",
                   "opa",
@@ -27270,9 +29030,42 @@
                   "type": "string"
                 }
               },
-              "enforcement-level": {
+              "tag-selectors": {
+                "type": "array",
+                "x-vis": [
+                  "public-beta"
+                ],
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "tag-key",
+                    "tag-value",
+                    "is-exclude"
+                  ],
+                  "properties": {
+                    "tag-key": {
+                      "type": "string"
+                    },
+                    "tag-value": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "is-exclude": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "scoping-type": {
                 "type": "string",
-                "nullable": true
+                "x-vis": [
+                  "public-beta"
+                ],
+                "description": "Scoping mode for the policy set. \"tag\" is dynamic tag-based scoping. \"explicit\" uses explicit workspace/project associations.",
+                "enum": [
+                  "tag",
+                  "explicit"
+                ]
               },
               "created-at": {
                 "type": "string",
@@ -29857,6 +31650,40 @@
                   "source-directory": {
                     "type": "string",
                     "description": "The directory within the repository where the module is located."
+                  }
+                }
+              },
+              "test-config": {
+                "type": "object",
+                "nullable": true,
+                "description": "Optional test configuration for the module. Present for branch-based\nmodules and non-VCS private modules, and `null` when the module has no\ntest configuration. Supplying `tests-enabled`, `agent-execution-mode`,\nor `agent-pool-id` configures testing for the module; when omitted,\ntesting defaults to disabled with remote execution.\n",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "readOnly": true
+                  },
+                  "tests-enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether testing is enabled for the module."
+                  },
+                  "agent-execution-mode": {
+                    "type": "string",
+                    "default": "remote",
+                    "description": "The execution mode used to run tests.",
+                    "enum": [
+                      "remote",
+                      "agent"
+                    ]
+                  },
+                  "agent-pool-id": {
+                    "type": "string",
+                    "description": "The ID of the agent pool used when `agent-execution-mode` is `agent`."
+                  },
+                  "agent-pool-name": {
+                    "type": "string",
+                    "readOnly": true,
+                    "description": "The name of the agent pool used when `agent-execution-mode` is `agent`."
                   }
                 }
               },

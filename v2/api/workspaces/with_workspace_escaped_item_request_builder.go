@@ -140,6 +140,11 @@ func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body i05d5
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspacesEnvelopeable), nil
 }
+// ProviderSets the providerSets property
+// returns a *ItemProviderSetsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
+    return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Queries the queries property
 // returns a *ItemQueriesRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
