@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "997e6918",
+    "version": "77c3b673",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -24759,6 +24759,13 @@
                 "type": "string",
                 "nullable": true,
                 "description": "Terraform Enterprise only. A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n"
+              },
+              "hyok-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n"
               }
             }
           },
