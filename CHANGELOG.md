@@ -1,5 +1,11 @@
 # Unreleased
 
+## Bug Fixes
+
+* Adds `PolicyEvaluationQueued` to `PolicyEvaluationStatus` enum by @sagarp917 [#1402](https://github.com/hashicorp/go-tfe/pull/1402)
+
+## Enhancements
+
 * Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
 customize many more aspects of every request round trip.
 
