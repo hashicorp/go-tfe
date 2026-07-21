@@ -9310,6 +9310,7 @@ const (
 	PolicyEvaluationPassed      PolicyEvaluationStatus = "passed"
 	PolicyEvaluationFailed      PolicyEvaluationStatus = "failed"
 	PolicyEvaluationPending     PolicyEvaluationStatus = "pending"
+	PolicyEvaluationQueued      PolicyEvaluationStatus = "queued"
 	PolicyEvaluationRunning     PolicyEvaluationStatus = "running"
 	PolicyEvaluationUnreachable PolicyEvaluationStatus = "unreachable"
 	PolicyEvaluationOverridden  PolicyEvaluationStatus = "overridden"
