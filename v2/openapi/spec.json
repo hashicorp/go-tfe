@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "997e6918",
+    "version": "7e981f86",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -6054,6 +6054,192 @@
         "responses": {
           "204": {
             "description": "Provider set deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider-sets/{provider_set_id}/relationships/projects": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetProjects",
+        "summary": "Add Projects to a Provider Set",
+        "description": "Add projects to a provider set. Relationships are additive; existing project assignments are preserved.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetProjects",
+        "summary": "Remove Projects from a Provider Set",
+        "description": "Remove projects from a provider set. Projects not currently assigned to the set are ignored.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully removed from provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider-sets/{provider_set_id}/relationships/workspaces": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetWorkspaces",
+        "summary": "Add Workspaces to a Provider Set",
+        "description": "Add workspaces to a provider set. Relationships are additive; existing workspace assignments are preserved.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetWorkspaces",
+        "summary": "Remove Workspaces from a Provider Set",
+        "description": "Remove workspaces from a provider set. Workspaces not currently assigned to the set are ignored.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully removed from provider set."
           },
           "default": {
             "description": "Error details",
@@ -24759,6 +24945,13 @@
                 "type": "string",
                 "nullable": true,
                 "description": "Terraform Enterprise only. A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n"
+              },
+              "hyok-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n"
               }
             }
           },
@@ -25792,6 +25985,35 @@
           }
         }
       },
+      "projects-identifier-array-document": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "projects"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "varsets": {
         "type": "object",
         "properties": {
@@ -26016,35 +26238,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/varsets"
-          }
-        }
-      },
-      "projects-identifier-array-document": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "projects"
-                  ]
-                },
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
