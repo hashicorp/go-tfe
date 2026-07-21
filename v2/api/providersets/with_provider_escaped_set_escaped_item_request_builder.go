@@ -82,6 +82,11 @@ func (m *WithProvider_set_ItemRequestBuilder) Patch(ctx context.Context, body i0
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable), nil
 }
+// Relationships the relationships property
+// returns a *ItemRelationshipsRequestBuilder when successful
+func (m *WithProvider_set_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
+    return NewItemRelationshipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ToDeleteRequestInformation delete an existing provider set.
 // returns a *RequestInformation when successful
 func (m *WithProvider_set_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {

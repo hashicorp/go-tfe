@@ -45,6 +45,8 @@ type Workspaces_attributes struct {
     fileTriggersEnabled *bool
     // The globalRemoteState property
     globalRemoteState *bool
+    // HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.
+    hyokEnabled *bool
     // The inheritsProjectAutoDestroy property
     inheritsProjectAutoDestroy *bool
     // The lastAssessmentResultAt property
@@ -370,6 +372,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["hyok-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetHyokEnabled(val)
+        }
+        return nil
+    }
     res["inherits-project-auto-destroy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -690,6 +702,11 @@ func (m *Workspaces_attributes) GetFileTriggersEnabled()(*bool) {
 func (m *Workspaces_attributes) GetGlobalRemoteState()(*bool) {
     return m.globalRemoteState
 }
+// GetHyokEnabled gets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.
+// returns a *bool when successful
+func (m *Workspaces_attributes) GetHyokEnabled()(*bool) {
+    return m.hyokEnabled
+}
 // GetInheritsProjectAutoDestroy gets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetInheritsProjectAutoDestroy()(*bool) {
@@ -930,6 +947,12 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
     }
     {
         err := writer.WriteBoolValue("global-remote-state", m.GetGlobalRemoteState())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("hyok-enabled", m.GetHyokEnabled())
         if err != nil {
             return err
         }
@@ -1182,6 +1205,10 @@ func (m *Workspaces_attributes) SetFileTriggersEnabled(value *bool)() {
 func (m *Workspaces_attributes) SetGlobalRemoteState(value *bool)() {
     m.globalRemoteState = value
 }
+// SetHyokEnabled sets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.
+func (m *Workspaces_attributes) SetHyokEnabled(value *bool)() {
+    m.hyokEnabled = value
+}
 // SetInheritsProjectAutoDestroy sets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 func (m *Workspaces_attributes) SetInheritsProjectAutoDestroy(value *bool)() {
     m.inheritsProjectAutoDestroy = value
@@ -1318,6 +1345,7 @@ type Workspaces_attributesable interface {
     GetExecutionMode()(*Workspaces_attributes_executionMode)
     GetFileTriggersEnabled()(*bool)
     GetGlobalRemoteState()(*bool)
+    GetHyokEnabled()(*bool)
     GetInheritsProjectAutoDestroy()(*bool)
     GetLastAssessmentResultAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -1364,6 +1392,7 @@ type Workspaces_attributesable interface {
     SetExecutionMode(value *Workspaces_attributes_executionMode)()
     SetFileTriggersEnabled(value *bool)()
     SetGlobalRemoteState(value *bool)()
+    SetHyokEnabled(value *bool)()
     SetInheritsProjectAutoDestroy(value *bool)()
     SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()

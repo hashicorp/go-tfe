@@ -11,7 +11,7 @@ type TokenTtlPolicyEntry struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The maximum time-to-live for the token in milliseconds
-    maxTtlMs *int32
+    maxTtlMs *int64
     // The type of the token TTL policy
     tokenType *TokenTtlPolicyEntry_tokenType
 }
@@ -37,7 +37,7 @@ func (m *TokenTtlPolicyEntry) GetAdditionalData()(map[string]any) {
 func (m *TokenTtlPolicyEntry) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["max-ttl-ms"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
+        val, err := n.GetInt64Value()
         if err != nil {
             return err
         }
@@ -59,8 +59,8 @@ func (m *TokenTtlPolicyEntry) GetFieldDeserializers()(map[string]func(i878a80d23
     return res
 }
 // GetMaxTtlMs gets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
-// returns a *int32 when successful
-func (m *TokenTtlPolicyEntry) GetMaxTtlMs()(*int32) {
+// returns a *int64 when successful
+func (m *TokenTtlPolicyEntry) GetMaxTtlMs()(*int64) {
     return m.maxTtlMs
 }
 // GetTokenType gets the token-type property value. The type of the token TTL policy
@@ -71,7 +71,7 @@ func (m *TokenTtlPolicyEntry) GetTokenType()(*TokenTtlPolicyEntry_tokenType) {
 // Serialize serializes information the current object
 func (m *TokenTtlPolicyEntry) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
-        err := writer.WriteInt32Value("max-ttl-ms", m.GetMaxTtlMs())
+        err := writer.WriteInt64Value("max-ttl-ms", m.GetMaxTtlMs())
         if err != nil {
             return err
         }
@@ -96,7 +96,7 @@ func (m *TokenTtlPolicyEntry) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetMaxTtlMs sets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
-func (m *TokenTtlPolicyEntry) SetMaxTtlMs(value *int32)() {
+func (m *TokenTtlPolicyEntry) SetMaxTtlMs(value *int64)() {
     m.maxTtlMs = value
 }
 // SetTokenType sets the token-type property value. The type of the token TTL policy
@@ -106,8 +106,8 @@ func (m *TokenTtlPolicyEntry) SetTokenType(value *TokenTtlPolicyEntry_tokenType)
 type TokenTtlPolicyEntryable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetMaxTtlMs()(*int32)
+    GetMaxTtlMs()(*int64)
     GetTokenType()(*TokenTtlPolicyEntry_tokenType)
-    SetMaxTtlMs(value *int32)()
+    SetMaxTtlMs(value *int64)()
     SetTokenType(value *TokenTtlPolicyEntry_tokenType)()
 }

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "997e6918",
+    "version": "development",
     "title": "HCP Terraform API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
     "license": {
@@ -2804,7 +2804,7 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "oneOf": [
                           {
                             "$ref": "#/components/schemas/users"
                           },
@@ -2817,7 +2817,16 @@
                           {
                             "$ref": "#/components/schemas/scim-identities"
                           }
-                        ]
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users",
+                            "teams": "#/components/schemas/teams",
+                            "organizations": "#/components/schemas/organizations",
+                            "scim-identities": "#/components/schemas/scim-identities"
+                          }
+                        }
                       }
                     }
                   }
@@ -3027,7 +3036,7 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "oneOf": [
                           {
                             "$ref": "#/components/schemas/users"
                           },
@@ -3037,7 +3046,15 @@
                           {
                             "$ref": "#/components/schemas/organizations"
                           }
-                        ]
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users",
+                            "teams": "#/components/schemas/teams",
+                            "organizations": "#/components/schemas/organizations"
+                          }
+                        }
                       }
                     }
                   }
@@ -3106,14 +3123,21 @@
                         "included": {
                           "type": "array",
                           "items": {
-                            "anyOf": [
+                            "oneOf": [
                               {
                                 "$ref": "#/components/schemas/users"
                               },
                               {
                                 "$ref": "#/components/schemas/teams"
                               }
-                            ]
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "users": "#/components/schemas/users",
+                                "teams": "#/components/schemas/teams"
+                              }
+                            }
                           }
                         }
                       }
@@ -6054,6 +6078,192 @@
         "responses": {
           "204": {
             "description": "Provider set deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider-sets/{provider_set_id}/relationships/projects": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetProjects",
+        "summary": "Add Projects to a Provider Set",
+        "description": "Add projects to a provider set. Relationships are additive; existing project assignments are preserved.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetProjects",
+        "summary": "Remove Projects from a Provider Set",
+        "description": "Remove projects from a provider set. Projects not currently assigned to the set are ignored.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully removed from provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider-sets/{provider_set_id}/relationships/workspaces": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetWorkspaces",
+        "summary": "Add Workspaces to a Provider Set",
+        "description": "Add workspaces to a provider set. Relationships are additive; existing workspace assignments are preserved.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetWorkspaces",
+        "summary": "Remove Workspaces from a Provider Set",
+        "description": "Remove workspaces from a provider set. Workspaces not currently assigned to the set are ignored.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully removed from provider set."
           },
           "default": {
             "description": "Error details",
@@ -14782,72 +14992,6 @@
           }
         }
       },
-      "post": {
-        "operationId": "createAuthenticationToken",
-        "summary": "Create Authentication Token",
-        "description": "Create an authentication token",
-        "tags": [
-          "authentication-tokens"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/authentication-tokens-envelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Authentication token created",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/authentication-tokens"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "operationId": "deleteAuthenticationToken",
         "summary": "Delete authentication Token",
@@ -15264,9 +15408,9 @@
     },
     "/teams/{id}/authentication-token": {
       "get": {
-        "operationId": "getAuthenticationToken",
-        "summary": "Get authentication token details",
-        "description": "Get details about an authentication token",
+        "operationId": "getTeamAuthenticationToken",
+        "summary": "Get team authentication token details",
+        "description": "Get details about a team's authentication token",
         "tags": [
           "authentication-tokens"
         ],
@@ -15278,7 +15422,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "responses": {
@@ -15305,9 +15449,9 @@
         }
       },
       "post": {
-        "operationId": "createAuthenticationToken",
-        "summary": "Create Authentication Token",
-        "description": "Create an authentication token",
+        "operationId": "createTeamAuthenticationToken",
+        "summary": "Create (or regenerate) the legacy team authentication token",
+        "description": "Creates the team's legacy, descriptionless authentication token. If one already exists, it is revoked and replaced.",
         "tags": [
           "authentication-tokens"
         ],
@@ -15319,7 +15463,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "requestBody": {
@@ -15338,22 +15482,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/authentication-tokens"
-                          }
-                        ]
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -15371,9 +15500,9 @@
         }
       },
       "delete": {
-        "operationId": "deleteAuthenticationToken",
-        "summary": "Delete authentication Token",
-        "description": "Delete an authentication token",
+        "operationId": "deleteTeamAuthenticationToken",
+        "summary": "Delete team authentication token",
+        "description": "Delete a team's authentication token",
         "tags": [
           "authentication-tokens"
         ],
@@ -15385,7 +15514,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "responses": {
@@ -24247,6 +24376,7 @@
               },
               "max-ttl-ms": {
                 "type": "integer",
+                "format": "int64",
                 "description": "The maximum time-to-live for the token in milliseconds",
                 "example": 3600000
               },
@@ -24288,6 +24418,7 @@
           },
           "max-ttl-ms": {
             "type": "integer",
+            "format": "int64",
             "description": "The maximum time-to-live for the token in milliseconds",
             "example": 3600000
           }
@@ -24759,6 +24890,13 @@
                 "type": "string",
                 "nullable": true,
                 "description": "Terraform Enterprise only. A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n"
+              },
+              "hyok-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n"
               }
             }
           },
@@ -25792,6 +25930,35 @@
           }
         }
       },
+      "projects-identifier-array-document": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "projects"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "varsets": {
         "type": "object",
         "properties": {
@@ -26016,35 +26183,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/varsets"
-          }
-        }
-      },
-      "projects-identifier-array-document": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "projects"
-                  ]
-                },
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
@@ -30676,36 +30814,50 @@
             "type": "object",
             "properties": {
               "team": {
-                "$ref": "#/components/schemas/links_related",
-                "properties": {
-                  "data": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/links_related"
+                  },
+                  {
                     "type": "object",
                     "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
                       }
                     }
                   }
-                }
+                ]
               },
               "created-by": {
-                "$ref": "#/components/schemas/links_related",
-                "properties": {
-                  "data": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/links_related"
+                  },
+                  {
                     "type": "object",
                     "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
                       }
                     }
                   }
-                }
+                ]
               }
             }
           }

@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -42,33 +43,25 @@ func NewItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetRespons
 func CreateItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     result := NewItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included()
     if parseNode != nil {
-        if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateOrganizationsFromDiscriminatorValue); val != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
             if err != nil {
                 return nil, err
             }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable); ok {
-                result.SetOrganizations(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateScimIdentitiesFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ScimIdentitiesable); ok {
-                result.SetScimIdentities(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTeamsFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable); ok {
-                result.SetTeams(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateUsersFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable); ok {
-                result.SetUsers(cast)
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+                    result.SetOrganizations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOrganizations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "scim-identities") {
+                    result.SetScimIdentities(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewScimIdentities())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "teams") {
+                    result.SetTeams(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewTeams())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
+                }
             }
         }
     }
@@ -77,6 +70,15 @@ func CreateItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResp
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetOrganizations() != nil {
+        return m.GetOrganizations().GetFieldDeserializers()
+    } else if m.GetScimIdentities() != nil {
+        return m.GetScimIdentities().GetFieldDeserializers()
+    } else if m.GetTeams() != nil {
+        return m.GetTeams().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
 }
 // GetIsComposedType determines if the current object is a wrapper around a composed type
