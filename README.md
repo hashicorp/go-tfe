@@ -143,20 +143,46 @@ its path:
 
 ```go
 import (
+	"github.com/hashicorp/go-tfe/v2/api/models"
 	"github.com/hashicorp/go-tfe/v2/api/organizations"
+	suborgmemberships "github.com/hashicorp/go-tfe/v2/api/organizations/item/organizationmemberships"
 
 	abstractions "github.com/microsoft/kiota-abstractions-go"
 )
 
 // Include subscriptions in the response by setting the include query parameter
-includeSubscriptions := organizations.SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
-req := abstractions.RequestConfiguration[organizations.OrganizationsRequestBuilderGetQueryParameters]{
-	QueryParameters: &organizations.OrganizationsRequestBuilderGetQueryParameters{
-		Include: &includeSubscriptions,
+includeUser := suborgmemberships.USER_GETINCLUDEQUERYPARAMETERTYPE
+
+c := abstractions.RequestConfiguration[organizations.ItemOrganizationMembershipsRequestBuilderGetQueryParameters]{
+	QueryParameters: &organizations.ItemOrganizationMembershipsRequestBuilderGetQueryParameters{
+		Include: []suborgmemberships.GetIncludeQueryParameterType{includeUser},
 	},
 }
 
-response, err := client.API.Organizations().Get(ctx, &req)
+// Get the organization memberships for "hashicorp", but include the user record for each member.
+response, err := client.API.Organizations().ByOrganization_name("hashicorp").OrganizationMemberships().Get(ctx, &c)
+if err != nil {
+	if apiErr, ok := err.(*tfe.APIError); ok {
+		log.Fatalf("API returned an error status: %d - %s", apiErr.StatusCode, apiErr.Message)
+	} else {
+		log.Fatalf("Error making API request: %s", err)
+	}
+	return 1
+}
+
+// For each membership record, print the email address of the member, found in the sideloaded records.
+for _, membership := range response.GetData() {
+	userID := membership.GetRelationships().GetUser().GetData().GetId()
+
+	// GetSideloadedResource is a helper that searches the 'included' resources for the ID you specified.
+	user := tfe.FindSideloadedResource(userID, response.GetIncluded(), func(item organizations.ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable) models.Usersable {
+		return item.GetUsers()
+	})
+
+	if user != nil && user.GetAttributes().GetEmail() != nil {
+		fmt.Fprintf(os.Stderr, "%q is a member of hashicorp\n", *user.GetAttributes().GetEmail())
+	}
+}
 ```
 
 ### Inspecting Response Headers
