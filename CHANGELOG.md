@@ -2,6 +2,8 @@
 
 * Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
 customize many more aspects of every request round trip.
+* Enhancement: FindSideloadedResource function simplifies finding a sideloaded resource using an ID from the relationships of another resource. See [README.md](README.md) for details.
+* Enhancement: The latest operations are now available, including those that are only available in Terraform Enterprise.
 
 # v2.2.0
 
