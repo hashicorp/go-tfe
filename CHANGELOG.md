@@ -2,6 +2,7 @@
 
 * Bug Fix: GET responses now properly assign included property schemas when used in conjunction with include request parameters.
 * Enhancement: Most available `include` query parameters are now enumerated in applicable GET requests.
+* Enhancement: FindSideloadedResource function simplifies finding a sideloaded resource using an ID from the relationships of another resource. See [README.md](README.md) for details.
 
 # v2.12.0
 
