@@ -71,9 +71,9 @@ type Runs_attributes_statusTimestamps struct {
     queuingApplyAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The queuingAt property
     queuingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The tfPolicyCheckedAt property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tfPolicyCheckedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The tfPolicyOverrideAt property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tfPolicyOverrideAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 }
 // NewRuns_attributes_statusTimestamps instantiates a new Runs_attributes_statusTimestamps and sets the default values.
@@ -569,12 +569,12 @@ func (m *Runs_attributes_statusTimestamps) GetQueuingApplyAt()(*i336074805fc8539
 func (m *Runs_attributes_statusTimestamps) GetQueuingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.queuingAt
 }
-// GetTfPolicyCheckedAt gets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
+// GetTfPolicyCheckedAt gets the tf-policy-checked-at property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetTfPolicyCheckedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.tfPolicyCheckedAt
 }
-// GetTfPolicyOverrideAt gets the tf-policy-override-at property value. The tfPolicyOverrideAt property
+// GetTfPolicyOverrideAt gets the tf-policy-override-at property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetTfPolicyOverrideAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.tfPolicyOverrideAt
@@ -905,11 +905,11 @@ func (m *Runs_attributes_statusTimestamps) SetQueuingApplyAt(value *i336074805fc
 func (m *Runs_attributes_statusTimestamps) SetQueuingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.queuingAt = value
 }
-// SetTfPolicyCheckedAt sets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
+// SetTfPolicyCheckedAt sets the tf-policy-checked-at property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Runs_attributes_statusTimestamps) SetTfPolicyCheckedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.tfPolicyCheckedAt = value
 }
-// SetTfPolicyOverrideAt sets the tf-policy-override-at property value. The tfPolicyOverrideAt property
+// SetTfPolicyOverrideAt sets the tf-policy-override-at property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Runs_attributes_statusTimestamps) SetTfPolicyOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.tfPolicyOverrideAt = value
 }

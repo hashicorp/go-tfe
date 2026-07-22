@@ -11,13 +11,13 @@ import (
 type Plans_attributes_executionDetails struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // ID of the agent used for this run (when mode is agent)
+    // ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
     agentId *string
-    // Name of the agent used for this run (when mode is agent)
+    // Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
     agentName *string
-    // ID of the agent pool used for this run (when mode is agent)
+    // ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
     agentPoolId *string
-    // Name of the agent pool used for this run (when mode is agent)
+    // Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
     agentPoolName *string
     // Execution mode of the run
     mode *Plans_attributes_executionDetails_mode
@@ -39,22 +39,22 @@ func CreatePlans_attributes_executionDetailsFromDiscriminatorValue(parseNode i87
 func (m *Plans_attributes_executionDetails) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetAgentId gets the agent-id property value. ID of the agent used for this run (when mode is agent)
+// GetAgentId gets the agent-id property value. ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentId()(*string) {
     return m.agentId
 }
-// GetAgentName gets the agent-name property value. Name of the agent used for this run (when mode is agent)
+// GetAgentName gets the agent-name property value. Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentName()(*string) {
     return m.agentName
 }
-// GetAgentPoolId gets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)
+// GetAgentPoolId gets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentPoolId()(*string) {
     return m.agentPoolId
 }
-// GetAgentPoolName gets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)
+// GetAgentPoolName gets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentPoolName()(*string) {
     return m.agentPoolName
@@ -165,19 +165,19 @@ func (m *Plans_attributes_executionDetails) Serialize(writer i878a80d2330e89d268
 func (m *Plans_attributes_executionDetails) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetAgentId sets the agent-id property value. ID of the agent used for this run (when mode is agent)
+// SetAgentId sets the agent-id property value. ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentId(value *string)() {
     m.agentId = value
 }
-// SetAgentName sets the agent-name property value. Name of the agent used for this run (when mode is agent)
+// SetAgentName sets the agent-name property value. Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentName(value *string)() {
     m.agentName = value
 }
-// SetAgentPoolId sets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)
+// SetAgentPoolId sets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentPoolId(value *string)() {
     m.agentPoolId = value
 }
-// SetAgentPoolName sets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)
+// SetAgentPoolName sets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentPoolName(value *string)() {
     m.agentPoolName = value
 }

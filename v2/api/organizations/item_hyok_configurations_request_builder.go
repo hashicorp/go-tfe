@@ -13,7 +13,7 @@ import (
 type ItemHyokConfigurationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemHyokConfigurationsRequestBuilderGetQueryParameters list all HYOK configurations in an organization
+// ItemHyokConfigurationsRequestBuilderGetQueryParameters list all HYOK configurations in an organizationThis operation is only available in HCP Terraform.
 type ItemHyokConfigurationsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemHyokConfigurationsRequestBuilder(rawUrl string, requestAdapter i2ae4
     urlParams["request-raw-url"] = rawUrl
     return NewItemHyokConfigurationsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all HYOK configurations in an organization
+// Get list all HYOK configurations in an organizationThis operation is only available in HCP Terraform.
 // returns a ItemHyokConfigurationsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemHyokConfigurationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemHyokConfigurationsRequestBuilderGetQueryParameters])(ItemHyokConfigurationsGetResponseable, error) {
@@ -53,7 +53,7 @@ func (m *ItemHyokConfigurationsRequestBuilder) Get(ctx context.Context, requestC
     }
     return res.(ItemHyokConfigurationsGetResponseable), nil
 }
-// Post create a new HYOK configuration
+// Post create a new HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemHyokConfigurationsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
@@ -78,7 +78,7 @@ func (m *ItemHyokConfigurationsRequestBuilder) Post(ctx context.Context, body i0
 func (m *ItemHyokConfigurationsRequestBuilder) Test()(*ItemHyokConfigurationsTestRequestBuilder) {
     return NewItemHyokConfigurationsTestRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// ToGetRequestInformation list all HYOK configurations in an organization
+// ToGetRequestInformation list all HYOK configurations in an organizationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemHyokConfigurationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemHyokConfigurationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -86,7 +86,7 @@ func (m *ItemHyokConfigurationsRequestBuilder) ToGetRequestInformation(ctx conte
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation create a new HYOK configuration
+// ToPostRequestInformation create a new HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemHyokConfigurationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

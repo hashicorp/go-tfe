@@ -10,10 +10,11 @@ const (
     TEAM_TOKENTTLPOLICYENTRY_TOKENTYPE
     USER_TOKENTTLPOLICYENTRY_TOKENTYPE
     AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
+    METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
 )
 
 func (i TokenTtlPolicyEntry_tokenType) String() string {
-    return []string{"organization", "team", "user", "audit_trails"}[i]
+    return []string{"organization", "team", "user", "audit_trails", "metrics"}[i]
 }
 func ParseTokenTtlPolicyEntry_tokenType(v string) (any, error) {
     result := ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE
@@ -26,6 +27,8 @@ func ParseTokenTtlPolicyEntry_tokenType(v string) (any, error) {
             result = USER_TOKENTTLPOLICYENTRY_TOKENTYPE
         case "audit_trails":
             result = AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
+        case "metrics":
+            result = METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
         default:
             return nil, nil
     }

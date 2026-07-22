@@ -13,7 +13,7 @@ import (
 type ItemCidrRangeListsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemCidrRangeListsRequestBuilderGetQueryParameters list all CIDR Range Lists in an organization
+// ItemCidrRangeListsRequestBuilderGetQueryParameters list all CIDR Range Lists in an organizationThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemCidrRangeListsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemCidrRangeListsRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     urlParams["request-raw-url"] = rawUrl
     return NewItemCidrRangeListsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all CIDR Range Lists in an organization
+// Get list all CIDR Range Lists in an organizationThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemCidrRangeListsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemCidrRangeListsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCidrRangeListsRequestBuilderGetQueryParameters])(ItemCidrRangeListsGetResponseable, error) {
@@ -53,7 +53,7 @@ func (m *ItemCidrRangeListsRequestBuilder) Get(ctx context.Context, requestConfi
     }
     return res.(ItemCidrRangeListsGetResponseable), nil
 }
-// Post create a new CIDR Range List
+// Post create a new CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a CidrRangeListEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemCidrRangeListsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListWithRangesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListEnvelopeable, error) {
@@ -73,7 +73,7 @@ func (m *ItemCidrRangeListsRequestBuilder) Post(ctx context.Context, body i05d5a
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListEnvelopeable), nil
 }
-// ToGetRequestInformation list all CIDR Range Lists in an organization
+// ToGetRequestInformation list all CIDR Range Lists in an organizationThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemCidrRangeListsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCidrRangeListsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -81,7 +81,7 @@ func (m *ItemCidrRangeListsRequestBuilder) ToGetRequestInformation(ctx context.C
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation create a new CIDR Range List
+// ToPostRequestInformation create a new CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemCidrRangeListsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListWithRangesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

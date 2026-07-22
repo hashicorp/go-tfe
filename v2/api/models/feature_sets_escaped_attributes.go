@@ -70,7 +70,7 @@ type FeatureSets_attributes struct {
     privateRunTasks *bool
     // Whether the feature set includes private VCS
     privateVcs *bool
-    // Whether the feature set allows enabling of recoverable items
+    // Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     recoverableItems *bool
     // Maximum number of run tasks (null means unlimited)
     runTaskLimit *float64
@@ -736,7 +736,7 @@ func (m *FeatureSets_attributes) GetPrivateRunTasks()(*bool) {
 func (m *FeatureSets_attributes) GetPrivateVcs()(*bool) {
     return m.privateVcs
 }
-// GetRecoverableItems gets the recoverable-items property value. Whether the feature set allows enabling of recoverable items
+// GetRecoverableItems gets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetRecoverableItems()(*bool) {
     return m.recoverableItems
@@ -1226,7 +1226,7 @@ func (m *FeatureSets_attributes) SetPrivateRunTasks(value *bool)() {
 func (m *FeatureSets_attributes) SetPrivateVcs(value *bool)() {
     m.privateVcs = value
 }
-// SetRecoverableItems sets the recoverable-items property value. Whether the feature set allows enabling of recoverable items
+// SetRecoverableItems sets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *FeatureSets_attributes) SetRecoverableItems(value *bool)() {
     m.recoverableItems = value
 }

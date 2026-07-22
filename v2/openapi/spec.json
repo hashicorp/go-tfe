@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "997e6918",
-    "title": "HCP Terraform API v2-Beta",
-    "description": "OpenAPI Specification for the HCP Terraform API V2 Public Beta.",
+    "version": "4a527346",
+    "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
+    "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
       "name": "MPL-2.0",
       "url": "https://www.mozilla.org/en-US/MPL/2.0/"
@@ -94,6 +94,14 @@
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions"
       }
+    },
+    {
+      "name": "data-retention-policies",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Data Retention Policies",
+      "description": "Data Retention Policy actions"
     },
     {
       "name": "organizations",
@@ -603,7 +611,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/users"
+                  "$ref": "#/components/schemas/users-envelope"
                 }
               }
             }
@@ -631,7 +639,7 @@
         "tags": [
           "accounts"
         ],
-        "description": "Get details of a specific HCP organization",
+        "description": "Get details of a specific HCP organization\n\nThis operation is only available in HCP Terraform.",
         "parameters": [
           {
             "name": "hcp_organization_id",
@@ -691,7 +699,7 @@
       ],
       "get": {
         "summary": "List Feature Sets",
-        "description": "Lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.",
+        "description": "Lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.\n\nThis operation is only available in HCP Terraform.",
         "operationId": "listFeatureSets",
         "tags": [
           "feature-sets"
@@ -763,7 +771,7 @@
       ],
       "get": {
         "summary": "List Feature Sets for Organization",
-        "description": "Lists the feature sets a particular organization is eligible to access.",
+        "description": "Lists the feature sets a particular organization is eligible to access.\n\nThis operation is only available in HCP Terraform.",
         "operationId": "listOrganizationFeatureSets",
         "tags": [
           "feature-sets"
@@ -855,7 +863,7 @@
       "get": {
         "operationId": "showSubscription",
         "summary": "Show a subscription",
-        "description": "Show details of a subscription.",
+        "description": "Show details of a subscription.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "subscriptions"
         ],
@@ -901,7 +909,7 @@
       "patch": {
         "operationId": "updateOrganizationSubscription",
         "summary": "Update organization subscription",
-        "description": "Update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.\n",
+        "description": "Update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.\n\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "subscriptions"
         ],
@@ -988,7 +996,7 @@
       "get": {
         "operationId": "listOrganizationInvoices",
         "summary": "List organization invoices",
-        "description": "Lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.",
+        "description": "Lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "billing-invoices"
         ],
@@ -1064,7 +1072,7 @@
       "get": {
         "operationId": "showOrganizationNextInvoice",
         "summary": "Get next invoice",
-        "description": "Returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.",
+        "description": "Returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "billing-invoices"
         ],
@@ -1085,13 +1093,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "nullable": true,
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/billing-invoices"
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/billing-invoices"
+                        }
+                      }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -1547,7 +1564,7 @@
       "get": {
         "operationId": "getCidrRangeList",
         "summary": "Get CIDR Range List details",
-        "description": "Get details about a CIDR Range List",
+        "description": "Get details about a CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1588,7 +1605,7 @@
       "patch": {
         "operationId": "updateCidrRangeList",
         "summary": "Update CIDR Range List",
-        "description": "Update a CIDR Range List",
+        "description": "Update a CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1639,7 +1656,7 @@
       "delete": {
         "operationId": "deleteCidrRangeList",
         "summary": "Delete CIDR Range List",
-        "description": "Delete a CIDR Range List.",
+        "description": "Delete a CIDR Range List.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1678,7 +1695,7 @@
       "get": {
         "operationId": "listCidrRanges",
         "summary": "List CIDR Ranges",
-        "description": "List all CIDR Ranges in a CIDR Range List",
+        "description": "List all CIDR Ranges in a CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1744,7 +1761,7 @@
       "post": {
         "operationId": "createCidrRange",
         "summary": "Create CIDR Range",
-        "description": "Create a new CIDR Range",
+        "description": "Create a new CIDR Range\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1800,7 +1817,7 @@
       "post": {
         "operationId": "assignAgentPoolsToCidrRangeList",
         "summary": "Assign Agent Pools to a CIDR Range List",
-        "description": "Assign one or more Agent Pools to a CIDR Range List",
+        "description": "Assign one or more Agent Pools to a CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1844,7 +1861,7 @@
       "delete": {
         "operationId": "unassignAgentPoolsFromCidrRangeList",
         "summary": "Unassign Agent Pools from a CIDR Range List",
-        "description": "Unassign one or more Agent Pools from a CIDR Range List",
+        "description": "Unassign one or more Agent Pools from a CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1893,7 +1910,7 @@
       "get": {
         "operationId": "getCidrRange",
         "summary": "Get CIDR Range details",
-        "description": "Get details about a CIDR Range",
+        "description": "Get details about a CIDR Range\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1934,7 +1951,7 @@
       "patch": {
         "operationId": "updateCidrRange",
         "summary": "Update CIDR Range",
-        "description": "Update a CIDR Range",
+        "description": "Update a CIDR Range\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -1985,7 +2002,7 @@
       "delete": {
         "operationId": "deleteCidrRange",
         "summary": "Delete CIDR Range",
-        "description": "Delete a CIDR Range.",
+        "description": "Delete a CIDR Range.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -2024,7 +2041,7 @@
       "get": {
         "operationId": "listMetricsTokens",
         "summary": "List tokens",
-        "description": "Lists all Metrics service tokens for the organization.",
+        "description": "Lists all Metrics service tokens for the organization.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "metrics-tokens"
         ],
@@ -2076,7 +2093,7 @@
       "post": {
         "operationId": "createMetricsToken",
         "summary": "Generate a new token",
-        "description": "Generates a new Metrics Service token.",
+        "description": "Generates a new Metrics Service token.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "metrics-tokens"
         ],
@@ -2177,7 +2194,7 @@
       "delete": {
         "operationId": "deleteMetricsToken",
         "summary": "Delete a token",
-        "description": "Deletes a Metrics Service token.",
+        "description": "Deletes a Metrics Service token.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "metrics-tokens"
         ],
@@ -2393,7 +2410,9 @@
             "schema": {
               "type": "string",
               "enum": [
-                "subscription"
+                "subscription",
+                "entitlement_set",
+                "default-project"
               ]
             },
             "required": false,
@@ -2419,6 +2438,12 @@
                             "anyOf": [
                               {
                                 "$ref": "#/components/schemas/subscriptions"
+                              },
+                              {
+                                "$ref": "#/components/schemas/projects"
+                              },
+                              {
+                                "$ref": "#/components/schemas/entitlement-sets"
                               }
                             ]
                           }
@@ -2586,7 +2611,7 @@
       "get": {
         "operationId": "listCidrRangeLists",
         "summary": "List CIDR Range Lists",
-        "description": "List all CIDR Range Lists in an organization",
+        "description": "List all CIDR Range Lists in an organization\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -2652,7 +2677,7 @@
       "post": {
         "operationId": "createCidrRangeList",
         "summary": "Create CIDR Range List",
-        "description": "Create a new CIDR Range List",
+        "description": "Create a new CIDR Range List\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "ip-allowlists"
         ],
@@ -2764,7 +2789,7 @@
               ]
             },
             "required": false,
-            "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"scim-identity\".\nNote: \"scim-identity\" is only available on HCP Terraform (not Terraform Enterprise).\n"
+            "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"scim-identity\".\nNote: \"scim-identity\" is only available on HCP Terraform.\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -3207,7 +3232,7 @@
       "get": {
         "operationId": "listRecoverableItems",
         "summary": "List Recoverable Items",
-        "description": "List all recoverable items (soft-deleted resources) in an organization.",
+        "description": "List all recoverable items (soft-deleted resources) in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "recoverable-items"
         ],
@@ -3355,7 +3380,7 @@
       "put": {
         "operationId": "recoverRecoverableItem",
         "summary": "Recover a Recoverable Item",
-        "description": "Recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.",
+        "description": "Recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "recoverable-items"
         ],
@@ -3454,7 +3479,7 @@
       "put": {
         "operationId": "permanentlyDeleteRecoverableItem",
         "summary": "Permanently Delete a Recoverable Item",
-        "description": "Permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.",
+        "description": "Permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "recoverable-items"
         ],
@@ -3520,6 +3545,252 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/relationships/module-producers": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "listModuleProducers",
+        "summary": "List Module Producers",
+        "description": "List organizations that are configured to share modules with an organization.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "organizations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization's module producers to view."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Module producers list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/organizations"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/relationships/data-retention-policy": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "getDataRetentionPolicy",
+        "summary": "Get Data Retention Policy",
+        "description": "Show the data retention policy set explicitly on the organization.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "organizations",
+          "data-retention-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to show the data retention policy for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data retention policy details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/data-retention-policy-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "organizations",
+          "data-retention-policies"
+        ],
+        "operationId": "createOrUpdateDataRetentionPolicy",
+        "summary": "Create or Update Data Retention Policy",
+        "description": "Create a data retention policy for an organization or update the existing policy.\n\nThis operation is only available in Terraform Enterprise.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to update the data retention policy for."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/data-retention-policy-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Data retention policy created or updated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "organizations",
+          "data-retention-policies"
+        ],
+        "operationId": "createOrUpdateDataRetentionPolicy",
+        "summary": "Create or Update Data Retention Policy",
+        "description": "Create a data retention policy for an organization or update the existing policy.\n\nThis operation is only available in Terraform Enterprise.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to update the data retention policy for."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/data-retention-policy-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Data retention policy created or updated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDataRetentionPolicy",
+        "summary": "Delete Data Retention Policy",
+        "description": "Remove the data retention policy explicitly set on an organization.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "organizations",
+          "data-retention-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to remove the data retention policy for."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Data retention policy deleted"
           },
           "default": {
             "description": "Error details",
@@ -4786,7 +5057,14 @@
             }
           },
           "404": {
-            "description": "Project not found"
+            "description": "Project not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           }
         }
       },
@@ -4829,11 +5107,35 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
           "404": {
-            "description": "Project not found"
+            "description": "Project not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "422": {
-            "description": "Validation error"
+            "description": "Validation error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           }
         }
       }
@@ -5944,7 +6246,7 @@
       "get": {
         "operationId": "showProviderSet",
         "summary": "Show a Provider Set",
-        "description": "Fetch details about the specified provider set.",
+        "description": "Fetch details about the specified provider set.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -5985,7 +6287,7 @@
       "patch": {
         "operationId": "updateProviderSet",
         "summary": "Update a Provider Set",
-        "description": "Update attributes of an existing provider set.",
+        "description": "Update attributes of an existing provider set.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6036,7 +6338,7 @@
       "delete": {
         "operationId": "deleteProviderSet",
         "summary": "Delete a Provider Set",
-        "description": "Delete an existing provider set.",
+        "description": "Delete an existing provider set.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6068,6 +6370,192 @@
         }
       }
     },
+    "/provider-sets/{provider_set_id}/relationships/projects": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetProjects",
+        "summary": "Add Projects to a Provider Set",
+        "description": "Add projects to a provider set. Relationships are additive; existing project assignments are preserved.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetProjects",
+        "summary": "Remove Projects from a Provider Set",
+        "description": "Remove projects from a provider set. Projects not currently assigned to the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/projects-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Projects successfully removed from provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider-sets/{provider_set_id}/relationships/workspaces": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "addProviderSetWorkspaces",
+        "summary": "Add Workspaces to a Provider Set",
+        "description": "Add workspaces to a provider set. Relationships are additive; existing workspace assignments are preserved.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully added to provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeProviderSetWorkspaces",
+        "summary": "Remove Workspaces from a Provider Set",
+        "description": "Remove workspaces from a provider set. Workspaces not currently assigned to the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "provider-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the provider set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/workspaces-identifier-array-document"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Workspaces successfully removed from provider set."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organization_name}/provider-sets": {
       "x-vis": [
         "public-beta"
@@ -6075,7 +6563,7 @@
       "get": {
         "operationId": "getProviderSets",
         "summary": "Get Provider Sets",
-        "description": "Fetch details about all the provider sets in an organization.",
+        "description": "Fetch details about all the provider sets in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6130,7 +6618,7 @@
       "post": {
         "operationId": "createProviderSet",
         "summary": "Create a Provider Set",
-        "description": "Create a provider set belonging to an organization.",
+        "description": "Create a provider set belonging to an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6181,7 +6669,7 @@
       "delete": {
         "operationId": "batchDeleteProviderSets",
         "summary": "Batch Delete Provider Sets",
-        "description": "Delete multiple provider sets in a single request.",
+        "description": "Delete multiple provider sets in a single request.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6249,7 +6737,7 @@
       "get": {
         "operationId": "showProviderSetByName",
         "summary": "Show a Provider Set by name",
-        "description": "Fetch details about the specified provider set.",
+        "description": "Fetch details about the specified provider set.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6304,7 +6792,7 @@
       "get": {
         "operationId": "getProjectProviderSets",
         "summary": "Get Provider Sets",
-        "description": "Fetch details about all the provider sets assigned to a project.",
+        "description": "Fetch details about all the provider sets assigned to a project.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -6364,7 +6852,7 @@
       "get": {
         "operationId": "getWorkspaceProviderSets",
         "summary": "Get Provider Sets",
-        "description": "Fetch details about all the provider sets assigned to a workspace.",
+        "description": "Fetch details about all the provider sets assigned to a workspace.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "provider-sets"
         ],
@@ -8895,6 +9383,180 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/relationships/data-retention-policy": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "getWorkspaceDataRetentionPolicy",
+        "summary": "Get Workspace Data Retention Policy",
+        "description": "Show the data retention policy explicitly set on the workspace.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "workspaces",
+          "data-retention-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workspace data retention policy",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/data-retention-policy-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or policy not set",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "setWorkspaceDataRetentionPolicy",
+        "summary": "Set Workspace Data Retention Policy",
+        "description": "Create or update the data retention policy explicitly set on the workspace.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "workspaces",
+          "data-retention-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/data-retention-policy-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data retention policy set",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/data-retention-policy-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Malformed request body",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteWorkspaceDataRetentionPolicy",
+        "summary": "Delete Workspace Data Retention Policy",
+        "description": "Remove the data retention policy explicitly set on the workspace.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "workspaces",
+          "data-retention-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Data retention policy deleted"
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/current-state-version": {
       "get": {
         "operationId": "getCurrentStateVersion",
@@ -9621,7 +10283,17 @@
         },
         "responses": {
           "202": {
-            "description": "Successfully queued an apply request"
+            "description": "Successfully queued an apply request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
           },
           "409": {
             "description": "Run was not paused for confirmation; apply not allowed.",
@@ -10253,6 +10925,123 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/{id}/actions/soft-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "softDeletePlanBackingData",
+        "summary": "Soft Delete Plan Backing Data",
+        "description": "Mark the backing files associated with this plan for garbage collection. Terraform permanently deletes backing files after a set number of days unless the plan is restored.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the plan to mark for garbage collection."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan backing data marked for garbage collection"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/{id}/actions/restore-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "restorePlanBackingData",
+        "summary": "Restore Plan Backing Data",
+        "description": "Restore backing files associated with a plan that was previously marked for garbage collection. This restores the plan back to its finalized state.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the plan to restore."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan backing data restore initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/{id}/actions/permanently-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "permanentlyDeletePlanBackingData",
+        "summary": "Permanently Delete Plan Backing Data",
+        "description": "Permanently delete the backing files associated with a plan that has been soft deleted. This action cannot be undone.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the plan to permanently delete backing data for."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan backing data permanently deleted"
           },
           "default": {
             "description": "Error details",
@@ -11033,7 +11822,7 @@
       "get": {
         "operationId": "listRunTfPolicyEvaluations",
         "summary": "List Terraform Policy Evaluations for a Run",
-        "description": "List the Terraform Policy evaluations associated with a run.",
+        "description": "List the Terraform Policy evaluations associated with a run.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -11104,7 +11893,7 @@
       "get": {
         "operationId": "getTfPolicyEvaluation",
         "summary": "Show a Terraform Policy Evaluation",
-        "description": "Get details about a specific Terraform Policy evaluation.",
+        "description": "Get details about a specific Terraform Policy evaluation.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -11178,7 +11967,7 @@
       "post": {
         "operationId": "overrideTfPolicyEvaluation",
         "summary": "Override a Terraform Policy Evaluation",
-        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.",
+        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -11251,7 +12040,7 @@
       "get": {
         "operationId": "listTfPolicyEvaluationTfPolicySetOutcomes",
         "summary": "List Terraform Policy Set Outcomes for a Terraform Policy Evaluation",
-        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.",
+        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -11367,7 +12156,7 @@
       "get": {
         "operationId": "getTfPolicySetOutcome",
         "summary": "Show a Terraform Policy Set Outcome",
-        "description": "Get details about a specific Terraform Policy set outcome.",
+        "description": "Get details about a specific Terraform Policy set outcome.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -12419,7 +13208,7 @@
       "post": {
         "operationId": "addPolicySetTagSelectors",
         "summary": "Add Tag Selectors to a Policy Set",
-        "description": "Add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.",
+        "description": "Add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "policy-sets"
         ],
@@ -12511,7 +13300,7 @@
       "delete": {
         "operationId": "removePolicySetTagSelectors",
         "summary": "Remove Tag Selectors from a Policy Set",
-        "description": "Remove tag selectors from a policy set by their tag key and value.",
+        "description": "Remove tag selectors from a policy set by their tag key and value.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "policy-sets"
         ],
@@ -12837,6 +13626,16 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     }
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filter provided",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -13489,6 +14288,240 @@
         }
       }
     },
+    "/applies/{id}/actions/soft-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "softDeleteApplyBackingData",
+        "summary": "Soft Delete Apply Backing Data",
+        "description": "Mark the backing files associated with this apply for garbage collection. Terraform permanently deletes backing files after a set number of days unless the apply is restored.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "applies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the apply to mark for garbage collection."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Apply backing data marked for garbage collection"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applies/{id}/actions/restore-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "restoreApplyBackingData",
+        "summary": "Restore Apply Backing Data",
+        "description": "Restore backing files associated with an apply that was previously marked for garbage collection. This restores the apply back to its finalized state.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "applies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the apply to restore."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Apply backing data restore initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applies/{id}/actions/permanently-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "permanentlyDeleteApplyBackingData",
+        "summary": "Permanently Delete Apply Backing Data",
+        "description": "Permanently delete the backing files associated with an apply that has been soft deleted. This action cannot be undone.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "applies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the apply to permanently delete backing data for."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Apply backing data permanently deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assessments/{id}/actions/soft-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "softDeleteAssessmentBackingData",
+        "summary": "Soft Delete Assessment Backing Data",
+        "description": "Mark the backing files associated with this assessment for garbage collection. Terraform permanently deletes backing files after a set number of days unless the assessment is restored.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "assessments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the assessment to mark for garbage collection."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Assessment backing data marked for garbage collection"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assessments/{id}/actions/restore-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "restoreAssessmentBackingData",
+        "summary": "Restore Assessment Backing Data",
+        "description": "Restore backing files associated with an assessment that was previously marked for garbage collection. This restores the assessment back to its finalized state.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "assessments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the assessment to restore."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Assessment backing data restore initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assessments/{id}/actions/permanently-delete-backing-data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "permanentlyDeleteAssessmentBackingData",
+        "summary": "Permanently Delete Assessment Backing Data",
+        "description": "Permanently delete the backing files associated with an assessment that has been soft deleted. This action cannot be undone.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "assessments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the assessment to permanently delete backing data for."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Assessment backing data permanently deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cost-estimates/{id}": {
       "get": {
         "summary": "Show a cost estimate",
@@ -13728,6 +14761,123 @@
         }
       }
     },
+    "/state-versions/{state_version_id}/actions/soft_delete_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "softDeleteStateVersionBackingData",
+        "summary": "Soft Delete State Version Backing Data",
+        "description": "Mark the backing files associated with this state version for garbage collection. Terraform permanently deletes backing files after a set number of days unless the state version is restored.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "state-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "state_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the state version to mark for garbage collection."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "State version backing data marked for garbage collection"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/state-versions/{state_version_id}/actions/restore_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "restoreStateVersionBackingData",
+        "summary": "Restore State Version Backing Data",
+        "description": "Restore backing files associated with a state version that was previously marked for garbage collection. This restores the state version back to its finalized state.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "state-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "state_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the state version to restore."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "State version backing data restore initiated"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/state-versions/{state_version_id}/actions/permanently_delete_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "permanentlyDeleteStateVersionBackingData",
+        "summary": "Permanently Delete State Version Backing Data",
+        "description": "Permanently delete the backing files associated with a state version that has been soft deleted. This action cannot be undone.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "state-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "state_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the state version to permanently delete backing data for."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "State version backing data permanently deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/state-versions": {
       "post": {
         "operationId": "createStateVersion",
@@ -13943,7 +15093,7 @@
       "get": {
         "operationId": "listHyokConfigurations",
         "summary": "List HYOK Configurations",
-        "description": "List all HYOK configurations in an organization",
+        "description": "List all HYOK configurations in an organization\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14009,7 +15159,7 @@
       "post": {
         "operationId": "createHyokConfiguration",
         "summary": "Create HYOK Configuration",
-        "description": "Create a new HYOK configuration",
+        "description": "Create a new HYOK configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14065,7 +15215,7 @@
       "post": {
         "operationId": "testUnpersistedHyokConfiguration",
         "summary": "Test new HYOK configuration",
-        "description": "Test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.",
+        "description": "Test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14149,7 +15299,7 @@
       "post": {
         "operationId": "createOidcConfiguration",
         "summary": "Create OIDC Configuration",
-        "description": "Create a new OIDC configuration",
+        "description": "Create a new OIDC configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14205,7 +15355,7 @@
       "get": {
         "operationId": "getHyokConfiguration",
         "summary": "Get HYOK configuration details",
-        "description": "Get details about an HYOK configuration",
+        "description": "Get details about an HYOK configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14246,7 +15396,7 @@
       "patch": {
         "operationId": "updateHyokConfiguration",
         "summary": "Update HYOK Configuration",
-        "description": "Update an HYOK configuration",
+        "description": "Update an HYOK configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14297,7 +15447,7 @@
       "delete": {
         "operationId": "deleteHyokConfiguration",
         "summary": "Delete HYOK Configuration",
-        "description": "Delete an HYOK configuration. Can only be performed on unused configurations.",
+        "description": "Delete an HYOK configuration. Can only be performed on unused configurations.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14336,7 +15486,7 @@
       "get": {
         "operationId": "listHyokCustomerKeyVersions",
         "summary": "List HYOK Customer Key Versions",
-        "description": "List all HYOK Customer Key Versions for an HYOK Configuration",
+        "description": "List all HYOK Customer Key Versions for an HYOK Configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14407,7 +15557,7 @@
       "post": {
         "operationId": "revokeHyokConfiguration",
         "summary": "Revoke HYOK configuration",
-        "description": "Revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.",
+        "description": "Revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14424,7 +15574,17 @@
         ],
         "responses": {
           "202": {
-            "description": "HYOK Configuration revocation initiated"
+            "description": "HYOK Configuration revocation initiated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
           },
           "default": {
             "description": "Error details",
@@ -14446,7 +15606,7 @@
       "post": {
         "operationId": "testHyokConfiguration",
         "summary": "Test HYOK configuration",
-        "description": "Test an HYOK configuration to ensure that it is set up correctly to connect to the specified KMS.",
+        "description": "Test an HYOK configuration to ensure that it is set up correctly to connect to the specified KMS.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14485,7 +15645,7 @@
       "get": {
         "operationId": "getHyokCustomerKeyVersion",
         "summary": "Get HYOK Customer Key Version details",
-        "description": "Get details about a HYOK Customer Key Version",
+        "description": "Get details about a HYOK Customer Key Version\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14526,7 +15686,7 @@
       "delete": {
         "operationId": "deleteHyokCustomerKeyVersion",
         "summary": "Delete HYOK Customer Key Version",
-        "description": "Delete a HYOK Customer Key Version. Can only be performed on unused key versions.",
+        "description": "Delete a HYOK Customer Key Version. Can only be performed on unused key versions.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14565,7 +15725,7 @@
       "post": {
         "operationId": "revokeHyokCustomerKeyVersion",
         "summary": "Revoke HYOK Customer Key Version",
-        "description": "Revoke a HYOK Customer Key Version.",
+        "description": "Revoke a HYOK Customer Key Version.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14582,7 +15742,17 @@
         ],
         "responses": {
           "202": {
-            "description": "HYOK Key Version revocation initiated"
+            "description": "HYOK Key Version revocation initiated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
           },
           "default": {
             "description": "Error details",
@@ -14604,7 +15774,7 @@
       "get": {
         "operationId": "getHyokEncryptedDataKey",
         "summary": "Get HYOK Encrypted Data Key details",
-        "description": "Get details about a HYOK Encrypted Data Key",
+        "description": "Get details about a HYOK Encrypted Data Key\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14650,7 +15820,7 @@
       "get": {
         "operationId": "getOidcConfiguration",
         "summary": "Get OIDC Configuration details",
-        "description": "Get details about an OIDC configuration",
+        "description": "Get details about an OIDC configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14691,7 +15861,7 @@
       "patch": {
         "operationId": "updateOidcConfiguration",
         "summary": "Update OIDC Configuration",
-        "description": "Update an OIDC configuration",
+        "description": "Update an OIDC configuration\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "hyok"
         ],
@@ -14816,22 +15986,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/authentication-tokens"
-                          }
-                        ]
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -15338,22 +16493,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "$ref": "#/components/schemas/authentication-tokens"
-                          }
-                        ]
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -15412,7 +16552,7 @@
       "get": {
         "operationId": "showOrganizationAuditTrail",
         "summary": "List organization audit events",
-        "description": "Returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.",
+        "description": "Returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.\n\nThis operation is only available in HCP Terraform.",
         "tags": [
           "audit-trails"
         ],
@@ -15562,7 +16702,7 @@
           "default": {
             "description": "Unauthorized or forbidden",
             "content": {
-              "application/json": {
+              "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors"
                 }
@@ -17598,7 +18738,17 @@
         ],
         "responses": {
           "202": {
-            "description": "Archive process initiated"
+            "description": "Archive process initiated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
           },
           "409": {
             "description": "Configuration version was in a non-archivable state or the configuration version was created with VCS and cannot be archived through the API.",
@@ -17609,6 +18759,123 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/actions/soft_delete_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "softDeleteConfigurationVersion",
+        "summary": "Soft Delete Configuration Version",
+        "description": "Mark a configuration version for garbage collection.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration version marked for garbage collection"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/actions/restore_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "restoreConfigurationVersion",
+        "summary": "Restore Configuration Version",
+        "description": "Restore a configuration version marked for garbage collection.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration version restored"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/actions/permanently_delete_backing_data": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "permanentlyDeleteConfigurationVersion",
+        "summary": "Permanently Delete Configuration Version",
+        "description": "Permanently delete the backing files for a configuration version.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration version permanently deleted"
           },
           "default": {
             "description": "Error details",
@@ -17870,6 +19137,16 @@
           },
           "404": {
             "description": "Repository not found or user doesn't have access"
+          },
+          "422": {
+            "description": "VCS provider error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -17987,13 +19264,44 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Bad request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Organization not found"
+            "description": "Organization not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           }
         }
       }
@@ -20017,6 +21325,16 @@
           "default": {
             "description": "Error details",
             "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors"
@@ -21585,13 +22903,15 @@
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "can-manage-hcp-accounts": {
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   }
                 }
               }
@@ -22002,7 +23322,7 @@
               },
               "recoverable-items": {
                 "type": "boolean",
-                "description": "Whether the feature set allows enabling of recoverable items",
+                "description": "Whether the feature set allows enabling of recoverable items\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
@@ -22148,6 +23468,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "id": {
                 "type": "string"
@@ -22518,11 +23839,13 @@
                 "type": "string"
               },
               "ip-address": {
-                "type": "string"
+                "type": "string",
+                "nullable": true
               },
               "last-ping-at": {
                 "type": "string",
-                "format": "date-time"
+                "format": "date-time",
+                "nullable": true
               },
               "created-at": {
                 "type": "string",
@@ -22544,39 +23867,61 @@
           }
         }
       },
-      "nested-cidr-range": {
+      "agent-pools-id-many": {
         "type": "object",
+        "nullable": true,
         "required": [
-          "type",
-          "attributes"
+          "data"
         ],
         "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "cidr-ranges"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "range",
-              "enabled"
-            ],
-            "properties": {
-              "range": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "enabled": {
-                "type": "boolean"
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "type"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "agent-pools"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "cidr-ranges-id-many": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "readOnly": true
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "cidr-ranges"
+                  ]
+                }
               }
             }
           }
@@ -22632,41 +23977,10 @@
               },
               "agent-pools": {
                 "readOnly": true,
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "agent-pools"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/agent-pools-id-many"
               },
               "cidr-ranges": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/nested-cidr-range"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/cidr-ranges-id-many"
               }
             }
           }
@@ -22887,11 +24201,40 @@
           }
         }
       },
+      "data-retention-policy-id": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "data-retention-policy-delete-olders",
+                  "data-retention-policy-dont-deletes"
+                ]
+              }
+            }
+          }
+        }
+      },
       "entitlement-sets-id": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "id": {
                 "type": "string"
@@ -22914,6 +24257,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "id": {
                 "type": "string"
@@ -22936,6 +24280,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "id": {
                 "type": "string"
@@ -23042,14 +24387,16 @@
                 "readOnly": true,
                 "x-vis": [
                   "hcpt"
-                ]
+                ],
+                "description": "This attribute is only available in HCP Terraform."
               },
               "is-unified": {
                 "type": "boolean",
                 "readOnly": true,
                 "x-vis": [
                   "hcpt"
-                ]
+                ],
+                "description": "This attribute is only available in HCP Terraform."
               },
               "permissions": {
                 "type": "object",
@@ -23169,25 +24516,36 @@
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "can-create-project-in-hcp": {
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "can-update-hyok-configuration": {
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "can-manage-recoverable-items": {
                     "type": "boolean",
                     "x-vis": [
                       "public-beta"
-                    ]
+                    ],
+                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                  },
+                  "can-read-policies": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "tfe"
+                    ],
+                    "description": "This attribute is only available in Terraform Enterprise."
                   }
                 }
               },
@@ -23212,6 +24570,44 @@
                 "type": "boolean",
                 "readOnly": true
               },
+              "global-module-sharing": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "global-provider-sharing": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "parent-data-retention-policy-info": {
+                "type": "string",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "module-consuming-organizations-count": {
+                "type": "integer",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "provider-consuming-organizations-count": {
+                "type": "integer",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
               "remaining-testable-count": {
                 "type": "integer",
                 "readOnly": true
@@ -23220,20 +24616,23 @@
                 "type": "boolean",
                 "x-vis": [
                   "public-beta"
-                ]
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               },
               "recoverable-items-enabled": {
                 "type": "boolean",
                 "x-vis": [
                   "public-beta"
-                ]
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               },
               "over-stacks-resource-limit": {
                 "type": "boolean",
                 "readOnly": true,
                 "x-vis": [
                   "public-beta"
-                ]
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               },
               "default-execution-mode": {
                 "type": "string",
@@ -23255,7 +24654,8 @@
                 "readOnly": true,
                 "x-vis": [
                   "public-beta"
-                ]
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               }
             }
           },
@@ -23271,6 +24671,27 @@
               "stacks-default-agent-pool": {
                 "$ref": "#/components/schemas/agent-pools-id"
               },
+              "data-retention-policy": {
+                "$ref": "#/components/schemas/data-retention-policy-id",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
+              "module-producers": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "$ref": "#/components/schemas/links_related",
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
+              "provider-producers": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "$ref": "#/components/schemas/links_related",
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
               "oauth-tokens": {
                 "$ref": "#/components/schemas/links_related"
               },
@@ -23281,7 +24702,8 @@
                 "$ref": "#/components/schemas/links_related",
                 "x-vis": [
                   "hcpt"
-                ]
+                ],
+                "description": "This relationship is only available in HCP Terraform."
               },
               "entitlement-set": {
                 "$ref": "#/components/schemas/entitlement-sets-id"
@@ -23296,7 +24718,8 @@
                 "x-vis": [
                   "hcpt"
                 ],
-                "$ref": "#/components/schemas/hyok-configurations-id"
+                "$ref": "#/components/schemas/hyok-configurations-id",
+                "description": "This relationship is only available in HCP Terraform."
               }
             }
           }
@@ -23310,6 +24733,228 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/organizations"
+          }
+        }
+      },
+      "projects": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "projects"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "auto-destroy-activity-duration": {
+                "type": "string",
+                "nullable": true
+              },
+              "default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "local",
+                  "agent"
+                ]
+              },
+              "stacks-default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "agent"
+                ]
+              },
+              "setting-overwrites": {
+                "type": "object",
+                "properties": {
+                  "default-execution-mode": {
+                    "type": "boolean"
+                  },
+                  "default-agent-pool": {
+                    "type": "boolean"
+                  },
+                  "stacks-default-execution-mode": {
+                    "type": "boolean"
+                  },
+                  "stacks-default-agent-pool": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "permissions": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "can-read": {
+                    "type": "boolean"
+                  },
+                  "can-update": {
+                    "type": "boolean"
+                  },
+                  "can-destroy": {
+                    "type": "boolean"
+                  },
+                  "can-create-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-move-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-move-stack": {
+                    "type": "boolean"
+                  },
+                  "can-manage-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-view-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-update-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-deploy-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-read-teams": {
+                    "type": "boolean"
+                  },
+                  "can-manage-tags": {
+                    "type": "boolean"
+                  },
+                  "can-manage-teams": {
+                    "type": "boolean"
+                  },
+                  "can-manage-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
+                  },
+                  "can-manage-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-manage-ephemeral-workspace-for-projects": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "workspace-count": {
+                "type": "integer",
+                "nullable": true
+              },
+              "team-count": {
+                "type": "integer",
+                "nullable": true
+              },
+              "hcp-id": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "This attribute is only available in HCP Terraform."
+              },
+              "is-unified": {
+                "type": "boolean",
+                "nullable": true,
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "This attribute is only available in HCP Terraform."
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/organizations-id"
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "tag-bindings": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              },
+              "stacks-default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "entitlement-sets": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "entitlement-sets"
+            ]
+          },
+          "attributes": {
+            "type": "object"
+          },
+          "links": {
+            "type": "object"
           }
         }
       },
@@ -23562,7 +25207,7 @@
               "scim-linked": {
                 "type": "boolean",
                 "readOnly": true,
-                "description": "Whether this team is linked to a SCIM group. Only available when SCIM is enabled.",
+                "description": "Whether this team is linked to a SCIM group. Only available when SCIM is enabled.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
@@ -23571,7 +25216,7 @@
                 "type": "string",
                 "nullable": true,
                 "readOnly": true,
-                "description": "The display name of the linked SCIM group. Only available when SCIM is enabled.",
+                "description": "The display name of the linked SCIM group. Only available when SCIM is enabled.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
@@ -23581,7 +25226,7 @@
                 "format": "date-time",
                 "nullable": true,
                 "readOnly": true,
-                "description": "The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.",
+                "description": "The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
@@ -23589,7 +25234,7 @@
               "scim-sync-paused": {
                 "type": "boolean",
                 "readOnly": true,
-                "description": "Whether SCIM sync is paused for this team. Only available when SCIM is enabled.",
+                "description": "Whether SCIM sync is paused for this team. Only available when SCIM is enabled.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
@@ -23598,7 +25243,7 @@
                 "type": "string",
                 "nullable": true,
                 "readOnly": true,
-                "description": "The HCP resource name for unified teams.",
+                "description": "The HCP resource name for unified teams.\n\nThis attribute is only available in HCP Terraform.",
                 "x-vis": [
                   "hcpt"
                 ]
@@ -23606,7 +25251,7 @@
               "is-unified": {
                 "type": "boolean",
                 "readOnly": true,
-                "description": "Whether this team is unified with HCP.",
+                "description": "Whether this team is unified with HCP.\n\nThis attribute is only available in HCP Terraform.",
                 "x-vis": [
                   "hcpt"
                 ]
@@ -23708,13 +25353,15 @@
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "manage-public-modules": {
                     "type": "boolean",
                     "x-vis": [
                       "hcpt"
-                    ]
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
                   },
                   "manage-registry-components": {
                     "type": "boolean",
@@ -23963,34 +25610,7 @@
           }
         }
       },
-      "effective-tag-bindings-id": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "object",
-            "nullable": true,
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "effective-tag-bindings"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "projects": {
+      "data-retention-policy": {
         "type": "object",
         "required": [
           "type",
@@ -23998,211 +25618,67 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "readOnly": true
           },
           "type": {
             "type": "string",
             "enum": [
-              "projects"
+              "data-retention-policy-delete-olders",
+              "data-retention-policy-dont-deletes"
             ]
           },
           "attributes": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "auto-destroy-activity-duration": {
-                "type": "string",
-                "nullable": true
-              },
-              "default-execution-mode": {
-                "type": "string",
-                "enum": [
-                  "remote",
-                  "local",
-                  "agent"
-                ]
-              },
-              "stacks-default-execution-mode": {
-                "type": "string",
-                "enum": [
-                  "remote",
-                  "agent"
-                ]
-              },
-              "setting-overwrites": {
-                "type": "object",
-                "properties": {
-                  "default-execution-mode": {
-                    "type": "boolean"
-                  },
-                  "default-agent-pool": {
-                    "type": "boolean"
-                  },
-                  "stacks-default-execution-mode": {
-                    "type": "boolean"
-                  },
-                  "stacks-default-agent-pool": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "permissions": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "can-read": {
-                    "type": "boolean"
-                  },
-                  "can-update": {
-                    "type": "boolean"
-                  },
-                  "can-destroy": {
-                    "type": "boolean"
-                  },
-                  "can-create-workspace": {
-                    "type": "boolean"
-                  },
-                  "can-move-workspace": {
-                    "type": "boolean"
-                  },
-                  "can-move-stack": {
-                    "type": "boolean"
-                  },
-                  "can-manage-stacks": {
-                    "type": "boolean"
-                  },
-                  "can-view-stacks": {
-                    "type": "boolean"
-                  },
-                  "can-update-stacks": {
-                    "type": "boolean"
-                  },
-                  "can-deploy-no-code-modules": {
-                    "type": "boolean"
-                  },
-                  "can-read-teams": {
-                    "type": "boolean"
-                  },
-                  "can-manage-tags": {
-                    "type": "boolean"
-                  },
-                  "can-manage-teams": {
-                    "type": "boolean"
-                  },
-                  "can-manage-in-hcp": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "hcpt"
-                    ]
-                  },
-                  "can-manage-varsets": {
-                    "type": "boolean"
-                  },
-                  "can-manage-ephemeral-workspace-for-projects": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "workspace-count": {
-                "type": "integer",
-                "nullable": true
-              },
-              "team-count": {
-                "type": "integer",
-                "nullable": true
-              },
-              "hcp-id": {
-                "type": "string",
-                "nullable": true,
-                "x-vis": [
-                  "hcpt"
-                ]
-              },
-              "is-unified": {
-                "type": "boolean",
-                "nullable": true,
-                "x-vis": [
-                  "hcpt"
-                ]
-              }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "organization": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/organizations-id"
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              },
-              "tag-bindings": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              },
-              "effective-tag-bindings": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/effective-tag-bindings-id"
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              },
-              "default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
-              },
-              "stacks-default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+              "deleteOlderThanNDays": {
+                "type": "integer"
               }
             }
           },
           "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
             "type": "object",
             "properties": {
-              "self": {
-                "type": "string"
+              "target": {
+                "readOnly": true,
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organizations",
+                          "workspaces"
+                        ]
+                      }
+                    }
+                  }
+                }
               }
             }
+          }
+        }
+      },
+      "data-retention-policy-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/data-retention-policy"
           }
         }
       },
@@ -24241,7 +25717,8 @@
                   "organization",
                   "team",
                   "user",
-                  "audit_trails"
+                  "audit_trails",
+                  "metrics"
                 ],
                 "example": "organization"
               },
@@ -24282,7 +25759,8 @@
               "organization",
               "team",
               "user",
-              "audit_trails"
+              "audit_trails",
+              "metrics"
             ],
             "example": "organization"
           },
@@ -24753,12 +26231,25 @@
               "effective-state-version-retention-desc": {
                 "type": "string",
                 "nullable": true,
-                "description": "Terraform Enterprise only. A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n"
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
               "effective-run-data-retention-desc": {
                 "type": "string",
                 "nullable": true,
-                "description": "Terraform Enterprise only. A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n"
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "A human-readable description of the effective run data and logs\nretention window for this workspace. Returns null when no run data retention policy is in effect for the\nworkspace, or when the policy does not delete run data and logs.\n\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "hyok-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n\n\nThis attribute is only available in HCP Terraform."
               }
             }
           },
@@ -24913,7 +26404,7 @@
                       "type": {
                         "type": "string",
                         "enum": [
-                          "readmes"
+                          "workspace-readme"
                         ]
                       }
                     }
@@ -25792,6 +27283,35 @@
           }
         }
       },
+      "projects-identifier-array-document": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "projects"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "varsets": {
         "type": "object",
         "properties": {
@@ -26016,35 +27536,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/varsets"
-          }
-        }
-      },
-      "projects-identifier-array-document": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "projects"
-                  ]
-                },
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
@@ -27120,14 +28611,16 @@
                     "format": "date-time",
                     "x-vis": [
                       "public-beta"
-                    ]
+                    ],
+                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
                   },
                   "tf-policy-override-at": {
                     "type": "string",
                     "format": "date-time",
                     "x-vis": [
                       "public-beta"
-                    ]
+                    ],
+                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
                   },
                   "post-plan-running-at": {
                     "type": "string",
@@ -27232,6 +28725,7 @@
                   "fetching_completed",
                   "pre_plan_running",
                   "pre_plan_completed",
+                  "pre_plan_awaiting_decision",
                   "queuing",
                   "plan_queued",
                   "planning",
@@ -27439,7 +28933,8 @@
                       "$ref": "#/components/schemas/tf-policy-evaluations-id"
                     }
                   }
-                }
+                },
+                "description": "This relationship is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               }
             }
           }
@@ -27783,7 +29278,7 @@
                   "agent-id": {
                     "type": "string",
                     "example": "agent-S1Y7tcKxXPJDQAvq",
-                    "description": "ID of the agent used for this run (when mode is agent)",
+                    "description": "ID of the agent used for this run (when mode is agent)\n\nThis attribute is only available in HCP Terraform.",
                     "x-vis": [
                       "hcpt"
                     ]
@@ -27791,7 +29286,7 @@
                   "agent-name": {
                     "type": "string",
                     "example": "agent_01",
-                    "description": "Name of the agent used for this run (when mode is agent)",
+                    "description": "Name of the agent used for this run (when mode is agent)\n\nThis attribute is only available in HCP Terraform.",
                     "x-vis": [
                       "hcpt"
                     ]
@@ -27799,7 +29294,7 @@
                   "agent-pool-id": {
                     "type": "string",
                     "example": "apool-Zigq2VGreKq7nwph",
-                    "description": "ID of the agent pool used for this run (when mode is agent)",
+                    "description": "ID of the agent pool used for this run (when mode is agent)\n\nThis attribute is only available in HCP Terraform.",
                     "x-vis": [
                       "hcpt"
                     ]
@@ -27807,7 +29302,7 @@
                   "agent-pool-name": {
                     "type": "string",
                     "example": "first-pool",
-                    "description": "Name of the agent pool used for this run (when mode is agent)",
+                    "description": "Name of the agent pool used for this run (when mode is agent)\n\nThis attribute is only available in HCP Terraform.",
                     "x-vis": [
                       "hcpt"
                     ]
@@ -27976,7 +29471,7 @@
               },
               "hyok-encrypted-data-key": {
                 "type": "object",
-                "description": "HYOK encrypted data key associated with this plan",
+                "description": "HYOK encrypted data key associated with this plan\n\nThis relationship is only available in HCP Terraform.",
                 "nullable": true,
                 "x-vis": [
                   "hcpt"
@@ -29054,14 +30549,15 @@
                       "type": "boolean"
                     }
                   }
-                }
+                },
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               },
               "scoping-type": {
                 "type": "string",
                 "x-vis": [
                   "public-beta"
                 ],
-                "description": "Scoping mode for the policy set. \"tag\" is dynamic tag-based scoping. \"explicit\" uses explicit workspace/project associations.",
+                "description": "Scoping mode for the policy set. \"tag\" is dynamic tag-based scoping. \"explicit\" uses explicit workspace/project associations.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "enum": [
                   "tag",
                   "explicit"
@@ -30207,6 +31703,7 @@
               },
               "kms-options": {
                 "type": "object",
+                "nullable": true,
                 "properties": {
                   "key-region": {
                     "type": "string",
@@ -30542,6 +32039,7 @@
               },
               "error": {
                 "type": "string",
+                "nullable": true,
                 "readOnly": true
               }
             }
@@ -31641,6 +33139,7 @@
                   },
                   "tag-prefix": {
                     "type": "string",
+                    "nullable": true,
                     "description": "An optional prefix used to filter tags for tag-based publishing."
                   },
                   "ingress-submodules": {
@@ -31649,6 +33148,7 @@
                   },
                   "source-directory": {
                     "type": "string",
+                    "nullable": true,
                     "description": "The directory within the repository where the module is located."
                   }
                 }
@@ -31678,12 +33178,14 @@
                   },
                   "agent-pool-id": {
                     "type": "string",
-                    "description": "The ID of the agent pool used when `agent-execution-mode` is `agent`."
+                    "description": "The ID of the agent pool used when `agent-execution-mode` is `agent`.",
+                    "nullable": true
                   },
                   "agent-pool-name": {
                     "type": "string",
                     "readOnly": true,
-                    "description": "The name of the agent pool used when `agent-execution-mode` is `agent`."
+                    "description": "The name of the agent pool used when `agent-execution-mode` is `agent`.",
+                    "nullable": true
                   }
                 }
               },

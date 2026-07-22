@@ -16,7 +16,7 @@ type Organizations_attributes_permissions struct {
     canCreateModule *bool
     // The canCreateProject property
     canCreateProject *bool
-    // The canCreateProjectInHcp property
+    // This attribute is only available in HCP Terraform.
     canCreateProjectInHcp *bool
     // The canCreateProvider property
     canCreateProvider *bool
@@ -34,7 +34,7 @@ type Organizations_attributes_permissions struct {
     canManageAssessments *bool
     // The canManageCustomProviders property
     canManageCustomProviders *bool
-    // The canManageGroupsInHcp property
+    // This attribute is only available in HCP Terraform.
     canManageGroupsInHcp *bool
     // The canManageNoCodeModules property
     canManageNoCodeModules *bool
@@ -46,7 +46,7 @@ type Organizations_attributes_permissions struct {
     canManagePublicModules *bool
     // The canManagePublicProviders property
     canManagePublicProviders *bool
-    // The canManageRecoverableItems property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     canManageRecoverableItems *bool
     // The canManageRunTasks property
     canManageRunTasks *bool
@@ -62,6 +62,8 @@ type Organizations_attributes_permissions struct {
     canManageVarsets *bool
     // The canReadAssessments property
     canReadAssessments *bool
+    // This attribute is only available in Terraform Enterprise.
+    canReadPolicies *bool
     // The canReadRunTasks property
     canReadRunTasks *bool
     // The canReadVarsets property
@@ -76,7 +78,7 @@ type Organizations_attributes_permissions struct {
     canUpdateApiToken *bool
     // The canUpdateAuthenticationToken property
     canUpdateAuthenticationToken *bool
-    // The canUpdateHyokConfiguration property
+    // This attribute is only available in HCP Terraform.
     canUpdateHyokConfiguration *bool
     // The canUpdateOauth property
     canUpdateOauth *bool
@@ -125,7 +127,7 @@ func (m *Organizations_attributes_permissions) GetCanCreateModule()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanCreateProject()(*bool) {
     return m.canCreateProject
 }
-// GetCanCreateProjectInHcp gets the can-create-project-in-hcp property value. The canCreateProjectInHcp property
+// GetCanCreateProjectInHcp gets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateProjectInHcp()(*bool) {
     return m.canCreateProjectInHcp
@@ -170,7 +172,7 @@ func (m *Organizations_attributes_permissions) GetCanManageAssessments()(*bool) 
 func (m *Organizations_attributes_permissions) GetCanManageCustomProviders()(*bool) {
     return m.canManageCustomProviders
 }
-// GetCanManageGroupsInHcp gets the can-manage-groups-in-hcp property value. The canManageGroupsInHcp property
+// GetCanManageGroupsInHcp gets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageGroupsInHcp()(*bool) {
     return m.canManageGroupsInHcp
@@ -200,7 +202,7 @@ func (m *Organizations_attributes_permissions) GetCanManagePublicModules()(*bool
 func (m *Organizations_attributes_permissions) GetCanManagePublicProviders()(*bool) {
     return m.canManagePublicProviders
 }
-// GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+// GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageRecoverableItems()(*bool) {
     return m.canManageRecoverableItems
@@ -240,6 +242,11 @@ func (m *Organizations_attributes_permissions) GetCanManageVarsets()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanReadAssessments()(*bool) {
     return m.canReadAssessments
 }
+// GetCanReadPolicies gets the can-read-policies property value. This attribute is only available in Terraform Enterprise.
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanReadPolicies()(*bool) {
+    return m.canReadPolicies
+}
 // GetCanReadRunTasks gets the can-read-run-tasks property value. The canReadRunTasks property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadRunTasks()(*bool) {
@@ -275,7 +282,7 @@ func (m *Organizations_attributes_permissions) GetCanUpdateApiToken()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanUpdateAuthenticationToken()(*bool) {
     return m.canUpdateAuthenticationToken
 }
-// GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+// GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateHyokConfiguration()(*bool) {
     return m.canUpdateHyokConfiguration
@@ -576,6 +583,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         if val != nil {
             m.SetCanReadAssessments(val)
+        }
+        return nil
+    }
+    res["can-read-policies"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanReadPolicies(val)
         }
         return nil
     }
@@ -890,6 +907,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-read-policies", m.GetCanReadPolicies())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-read-run-tasks", m.GetCanReadRunTasks())
         if err != nil {
             return err
@@ -1003,7 +1026,7 @@ func (m *Organizations_attributes_permissions) SetCanCreateModule(value *bool)()
 func (m *Organizations_attributes_permissions) SetCanCreateProject(value *bool)() {
     m.canCreateProject = value
 }
-// SetCanCreateProjectInHcp sets the can-create-project-in-hcp property value. The canCreateProjectInHcp property
+// SetCanCreateProjectInHcp sets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanCreateProjectInHcp(value *bool)() {
     m.canCreateProjectInHcp = value
 }
@@ -1039,7 +1062,7 @@ func (m *Organizations_attributes_permissions) SetCanManageAssessments(value *bo
 func (m *Organizations_attributes_permissions) SetCanManageCustomProviders(value *bool)() {
     m.canManageCustomProviders = value
 }
-// SetCanManageGroupsInHcp sets the can-manage-groups-in-hcp property value. The canManageGroupsInHcp property
+// SetCanManageGroupsInHcp sets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanManageGroupsInHcp(value *bool)() {
     m.canManageGroupsInHcp = value
 }
@@ -1063,7 +1086,7 @@ func (m *Organizations_attributes_permissions) SetCanManagePublicModules(value *
 func (m *Organizations_attributes_permissions) SetCanManagePublicProviders(value *bool)() {
     m.canManagePublicProviders = value
 }
-// SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+// SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes_permissions) SetCanManageRecoverableItems(value *bool)() {
     m.canManageRecoverableItems = value
 }
@@ -1095,6 +1118,10 @@ func (m *Organizations_attributes_permissions) SetCanManageVarsets(value *bool)(
 func (m *Organizations_attributes_permissions) SetCanReadAssessments(value *bool)() {
     m.canReadAssessments = value
 }
+// SetCanReadPolicies sets the can-read-policies property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes_permissions) SetCanReadPolicies(value *bool)() {
+    m.canReadPolicies = value
+}
 // SetCanReadRunTasks sets the can-read-run-tasks property value. The canReadRunTasks property
 func (m *Organizations_attributes_permissions) SetCanReadRunTasks(value *bool)() {
     m.canReadRunTasks = value
@@ -1123,7 +1150,7 @@ func (m *Organizations_attributes_permissions) SetCanUpdateApiToken(value *bool)
 func (m *Organizations_attributes_permissions) SetCanUpdateAuthenticationToken(value *bool)() {
     m.canUpdateAuthenticationToken = value
 }
-// SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+// SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanUpdateHyokConfiguration(value *bool)() {
     m.canUpdateHyokConfiguration = value
 }
@@ -1184,6 +1211,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanManageUsers()(*bool)
     GetCanManageVarsets()(*bool)
     GetCanReadAssessments()(*bool)
+    GetCanReadPolicies()(*bool)
     GetCanReadRunTasks()(*bool)
     GetCanReadVarsets()(*bool)
     GetCanTraverse()(*bool)
@@ -1225,6 +1253,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanManageUsers(value *bool)()
     SetCanManageVarsets(value *bool)()
     SetCanReadAssessments(value *bool)()
+    SetCanReadPolicies(value *bool)()
     SetCanReadRunTasks(value *bool)()
     SetCanReadVarsets(value *bool)()
     SetCanTraverse(value *bool)()

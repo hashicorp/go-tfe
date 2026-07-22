@@ -13,6 +13,11 @@ import (
 type WithState_version_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// Actions the actions property
+// returns a *ItemActionsRequestBuilder when successful
+func (m *WithState_version_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
+    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewWithState_version_ItemRequestBuilderInternal instantiates a new WithState_version_ItemRequestBuilder and sets the default values.
 func NewWithState_version_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithState_version_ItemRequestBuilder) {
     m := &WithState_version_ItemRequestBuilder{

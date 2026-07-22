@@ -14,7 +14,7 @@ import (
 type AuditTrailRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// AuditTrailRequestBuilderGetQueryParameters returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
+// AuditTrailRequestBuilderGetQueryParameters returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.This operation is only available in HCP Terraform.
 type AuditTrailRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -36,7 +36,7 @@ func NewAuditTrailRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
     urlParams["request-raw-url"] = rawUrl
     return NewAuditTrailRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
+// Get returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.This operation is only available in HCP Terraform.
 // returns a AuditTrailGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *AuditTrailRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuditTrailRequestBuilderGetQueryParameters])(AuditTrailGetResponseable, error) {
@@ -56,7 +56,7 @@ func (m *AuditTrailRequestBuilder) Get(ctx context.Context, requestConfiguration
     }
     return res.(AuditTrailGetResponseable), nil
 }
-// ToGetRequestInformation returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
+// ToGetRequestInformation returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *AuditTrailRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuditTrailRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

@@ -31,18 +31,26 @@ type Organizations_attributes struct {
     externalId *string
     // The fairRunQueuingEnabled property
     fairRunQueuingEnabled *bool
-    // The hcpId property
+    // This attribute is only available in Terraform Enterprise.
+    globalModuleSharing *bool
+    // This attribute is only available in Terraform Enterprise.
+    globalProviderSharing *bool
+    // This attribute is only available in HCP Terraform.
     hcpId *string
     // The isInDegradedMode property
     isInDegradedMode *bool
-    // The isUnified property
+    // This attribute is only available in HCP Terraform.
     isUnified *bool
+    // This attribute is only available in Terraform Enterprise.
+    moduleConsumingOrganizationsCount *int32
     // The name property
     name *string
-    // The overStacksResourceLimit property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     overStacksResourceLimit *bool
     // The ownersTeamSamlRoleId property
     ownersTeamSamlRoleId *string
+    // This attribute is only available in Terraform Enterprise.
+    parentDataRetentionPolicyInfo *string
     // The permissions property
     permissions Organizations_attributes_permissionsable
     // The planExpired property
@@ -55,7 +63,9 @@ type Organizations_attributes struct {
     planIsEnterprise *bool
     // The planIsTrial property
     planIsTrial *bool
-    // The recoverableItemsEnabled property
+    // This attribute is only available in Terraform Enterprise.
+    providerConsumingOrganizationsCount *int32
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     recoverableItemsEnabled *bool
     // The remainingTestableCount property
     remainingTestableCount *int32
@@ -71,9 +81,9 @@ type Organizations_attributes struct {
     speculativePlanManagementEnabled *bool
     // The stacksDefaultExecutionMode property
     stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
-    // The stacksEnabled property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     stacksEnabled *bool
-    // The testGenerationEnabled property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     testGenerationEnabled *bool
     // The twoFactorConformant property
     twoFactorConformant *bool
@@ -249,6 +259,26 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["global-module-sharing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetGlobalModuleSharing(val)
+        }
+        return nil
+    }
+    res["global-provider-sharing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetGlobalProviderSharing(val)
+        }
+        return nil
+    }
     res["hcp-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -279,6 +309,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["module-consuming-organizations-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModuleConsumingOrganizationsCount(val)
+        }
+        return nil
+    }
     res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -306,6 +346,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetOwnersTeamSamlRoleId(val)
+        }
+        return nil
+    }
+    res["parent-data-retention-policy-info"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetParentDataRetentionPolicyInfo(val)
         }
         return nil
     }
@@ -366,6 +416,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetPlanIsTrial(val)
+        }
+        return nil
+    }
+    res["provider-consuming-organizations-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetProviderConsumingOrganizationsCount(val)
         }
         return nil
     }
@@ -481,7 +541,17 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
-// GetHcpId gets the hcp-id property value. The hcpId property
+// GetGlobalModuleSharing gets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
+// returns a *bool when successful
+func (m *Organizations_attributes) GetGlobalModuleSharing()(*bool) {
+    return m.globalModuleSharing
+}
+// GetGlobalProviderSharing gets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
+// returns a *bool when successful
+func (m *Organizations_attributes) GetGlobalProviderSharing()(*bool) {
+    return m.globalProviderSharing
+}
+// GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Organizations_attributes) GetHcpId()(*string) {
     return m.hcpId
@@ -491,17 +561,22 @@ func (m *Organizations_attributes) GetHcpId()(*string) {
 func (m *Organizations_attributes) GetIsInDegradedMode()(*bool) {
     return m.isInDegradedMode
 }
-// GetIsUnified gets the is-unified property value. The isUnified property
+// GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetIsUnified()(*bool) {
     return m.isUnified
+}
+// GetModuleConsumingOrganizationsCount gets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
+// returns a *int32 when successful
+func (m *Organizations_attributes) GetModuleConsumingOrganizationsCount()(*int32) {
+    return m.moduleConsumingOrganizationsCount
 }
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Organizations_attributes) GetName()(*string) {
     return m.name
 }
-// GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+// GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetOverStacksResourceLimit()(*bool) {
     return m.overStacksResourceLimit
@@ -510,6 +585,11 @@ func (m *Organizations_attributes) GetOverStacksResourceLimit()(*bool) {
 // returns a *string when successful
 func (m *Organizations_attributes) GetOwnersTeamSamlRoleId()(*string) {
     return m.ownersTeamSamlRoleId
+}
+// GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
+// returns a *string when successful
+func (m *Organizations_attributes) GetParentDataRetentionPolicyInfo()(*string) {
+    return m.parentDataRetentionPolicyInfo
 }
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Organizations_attributes_permissionsable when successful
@@ -541,7 +621,12 @@ func (m *Organizations_attributes) GetPlanIsEnterprise()(*bool) {
 func (m *Organizations_attributes) GetPlanIsTrial()(*bool) {
     return m.planIsTrial
 }
-// GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. The recoverableItemsEnabled property
+// GetProviderConsumingOrganizationsCount gets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
+// returns a *int32 when successful
+func (m *Organizations_attributes) GetProviderConsumingOrganizationsCount()(*int32) {
+    return m.providerConsumingOrganizationsCount
+}
+// GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetRecoverableItemsEnabled()(*bool) {
     return m.recoverableItemsEnabled
@@ -581,12 +666,12 @@ func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled()(*bool) 
 func (m *Organizations_attributes) GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode) {
     return m.stacksDefaultExecutionMode
 }
-// GetStacksEnabled gets the stacks-enabled property value. The stacksEnabled property
+// GetStacksEnabled gets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetStacksEnabled()(*bool) {
     return m.stacksEnabled
 }
-// GetTestGenerationEnabled gets the test-generation-enabled property value. The testGenerationEnabled property
+// GetTestGenerationEnabled gets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetTestGenerationEnabled()(*bool) {
     return m.testGenerationEnabled
@@ -638,6 +723,18 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteStringValue("email", m.GetEmail())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("global-module-sharing", m.GetGlobalModuleSharing())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("global-provider-sharing", m.GetGlobalProviderSharing())
         if err != nil {
             return err
         }
@@ -767,7 +864,15 @@ func (m *Organizations_attributes) SetExternalId(value *string)() {
 func (m *Organizations_attributes) SetFairRunQueuingEnabled(value *bool)() {
     m.fairRunQueuingEnabled = value
 }
-// SetHcpId sets the hcp-id property value. The hcpId property
+// SetGlobalModuleSharing sets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes) SetGlobalModuleSharing(value *bool)() {
+    m.globalModuleSharing = value
+}
+// SetGlobalProviderSharing sets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes) SetGlobalProviderSharing(value *bool)() {
+    m.globalProviderSharing = value
+}
+// SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetHcpId(value *string)() {
     m.hcpId = value
 }
@@ -775,21 +880,29 @@ func (m *Organizations_attributes) SetHcpId(value *string)() {
 func (m *Organizations_attributes) SetIsInDegradedMode(value *bool)() {
     m.isInDegradedMode = value
 }
-// SetIsUnified sets the is-unified property value. The isUnified property
+// SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetIsUnified(value *bool)() {
     m.isUnified = value
+}
+// SetModuleConsumingOrganizationsCount sets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes) SetModuleConsumingOrganizationsCount(value *int32)() {
+    m.moduleConsumingOrganizationsCount = value
 }
 // SetName sets the name property value. The name property
 func (m *Organizations_attributes) SetName(value *string)() {
     m.name = value
 }
-// SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+// SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetOverStacksResourceLimit(value *bool)() {
     m.overStacksResourceLimit = value
 }
 // SetOwnersTeamSamlRoleId sets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 func (m *Organizations_attributes) SetOwnersTeamSamlRoleId(value *string)() {
     m.ownersTeamSamlRoleId = value
+}
+// SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes) SetParentDataRetentionPolicyInfo(value *string)() {
+    m.parentDataRetentionPolicyInfo = value
 }
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Organizations_attributes) SetPermissions(value Organizations_attributes_permissionsable)() {
@@ -815,7 +928,11 @@ func (m *Organizations_attributes) SetPlanIsEnterprise(value *bool)() {
 func (m *Organizations_attributes) SetPlanIsTrial(value *bool)() {
     m.planIsTrial = value
 }
-// SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. The recoverableItemsEnabled property
+// SetProviderConsumingOrganizationsCount sets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
+func (m *Organizations_attributes) SetProviderConsumingOrganizationsCount(value *int32)() {
+    m.providerConsumingOrganizationsCount = value
+}
+// SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetRecoverableItemsEnabled(value *bool)() {
     m.recoverableItemsEnabled = value
 }
@@ -847,11 +964,11 @@ func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bo
 func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)() {
     m.stacksDefaultExecutionMode = value
 }
-// SetStacksEnabled sets the stacks-enabled property value. The stacksEnabled property
+// SetStacksEnabled sets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetStacksEnabled(value *bool)() {
     m.stacksEnabled = value
 }
-// SetTestGenerationEnabled sets the test-generation-enabled property value. The testGenerationEnabled property
+// SetTestGenerationEnabled sets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool)() {
     m.testGenerationEnabled = value
 }
@@ -872,18 +989,23 @@ type Organizations_attributesable interface {
     GetEmail()(*string)
     GetExternalId()(*string)
     GetFairRunQueuingEnabled()(*bool)
+    GetGlobalModuleSharing()(*bool)
+    GetGlobalProviderSharing()(*bool)
     GetHcpId()(*string)
     GetIsInDegradedMode()(*bool)
     GetIsUnified()(*bool)
+    GetModuleConsumingOrganizationsCount()(*int32)
     GetName()(*string)
     GetOverStacksResourceLimit()(*bool)
     GetOwnersTeamSamlRoleId()(*string)
+    GetParentDataRetentionPolicyInfo()(*string)
     GetPermissions()(Organizations_attributes_permissionsable)
     GetPlanExpired()(*bool)
     GetPlanExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetPlanIdentifier()(*string)
     GetPlanIsEnterprise()(*bool)
     GetPlanIsTrial()(*bool)
+    GetProviderConsumingOrganizationsCount()(*int32)
     GetRecoverableItemsEnabled()(*bool)
     GetRemainingTestableCount()(*int32)
     GetSamlEnabled()(*bool)
@@ -905,18 +1027,23 @@ type Organizations_attributesable interface {
     SetEmail(value *string)()
     SetExternalId(value *string)()
     SetFairRunQueuingEnabled(value *bool)()
+    SetGlobalModuleSharing(value *bool)()
+    SetGlobalProviderSharing(value *bool)()
     SetHcpId(value *string)()
     SetIsInDegradedMode(value *bool)()
     SetIsUnified(value *bool)()
+    SetModuleConsumingOrganizationsCount(value *int32)()
     SetName(value *string)()
     SetOverStacksResourceLimit(value *bool)()
     SetOwnersTeamSamlRoleId(value *string)()
+    SetParentDataRetentionPolicyInfo(value *string)()
     SetPermissions(value Organizations_attributes_permissionsable)()
     SetPlanExpired(value *bool)()
     SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetPlanIdentifier(value *string)()
     SetPlanIsEnterprise(value *bool)()
     SetPlanIsTrial(value *bool)()
+    SetProviderConsumingOrganizationsCount(value *int32)()
     SetRecoverableItemsEnabled(value *bool)()
     SetRemainingTestableCount(value *int32)()
     SetSamlEnabled(value *bool)()

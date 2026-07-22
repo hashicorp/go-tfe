@@ -13,7 +13,7 @@ import (
 type ItemHyokCustomerKeyVersionsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters list all HYOK Customer Key Versions for an HYOK Configuration
+// ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters list all HYOK Customer Key Versions for an HYOK ConfigurationThis operation is only available in HCP Terraform.
 type ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemHyokCustomerKeyVersionsRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewItemHyokCustomerKeyVersionsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all HYOK Customer Key Versions for an HYOK Configuration
+// Get list all HYOK Customer Key Versions for an HYOK ConfigurationThis operation is only available in HCP Terraform.
 // returns a ItemHyokCustomerKeyVersionsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemHyokCustomerKeyVersionsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters])(ItemHyokCustomerKeyVersionsGetResponseable, error) {
@@ -53,7 +53,7 @@ func (m *ItemHyokCustomerKeyVersionsRequestBuilder) Get(ctx context.Context, req
     }
     return res.(ItemHyokCustomerKeyVersionsGetResponseable), nil
 }
-// ToGetRequestInformation list all HYOK Customer Key Versions for an HYOK Configuration
+// ToGetRequestInformation list all HYOK Customer Key Versions for an HYOK ConfigurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemHyokCustomerKeyVersionsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

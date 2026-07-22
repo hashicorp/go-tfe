@@ -15,7 +15,7 @@ import (
 type ItemRecoverableItemsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.
+// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
     // Filter recoverable items that expire after the specified date and time.
     Filterexpires_after *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bexpires_after%5D\""
@@ -47,7 +47,7 @@ func NewItemRecoverableItemsRequestBuilder(rawUrl string, requestAdapter i2ae418
     urlParams["request-raw-url"] = rawUrl
     return NewItemRecoverableItemsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all recoverable items (soft-deleted resources) in an organization.
+// Get list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemRecoverableItemsGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -69,7 +69,7 @@ func (m *ItemRecoverableItemsRequestBuilder) Get(ctx context.Context, requestCon
     }
     return res.(ItemRecoverableItemsGetResponseable), nil
 }
-// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.
+// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemRecoverableItemsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRecoverableItemsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

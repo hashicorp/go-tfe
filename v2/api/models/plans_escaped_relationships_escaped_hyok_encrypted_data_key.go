@@ -7,7 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// Plans_relationships_hyokEncryptedDataKey hYOK encrypted data key associated with this plan
+// Plans_relationships_hyokEncryptedDataKey hYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
 type Plans_relationships_hyokEncryptedDataKey struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any

@@ -26,7 +26,7 @@ func NewWithOidc_configuration_ItemRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewWithOidc_configuration_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get get details about an OIDC configuration
+// Get get details about an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a OidcConfigurationEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithOidc_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, error) {
@@ -46,7 +46,7 @@ func (m *WithOidc_configuration_ItemRequestBuilder) Get(ctx context.Context, req
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable), nil
 }
-// Patch update an OIDC configuration
+// Patch update an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a OidcConfigurationEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithOidc_configuration_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, error) {
@@ -66,7 +66,7 @@ func (m *WithOidc_configuration_ItemRequestBuilder) Patch(ctx context.Context, b
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable), nil
 }
-// ToGetRequestInformation get details about an OIDC configuration
+// ToGetRequestInformation get details about an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithOidc_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -74,7 +74,7 @@ func (m *WithOidc_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx 
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPatchRequestInformation update an OIDC configuration
+// ToPatchRequestInformation update an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithOidc_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

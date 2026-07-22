@@ -15,9 +15,9 @@ type Teams_attributes struct {
     allowMemberTokenManagement *bool
     // Team description. Only available when effective permissions are enabled for unified organizations.
     description *string
-    // The HCP resource name for unified teams.
+    // The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
     hcpResourceName *string
-    // Whether this team is unified with HCP.
+    // Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
     isUnified *bool
     // The name of the team, which can only include letters, numbers, `-`, and `_`.
     name *string
@@ -27,13 +27,13 @@ type Teams_attributes struct {
     organizationAccess Teams_attributes_organizationAccessable
     // Permissions for the current user on this team.
     permissions Teams_attributes_permissionsable
-    // The display name of the linked SCIM group. Only available when SCIM is enabled.
+    // The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scimGroupName *string
-    // Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+    // Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scimLinked *bool
-    // Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+    // Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scimSyncPaused *bool
-    // The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+    // The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scimUpdatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The unique identifier of the team from the SAML MemberOf attribute.
     ssoTeamId *string
@@ -225,12 +225,12 @@ func (m *Teams_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
     }
     return res
 }
-// GetHcpResourceName gets the hcp-resource-name property value. The HCP resource name for unified teams.
+// GetHcpResourceName gets the hcp-resource-name property value. The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Teams_attributes) GetHcpResourceName()(*string) {
     return m.hcpResourceName
 }
-// GetIsUnified gets the is-unified property value. Whether this team is unified with HCP.
+// GetIsUnified gets the is-unified property value. Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Teams_attributes) GetIsUnified()(*bool) {
     return m.isUnified
@@ -255,22 +255,22 @@ func (m *Teams_attributes) GetOrganizationAccess()(Teams_attributes_organization
 func (m *Teams_attributes) GetPermissions()(Teams_attributes_permissionsable) {
     return m.permissions
 }
-// GetScimGroupName gets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.
+// GetScimGroupName gets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *string when successful
 func (m *Teams_attributes) GetScimGroupName()(*string) {
     return m.scimGroupName
 }
-// GetScimLinked gets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+// GetScimLinked gets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Teams_attributes) GetScimLinked()(*bool) {
     return m.scimLinked
 }
-// GetScimSyncPaused gets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+// GetScimSyncPaused gets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Teams_attributes) GetScimSyncPaused()(*bool) {
     return m.scimSyncPaused
 }
-// GetScimUpdatedAt gets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+// GetScimUpdatedAt gets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *Time when successful
 func (m *Teams_attributes) GetScimUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.scimUpdatedAt
@@ -349,11 +349,11 @@ func (m *Teams_attributes) SetAllowMemberTokenManagement(value *bool)() {
 func (m *Teams_attributes) SetDescription(value *string)() {
     m.description = value
 }
-// SetHcpResourceName sets the hcp-resource-name property value. The HCP resource name for unified teams.
+// SetHcpResourceName sets the hcp-resource-name property value. The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
 func (m *Teams_attributes) SetHcpResourceName(value *string)() {
     m.hcpResourceName = value
 }
-// SetIsUnified sets the is-unified property value. Whether this team is unified with HCP.
+// SetIsUnified sets the is-unified property value. Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
 func (m *Teams_attributes) SetIsUnified(value *bool)() {
     m.isUnified = value
 }
@@ -373,19 +373,19 @@ func (m *Teams_attributes) SetOrganizationAccess(value Teams_attributes_organiza
 func (m *Teams_attributes) SetPermissions(value Teams_attributes_permissionsable)() {
     m.permissions = value
 }
-// SetScimGroupName sets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.
+// SetScimGroupName sets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimGroupName(value *string)() {
     m.scimGroupName = value
 }
-// SetScimLinked sets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.
+// SetScimLinked sets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimLinked(value *bool)() {
     m.scimLinked = value
 }
-// SetScimSyncPaused sets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.
+// SetScimSyncPaused sets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimSyncPaused(value *bool)() {
     m.scimSyncPaused = value
 }
-// SetScimUpdatedAt sets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.
+// SetScimUpdatedAt sets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.scimUpdatedAt = value
 }

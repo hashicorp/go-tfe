@@ -13,7 +13,7 @@ import (
 type FeatureSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// FeatureSetsRequestBuilderGetQueryParameters lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.
+// FeatureSetsRequestBuilderGetQueryParameters lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.This operation is only available in HCP Terraform.
 type FeatureSetsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewFeatureSetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     urlParams["request-raw-url"] = rawUrl
     return NewFeatureSetsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.
+// Get lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.This operation is only available in HCP Terraform.
 // returns a FeatureSetsGetResponseable when successful
 // returns a Errors error when the service returns a 401 status code
 // returns a Errors error when the service returns a 404 status code
@@ -55,7 +55,7 @@ func (m *FeatureSetsRequestBuilder) Get(ctx context.Context, requestConfiguratio
     }
     return res.(FeatureSetsGetResponseable), nil
 }
-// ToGetRequestInformation lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.
+// ToGetRequestInformation lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *FeatureSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[FeatureSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

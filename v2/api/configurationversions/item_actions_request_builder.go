@@ -29,3 +29,18 @@ func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     urlParams["request-raw-url"] = rawUrl
     return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
 }
+// Permanently_delete_backing_data the permanently_delete_backing_data property
+// returns a *ItemActionsPermanently_delete_backing_dataRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) Permanently_delete_backing_data()(*ItemActionsPermanently_delete_backing_dataRequestBuilder) {
+    return NewItemActionsPermanently_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Restore_backing_data the restore_backing_data property
+// returns a *ItemActionsRestore_backing_dataRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) Restore_backing_data()(*ItemActionsRestore_backing_dataRequestBuilder) {
+    return NewItemActionsRestore_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Soft_delete_backing_data the soft_delete_backing_data property
+// returns a *ItemActionsSoft_delete_backing_dataRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) Soft_delete_backing_data()(*ItemActionsSoft_delete_backing_dataRequestBuilder) {
+    return NewItemActionsSoft_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}

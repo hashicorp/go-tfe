@@ -35,9 +35,9 @@ type PolicySets_attributes struct {
     policyUpdatePatterns []string
     // The projectCount property
     projectCount *int32
-    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scopingType *PolicySets_attributes_scopingType
-    // The tagSelectors property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tagSelectors []PolicySets_attributes_tagSelectorsable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -323,12 +323,12 @@ func (m *PolicySets_attributes) GetPolicyUpdatePatterns()([]string) {
 func (m *PolicySets_attributes) GetProjectCount()(*int32) {
     return m.projectCount
 }
-// GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+// GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *PolicySets_attributes_scopingType when successful
 func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
     return m.scopingType
 }
-// GetTagSelectors gets the tag-selectors property value. The tagSelectors property
+// GetTagSelectors gets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a []PolicySets_attributes_tagSelectorsable when successful
 func (m *PolicySets_attributes) GetTagSelectors()([]PolicySets_attributes_tagSelectorsable) {
     return m.tagSelectors
@@ -495,11 +495,11 @@ func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string)() {
 func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
     m.projectCount = value
 }
-// SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+// SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
     m.scopingType = value
 }
-// SetTagSelectors sets the tag-selectors property value. The tagSelectors property
+// SetTagSelectors sets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
     m.tagSelectors = value
 }

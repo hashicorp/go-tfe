@@ -26,7 +26,7 @@ func NewItemHyokConfigurationsTestRequestBuilder(rawUrl string, requestAdapter i
     urlParams["request-raw-url"] = rawUrl
     return NewItemHyokConfigurationsTestRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.
+// Post test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemHyokConfigurationsTestRequestBuilder) Post(ctx context.Context, body ItemHyokConfigurationsTestPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemHyokConfigurationsTestRequestBuilder) Post(ctx context.Context, bod
     }
     return nil
 }
-// ToPostRequestInformation test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.
+// ToPostRequestInformation test an HYOK configuration that has yet to be saved on HCP Terraform. The test ensures that the configuration is set up correctly to connect to the specified KMS.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemHyokConfigurationsTestRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemHyokConfigurationsTestPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

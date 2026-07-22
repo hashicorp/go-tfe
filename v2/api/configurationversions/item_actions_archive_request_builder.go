@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i3ce931ea689b3fc05d03931afa4a8fa5a25473da9ad66350563ee26f899eca0e "github.com/hashicorp/go-tfe/v2/api/configurationversions/item/actions/archive"
 )
 
 // ItemActionsArchiveRequestBuilder builds and executes requests for operations under \configuration-versions\{configuration_version_id}\actions\archive
@@ -27,22 +28,26 @@ func NewItemActionsArchiveRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     return NewItemActionsArchiveRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post archive the uploaded files for a configuration version.
+// returns a *ArchivePostResponse when successful
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsArchiveRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+func (m *ItemActionsArchiveRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i3ce931ea689b3fc05d03931afa4a8fa5a25473da9ad66350563ee26f899eca0e.ArchivePostResponse, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
-        return err
+        return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "409": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.SendEnum(ctx, requestInfo, i3ce931ea689b3fc05d03931afa4a8fa5a25473da9ad66350563ee26f899eca0e.ParseArchivePostResponse, errorMapping)
     if err != nil {
-        return err
+        return nil, err
     }
-    return nil
+    if res == nil {
+        return nil, nil
+    }
+    return res.(*i3ce931ea689b3fc05d03931afa4a8fa5a25473da9ad66350563ee26f899eca0e.ArchivePostResponse), nil
 }
 // ToPostRequestInformation archive the uploaded files for a configuration version.
 // returns a *RequestInformation when successful

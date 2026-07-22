@@ -26,7 +26,7 @@ func NewItemSubscriptionRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     urlParams["request-raw-url"] = rawUrl
     return NewItemSubscriptionRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Patch update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.
+// Patch update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.This operation is only available in HCP Terraform.
 // returns a SubscriptionsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemSubscriptionRequestBuilder) Patch(ctx context.Context, body ItemSubscriptionPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SubscriptionsEnvelopeable, error) {
@@ -46,7 +46,7 @@ func (m *ItemSubscriptionRequestBuilder) Patch(ctx context.Context, body ItemSub
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SubscriptionsEnvelopeable), nil
 }
-// ToPatchRequestInformation update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.
+// ToPatchRequestInformation update configurable fields on an organization's active subscription. Currently supports setting, updating, or clearing the RUM alert threshold. Requires org owner permissions. Only available on paid RUM plans.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemSubscriptionRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemSubscriptionPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

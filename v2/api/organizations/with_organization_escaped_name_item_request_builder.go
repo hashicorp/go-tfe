@@ -198,6 +198,11 @@ func (m *WithOrganization_nameItemRequestBuilder) RecoverableItems()(*ItemRecove
 func (m *WithOrganization_nameItemRequestBuilder) RegistryModules()(*ItemRegistryModulesRequestBuilder) {
     return NewItemRegistryModulesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Relationships the relationships property
+// returns a *ItemRelationshipsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
+    return NewItemRelationshipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Runs the runs property
 // returns a *ItemRunsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Runs()(*ItemRunsRequestBuilder) {

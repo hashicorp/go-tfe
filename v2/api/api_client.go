@@ -65,6 +65,7 @@ import (
     if79c79bd91715cf771fcf71d144e7813d4a746ac43c33fe4d933a83cbd521b8f "github.com/hashicorp/go-tfe/v2/api/tfpolicysetoutcomes"
     if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations"
     if98345fbfcbf35d9802ff0f86c47b887991578f3c045956773765f5ed9880f45 "github.com/hashicorp/go-tfe/v2/api/taskresultoutcomes"
+    ifb7790691092242fcedaef3a1b1e29d95535948dd928a2e61584e4377325be57 "github.com/hashicorp/go-tfe/v2/api/assessments"
     ifdc5f7656139cba3d476719e11926e5c5420f749e4486c10560f10ea71688721 "github.com/hashicorp/go-tfe/v2/api/organizationmemberships"
 )
 
@@ -96,6 +97,11 @@ func (m *ApiClient) Applies()(*i6deddaa1c7f639a3972e6e85d970773ee131b52cfe7b6df0
 // returns a *AssessmentResultsRequestBuilder when successful
 func (m *ApiClient) AssessmentResults()(*id37f321ec9d929c628c7d6b68b52c0895a210904bdfe553054b3b8144f73ba73.AssessmentResultsRequestBuilder) {
     return id37f321ec9d929c628c7d6b68b52c0895a210904bdfe553054b3b8144f73ba73.NewAssessmentResultsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Assessments the assessments property
+// returns a *AssessmentsRequestBuilder when successful
+func (m *ApiClient) Assessments()(*ifb7790691092242fcedaef3a1b1e29d95535948dd928a2e61584e4377325be57.AssessmentsRequestBuilder) {
+    return ifb7790691092242fcedaef3a1b1e29d95535948dd928a2e61584e4377325be57.NewAssessmentsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // AuthenticationTokens the authenticationTokens property
 // returns a *AuthenticationTokensRequestBuilder when successful

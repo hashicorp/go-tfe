@@ -24,6 +24,11 @@ func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     urlParams["request-raw-url"] = rawUrl
     return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
 }
+// DataRetentionPolicy the dataRetentionPolicy property
+// returns a *ItemRelationshipsDataRetentionPolicyRequestBuilder when successful
+func (m *ItemRelationshipsRequestBuilder) DataRetentionPolicy()(*ItemRelationshipsDataRetentionPolicyRequestBuilder) {
+    return NewItemRelationshipsDataRetentionPolicyRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // RemoteStateConsumers the remoteStateConsumers property
 // returns a *ItemRelationshipsRemoteStateConsumersRequestBuilder when successful
 func (m *ItemRelationshipsRequestBuilder) RemoteStateConsumers()(*ItemRelationshipsRemoteStateConsumersRequestBuilder) {

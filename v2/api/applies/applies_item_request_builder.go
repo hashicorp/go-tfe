@@ -13,6 +13,11 @@ import (
 type AppliesItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// Actions the actions property
+// returns a *ItemActionsRequestBuilder when successful
+func (m *AppliesItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
+    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewAppliesItemRequestBuilderInternal instantiates a new AppliesItemRequestBuilder and sets the default values.
 func NewAppliesItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AppliesItemRequestBuilder) {
     m := &AppliesItemRequestBuilder{

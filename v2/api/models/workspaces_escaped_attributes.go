@@ -33,9 +33,9 @@ type Workspaces_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The description property
     description *string
-    // Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+    // A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
     effectiveRunDataRetentionDesc *string
-    // Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+    // A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
     effectiveStateVersionRetentionDesc *string
     // The environment property
     environment *string
@@ -45,6 +45,8 @@ type Workspaces_attributes struct {
     fileTriggersEnabled *bool
     // The globalRemoteState property
     globalRemoteState *bool
+    // HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
+    hyokEnabled *bool
     // The inheritsProjectAutoDestroy property
     inheritsProjectAutoDestroy *bool
     // The lastAssessmentResultAt property
@@ -176,12 +178,12 @@ func (m *Workspaces_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a
 func (m *Workspaces_attributes) GetDescription()(*string) {
     return m.description
 }
-// GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+// GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc()(*string) {
     return m.effectiveRunDataRetentionDesc
 }
-// GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+// GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc()(*string) {
     return m.effectiveStateVersionRetentionDesc
@@ -367,6 +369,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetGlobalRemoteState(val)
+        }
+        return nil
+    }
+    res["hyok-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetHyokEnabled(val)
         }
         return nil
     }
@@ -690,6 +702,11 @@ func (m *Workspaces_attributes) GetFileTriggersEnabled()(*bool) {
 func (m *Workspaces_attributes) GetGlobalRemoteState()(*bool) {
     return m.globalRemoteState
 }
+// GetHyokEnabled gets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
+// returns a *bool when successful
+func (m *Workspaces_attributes) GetHyokEnabled()(*bool) {
+    return m.hyokEnabled
+}
 // GetInheritsProjectAutoDestroy gets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetInheritsProjectAutoDestroy()(*bool) {
@@ -935,6 +952,12 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteBoolValue("hyok-enabled", m.GetHyokEnabled())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("inherits-project-auto-destroy", m.GetInheritsProjectAutoDestroy())
         if err != nil {
             return err
@@ -1158,11 +1181,11 @@ func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3a
 func (m *Workspaces_attributes) SetDescription(value *string)() {
     m.description = value
 }
-// SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.
+// SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
 func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string)() {
     m.effectiveRunDataRetentionDesc = value
 }
-// SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. Terraform Enterprise only. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.
+// SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
 func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string)() {
     m.effectiveStateVersionRetentionDesc = value
 }
@@ -1181,6 +1204,10 @@ func (m *Workspaces_attributes) SetFileTriggersEnabled(value *bool)() {
 // SetGlobalRemoteState sets the global-remote-state property value. The globalRemoteState property
 func (m *Workspaces_attributes) SetGlobalRemoteState(value *bool)() {
     m.globalRemoteState = value
+}
+// SetHyokEnabled sets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
+func (m *Workspaces_attributes) SetHyokEnabled(value *bool)() {
+    m.hyokEnabled = value
 }
 // SetInheritsProjectAutoDestroy sets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 func (m *Workspaces_attributes) SetInheritsProjectAutoDestroy(value *bool)() {
@@ -1318,6 +1345,7 @@ type Workspaces_attributesable interface {
     GetExecutionMode()(*Workspaces_attributes_executionMode)
     GetFileTriggersEnabled()(*bool)
     GetGlobalRemoteState()(*bool)
+    GetHyokEnabled()(*bool)
     GetInheritsProjectAutoDestroy()(*bool)
     GetLastAssessmentResultAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -1364,6 +1392,7 @@ type Workspaces_attributesable interface {
     SetExecutionMode(value *Workspaces_attributes_executionMode)()
     SetFileTriggersEnabled(value *bool)()
     SetGlobalRemoteState(value *bool)()
+    SetHyokEnabled(value *bool)()
     SetInheritsProjectAutoDestroy(value *bool)()
     SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
