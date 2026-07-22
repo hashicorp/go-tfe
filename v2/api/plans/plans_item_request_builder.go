@@ -13,6 +13,11 @@ import (
 type PlansItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// Actions the actions property
+// returns a *ItemActionsRequestBuilder when successful
+func (m *PlansItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
+    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewPlansItemRequestBuilderInternal instantiates a new PlansItemRequestBuilder and sets the default values.
 func NewPlansItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*PlansItemRequestBuilder) {
     m := &PlansItemRequestBuilder{

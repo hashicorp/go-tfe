@@ -18,7 +18,7 @@ type Projects_attributes_permissions struct {
     canDestroy *bool
     // The canManageEphemeralWorkspaceForProjects property
     canManageEphemeralWorkspaceForProjects *bool
-    // The canManageInHcp property
+    // This attribute is only available in HCP Terraform.
     canManageInHcp *bool
     // The canManageStacks property
     canManageStacks *bool
@@ -80,7 +80,7 @@ func (m *Projects_attributes_permissions) GetCanDestroy()(*bool) {
 func (m *Projects_attributes_permissions) GetCanManageEphemeralWorkspaceForProjects()(*bool) {
     return m.canManageEphemeralWorkspaceForProjects
 }
-// GetCanManageInHcp gets the can-manage-in-hcp property value. The canManageInHcp property
+// GetCanManageInHcp gets the can-manage-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageInHcp()(*bool) {
     return m.canManageInHcp
@@ -432,7 +432,7 @@ func (m *Projects_attributes_permissions) SetCanDestroy(value *bool)() {
 func (m *Projects_attributes_permissions) SetCanManageEphemeralWorkspaceForProjects(value *bool)() {
     m.canManageEphemeralWorkspaceForProjects = value
 }
-// SetCanManageInHcp sets the can-manage-in-hcp property value. The canManageInHcp property
+// SetCanManageInHcp sets the can-manage-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Projects_attributes_permissions) SetCanManageInHcp(value *bool)() {
     m.canManageInHcp = value
 }

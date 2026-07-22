@@ -26,7 +26,7 @@ func NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl string, requestA
     urlParams["request-raw-url"] = rawUrl
     return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete deletes a Metrics Service token.
+// Delete deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Co
     }
     return nil
 }
-// ToDeleteRequestInformation deletes a Metrics Service token.
+// ToDeleteRequestInformation deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

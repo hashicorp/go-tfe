@@ -35,12 +35,22 @@ func NewItemRegistryModulesValidationRequestBuilder(rawUrl string, requestAdapte
 }
 // Get this endpoint checks if a module name and provider combination is available for use within an organization.It returns a validation result indicating whether the name is already in use.
 // returns a RegistryModuleAddressValidationsEnvelopeable when successful
+// returns a Errors error when the service returns a 400 status code
+// returns a Errors error when the service returns a 401 status code
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 422 status code
 func (m *ItemRegistryModulesValidationRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRegistryModulesValidationRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModuleAddressValidationsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateRegistryModuleAddressValidationsEnvelopeFromDiscriminatorValue, nil)
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "422": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateRegistryModuleAddressValidationsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }

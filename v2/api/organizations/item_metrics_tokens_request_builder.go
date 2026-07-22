@@ -38,7 +38,7 @@ func NewItemMetricsTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     urlParams["request-raw-url"] = rawUrl
     return NewItemMetricsTokensRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists all Metrics service tokens for the organization.
+// Get lists all Metrics service tokens for the organization.This operation is only available in HCP Terraform.
 // returns a ItemMetricsTokensGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemMetricsTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemMetricsTokensGetResponseable, error) {
@@ -58,7 +58,7 @@ func (m *ItemMetricsTokensRequestBuilder) Get(ctx context.Context, requestConfig
     }
     return res.(ItemMetricsTokensGetResponseable), nil
 }
-// Post generates a new Metrics Service token.
+// Post generates a new Metrics Service token.This operation is only available in HCP Terraform.
 // returns a ItemMetricsTokensPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemMetricsTokensRequestBuilder) Post(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemMetricsTokensPostResponseable, error) {
@@ -78,7 +78,7 @@ func (m *ItemMetricsTokensRequestBuilder) Post(ctx context.Context, body ItemMet
     }
     return res.(ItemMetricsTokensPostResponseable), nil
 }
-// ToGetRequestInformation lists all Metrics service tokens for the organization.
+// ToGetRequestInformation lists all Metrics service tokens for the organization.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemMetricsTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -86,7 +86,7 @@ func (m *ItemMetricsTokensRequestBuilder) ToGetRequestInformation(ctx context.Co
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation generates a new Metrics Service token.
+// ToPostRequestInformation generates a new Metrics Service token.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemMetricsTokensRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

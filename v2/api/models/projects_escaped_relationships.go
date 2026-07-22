@@ -12,8 +12,6 @@ type Projects_relationships struct {
     additionalData map[string]any
     // The defaultAgentPool property
     defaultAgentPool AgentPoolsIdable
-    // The effectiveTagBindings property
-    effectiveTagBindings Projects_relationships_effectiveTagBindingsable
     // The organization property
     organization Projects_relationships_organizationable
     // The stacksDefaultAgentPool property
@@ -43,11 +41,6 @@ func (m *Projects_relationships) GetAdditionalData()(map[string]any) {
 func (m *Projects_relationships) GetDefaultAgentPool()(AgentPoolsIdable) {
     return m.defaultAgentPool
 }
-// GetEffectiveTagBindings gets the effective-tag-bindings property value. The effectiveTagBindings property
-// returns a Projects_relationships_effectiveTagBindingsable when successful
-func (m *Projects_relationships) GetEffectiveTagBindings()(Projects_relationships_effectiveTagBindingsable) {
-    return m.effectiveTagBindings
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Projects_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -59,16 +52,6 @@ func (m *Projects_relationships) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetDefaultAgentPool(val.(AgentPoolsIdable))
-        }
-        return nil
-    }
-    res["effective-tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjects_relationships_effectiveTagBindingsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEffectiveTagBindings(val.(Projects_relationships_effectiveTagBindingsable))
         }
         return nil
     }
@@ -128,12 +111,6 @@ func (m *Projects_relationships) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
-        err := writer.WriteObjectValue("effective-tag-bindings", m.GetEffectiveTagBindings())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
         if err != nil {
             return err
@@ -167,10 +144,6 @@ func (m *Projects_relationships) SetAdditionalData(value map[string]any)() {
 func (m *Projects_relationships) SetDefaultAgentPool(value AgentPoolsIdable)() {
     m.defaultAgentPool = value
 }
-// SetEffectiveTagBindings sets the effective-tag-bindings property value. The effectiveTagBindings property
-func (m *Projects_relationships) SetEffectiveTagBindings(value Projects_relationships_effectiveTagBindingsable)() {
-    m.effectiveTagBindings = value
-}
 // SetOrganization sets the organization property value. The organization property
 func (m *Projects_relationships) SetOrganization(value Projects_relationships_organizationable)() {
     m.organization = value
@@ -187,12 +160,10 @@ type Projects_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetDefaultAgentPool()(AgentPoolsIdable)
-    GetEffectiveTagBindings()(Projects_relationships_effectiveTagBindingsable)
     GetOrganization()(Projects_relationships_organizationable)
     GetStacksDefaultAgentPool()(AgentPoolsIdable)
     GetTagBindings()(Projects_relationships_tagBindingsable)
     SetDefaultAgentPool(value AgentPoolsIdable)()
-    SetEffectiveTagBindings(value Projects_relationships_effectiveTagBindingsable)()
     SetOrganization(value Projects_relationships_organizationable)()
     SetStacksDefaultAgentPool(value AgentPoolsIdable)()
     SetTagBindings(value Projects_relationships_tagBindingsable)()

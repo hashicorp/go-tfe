@@ -13,7 +13,7 @@ import (
 type ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy evaluation.
+// ItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy evaluation.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemRequestBuilderGetQueryParameters struct {
     // Comma-separated list of related resources to include. Valid values are `tf_policy_set_outcomes`.
     Include *string "uriparametername:\"include\""
@@ -36,7 +36,7 @@ func NewItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1
     urlParams["request-raw-url"] = rawUrl
     return NewItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get get details about a specific Terraform Policy evaluation.
+// Get get details about a specific Terraform Policy evaluation.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(ItemGetResponseable, error) {
@@ -61,7 +61,7 @@ func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae
 func (m *ItemRequestBuilder) TfPolicySetOutcomes()(*ItemTfPolicySetOutcomesRequestBuilder) {
     return NewItemTfPolicySetOutcomesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// ToGetRequestInformation get details about a specific Terraform Policy evaluation.
+// ToGetRequestInformation get details about a specific Terraform Policy evaluation.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

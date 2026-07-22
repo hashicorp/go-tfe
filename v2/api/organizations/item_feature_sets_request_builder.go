@@ -13,7 +13,7 @@ import (
 type ItemFeatureSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemFeatureSetsRequestBuilderGetQueryParameters lists the feature sets a particular organization is eligible to access.
+// ItemFeatureSetsRequestBuilderGetQueryParameters lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 type ItemFeatureSetsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemFeatureSetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
     urlParams["request-raw-url"] = rawUrl
     return NewItemFeatureSetsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists the feature sets a particular organization is eligible to access.
+// Get lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 // returns a ItemFeatureSetsGetResponseable when successful
 // returns a Errors error when the service returns a 401 status code
 // returns a Errors error when the service returns a 403 status code
@@ -57,7 +57,7 @@ func (m *ItemFeatureSetsRequestBuilder) Get(ctx context.Context, requestConfigur
     }
     return res.(ItemFeatureSetsGetResponseable), nil
 }
-// ToGetRequestInformation lists the feature sets a particular organization is eligible to access.
+// ToGetRequestInformation lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemFeatureSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemFeatureSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

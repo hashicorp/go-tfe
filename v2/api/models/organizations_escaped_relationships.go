@@ -14,16 +14,22 @@ type Organizations_relationships struct {
     auditTrailsAuthenticationToken Links_relatedable
     // The authenticationToken property
     authenticationToken Links_relatedable
+    // The dataRetentionPolicy property
+    dataRetentionPolicy DataRetentionPolicyIdable
     // The defaultAgentPool property
     defaultAgentPool AgentPoolsIdable
     // The defaultProject property
     defaultProject ProjectsIdable
     // The entitlementSet property
     entitlementSet EntitlementSetsIdable
+    // The moduleProducers property
+    moduleProducers Links_relatedable
     // The oauthTokens property
     oauthTokens Links_relatedable
     // The primaryHyokConfiguration property
     primaryHyokConfiguration HyokConfigurationsIdable
+    // The providerProducers property
+    providerProducers Links_relatedable
     // The stacksDefaultAgentPool property
     stacksDefaultAgentPool AgentPoolsIdable
     // The subscription property
@@ -55,6 +61,11 @@ func (m *Organizations_relationships) GetAuditTrailsAuthenticationToken()(Links_
 // returns a Links_relatedable when successful
 func (m *Organizations_relationships) GetAuthenticationToken()(Links_relatedable) {
     return m.authenticationToken
+}
+// GetDataRetentionPolicy gets the data-retention-policy property value. The dataRetentionPolicy property
+// returns a DataRetentionPolicyIdable when successful
+func (m *Organizations_relationships) GetDataRetentionPolicy()(DataRetentionPolicyIdable) {
+    return m.dataRetentionPolicy
 }
 // GetDefaultAgentPool gets the default-agent-pool property value. The defaultAgentPool property
 // returns a AgentPoolsIdable when successful
@@ -95,6 +106,16 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["data-retention-policy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateDataRetentionPolicyIdFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDataRetentionPolicy(val.(DataRetentionPolicyIdable))
+        }
+        return nil
+    }
     res["default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
         if err != nil {
@@ -125,6 +146,16 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["module-producers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModuleProducers(val.(Links_relatedable))
+        }
+        return nil
+    }
     res["oauth-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
         if err != nil {
@@ -142,6 +173,16 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         if val != nil {
             m.SetPrimaryHyokConfiguration(val.(HyokConfigurationsIdable))
+        }
+        return nil
+    }
+    res["provider-producers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetProviderProducers(val.(Links_relatedable))
         }
         return nil
     }
@@ -167,6 +208,11 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
     }
     return res
 }
+// GetModuleProducers gets the module-producers property value. The moduleProducers property
+// returns a Links_relatedable when successful
+func (m *Organizations_relationships) GetModuleProducers()(Links_relatedable) {
+    return m.moduleProducers
+}
 // GetOauthTokens gets the oauth-tokens property value. The oauthTokens property
 // returns a Links_relatedable when successful
 func (m *Organizations_relationships) GetOauthTokens()(Links_relatedable) {
@@ -176,6 +222,11 @@ func (m *Organizations_relationships) GetOauthTokens()(Links_relatedable) {
 // returns a HyokConfigurationsIdable when successful
 func (m *Organizations_relationships) GetPrimaryHyokConfiguration()(HyokConfigurationsIdable) {
     return m.primaryHyokConfiguration
+}
+// GetProviderProducers gets the provider-producers property value. The providerProducers property
+// returns a Links_relatedable when successful
+func (m *Organizations_relationships) GetProviderProducers()(Links_relatedable) {
+    return m.providerProducers
 }
 // GetStacksDefaultAgentPool gets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 // returns a AgentPoolsIdable when successful
@@ -202,6 +253,12 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
         }
     }
     {
+        err := writer.WriteObjectValue("data-retention-policy", m.GetDataRetentionPolicy())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("default-agent-pool", m.GetDefaultAgentPool())
         if err != nil {
             return err
@@ -220,6 +277,12 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
         }
     }
     {
+        err := writer.WriteObjectValue("module-producers", m.GetModuleProducers())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("oauth-tokens", m.GetOauthTokens())
         if err != nil {
             return err
@@ -227,6 +290,12 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
     }
     {
         err := writer.WriteObjectValue("primary-hyok-configuration", m.GetPrimaryHyokConfiguration())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("provider-producers", m.GetProviderProducers())
         if err != nil {
             return err
         }
@@ -263,6 +332,10 @@ func (m *Organizations_relationships) SetAuditTrailsAuthenticationToken(value Li
 func (m *Organizations_relationships) SetAuthenticationToken(value Links_relatedable)() {
     m.authenticationToken = value
 }
+// SetDataRetentionPolicy sets the data-retention-policy property value. The dataRetentionPolicy property
+func (m *Organizations_relationships) SetDataRetentionPolicy(value DataRetentionPolicyIdable)() {
+    m.dataRetentionPolicy = value
+}
 // SetDefaultAgentPool sets the default-agent-pool property value. The defaultAgentPool property
 func (m *Organizations_relationships) SetDefaultAgentPool(value AgentPoolsIdable)() {
     m.defaultAgentPool = value
@@ -275,6 +348,10 @@ func (m *Organizations_relationships) SetDefaultProject(value ProjectsIdable)() 
 func (m *Organizations_relationships) SetEntitlementSet(value EntitlementSetsIdable)() {
     m.entitlementSet = value
 }
+// SetModuleProducers sets the module-producers property value. The moduleProducers property
+func (m *Organizations_relationships) SetModuleProducers(value Links_relatedable)() {
+    m.moduleProducers = value
+}
 // SetOauthTokens sets the oauth-tokens property value. The oauthTokens property
 func (m *Organizations_relationships) SetOauthTokens(value Links_relatedable)() {
     m.oauthTokens = value
@@ -282,6 +359,10 @@ func (m *Organizations_relationships) SetOauthTokens(value Links_relatedable)() 
 // SetPrimaryHyokConfiguration sets the primary-hyok-configuration property value. The primaryHyokConfiguration property
 func (m *Organizations_relationships) SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)() {
     m.primaryHyokConfiguration = value
+}
+// SetProviderProducers sets the provider-producers property value. The providerProducers property
+func (m *Organizations_relationships) SetProviderProducers(value Links_relatedable)() {
+    m.providerProducers = value
 }
 // SetStacksDefaultAgentPool sets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 func (m *Organizations_relationships) SetStacksDefaultAgentPool(value AgentPoolsIdable)() {
@@ -296,20 +377,26 @@ type Organizations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAuditTrailsAuthenticationToken()(Links_relatedable)
     GetAuthenticationToken()(Links_relatedable)
+    GetDataRetentionPolicy()(DataRetentionPolicyIdable)
     GetDefaultAgentPool()(AgentPoolsIdable)
     GetDefaultProject()(ProjectsIdable)
     GetEntitlementSet()(EntitlementSetsIdable)
+    GetModuleProducers()(Links_relatedable)
     GetOauthTokens()(Links_relatedable)
     GetPrimaryHyokConfiguration()(HyokConfigurationsIdable)
+    GetProviderProducers()(Links_relatedable)
     GetStacksDefaultAgentPool()(AgentPoolsIdable)
     GetSubscription()(SubscriptionsIdable)
     SetAuditTrailsAuthenticationToken(value Links_relatedable)()
     SetAuthenticationToken(value Links_relatedable)()
+    SetDataRetentionPolicy(value DataRetentionPolicyIdable)()
     SetDefaultAgentPool(value AgentPoolsIdable)()
     SetDefaultProject(value ProjectsIdable)()
     SetEntitlementSet(value EntitlementSetsIdable)()
+    SetModuleProducers(value Links_relatedable)()
     SetOauthTokens(value Links_relatedable)()
     SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)()
+    SetProviderProducers(value Links_relatedable)()
     SetStacksDefaultAgentPool(value AgentPoolsIdable)()
     SetSubscription(value SubscriptionsIdable)()
 }

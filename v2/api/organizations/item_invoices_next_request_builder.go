@@ -6,12 +6,105 @@ package organizations
 import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
 // ItemInvoicesNextRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\invoices\next
 type ItemInvoicesNextRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// NextGetResponse composed type wrapper for classes ItemInvoicesNextGetResponseMember1able, string
+type NextGetResponse struct {
+    // Composed type representation for type ItemInvoicesNextGetResponseMember1able
+    itemInvoicesNextGetResponseMember1 ItemInvoicesNextGetResponseMember1able
+    // Composed type representation for type string
+    string *string
+}
+// NewNextGetResponse instantiates a new NextGetResponse and sets the default values.
+func NewNextGetResponse()(*NextGetResponse) {
+    m := &NextGetResponse{
+    }
+    return m
+}
+// CreateNextGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateNextGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewNextGetResponse()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+            }
+        }
+    }
+    if val, err := parseNode.GetStringValue(); val != nil {
+        if err != nil {
+            return nil, err
+        }
+        result.SetString(val)
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *NextGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetItemInvoicesNextGetResponseMember1() != nil {
+        return m.GetItemInvoicesNextGetResponseMember1().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *NextGetResponse) GetIsComposedType()(bool) {
+    return true
+}
+// GetItemInvoicesNextGetResponseMember1 gets the ItemInvoicesNextGetResponseMember1 property value. Composed type representation for type ItemInvoicesNextGetResponseMember1able
+// returns a ItemInvoicesNextGetResponseMember1able when successful
+func (m *NextGetResponse) GetItemInvoicesNextGetResponseMember1()(ItemInvoicesNextGetResponseMember1able) {
+    return m.itemInvoicesNextGetResponseMember1
+}
+// GetString gets the string property value. Composed type representation for type string
+// returns a *string when successful
+func (m *NextGetResponse) GetString()(*string) {
+    return m.string
+}
+// Serialize serializes information the current object
+func (m *NextGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetItemInvoicesNextGetResponseMember1() != nil {
+        err := writer.WriteObjectValue("", m.GetItemInvoicesNextGetResponseMember1())
+        if err != nil {
+            return err
+        }
+    } else if m.GetString() != nil {
+        err := writer.WriteStringValue("", m.GetString())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetItemInvoicesNextGetResponseMember1 sets the ItemInvoicesNextGetResponseMember1 property value. Composed type representation for type ItemInvoicesNextGetResponseMember1able
+func (m *NextGetResponse) SetItemInvoicesNextGetResponseMember1(value ItemInvoicesNextGetResponseMember1able)() {
+    m.itemInvoicesNextGetResponseMember1 = value
+}
+// SetString sets the string property value. Composed type representation for type string
+func (m *NextGetResponse) SetString(value *string)() {
+    m.string = value
+}
+type NextGetResponseable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetItemInvoicesNextGetResponseMember1()(ItemInvoicesNextGetResponseMember1able)
+    GetString()(*string)
+    SetItemInvoicesNextGetResponseMember1(value ItemInvoicesNextGetResponseMember1able)()
+    SetString(value *string)()
 }
 // NewItemInvoicesNextRequestBuilderInternal instantiates a new ItemInvoicesNextRequestBuilder and sets the default values.
 func NewItemInvoicesNextRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesNextRequestBuilder) {
@@ -26,10 +119,10 @@ func NewItemInvoicesNextRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     urlParams["request-raw-url"] = rawUrl
     return NewItemInvoicesNextRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.
-// returns a ItemInvoicesNextGetResponseable when successful
+// Get returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.This operation is only available in HCP Terraform.
+// returns a NextGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemInvoicesNextRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemInvoicesNextGetResponseable, error) {
+func (m *ItemInvoicesNextRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(NextGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -37,16 +130,16 @@ func (m *ItemInvoicesNextRequestBuilder) Get(ctx context.Context, requestConfigu
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemInvoicesNextGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateNextGetResponseFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemInvoicesNextGetResponseable), nil
+    return res.(NextGetResponseable), nil
 }
-// ToGetRequestInformation returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.
+// ToGetRequestInformation returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemInvoicesNextRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

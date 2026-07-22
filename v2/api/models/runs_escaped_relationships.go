@@ -34,7 +34,7 @@ type Runs_relationships struct {
     runTriggerSnapshots Relatedable
     // The taskStages property
     taskStages Runs_relationships_taskStagesable
-    // The tfPolicyEvaluations property
+    // This relationship is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tfPolicyEvaluations Runs_relationships_tfPolicyEvaluationsable
     // The triggeringRun property
     triggeringRun RunsIdable
@@ -286,7 +286,7 @@ func (m *Runs_relationships) GetRunTriggerSnapshots()(Relatedable) {
 func (m *Runs_relationships) GetTaskStages()(Runs_relationships_taskStagesable) {
     return m.taskStages
 }
-// GetTfPolicyEvaluations gets the tf-policy-evaluations property value. The tfPolicyEvaluations property
+// GetTfPolicyEvaluations gets the tf-policy-evaluations property value. This relationship is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Runs_relationships_tfPolicyEvaluationsable when successful
 func (m *Runs_relationships) GetTfPolicyEvaluations()(Runs_relationships_tfPolicyEvaluationsable) {
     return m.tfPolicyEvaluations
@@ -464,7 +464,7 @@ func (m *Runs_relationships) SetRunTriggerSnapshots(value Relatedable)() {
 func (m *Runs_relationships) SetTaskStages(value Runs_relationships_taskStagesable)() {
     m.taskStages = value
 }
-// SetTfPolicyEvaluations sets the tf-policy-evaluations property value. The tfPolicyEvaluations property
+// SetTfPolicyEvaluations sets the tf-policy-evaluations property value. This relationship is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Runs_relationships) SetTfPolicyEvaluations(value Runs_relationships_tfPolicyEvaluationsable)() {
     m.tfPolicyEvaluations = value
 }

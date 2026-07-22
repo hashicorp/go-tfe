@@ -19,9 +19,9 @@ type Projects_attributes struct {
     defaultExecutionMode *Projects_attributes_defaultExecutionMode
     // The description property
     description *string
-    // The hcpId property
+    // This attribute is only available in HCP Terraform.
     hcpId *string
-    // The isUnified property
+    // This attribute is only available in HCP Terraform.
     isUnified *bool
     // The name property
     name *string
@@ -199,12 +199,12 @@ func (m *Projects_attributes) GetFieldDeserializers()(map[string]func(i878a80d23
     }
     return res
 }
-// GetHcpId gets the hcp-id property value. The hcpId property
+// GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Projects_attributes) GetHcpId()(*string) {
     return m.hcpId
 }
-// GetIsUnified gets the is-unified property value. The isUnified property
+// GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Projects_attributes) GetIsUnified()(*bool) {
     return m.isUnified
@@ -337,11 +337,11 @@ func (m *Projects_attributes) SetDefaultExecutionMode(value *Projects_attributes
 func (m *Projects_attributes) SetDescription(value *string)() {
     m.description = value
 }
-// SetHcpId sets the hcp-id property value. The hcpId property
+// SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
 func (m *Projects_attributes) SetHcpId(value *string)() {
     m.hcpId = value
 }
-// SetIsUnified sets the is-unified property value. The isUnified property
+// SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
 func (m *Projects_attributes) SetIsUnified(value *bool)() {
     m.isUnified = value
 }

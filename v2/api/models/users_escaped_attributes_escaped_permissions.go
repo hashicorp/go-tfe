@@ -20,13 +20,13 @@ type Users_attributes_permissions struct {
     canCreateOrganization *bool
     // The canCreateToolVersions property
     canCreateToolVersions *bool
-    // The canManageHcpAccounts property
+    // This attribute is only available in HCP Terraform.
     canManageHcpAccounts *bool
     // The canManageSessions property
     canManageSessions *bool
     // The canManageUserTokens property
     canManageUserTokens *bool
-    // The canReenable2faByUnlinking property
+    // This attribute is only available in HCP Terraform.
     canReenable2faByUnlinking *bool
     // The canUpdateUser property
     canUpdateUser *bool
@@ -99,7 +99,7 @@ func (m *Users_attributes_permissions) GetCanCreateOrganization()(*bool) {
 func (m *Users_attributes_permissions) GetCanCreateToolVersions()(*bool) {
     return m.canCreateToolVersions
 }
-// GetCanManageHcpAccounts gets the can-manage-hcp-accounts property value. The canManageHcpAccounts property
+// GetCanManageHcpAccounts gets the can-manage-hcp-accounts property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanManageHcpAccounts()(*bool) {
     return m.canManageHcpAccounts
@@ -114,7 +114,7 @@ func (m *Users_attributes_permissions) GetCanManageSessions()(*bool) {
 func (m *Users_attributes_permissions) GetCanManageUserTokens()(*bool) {
     return m.canManageUserTokens
 }
-// GetCanReenable2faByUnlinking gets the can-reenable-2fa-by-unlinking property value. The canReenable2faByUnlinking property
+// GetCanReenable2faByUnlinking gets the can-reenable-2fa-by-unlinking property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanReenable2faByUnlinking()(*bool) {
     return m.canReenable2faByUnlinking
@@ -597,7 +597,7 @@ func (m *Users_attributes_permissions) SetCanCreateOrganization(value *bool)() {
 func (m *Users_attributes_permissions) SetCanCreateToolVersions(value *bool)() {
     m.canCreateToolVersions = value
 }
-// SetCanManageHcpAccounts sets the can-manage-hcp-accounts property value. The canManageHcpAccounts property
+// SetCanManageHcpAccounts sets the can-manage-hcp-accounts property value. This attribute is only available in HCP Terraform.
 func (m *Users_attributes_permissions) SetCanManageHcpAccounts(value *bool)() {
     m.canManageHcpAccounts = value
 }
@@ -609,7 +609,7 @@ func (m *Users_attributes_permissions) SetCanManageSessions(value *bool)() {
 func (m *Users_attributes_permissions) SetCanManageUserTokens(value *bool)() {
     m.canManageUserTokens = value
 }
-// SetCanReenable2faByUnlinking sets the can-reenable-2fa-by-unlinking property value. The canReenable2faByUnlinking property
+// SetCanReenable2faByUnlinking sets the can-reenable-2fa-by-unlinking property value. This attribute is only available in HCP Terraform.
 func (m *Users_attributes_permissions) SetCanReenable2faByUnlinking(value *bool)() {
     m.canReenable2faByUnlinking = value
 }

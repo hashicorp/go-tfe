@@ -5,17 +5,17 @@ package models
 type Workspaces_relationships_readme_data_type int
 
 const (
-    READMES_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE Workspaces_relationships_readme_data_type = iota
+    WORKSPACEREADME_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE Workspaces_relationships_readme_data_type = iota
 )
 
 func (i Workspaces_relationships_readme_data_type) String() string {
-    return []string{"readmes"}[i]
+    return []string{"workspace-readme"}[i]
 }
 func ParseWorkspaces_relationships_readme_data_type(v string) (any, error) {
-    result := READMES_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE
+    result := WORKSPACEREADME_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE
     switch v {
-        case "readmes":
-            result = READMES_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE
+        case "workspace-readme":
+            result = WORKSPACEREADME_WORKSPACES_RELATIONSHIPS_README_DATA_TYPE
         default:
             return nil, nil
     }

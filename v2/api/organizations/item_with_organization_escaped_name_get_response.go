@@ -11,7 +11,118 @@ import (
 type ItemWithOrganization_nameGetResponse struct {
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsEnvelope
     // The included property
-    included []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+    included []ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable
+}
+// ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+type ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+    entitlementSets i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+    subscriptions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+}
+// NewItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included instantiates a new ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included and sets the default values.
+func NewItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included()(*ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) {
+    m := &ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included{
+    }
+    return m
+}
+// CreateItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included()
+    if parseNode != nil {
+        if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateEntitlementSetsFromDiscriminatorValue); val != nil {
+            if err != nil {
+                return nil, err
+            }
+            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable); ok {
+                result.SetEntitlementSets(cast)
+            }
+        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateProjectsFromDiscriminatorValue); val != nil {
+            if err != nil {
+                return nil, err
+            }
+            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable); ok {
+                result.SetProjects(cast)
+            }
+        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSubscriptionsFromDiscriminatorValue); val != nil {
+            if err != nil {
+                return nil, err
+            }
+            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable); ok {
+                result.SetSubscriptions(cast)
+            }
+        }
+    }
+    return result, nil
+}
+// GetEntitlementSets gets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+// returns a EntitlementSetsable when successful
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) GetEntitlementSets()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable) {
+    return m.entitlementSets
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// returns a Projectsable when successful
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+    return m.projects
+}
+// GetSubscriptions gets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+// returns a Subscriptionsable when successful
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) GetSubscriptions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable) {
+    return m.subscriptions
+}
+// Serialize serializes information the current object
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetEntitlementSets() != nil {
+        err := writer.WriteObjectValue("", m.GetEntitlementSets())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetSubscriptions() != nil {
+        err := writer.WriteObjectValue("", m.GetSubscriptions())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetEntitlementSets sets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)() {
+    m.entitlementSets = value
+}
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
+    m.projects = value
+}
+// SetSubscriptions sets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+func (m *ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_included) SetSubscriptions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)() {
+    m.subscriptions = value
+}
+type ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetEntitlementSets()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)
+    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+    GetSubscriptions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)
+    SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)()
+    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
+    SetSubscriptions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)()
 }
 // NewItemWithOrganization_nameGetResponse instantiates a new ItemWithOrganization_nameGetResponse and sets the default values.
 func NewItemWithOrganization_nameGetResponse()(*ItemWithOrganization_nameGetResponse) {
@@ -30,15 +141,15 @@ func CreateItemWithOrganization_nameGetResponseFromDiscriminatorValue(parseNode 
 func (m *ItemWithOrganization_nameGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := m.OrganizationsEnvelope.GetFieldDeserializers()
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSubscriptionsFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable, len(val))
+            res := make([]ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)
+                    res[i] = v.(ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable)
                 }
             }
             m.SetIncluded(res)
@@ -48,8 +159,8 @@ func (m *ItemWithOrganization_nameGetResponse) GetFieldDeserializers()(map[strin
     return res
 }
 // GetIncluded gets the included property value. The included property
-// returns a []Subscriptionsable when successful
-func (m *ItemWithOrganization_nameGetResponse) GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable) {
+// returns a []ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable when successful
+func (m *ItemWithOrganization_nameGetResponse) GetIncluded()([]ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable) {
     return m.included
 }
 // Serialize serializes information the current object
@@ -73,12 +184,12 @@ func (m *ItemWithOrganization_nameGetResponse) Serialize(writer i878a80d2330e89d
     return nil
 }
 // SetIncluded sets the included property value. The included property
-func (m *ItemWithOrganization_nameGetResponse) SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)() {
+func (m *ItemWithOrganization_nameGetResponse) SetIncluded(value []ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable)() {
     m.included = value
 }
 type ItemWithOrganization_nameGetResponseable interface {
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsEnvelopeable
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)
-    SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)()
+    GetIncluded()([]ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable)
+    SetIncluded(value []ItemWithOrganization_nameGetResponse_WithOrganization_nameGetResponse_includedable)()
 }

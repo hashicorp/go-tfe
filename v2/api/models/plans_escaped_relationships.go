@@ -12,7 +12,7 @@ type Plans_relationships struct {
     additionalData map[string]any
     // Exports associated with this plan
     exports Plans_relationships_exportsable
-    // HYOK encrypted data key associated with this plan
+    // HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
     hyokEncryptedDataKey Plans_relationships_hyokEncryptedDataKeyable
     // State versions associated with this plan (for TF <= 0.8)
     stateVersions Plans_relationships_stateVersionsable
@@ -75,7 +75,7 @@ func (m *Plans_relationships) GetFieldDeserializers()(map[string]func(i878a80d23
     }
     return res
 }
-// GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this plan
+// GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
 // returns a Plans_relationships_hyokEncryptedDataKeyable when successful
 func (m *Plans_relationships) GetHyokEncryptedDataKey()(Plans_relationships_hyokEncryptedDataKeyable) {
     return m.hyokEncryptedDataKey
@@ -121,7 +121,7 @@ func (m *Plans_relationships) SetAdditionalData(value map[string]any)() {
 func (m *Plans_relationships) SetExports(value Plans_relationships_exportsable)() {
     m.exports = value
 }
-// SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this plan
+// SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
 func (m *Plans_relationships) SetHyokEncryptedDataKey(value Plans_relationships_hyokEncryptedDataKeyable)() {
     m.hyokEncryptedDataKey = value
 }

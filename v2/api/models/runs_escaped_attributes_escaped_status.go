@@ -11,6 +11,7 @@ const (
     FETCHING_COMPLETED_RUNS_ATTRIBUTES_STATUS
     PRE_PLAN_RUNNING_RUNS_ATTRIBUTES_STATUS
     PRE_PLAN_COMPLETED_RUNS_ATTRIBUTES_STATUS
+    PRE_PLAN_AWAITING_DECISION_RUNS_ATTRIBUTES_STATUS
     QUEUING_RUNS_ATTRIBUTES_STATUS
     PLAN_QUEUED_RUNS_ATTRIBUTES_STATUS
     PLANNING_RUNS_ATTRIBUTES_STATUS
@@ -44,7 +45,7 @@ const (
 )
 
 func (i Runs_attributes_status) String() string {
-    return []string{"pending", "fetching", "fetching_completed", "pre_plan_running", "pre_plan_completed", "queuing", "plan_queued", "planning", "planned", "tf_policy_checked", "tf_policy_override", "post_plan_running", "post_plan_completed", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "confirmed", "pre_apply_running", "pre_apply_completed", "queuing_apply", "apply_queued", "applying", "post_apply_running", "post_apply_completed", "applied", "discarded", "errored", "canceled", "planned_and_finished", "planned_and_saved", "assessing", "assessed"}[i]
+    return []string{"pending", "fetching", "fetching_completed", "pre_plan_running", "pre_plan_completed", "pre_plan_awaiting_decision", "queuing", "plan_queued", "planning", "planned", "tf_policy_checked", "tf_policy_override", "post_plan_running", "post_plan_completed", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "confirmed", "pre_apply_running", "pre_apply_completed", "queuing_apply", "apply_queued", "applying", "post_apply_running", "post_apply_completed", "applied", "discarded", "errored", "canceled", "planned_and_finished", "planned_and_saved", "assessing", "assessed"}[i]
 }
 func ParseRuns_attributes_status(v string) (any, error) {
     result := PENDING_RUNS_ATTRIBUTES_STATUS
@@ -59,6 +60,8 @@ func ParseRuns_attributes_status(v string) (any, error) {
             result = PRE_PLAN_RUNNING_RUNS_ATTRIBUTES_STATUS
         case "pre_plan_completed":
             result = PRE_PLAN_COMPLETED_RUNS_ATTRIBUTES_STATUS
+        case "pre_plan_awaiting_decision":
+            result = PRE_PLAN_AWAITING_DECISION_RUNS_ATTRIBUTES_STATUS
         case "queuing":
             result = QUEUING_RUNS_ATTRIBUTES_STATUS
         case "plan_queued":

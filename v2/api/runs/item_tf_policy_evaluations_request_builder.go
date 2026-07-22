@@ -13,7 +13,7 @@ import (
 type ItemTfPolicyEvaluationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters list the Terraform Policy evaluations associated with a run.
+// ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters list the Terraform Policy evaluations associated with a run.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemTfPolicyEvaluationsRequestBuilder(rawUrl string, requestAdapter i2ae
     urlParams["request-raw-url"] = rawUrl
     return NewItemTfPolicyEvaluationsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list the Terraform Policy evaluations associated with a run.
+// Get list the Terraform Policy evaluations associated with a run.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemTfPolicyEvaluationsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemTfPolicyEvaluationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters])(ItemTfPolicyEvaluationsGetResponseable, error) {
@@ -53,7 +53,7 @@ func (m *ItemTfPolicyEvaluationsRequestBuilder) Get(ctx context.Context, request
     }
     return res.(ItemTfPolicyEvaluationsGetResponseable), nil
 }
-// ToGetRequestInformation list the Terraform Policy evaluations associated with a run.
+// ToGetRequestInformation list the Terraform Policy evaluations associated with a run.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemTfPolicyEvaluationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

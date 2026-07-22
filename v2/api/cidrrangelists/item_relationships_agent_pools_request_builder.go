@@ -26,7 +26,7 @@ func NewItemRelationshipsAgentPoolsRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewItemRelationshipsAgentPoolsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete unassign one or more Agent Pools from a CIDR Range List
+// Delete unassign one or more Agent Pools from a CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsAgentPoolsRequestBuilder) Delete(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolIdsable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemRelationshipsAgentPoolsRequestBuilder) Delete(ctx context.Context, 
     }
     return nil
 }
-// Post assign one or more Agent Pools to a CIDR Range List
+// Post assign one or more Agent Pools to a CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsAgentPoolsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolIdsable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -58,7 +58,7 @@ func (m *ItemRelationshipsAgentPoolsRequestBuilder) Post(ctx context.Context, bo
     }
     return nil
 }
-// ToDeleteRequestInformation unassign one or more Agent Pools from a CIDR Range List
+// ToDeleteRequestInformation unassign one or more Agent Pools from a CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsAgentPoolsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolIdsable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -70,7 +70,7 @@ func (m *ItemRelationshipsAgentPoolsRequestBuilder) ToDeleteRequestInformation(c
     }
     return requestInfo, nil
 }
-// ToPostRequestInformation assign one or more Agent Pools to a CIDR Range List
+// ToPostRequestInformation assign one or more Agent Pools to a CIDR Range ListThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsAgentPoolsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolIdsable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
