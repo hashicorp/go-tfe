@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "4a527346",
+    "version": "34afcf5d",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -26589,7 +26589,8 @@
                         "enum": [
                           "workspaces",
                           "projects",
-                          "teams"
+                          "teams",
+                          "stacks"
                         ]
                       }
                     }
@@ -31394,6 +31395,16 @@
                 "nullable": true
               },
               "resource-imports": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "action-invocations": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "action-failures": {
                 "readOnly": true,
                 "type": "integer",
                 "nullable": true
