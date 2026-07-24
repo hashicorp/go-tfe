@@ -2928,6 +2928,9 @@ type AgentTokens interface {
 	// List all the agent tokens of the given agent pool.
 	List(ctx context.Context, agentPoolID string) (*AgentTokenList, error)
 
+	// ListWithOptions lists the agent tokens of the given agent pool with the given options.
+	ListWithOptions(ctx context.Context, agentPoolID string, options *AgentTokenListOptions) (*AgentTokenList, error)
+
 	// Create a new agent token with the given options.
 	Create(ctx context.Context, agentPoolID string, options AgentTokenCreateOptions) (*AgentToken, error)
 
@@ -2961,6 +2964,11 @@ type AgentTokenList struct {
 	Items []*AgentToken
 }
 
+// AgentTokenListOptions represents the options for listing agent tokens.
+type AgentTokenListOptions struct {
+	ListOptions
+}
+
 // AgentTokenCreateOptions represents the options for creating an agent token.
 type AgentTokenCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -2975,12 +2983,18 @@ type AgentTokenCreateOptions struct {
 
 // List all the agent tokens of the given agent pool.
 func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentTokenList, error) {
+	return s.ListWithOptions(ctx, agentPoolID, nil)
+}
+
+// ListWithOptions lists the agent tokens of the given agent pool with
+// the given list options, e.g. for pagination.
+func (s *agentTokens) ListWithOptions(ctx context.Context, agentPoolID string, options *AgentTokenListOptions) (*AgentTokenList, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
 	}
 
 	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.PathEscape(agentPoolID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

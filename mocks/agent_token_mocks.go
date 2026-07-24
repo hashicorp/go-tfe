@@ -84,6 +84,21 @@ func (mr *MockAgentTokensMockRecorder) List(ctx, agentPoolID any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAgentTokens)(nil).List), ctx, agentPoolID)
 }
 
+// ListWithOptions mocks base method.
+func (m *MockAgentTokens) ListWithOptions(ctx context.Context, agentPoolID string, options *tfe.AgentTokenListOptions) (*tfe.AgentTokenList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListWithOptions", ctx, agentPoolID, options)
+	ret0, _ := ret[0].(*tfe.AgentTokenList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWithOptions indicates an expected call of ListWithOptions.
+func (mr *MockAgentTokensMockRecorder) ListWithOptions(ctx, agentPoolID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWithOptions", reflect.TypeOf((*MockAgentTokens)(nil).ListWithOptions), ctx, agentPoolID, options)
+}
+
 // Read mocks base method.
 func (m *MockAgentTokens) Read(ctx context.Context, agentTokenID string) (*tfe.AgentToken, error) {
 	m.ctrl.T.Helper()
