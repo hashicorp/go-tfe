@@ -559,12 +559,13 @@ func TestRetryMiddleware_ReturnsErrorWhenTransportRetriesExhausted(t *testing.T)
 
 	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
 	resp, err := middleware.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+		t.Fatalf("expected nil response, got %v", resp)
+	}
 
 	if !errors.Is(err, transportErr) {
 		t.Fatalf("expected transport error, got %v", err)
-	}
-	if resp != nil {
-		t.Fatalf("expected nil response, got %v", resp)
 	}
 	// 1 initial + 2 retries = 3 total
 	if atomic.LoadInt32(&pipeline.attempts) != 3 {
@@ -590,7 +591,10 @@ func TestRetryMiddleware_DoesNotRetryTransportErrorWhenShouldRetryReturnsFalse(t
 	})
 
 	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
-	_, err := middleware.Intercept(pipeline, 0, req)
+	resp, err := middleware.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 
 	if !errors.Is(err, transportErr) {
 		t.Fatalf("expected transport error, got %v", err)
@@ -685,7 +689,10 @@ func TestGetForKiota_TransportErrorNotRetriedWhenRetryServerErrorsDisabled(t *te
 	}
 
 	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
-	_, err = retryMW.Intercept(pipeline, 0, req)
+	resp, err := retryMW.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 
 	if !errors.Is(err, transportErr) {
 		t.Fatalf("expected transport error, got %v", err)
