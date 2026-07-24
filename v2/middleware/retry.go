@@ -4,6 +4,7 @@
 package middleware
 
 import (
+	"cmp"
 	"io"
 	"math"
 	nethttp "net/http"
@@ -122,10 +123,7 @@ func (m *RetryMiddleware) retryRequest(
 		if seeker, ok := req.Body.(io.Seeker); ok {
 			if _, err := seeker.Seek(0, io.SeekStart); err != nil {
 				// Prefer surfacing the original transport error over the seek error.
-				if respErr != nil {
-					return resp, respErr
-				}
-				return resp, err
+				return resp, cmp.Or(respErr, err)
 			}
 		}
 	}
