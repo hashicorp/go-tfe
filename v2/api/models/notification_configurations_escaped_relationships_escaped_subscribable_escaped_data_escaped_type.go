@@ -8,10 +8,11 @@ const (
     WORKSPACES_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE NotificationConfigurations_relationships_subscribable_data_type = iota
     PROJECTS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
     TEAMS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
+    STACKS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
 )
 
 func (i NotificationConfigurations_relationships_subscribable_data_type) String() string {
-    return []string{"workspaces", "projects", "teams"}[i]
+    return []string{"workspaces", "projects", "teams", "stacks"}[i]
 }
 func ParseNotificationConfigurations_relationships_subscribable_data_type(v string) (any, error) {
     result := WORKSPACES_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
@@ -22,6 +23,8 @@ func ParseNotificationConfigurations_relationships_subscribable_data_type(v stri
             result = PROJECTS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
         case "teams":
             result = TEAMS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
+        case "stacks":
+            result = STACKS_NOTIFICATIONCONFIGURATIONS_RELATIONSHIPS_SUBSCRIBABLE_DATA_TYPE
         default:
             return nil, nil
     }
