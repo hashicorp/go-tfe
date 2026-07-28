@@ -11,17 +11,17 @@ type Varsets_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The organization property
-    organization Varsets_relationships_organizationable
+    organization OrganizationsHasOneable
     // The parent property
-    parent Varsets_relationships_parentable
+    parent VarsetParentHasOneable
     // The projects property
-    projects Varsets_relationships_projectsable
+    projects ProjectsHasManyable
     // The stacks property
-    stacks Varsets_relationships_stacksable
+    stacks StacksHasManyable
     // The vars property
     vars Varsets_relationships_varsable
     // The workspaces property
-    workspaces Varsets_relationships_workspacesable
+    workspaces WorkspacesHasManyable
 }
 // NewVarsets_relationships instantiates a new Varsets_relationships and sets the default values.
 func NewVarsets_relationships()(*Varsets_relationships) {
@@ -45,42 +45,42 @@ func (m *Varsets_relationships) GetAdditionalData()(map[string]any) {
 func (m *Varsets_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsets_relationships_organizationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(Varsets_relationships_organizationable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["parent"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsets_relationships_parentFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateVarsetParentHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetParent(val.(Varsets_relationships_parentable))
+            m.SetParent(val.(VarsetParentHasOneable))
         }
         return nil
     }
     res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsets_relationships_projectsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProjects(val.(Varsets_relationships_projectsable))
+            m.SetProjects(val.(ProjectsHasManyable))
         }
         return nil
     }
     res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsets_relationships_stacksFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetStacks(val.(Varsets_relationships_stacksable))
+            m.SetStacks(val.(StacksHasManyable))
         }
         return nil
     }
@@ -95,35 +95,35 @@ func (m *Varsets_relationships) GetFieldDeserializers()(map[string]func(i878a80d
         return nil
     }
     res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsets_relationships_workspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaces(val.(Varsets_relationships_workspacesable))
+            m.SetWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a Varsets_relationships_organizationable when successful
-func (m *Varsets_relationships) GetOrganization()(Varsets_relationships_organizationable) {
+// returns a OrganizationsHasOneable when successful
+func (m *Varsets_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetParent gets the parent property value. The parent property
-// returns a Varsets_relationships_parentable when successful
-func (m *Varsets_relationships) GetParent()(Varsets_relationships_parentable) {
+// returns a VarsetParentHasOneable when successful
+func (m *Varsets_relationships) GetParent()(VarsetParentHasOneable) {
     return m.parent
 }
 // GetProjects gets the projects property value. The projects property
-// returns a Varsets_relationships_projectsable when successful
-func (m *Varsets_relationships) GetProjects()(Varsets_relationships_projectsable) {
+// returns a ProjectsHasManyable when successful
+func (m *Varsets_relationships) GetProjects()(ProjectsHasManyable) {
     return m.projects
 }
 // GetStacks gets the stacks property value. The stacks property
-// returns a Varsets_relationships_stacksable when successful
-func (m *Varsets_relationships) GetStacks()(Varsets_relationships_stacksable) {
+// returns a StacksHasManyable when successful
+func (m *Varsets_relationships) GetStacks()(StacksHasManyable) {
     return m.stacks
 }
 // GetVars gets the vars property value. The vars property
@@ -132,8 +132,8 @@ func (m *Varsets_relationships) GetVars()(Varsets_relationships_varsable) {
     return m.vars
 }
 // GetWorkspaces gets the workspaces property value. The workspaces property
-// returns a Varsets_relationships_workspacesable when successful
-func (m *Varsets_relationships) GetWorkspaces()(Varsets_relationships_workspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *Varsets_relationships) GetWorkspaces()(WorkspacesHasManyable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
@@ -187,19 +187,19 @@ func (m *Varsets_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *Varsets_relationships) SetOrganization(value Varsets_relationships_organizationable)() {
+func (m *Varsets_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetParent sets the parent property value. The parent property
-func (m *Varsets_relationships) SetParent(value Varsets_relationships_parentable)() {
+func (m *Varsets_relationships) SetParent(value VarsetParentHasOneable)() {
     m.parent = value
 }
 // SetProjects sets the projects property value. The projects property
-func (m *Varsets_relationships) SetProjects(value Varsets_relationships_projectsable)() {
+func (m *Varsets_relationships) SetProjects(value ProjectsHasManyable)() {
     m.projects = value
 }
 // SetStacks sets the stacks property value. The stacks property
-func (m *Varsets_relationships) SetStacks(value Varsets_relationships_stacksable)() {
+func (m *Varsets_relationships) SetStacks(value StacksHasManyable)() {
     m.stacks = value
 }
 // SetVars sets the vars property value. The vars property
@@ -207,22 +207,22 @@ func (m *Varsets_relationships) SetVars(value Varsets_relationships_varsable)() 
     m.vars = value
 }
 // SetWorkspaces sets the workspaces property value. The workspaces property
-func (m *Varsets_relationships) SetWorkspaces(value Varsets_relationships_workspacesable)() {
+func (m *Varsets_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
     m.workspaces = value
 }
 type Varsets_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(Varsets_relationships_organizationable)
-    GetParent()(Varsets_relationships_parentable)
-    GetProjects()(Varsets_relationships_projectsable)
-    GetStacks()(Varsets_relationships_stacksable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetParent()(VarsetParentHasOneable)
+    GetProjects()(ProjectsHasManyable)
+    GetStacks()(StacksHasManyable)
     GetVars()(Varsets_relationships_varsable)
-    GetWorkspaces()(Varsets_relationships_workspacesable)
-    SetOrganization(value Varsets_relationships_organizationable)()
-    SetParent(value Varsets_relationships_parentable)()
-    SetProjects(value Varsets_relationships_projectsable)()
-    SetStacks(value Varsets_relationships_stacksable)()
+    GetWorkspaces()(WorkspacesHasManyable)
+    SetOrganization(value OrganizationsHasOneable)()
+    SetParent(value VarsetParentHasOneable)()
+    SetProjects(value ProjectsHasManyable)()
+    SetStacks(value StacksHasManyable)()
     SetVars(value Varsets_relationships_varsable)()
-    SetWorkspaces(value Varsets_relationships_workspacesable)()
+    SetWorkspaces(value WorkspacesHasManyable)()
 }

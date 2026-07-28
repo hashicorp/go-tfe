@@ -11,7 +11,7 @@ type TfPolicySetOutcome_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The tfPolicyEvaluation property
-    tfPolicyEvaluation TfPolicySetOutcome_relationships_tfPolicyEvaluationable
+    tfPolicyEvaluation TfPolicyEvaluationsHasOneable
 }
 // NewTfPolicySetOutcome_relationships instantiates a new TfPolicySetOutcome_relationships and sets the default values.
 func NewTfPolicySetOutcome_relationships()(*TfPolicySetOutcome_relationships) {
@@ -35,20 +35,20 @@ func (m *TfPolicySetOutcome_relationships) GetAdditionalData()(map[string]any) {
 func (m *TfPolicySetOutcome_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["tf-policy-evaluation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicySetOutcome_relationships_tfPolicyEvaluationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTfPolicyEvaluationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTfPolicyEvaluation(val.(TfPolicySetOutcome_relationships_tfPolicyEvaluationable))
+            m.SetTfPolicyEvaluation(val.(TfPolicyEvaluationsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetTfPolicyEvaluation gets the tf-policy-evaluation property value. The tfPolicyEvaluation property
-// returns a TfPolicySetOutcome_relationships_tfPolicyEvaluationable when successful
-func (m *TfPolicySetOutcome_relationships) GetTfPolicyEvaluation()(TfPolicySetOutcome_relationships_tfPolicyEvaluationable) {
+// returns a TfPolicyEvaluationsHasOneable when successful
+func (m *TfPolicySetOutcome_relationships) GetTfPolicyEvaluation()(TfPolicyEvaluationsHasOneable) {
     return m.tfPolicyEvaluation
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *TfPolicySetOutcome_relationships) SetAdditionalData(value map[string]an
     m.additionalData = value
 }
 // SetTfPolicyEvaluation sets the tf-policy-evaluation property value. The tfPolicyEvaluation property
-func (m *TfPolicySetOutcome_relationships) SetTfPolicyEvaluation(value TfPolicySetOutcome_relationships_tfPolicyEvaluationable)() {
+func (m *TfPolicySetOutcome_relationships) SetTfPolicyEvaluation(value TfPolicyEvaluationsHasOneable)() {
     m.tfPolicyEvaluation = value
 }
 type TfPolicySetOutcome_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTfPolicyEvaluation()(TfPolicySetOutcome_relationships_tfPolicyEvaluationable)
-    SetTfPolicyEvaluation(value TfPolicySetOutcome_relationships_tfPolicyEvaluationable)()
+    GetTfPolicyEvaluation()(TfPolicyEvaluationsHasOneable)
+    SetTfPolicyEvaluation(value TfPolicyEvaluationsHasOneable)()
 }

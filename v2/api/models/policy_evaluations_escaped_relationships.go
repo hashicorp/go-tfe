@@ -11,9 +11,9 @@ type PolicyEvaluations_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The policyAttachable property
-    policyAttachable PolicyEvaluations_relationships_policyAttachableable
+    policyAttachable TaskStagesHasOneable
     // The policySetOutcomes property
-    policySetOutcomes PolicyEvaluations_relationships_policySetOutcomesable
+    policySetOutcomes PolicySetOutcomesHasManyable
 }
 // NewPolicyEvaluations_relationships instantiates a new PolicyEvaluations_relationships and sets the default values.
 func NewPolicyEvaluations_relationships()(*PolicyEvaluations_relationships) {
@@ -37,35 +37,35 @@ func (m *PolicyEvaluations_relationships) GetAdditionalData()(map[string]any) {
 func (m *PolicyEvaluations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["policy-attachable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluations_relationships_policyAttachableFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTaskStagesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicyAttachable(val.(PolicyEvaluations_relationships_policyAttachableable))
+            m.SetPolicyAttachable(val.(TaskStagesHasOneable))
         }
         return nil
     }
     res["policy-set-outcomes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluations_relationships_policySetOutcomesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicySetOutcomesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicySetOutcomes(val.(PolicyEvaluations_relationships_policySetOutcomesable))
+            m.SetPolicySetOutcomes(val.(PolicySetOutcomesHasManyable))
         }
         return nil
     }
     return res
 }
 // GetPolicyAttachable gets the policy-attachable property value. The policyAttachable property
-// returns a PolicyEvaluations_relationships_policyAttachableable when successful
-func (m *PolicyEvaluations_relationships) GetPolicyAttachable()(PolicyEvaluations_relationships_policyAttachableable) {
+// returns a TaskStagesHasOneable when successful
+func (m *PolicyEvaluations_relationships) GetPolicyAttachable()(TaskStagesHasOneable) {
     return m.policyAttachable
 }
 // GetPolicySetOutcomes gets the policy-set-outcomes property value. The policySetOutcomes property
-// returns a PolicyEvaluations_relationships_policySetOutcomesable when successful
-func (m *PolicyEvaluations_relationships) GetPolicySetOutcomes()(PolicyEvaluations_relationships_policySetOutcomesable) {
+// returns a PolicySetOutcomesHasManyable when successful
+func (m *PolicyEvaluations_relationships) GetPolicySetOutcomes()(PolicySetOutcomesHasManyable) {
     return m.policySetOutcomes
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *PolicyEvaluations_relationships) SetAdditionalData(value map[string]any
     m.additionalData = value
 }
 // SetPolicyAttachable sets the policy-attachable property value. The policyAttachable property
-func (m *PolicyEvaluations_relationships) SetPolicyAttachable(value PolicyEvaluations_relationships_policyAttachableable)() {
+func (m *PolicyEvaluations_relationships) SetPolicyAttachable(value TaskStagesHasOneable)() {
     m.policyAttachable = value
 }
 // SetPolicySetOutcomes sets the policy-set-outcomes property value. The policySetOutcomes property
-func (m *PolicyEvaluations_relationships) SetPolicySetOutcomes(value PolicyEvaluations_relationships_policySetOutcomesable)() {
+func (m *PolicyEvaluations_relationships) SetPolicySetOutcomes(value PolicySetOutcomesHasManyable)() {
     m.policySetOutcomes = value
 }
 type PolicyEvaluations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPolicyAttachable()(PolicyEvaluations_relationships_policyAttachableable)
-    GetPolicySetOutcomes()(PolicyEvaluations_relationships_policySetOutcomesable)
-    SetPolicyAttachable(value PolicyEvaluations_relationships_policyAttachableable)()
-    SetPolicySetOutcomes(value PolicyEvaluations_relationships_policySetOutcomesable)()
+    GetPolicyAttachable()(TaskStagesHasOneable)
+    GetPolicySetOutcomes()(PolicySetOutcomesHasManyable)
+    SetPolicyAttachable(value TaskStagesHasOneable)()
+    SetPolicySetOutcomes(value PolicySetOutcomesHasManyable)()
 }

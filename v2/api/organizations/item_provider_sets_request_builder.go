@@ -13,6 +13,11 @@ import (
 type ItemProviderSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemProviderSetsRequestBuilderGetQueryParameters fetch details about all the provider sets in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+type ItemProviderSetsRequestBuilderGetQueryParameters struct {
+    // Comma-separated list of related resources to include. Valid values: projects, workspaces.
+    Include *string "uriparametername:\"include\""
+}
 // ByProvider_set_name gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item.providerSets.item collection
 // returns a *ItemProviderSetsWithProvider_set_nameItemRequestBuilder when successful
 func (m *ItemProviderSetsRequestBuilder) ByProvider_set_name(provider_set_name string)(*ItemProviderSetsWithProvider_set_nameItemRequestBuilder) {
@@ -28,7 +33,7 @@ func (m *ItemProviderSetsRequestBuilder) ByProvider_set_name(provider_set_name s
 // NewItemProviderSetsRequestBuilderInternal instantiates a new ItemProviderSetsRequestBuilder and sets the default values.
 func NewItemProviderSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsRequestBuilder) {
     m := &ItemProviderSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets{?include*}", pathParameters),
     }
     return m
 }
@@ -57,7 +62,7 @@ func (m *ItemProviderSetsRequestBuilder) Delete(ctx context.Context, body ItemPr
 // Get fetch details about all the provider sets in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemProviderSetsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemProviderSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemProviderSetsGetResponseable, error) {
+func (m *ItemProviderSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsRequestBuilderGetQueryParameters])(ItemProviderSetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -108,7 +113,7 @@ func (m *ItemProviderSetsRequestBuilder) ToDeleteRequestInformation(ctx context.
 }
 // ToGetRequestInformation fetch details about all the provider sets in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
-func (m *ItemProviderSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemProviderSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

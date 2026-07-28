@@ -11,13 +11,13 @@ type OauthClients_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The agentPool property
-    agentPool AgentPoolsIdable
+    agentPool AgentPoolsHasOneable
     // The oauthTokens property
-    oauthTokens OauthClients_relationships_oauthTokensable
+    oauthTokens OauthTokensHasManyable
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
     // The projects property
-    projects OauthClients_relationships_projectsable
+    projects ProjectsHasManyable
 }
 // NewOauthClients_relationships instantiates a new OauthClients_relationships and sets the default values.
 func NewOauthClients_relationships()(*OauthClients_relationships) {
@@ -37,8 +37,8 @@ func (m *OauthClients_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetAgentPool gets the agent-pool property value. The agentPool property
-// returns a AgentPoolsIdable when successful
-func (m *OauthClients_relationships) GetAgentPool()(AgentPoolsIdable) {
+// returns a AgentPoolsHasOneable when successful
+func (m *OauthClients_relationships) GetAgentPool()(AgentPoolsHasOneable) {
     return m.agentPool
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -46,60 +46,60 @@ func (m *OauthClients_relationships) GetAgentPool()(AgentPoolsIdable) {
 func (m *OauthClients_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAgentPool(val.(AgentPoolsIdable))
+            m.SetAgentPool(val.(AgentPoolsHasOneable))
         }
         return nil
     }
     res["oauth-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthClients_relationships_oauthTokensFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOauthTokensHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOauthTokens(val.(OauthClients_relationships_oauthTokensable))
+            m.SetOauthTokens(val.(OauthTokensHasManyable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthClients_relationships_projectsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProjects(val.(OauthClients_relationships_projectsable))
+            m.SetProjects(val.(ProjectsHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOauthTokens gets the oauth-tokens property value. The oauthTokens property
-// returns a OauthClients_relationships_oauthTokensable when successful
-func (m *OauthClients_relationships) GetOauthTokens()(OauthClients_relationships_oauthTokensable) {
+// returns a OauthTokensHasManyable when successful
+func (m *OauthClients_relationships) GetOauthTokens()(OauthTokensHasManyable) {
     return m.oauthTokens
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *OauthClients_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *OauthClients_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetProjects gets the projects property value. The projects property
-// returns a OauthClients_relationships_projectsable when successful
-func (m *OauthClients_relationships) GetProjects()(OauthClients_relationships_projectsable) {
+// returns a ProjectsHasManyable when successful
+func (m *OauthClients_relationships) GetProjects()(ProjectsHasManyable) {
     return m.projects
 }
 // Serialize serializes information the current object
@@ -141,30 +141,30 @@ func (m *OauthClients_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *OauthClients_relationships) SetAgentPool(value AgentPoolsIdable)() {
+func (m *OauthClients_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
     m.agentPool = value
 }
 // SetOauthTokens sets the oauth-tokens property value. The oauthTokens property
-func (m *OauthClients_relationships) SetOauthTokens(value OauthClients_relationships_oauthTokensable)() {
+func (m *OauthClients_relationships) SetOauthTokens(value OauthTokensHasManyable)() {
     m.oauthTokens = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *OauthClients_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *OauthClients_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetProjects sets the projects property value. The projects property
-func (m *OauthClients_relationships) SetProjects(value OauthClients_relationships_projectsable)() {
+func (m *OauthClients_relationships) SetProjects(value ProjectsHasManyable)() {
     m.projects = value
 }
 type OauthClients_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsIdable)
-    GetOauthTokens()(OauthClients_relationships_oauthTokensable)
-    GetOrganization()(OrganizationsIdable)
-    GetProjects()(OauthClients_relationships_projectsable)
-    SetAgentPool(value AgentPoolsIdable)()
-    SetOauthTokens(value OauthClients_relationships_oauthTokensable)()
-    SetOrganization(value OrganizationsIdable)()
-    SetProjects(value OauthClients_relationships_projectsable)()
+    GetAgentPool()(AgentPoolsHasOneable)
+    GetOauthTokens()(OauthTokensHasManyable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetProjects()(ProjectsHasManyable)
+    SetAgentPool(value AgentPoolsHasOneable)()
+    SetOauthTokens(value OauthTokensHasManyable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetProjects(value ProjectsHasManyable)()
 }

@@ -11,7 +11,7 @@ type PolicySetOutcomes_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The policyEvaluation property
-    policyEvaluation PolicyEvaluationsIdable
+    policyEvaluation PolicyEvaluationsHasOneable
 }
 // NewPolicySetOutcomes_relationships instantiates a new PolicySetOutcomes_relationships and sets the default values.
 func NewPolicySetOutcomes_relationships()(*PolicySetOutcomes_relationships) {
@@ -35,20 +35,20 @@ func (m *PolicySetOutcomes_relationships) GetAdditionalData()(map[string]any) {
 func (m *PolicySetOutcomes_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["policy-evaluation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicyEvaluationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicyEvaluation(val.(PolicyEvaluationsIdable))
+            m.SetPolicyEvaluation(val.(PolicyEvaluationsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetPolicyEvaluation gets the policy-evaluation property value. The policyEvaluation property
-// returns a PolicyEvaluationsIdable when successful
-func (m *PolicySetOutcomes_relationships) GetPolicyEvaluation()(PolicyEvaluationsIdable) {
+// returns a PolicyEvaluationsHasOneable when successful
+func (m *PolicySetOutcomes_relationships) GetPolicyEvaluation()(PolicyEvaluationsHasOneable) {
     return m.policyEvaluation
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *PolicySetOutcomes_relationships) SetAdditionalData(value map[string]any
     m.additionalData = value
 }
 // SetPolicyEvaluation sets the policy-evaluation property value. The policyEvaluation property
-func (m *PolicySetOutcomes_relationships) SetPolicyEvaluation(value PolicyEvaluationsIdable)() {
+func (m *PolicySetOutcomes_relationships) SetPolicyEvaluation(value PolicyEvaluationsHasOneable)() {
     m.policyEvaluation = value
 }
 type PolicySetOutcomes_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPolicyEvaluation()(PolicyEvaluationsIdable)
-    SetPolicyEvaluation(value PolicyEvaluationsIdable)()
+    GetPolicyEvaluation()(PolicyEvaluationsHasOneable)
+    SetPolicyEvaluation(value PolicyEvaluationsHasOneable)()
 }

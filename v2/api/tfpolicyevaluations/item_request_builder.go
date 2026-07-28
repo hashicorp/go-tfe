@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551 "github.com/hashicorp/go-tfe/v2/api/tfpolicyevaluations/item"
 )
 
 // ItemRequestBuilder builds and executes requests for operations under \tf-policy-evaluations\{-id}
@@ -15,8 +16,8 @@ type ItemRequestBuilder struct {
 }
 // ItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy evaluation.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemRequestBuilderGetQueryParameters struct {
-    // Comma-separated list of related resources to include. Valid values are `tf_policy_set_outcomes`.
-    Include *string "uriparametername:\"include\""
+    // Comma-separated list of related resources to include.
+    Include []id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +27,7 @@ func (m *ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
 func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
     m := &ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}{?include}", pathParameters),
     }
     return m
 }

@@ -14,8 +14,10 @@ type StateVersions struct {
     attributes StateVersions_attributesable
     // The id property
     id *string
+    // The links property
+    links Selfable
     // The relationships property
-    relationships Selfable
+    relationships StateVersions_relationshipsable
     // The type property
     typeEscaped *StateVersions_type
 }
@@ -65,13 +67,23 @@ func (m *StateVersions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d
         }
         return nil
     }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateSelfFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetRelationships(val.(Selfable))
+            m.SetLinks(val.(Selfable))
+        }
+        return nil
+    }
+    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStateVersions_relationshipsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRelationships(val.(StateVersions_relationshipsable))
         }
         return nil
     }
@@ -92,9 +104,14 @@ func (m *StateVersions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d
 func (m *StateVersions) GetId()(*string) {
     return m.id
 }
-// GetRelationships gets the relationships property value. The relationships property
+// GetLinks gets the links property value. The links property
 // returns a Selfable when successful
-func (m *StateVersions) GetRelationships()(Selfable) {
+func (m *StateVersions) GetLinks()(Selfable) {
+    return m.links
+}
+// GetRelationships gets the relationships property value. The relationships property
+// returns a StateVersions_relationshipsable when successful
+func (m *StateVersions) GetRelationships()(StateVersions_relationshipsable) {
     return m.relationships
 }
 // GetTypeEscaped gets the type property value. The type property
@@ -106,6 +123,12 @@ func (m *StateVersions) GetTypeEscaped()(*StateVersions_type) {
 func (m *StateVersions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("attributes", m.GetAttributes())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
         if err != nil {
             return err
         }
@@ -143,8 +166,12 @@ func (m *StateVersions) SetAttributes(value StateVersions_attributesable)() {
 func (m *StateVersions) SetId(value *string)() {
     m.id = value
 }
+// SetLinks sets the links property value. The links property
+func (m *StateVersions) SetLinks(value Selfable)() {
+    m.links = value
+}
 // SetRelationships sets the relationships property value. The relationships property
-func (m *StateVersions) SetRelationships(value Selfable)() {
+func (m *StateVersions) SetRelationships(value StateVersions_relationshipsable)() {
     m.relationships = value
 }
 // SetTypeEscaped sets the type property value. The type property
@@ -156,10 +183,12 @@ type StateVersionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAttributes()(StateVersions_attributesable)
     GetId()(*string)
-    GetRelationships()(Selfable)
+    GetLinks()(Selfable)
+    GetRelationships()(StateVersions_relationshipsable)
     GetTypeEscaped()(*StateVersions_type)
     SetAttributes(value StateVersions_attributesable)()
     SetId(value *string)()
-    SetRelationships(value Selfable)()
+    SetLinks(value Selfable)()
+    SetRelationships(value StateVersions_relationshipsable)()
     SetTypeEscaped(value *StateVersions_type)()
 }

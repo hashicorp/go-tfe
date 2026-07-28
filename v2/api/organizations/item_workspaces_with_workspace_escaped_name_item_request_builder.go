@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ia60cd24b348b303e1b7a2d108acb7afd0314eabcdb551a1d763d372fb22b5f05 "github.com/hashicorp/go-tfe/v2/api/organizations/item/workspaces/item"
 )
 
 // ItemWorkspacesWithWorkspace_nameItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\workspaces\{workspace_name}
@@ -15,8 +16,8 @@ type ItemWorkspacesWithWorkspace_nameItemRequestBuilder struct {
 }
 // ItemWorkspacesWithWorkspace_nameItemRequestBuilderGetQueryParameters get details of a workspace by organization name and workspace name.
 type ItemWorkspacesWithWorkspace_nameItemRequestBuilderGetQueryParameters struct {
-    // Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).
-    Include *string "uriparametername:\"include\""
+    // Optionally side-load relationships.
+    Include []ia60cd24b348b303e1b7a2d108acb7afd0314eabcdb551a1d763d372fb22b5f05.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemWorkspacesItemActionsRequestBuilder when successful
@@ -26,7 +27,7 @@ func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Actions()(*ItemWork
 // NewItemWorkspacesWithWorkspace_nameItemRequestBuilderInternal instantiates a new ItemWorkspacesWithWorkspace_nameItemRequestBuilder and sets the default values.
 func NewItemWorkspacesWithWorkspace_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesWithWorkspace_nameItemRequestBuilder) {
     m := &ItemWorkspacesWithWorkspace_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces/{workspace_name}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces/{workspace_name}{?include}", pathParameters),
     }
     return m
 }

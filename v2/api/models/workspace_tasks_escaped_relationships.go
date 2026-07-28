@@ -11,9 +11,9 @@ type WorkspaceTasks_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The task property
-    task TasksIdable
+    task TasksHasOneable
     // The workspace property
-    workspace WorkspacesIdable
+    workspace WorkspacesHasOneable
 }
 // NewWorkspaceTasks_relationships instantiates a new WorkspaceTasks_relationships and sets the default values.
 func NewWorkspaceTasks_relationships()(*WorkspaceTasks_relationships) {
@@ -37,35 +37,35 @@ func (m *WorkspaceTasks_relationships) GetAdditionalData()(map[string]any) {
 func (m *WorkspaceTasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["task"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasksIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTasksHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTask(val.(TasksIdable))
+            m.SetTask(val.(TasksHasOneable))
         }
         return nil
     }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspace(val.(WorkspacesIdable))
+            m.SetWorkspace(val.(WorkspacesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetTask gets the task property value. The task property
-// returns a TasksIdable when successful
-func (m *WorkspaceTasks_relationships) GetTask()(TasksIdable) {
+// returns a TasksHasOneable when successful
+func (m *WorkspaceTasks_relationships) GetTask()(TasksHasOneable) {
     return m.task
 }
 // GetWorkspace gets the workspace property value. The workspace property
-// returns a WorkspacesIdable when successful
-func (m *WorkspaceTasks_relationships) GetWorkspace()(WorkspacesIdable) {
+// returns a WorkspacesHasOneable when successful
+func (m *WorkspaceTasks_relationships) GetWorkspace()(WorkspacesHasOneable) {
     return m.workspace
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *WorkspaceTasks_relationships) SetAdditionalData(value map[string]any)()
     m.additionalData = value
 }
 // SetTask sets the task property value. The task property
-func (m *WorkspaceTasks_relationships) SetTask(value TasksIdable)() {
+func (m *WorkspaceTasks_relationships) SetTask(value TasksHasOneable)() {
     m.task = value
 }
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *WorkspaceTasks_relationships) SetWorkspace(value WorkspacesIdable)() {
+func (m *WorkspaceTasks_relationships) SetWorkspace(value WorkspacesHasOneable)() {
     m.workspace = value
 }
 type WorkspaceTasks_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTask()(TasksIdable)
-    GetWorkspace()(WorkspacesIdable)
-    SetTask(value TasksIdable)()
-    SetWorkspace(value WorkspacesIdable)()
+    GetTask()(TasksHasOneable)
+    GetWorkspace()(WorkspacesHasOneable)
+    SetTask(value TasksHasOneable)()
+    SetWorkspace(value WorkspacesHasOneable)()
 }

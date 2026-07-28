@@ -11,9 +11,9 @@ type RunTriggers_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The sourceable property
-    sourceable WorkspacesIdable
+    sourceable WorkspacesHasOneable
     // The workspace property
-    workspace WorkspacesIdable
+    workspace WorkspacesHasOneable
 }
 // NewRunTriggers_relationships instantiates a new RunTriggers_relationships and sets the default values.
 func NewRunTriggers_relationships()(*RunTriggers_relationships) {
@@ -37,35 +37,35 @@ func (m *RunTriggers_relationships) GetAdditionalData()(map[string]any) {
 func (m *RunTriggers_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["sourceable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetSourceable(val.(WorkspacesIdable))
+            m.SetSourceable(val.(WorkspacesHasOneable))
         }
         return nil
     }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspace(val.(WorkspacesIdable))
+            m.SetWorkspace(val.(WorkspacesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetSourceable gets the sourceable property value. The sourceable property
-// returns a WorkspacesIdable when successful
-func (m *RunTriggers_relationships) GetSourceable()(WorkspacesIdable) {
+// returns a WorkspacesHasOneable when successful
+func (m *RunTriggers_relationships) GetSourceable()(WorkspacesHasOneable) {
     return m.sourceable
 }
 // GetWorkspace gets the workspace property value. The workspace property
-// returns a WorkspacesIdable when successful
-func (m *RunTriggers_relationships) GetWorkspace()(WorkspacesIdable) {
+// returns a WorkspacesHasOneable when successful
+func (m *RunTriggers_relationships) GetWorkspace()(WorkspacesHasOneable) {
     return m.workspace
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *RunTriggers_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetSourceable sets the sourceable property value. The sourceable property
-func (m *RunTriggers_relationships) SetSourceable(value WorkspacesIdable)() {
+func (m *RunTriggers_relationships) SetSourceable(value WorkspacesHasOneable)() {
     m.sourceable = value
 }
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *RunTriggers_relationships) SetWorkspace(value WorkspacesIdable)() {
+func (m *RunTriggers_relationships) SetWorkspace(value WorkspacesHasOneable)() {
     m.workspace = value
 }
 type RunTriggers_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetSourceable()(WorkspacesIdable)
-    GetWorkspace()(WorkspacesIdable)
-    SetSourceable(value WorkspacesIdable)()
-    SetWorkspace(value WorkspacesIdable)()
+    GetSourceable()(WorkspacesHasOneable)
+    GetWorkspace()(WorkspacesHasOneable)
+    SetSourceable(value WorkspacesHasOneable)()
+    SetWorkspace(value WorkspacesHasOneable)()
 }

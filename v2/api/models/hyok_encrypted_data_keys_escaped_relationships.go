@@ -11,7 +11,7 @@ type HyokEncryptedDataKeys_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The hyokCustomerKeyVersion property
-    hyokCustomerKeyVersion HyokCustomerKeyVersionsIdable
+    hyokCustomerKeyVersion HyokCustomerKeyVersionsHasOneable
 }
 // NewHyokEncryptedDataKeys_relationships instantiates a new HyokEncryptedDataKeys_relationships and sets the default values.
 func NewHyokEncryptedDataKeys_relationships()(*HyokEncryptedDataKeys_relationships) {
@@ -35,20 +35,20 @@ func (m *HyokEncryptedDataKeys_relationships) GetAdditionalData()(map[string]any
 func (m *HyokEncryptedDataKeys_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["hyok-customer-key-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokCustomerKeyVersionsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateHyokCustomerKeyVersionsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetHyokCustomerKeyVersion(val.(HyokCustomerKeyVersionsIdable))
+            m.SetHyokCustomerKeyVersion(val.(HyokCustomerKeyVersionsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetHyokCustomerKeyVersion gets the hyok-customer-key-version property value. The hyokCustomerKeyVersion property
-// returns a HyokCustomerKeyVersionsIdable when successful
-func (m *HyokEncryptedDataKeys_relationships) GetHyokCustomerKeyVersion()(HyokCustomerKeyVersionsIdable) {
+// returns a HyokCustomerKeyVersionsHasOneable when successful
+func (m *HyokEncryptedDataKeys_relationships) GetHyokCustomerKeyVersion()(HyokCustomerKeyVersionsHasOneable) {
     return m.hyokCustomerKeyVersion
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *HyokEncryptedDataKeys_relationships) SetAdditionalData(value map[string
     m.additionalData = value
 }
 // SetHyokCustomerKeyVersion sets the hyok-customer-key-version property value. The hyokCustomerKeyVersion property
-func (m *HyokEncryptedDataKeys_relationships) SetHyokCustomerKeyVersion(value HyokCustomerKeyVersionsIdable)() {
+func (m *HyokEncryptedDataKeys_relationships) SetHyokCustomerKeyVersion(value HyokCustomerKeyVersionsHasOneable)() {
     m.hyokCustomerKeyVersion = value
 }
 type HyokEncryptedDataKeys_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetHyokCustomerKeyVersion()(HyokCustomerKeyVersionsIdable)
-    SetHyokCustomerKeyVersion(value HyokCustomerKeyVersionsIdable)()
+    GetHyokCustomerKeyVersion()(HyokCustomerKeyVersionsHasOneable)
+    SetHyokCustomerKeyVersion(value HyokCustomerKeyVersionsHasOneable)()
 }

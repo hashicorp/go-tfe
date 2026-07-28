@@ -11,9 +11,9 @@ type TeamProjects_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The project property
-    project ProjectsIdable
+    project ProjectsHasOneable
     // The team property
-    team TeamsIdable
+    team TeamsHasOneable
 }
 // NewTeamProjects_relationships instantiates a new TeamProjects_relationships and sets the default values.
 func NewTeamProjects_relationships()(*TeamProjects_relationships) {
@@ -37,35 +37,35 @@ func (m *TeamProjects_relationships) GetAdditionalData()(map[string]any) {
 func (m *TeamProjects_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProject(val.(ProjectsIdable))
+            m.SetProject(val.(ProjectsHasOneable))
         }
         return nil
     }
     res["team"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTeamsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTeam(val.(TeamsIdable))
+            m.SetTeam(val.(TeamsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetProject gets the project property value. The project property
-// returns a ProjectsIdable when successful
-func (m *TeamProjects_relationships) GetProject()(ProjectsIdable) {
+// returns a ProjectsHasOneable when successful
+func (m *TeamProjects_relationships) GetProject()(ProjectsHasOneable) {
     return m.project
 }
 // GetTeam gets the team property value. The team property
-// returns a TeamsIdable when successful
-func (m *TeamProjects_relationships) GetTeam()(TeamsIdable) {
+// returns a TeamsHasOneable when successful
+func (m *TeamProjects_relationships) GetTeam()(TeamsHasOneable) {
     return m.team
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *TeamProjects_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetProject sets the project property value. The project property
-func (m *TeamProjects_relationships) SetProject(value ProjectsIdable)() {
+func (m *TeamProjects_relationships) SetProject(value ProjectsHasOneable)() {
     m.project = value
 }
 // SetTeam sets the team property value. The team property
-func (m *TeamProjects_relationships) SetTeam(value TeamsIdable)() {
+func (m *TeamProjects_relationships) SetTeam(value TeamsHasOneable)() {
     m.team = value
 }
 type TeamProjects_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetProject()(ProjectsIdable)
-    GetTeam()(TeamsIdable)
-    SetProject(value ProjectsIdable)()
-    SetTeam(value TeamsIdable)()
+    GetProject()(ProjectsHasOneable)
+    GetTeam()(TeamsHasOneable)
+    SetProject(value ProjectsHasOneable)()
+    SetTeam(value TeamsHasOneable)()
 }

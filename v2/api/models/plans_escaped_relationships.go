@@ -10,12 +10,12 @@ import (
 type Plans_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // Exports associated with this plan
-    exports Plans_relationships_exportsable
-    // HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
-    hyokEncryptedDataKey Plans_relationships_hyokEncryptedDataKeyable
-    // State versions associated with this plan (for TF <= 0.8)
-    stateVersions Plans_relationships_stateVersionsable
+    // The exports property
+    exports PlanExportsHasManyable
+    // The hyokEncryptedDataKey property
+    hyokEncryptedDataKey HyokEncryptedDataKeysHasOneable
+    // The stateVersions property
+    stateVersions StateVersionsHasManyable
 }
 // NewPlans_relationships instantiates a new Plans_relationships and sets the default values.
 func NewPlans_relationships()(*Plans_relationships) {
@@ -34,9 +34,9 @@ func CreatePlans_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d2
 func (m *Plans_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetExports gets the exports property value. Exports associated with this plan
-// returns a Plans_relationships_exportsable when successful
-func (m *Plans_relationships) GetExports()(Plans_relationships_exportsable) {
+// GetExports gets the exports property value. The exports property
+// returns a PlanExportsHasManyable when successful
+func (m *Plans_relationships) GetExports()(PlanExportsHasManyable) {
     return m.exports
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -44,45 +44,45 @@ func (m *Plans_relationships) GetExports()(Plans_relationships_exportsable) {
 func (m *Plans_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["exports"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlans_relationships_exportsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePlanExportsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetExports(val.(Plans_relationships_exportsable))
+            m.SetExports(val.(PlanExportsHasManyable))
         }
         return nil
     }
     res["hyok-encrypted-data-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlans_relationships_hyokEncryptedDataKeyFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateHyokEncryptedDataKeysHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetHyokEncryptedDataKey(val.(Plans_relationships_hyokEncryptedDataKeyable))
+            m.SetHyokEncryptedDataKey(val.(HyokEncryptedDataKeysHasOneable))
         }
         return nil
     }
     res["state-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlans_relationships_stateVersionsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateStateVersionsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetStateVersions(val.(Plans_relationships_stateVersionsable))
+            m.SetStateVersions(val.(StateVersionsHasManyable))
         }
         return nil
     }
     return res
 }
-// GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
-// returns a Plans_relationships_hyokEncryptedDataKeyable when successful
-func (m *Plans_relationships) GetHyokEncryptedDataKey()(Plans_relationships_hyokEncryptedDataKeyable) {
+// GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
+// returns a HyokEncryptedDataKeysHasOneable when successful
+func (m *Plans_relationships) GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable) {
     return m.hyokEncryptedDataKey
 }
-// GetStateVersions gets the state-versions property value. State versions associated with this plan (for TF <= 0.8)
-// returns a Plans_relationships_stateVersionsable when successful
-func (m *Plans_relationships) GetStateVersions()(Plans_relationships_stateVersionsable) {
+// GetStateVersions gets the state-versions property value. The stateVersions property
+// returns a StateVersionsHasManyable when successful
+func (m *Plans_relationships) GetStateVersions()(StateVersionsHasManyable) {
     return m.stateVersions
 }
 // Serialize serializes information the current object
@@ -117,25 +117,25 @@ func (m *Plans_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef
 func (m *Plans_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetExports sets the exports property value. Exports associated with this plan
-func (m *Plans_relationships) SetExports(value Plans_relationships_exportsable)() {
+// SetExports sets the exports property value. The exports property
+func (m *Plans_relationships) SetExports(value PlanExportsHasManyable)() {
     m.exports = value
 }
-// SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this planThis relationship is only available in HCP Terraform.
-func (m *Plans_relationships) SetHyokEncryptedDataKey(value Plans_relationships_hyokEncryptedDataKeyable)() {
+// SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
+func (m *Plans_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)() {
     m.hyokEncryptedDataKey = value
 }
-// SetStateVersions sets the state-versions property value. State versions associated with this plan (for TF <= 0.8)
-func (m *Plans_relationships) SetStateVersions(value Plans_relationships_stateVersionsable)() {
+// SetStateVersions sets the state-versions property value. The stateVersions property
+func (m *Plans_relationships) SetStateVersions(value StateVersionsHasManyable)() {
     m.stateVersions = value
 }
 type Plans_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetExports()(Plans_relationships_exportsable)
-    GetHyokEncryptedDataKey()(Plans_relationships_hyokEncryptedDataKeyable)
-    GetStateVersions()(Plans_relationships_stateVersionsable)
-    SetExports(value Plans_relationships_exportsable)()
-    SetHyokEncryptedDataKey(value Plans_relationships_hyokEncryptedDataKeyable)()
-    SetStateVersions(value Plans_relationships_stateVersionsable)()
+    GetExports()(PlanExportsHasManyable)
+    GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable)
+    GetStateVersions()(StateVersionsHasManyable)
+    SetExports(value PlanExportsHasManyable)()
+    SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)()
+    SetStateVersions(value StateVersionsHasManyable)()
 }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ie528eac21284f8672aaa47fa355616c8ce1cd05239efef6f9ab3d7a226aefe49 "github.com/hashicorp/go-tfe/v2/api/workspaces/item"
 )
 
 // WithWorkspace_ItemRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}
@@ -15,8 +16,8 @@ type WithWorkspace_ItemRequestBuilder struct {
 }
 // WithWorkspace_ItemRequestBuilderGetQueryParameters get details of a specific workspace by its external ID.
 type WithWorkspace_ItemRequestBuilderGetQueryParameters struct {
-    // Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).
-    Include *string "uriparametername:\"include\""
+    // Optionally side-load relationships.
+    Include []ie528eac21284f8672aaa47fa355616c8ce1cd05239efef6f9ab3d7a226aefe49.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -46,7 +47,7 @@ func (m *WithWorkspace_ItemRequestBuilder) ConfigurationVersions()(*ItemConfigur
 // NewWithWorkspace_ItemRequestBuilderInternal instantiates a new WithWorkspace_ItemRequestBuilder and sets the default values.
 func NewWithWorkspace_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_ItemRequestBuilder) {
     m := &WithWorkspace_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}{?include}", pathParameters),
     }
     return m
 }
@@ -144,11 +145,6 @@ func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body i05d5
 // returns a *ItemProviderSetsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
     return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
-// Queries the queries property
-// returns a *ItemQueriesRequestBuilder when successful
-func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
-    return NewItemQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Relationships the relationships property
 // returns a *ItemRelationshipsRequestBuilder when successful

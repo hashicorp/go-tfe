@@ -11,13 +11,13 @@ type HyokConfigurations_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The agentPool property
-    agentPool AgentPoolsIdable
+    agentPool AgentPoolsHasOneable
     // The hyokCustomerKeyVersions property
-    hyokCustomerKeyVersions HyokConfigurations_relationships_hyokCustomerKeyVersionsable
+    hyokCustomerKeyVersions HyokCustomerKeyVersionsHasManyable
     // The oidcConfiguration property
-    oidcConfiguration OidcConfigurationsIdable
+    oidcConfiguration OidcConfigurationsHasOneable
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
 }
 // NewHyokConfigurations_relationships instantiates a new HyokConfigurations_relationships and sets the default values.
 func NewHyokConfigurations_relationships()(*HyokConfigurations_relationships) {
@@ -37,8 +37,8 @@ func (m *HyokConfigurations_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetAgentPool gets the agent-pool property value. The agentPool property
-// returns a AgentPoolsIdable when successful
-func (m *HyokConfigurations_relationships) GetAgentPool()(AgentPoolsIdable) {
+// returns a AgentPoolsHasOneable when successful
+func (m *HyokConfigurations_relationships) GetAgentPool()(AgentPoolsHasOneable) {
     return m.agentPool
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -46,66 +46,72 @@ func (m *HyokConfigurations_relationships) GetAgentPool()(AgentPoolsIdable) {
 func (m *HyokConfigurations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAgentPool(val.(AgentPoolsIdable))
+            m.SetAgentPool(val.(AgentPoolsHasOneable))
         }
         return nil
     }
     res["hyok-customer-key-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurations_relationships_hyokCustomerKeyVersionsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateHyokCustomerKeyVersionsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetHyokCustomerKeyVersions(val.(HyokConfigurations_relationships_hyokCustomerKeyVersionsable))
+            m.SetHyokCustomerKeyVersions(val.(HyokCustomerKeyVersionsHasManyable))
         }
         return nil
     }
     res["oidc-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOidcConfigurationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOidcConfigurationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOidcConfiguration(val.(OidcConfigurationsIdable))
+            m.SetOidcConfiguration(val.(OidcConfigurationsHasOneable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetHyokCustomerKeyVersions gets the hyok-customer-key-versions property value. The hyokCustomerKeyVersions property
-// returns a HyokConfigurations_relationships_hyokCustomerKeyVersionsable when successful
-func (m *HyokConfigurations_relationships) GetHyokCustomerKeyVersions()(HyokConfigurations_relationships_hyokCustomerKeyVersionsable) {
+// returns a HyokCustomerKeyVersionsHasManyable when successful
+func (m *HyokConfigurations_relationships) GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsHasManyable) {
     return m.hyokCustomerKeyVersions
 }
 // GetOidcConfiguration gets the oidc-configuration property value. The oidcConfiguration property
-// returns a OidcConfigurationsIdable when successful
-func (m *HyokConfigurations_relationships) GetOidcConfiguration()(OidcConfigurationsIdable) {
+// returns a OidcConfigurationsHasOneable when successful
+func (m *HyokConfigurations_relationships) GetOidcConfiguration()(OidcConfigurationsHasOneable) {
     return m.oidcConfiguration
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *HyokConfigurations_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *HyokConfigurations_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // Serialize serializes information the current object
 func (m *HyokConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("hyok-customer-key-versions", m.GetHyokCustomerKeyVersions())
         if err != nil {
             return err
         }
@@ -135,30 +141,30 @@ func (m *HyokConfigurations_relationships) SetAdditionalData(value map[string]an
     m.additionalData = value
 }
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *HyokConfigurations_relationships) SetAgentPool(value AgentPoolsIdable)() {
+func (m *HyokConfigurations_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
     m.agentPool = value
 }
 // SetHyokCustomerKeyVersions sets the hyok-customer-key-versions property value. The hyokCustomerKeyVersions property
-func (m *HyokConfigurations_relationships) SetHyokCustomerKeyVersions(value HyokConfigurations_relationships_hyokCustomerKeyVersionsable)() {
+func (m *HyokConfigurations_relationships) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsHasManyable)() {
     m.hyokCustomerKeyVersions = value
 }
 // SetOidcConfiguration sets the oidc-configuration property value. The oidcConfiguration property
-func (m *HyokConfigurations_relationships) SetOidcConfiguration(value OidcConfigurationsIdable)() {
+func (m *HyokConfigurations_relationships) SetOidcConfiguration(value OidcConfigurationsHasOneable)() {
     m.oidcConfiguration = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *HyokConfigurations_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *HyokConfigurations_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 type HyokConfigurations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsIdable)
-    GetHyokCustomerKeyVersions()(HyokConfigurations_relationships_hyokCustomerKeyVersionsable)
-    GetOidcConfiguration()(OidcConfigurationsIdable)
-    GetOrganization()(OrganizationsIdable)
-    SetAgentPool(value AgentPoolsIdable)()
-    SetHyokCustomerKeyVersions(value HyokConfigurations_relationships_hyokCustomerKeyVersionsable)()
-    SetOidcConfiguration(value OidcConfigurationsIdable)()
-    SetOrganization(value OrganizationsIdable)()
+    GetAgentPool()(AgentPoolsHasOneable)
+    GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsHasManyable)
+    GetOidcConfiguration()(OidcConfigurationsHasOneable)
+    GetOrganization()(OrganizationsHasOneable)
+    SetAgentPool(value AgentPoolsHasOneable)()
+    SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsHasManyable)()
+    SetOidcConfiguration(value OidcConfigurationsHasOneable)()
+    SetOrganization(value OrganizationsHasOneable)()
 }

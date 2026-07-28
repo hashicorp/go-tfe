@@ -10,10 +10,10 @@ import (
 type TfPolicyEvaluation_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The run that this policy evaluation belongs to
-    run TfPolicyEvaluation_relationships_runable
-    // The Terraform policy set outcomes that are part of this evaluation
-    tfPolicySetOutcomes TfPolicyEvaluation_relationships_tfPolicySetOutcomesable
+    // The run property
+    run RunsHasOneable
+    // The tfPolicySetOutcomes property
+    tfPolicySetOutcomes TfPolicySetOutcomesHasManyable
 }
 // NewTfPolicyEvaluation_relationships instantiates a new TfPolicyEvaluation_relationships and sets the default values.
 func NewTfPolicyEvaluation_relationships()(*TfPolicyEvaluation_relationships) {
@@ -37,35 +37,35 @@ func (m *TfPolicyEvaluation_relationships) GetAdditionalData()(map[string]any) {
 func (m *TfPolicyEvaluation_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluation_relationships_runFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetRun(val.(TfPolicyEvaluation_relationships_runable))
+            m.SetRun(val.(RunsHasOneable))
         }
         return nil
     }
     res["tf-policy-set-outcomes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluation_relationships_tfPolicySetOutcomesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTfPolicySetOutcomesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTfPolicySetOutcomes(val.(TfPolicyEvaluation_relationships_tfPolicySetOutcomesable))
+            m.SetTfPolicySetOutcomes(val.(TfPolicySetOutcomesHasManyable))
         }
         return nil
     }
     return res
 }
-// GetRun gets the run property value. The run that this policy evaluation belongs to
-// returns a TfPolicyEvaluation_relationships_runable when successful
-func (m *TfPolicyEvaluation_relationships) GetRun()(TfPolicyEvaluation_relationships_runable) {
+// GetRun gets the run property value. The run property
+// returns a RunsHasOneable when successful
+func (m *TfPolicyEvaluation_relationships) GetRun()(RunsHasOneable) {
     return m.run
 }
-// GetTfPolicySetOutcomes gets the tf-policy-set-outcomes property value. The Terraform policy set outcomes that are part of this evaluation
-// returns a TfPolicyEvaluation_relationships_tfPolicySetOutcomesable when successful
-func (m *TfPolicyEvaluation_relationships) GetTfPolicySetOutcomes()(TfPolicyEvaluation_relationships_tfPolicySetOutcomesable) {
+// GetTfPolicySetOutcomes gets the tf-policy-set-outcomes property value. The tfPolicySetOutcomes property
+// returns a TfPolicySetOutcomesHasManyable when successful
+func (m *TfPolicyEvaluation_relationships) GetTfPolicySetOutcomes()(TfPolicySetOutcomesHasManyable) {
     return m.tfPolicySetOutcomes
 }
 // Serialize serializes information the current object
@@ -94,19 +94,19 @@ func (m *TfPolicyEvaluation_relationships) Serialize(writer i878a80d2330e89d2689
 func (m *TfPolicyEvaluation_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetRun sets the run property value. The run that this policy evaluation belongs to
-func (m *TfPolicyEvaluation_relationships) SetRun(value TfPolicyEvaluation_relationships_runable)() {
+// SetRun sets the run property value. The run property
+func (m *TfPolicyEvaluation_relationships) SetRun(value RunsHasOneable)() {
     m.run = value
 }
-// SetTfPolicySetOutcomes sets the tf-policy-set-outcomes property value. The Terraform policy set outcomes that are part of this evaluation
-func (m *TfPolicyEvaluation_relationships) SetTfPolicySetOutcomes(value TfPolicyEvaluation_relationships_tfPolicySetOutcomesable)() {
+// SetTfPolicySetOutcomes sets the tf-policy-set-outcomes property value. The tfPolicySetOutcomes property
+func (m *TfPolicyEvaluation_relationships) SetTfPolicySetOutcomes(value TfPolicySetOutcomesHasManyable)() {
     m.tfPolicySetOutcomes = value
 }
 type TfPolicyEvaluation_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetRun()(TfPolicyEvaluation_relationships_runable)
-    GetTfPolicySetOutcomes()(TfPolicyEvaluation_relationships_tfPolicySetOutcomesable)
-    SetRun(value TfPolicyEvaluation_relationships_runable)()
-    SetTfPolicySetOutcomes(value TfPolicyEvaluation_relationships_tfPolicySetOutcomesable)()
+    GetRun()(RunsHasOneable)
+    GetTfPolicySetOutcomes()(TfPolicySetOutcomesHasManyable)
+    SetRun(value RunsHasOneable)()
+    SetTfPolicySetOutcomes(value TfPolicySetOutcomesHasManyable)()
 }

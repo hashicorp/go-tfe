@@ -11,7 +11,7 @@ type PolicyChecks_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The run property
-    run RunsIdable
+    run RunsHasOneable
 }
 // NewPolicyChecks_relationships instantiates a new PolicyChecks_relationships and sets the default values.
 func NewPolicyChecks_relationships()(*PolicyChecks_relationships) {
@@ -35,20 +35,20 @@ func (m *PolicyChecks_relationships) GetAdditionalData()(map[string]any) {
 func (m *PolicyChecks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetRun(val.(RunsIdable))
+            m.SetRun(val.(RunsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetRun gets the run property value. The run property
-// returns a RunsIdable when successful
-func (m *PolicyChecks_relationships) GetRun()(RunsIdable) {
+// returns a RunsHasOneable when successful
+func (m *PolicyChecks_relationships) GetRun()(RunsHasOneable) {
     return m.run
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *PolicyChecks_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetRun sets the run property value. The run property
-func (m *PolicyChecks_relationships) SetRun(value RunsIdable)() {
+func (m *PolicyChecks_relationships) SetRun(value RunsHasOneable)() {
     m.run = value
 }
 type PolicyChecks_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetRun()(RunsIdable)
-    SetRun(value RunsIdable)()
+    GetRun()(RunsHasOneable)
+    SetRun(value RunsHasOneable)()
 }

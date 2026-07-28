@@ -11,11 +11,11 @@ type Tasks_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The agentPool property
-    agentPool AgentPoolsIdable
+    agentPool AgentPoolsHasOneable
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
     // The workspaceTasks property
-    workspaceTasks Tasks_relationships_workspaceTasksable
+    workspaceTasks WorkspaceTasksHasManyable
 }
 // NewTasks_relationships instantiates a new Tasks_relationships and sets the default values.
 func NewTasks_relationships()(*Tasks_relationships) {
@@ -35,8 +35,8 @@ func (m *Tasks_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetAgentPool gets the agent-pool property value. The agentPool property
-// returns a AgentPoolsIdable when successful
-func (m *Tasks_relationships) GetAgentPool()(AgentPoolsIdable) {
+// returns a AgentPoolsHasOneable when successful
+func (m *Tasks_relationships) GetAgentPool()(AgentPoolsHasOneable) {
     return m.agentPool
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -44,45 +44,45 @@ func (m *Tasks_relationships) GetAgentPool()(AgentPoolsIdable) {
 func (m *Tasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAgentPool(val.(AgentPoolsIdable))
+            m.SetAgentPool(val.(AgentPoolsHasOneable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["workspace-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasks_relationships_workspaceTasksFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspaceTasksHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaceTasks(val.(Tasks_relationships_workspaceTasksable))
+            m.SetWorkspaceTasks(val.(WorkspaceTasksHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *Tasks_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *Tasks_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetWorkspaceTasks gets the workspace-tasks property value. The workspaceTasks property
-// returns a Tasks_relationships_workspaceTasksable when successful
-func (m *Tasks_relationships) GetWorkspaceTasks()(Tasks_relationships_workspaceTasksable) {
+// returns a WorkspaceTasksHasManyable when successful
+func (m *Tasks_relationships) GetWorkspaceTasks()(WorkspaceTasksHasManyable) {
     return m.workspaceTasks
 }
 // Serialize serializes information the current object
@@ -118,24 +118,24 @@ func (m *Tasks_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *Tasks_relationships) SetAgentPool(value AgentPoolsIdable)() {
+func (m *Tasks_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
     m.agentPool = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *Tasks_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *Tasks_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetWorkspaceTasks sets the workspace-tasks property value. The workspaceTasks property
-func (m *Tasks_relationships) SetWorkspaceTasks(value Tasks_relationships_workspaceTasksable)() {
+func (m *Tasks_relationships) SetWorkspaceTasks(value WorkspaceTasksHasManyable)() {
     m.workspaceTasks = value
 }
 type Tasks_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsIdable)
-    GetOrganization()(OrganizationsIdable)
-    GetWorkspaceTasks()(Tasks_relationships_workspaceTasksable)
-    SetAgentPool(value AgentPoolsIdable)()
-    SetOrganization(value OrganizationsIdable)()
-    SetWorkspaceTasks(value Tasks_relationships_workspaceTasksable)()
+    GetAgentPool()(AgentPoolsHasOneable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetWorkspaceTasks()(WorkspaceTasksHasManyable)
+    SetAgentPool(value AgentPoolsHasOneable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetWorkspaceTasks(value WorkspaceTasksHasManyable)()
 }
