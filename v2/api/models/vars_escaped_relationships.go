@@ -11,15 +11,15 @@ type Vars_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The configurable property
-    configurable Vars_relationships_configurableable
+    configurable ConfigurableHasOneable
     // The overwriter property
-    overwriter Vars_relationships_overwriterable
+    overwriter VarsHasOneable
     // The overwritten property
-    overwritten Vars_relationships_overwrittenable
+    overwritten VarsHasManyable
     // The varset property
-    varset Vars_relationships_varsetable
+    varset VarsetsHasOneable
     // The workspace property
-    workspace Vars_relationships_workspaceable
+    workspace WorkspacesHasOneable
 }
 // NewVars_relationships instantiates a new Vars_relationships and sets the default values.
 func NewVars_relationships()(*Vars_relationships) {
@@ -39,8 +39,8 @@ func (m *Vars_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetConfigurable gets the configurable property value. The configurable property
-// returns a Vars_relationships_configurableable when successful
-func (m *Vars_relationships) GetConfigurable()(Vars_relationships_configurableable) {
+// returns a ConfigurableHasOneable when successful
+func (m *Vars_relationships) GetConfigurable()(ConfigurableHasOneable) {
     return m.configurable
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -48,75 +48,75 @@ func (m *Vars_relationships) GetConfigurable()(Vars_relationships_configurableab
 func (m *Vars_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["configurable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVars_relationships_configurableFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateConfigurableHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetConfigurable(val.(Vars_relationships_configurableable))
+            m.SetConfigurable(val.(ConfigurableHasOneable))
         }
         return nil
     }
     res["overwriter"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVars_relationships_overwriterFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateVarsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOverwriter(val.(Vars_relationships_overwriterable))
+            m.SetOverwriter(val.(VarsHasOneable))
         }
         return nil
     }
     res["overwritten"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVars_relationships_overwrittenFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateVarsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOverwritten(val.(Vars_relationships_overwrittenable))
+            m.SetOverwritten(val.(VarsHasManyable))
         }
         return nil
     }
     res["varset"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVars_relationships_varsetFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateVarsetsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetVarset(val.(Vars_relationships_varsetable))
+            m.SetVarset(val.(VarsetsHasOneable))
         }
         return nil
     }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVars_relationships_workspaceFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspace(val.(Vars_relationships_workspaceable))
+            m.SetWorkspace(val.(WorkspacesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetOverwriter gets the overwriter property value. The overwriter property
-// returns a Vars_relationships_overwriterable when successful
-func (m *Vars_relationships) GetOverwriter()(Vars_relationships_overwriterable) {
+// returns a VarsHasOneable when successful
+func (m *Vars_relationships) GetOverwriter()(VarsHasOneable) {
     return m.overwriter
 }
 // GetOverwritten gets the overwritten property value. The overwritten property
-// returns a Vars_relationships_overwrittenable when successful
-func (m *Vars_relationships) GetOverwritten()(Vars_relationships_overwrittenable) {
+// returns a VarsHasManyable when successful
+func (m *Vars_relationships) GetOverwritten()(VarsHasManyable) {
     return m.overwritten
 }
 // GetVarset gets the varset property value. The varset property
-// returns a Vars_relationships_varsetable when successful
-func (m *Vars_relationships) GetVarset()(Vars_relationships_varsetable) {
+// returns a VarsetsHasOneable when successful
+func (m *Vars_relationships) GetVarset()(VarsetsHasOneable) {
     return m.varset
 }
 // GetWorkspace gets the workspace property value. The workspace property
-// returns a Vars_relationships_workspaceable when successful
-func (m *Vars_relationships) GetWorkspace()(Vars_relationships_workspaceable) {
+// returns a WorkspacesHasOneable when successful
+func (m *Vars_relationships) GetWorkspace()(WorkspacesHasOneable) {
     return m.workspace
 }
 // Serialize serializes information the current object
@@ -164,36 +164,36 @@ func (m *Vars_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetConfigurable sets the configurable property value. The configurable property
-func (m *Vars_relationships) SetConfigurable(value Vars_relationships_configurableable)() {
+func (m *Vars_relationships) SetConfigurable(value ConfigurableHasOneable)() {
     m.configurable = value
 }
 // SetOverwriter sets the overwriter property value. The overwriter property
-func (m *Vars_relationships) SetOverwriter(value Vars_relationships_overwriterable)() {
+func (m *Vars_relationships) SetOverwriter(value VarsHasOneable)() {
     m.overwriter = value
 }
 // SetOverwritten sets the overwritten property value. The overwritten property
-func (m *Vars_relationships) SetOverwritten(value Vars_relationships_overwrittenable)() {
+func (m *Vars_relationships) SetOverwritten(value VarsHasManyable)() {
     m.overwritten = value
 }
 // SetVarset sets the varset property value. The varset property
-func (m *Vars_relationships) SetVarset(value Vars_relationships_varsetable)() {
+func (m *Vars_relationships) SetVarset(value VarsetsHasOneable)() {
     m.varset = value
 }
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *Vars_relationships) SetWorkspace(value Vars_relationships_workspaceable)() {
+func (m *Vars_relationships) SetWorkspace(value WorkspacesHasOneable)() {
     m.workspace = value
 }
 type Vars_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetConfigurable()(Vars_relationships_configurableable)
-    GetOverwriter()(Vars_relationships_overwriterable)
-    GetOverwritten()(Vars_relationships_overwrittenable)
-    GetVarset()(Vars_relationships_varsetable)
-    GetWorkspace()(Vars_relationships_workspaceable)
-    SetConfigurable(value Vars_relationships_configurableable)()
-    SetOverwriter(value Vars_relationships_overwriterable)()
-    SetOverwritten(value Vars_relationships_overwrittenable)()
-    SetVarset(value Vars_relationships_varsetable)()
-    SetWorkspace(value Vars_relationships_workspaceable)()
+    GetConfigurable()(ConfigurableHasOneable)
+    GetOverwriter()(VarsHasOneable)
+    GetOverwritten()(VarsHasManyable)
+    GetVarset()(VarsetsHasOneable)
+    GetWorkspace()(WorkspacesHasOneable)
+    SetConfigurable(value ConfigurableHasOneable)()
+    SetOverwriter(value VarsHasOneable)()
+    SetOverwritten(value VarsHasManyable)()
+    SetVarset(value VarsetsHasOneable)()
+    SetWorkspace(value WorkspacesHasOneable)()
 }

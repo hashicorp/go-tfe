@@ -10,14 +10,14 @@ import (
 type OrganizationMemberships_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The organization this membership belongs to.
-    organization OrganizationMemberships_relationships_organizationable
-    // The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
-    scimIdentity OrganizationMemberships_relationships_scimIdentityable
-    // The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
-    teams OrganizationMemberships_relationships_teamsable
-    // The user associated with this organization membership.
-    user OrganizationMemberships_relationships_userable
+    // The organization property
+    organization OrganizationsHasOneable
+    // The scimIdentity property
+    scimIdentity ScimIdentitiesHasOneable
+    // The teams property
+    teams TeamsHasManyable
+    // The user property
+    user UsersHasOneable
 }
 // NewOrganizationMemberships_relationships instantiates a new OrganizationMemberships_relationships and sets the default values.
 func NewOrganizationMemberships_relationships()(*OrganizationMemberships_relationships) {
@@ -41,65 +41,65 @@ func (m *OrganizationMemberships_relationships) GetAdditionalData()(map[string]a
 func (m *OrganizationMemberships_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_organizationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationMemberships_relationships_organizationable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["scim-identity"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_scimIdentityFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateScimIdentitiesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetScimIdentity(val.(OrganizationMemberships_relationships_scimIdentityable))
+            m.SetScimIdentity(val.(ScimIdentitiesHasOneable))
         }
         return nil
     }
     res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_teamsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTeamsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTeams(val.(OrganizationMemberships_relationships_teamsable))
+            m.SetTeams(val.(TeamsHasManyable))
         }
         return nil
     }
     res["user"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationships_userFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetUser(val.(OrganizationMemberships_relationships_userable))
+            m.SetUser(val.(UsersHasOneable))
         }
         return nil
     }
     return res
 }
-// GetOrganization gets the organization property value. The organization this membership belongs to.
-// returns a OrganizationMemberships_relationships_organizationable when successful
-func (m *OrganizationMemberships_relationships) GetOrganization()(OrganizationMemberships_relationships_organizationable) {
+// GetOrganization gets the organization property value. The organization property
+// returns a OrganizationsHasOneable when successful
+func (m *OrganizationMemberships_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
-// GetScimIdentity gets the scim-identity property value. The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
-// returns a OrganizationMemberships_relationships_scimIdentityable when successful
-func (m *OrganizationMemberships_relationships) GetScimIdentity()(OrganizationMemberships_relationships_scimIdentityable) {
+// GetScimIdentity gets the scim-identity property value. The scimIdentity property
+// returns a ScimIdentitiesHasOneable when successful
+func (m *OrganizationMemberships_relationships) GetScimIdentity()(ScimIdentitiesHasOneable) {
     return m.scimIdentity
 }
-// GetTeams gets the teams property value. The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
-// returns a OrganizationMemberships_relationships_teamsable when successful
-func (m *OrganizationMemberships_relationships) GetTeams()(OrganizationMemberships_relationships_teamsable) {
+// GetTeams gets the teams property value. The teams property
+// returns a TeamsHasManyable when successful
+func (m *OrganizationMemberships_relationships) GetTeams()(TeamsHasManyable) {
     return m.teams
 }
-// GetUser gets the user property value. The user associated with this organization membership.
-// returns a OrganizationMemberships_relationships_userable when successful
-func (m *OrganizationMemberships_relationships) GetUser()(OrganizationMemberships_relationships_userable) {
+// GetUser gets the user property value. The user property
+// returns a UsersHasOneable when successful
+func (m *OrganizationMemberships_relationships) GetUser()(UsersHasOneable) {
     return m.user
 }
 // Serialize serializes information the current object
@@ -140,31 +140,31 @@ func (m *OrganizationMemberships_relationships) Serialize(writer i878a80d2330e89
 func (m *OrganizationMemberships_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetOrganization sets the organization property value. The organization this membership belongs to.
-func (m *OrganizationMemberships_relationships) SetOrganization(value OrganizationMemberships_relationships_organizationable)() {
+// SetOrganization sets the organization property value. The organization property
+func (m *OrganizationMemberships_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
-// SetScimIdentity sets the scim-identity property value. The SCIM identity associated with this organization membership.Only available on HCP Terraform when SCIM is enabled.Returns null if the user has no SCIM identity for this organization.
-func (m *OrganizationMemberships_relationships) SetScimIdentity(value OrganizationMemberships_relationships_scimIdentityable)() {
+// SetScimIdentity sets the scim-identity property value. The scimIdentity property
+func (m *OrganizationMemberships_relationships) SetScimIdentity(value ScimIdentitiesHasOneable)() {
     m.scimIdentity = value
 }
-// SetTeams sets the teams property value. The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not "secret" (unless the requester is a member).
-func (m *OrganizationMemberships_relationships) SetTeams(value OrganizationMemberships_relationships_teamsable)() {
+// SetTeams sets the teams property value. The teams property
+func (m *OrganizationMemberships_relationships) SetTeams(value TeamsHasManyable)() {
     m.teams = value
 }
-// SetUser sets the user property value. The user associated with this organization membership.
-func (m *OrganizationMemberships_relationships) SetUser(value OrganizationMemberships_relationships_userable)() {
+// SetUser sets the user property value. The user property
+func (m *OrganizationMemberships_relationships) SetUser(value UsersHasOneable)() {
     m.user = value
 }
 type OrganizationMemberships_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(OrganizationMemberships_relationships_organizationable)
-    GetScimIdentity()(OrganizationMemberships_relationships_scimIdentityable)
-    GetTeams()(OrganizationMemberships_relationships_teamsable)
-    GetUser()(OrganizationMemberships_relationships_userable)
-    SetOrganization(value OrganizationMemberships_relationships_organizationable)()
-    SetScimIdentity(value OrganizationMemberships_relationships_scimIdentityable)()
-    SetTeams(value OrganizationMemberships_relationships_teamsable)()
-    SetUser(value OrganizationMemberships_relationships_userable)()
+    GetOrganization()(OrganizationsHasOneable)
+    GetScimIdentity()(ScimIdentitiesHasOneable)
+    GetTeams()(TeamsHasManyable)
+    GetUser()(UsersHasOneable)
+    SetOrganization(value OrganizationsHasOneable)()
+    SetScimIdentity(value ScimIdentitiesHasOneable)()
+    SetTeams(value TeamsHasManyable)()
+    SetUser(value UsersHasOneable)()
 }

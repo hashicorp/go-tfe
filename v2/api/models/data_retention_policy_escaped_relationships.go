@@ -11,7 +11,7 @@ type DataRetentionPolicy_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The target property
-    target DataRetentionPolicy_relationships_targetable
+    target DataRetentionTargetHasOneable
 }
 // NewDataRetentionPolicy_relationships instantiates a new DataRetentionPolicy_relationships and sets the default values.
 func NewDataRetentionPolicy_relationships()(*DataRetentionPolicy_relationships) {
@@ -35,24 +35,30 @@ func (m *DataRetentionPolicy_relationships) GetAdditionalData()(map[string]any) 
 func (m *DataRetentionPolicy_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["target"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateDataRetentionPolicy_relationships_targetFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateDataRetentionTargetHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTarget(val.(DataRetentionPolicy_relationships_targetable))
+            m.SetTarget(val.(DataRetentionTargetHasOneable))
         }
         return nil
     }
     return res
 }
 // GetTarget gets the target property value. The target property
-// returns a DataRetentionPolicy_relationships_targetable when successful
-func (m *DataRetentionPolicy_relationships) GetTarget()(DataRetentionPolicy_relationships_targetable) {
+// returns a DataRetentionTargetHasOneable when successful
+func (m *DataRetentionPolicy_relationships) GetTarget()(DataRetentionTargetHasOneable) {
     return m.target
 }
 // Serialize serializes information the current object
 func (m *DataRetentionPolicy_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("target", m.GetTarget())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
@@ -66,12 +72,12 @@ func (m *DataRetentionPolicy_relationships) SetAdditionalData(value map[string]a
     m.additionalData = value
 }
 // SetTarget sets the target property value. The target property
-func (m *DataRetentionPolicy_relationships) SetTarget(value DataRetentionPolicy_relationships_targetable)() {
+func (m *DataRetentionPolicy_relationships) SetTarget(value DataRetentionTargetHasOneable)() {
     m.target = value
 }
 type DataRetentionPolicy_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTarget()(DataRetentionPolicy_relationships_targetable)
-    SetTarget(value DataRetentionPolicy_relationships_targetable)()
+    GetTarget()(DataRetentionTargetHasOneable)
+    SetTarget(value DataRetentionTargetHasOneable)()
 }

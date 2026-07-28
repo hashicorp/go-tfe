@@ -10,10 +10,10 @@ import (
 type NotificationConfigurations_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The resource (workspace, project, or team) this notification is configured for.
-    subscribable NotificationConfigurations_relationships_subscribableable
-    // Users associated with this notification (for email type).
-    users NotificationConfigurations_relationships_usersable
+    // The subscribable property
+    subscribable SubscribableHasOneable
+    // The users property
+    users UsersHasManyable
 }
 // NewNotificationConfigurations_relationships instantiates a new NotificationConfigurations_relationships and sets the default values.
 func NewNotificationConfigurations_relationships()(*NotificationConfigurations_relationships) {
@@ -37,35 +37,35 @@ func (m *NotificationConfigurations_relationships) GetAdditionalData()(map[strin
 func (m *NotificationConfigurations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["subscribable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNotificationConfigurations_relationships_subscribableFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateSubscribableHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetSubscribable(val.(NotificationConfigurations_relationships_subscribableable))
+            m.SetSubscribable(val.(SubscribableHasOneable))
         }
         return nil
     }
     res["users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNotificationConfigurations_relationships_usersFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetUsers(val.(NotificationConfigurations_relationships_usersable))
+            m.SetUsers(val.(UsersHasManyable))
         }
         return nil
     }
     return res
 }
-// GetSubscribable gets the subscribable property value. The resource (workspace, project, or team) this notification is configured for.
-// returns a NotificationConfigurations_relationships_subscribableable when successful
-func (m *NotificationConfigurations_relationships) GetSubscribable()(NotificationConfigurations_relationships_subscribableable) {
+// GetSubscribable gets the subscribable property value. The subscribable property
+// returns a SubscribableHasOneable when successful
+func (m *NotificationConfigurations_relationships) GetSubscribable()(SubscribableHasOneable) {
     return m.subscribable
 }
-// GetUsers gets the users property value. Users associated with this notification (for email type).
-// returns a NotificationConfigurations_relationships_usersable when successful
-func (m *NotificationConfigurations_relationships) GetUsers()(NotificationConfigurations_relationships_usersable) {
+// GetUsers gets the users property value. The users property
+// returns a UsersHasManyable when successful
+func (m *NotificationConfigurations_relationships) GetUsers()(UsersHasManyable) {
     return m.users
 }
 // Serialize serializes information the current object
@@ -94,19 +94,19 @@ func (m *NotificationConfigurations_relationships) Serialize(writer i878a80d2330
 func (m *NotificationConfigurations_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetSubscribable sets the subscribable property value. The resource (workspace, project, or team) this notification is configured for.
-func (m *NotificationConfigurations_relationships) SetSubscribable(value NotificationConfigurations_relationships_subscribableable)() {
+// SetSubscribable sets the subscribable property value. The subscribable property
+func (m *NotificationConfigurations_relationships) SetSubscribable(value SubscribableHasOneable)() {
     m.subscribable = value
 }
-// SetUsers sets the users property value. Users associated with this notification (for email type).
-func (m *NotificationConfigurations_relationships) SetUsers(value NotificationConfigurations_relationships_usersable)() {
+// SetUsers sets the users property value. The users property
+func (m *NotificationConfigurations_relationships) SetUsers(value UsersHasManyable)() {
     m.users = value
 }
 type NotificationConfigurations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetSubscribable()(NotificationConfigurations_relationships_subscribableable)
-    GetUsers()(NotificationConfigurations_relationships_usersable)
-    SetSubscribable(value NotificationConfigurations_relationships_subscribableable)()
-    SetUsers(value NotificationConfigurations_relationships_usersable)()
+    GetSubscribable()(SubscribableHasOneable)
+    GetUsers()(UsersHasManyable)
+    SetSubscribable(value SubscribableHasOneable)()
+    SetUsers(value UsersHasManyable)()
 }

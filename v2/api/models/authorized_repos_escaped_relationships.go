@@ -11,7 +11,7 @@ type AuthorizedRepos_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The oauthToken property
-    oauthToken OauthTokensIdable
+    oauthToken OauthTokensHasOneable
 }
 // NewAuthorizedRepos_relationships instantiates a new AuthorizedRepos_relationships and sets the default values.
 func NewAuthorizedRepos_relationships()(*AuthorizedRepos_relationships) {
@@ -35,20 +35,20 @@ func (m *AuthorizedRepos_relationships) GetAdditionalData()(map[string]any) {
 func (m *AuthorizedRepos_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["oauth-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthTokensIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOauthTokensHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOauthToken(val.(OauthTokensIdable))
+            m.SetOauthToken(val.(OauthTokensHasOneable))
         }
         return nil
     }
     return res
 }
 // GetOauthToken gets the oauth-token property value. The oauthToken property
-// returns a OauthTokensIdable when successful
-func (m *AuthorizedRepos_relationships) GetOauthToken()(OauthTokensIdable) {
+// returns a OauthTokensHasOneable when successful
+func (m *AuthorizedRepos_relationships) GetOauthToken()(OauthTokensHasOneable) {
     return m.oauthToken
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *AuthorizedRepos_relationships) SetAdditionalData(value map[string]any)(
     m.additionalData = value
 }
 // SetOauthToken sets the oauth-token property value. The oauthToken property
-func (m *AuthorizedRepos_relationships) SetOauthToken(value OauthTokensIdable)() {
+func (m *AuthorizedRepos_relationships) SetOauthToken(value OauthTokensHasOneable)() {
     m.oauthToken = value
 }
 type AuthorizedRepos_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOauthToken()(OauthTokensIdable)
-    SetOauthToken(value OauthTokensIdable)()
+    GetOauthToken()(OauthTokensHasOneable)
+    SetOauthToken(value OauthTokensHasOneable)()
 }

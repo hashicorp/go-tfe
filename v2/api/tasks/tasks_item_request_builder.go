@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    iaad17ee58633d1bcb69c36c294867edc7605bc892a131b243a6107cfc310349e "github.com/hashicorp/go-tfe/v2/api/tasks/item"
 )
 
 // TasksItemRequestBuilder builds and executes requests for operations under \tasks\{id}
@@ -15,13 +16,13 @@ type TasksItemRequestBuilder struct {
 }
 // TasksItemRequestBuilderGetQueryParameters get details about a run task.
 type TasksItemRequestBuilderGetQueryParameters struct {
-    // Allows including related resource data. Value must be a comma-separated list containing one or more of `workspace_tasks` or `workspace_tasks.workspace`.
-    Include *string "uriparametername:\"include\""
+    // Allows including related resource data.
+    Include []iaad17ee58633d1bcb69c36c294867edc7605bc892a131b243a6107cfc310349e.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewTasksItemRequestBuilderInternal instantiates a new TasksItemRequestBuilder and sets the default values.
 func NewTasksItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TasksItemRequestBuilder) {
     m := &TasksItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}{?include}", pathParameters),
     }
     return m
 }

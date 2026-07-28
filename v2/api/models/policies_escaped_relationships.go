@@ -11,9 +11,9 @@ type Policies_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
     // The policySets property
-    policySets Policies_relationships_policySetsable
+    policySets PolicySetsHasManyable
 }
 // NewPolicies_relationships instantiates a new Policies_relationships and sets the default values.
 func NewPolicies_relationships()(*Policies_relationships) {
@@ -37,35 +37,35 @@ func (m *Policies_relationships) GetAdditionalData()(map[string]any) {
 func (m *Policies_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["policy-sets"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicies_relationships_policySetsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicySetsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicySets(val.(Policies_relationships_policySetsable))
+            m.SetPolicySets(val.(PolicySetsHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *Policies_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *Policies_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetPolicySets gets the policy-sets property value. The policySets property
-// returns a Policies_relationships_policySetsable when successful
-func (m *Policies_relationships) GetPolicySets()(Policies_relationships_policySetsable) {
+// returns a PolicySetsHasManyable when successful
+func (m *Policies_relationships) GetPolicySets()(PolicySetsHasManyable) {
     return m.policySets
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *Policies_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *Policies_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *Policies_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetPolicySets sets the policy-sets property value. The policySets property
-func (m *Policies_relationships) SetPolicySets(value Policies_relationships_policySetsable)() {
+func (m *Policies_relationships) SetPolicySets(value PolicySetsHasManyable)() {
     m.policySets = value
 }
 type Policies_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(OrganizationsIdable)
-    GetPolicySets()(Policies_relationships_policySetsable)
-    SetOrganization(value OrganizationsIdable)()
-    SetPolicySets(value Policies_relationships_policySetsable)()
+    GetOrganization()(OrganizationsHasOneable)
+    GetPolicySets()(PolicySetsHasManyable)
+    SetOrganization(value OrganizationsHasOneable)()
+    SetPolicySets(value PolicySetsHasManyable)()
 }

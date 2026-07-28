@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7 "github.com/hashicorp/go-tfe/v2/api/workspacetransfers/item"
 )
 
 // WithWorkspace_transfer_ItemRequestBuilder builds and executes requests for operations under \workspace-transfers\{workspace_transfer_id}
@@ -15,8 +16,8 @@ type WithWorkspace_transfer_ItemRequestBuilder struct {
 }
 // WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters get details about a workspace transfer.
 type WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters struct {
-    // Related resources to include (e.g., operations)
-    Include *string "uriparametername:\"include\""
+    // Allows including related resource data.
+    Include []i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +27,7 @@ func (m *WithWorkspace_transfer_ItemRequestBuilder) Actions()(*ItemActionsReques
 // NewWithWorkspace_transfer_ItemRequestBuilderInternal instantiates a new WithWorkspace_transfer_ItemRequestBuilder and sets the default values.
 func NewWithWorkspace_transfer_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_transfer_ItemRequestBuilder) {
     m := &WithWorkspace_transfer_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?include}", pathParameters),
     }
     return m
 }

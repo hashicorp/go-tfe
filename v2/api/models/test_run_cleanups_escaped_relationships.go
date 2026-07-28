@@ -11,11 +11,11 @@ type TestRunCleanups_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The createdBy property
-    createdBy UsersIdable
+    createdBy UsersHasOneable
     // The previousTestRunCleanup property
-    previousTestRunCleanup TestRunCleanupsIdable
+    previousTestRunCleanup TestRunCleanupsHasOneable
     // The testRun property
-    testRun TestRunsIdable
+    testRun TestRunsHasOneable
 }
 // NewTestRunCleanups_relationships instantiates a new TestRunCleanups_relationships and sets the default values.
 func NewTestRunCleanups_relationships()(*TestRunCleanups_relationships) {
@@ -35,8 +35,8 @@ func (m *TestRunCleanups_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetCreatedBy gets the created-by property value. The createdBy property
-// returns a UsersIdable when successful
-func (m *TestRunCleanups_relationships) GetCreatedBy()(UsersIdable) {
+// returns a UsersHasOneable when successful
+func (m *TestRunCleanups_relationships) GetCreatedBy()(UsersHasOneable) {
     return m.createdBy
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -44,45 +44,45 @@ func (m *TestRunCleanups_relationships) GetCreatedBy()(UsersIdable) {
 func (m *TestRunCleanups_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetCreatedBy(val.(UsersIdable))
+            m.SetCreatedBy(val.(UsersHasOneable))
         }
         return nil
     }
     res["previous-test-run-cleanup"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTestRunCleanupsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTestRunCleanupsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPreviousTestRunCleanup(val.(TestRunCleanupsIdable))
+            m.SetPreviousTestRunCleanup(val.(TestRunCleanupsHasOneable))
         }
         return nil
     }
     res["test-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTestRunsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTestRunsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTestRun(val.(TestRunsIdable))
+            m.SetTestRun(val.(TestRunsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetPreviousTestRunCleanup gets the previous-test-run-cleanup property value. The previousTestRunCleanup property
-// returns a TestRunCleanupsIdable when successful
-func (m *TestRunCleanups_relationships) GetPreviousTestRunCleanup()(TestRunCleanupsIdable) {
+// returns a TestRunCleanupsHasOneable when successful
+func (m *TestRunCleanups_relationships) GetPreviousTestRunCleanup()(TestRunCleanupsHasOneable) {
     return m.previousTestRunCleanup
 }
 // GetTestRun gets the test-run property value. The testRun property
-// returns a TestRunsIdable when successful
-func (m *TestRunCleanups_relationships) GetTestRun()(TestRunsIdable) {
+// returns a TestRunsHasOneable when successful
+func (m *TestRunCleanups_relationships) GetTestRun()(TestRunsHasOneable) {
     return m.testRun
 }
 // Serialize serializes information the current object
@@ -118,24 +118,24 @@ func (m *TestRunCleanups_relationships) SetAdditionalData(value map[string]any)(
     m.additionalData = value
 }
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *TestRunCleanups_relationships) SetCreatedBy(value UsersIdable)() {
+func (m *TestRunCleanups_relationships) SetCreatedBy(value UsersHasOneable)() {
     m.createdBy = value
 }
 // SetPreviousTestRunCleanup sets the previous-test-run-cleanup property value. The previousTestRunCleanup property
-func (m *TestRunCleanups_relationships) SetPreviousTestRunCleanup(value TestRunCleanupsIdable)() {
+func (m *TestRunCleanups_relationships) SetPreviousTestRunCleanup(value TestRunCleanupsHasOneable)() {
     m.previousTestRunCleanup = value
 }
 // SetTestRun sets the test-run property value. The testRun property
-func (m *TestRunCleanups_relationships) SetTestRun(value TestRunsIdable)() {
+func (m *TestRunCleanups_relationships) SetTestRun(value TestRunsHasOneable)() {
     m.testRun = value
 }
 type TestRunCleanups_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedBy()(UsersIdable)
-    GetPreviousTestRunCleanup()(TestRunCleanupsIdable)
-    GetTestRun()(TestRunsIdable)
-    SetCreatedBy(value UsersIdable)()
-    SetPreviousTestRunCleanup(value TestRunCleanupsIdable)()
-    SetTestRun(value TestRunsIdable)()
+    GetCreatedBy()(UsersHasOneable)
+    GetPreviousTestRunCleanup()(TestRunCleanupsHasOneable)
+    GetTestRun()(TestRunsHasOneable)
+    SetCreatedBy(value UsersHasOneable)()
+    SetPreviousTestRunCleanup(value TestRunCleanupsHasOneable)()
+    SetTestRun(value TestRunsHasOneable)()
 }

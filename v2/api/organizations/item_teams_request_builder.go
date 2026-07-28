@@ -19,7 +19,7 @@ type ItemTeamsRequestBuilderGetQueryParameters struct {
     // If specified, restricts results to a team with a matching name. If multiple comma separated values are specified, teams matching any of the names are returned.
     Filternames *string "uriparametername:\"filter%5Bnames%5D\""
     // Optionally side-load relationships. Can include "users" or "organization-memberships".
-    Include *i68c7b1754f3d859dd95c09b410930e44dcfd5c211141c27437c039782e7cf6df.GetIncludeQueryParameterType "uriparametername:\"include\""
+    Include []i68c7b1754f3d859dd95c09b410930e44dcfd5c211141c27437c039782e7cf6df.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -30,7 +30,7 @@ type ItemTeamsRequestBuilderGetQueryParameters struct {
 // NewItemTeamsRequestBuilderInternal instantiates a new ItemTeamsRequestBuilder and sets the default values.
 func NewItemTeamsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTeamsRequestBuilder) {
     m := &ItemTeamsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/teams{?filter%5Bnames%5D*,include*,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/teams{?filter%5Bnames%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
     }
     return m
 }

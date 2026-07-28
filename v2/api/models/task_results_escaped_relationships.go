@@ -13,7 +13,7 @@ type TaskResults_relationships struct {
     // The taskResultOutcomes property
     taskResultOutcomes TaskResults_relationships_taskResultOutcomesable
     // The taskStage property
-    taskStage TaskStagesIdable
+    taskStage TaskStagesHasOneable
 }
 // NewTaskResults_relationships instantiates a new TaskResults_relationships and sets the default values.
 func NewTaskResults_relationships()(*TaskResults_relationships) {
@@ -47,12 +47,12 @@ func (m *TaskResults_relationships) GetFieldDeserializers()(map[string]func(i878
         return nil
     }
     res["task-stage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskStagesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTaskStagesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTaskStage(val.(TaskStagesIdable))
+            m.SetTaskStage(val.(TaskStagesHasOneable))
         }
         return nil
     }
@@ -64,8 +64,8 @@ func (m *TaskResults_relationships) GetTaskResultOutcomes()(TaskResults_relation
     return m.taskResultOutcomes
 }
 // GetTaskStage gets the task-stage property value. The taskStage property
-// returns a TaskStagesIdable when successful
-func (m *TaskResults_relationships) GetTaskStage()(TaskStagesIdable) {
+// returns a TaskStagesHasOneable when successful
+func (m *TaskResults_relationships) GetTaskStage()(TaskStagesHasOneable) {
     return m.taskStage
 }
 // Serialize serializes information the current object
@@ -99,14 +99,14 @@ func (m *TaskResults_relationships) SetTaskResultOutcomes(value TaskResults_rela
     m.taskResultOutcomes = value
 }
 // SetTaskStage sets the task-stage property value. The taskStage property
-func (m *TaskResults_relationships) SetTaskStage(value TaskStagesIdable)() {
+func (m *TaskResults_relationships) SetTaskStage(value TaskStagesHasOneable)() {
     m.taskStage = value
 }
 type TaskResults_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetTaskResultOutcomes()(TaskResults_relationships_taskResultOutcomesable)
-    GetTaskStage()(TaskStagesIdable)
+    GetTaskStage()(TaskStagesHasOneable)
     SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)()
-    SetTaskStage(value TaskStagesIdable)()
+    SetTaskStage(value TaskStagesHasOneable)()
 }

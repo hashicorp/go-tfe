@@ -11,7 +11,7 @@ type Comments_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The runEvent property
-    runEvent RunEventsIdable
+    runEvent RunEventsHasOneable
 }
 // NewComments_relationships instantiates a new Comments_relationships and sets the default values.
 func NewComments_relationships()(*Comments_relationships) {
@@ -35,20 +35,20 @@ func (m *Comments_relationships) GetAdditionalData()(map[string]any) {
 func (m *Comments_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["run-event"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunEventsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateRunEventsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetRunEvent(val.(RunEventsIdable))
+            m.SetRunEvent(val.(RunEventsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetRunEvent gets the run-event property value. The runEvent property
-// returns a RunEventsIdable when successful
-func (m *Comments_relationships) GetRunEvent()(RunEventsIdable) {
+// returns a RunEventsHasOneable when successful
+func (m *Comments_relationships) GetRunEvent()(RunEventsHasOneable) {
     return m.runEvent
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *Comments_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetRunEvent sets the run-event property value. The runEvent property
-func (m *Comments_relationships) SetRunEvent(value RunEventsIdable)() {
+func (m *Comments_relationships) SetRunEvent(value RunEventsHasOneable)() {
     m.runEvent = value
 }
 type Comments_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetRunEvent()(RunEventsIdable)
-    SetRunEvent(value RunEventsIdable)()
+    GetRunEvent()(RunEventsHasOneable)
+    SetRunEvent(value RunEventsHasOneable)()
 }

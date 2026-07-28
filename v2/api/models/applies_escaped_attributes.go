@@ -8,6 +8,10 @@ import (
 )
 
 type Applies_attributes struct {
+    // The actionFailures property
+    actionFailures *int32
+    // The actionInvocations property
+    actionInvocations *int32
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The executionDetails property
@@ -39,6 +43,16 @@ func NewApplies_attributes()(*Applies_attributes) {
 func CreateApplies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewApplies_attributes(), nil
 }
+// GetActionFailures gets the action-failures property value. The actionFailures property
+// returns a *int32 when successful
+func (m *Applies_attributes) GetActionFailures()(*int32) {
+    return m.actionFailures
+}
+// GetActionInvocations gets the action-invocations property value. The actionInvocations property
+// returns a *int32 when successful
+func (m *Applies_attributes) GetActionInvocations()(*int32) {
+    return m.actionInvocations
+}
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Applies_attributes) GetAdditionalData()(map[string]any) {
@@ -53,6 +67,26 @@ func (m *Applies_attributes) GetExecutionDetails()(Applies_attributes_executionD
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Applies_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["action-failures"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetActionFailures(val)
+        }
+        return nil
+    }
+    res["action-invocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetActionInvocations(val)
+        }
+        return nil
+    }
     res["execution-details"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateApplies_attributes_executionDetailsFromDiscriminatorValue)
         if err != nil {
@@ -180,6 +214,14 @@ func (m *Applies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
     }
     return nil
 }
+// SetActionFailures sets the action-failures property value. The actionFailures property
+func (m *Applies_attributes) SetActionFailures(value *int32)() {
+    m.actionFailures = value
+}
+// SetActionInvocations sets the action-invocations property value. The actionInvocations property
+func (m *Applies_attributes) SetActionInvocations(value *int32)() {
+    m.actionInvocations = value
+}
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Applies_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
@@ -219,6 +261,8 @@ func (m *Applies_attributes) SetStatusTimestamps(value Applies_attributes_status
 type Applies_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetActionFailures()(*int32)
+    GetActionInvocations()(*int32)
     GetExecutionDetails()(Applies_attributes_executionDetailsable)
     GetLogReadUrl()(*string)
     GetResourceAdditions()(*int32)
@@ -227,6 +271,8 @@ type Applies_attributesable interface {
     GetResourceImports()(*int32)
     GetStatus()(*Applies_attributes_status)
     GetStatusTimestamps()(Applies_attributes_statusTimestampsable)
+    SetActionFailures(value *int32)()
+    SetActionInvocations(value *int32)()
     SetExecutionDetails(value Applies_attributes_executionDetailsable)()
     SetLogReadUrl(value *string)()
     SetResourceAdditions(value *int32)()

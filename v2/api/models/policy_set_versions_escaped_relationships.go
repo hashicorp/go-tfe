@@ -11,7 +11,7 @@ type PolicySetVersions_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The policySet property
-    policySet PolicySetsIdable
+    policySet PolicySetsHasOneable
 }
 // NewPolicySetVersions_relationships instantiates a new PolicySetVersions_relationships and sets the default values.
 func NewPolicySetVersions_relationships()(*PolicySetVersions_relationships) {
@@ -35,20 +35,20 @@ func (m *PolicySetVersions_relationships) GetAdditionalData()(map[string]any) {
 func (m *PolicySetVersions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["policy-set"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicySetsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicySet(val.(PolicySetsIdable))
+            m.SetPolicySet(val.(PolicySetsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetPolicySet gets the policy-set property value. The policySet property
-// returns a PolicySetsIdable when successful
-func (m *PolicySetVersions_relationships) GetPolicySet()(PolicySetsIdable) {
+// returns a PolicySetsHasOneable when successful
+func (m *PolicySetVersions_relationships) GetPolicySet()(PolicySetsHasOneable) {
     return m.policySet
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *PolicySetVersions_relationships) SetAdditionalData(value map[string]any
     m.additionalData = value
 }
 // SetPolicySet sets the policy-set property value. The policySet property
-func (m *PolicySetVersions_relationships) SetPolicySet(value PolicySetsIdable)() {
+func (m *PolicySetVersions_relationships) SetPolicySet(value PolicySetsHasOneable)() {
     m.policySet = value
 }
 type PolicySetVersions_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPolicySet()(PolicySetsIdable)
-    SetPolicySet(value PolicySetsIdable)()
+    GetPolicySet()(PolicySetsHasOneable)
+    SetPolicySet(value PolicySetsHasOneable)()
 }

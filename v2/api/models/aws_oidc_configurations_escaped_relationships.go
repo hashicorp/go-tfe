@@ -11,7 +11,7 @@ type AwsOidcConfigurations_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
 }
 // NewAwsOidcConfigurations_relationships instantiates a new AwsOidcConfigurations_relationships and sets the default values.
 func NewAwsOidcConfigurations_relationships()(*AwsOidcConfigurations_relationships) {
@@ -35,20 +35,20 @@ func (m *AwsOidcConfigurations_relationships) GetAdditionalData()(map[string]any
 func (m *AwsOidcConfigurations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *AwsOidcConfigurations_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *AwsOidcConfigurations_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *AwsOidcConfigurations_relationships) SetAdditionalData(value map[string
     m.additionalData = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *AwsOidcConfigurations_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *AwsOidcConfigurations_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 type AwsOidcConfigurations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(OrganizationsIdable)
-    SetOrganization(value OrganizationsIdable)()
+    GetOrganization()(OrganizationsHasOneable)
+    SetOrganization(value OrganizationsHasOneable)()
 }

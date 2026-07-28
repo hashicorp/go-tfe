@@ -11,7 +11,7 @@ type TaskResultOutcomes_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The taskResult property
-    taskResult TaskResultsIdable
+    taskResult TaskResultsHasOneable
 }
 // NewTaskResultOutcomes_relationships instantiates a new TaskResultOutcomes_relationships and sets the default values.
 func NewTaskResultOutcomes_relationships()(*TaskResultOutcomes_relationships) {
@@ -35,20 +35,20 @@ func (m *TaskResultOutcomes_relationships) GetAdditionalData()(map[string]any) {
 func (m *TaskResultOutcomes_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["task-result"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskResultsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTaskResultsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTaskResult(val.(TaskResultsIdable))
+            m.SetTaskResult(val.(TaskResultsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetTaskResult gets the task-result property value. The taskResult property
-// returns a TaskResultsIdable when successful
-func (m *TaskResultOutcomes_relationships) GetTaskResult()(TaskResultsIdable) {
+// returns a TaskResultsHasOneable when successful
+func (m *TaskResultOutcomes_relationships) GetTaskResult()(TaskResultsHasOneable) {
     return m.taskResult
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *TaskResultOutcomes_relationships) SetAdditionalData(value map[string]an
     m.additionalData = value
 }
 // SetTaskResult sets the task-result property value. The taskResult property
-func (m *TaskResultOutcomes_relationships) SetTaskResult(value TaskResultsIdable)() {
+func (m *TaskResultOutcomes_relationships) SetTaskResult(value TaskResultsHasOneable)() {
     m.taskResult = value
 }
 type TaskResultOutcomes_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTaskResult()(TaskResultsIdable)
-    SetTaskResult(value TaskResultsIdable)()
+    GetTaskResult()(TaskResultsHasOneable)
+    SetTaskResult(value TaskResultsHasOneable)()
 }

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "4a527346",
+    "version": "f93f81ee",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -2247,11 +2247,16 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "subscription"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscription"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships of the specified name"
@@ -2407,13 +2412,18 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "subscription",
-                "entitlement_set",
-                "default-project"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscription",
+                  "entitlement_set",
+                  "default-project"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships of the specified name"
@@ -2780,13 +2790,18 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "user",
-                "teams",
-                "scim-identity"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "teams",
+                  "scim-identity"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"scim-identity\".\nNote: \"scim-identity\" is only available on HCP Terraform.\n"
@@ -2829,7 +2844,7 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "oneOf": [
                           {
                             "$ref": "#/components/schemas/users"
                           },
@@ -2842,7 +2857,16 @@
                           {
                             "$ref": "#/components/schemas/scim-identities"
                           }
-                        ]
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users",
+                            "teams": "#/components/schemas/teams",
+                            "organizations": "#/components/schemas/organizations",
+                            "scim-identities": "#/components/schemas/scim-identities"
+                          }
+                        }
                       }
                     }
                   }
@@ -3003,13 +3027,18 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "user",
-                "teams",
-                "organization"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "teams",
+                  "organization"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"organization\"."
@@ -3052,7 +3081,7 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "oneOf": [
                           {
                             "$ref": "#/components/schemas/users"
                           },
@@ -3062,7 +3091,15 @@
                           {
                             "$ref": "#/components/schemas/organizations"
                           }
-                        ]
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users",
+                            "teams": "#/components/schemas/teams",
+                            "organizations": "#/components/schemas/organizations"
+                          }
+                        }
                       }
                     }
                   }
@@ -3104,12 +3141,17 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "user",
-                "teams"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "teams"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"user\" or \"teams\"."
@@ -3131,14 +3173,21 @@
                         "included": {
                           "type": "array",
                           "items": {
-                            "anyOf": [
+                            "oneOf": [
                               {
                                 "$ref": "#/components/schemas/users"
                               },
                               {
                                 "$ref": "#/components/schemas/teams"
                               }
-                            ]
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "users": "#/components/schemas/users",
+                                "teams": "#/components/schemas/teams"
+                              }
+                            }
                           }
                         }
                       }
@@ -3249,13 +3298,18 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "recoverable",
-                "deleted_by",
-                "project"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "recoverable",
+                  "deleted_by",
+                  "project"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships of the specified name. Multiple values can be comma-separated."
@@ -4582,11 +4636,43 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "agent_pool",
+                  "current_assessment_result",
+                  "current_configuration_version",
+                  "current_configuration_version.ingress_attributes",
+                  "current_run",
+                  "current_run.apply",
+                  "current_run.plan",
+                  "current_run.configuration_version",
+                  "current_run.configuration_version.ingress_attributes",
+                  "current_state_version",
+                  "current_state_version.resources_processed",
+                  "latest_run",
+                  "latest_run.plan",
+                  "latest_run.configuration_version",
+                  "latest_run.configuration_version.ingress_attributes",
+                  "locked_by",
+                  "no_code_module_version",
+                  "no_code_module_version.no_code_module",
+                  "no_code_module_version.no_code_module.latest_version",
+                  "organization",
+                  "outputs",
+                  "project",
+                  "readme",
+                  "vars",
+                  "effective_tag_bindings"
+                ]
+              }
             },
             "required": false,
-            "description": "Comma-separated list of relationship names to side-load (e.g., current_run, readme, effective_tag_bindings).\n"
+            "description": "Comma-separated list of relationship names to side-load.\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -4764,11 +4850,43 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "agent_pool",
+                  "current_assessment_result",
+                  "current_configuration_version",
+                  "current_configuration_version.ingress_attributes",
+                  "current_run",
+                  "current_run.apply",
+                  "current_run.plan",
+                  "current_run.configuration_version",
+                  "current_run.configuration_version.ingress_attributes",
+                  "current_state_version",
+                  "current_state_version.resources_processed",
+                  "latest_run",
+                  "latest_run.plan",
+                  "latest_run.configuration_version",
+                  "latest_run.configuration_version.ingress_attributes",
+                  "locked_by",
+                  "no_code_module_version",
+                  "no_code_module_version.no_code_module",
+                  "no_code_module_version.no_code_module.latest_version",
+                  "organization",
+                  "outputs",
+                  "project",
+                  "readme",
+                  "vars",
+                  "effective_tag_bindings"
+                ]
+              }
             },
             "required": false,
-            "description": "Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).\n"
+            "description": "Optionally side-load relationships.\n"
           }
         ],
         "responses": {
@@ -5859,72 +5977,6 @@
         }
       }
     },
-    "/workspaces/{workspace_id}/queries": {
-      "x-vs": [
-        "internal-beta"
-      ],
-      "get": {
-        "operationId": "getWorkspaceQueries",
-        "summary": "Get Queries for a Workspace",
-        "description": "Get list of queries for a particular workspace.",
-        "tags": [
-          "queries"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "workspace_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The id of the workspace."
-          },
-          {
-            "$ref": "#/components/parameters/page_number"
-          },
-          {
-            "$ref": "#/components/parameters/page_size"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of Queries",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/queries"
-                      }
-                    },
-                    "links": {
-                      "$ref": "#/components/schemas/self-with-pagination"
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/pagination"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/workspaces/{workspace_id}/all-vars": {
       "get": {
         "operationId": "listAllVars",
@@ -6259,6 +6311,16 @@
             },
             "required": true,
             "description": "The ID of the provider set."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "description": "Comma-separated list of related resources to include. Valid values: projects, workspaces.\n",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "example": "projects,workspaces"
           }
         ],
         "responses": {
@@ -6576,6 +6638,16 @@
             },
             "required": true,
             "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "description": "Comma-separated list of related resources to include. Valid values: projects, workspaces.\n",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "example": "projects,workspaces"
           }
         ],
         "responses": {
@@ -6759,6 +6831,16 @@
             },
             "required": true,
             "description": "The name of the provider_set."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "description": "Comma-separated list of related resources to include. Valid values: projects, workspaces.\n",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "example": "projects,workspaces"
           }
         ],
         "responses": {
@@ -8178,11 +8260,43 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "agent_pool",
+                  "current_assessment_result",
+                  "current_configuration_version",
+                  "current_configuration_version.ingress_attributes",
+                  "current_run",
+                  "current_run.apply",
+                  "current_run.plan",
+                  "current_run.configuration_version",
+                  "current_run.configuration_version.ingress_attributes",
+                  "current_state_version",
+                  "current_state_version.resources_processed",
+                  "latest_run",
+                  "latest_run.plan",
+                  "latest_run.configuration_version",
+                  "latest_run.configuration_version.ingress_attributes",
+                  "locked_by",
+                  "no_code_module_version",
+                  "no_code_module_version.no_code_module",
+                  "no_code_module_version.no_code_module.latest_version",
+                  "organization",
+                  "outputs",
+                  "project",
+                  "readme",
+                  "vars",
+                  "effective_tag_bindings"
+                ]
+              }
             },
             "required": false,
-            "description": "Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).\n"
+            "description": "Optionally side-load relationships.\n"
           }
         ],
         "responses": {
@@ -9578,11 +9692,19 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "outputs"
+                ]
+              }
             },
             "required": false,
-            "description": "Optionally side-load relationships. For example, outputs or created-by.\n"
+            "description": "Optionally side-load relationships.\n"
           }
         ],
         "responses": {
@@ -9972,8 +10094,24 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "plan",
+                  "apply",
+                  "created_by",
+                  "configuration_version",
+                  "configuration_version.ingress_attributes",
+                  "cost_estimate",
+                  "workspace",
+                  "task_stages",
+                  "tf_policy_evaluations"
+                ]
+              }
             },
             "required": false,
             "description": "Available side-load related resources. Multiple values can be comma-separated.\n\nAvailable includes:\n- `plan` - The plan for this run\n- `apply` - The apply for this run\n- `created_by` - The user who created this run\n- `configuration_version` - The configuration version used\n- `configuration_version.ingress_attributes` - VCS ingress details\n- `cost_estimate` - Cost estimation for this run\n- `workspace` - The workspace this run belongs to\n- `task_stages` - Run task stages\n- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*\n"
@@ -11910,11 +12048,19 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "tf_policy_set_outcomes"
+                ]
+              }
             },
             "required": false,
-            "description": "Comma-separated list of related resources to include. Valid values are `tf_policy_set_outcomes`."
+            "description": "Comma-separated list of related resources to include."
           }
         ],
         "responses": {
@@ -15952,57 +16098,6 @@
           }
         }
       },
-      "post": {
-        "operationId": "createAuthenticationToken",
-        "summary": "Create Authentication Token",
-        "description": "Create an authentication token",
-        "tags": [
-          "authentication-tokens"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/authentication-tokens-envelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Authentication token created",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/authentication-tokens-envelope"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "operationId": "deleteAuthenticationToken",
         "summary": "Delete authentication Token",
@@ -16419,9 +16514,9 @@
     },
     "/teams/{id}/authentication-token": {
       "get": {
-        "operationId": "getAuthenticationToken",
-        "summary": "Get authentication token details",
-        "description": "Get details about an authentication token",
+        "operationId": "getTeamAuthenticationToken",
+        "summary": "Get team authentication token details",
+        "description": "Get details about a team's authentication token",
         "tags": [
           "authentication-tokens"
         ],
@@ -16433,7 +16528,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "responses": {
@@ -16460,9 +16555,9 @@
         }
       },
       "post": {
-        "operationId": "createAuthenticationToken",
-        "summary": "Create Authentication Token",
-        "description": "Create an authentication token",
+        "operationId": "createTeamAuthenticationToken",
+        "summary": "Create (or regenerate) the legacy team authentication token",
+        "description": "Creates the team's legacy, descriptionless authentication token. If one already exists, it is revoked and replaced.",
         "tags": [
           "authentication-tokens"
         ],
@@ -16474,7 +16569,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "requestBody": {
@@ -16511,9 +16606,9 @@
         }
       },
       "delete": {
-        "operationId": "deleteAuthenticationToken",
-        "summary": "Delete authentication Token",
-        "description": "Delete an authentication token",
+        "operationId": "deleteTeamAuthenticationToken",
+        "summary": "Delete team authentication token",
+        "description": "Delete a team's authentication token",
         "tags": [
           "authentication-tokens"
         ],
@@ -16525,7 +16620,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+            "description": "Team ID"
           }
         ],
         "responses": {
@@ -16859,6 +16954,24 @@
             "description": "Organization Name"
           },
           {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Search team tokens by team name."
+          },
+          {
+            "in": "query",
+            "name": "filter[expiry_status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by token expiry status. Accepts a comma-separated list of any of: `active`, `expiring_in_7_days`, `expiring_in_30_days`, `expired`, `no_expiration`. Multiple values are combined with OR."
+          },
+          {
             "$ref": "#/components/parameters/page_number"
           },
           {
@@ -16894,6 +17007,71 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTeamTokensForAnOrganization",
+        "summary": "Bulk-Delete Team Tokens for an Organization",
+        "description": "Bulk-delete team tokens for an organization.",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization Name"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "authentication-tokens"
+                          ]
+                        },
+                        "id": {
+                          "type": "string",
+                          "description": "External ID of the team token to delete.",
+                          "example": "at-abc123def456"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tokens deleted"
           },
           "default": {
             "description": "Error details",
@@ -16947,12 +17125,17 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "users",
-                "organization-memberships"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "users",
+                  "organization-memberships"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"users\" or \"organization-memberships\"."
@@ -17145,12 +17328,17 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "users",
-                "organization-memberships"
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "users",
+                  "organization-memberships"
+                ]
+              }
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"users\" or \"organization-memberships\"."
@@ -18993,11 +19181,19 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "oauth_client"
+                ]
+              }
             },
             "required": false,
-            "description": "Allows including related resource data. Only \"oauth_client\" is supported."
+            "description": "Allows including related resource data."
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -21366,11 +21562,20 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "workspace_tasks",
+                  "workspace_tasks.workspace"
+                ]
+              }
             },
             "required": false,
-            "description": "Allows including related resource data. Value must be a comma-separated list containing one or more of `workspace_tasks` or `workspace_tasks.workspace`.\n"
+            "description": "Allows including related resource data.\n"
           }
         ],
         "responses": {
@@ -21503,11 +21708,20 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "workspace_tasks",
+                  "workspace_tasks.workspace"
+                ]
+              }
             },
             "required": false,
-            "description": "Allows including related resource data. Value must be a comma-separated list containing one or more of `workspace_tasks` or `workspace_tasks.workspace`.\n"
+            "description": "Allows including related resource data.\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -21973,11 +22187,23 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "run",
+                  "run.workspace",
+                  "task_results",
+                  "policy_evaluations",
+                  "cost_estimate"
+                ]
+              }
             },
             "required": false,
-            "description": "A comma-separated list of related resources to include. Supported values: run, run.workspace, task-results, policy-evaluations."
+            "description": "A comma-separated list of related resources to include."
           }
         ],
         "responses": {
@@ -22542,11 +22768,19 @@
           {
             "in": "query",
             "name": "include",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "events"
+                ]
+              }
             },
             "required": false,
-            "description": "Related resources to include (e.g., operations)"
+            "description": "Allows including related resource data."
           }
         ],
         "responses": {
@@ -22731,6 +22965,38 @@
       "links_related": {
         "type": "object",
         "properties": {
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "authenticated-resource-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations",
+              "runs",
+              "users",
+              "teams"
+            ]
+          }
+        }
+      },
+      "authenticated-resource-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/authenticated-resource-identifier"
+          },
           "links": {
             "$ref": "#/components/schemas/related"
           }
@@ -22927,29 +23193,7 @@
                 "$ref": "#/components/schemas/links_related"
               },
               "authenticated-resource": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations",
-                          "runs",
-                          "users",
-                          "teams"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/authenticated-resource-has-one"
               }
             }
           },
@@ -22969,56 +23213,61 @@
           }
         }
       },
-      "hcp-billing-accounts-id": {
+      "hcp-billing-accounts-identifier": {
         "type": "object",
-        "nullable": false,
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hcp-billing-account"
+            ]
+          }
+        }
+      },
+      "hcp-billing-accounts-has-one": {
+        "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "hcp-billing-account"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/hcp-billing-accounts-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "feature-sets-id": {
+      "feature-sets-identifier": {
         "type": "object",
-        "nullable": true,
         "required": [
-          "data"
+          "id",
+          "type"
         ],
         "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "feature-sets"
+            ]
+          }
+        }
+      },
+      "feature-sets-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
           "data": {
-            "type": "object",
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "feature-sets"
-                ]
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/feature-sets-identifier"
             }
           }
         }
@@ -23065,18 +23314,10 @@
             ],
             "properties": {
               "default-account": {
-                "$ref": "#/components/schemas/hcp-billing-accounts-id"
+                "$ref": "#/components/schemas/hcp-billing-accounts-has-one"
               },
               "connected-plans": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/feature-sets-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/feature-sets-has-many"
               }
             }
           }
@@ -23437,49 +23678,78 @@
           }
         }
       },
-      "organizations-id": {
+      "organizations-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations"
+            ]
+          }
+        }
+      },
+      "organizations-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "organizations"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/organizations-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "subscriptions-id": {
+      "feature-sets-has-one": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/feature-sets-identifier"
+          }
+        }
+      },
+      "subscriptions-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "subscriptions"
+            ]
+          }
+        }
+      },
+      "subscriptions-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "subscriptions"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/subscriptions-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -23627,16 +23897,16 @@
             ],
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "feature-set": {
-                "$ref": "#/components/schemas/feature-sets-id"
+                "$ref": "#/components/schemas/feature-sets-has-one"
               },
               "hcp-billing-account": {
                 "$ref": "#/components/schemas/links_related"
               },
               "next-subscription": {
-                "$ref": "#/components/schemas/subscriptions-id"
+                "$ref": "#/components/schemas/subscriptions-has-one"
               }
             }
           }
@@ -23699,6 +23969,32 @@
           }
         }
       },
+      "workspaces-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspaces"
+            ]
+          }
+        }
+      },
+      "workspaces-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workspaces-identifier"
+            }
+          }
+        }
+      },
       "agent-pools": {
         "type": "object",
         "required": [
@@ -23749,57 +24045,10 @@
                 "$ref": "#/components/schemas/links_related"
               },
               "workspaces": {
-                "readOnly": true,
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspaces"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               },
               "allowed-workspaces": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspaces"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               }
             }
           }
@@ -23867,62 +24116,62 @@
           }
         }
       },
-      "agent-pools-id-many": {
+      "agent-pools-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent-pools"
+            ]
+          }
+        }
+      },
+      "agent-pools-has-many": {
         "type": "object",
         "nullable": true,
-        "required": [
-          "data"
-        ],
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "type"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "agent-pools"
-                  ]
-                }
-              }
+              "$ref": "#/components/schemas/agent-pools-identifier"
             }
           }
         }
       },
-      "cidr-ranges-id-many": {
+      "cidr-ranges-identifier": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cidr-ranges"
+            ]
+          }
+        }
+      },
+      "cidr-ranges-has-many": {
         "type": "object",
         "nullable": true,
-        "required": [
-          "data"
-        ],
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "type"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "readOnly": true
-                },
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "cidr-ranges"
-                  ]
-                }
-              }
+              "$ref": "#/components/schemas/cidr-ranges-identifier"
             }
           }
         }
@@ -23972,15 +24221,13 @@
             "type": "object",
             "properties": {
               "organization": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "agent-pools": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/agent-pools-id-many"
+                "$ref": "#/components/schemas/agent-pools-has-many"
               },
               "cidr-ranges": {
-                "$ref": "#/components/schemas/cidr-ranges-id-many"
+                "$ref": "#/components/schemas/cidr-ranges-has-many"
               }
             }
           }
@@ -23997,7 +24244,25 @@
           }
         }
       },
-      "cidr-range-lists-id": {
+      "cidr-range-lists-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cidr-range-lists"
+            ]
+          }
+        }
+      },
+      "cidr-range-lists-has-one": {
         "type": "object",
         "nullable": true,
         "required": [
@@ -24006,22 +24271,12 @@
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "cidr-range-lists"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/cidr-range-lists-identifier"
               }
-            }
+            ],
+            "nullable": true
           }
         }
       },
@@ -24070,12 +24325,10 @@
             "type": "object",
             "properties": {
               "organization": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "cidr-range-list": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/cidr-range-lists-id"
+                "$ref": "#/components/schemas/cidr-range-lists-has-one"
               }
             }
           }
@@ -24173,7 +24426,7 @@
           }
         }
       },
-      "agent-pools-id": {
+      "agent-pools-has-one": {
         "type": "object",
         "nullable": true,
         "required": [
@@ -24182,26 +24435,35 @@
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "agent-pools"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/agent-pools-identifier"
               }
-            }
+            ],
+            "nullable": true
           }
         }
       },
-      "data-retention-policy-id": {
+      "data-retention-policy-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "data-retention-policy-delete-olders",
+              "data-retention-policy-dont-deletes"
+            ]
+          }
+        }
+      },
+      "data-retention-policy-has-one": {
         "type": "object",
         "required": [
           "data"
@@ -24209,89 +24471,102 @@
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "required": [
-              "id",
-              "type"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/data-retention-policy-identifier"
+              }
             ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "data-retention-policy-delete-olders",
-                  "data-retention-policy-dont-deletes"
-                ]
-              }
-            }
+            "nullable": true
           }
         }
       },
-      "entitlement-sets-id": {
+      "entitlement-sets-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "entitlement-sets"
+            ]
+          }
+        }
+      },
+      "entitlement-sets-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "entitlement-sets"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/entitlement-sets-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "projects-id": {
+      "projects-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "projects"
+            ]
+          }
+        }
+      },
+      "projects-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "projects"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/projects-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "hyok-configurations-id": {
+      "hyok-configurations-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-configurations"
+            ]
+          }
+        }
+      },
+      "hyok-configurations-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "hyok-configurations"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/hyok-configurations-identifier"
               }
-            }
+            ],
+            "nullable": true
           }
         }
       },
@@ -24666,13 +24941,13 @@
             "type": "object",
             "properties": {
               "default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "stacks-default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "data-retention-policy": {
-                "$ref": "#/components/schemas/data-retention-policy-id",
+                "$ref": "#/components/schemas/data-retention-policy-has-one",
                 "x-vis": [
                   "tfe"
                 ],
@@ -24706,19 +24981,19 @@
                 "description": "This relationship is only available in HCP Terraform."
               },
               "entitlement-set": {
-                "$ref": "#/components/schemas/entitlement-sets-id"
+                "$ref": "#/components/schemas/entitlement-sets-has-one"
               },
               "subscription": {
-                "$ref": "#/components/schemas/subscriptions-id"
+                "$ref": "#/components/schemas/subscriptions-has-one"
               },
               "default-project": {
-                "$ref": "#/components/schemas/projects-id"
+                "$ref": "#/components/schemas/projects-has-one"
               },
               "primary-hyok-configuration": {
                 "x-vis": [
                   "hcpt"
                 ],
-                "$ref": "#/components/schemas/hyok-configurations-id",
+                "$ref": "#/components/schemas/hyok-configurations-has-one",
                 "description": "This relationship is only available in HCP Terraform."
               }
             }
@@ -24891,20 +25166,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/organizations-id"
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "tag-bindings": {
                 "type": "object",
@@ -24921,10 +25183,10 @@
                 }
               },
               "default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "stacks-default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               }
             }
           },
@@ -24966,6 +25228,87 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/cidr-range-lists"
+          }
+        }
+      },
+      "teams-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "teams"
+            ]
+          }
+        }
+      },
+      "teams-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/teams-identifier"
+            }
+          }
+        }
+      },
+      "users-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "scim-identities-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scim-identities"
+            ]
+          }
+        }
+      },
+      "scim-identities-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/scim-identities-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -25037,100 +25380,20 @@
             "type": "object",
             "properties": {
               "teams": {
-                "type": "object",
                 "description": "The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not \"secret\" (unless the requester is a member).",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "teams"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/teams-has-many"
               },
               "user": {
-                "type": "object",
                 "description": "The user associated with this organization membership.",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "users"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-one"
               },
               "organization": {
-                "type": "object",
                 "description": "The organization this membership belongs to.",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "scim-identity": {
-                "type": "object",
                 "description": "The SCIM identity associated with this organization membership.\nOnly available on HCP Terraform when SCIM is enabled.\nReturns null if the user has no SCIM identity for this organization.\n",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "scim-identities"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/scim-identities-has-one"
               }
             }
           },
@@ -25146,6 +25409,58 @@
               "pagination": {
                 "$ref": "#/components/schemas/pagination"
               }
+            }
+          }
+        }
+      },
+      "users-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users"
+            ]
+          }
+        }
+      },
+      "users-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/users-identifier"
+            }
+          }
+        }
+      },
+      "organization-memberships-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organization-memberships"
+            ]
+          }
+        }
+      },
+      "organization-memberships-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/organization-memberships-identifier"
             }
           }
         }
@@ -25386,67 +25701,15 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "users": {
-                "type": "object",
                 "description": "Team members (active users only).",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "users"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/links_related"
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-many"
               },
               "organization-memberships": {
-                "type": "object",
                 "description": "Organization memberships for team members.",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "organization-memberships"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/organization-memberships-has-many"
               },
               "authentication-token": {
                 "$ref": "#/components/schemas/links_related"
@@ -25500,6 +25763,36 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/organization-memberships"
+          }
+        }
+      },
+      "recoverable-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspaces",
+              "stacks"
+            ]
+          }
+        }
+      },
+      "recoverable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/recoverable-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -25566,47 +25859,44 @@
             ],
             "properties": {
               "project": {
-                "type": "object",
                 "description": "The project this recoverable item belongs to",
-                "properties": {
-                  "data": {
-                    "$ref": "#/components/schemas/projects-id"
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-one"
               },
               "recoverable": {
-                "type": "object",
                 "description": "The recoverable resource (can be a workspace or stack.)",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "description": "The type of the recoverable resource (e.g., workspaces, stacks)",
-                        "enum": [
-                          "workspaces",
-                          "stacks"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/recoverable-has-one"
               }
             }
+          }
+        }
+      },
+      "data-retention-target-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations",
+              "workspaces"
+            ]
+          }
+        }
+      },
+      "data-retention-target-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/data-retention-target-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -25633,6 +25923,39 @@
             "properties": {
               "deleteOlderThanNDays": {
                 "type": "integer"
+              },
+              "deleteStateVersions": {
+                "type": "boolean"
+              },
+              "deleteConfigurationVersions": {
+                "type": "boolean"
+              },
+              "deleteRunDataAndLogs": {
+                "type": "boolean"
+              },
+              "stateVersionsDeleteAfterNDays": {
+                "type": "integer",
+                "nullable": true
+              },
+              "configurationVersionsDeleteAfterNDays": {
+                "type": "integer",
+                "nullable": true
+              },
+              "runDataAndLogsDeleteAfterNDays": {
+                "type": "integer",
+                "nullable": true
+              },
+              "stateVersionsKeepLatestCount": {
+                "type": "integer",
+                "nullable": true
+              },
+              "configurationVersionsKeepLatestCount": {
+                "type": "integer",
+                "nullable": true
+              },
+              "runDataKeepLatestCount": {
+                "type": "integer",
+                "nullable": true
               }
             }
           },
@@ -25643,29 +25966,7 @@
             "type": "object",
             "properties": {
               "target": {
-                "readOnly": true,
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations",
-                          "workspaces"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/data-retention-target-has-one"
               }
             }
           }
@@ -25724,6 +26025,7 @@
               },
               "max-ttl-ms": {
                 "type": "integer",
+                "format": "int64",
                 "description": "The maximum time-to-live for the token in milliseconds",
                 "example": 3600000
               },
@@ -25766,6 +26068,7 @@
           },
           "max-ttl-ms": {
             "type": "integer",
+            "format": "int64",
             "description": "The maximum time-to-live for the token in milliseconds",
             "example": 3600000
           }
@@ -25889,41 +26192,275 @@
           }
         }
       },
-      "runs-id": {
+      "ssh-keys-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ssh-keys"
+            ]
+          }
+        }
+      },
+      "ssh-keys-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "runs"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ssh-keys-identifier"
               }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "locked-by-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users",
+              "teams",
+              "runs"
+            ]
+          }
+        }
+      },
+      "locked-by-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/locked-by-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "runs-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "runs"
+            ]
+          }
+        }
+      },
+      "runs-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/runs-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "workspace-outputs-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-outputs"
+            ]
+          }
+        }
+      },
+      "workspace-outputs-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workspace-outputs-identifier"
             }
           }
         }
       },
-      "vars-id": {
+      "state-versions-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "state-versions"
+            ]
+          }
+        }
+      },
+      "state-versions-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "vars"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/state-versions-identifier"
               }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "configuration-versions-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "configuration-versions"
+            ]
+          }
+        }
+      },
+      "configuration-versions-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/configuration-versions-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "workspace-readme-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-readme"
+            ]
+          }
+        }
+      },
+      "workspace-readme-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/workspace-readme-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "assessment-results-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "assessment-results"
+            ]
+          }
+        }
+      },
+      "assessment-results-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/assessment-results-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "vars-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "vars"
+            ]
+          }
+        }
+      },
+      "vars-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/vars-identifier"
             }
           }
         }
@@ -26257,85 +26794,22 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "ssh-key": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "ssh-keys"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/ssh-keys-has-one"
               },
               "locked-by": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "users",
-                          "teams",
-                          "runs"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/locked-by-has-one"
               },
               "current-run": {
-                "$ref": "#/components/schemas/runs-id"
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "latest-run": {
-                "$ref": "#/components/schemas/runs-id"
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "outputs": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspace-outputs"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-outputs-has-many"
               },
               "remote-state-consumers": {
                 "type": "object",
@@ -26346,105 +26820,25 @@
                 }
               },
               "current-state-version": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "state-versions"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-one"
               },
               "current-configuration-version": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "configuration-versions"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/configuration-versions-has-one"
               },
               "agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "readme": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "workspace-readme"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-readme-has-one"
               },
               "project": {
-                "$ref": "#/components/schemas/projects-id"
+                "$ref": "#/components/schemas/projects-has-one"
               },
               "current-assessment-result": {
-                "type": "object",
-                "nullable": true,
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "assessment-results"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/assessment-results-has-one"
               },
               "vars": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/vars-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/vars-has-many"
               }
             }
           },
@@ -26461,6 +26855,38 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspaces"
+          }
+        }
+      },
+      "subscribable-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspaces",
+              "projects",
+              "teams",
+              "stacks"
+            ]
+          }
+        }
+      },
+      "subscribable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/subscribable-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -26575,49 +27001,12 @@
             "type": "object",
             "properties": {
               "subscribable": {
-                "type": "object",
                 "description": "The resource (workspace, project, or team) this notification is configured for.",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "workspaces",
-                          "projects",
-                          "teams"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/subscribable-has-one"
               },
               "users": {
-                "type": "object",
                 "description": "Users associated with this notification (for email type).",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "users"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-many"
               }
             }
           }
@@ -26700,254 +27089,100 @@
           }
         }
       },
-      "workspaces-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "workspaces"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "users-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "users"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "configuration-versions-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "configuration-versions"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "no-code-queries-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "no-code-queries"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "queries": {
+      "configurable-identifier": {
         "type": "object",
         "required": [
-          "type",
-          "attributes",
-          "relationships"
+          "id",
+          "type"
         ],
         "properties": {
           "id": {
-            "type": "string",
-            "readOnly": true
+            "type": "string"
           },
           "type": {
             "type": "string",
             "enum": [
-              "queries"
+              "workspaces",
+              "policy-sets",
+              "varsets"
             ]
-          },
-          "attributes": {
+          }
+        }
+      },
+      "configurable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
             "type": "object",
-            "properties": {
-              "actions": {
-                "type": "object",
-                "required": [
-                  "is-cancelable",
-                  "is-force-cancelable"
-                ],
-                "properties": {
-                  "is-cancelable": {
-                    "type": "boolean"
-                  },
-                  "is-force-cancelable": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "canceled-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true,
-                "readOnly": true
-              },
-              "updated-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "source": {
-                "type": "string",
-                "enum": [
-                  "tfe-api",
-                  "tfe-ui",
-                  "tfe-module",
-                  "tfe-no-code-query",
-                  "terraform"
-                ]
-              },
-              "generate-config-out": {
-                "type": "boolean"
-              },
-              "resources-discovered": {
-                "type": "integer",
-                "readOnly": true,
-                "description": "The number of resources discovered by the query run."
-              },
-              "status-timestamps": {
-                "type": "object",
-                "properties": {
-                  "pending-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "queued-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "errored-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "canceled-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "running-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "finished-at": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                }
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "pending",
-                  "queued",
-                  "running",
-                  "finished",
-                  "canceled",
-                  "errored"
-                ]
-              },
-              "log-read-url": {
-                "type": "string",
-                "readOnly": true
-              },
-              "permissions": {
-                "type": "object",
-                "properties": {
-                  "can-cancel": {
-                    "type": "boolean"
-                  },
-                  "can-force-cancel": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "force-cancel-available-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "policy-paths": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "nullable": true
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/configurable-identifier"
               }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "required": [
-              "workspace",
-              "configuration-version"
             ],
-            "properties": {
-              "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
-              },
-              "canceled-by": {
-                "$ref": "#/components/schemas/users-id"
-              },
-              "configuration-version": {
-                "$ref": "#/components/schemas/configuration-versions-id"
-              },
-              "created-by": {
-                "$ref": "#/components/schemas/users-id"
-              },
-              "no-code-query": {
-                "$ref": "#/components/schemas/no-code-queries-id",
-                "description": "The no-code query that triggered this query run, if any."
+            "nullable": true
+          }
+        }
+      },
+      "varsets-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "varsets"
+            ]
+          }
+        }
+      },
+      "varsets-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/varsets-identifier"
               }
-            }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "workspaces-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/workspaces-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "vars-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/vars-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -27011,121 +27246,19 @@
             "type": "object",
             "properties": {
               "configurable": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "workspaces",
-                          "policy-sets",
-                          "varsets"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/configurable-has-one"
               },
               "varset": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "varsets"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/varsets-has-one"
               },
               "workspace": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "workspaces"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "overwritten": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/vars-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/vars-has-many"
               },
               "overwriter": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "vars"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/vars-has-one"
               }
             }
           },
@@ -27147,6 +27280,18 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/vars"
+          }
+        }
+      },
+      "projects-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/projects-identifier"
+            }
           }
         }
       },
@@ -27205,68 +27350,13 @@
             "type": "object",
             "properties": {
               "organization": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "workspaces": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspaces"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               },
               "projects": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "projects"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-many"
               }
             }
           }
@@ -27309,6 +27399,65 @@
                 }
               }
             }
+          }
+        }
+      },
+      "stacks-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stacks"
+            ]
+          }
+        }
+      },
+      "stacks-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/stacks-identifier"
+            }
+          }
+        }
+      },
+      "varset-parent-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations",
+              "projects"
+            ]
+          }
+        }
+      },
+      "varset-parent-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/varset-parent-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -27377,24 +27526,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "vars": {
                 "type": "object",
@@ -27438,91 +27570,16 @@
                 }
               },
               "workspaces": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspaces"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               },
               "projects": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "projects"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-many"
               },
               "stacks": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "stacks"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/stacks-has-many"
               },
               "parent": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "organizations",
-                          "projects"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/varset-parent-has-one"
               }
             }
           }
@@ -27799,6 +27856,64 @@
           }
         }
       },
+      "hyok-encrypted-data-keys-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-encrypted-data-keys"
+            ]
+          }
+        }
+      },
+      "hyok-encrypted-data-keys-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/hyok-encrypted-data-keys-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "state-version-outputs-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "state-version-outputs"
+            ]
+          }
+        }
+      },
+      "state-version-outputs-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/state-version-outputs-identifier"
+            }
+          }
+        }
+      },
       "state-versions": {
         "type": "object",
         "required": [
@@ -27987,128 +28102,32 @@
             "type": "object",
             "properties": {
               "run": {
-                "$ref": "./stub/runs-id.yml"
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "rollback-state-version": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "state-versions"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-one"
               },
               "next-state-version": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "state-versions"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-one"
               },
               "previous-state-version": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "state-versions"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-one"
               },
               "created-by": {
-                "$ref": "./stub/users-id.yml"
+                "$ref": "#/components/schemas/users-has-one"
               },
               "workspace": {
-                "$ref": "./stub/workspaces-id.yml"
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "hyok-encrypted-data-key": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "hyok-encrypted-data-keys"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/hyok-encrypted-data-keys-has-one"
               },
               "outputs": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "state-version-outputs"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "./related.yml"
-                  }
-                }
-              },
-              "links": null
-            },
+                "$ref": "#/components/schemas/state-version-outputs-has-many"
+              }
+            }
+          },
+          "links": {
             "$ref": "#/components/schemas/self"
           }
         }
@@ -28127,6 +28146,36 @@
             "items": {
               "type": "object"
             }
+          }
+        }
+      },
+      "assessment-source-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "assessments",
+              "plans"
+            ]
+          }
+        }
+      },
+      "assessment-source-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/assessment-source-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -28209,54 +28258,12 @@
             "type": "object",
             "properties": {
               "workspace": {
-                "type": "object",
                 "description": "The workspace this assessment result belongs to",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "workspaces"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "source": {
-                "type": "object",
                 "description": "The source assessment or plan that produced this result.",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "asmt-8F5JFydVYAmtTjET"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "assessments",
-                          "plans"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/assessment-source-has-one"
               }
             }
           },
@@ -28304,179 +28311,214 @@
           }
         }
       },
-      "applies-id": {
+      "applies-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "applies"
+            ]
+          }
+        }
+      },
+      "applies-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "applies"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/applies-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "cost-estimates-id": {
+      "cost-estimates-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cost-estimates"
+            ]
+          }
+        }
+      },
+      "cost-estimates-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "cost-estimates"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/cost-estimates-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "plans-id": {
+      "plans-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "plans"
+            ]
+          }
+        }
+      },
+      "plans-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "plans"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/plans-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "run-events-id": {
+      "run-events-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "run-events"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "run-events"
+            ]
           }
         }
       },
-      "task-stages-id": {
+      "run-events-has-many": {
         "type": "object",
+        "nullable": true,
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "task-stages"
-                ]
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/run-events-identifier"
             }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
-      "policy-checks-id": {
+      "task-stages-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "policy-checks"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "task-stages"
+            ]
           }
         }
       },
-      "comments-id": {
+      "task-stages-has-many": {
         "type": "object",
+        "nullable": true,
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "workspace-comments"
-                ]
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/task-stages-identifier"
             }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
-      "tf-policy-evaluations-id": {
+      "policy-checks-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "tf-policy-evaluations"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-checks"
+            ]
+          }
+        }
+      },
+      "policy-checks-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/policy-checks-identifier"
+            }
+          }
+        }
+      },
+      "workspace-comments-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-comments"
+            ]
+          }
+        }
+      },
+      "workspace-comments-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workspace-comments-identifier"
+            }
+          }
+        }
+      },
+      "tf-policy-evaluations-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tf-policy-evaluations"
+            ]
+          }
+        }
+      },
+      "tf-policy-evaluations-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tf-policy-evaluations-identifier"
+            }
           }
         }
       },
@@ -28845,95 +28887,55 @@
             "type": "object",
             "properties": {
               "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "triggering-source": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "triggering-run": {
-                "$ref": "#/components/schemas/runs-id"
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "apply": {
-                "$ref": "#/components/schemas/applies-id"
+                "$ref": "#/components/schemas/applies-has-one"
               },
               "canceled-by": {
-                "$ref": "#/components/schemas/users-id"
+                "$ref": "#/components/schemas/users-has-one"
               },
               "configuration-version": {
-                "$ref": "#/components/schemas/configuration-versions-id"
+                "$ref": "#/components/schemas/configuration-versions-has-one"
               },
               "confirmed-by": {
-                "$ref": "#/components/schemas/users-id"
+                "$ref": "#/components/schemas/users-has-one"
               },
               "cost-estimate": {
-                "$ref": "#/components/schemas/cost-estimates-id"
+                "$ref": "#/components/schemas/cost-estimates-has-one"
               },
               "created-by": {
-                "$ref": "#/components/schemas/users-id"
+                "$ref": "#/components/schemas/users-has-one"
               },
               "plan": {
-                "$ref": "#/components/schemas/plans-id"
+                "$ref": "#/components/schemas/plans-has-one"
               },
               "run-events": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/run-events-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/run-events-has-many"
               },
               "task-stages": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/task-stages-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/task-stages-has-many"
               },
               "policy-checks": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/policy-checks-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/policy-checks-has-many"
               },
               "run-trigger-snapshots": {
-                "$ref": "#/components/schemas/related"
+                "$ref": "#/components/schemas/links_related"
               },
               "comments": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/comments-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-comments-has-many"
               },
               "tf-policy-evaluations": {
-                "type": "object",
                 "x-vis": [
                   "public-beta"
                 ],
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/tf-policy-evaluations-id"
-                    }
-                  }
-                },
+                "$ref": "#/components/schemas/tf-policy-evaluations-has-many",
                 "description": "This relationship is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
               }
             }
@@ -28951,23 +28953,31 @@
           }
         }
       },
-      "ingress-attributes-id": {
+      "ingress-attributes-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ingress-attributes"
+            ]
+          }
+        }
+      },
+      "ingress-attributes-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "nullable": true,
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "ingress-attributes"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ingress-attributes-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -29078,7 +29088,7 @@
             "type": "object",
             "properties": {
               "ingress-attributes": {
-                "$ref": "#/components/schemas/ingress-attributes-id"
+                "$ref": "#/components/schemas/ingress-attributes-has-one"
               }
             }
           },
@@ -29103,6 +29113,17 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/configuration-versions"
+          }
+        }
+      },
+      "run-events-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/run-events-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -29135,7 +29156,7 @@
             "type": "object",
             "properties": {
               "run-event": {
-                "$ref": "#/components/schemas/run-events-id"
+                "$ref": "#/components/schemas/run-events-has-one"
               }
             }
           }
@@ -29198,10 +29219,10 @@
             "type": "object",
             "properties": {
               "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "sourceable": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               }
             }
           },
@@ -29237,6 +29258,44 @@
           "next-page": {
             "type": "integer",
             "nullable": true
+          }
+        }
+      },
+      "state-versions-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/state-versions-identifier"
+            }
+          }
+        }
+      },
+      "plan-exports-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "plan-exports"
+            ]
+          }
+        }
+      },
+      "plan-exports-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/plan-exports-identifier"
+            }
           }
         }
       },
@@ -29416,87 +29475,19 @@
             "type": "object",
             "properties": {
               "state-versions": {
-                "type": "object",
                 "description": "State versions associated with this plan (for TF <= 0.8)",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "state-versions"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-many"
               },
               "exports": {
-                "type": "object",
                 "description": "Exports associated with this plan",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "plan-exports"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/plan-exports-has-many"
               },
               "hyok-encrypted-data-key": {
-                "type": "object",
                 "description": "HYOK encrypted data key associated with this plan\n\nThis relationship is only available in HCP Terraform.",
-                "nullable": true,
                 "x-vis": [
                   "hcpt"
                 ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "required": [
-                      "id",
-                      "type"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "hyok-encrypted-data-keys"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/hyok-encrypted-data-keys-has-one"
               }
             }
           },
@@ -29545,25 +29536,29 @@
           }
         }
       },
-      "policy-sets-id": {
+      "policy-sets-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "policy-sets"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-sets"
+            ]
+          }
+        }
+      },
+      "policy-sets-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/policy-sets-identifier"
+            }
           }
         }
       },
@@ -29651,18 +29646,10 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "policy-sets": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/policy-sets-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/policy-sets-has-many"
               }
             }
           }
@@ -29812,7 +29799,7 @@
             "type": "object",
             "properties": {
               "run": {
-                "$ref": "#/components/schemas/runs-id"
+                "$ref": "#/components/schemas/runs-has-one"
               }
             }
           },
@@ -29841,6 +29828,32 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/policy-checks"
+          }
+        }
+      },
+      "tf-policy-set-outcomes-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tf-policy-set-outcomes"
+            ]
+          }
+        }
+      },
+      "tf-policy-set-outcomes-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tf-policy-set-outcomes-identifier"
+            }
           }
         }
       },
@@ -30037,59 +30050,12 @@
             "type": "object",
             "properties": {
               "run": {
-                "type": "object",
                 "description": "The run that this policy evaluation belongs to",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The run's external ID"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "runs"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "tf-policy-set-outcomes": {
-                "type": "object",
                 "description": "The Terraform policy set outcomes that are part of this evaluation",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "description": "List of Terraform policy set outcome resource identifiers",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "The Terraform policy set outcome's external ID"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "tf-policy-set-outcomes"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string",
-                        "description": "URL to fetch the related Terraform policy set outcomes"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/tf-policy-set-outcomes-has-many"
               }
             }
           },
@@ -30111,6 +30077,17 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/tf-policy-evaluation"
+          }
+        }
+      },
+      "tf-policy-evaluations-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tf-policy-evaluations-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -30332,23 +30309,7 @@
             "type": "object",
             "properties": {
               "tf-policy-evaluation": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "tf-policy-evaluations"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/tf-policy-evaluations-has-one"
               }
             }
           }
@@ -30365,48 +30326,60 @@
           }
         }
       },
-      "policy-set-versions-id": {
+      "policy-set-versions-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-set-versions"
+            ]
+          }
+        }
+      },
+      "policy-set-versions-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "policy-set-versions"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/policy-set-versions-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "policies-id": {
+      "policies-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "policies"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "policies"
+            ]
+          }
+        }
+      },
+      "policies-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/policies-identifier"
+            }
           }
         }
       },
@@ -30579,68 +30552,28 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "current-version": {
-                "$ref": "#/components/schemas/policy-set-versions-id"
+                "$ref": "#/components/schemas/policy-set-versions-has-one"
               },
               "newest-version": {
-                "$ref": "#/components/schemas/policy-set-versions-id"
+                "$ref": "#/components/schemas/policy-set-versions-has-one"
               },
               "policies": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/policies-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/policies-has-many"
               },
               "workspaces": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/workspaces-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               },
               "projects": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/projects-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-many"
               },
               "workspace-exclusions": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/workspaces-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspaces-has-many"
               },
               "project-exclusions": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/projects-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-many"
               }
             }
           },
@@ -30691,6 +30624,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "policy-sets-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-sets-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -30796,7 +30740,7 @@
             "type": "object",
             "properties": {
               "policy-set": {
-                "$ref": "#/components/schemas/policy-sets-id"
+                "$ref": "#/components/schemas/policy-sets-has-one"
               }
             }
           },
@@ -30822,6 +30766,43 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/policy-set-versions"
+          }
+        }
+      },
+      "task-stages-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-stages-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "policy-set-outcomes-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-set-outcomes"
+            ]
+          }
+        }
+      },
+      "policy-set-outcomes-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/policy-set-outcomes-identifier"
+            }
           }
         }
       },
@@ -30944,53 +30925,10 @@
             "type": "object",
             "properties": {
               "policy-attachable": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "task-stages"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/task-stages-has-one"
               },
               "policy-set-outcomes": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "policy-set-outcomes"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/policy-set-outcomes-has-many"
               }
             }
           },
@@ -31015,22 +30953,25 @@
           }
         }
       },
-      "policy-evaluations-id": {
+      "policy-evaluations-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-evaluations"
+            ]
+          }
+        }
+      },
+      "policy-evaluations-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "policy-evaluations"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/policy-evaluations-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -31135,7 +31076,7 @@
             "type": "object",
             "properties": {
               "policy-evaluation": {
-                "$ref": "#/components/schemas/policy-evaluations-id"
+                "$ref": "#/components/schemas/policy-evaluations-has-one"
               }
             }
           }
@@ -31234,7 +31175,7 @@
             "type": "object",
             "properties": {
               "plan": {
-                "$ref": "#/components/schemas/plans-id"
+                "$ref": "#/components/schemas/plans-has-one"
               }
             }
           },
@@ -31260,24 +31201,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/plan-exports"
-          }
-        }
-      },
-      "state-versions-id": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "state-versions"
-            ]
           }
         }
       },
@@ -31397,6 +31320,16 @@
                 "readOnly": true,
                 "type": "integer",
                 "nullable": true
+              },
+              "action-invocations": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "action-failures": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
               }
             }
           },
@@ -31404,15 +31337,7 @@
             "type": "object",
             "properties": {
               "state-versions": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/state-versions-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/state-versions-has-many"
               }
             }
           },
@@ -31622,26 +31547,54 @@
           }
         }
       },
-      "hyok-customer-key-versions-id": {
+      "hyok-customer-key-versions-identifier": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-customer-key-versions"
+            ]
+          }
+        }
+      },
+      "hyok-customer-key-versions-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "hyok-customer-key-versions"
-                ]
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/hyok-customer-key-versions-identifier"
             }
           }
         }
       },
-      "oidc-configurations-id": {
+      "oidc-configurations-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "aws-oidc-configurations",
+              "azure-oidc-configurations",
+              "gcp-oidc-configurations",
+              "vault-oidc-configurations"
+            ]
+          }
+        }
+      },
+      "oidc-configurations-has-one": {
         "type": "object",
         "nullable": true,
         "required": [
@@ -31650,25 +31603,12 @@
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "required": [
-              "id",
-              "type"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "aws-oidc-configurations",
-                  "azure-oidc-configurations",
-                  "gcp-oidc-configurations",
-                  "vault-oidc-configurations"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/oidc-configurations-identifier"
               }
-            }
+            ],
+            "nullable": true
           }
         }
       },
@@ -31725,47 +31665,16 @@
             "type": "object",
             "properties": {
               "organization": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "hyok-customer-key-versions": {
-                "readOnly": true,
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/hyok-customer-key-versions-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/hyok-customer-key-versions-has-many"
               },
               "oidc-configuration": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/oidc-configurations-id",
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "aws-oidc-configurations",
-                          "gcp-oidc-configurations",
-                          "azure-oidc-configurations",
-                          "vault-oidc-configurations"
-                        ]
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/oidc-configurations-has-one"
               }
             }
           }
@@ -31817,7 +31726,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               }
             }
           }
@@ -31873,7 +31782,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               }
             }
           }
@@ -31917,7 +31826,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               }
             }
           }
@@ -31964,7 +31873,7 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               }
             }
           }
@@ -32048,8 +31957,7 @@
             "type": "object",
             "properties": {
               "hyok-configuration": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/hyok-configurations-id"
+                "$ref": "#/components/schemas/hyok-configurations-has-one"
               }
             }
           }
@@ -32063,6 +31971,14 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/hyok-customer-key-versions"
+          }
+        }
+      },
+      "hyok-customer-key-versions-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hyok-customer-key-versions-identifier"
           }
         }
       },
@@ -32105,8 +32021,7 @@
             "type": "object",
             "properties": {
               "hyok-customer-key-version": {
-                "readOnly": true,
-                "$ref": "#/components/schemas/hyok-customer-key-versions-id"
+                "$ref": "#/components/schemas/hyok-customer-key-versions-has-one"
               }
             }
           }
@@ -32120,6 +32035,54 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/hyok-encrypted-data-keys"
+          }
+        }
+      },
+      "teams-nullable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/teams-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "auth-token-created-by-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users",
+              "organizations",
+              "teams"
+            ]
+          }
+        }
+      },
+      "auth-token-created-by-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/auth-token-created-by-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -32174,36 +32137,10 @@
             "type": "object",
             "properties": {
               "team": {
-                "$ref": "#/components/schemas/links_related",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/teams-nullable-has-one"
               },
               "created-by": {
-                "$ref": "#/components/schemas/links_related",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/auth-token-created-by-has-one"
               }
             }
           }
@@ -32255,26 +32192,7 @@
             "type": "object",
             "properties": {
               "user": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "users"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -32349,22 +32267,11 @@
           }
         }
       },
-      "teams-id": {
+      "teams-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "teams"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/teams-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -32506,10 +32413,10 @@
             "type": "object",
             "properties": {
               "team": {
-                "$ref": "#/components/schemas/teams-id"
+                "$ref": "#/components/schemas/teams-has-one"
               },
               "project": {
-                "$ref": "#/components/schemas/projects-id"
+                "$ref": "#/components/schemas/projects-has-one"
               }
             }
           },
@@ -32622,10 +32529,10 @@
             "type": "object",
             "properties": {
               "team": {
-                "$ref": "#/components/schemas/teams-id"
+                "$ref": "#/components/schemas/teams-has-one"
               },
               "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               }
             }
           },
@@ -32849,7 +32756,7 @@
             "type": "object",
             "properties": {
               "created-by": {
-                "$ref": "#/components/schemas/users-id"
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           },
@@ -32858,46 +32765,62 @@
           }
         }
       },
-      "oauth-clients-id": {
+      "oauth-clients-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "oauth-clients"
+            ]
+          }
+        }
+      },
+      "oauth-clients-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "oauth-clients"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/oauth-clients-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
           }
         }
       },
-      "oauth-tokens-id": {
+      "oauth-tokens-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "oauth-tokens"
+            ]
+          }
+        }
+      },
+      "oauth-tokens-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "oauth-tokens"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/oauth-tokens-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -32949,10 +32872,10 @@
             "type": "object",
             "properties": {
               "oauth-client": {
-                "$ref": "#/components/schemas/oauth-clients-id"
+                "$ref": "#/components/schemas/oauth-clients-has-one"
               },
               "oauth-token": {
-                "$ref": "#/components/schemas/oauth-tokens-id"
+                "$ref": "#/components/schemas/oauth-tokens-has-one"
               }
             }
           }
@@ -33233,42 +33156,53 @@
           }
         }
       },
-      "test-runs-id": {
+      "test-runs-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "test-runs"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "test-runs"
+            ]
           }
         }
       },
-      "test-run-cleanups-id": {
+      "test-runs-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/test-runs-identifier"
+          }
+        }
+      },
+      "test-run-cleanups-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "test-run-cleanups"
+            ]
+          }
+        }
+      },
+      "test-run-cleanups-has-one": {
         "type": "object",
         "properties": {
           "data": {
             "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "test-run-cleanups"
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/test-run-cleanups-identifier"
               }
-            }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -33343,13 +33277,13 @@
             "type": "object",
             "properties": {
               "test-run": {
-                "$ref": "#/components/schemas/test-runs-id"
+                "$ref": "#/components/schemas/test-runs-has-one"
               },
               "created-by": {
-                "$ref": "#/components/schemas/users-id"
+                "$ref": "#/components/schemas/users-has-one"
               },
               "previous-test-run-cleanup": {
-                "$ref": "#/components/schemas/test-run-cleanups-id"
+                "$ref": "#/components/schemas/test-run-cleanups-has-one"
               }
             }
           }
@@ -33475,53 +33409,13 @@
             "type": "object",
             "properties": {
               "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               },
               "created-by": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "users"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-one"
               },
               "archived-by-user": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "users"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -33535,6 +33429,18 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspace-change-requests"
+          }
+        }
+      },
+      "oauth-tokens-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/oauth-tokens-identifier"
+            }
           }
         }
       },
@@ -33637,70 +33543,16 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               },
               "projects": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "projects"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/projects-has-many"
               },
               "oauth-tokens": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "oauth-tokens"
-                          ]
-                        }
-                      }
-                    }
-                  },
-                  "links": {
-                    "type": "object",
-                    "properties": {
-                      "related": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/oauth-tokens-has-many"
               }
             }
           }
@@ -33766,7 +33618,7 @@
             "type": "object",
             "properties": {
               "oauth-client": {
-                "$ref": "#/components/schemas/oauth-clients-id"
+                "$ref": "#/components/schemas/oauth-clients-has-one"
               },
               "vcs-organizations": {
                 "$ref": "#/components/schemas/links_related"
@@ -33820,7 +33672,7 @@
             "type": "object",
             "properties": {
               "oauth-token": {
-                "$ref": "#/components/schemas/oauth-tokens-id"
+                "$ref": "#/components/schemas/oauth-tokens-has-one"
               }
             }
           }
@@ -33949,7 +33801,7 @@
           }
         }
       },
-      "workspace-tasks-id": {
+      "workspace-tasks-identifier": {
         "type": "object",
         "properties": {
           "id": {
@@ -33960,6 +33812,18 @@
             "enum": [
               "workspace-tasks"
             ]
+          }
+        }
+      },
+      "workspace-tasks-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workspace-tasks-identifier"
+            }
           }
         }
       },
@@ -34037,21 +33901,13 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/organizations-id"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "workspace-tasks": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/workspace-tasks-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-tasks-has-many"
               },
               "agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-id"
+                "$ref": "#/components/schemas/agent-pools-has-one"
               }
             }
           },
@@ -34071,22 +33927,25 @@
           }
         }
       },
-      "tasks-id": {
+      "tasks-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tasks"
+            ]
+          }
+        }
+      },
+      "tasks-has-one": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "tasks"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/tasks-identifier"
           },
           "links": {
             "$ref": "#/components/schemas/related"
@@ -34146,10 +34005,10 @@
             "type": "object",
             "properties": {
               "task": {
-                "$ref": "#/components/schemas/tasks-id"
+                "$ref": "#/components/schemas/tasks-has-one"
               },
               "workspace": {
-                "$ref": "#/components/schemas/workspaces-id"
+                "$ref": "#/components/schemas/workspaces-has-one"
               }
             }
           },
@@ -34169,25 +34028,41 @@
           }
         }
       },
-      "task-results-id": {
+      "task-results-identifier": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "task-results"
-                ]
-              }
-            }
+          "id": {
+            "type": "string"
           },
-          "links": {
-            "$ref": "#/components/schemas/related"
+          "type": {
+            "type": "string",
+            "enum": [
+              "task-results"
+            ]
+          }
+        }
+      },
+      "task-results-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/task-results-identifier"
+            }
+          }
+        }
+      },
+      "policy-evaluations-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/policy-evaluations-identifier"
+            }
           }
         }
       },
@@ -34273,52 +34148,16 @@
             "type": "object",
             "properties": {
               "run": {
-                "$ref": "#/components/schemas/runs-id"
+                "$ref": "#/components/schemas/runs-has-one"
               },
               "cost-estimate": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "nullable": true,
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "cost-estimates"
-                        ]
-                      }
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/related"
-                  }
-                }
+                "$ref": "#/components/schemas/cost-estimates-has-one"
               },
               "task-results": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/task-results-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/task-results-has-many"
               },
               "policy-evaluations": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/policy-evaluations-id"
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/policy-evaluations-has-many"
               }
             }
           },
@@ -34452,7 +34291,7 @@
             "type": "object",
             "properties": {
               "task-stage": {
-                "$ref": "#/components/schemas/task-stages-id"
+                "$ref": "#/components/schemas/task-stages-has-one"
               },
               "task-result-outcomes": {
                 "type": "object",
@@ -34532,6 +34371,17 @@
           }
         }
       },
+      "task-results-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-results-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "task-result-outcomes": {
         "type": "object",
         "properties": {
@@ -34600,7 +34450,7 @@
             "type": "object",
             "properties": {
               "task-result": {
-                "$ref": "#/components/schemas/task-results-id"
+                "$ref": "#/components/schemas/task-results-has-one"
               }
             }
           },
@@ -34627,6 +34477,32 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/task-result-outcomes"
+          }
+        }
+      },
+      "workspace-transfer-events-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-transfer-events"
+            ]
+          }
+        }
+      },
+      "workspace-transfer-events-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workspace-transfer-events-identifier"
+            }
           }
         }
       },
@@ -34750,26 +34626,7 @@
             "type": "object",
             "properties": {
               "events": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "workspace-transfer-events"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/workspace-transfer-events-has-many"
               }
             }
           }

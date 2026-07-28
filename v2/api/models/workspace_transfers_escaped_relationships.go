@@ -11,7 +11,7 @@ type WorkspaceTransfers_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The events property
-    events WorkspaceTransfers_relationships_eventsable
+    events WorkspaceTransferEventsHasManyable
 }
 // NewWorkspaceTransfers_relationships instantiates a new WorkspaceTransfers_relationships and sets the default values.
 func NewWorkspaceTransfers_relationships()(*WorkspaceTransfers_relationships) {
@@ -31,8 +31,8 @@ func (m *WorkspaceTransfers_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetEvents gets the events property value. The events property
-// returns a WorkspaceTransfers_relationships_eventsable when successful
-func (m *WorkspaceTransfers_relationships) GetEvents()(WorkspaceTransfers_relationships_eventsable) {
+// returns a WorkspaceTransferEventsHasManyable when successful
+func (m *WorkspaceTransfers_relationships) GetEvents()(WorkspaceTransferEventsHasManyable) {
     return m.events
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *WorkspaceTransfers_relationships) GetEvents()(WorkspaceTransfers_relati
 func (m *WorkspaceTransfers_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["events"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceTransfers_relationships_eventsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspaceTransferEventsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetEvents(val.(WorkspaceTransfers_relationships_eventsable))
+            m.SetEvents(val.(WorkspaceTransferEventsHasManyable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *WorkspaceTransfers_relationships) SetAdditionalData(value map[string]an
     m.additionalData = value
 }
 // SetEvents sets the events property value. The events property
-func (m *WorkspaceTransfers_relationships) SetEvents(value WorkspaceTransfers_relationships_eventsable)() {
+func (m *WorkspaceTransfers_relationships) SetEvents(value WorkspaceTransferEventsHasManyable)() {
     m.events = value
 }
 type WorkspaceTransfers_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEvents()(WorkspaceTransfers_relationships_eventsable)
-    SetEvents(value WorkspaceTransfers_relationships_eventsable)()
+    GetEvents()(WorkspaceTransferEventsHasManyable)
+    SetEvents(value WorkspaceTransferEventsHasManyable)()
 }

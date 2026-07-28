@@ -13,11 +13,11 @@ type AgentPools_relationships struct {
     // The agents property
     agents Links_relatedable
     // The allowedWorkspaces property
-    allowedWorkspaces AgentPools_relationships_allowedWorkspacesable
+    allowedWorkspaces WorkspacesHasManyable
     // The authenticationTokens property
     authenticationTokens Links_relatedable
     // The workspaces property
-    workspaces AgentPools_relationships_workspacesable
+    workspaces WorkspacesHasManyable
 }
 // NewAgentPools_relationships instantiates a new AgentPools_relationships and sets the default values.
 func NewAgentPools_relationships()(*AgentPools_relationships) {
@@ -42,8 +42,8 @@ func (m *AgentPools_relationships) GetAgents()(Links_relatedable) {
     return m.agents
 }
 // GetAllowedWorkspaces gets the allowed-workspaces property value. The allowedWorkspaces property
-// returns a AgentPools_relationships_allowedWorkspacesable when successful
-func (m *AgentPools_relationships) GetAllowedWorkspaces()(AgentPools_relationships_allowedWorkspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *AgentPools_relationships) GetAllowedWorkspaces()(WorkspacesHasManyable) {
     return m.allowedWorkspaces
 }
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
@@ -66,12 +66,12 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         return nil
     }
     res["allowed-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPools_relationships_allowedWorkspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAllowedWorkspaces(val.(AgentPools_relationships_allowedWorkspacesable))
+            m.SetAllowedWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
@@ -86,20 +86,20 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         return nil
     }
     res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPools_relationships_workspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaces(val.(AgentPools_relationships_workspacesable))
+            m.SetWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
     return res
 }
 // GetWorkspaces gets the workspaces property value. The workspaces property
-// returns a AgentPools_relationships_workspacesable when successful
-func (m *AgentPools_relationships) GetWorkspaces()(AgentPools_relationships_workspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *AgentPools_relationships) GetWorkspaces()(WorkspacesHasManyable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
@@ -123,6 +123,12 @@ func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteObjectValue("workspaces", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -139,7 +145,7 @@ func (m *AgentPools_relationships) SetAgents(value Links_relatedable)() {
     m.agents = value
 }
 // SetAllowedWorkspaces sets the allowed-workspaces property value. The allowedWorkspaces property
-func (m *AgentPools_relationships) SetAllowedWorkspaces(value AgentPools_relationships_allowedWorkspacesable)() {
+func (m *AgentPools_relationships) SetAllowedWorkspaces(value WorkspacesHasManyable)() {
     m.allowedWorkspaces = value
 }
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
@@ -147,18 +153,18 @@ func (m *AgentPools_relationships) SetAuthenticationTokens(value Links_relatedab
     m.authenticationTokens = value
 }
 // SetWorkspaces sets the workspaces property value. The workspaces property
-func (m *AgentPools_relationships) SetWorkspaces(value AgentPools_relationships_workspacesable)() {
+func (m *AgentPools_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
     m.workspaces = value
 }
 type AgentPools_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgents()(Links_relatedable)
-    GetAllowedWorkspaces()(AgentPools_relationships_allowedWorkspacesable)
+    GetAllowedWorkspaces()(WorkspacesHasManyable)
     GetAuthenticationTokens()(Links_relatedable)
-    GetWorkspaces()(AgentPools_relationships_workspacesable)
+    GetWorkspaces()(WorkspacesHasManyable)
     SetAgents(value Links_relatedable)()
-    SetAllowedWorkspaces(value AgentPools_relationships_allowedWorkspacesable)()
+    SetAllowedWorkspaces(value WorkspacesHasManyable)()
     SetAuthenticationTokens(value Links_relatedable)()
-    SetWorkspaces(value AgentPools_relationships_workspacesable)()
+    SetWorkspaces(value WorkspacesHasManyable)()
 }

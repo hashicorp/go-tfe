@@ -11,9 +11,9 @@ type TeamWorkspaces_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The team property
-    team TeamsIdable
+    team TeamsHasOneable
     // The workspace property
-    workspace WorkspacesIdable
+    workspace WorkspacesHasOneable
 }
 // NewTeamWorkspaces_relationships instantiates a new TeamWorkspaces_relationships and sets the default values.
 func NewTeamWorkspaces_relationships()(*TeamWorkspaces_relationships) {
@@ -37,35 +37,35 @@ func (m *TeamWorkspaces_relationships) GetAdditionalData()(map[string]any) {
 func (m *TeamWorkspaces_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["team"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTeamsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTeam(val.(TeamsIdable))
+            m.SetTeam(val.(TeamsHasOneable))
         }
         return nil
     }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspace(val.(WorkspacesIdable))
+            m.SetWorkspace(val.(WorkspacesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetTeam gets the team property value. The team property
-// returns a TeamsIdable when successful
-func (m *TeamWorkspaces_relationships) GetTeam()(TeamsIdable) {
+// returns a TeamsHasOneable when successful
+func (m *TeamWorkspaces_relationships) GetTeam()(TeamsHasOneable) {
     return m.team
 }
 // GetWorkspace gets the workspace property value. The workspace property
-// returns a WorkspacesIdable when successful
-func (m *TeamWorkspaces_relationships) GetWorkspace()(WorkspacesIdable) {
+// returns a WorkspacesHasOneable when successful
+func (m *TeamWorkspaces_relationships) GetWorkspace()(WorkspacesHasOneable) {
     return m.workspace
 }
 // Serialize serializes information the current object
@@ -95,18 +95,18 @@ func (m *TeamWorkspaces_relationships) SetAdditionalData(value map[string]any)()
     m.additionalData = value
 }
 // SetTeam sets the team property value. The team property
-func (m *TeamWorkspaces_relationships) SetTeam(value TeamsIdable)() {
+func (m *TeamWorkspaces_relationships) SetTeam(value TeamsHasOneable)() {
     m.team = value
 }
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *TeamWorkspaces_relationships) SetWorkspace(value WorkspacesIdable)() {
+func (m *TeamWorkspaces_relationships) SetWorkspace(value WorkspacesHasOneable)() {
     m.workspace = value
 }
 type TeamWorkspaces_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTeam()(TeamsIdable)
-    GetWorkspace()(WorkspacesIdable)
-    SetTeam(value TeamsIdable)()
-    SetWorkspace(value WorkspacesIdable)()
+    GetTeam()(TeamsHasOneable)
+    GetWorkspace()(WorkspacesHasOneable)
+    SetTeam(value TeamsHasOneable)()
+    SetWorkspace(value WorkspacesHasOneable)()
 }
