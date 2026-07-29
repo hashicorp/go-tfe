@@ -4603,6 +4603,12 @@ var (
 
 	ErrInvalidRunTaskURL = errors.New("invalid url for run task URL")
 
+	ErrInvalidNativeTaskID = errors.New("invalid value for native task ID")
+
+	ErrInvalidNativeTaskCategory = errors.New(`category must be "native"`)
+
+	ErrRequiredIntegration = errors.New("integration is required for native tasks")
+
 	ErrInvalidWorkspaceRunTaskID = errors.New("invalid value for workspace run task ID")
 
 	ErrInvalidWorkspaceRunTaskType = errors.New(`invalid value for type, please use "workspace-tasks"`)
@@ -15641,7 +15647,295 @@ func (o *RunTaskReadOptions) valid() error {
 	return nil
 }
 
+
 // Compile-time proof of interface implementation.
+var _ Integrations = (*integrations)(nil)
+
+// Integrations describes the methods for listing available task integrations.
+//
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks
+type Integrations interface {
+	// List all available integrations for use with native tasks.
+	List(ctx context.Context, options *IntegrationListOptions) (*IntegrationList, error)
+}
+
+// integrations implements Integrations.
+type integrations struct {
+	client *Client
+}
+
+// IntegrationParam describes a single configuration parameter required by an integration.
+// Note: uses json tags (not jsonapi) because params is a nested array attribute.
+type IntegrationParam struct {
+	ParamID   string `json:"paramId"`
+	Name      string `json:"name"`
+	Kind      string `json:"kind"`
+	Required  bool   `json:"required"`
+	Sensitive bool   `json:"sensitive"`
+}
+
+// Integration represents a native task integration available in the TFE/TFC instance.
+type Integration struct {
+	ID       string             `jsonapi:"primary,integrations"`
+	Name     string             `jsonapi:"attr,name"`
+	Provider string             `jsonapi:"attr,provider"`
+	Stages   []Stage            `jsonapi:"attr,stages"`
+	IsActive bool               `jsonapi:"attr,is-active"`
+	Params   []IntegrationParam `jsonapi:"attr,params"`
+}
+
+// IntegrationList represents a list of integrations.
+type IntegrationList struct {
+	*Pagination
+	Items []*Integration
+}
+
+// IntegrationListOptions are the query parameters for listing integrations.
+type IntegrationListOptions struct {
+	ListOptions
+
+	// Optional: filter by name (case-insensitive, partial match).
+	Search string `url:"search,omitempty"`
+
+	// Optional: include inactive integrations in the results.
+	IncludeInactive bool `url:"include_inactive,omitempty"`
+}
+
+// List all available integrations.
+func (s *integrations) List(ctx context.Context, options *IntegrationListOptions) (*IntegrationList, error) {
+	req, err := s.client.NewRequest("GET", "tasks/integrations", options)
+	if err != nil {
+		return nil, err
+	}
+
+	il := &IntegrationList{}
+	err = req.Do(ctx, il)
+	if err != nil {
+		return nil, err
+	}
+
+	return il, nil
+}
+
+
+// Compile-time proof of interface implementation.
+
+// Compile-time proof of interface implementation.
+var _ NativeTasks = (*nativeTasks)(nil)
+
+// NativeTasks describes all the native task related methods that the HCP Terraform and
+// Terraform Enterprise API supports.
+//
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks
+type NativeTasks interface {
+	// Create a new native task for an organization.
+	Create(ctx context.Context, organization string, options NativeTaskCreateOptions) (*NativeTask, error)
+
+	// List all native tasks for an organization.
+	List(ctx context.Context, organization string, options *NativeTaskListOptions) (*NativeTaskList, error)
+
+	// Read a native task by ID.
+	Read(ctx context.Context, nativeTaskID string) (*NativeTask, error)
+
+	// Update an existing native task by ID.
+	Update(ctx context.Context, nativeTaskID string, options NativeTaskUpdateOptions) (*NativeTask, error)
+
+	// Delete a native task by ID.
+	Delete(ctx context.Context, nativeTaskID string) error
+}
+
+// nativeTasks implements NativeTasks.
+type nativeTasks struct {
+	client *Client
+}
+
+// NativeTask represents a native (integration-backed) run task in HCP Terraform /
+// Terraform Enterprise.
+type NativeTask struct {
+	ID          string            `jsonapi:"primary,tasks"`
+	Name        string            `jsonapi:"attr,name"`
+	Description string            `jsonapi:"attr,description,omitempty"`
+	Category    string            `jsonapi:"attr,category"`
+	Enabled     bool              `jsonapi:"attr,enabled"`
+	Params      map[string]string `jsonapi:"attr,params,omitempty"`
+
+	Organization *Organization `jsonapi:"relation,organization"`
+	Integration  *Integration  `jsonapi:"relation,integration,omitempty"`
+}
+
+// NativeTaskList is a paginated list of native tasks.
+type NativeTaskList struct {
+	*Pagination
+	Items []*NativeTask
+}
+
+// NativeTaskListOptions are the query parameters for listing native tasks.
+type NativeTaskListOptions struct {
+	ListOptions
+}
+
+// NativeTaskCreateOptions are the options for creating a native task.
+type NativeTaskCreateOptions struct {
+	// Required: must be "tasks" to satisfy the JSON:API type.
+	Type string `jsonapi:"primary,tasks"`
+
+	// Required: display name of the task.
+	Name string `jsonapi:"attr,name"`
+
+	// Required: must be "native".
+	Category string `jsonapi:"attr,category"`
+
+	// Optional: human-readable description.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Optional: whether the task is active.
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
+	// Optional: provider-specific key/value configuration parameters.
+	Params map[string]string `jsonapi:"attr,params,omitempty"`
+
+	// Required: the integration that backs this task.
+	Integration *Integration `jsonapi:"relation,integration"`
+}
+
+// NativeTaskUpdateOptions are the options for updating a native task.
+type NativeTaskUpdateOptions struct {
+	// Required: must be "tasks" to satisfy the JSON:API type.
+	Type string `jsonapi:"primary,tasks"`
+
+	// Optional: new display name.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: new description.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Optional: enable or disable the task.
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
+	// Optional: updated provider-specific configuration parameters.
+	Params map[string]string `jsonapi:"attr,params,omitempty"`
+}
+
+// Create a new native task for an organization.
+func (s *nativeTasks) Create(ctx context.Context, organization string, options NativeTaskCreateOptions) (*NativeTask, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("organizations/%s/tasks", url.PathEscape(organization))
+	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	nt := &NativeTask{}
+	err = req.Do(ctx, nt)
+	if err != nil {
+		return nil, err
+	}
+
+	return nt, nil
+}
+
+// List all native tasks for an organization.
+func (s *nativeTasks) List(ctx context.Context, organization string, options *NativeTaskListOptions) (*NativeTaskList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/tasks", url.PathEscape(organization))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	nl := &NativeTaskList{}
+	err = req.Do(ctx, nl)
+	if err != nil {
+		return nil, err
+	}
+
+	return nl, nil
+}
+
+// Read a native task by ID.
+func (s *nativeTasks) Read(ctx context.Context, nativeTaskID string) (*NativeTask, error) {
+	if !validStringID(&nativeTaskID) {
+		return nil, ErrInvalidNativeTaskID
+	}
+
+	u := fmt.Sprintf("tasks/%s", url.PathEscape(nativeTaskID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	nt := &NativeTask{}
+	err = req.Do(ctx, nt)
+	if err != nil {
+		return nil, err
+	}
+
+	return nt, nil
+}
+
+// Update an existing native task by ID.
+func (s *nativeTasks) Update(ctx context.Context, nativeTaskID string, options NativeTaskUpdateOptions) (*NativeTask, error) {
+	if !validStringID(&nativeTaskID) {
+		return nil, ErrInvalidNativeTaskID
+	}
+
+	u := fmt.Sprintf("tasks/%s", url.PathEscape(nativeTaskID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	nt := &NativeTask{}
+	err = req.Do(ctx, nt)
+	if err != nil {
+		return nil, err
+	}
+
+	return nt, nil
+}
+
+// Delete a native task by ID.
+func (s *nativeTasks) Delete(ctx context.Context, nativeTaskID string) error {
+	if !validStringID(&nativeTaskID) {
+		return ErrInvalidNativeTaskID
+	}
+
+	u := fmt.Sprintf("tasks/%s", nativeTaskID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (o NativeTaskCreateOptions) valid() error {
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if o.Category != "native" {
+		return ErrInvalidNativeTaskCategory
+	}
+
+	if o.Integration == nil || o.Integration.ID == "" {
+		return ErrRequiredIntegration
+	}
+
+	return nil
+}
+
+
 var _ RunTasksIntegration = (*runTaskIntegration)(nil)
 
 // RunTasksIntegration describes all the Run Tasks Integration Callback API methods.
@@ -18883,6 +19177,15 @@ type TaskResult struct {
 	WorkspaceTaskEnforcementLevel TaskEnforcementLevel       `jsonapi:"attr,workspace-task-enforcement-level"`
 	AgentPoolID                   *string                    `jsonapi:"attr,agent-pool-id,omitempty"`
 
+	// TaskCategory is the category of the run task ("task" for webhook-based, "native" for native tasks).
+	TaskCategory string `jsonapi:"attr,task-category,omitempty"`
+
+	// Provider is the integration provider identifier (e.g. "cloudability") for native tasks.
+	Provider string `jsonapi:"attr,provider,omitempty"`
+
+	// TaskResultOutcomesCount is the number of task result outcomes associated with this result.
+	TaskResultOutcomesCount int `jsonapi:"attr,task-result-outcomes-count,omitempty"`
+
 	// The task stage this result belongs to
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
 }
@@ -21096,6 +21399,8 @@ type Client struct {
 	RegistryProviderVersions        RegistryProviderVersions
 	RegistryComponents              RegistryComponents
 	ReservedTagKeys                 ReservedTagKeys
+	Integrations                    Integrations
+	NativeTasks                     NativeTasks
 	Runs                            Runs
 	RunEvents                       RunEvents
 	RunTasks                        RunTasks
@@ -21446,6 +21751,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.RegistryComponents = &registryComponents{client: client}
 	client.ReservedTagKeys = &reservedTagKeys{client: client}
+	client.Integrations = &integrations{client: client}
+	client.NativeTasks = &nativeTasks{client: client}
 	client.Runs = &runs{client: client}
 	client.RunEvents = &runEvents{client: client}
 	client.RunTasks = &runTasks{client: client}
