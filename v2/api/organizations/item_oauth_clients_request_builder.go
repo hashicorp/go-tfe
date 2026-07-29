@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemOauthClientsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\oauth-clients
+// ItemOauthClientsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\oauth-clients
 type ItemOauthClientsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -25,7 +25,7 @@ type ItemOauthClientsRequestBuilderGetQueryParameters struct {
 // NewItemOauthClientsRequestBuilderInternal instantiates a new ItemOauthClientsRequestBuilder and sets the default values.
 func NewItemOauthClientsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOauthClientsRequestBuilder) {
     m := &ItemOauthClientsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/oauth-clients{?page%5Bnumber%5D*,page%5Bsize%5D*,show_affected_workspaces*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/oauth-clients{?page%5Bnumber%5D*,page%5Bsize%5D*,show_affected_workspaces*}", pathParameters),
     }
     return m
 }

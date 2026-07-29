@@ -10,7 +10,7 @@ import (
     ieeda671510118658dce37ec4adc9dc98dfde056c5e2589d03657530d4a5526ae "github.com/hashicorp/go-tfe/v2/api/organizations/item/policies"
 )
 
-// ItemPoliciesRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\policies
+// ItemPoliciesRequestBuilder builds and executes requests for operations under \organizations\{name-id}\policies
 type ItemPoliciesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -30,7 +30,7 @@ type ItemPoliciesRequestBuilderGetQueryParameters struct {
 // NewItemPoliciesRequestBuilderInternal instantiates a new ItemPoliciesRequestBuilder and sets the default values.
 func NewItemPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPoliciesRequestBuilder) {
     m := &ItemPoliciesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policies{?filter%5Bkind%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/policies{?filter%5Bkind%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,sort*}", pathParameters),
     }
     return m
 }

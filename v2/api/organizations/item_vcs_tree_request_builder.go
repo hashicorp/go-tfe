@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemVcsTreeRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs\tree
+// ItemVcsTreeRequestBuilder builds and executes requests for operations under \organizations\{name-id}\vcs\tree
 type ItemVcsTreeRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -27,7 +27,7 @@ type ItemVcsTreeRequestBuilderGetQueryParameters struct {
 // NewItemVcsTreeRequestBuilderInternal instantiates a new ItemVcsTreeRequestBuilder and sets the default values.
 func NewItemVcsTreeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsTreeRequestBuilder) {
     m := &ItemVcsTreeRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/tree?identifier={identifier}&oauth_token_id={oauth_token_id}{&branch*,githubAppInstallationId*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/vcs/tree?identifier={identifier}&oauth_token_id={oauth_token_id}{&branch*,githubAppInstallationId*}", pathParameters),
     }
     return m
 }

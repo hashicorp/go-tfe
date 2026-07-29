@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemProviderSetsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\provider-sets
+// ItemProviderSetsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\provider-sets
 type ItemProviderSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -33,7 +33,7 @@ func (m *ItemProviderSetsRequestBuilder) ByProvider_set_name(provider_set_name s
 // NewItemProviderSetsRequestBuilderInternal instantiates a new ItemProviderSetsRequestBuilder and sets the default values.
 func NewItemProviderSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsRequestBuilder) {
     m := &ItemProviderSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/provider-sets{?include*}", pathParameters),
     }
     return m
 }

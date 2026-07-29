@@ -7,7 +7,7 @@ import (
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
-// ItemRegistryModulesWithRegistry_nameItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\registry-modules\{registry_name}
+// ItemRegistryModulesWithRegistry_nameItemRequestBuilder builds and executes requests for operations under \organizations\{name-id}\registry-modules\{registry_name}
 type ItemRegistryModulesWithRegistry_nameItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -26,7 +26,7 @@ func (m *ItemRegistryModulesWithRegistry_nameItemRequestBuilder) ByNamespace(nam
 // NewItemRegistryModulesWithRegistry_nameItemRequestBuilderInternal instantiates a new ItemRegistryModulesWithRegistry_nameItemRequestBuilder and sets the default values.
 func NewItemRegistryModulesWithRegistry_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesWithRegistry_nameItemRequestBuilder) {
     m := &ItemRegistryModulesWithRegistry_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/registry-modules/{registry_name}", pathParameters),
     }
     return m
 }

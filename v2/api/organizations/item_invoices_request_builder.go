@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemInvoicesRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\invoices
+// ItemInvoicesRequestBuilder builds and executes requests for operations under \organizations\{name-id}\invoices
 type ItemInvoicesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -21,7 +21,7 @@ type ItemInvoicesRequestBuilderGetQueryParameters struct {
 // NewItemInvoicesRequestBuilderInternal instantiates a new ItemInvoicesRequestBuilder and sets the default values.
 func NewItemInvoicesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesRequestBuilder) {
     m := &ItemInvoicesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/invoices{?cursor*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/invoices{?cursor*}", pathParameters),
     }
     return m
 }

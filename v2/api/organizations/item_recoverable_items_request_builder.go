@@ -11,7 +11,7 @@ import (
     i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657 "github.com/hashicorp/go-tfe/v2/api/organizations/item/recoverableitems"
 )
 
-// ItemRecoverableItemsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\recoverable-items
+// ItemRecoverableItemsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\recoverable-items
 type ItemRecoverableItemsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -37,7 +37,7 @@ type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
 // NewItemRecoverableItemsRequestBuilderInternal instantiates a new ItemRecoverableItemsRequestBuilder and sets the default values.
 func NewItemRecoverableItemsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRecoverableItemsRequestBuilder) {
     m := &ItemRecoverableItemsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/recoverable-items{?filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/recoverable-items{?filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

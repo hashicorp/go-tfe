@@ -33,10 +33,8 @@ type Workspaces_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The description property
     description *string
-    // A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-    effectiveRunDataRetentionDesc *string
-    // A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-    effectiveStateVersionRetentionDesc *string
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    directActionInvocations *int32
     // The environment property
     environment *string
     // The executionMode property
@@ -53,6 +51,8 @@ type Workspaces_attributes struct {
     lastAssessmentResultAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The latestChangeAt property
     latestChangeAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    lifecycleActionInvocations *int32
     // The locked property
     locked *bool
     // The lockedReason property
@@ -89,6 +89,8 @@ type Workspaces_attributes struct {
     structuredRunOutputEnabled *bool
     // The tagNames property
     tagNames []string
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    terraformActionsCount *int32
     // The terraformVersion property
     terraformVersion *string
     // The triggerPatterns property
@@ -178,15 +180,10 @@ func (m *Workspaces_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a
 func (m *Workspaces_attributes) GetDescription()(*string) {
     return m.description
 }
-// GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-// returns a *string when successful
-func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc()(*string) {
-    return m.effectiveRunDataRetentionDesc
-}
-// GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-// returns a *string when successful
-func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc()(*string) {
-    return m.effectiveStateVersionRetentionDesc
+// GetDirectActionInvocations gets the direct-action-invocations property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *int32 when successful
+func (m *Workspaces_attributes) GetDirectActionInvocations()(*int32) {
+    return m.directActionInvocations
 }
 // GetEnvironment gets the environment property value. The environment property
 // returns a *string when successful
@@ -312,23 +309,13 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
-    res["effective-run-data-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+    res["direct-action-invocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetEffectiveRunDataRetentionDesc(val)
-        }
-        return nil
-    }
-    res["effective-state-version-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEffectiveStateVersionRetentionDesc(val)
+            m.SetDirectActionInvocations(val)
         }
         return nil
     }
@@ -409,6 +396,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetLatestChangeAt(val)
+        }
+        return nil
+    }
+    res["lifecycle-action-invocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLifecycleActionInvocations(val)
         }
         return nil
     }
@@ -598,6 +595,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["terraform-actions-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTerraformActionsCount(val)
+        }
+        return nil
+    }
     res["terraform-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -722,6 +729,11 @@ func (m *Workspaces_attributes) GetLastAssessmentResultAt()(*i336074805fc853987a
 func (m *Workspaces_attributes) GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.latestChangeAt
 }
+// GetLifecycleActionInvocations gets the lifecycle-action-invocations property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *int32 when successful
+func (m *Workspaces_attributes) GetLifecycleActionInvocations()(*int32) {
+    return m.lifecycleActionInvocations
+}
 // GetLocked gets the locked property value. The locked property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetLocked()(*bool) {
@@ -811,6 +823,11 @@ func (m *Workspaces_attributes) GetStructuredRunOutputEnabled()(*bool) {
 // returns a []string when successful
 func (m *Workspaces_attributes) GetTagNames()([]string) {
     return m.tagNames
+}
+// GetTerraformActionsCount gets the terraform-actions-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *int32 when successful
+func (m *Workspaces_attributes) GetTerraformActionsCount()(*int32) {
+    return m.terraformActionsCount
 }
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
@@ -915,13 +932,7 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
-        err := writer.WriteStringValue("effective-run-data-retention-desc", m.GetEffectiveRunDataRetentionDesc())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("effective-state-version-retention-desc", m.GetEffectiveStateVersionRetentionDesc())
+        err := writer.WriteInt32Value("direct-action-invocations", m.GetDirectActionInvocations())
         if err != nil {
             return err
         }
@@ -971,6 +982,12 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
     }
     {
         err := writer.WriteTimeValue("latest-change-at", m.GetLatestChangeAt())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteInt32Value("lifecycle-action-invocations", m.GetLifecycleActionInvocations())
         if err != nil {
             return err
         }
@@ -1084,6 +1101,12 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteInt32Value("terraform-actions-count", m.GetTerraformActionsCount())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("terraform-version", m.GetTerraformVersion())
         if err != nil {
             return err
@@ -1181,13 +1204,9 @@ func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3a
 func (m *Workspaces_attributes) SetDescription(value *string)() {
     m.description = value
 }
-// SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string)() {
-    m.effectiveRunDataRetentionDesc = value
-}
-// SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string)() {
-    m.effectiveStateVersionRetentionDesc = value
+// SetDirectActionInvocations sets the direct-action-invocations property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Workspaces_attributes) SetDirectActionInvocations(value *int32)() {
+    m.directActionInvocations = value
 }
 // SetEnvironment sets the environment property value. The environment property
 func (m *Workspaces_attributes) SetEnvironment(value *string)() {
@@ -1220,6 +1239,10 @@ func (m *Workspaces_attributes) SetLastAssessmentResultAt(value *i336074805fc853
 // SetLatestChangeAt sets the latest-change-at property value. The latestChangeAt property
 func (m *Workspaces_attributes) SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.latestChangeAt = value
+}
+// SetLifecycleActionInvocations sets the lifecycle-action-invocations property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Workspaces_attributes) SetLifecycleActionInvocations(value *int32)() {
+    m.lifecycleActionInvocations = value
 }
 // SetLocked sets the locked property value. The locked property
 func (m *Workspaces_attributes) SetLocked(value *bool)() {
@@ -1293,6 +1316,10 @@ func (m *Workspaces_attributes) SetStructuredRunOutputEnabled(value *bool)() {
 func (m *Workspaces_attributes) SetTagNames(value []string)() {
     m.tagNames = value
 }
+// SetTerraformActionsCount sets the terraform-actions-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Workspaces_attributes) SetTerraformActionsCount(value *int32)() {
+    m.terraformActionsCount = value
+}
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
 func (m *Workspaces_attributes) SetTerraformVersion(value *string)() {
     m.terraformVersion = value
@@ -1339,8 +1366,7 @@ type Workspaces_attributesable interface {
     GetAutoDestroyStatus()(*string)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDescription()(*string)
-    GetEffectiveRunDataRetentionDesc()(*string)
-    GetEffectiveStateVersionRetentionDesc()(*string)
+    GetDirectActionInvocations()(*int32)
     GetEnvironment()(*string)
     GetExecutionMode()(*Workspaces_attributes_executionMode)
     GetFileTriggersEnabled()(*bool)
@@ -1349,6 +1375,7 @@ type Workspaces_attributesable interface {
     GetInheritsProjectAutoDestroy()(*bool)
     GetLastAssessmentResultAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetLifecycleActionInvocations()(*int32)
     GetLocked()(*bool)
     GetLockedReason()(*string)
     GetName()(*string)
@@ -1367,6 +1394,7 @@ type Workspaces_attributesable interface {
     GetSpeculativeEnabled()(*bool)
     GetStructuredRunOutputEnabled()(*bool)
     GetTagNames()([]string)
+    GetTerraformActionsCount()(*int32)
     GetTerraformVersion()(*string)
     GetTriggerPatterns()([]string)
     GetTriggerPrefixes()([]string)
@@ -1386,8 +1414,7 @@ type Workspaces_attributesable interface {
     SetAutoDestroyStatus(value *string)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDescription(value *string)()
-    SetEffectiveRunDataRetentionDesc(value *string)()
-    SetEffectiveStateVersionRetentionDesc(value *string)()
+    SetDirectActionInvocations(value *int32)()
     SetEnvironment(value *string)()
     SetExecutionMode(value *Workspaces_attributes_executionMode)()
     SetFileTriggersEnabled(value *bool)()
@@ -1396,6 +1423,7 @@ type Workspaces_attributesable interface {
     SetInheritsProjectAutoDestroy(value *bool)()
     SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetLifecycleActionInvocations(value *int32)()
     SetLocked(value *bool)()
     SetLockedReason(value *string)()
     SetName(value *string)()
@@ -1414,6 +1442,7 @@ type Workspaces_attributesable interface {
     SetSpeculativeEnabled(value *bool)()
     SetStructuredRunOutputEnabled(value *bool)()
     SetTagNames(value []string)()
+    SetTerraformActionsCount(value *int32)()
     SetTerraformVersion(value *string)()
     SetTriggerPatterns(value []string)()
     SetTriggerPrefixes(value []string)()

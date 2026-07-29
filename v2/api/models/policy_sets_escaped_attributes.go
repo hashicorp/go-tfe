@@ -37,6 +37,8 @@ type PolicySets_attributes struct {
     projectCount *int32
     // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scopingType *PolicySets_attributes_scopingType
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    stackCount *int32
     // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tagSelectors []PolicySets_attributes_tagSelectorsable
     // The updatedAt property
@@ -220,6 +222,16 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["stack-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackCount(val)
+        }
+        return nil
+    }
     res["tag-selectors"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(CreatePolicySets_attributes_tagSelectorsFromDiscriminatorValue)
         if err != nil {
@@ -327,6 +339,11 @@ func (m *PolicySets_attributes) GetProjectCount()(*int32) {
 // returns a *PolicySets_attributes_scopingType when successful
 func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
     return m.scopingType
+}
+// GetStackCount gets the stack-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *int32 when successful
+func (m *PolicySets_attributes) GetStackCount()(*int32) {
+    return m.stackCount
 }
 // GetTagSelectors gets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a []PolicySets_attributes_tagSelectorsable when successful
@@ -499,6 +516,10 @@ func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
     m.scopingType = value
 }
+// SetStackCount sets the stack-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *PolicySets_attributes) SetStackCount(value *int32)() {
+    m.stackCount = value
+}
 // SetTagSelectors sets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
     m.tagSelectors = value
@@ -535,6 +556,7 @@ type PolicySets_attributesable interface {
     GetPolicyUpdatePatterns()([]string)
     GetProjectCount()(*int32)
     GetScopingType()(*PolicySets_attributes_scopingType)
+    GetStackCount()(*int32)
     GetTagSelectors()([]PolicySets_attributes_tagSelectorsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(PolicySets_attributes_vcsRepoable)
@@ -553,6 +575,7 @@ type PolicySets_attributesable interface {
     SetPolicyUpdatePatterns(value []string)()
     SetProjectCount(value *int32)()
     SetScopingType(value *PolicySets_attributes_scopingType)()
+    SetStackCount(value *int32)()
     SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value PolicySets_attributes_vcsRepoable)()

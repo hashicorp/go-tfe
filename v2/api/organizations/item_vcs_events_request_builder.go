@@ -11,7 +11,7 @@ import (
     ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e "github.com/hashicorp/go-tfe/v2/api/organizations/item/vcsevents"
 )
 
-// ItemVcsEventsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs-events
+// ItemVcsEventsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\vcs-events
 type ItemVcsEventsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -35,7 +35,7 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
 func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
     m := &ItemVcsEventsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/vcs-events{?filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

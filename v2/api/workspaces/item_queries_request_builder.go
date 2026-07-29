@@ -13,7 +13,7 @@ import (
 type ItemQueriesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemQueriesRequestBuilderGetQueryParameters get list of queries for a particular workspace.
+// ItemQueriesRequestBuilderGetQueryParameters get list of queries for a particular workspace.This operation is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
 type ItemQueriesRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -33,7 +33,7 @@ func NewItemQueriesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     urlParams["request-raw-url"] = rawUrl
     return NewItemQueriesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get get list of queries for a particular workspace.
+// Get get list of queries for a particular workspace.This operation is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
 // returns a ItemQueriesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemQueriesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters])(ItemQueriesGetResponseable, error) {
@@ -53,7 +53,7 @@ func (m *ItemQueriesRequestBuilder) Get(ctx context.Context, requestConfiguratio
     }
     return res.(ItemQueriesGetResponseable), nil
 }
-// ToGetRequestInformation get list of queries for a particular workspace.
+// ToGetRequestInformation get list of queries for a particular workspace.This operation is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
 // returns a *RequestInformation when successful
 func (m *ItemQueriesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

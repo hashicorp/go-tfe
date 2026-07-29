@@ -7,16 +7,32 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    id4b852bd71ad03f70caf4b4d96531b02b2c582a15b4e6d4690a25b3cc9b00d49 "github.com/hashicorp/go-tfe/v2/api/organizations/item/authenticationtoken"
 )
 
-// ItemAuthenticationTokenRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\authentication-token
+// ItemAuthenticationTokenRequestBuilder builds and executes requests for operations under \organizations\{name-id}\authentication-token
 type ItemAuthenticationTokenRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// ItemAuthenticationTokenRequestBuilderDeleteQueryParameters delete an organization token
+type ItemAuthenticationTokenRequestBuilderDeleteQueryParameters struct {
+    // The type of organization token to delete. Omit for the standard organization token; use "audit-trails" for the audit trail token.
+    Token *id4b852bd71ad03f70caf4b4d96531b02b2c582a15b4e6d4690a25b3cc9b00d49.DeleteTokenQueryParameterType "uriparametername:\"token\""
+}
+// ItemAuthenticationTokenRequestBuilderGetQueryParameters get details about an organization token
+type ItemAuthenticationTokenRequestBuilderGetQueryParameters struct {
+    // The type of organization token to retrieve. Omit for the standard organization token; use "audit-trails" for the audit trail token.
+    Token *id4b852bd71ad03f70caf4b4d96531b02b2c582a15b4e6d4690a25b3cc9b00d49.GetTokenQueryParameterType "uriparametername:\"token\""
+}
+// ItemAuthenticationTokenRequestBuilderPostQueryParameters create an organization token
+type ItemAuthenticationTokenRequestBuilderPostQueryParameters struct {
+    // The type of organization token to create. Omit for the standard organization token; use "audit-trails" for the audit trail token.
+    Token *id4b852bd71ad03f70caf4b4d96531b02b2c582a15b4e6d4690a25b3cc9b00d49.PostTokenQueryParameterType "uriparametername:\"token\""
 }
 // NewItemAuthenticationTokenRequestBuilderInternal instantiates a new ItemAuthenticationTokenRequestBuilder and sets the default values.
 func NewItemAuthenticationTokenRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthenticationTokenRequestBuilder) {
     m := &ItemAuthenticationTokenRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/authentication-token", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/authentication-token{?token*}", pathParameters),
     }
     return m
 }
@@ -28,7 +44,7 @@ func NewItemAuthenticationTokenRequestBuilder(rawUrl string, requestAdapter i2ae
 }
 // Delete delete an organization token
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokenRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+func (m *ItemAuthenticationTokenRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderDeleteQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -45,7 +61,7 @@ func (m *ItemAuthenticationTokenRequestBuilder) Delete(ctx context.Context, requ
 // Get get details about an organization token
 // returns a AuthenticationTokensEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokenRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
+func (m *ItemAuthenticationTokenRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -65,7 +81,7 @@ func (m *ItemAuthenticationTokenRequestBuilder) Get(ctx context.Context, request
 // Post create an organization token
 // returns a AuthenticationTokensEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokenRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
+func (m *ItemAuthenticationTokenRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderPostQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -84,7 +100,7 @@ func (m *ItemAuthenticationTokenRequestBuilder) Post(ctx context.Context, body i
 }
 // ToDeleteRequestInformation delete an organization token
 // returns a *RequestInformation when successful
-func (m *ItemAuthenticationTokenRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAuthenticationTokenRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderDeleteQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
@@ -92,7 +108,7 @@ func (m *ItemAuthenticationTokenRequestBuilder) ToDeleteRequestInformation(ctx c
 }
 // ToGetRequestInformation get details about an organization token
 // returns a *RequestInformation when successful
-func (m *ItemAuthenticationTokenRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAuthenticationTokenRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
@@ -100,7 +116,7 @@ func (m *ItemAuthenticationTokenRequestBuilder) ToGetRequestInformation(ctx cont
 }
 // ToPostRequestInformation create an organization token
 // returns a *RequestInformation when successful
-func (m *ItemAuthenticationTokenRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAuthenticationTokenRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokenRequestBuilderPostQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

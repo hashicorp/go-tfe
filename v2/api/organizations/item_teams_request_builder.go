@@ -10,7 +10,7 @@ import (
     i68c7b1754f3d859dd95c09b410930e44dcfd5c211141c27437c039782e7cf6df "github.com/hashicorp/go-tfe/v2/api/organizations/item/teams"
 )
 
-// ItemTeamsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\teams
+// ItemTeamsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\teams
 type ItemTeamsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -30,7 +30,7 @@ type ItemTeamsRequestBuilderGetQueryParameters struct {
 // NewItemTeamsRequestBuilderInternal instantiates a new ItemTeamsRequestBuilder and sets the default values.
 func NewItemTeamsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTeamsRequestBuilder) {
     m := &ItemTeamsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/teams{?filter%5Bnames%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/teams{?filter%5Bnames%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
     }
     return m
 }

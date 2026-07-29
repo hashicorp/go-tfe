@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemVcsRepoRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs\repo
+// ItemVcsRepoRequestBuilder builds and executes requests for operations under \organizations\{name-id}\vcs\repo
 type ItemVcsRepoRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -23,7 +23,7 @@ type ItemVcsRepoRequestBuilderGetQueryParameters struct {
 // NewItemVcsRepoRequestBuilderInternal instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
 func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {
     m := &ItemVcsRepoRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}", pathParameters),
     }
     return m
 }

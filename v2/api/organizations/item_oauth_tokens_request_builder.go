@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemOauthTokensRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\oauth-tokens
+// ItemOauthTokensRequestBuilder builds and executes requests for operations under \organizations\{name-id}\oauth-tokens
 type ItemOauthTokensRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -25,7 +25,7 @@ type ItemOauthTokensRequestBuilderGetQueryParameters struct {
 // NewItemOauthTokensRequestBuilderInternal instantiates a new ItemOauthTokensRequestBuilder and sets the default values.
 func NewItemOauthTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOauthTokensRequestBuilder) {
     m := &ItemOauthTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/oauth-tokens{?filter%5Bprovider%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/oauth-tokens{?filter%5Bprovider%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

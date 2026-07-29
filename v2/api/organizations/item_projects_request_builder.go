@@ -9,7 +9,7 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemProjectsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\projects
+// ItemProjectsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\projects
 type ItemProjectsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -31,7 +31,7 @@ type ItemProjectsRequestBuilderGetQueryParameters struct {
 // NewItemProjectsRequestBuilderInternal instantiates a new ItemProjectsRequestBuilder and sets the default values.
 func NewItemProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProjectsRequestBuilder) {
     m := &ItemProjectsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/projects{?filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/projects{?filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

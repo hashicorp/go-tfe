@@ -72,6 +72,11 @@ func (m *WithWorkspace_ItemRequestBuilder) CurrentStateVersion()(*ItemCurrentSta
 func (m *WithWorkspace_ItemRequestBuilder) CurrentStateVersionOutputs()(*ItemCurrentStateVersionOutputsRequestBuilder) {
     return NewItemCurrentStateVersionOutputsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// DelegatedPermissionOperations the delegatedPermissionOperations property
+// returns a *ItemDelegatedPermissionOperationsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) DelegatedPermissionOperations()(*ItemDelegatedPermissionOperationsRequestBuilder) {
+    return NewItemDelegatedPermissionOperationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Delete delete a workspace. This permanently removes the workspace and all its associated data including runs, state versions, and configuration versions.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -146,6 +151,11 @@ func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body i05d5
 func (m *WithWorkspace_ItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
     return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Queries the queries property
+// returns a *ItemQueriesRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
+    return NewItemQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Relationships the relationships property
 // returns a *ItemRelationshipsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
@@ -175,6 +185,11 @@ func (m *WithWorkspace_ItemRequestBuilder) StateVersions()(*ItemStateVersionsReq
 // returns a *ItemTasksRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Tasks()(*ItemTasksRequestBuilder) {
     return NewItemTasksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TerraformActions the terraformActions property
+// returns a *ItemTerraformActionsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) TerraformActions()(*ItemTerraformActionsRequestBuilder) {
+    return NewItemTerraformActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ToDeleteRequestInformation delete a workspace. This permanently removes the workspace and all its associated data including runs, state versions, and configuration versions.
 // returns a *RequestInformation when successful

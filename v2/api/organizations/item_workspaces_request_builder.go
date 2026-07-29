@@ -10,7 +10,7 @@ import (
     ib221dccd3c79fe396924505f7690d5263c9d3d6438d3a888a0e019c0a8f12f06 "github.com/hashicorp/go-tfe/v2/api/organizations/item/workspaces"
 )
 
-// ItemWorkspacesRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\workspaces
+// ItemWorkspacesRequestBuilder builds and executes requests for operations under \organizations\{name-id}\workspaces
 type ItemWorkspacesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -56,7 +56,7 @@ func (m *ItemWorkspacesRequestBuilder) ByWorkspace_name(workspace_name string)(*
 // NewItemWorkspacesRequestBuilderInternal instantiates a new ItemWorkspacesRequestBuilder and sets the default values.
 func NewItemWorkspacesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesRequestBuilder) {
     m := &ItemWorkspacesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces{?filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btag%2Dunion%5D*,filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D*,filter%5Btagged%5D*,filter%5Btagged%5D%5Bvalue%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/workspaces{?filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btag%2Dunion%5D*,filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D*,filter%5Btagged%5D*,filter%5Btagged%5D%5Bvalue%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
     }
     return m
 }

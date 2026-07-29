@@ -8,14 +8,14 @@ import (
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
-// ItemGithubAppInstallationsItemLinkAccountRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\github-app-installations\{github_app_installation_id}\link-account
+// ItemGithubAppInstallationsItemLinkAccountRequestBuilder builds and executes requests for operations under \organizations\{name-id}\github-app-installations\{github_app_installation_id}\link-account
 type ItemGithubAppInstallationsItemLinkAccountRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
 // NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal instantiates a new ItemGithubAppInstallationsItemLinkAccountRequestBuilder and sets the default values.
 func NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppInstallationsItemLinkAccountRequestBuilder) {
     m := &ItemGithubAppInstallationsItemLinkAccountRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/github-app-installations/{github_app_installation_id}/link-account", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/github-app-installations/{github_app_installation_id}/link-account", pathParameters),
     }
     return m
 }

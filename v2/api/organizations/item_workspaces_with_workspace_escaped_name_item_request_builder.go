@@ -10,7 +10,7 @@ import (
     ia60cd24b348b303e1b7a2d108acb7afd0314eabcdb551a1d763d372fb22b5f05 "github.com/hashicorp/go-tfe/v2/api/organizations/item/workspaces/item"
 )
 
-// ItemWorkspacesWithWorkspace_nameItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\workspaces\{workspace_name}
+// ItemWorkspacesWithWorkspace_nameItemRequestBuilder builds and executes requests for operations under \organizations\{name-id}\workspaces\{workspace_name}
 type ItemWorkspacesWithWorkspace_nameItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -27,7 +27,7 @@ func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Actions()(*ItemWork
 // NewItemWorkspacesWithWorkspace_nameItemRequestBuilderInternal instantiates a new ItemWorkspacesWithWorkspace_nameItemRequestBuilder and sets the default values.
 func NewItemWorkspacesWithWorkspace_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesWithWorkspace_nameItemRequestBuilder) {
     m := &ItemWorkspacesWithWorkspace_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces/{workspace_name}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/workspaces/{workspace_name}{?include}", pathParameters),
     }
     return m
 }

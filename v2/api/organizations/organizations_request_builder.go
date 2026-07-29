@@ -28,17 +28,17 @@ type OrganizationsRequestBuilderGetQueryParameters struct {
     // A search query string. This query searches organizations by name.
     Qname *string "uriparametername:\"q%5Bname%5D\""
 }
-// ByOrganization_name gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item collection
-// returns a *WithOrganization_nameItemRequestBuilder when successful
-func (m *OrganizationsRequestBuilder) ByOrganization_name(organization_name string)(*WithOrganization_nameItemRequestBuilder) {
+// ByNameId gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item collection
+// returns a *NameItemRequestBuilder when successful
+func (m *OrganizationsRequestBuilder) ByNameId(nameId string)(*NameItemRequestBuilder) {
     urlTplParams := make(map[string]string)
     for idx, item := range m.BaseRequestBuilder.PathParameters {
         urlTplParams[idx] = item
     }
-    if organization_name != "" {
-        urlTplParams["organization_name"] = organization_name
+    if nameId != "" {
+        urlTplParams["name%2Did"] = nameId
     }
-    return NewWithOrganization_nameItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+    return NewNameItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
 // NewOrganizationsRequestBuilderInternal instantiates a new OrganizationsRequestBuilder and sets the default values.
 func NewOrganizationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*OrganizationsRequestBuilder) {

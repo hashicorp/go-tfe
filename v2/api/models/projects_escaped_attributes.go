@@ -29,6 +29,8 @@ type Projects_attributes struct {
     permissions Projects_attributes_permissionsable
     // The settingOverwrites property
     settingOverwrites Projects_attributes_settingOverwritesable
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    stackCount *int32
     // The stacksDefaultExecutionMode property
     stacksDefaultExecutionMode *Projects_attributes_stacksDefaultExecutionMode
     // The teamCount property
@@ -167,6 +169,16 @@ func (m *Projects_attributes) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["stack-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackCount(val)
+        }
+        return nil
+    }
     res["stacks-default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseProjects_attributes_stacksDefaultExecutionMode)
         if err != nil {
@@ -223,6 +235,11 @@ func (m *Projects_attributes) GetPermissions()(Projects_attributes_permissionsab
 // returns a Projects_attributes_settingOverwritesable when successful
 func (m *Projects_attributes) GetSettingOverwrites()(Projects_attributes_settingOverwritesable) {
     return m.settingOverwrites
+}
+// GetStackCount gets the stack-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *int32 when successful
+func (m *Projects_attributes) GetStackCount()(*int32) {
+    return m.stackCount
 }
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Projects_attributes_stacksDefaultExecutionMode when successful
@@ -286,6 +303,12 @@ func (m *Projects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef
     }
     {
         err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteInt32Value("stack-count", m.GetStackCount())
         if err != nil {
             return err
         }
@@ -357,6 +380,10 @@ func (m *Projects_attributes) SetPermissions(value Projects_attributes_permissio
 func (m *Projects_attributes) SetSettingOverwrites(value Projects_attributes_settingOverwritesable)() {
     m.settingOverwrites = value
 }
+// SetStackCount sets the stack-count property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Projects_attributes) SetStackCount(value *int32)() {
+    m.stackCount = value
+}
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 func (m *Projects_attributes) SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)() {
     m.stacksDefaultExecutionMode = value
@@ -381,6 +408,7 @@ type Projects_attributesable interface {
     GetName()(*string)
     GetPermissions()(Projects_attributes_permissionsable)
     GetSettingOverwrites()(Projects_attributes_settingOverwritesable)
+    GetStackCount()(*int32)
     GetStacksDefaultExecutionMode()(*Projects_attributes_stacksDefaultExecutionMode)
     GetTeamCount()(*int32)
     GetWorkspaceCount()(*int32)
@@ -393,6 +421,7 @@ type Projects_attributesable interface {
     SetName(value *string)()
     SetPermissions(value Projects_attributes_permissionsable)()
     SetSettingOverwrites(value Projects_attributes_settingOverwritesable)()
+    SetStackCount(value *int32)()
     SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)()
     SetTeamCount(value *int32)()
     SetWorkspaceCount(value *int32)()

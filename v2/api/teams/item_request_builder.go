@@ -24,6 +24,11 @@ type ItemRequestBuilderGetQueryParameters struct {
 func (m *ItemRequestBuilder) AuthenticationToken()(*ItemAuthenticationTokenRequestBuilder) {
     return NewItemAuthenticationTokenRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// AuthenticationTokens the authenticationTokens property
+// returns a *ItemAuthenticationTokensRequestBuilder when successful
+func (m *ItemRequestBuilder) AuthenticationTokens()(*ItemAuthenticationTokensRequestBuilder) {
+    return NewItemAuthenticationTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
 func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
     m := &ItemRequestBuilder{

@@ -24,6 +24,8 @@ type Users_attributes_permissions struct {
     canManageHcpAccounts *bool
     // The canManageSessions property
     canManageSessions *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    canManageSsoIdentities *bool
     // The canManageUserTokens property
     canManageUserTokens *bool
     // This attribute is only available in HCP Terraform.
@@ -108,6 +110,11 @@ func (m *Users_attributes_permissions) GetCanManageHcpAccounts()(*bool) {
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanManageSessions()(*bool) {
     return m.canManageSessions
+}
+// GetCanManageSsoIdentities gets the can-manage-sso-identities property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Users_attributes_permissions) GetCanManageSsoIdentities()(*bool) {
+    return m.canManageSsoIdentities
 }
 // GetCanManageUserTokens gets the can-manage-user-tokens property value. The canManageUserTokens property
 // returns a *bool when successful
@@ -260,6 +267,16 @@ func (m *Users_attributes_permissions) GetFieldDeserializers()(map[string]func(i
         }
         if val != nil {
             m.SetCanManageSessions(val)
+        }
+        return nil
+    }
+    res["can-manage-sso-identities"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanManageSsoIdentities(val)
         }
         return nil
     }
@@ -470,6 +487,12 @@ func (m *Users_attributes_permissions) Serialize(writer i878a80d2330e89d26896388
         }
     }
     {
+        err := writer.WriteBoolValue("can-manage-sso-identities", m.GetCanManageSsoIdentities())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-manage-user-tokens", m.GetCanManageUserTokens())
         if err != nil {
             return err
@@ -605,6 +628,10 @@ func (m *Users_attributes_permissions) SetCanManageHcpAccounts(value *bool)() {
 func (m *Users_attributes_permissions) SetCanManageSessions(value *bool)() {
     m.canManageSessions = value
 }
+// SetCanManageSsoIdentities sets the can-manage-sso-identities property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Users_attributes_permissions) SetCanManageSsoIdentities(value *bool)() {
+    m.canManageSsoIdentities = value
+}
 // SetCanManageUserTokens sets the can-manage-user-tokens property value. The canManageUserTokens property
 func (m *Users_attributes_permissions) SetCanManageUserTokens(value *bool)() {
     m.canManageUserTokens = value
@@ -679,6 +706,7 @@ type Users_attributes_permissionsable interface {
     GetCanCreateToolVersions()(*bool)
     GetCanManageHcpAccounts()(*bool)
     GetCanManageSessions()(*bool)
+    GetCanManageSsoIdentities()(*bool)
     GetCanManageUserTokens()(*bool)
     GetCanReenable2faByUnlinking()(*bool)
     GetCanUpdateUser()(*bool)
@@ -702,6 +730,7 @@ type Users_attributes_permissionsable interface {
     SetCanCreateToolVersions(value *bool)()
     SetCanManageHcpAccounts(value *bool)()
     SetCanManageSessions(value *bool)()
+    SetCanManageSsoIdentities(value *bool)()
     SetCanManageUserTokens(value *bool)()
     SetCanReenable2faByUnlinking(value *bool)()
     SetCanUpdateUser(value *bool)()
