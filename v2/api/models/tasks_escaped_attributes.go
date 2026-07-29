@@ -25,6 +25,8 @@ type Tasks_attributes struct {
     hmacKey *string
     // The name property
     name *string
+    // The params property
+    params Tasks_attributes_paramsable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The url property
@@ -141,6 +143,16 @@ func (m *Tasks_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         return nil
     }
+    res["params"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateTasks_attributes_paramsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetParams(val.(Tasks_attributes_paramsable))
+        }
+        return nil
+    }
     res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -177,6 +189,11 @@ func (m *Tasks_attributes) GetHmacKey()(*string) {
 // returns a *string when successful
 func (m *Tasks_attributes) GetName()(*string) {
     return m.name
+}
+// GetParams gets the params property value. The params property
+// returns a Tasks_attributes_paramsable when successful
+func (m *Tasks_attributes) GetParams()(Tasks_attributes_paramsable) {
+    return m.params
 }
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
@@ -227,6 +244,12 @@ func (m *Tasks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
         }
     }
     {
+        err := writer.WriteObjectValue("params", m.GetParams())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("url", m.GetUrl())
         if err != nil {
             return err
@@ -272,6 +295,10 @@ func (m *Tasks_attributes) SetHmacKey(value *string)() {
 func (m *Tasks_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetParams sets the params property value. The params property
+func (m *Tasks_attributes) SetParams(value Tasks_attributes_paramsable)() {
+    m.params = value
+}
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Tasks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
@@ -290,6 +317,7 @@ type Tasks_attributesable interface {
     GetGlobalConfiguration()(Tasks_attributes_globalConfigurationable)
     GetHmacKey()(*string)
     GetName()(*string)
+    GetParams()(Tasks_attributes_paramsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetUrl()(*string)
     SetCategory(value *string)()
@@ -299,6 +327,7 @@ type Tasks_attributesable interface {
     SetGlobalConfiguration(value Tasks_attributes_globalConfigurationable)()
     SetHmacKey(value *string)()
     SetName(value *string)()
+    SetParams(value Tasks_attributes_paramsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetUrl(value *string)()
 }
