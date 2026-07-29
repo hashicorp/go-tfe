@@ -12,6 +12,8 @@ type Tasks_relationships struct {
     additionalData map[string]any
     // The agentPool property
     agentPool AgentPoolsHasOneable
+    // The integration property
+    integration IntegrationsHasOneable
     // The organization property
     organization OrganizationsHasOneable
     // The workspaceTasks property
@@ -53,6 +55,16 @@ func (m *Tasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["integration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateIntegrationsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetIntegration(val.(IntegrationsHasOneable))
+        }
+        return nil
+    }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -75,6 +87,11 @@ func (m *Tasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d23
     }
     return res
 }
+// GetIntegration gets the integration property value. The integration property
+// returns a IntegrationsHasOneable when successful
+func (m *Tasks_relationships) GetIntegration()(IntegrationsHasOneable) {
+    return m.integration
+}
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *Tasks_relationships) GetOrganization()(OrganizationsHasOneable) {
@@ -89,6 +106,12 @@ func (m *Tasks_relationships) GetWorkspaceTasks()(WorkspaceTasksHasManyable) {
 func (m *Tasks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("integration", m.GetIntegration())
         if err != nil {
             return err
         }
@@ -121,6 +144,10 @@ func (m *Tasks_relationships) SetAdditionalData(value map[string]any)() {
 func (m *Tasks_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
     m.agentPool = value
 }
+// SetIntegration sets the integration property value. The integration property
+func (m *Tasks_relationships) SetIntegration(value IntegrationsHasOneable)() {
+    m.integration = value
+}
 // SetOrganization sets the organization property value. The organization property
 func (m *Tasks_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
@@ -133,9 +160,11 @@ type Tasks_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgentPool()(AgentPoolsHasOneable)
+    GetIntegration()(IntegrationsHasOneable)
     GetOrganization()(OrganizationsHasOneable)
     GetWorkspaceTasks()(WorkspaceTasksHasManyable)
     SetAgentPool(value AgentPoolsHasOneable)()
+    SetIntegration(value IntegrationsHasOneable)()
     SetOrganization(value OrganizationsHasOneable)()
     SetWorkspaceTasks(value WorkspaceTasksHasManyable)()
 }

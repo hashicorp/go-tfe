@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "f93f81ee",
+    "version": "b3954fbd",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -17185,7 +17185,14 @@
                           {
                             "$ref": "#/components/schemas/organization-memberships"
                           }
-                        ]
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users",
+                            "organization-memberships": "#/components/schemas/organization-memberships"
+                          }
+                        }
                       }
                     }
                   }
@@ -17367,7 +17374,14 @@
                               {
                                 "$ref": "#/components/schemas/organization-memberships"
                               }
-                            ]
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "users": "#/components/schemas/users",
+                                "organization-memberships": "#/components/schemas/organization-memberships"
+                              }
+                            }
                           }
                         }
                       }
@@ -33827,6 +33841,41 @@
           }
         }
       },
+      "integrations-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "integrations"
+            ]
+          }
+        }
+      },
+      "integrations-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/integrations-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "tasks": {
         "type": "object",
         "required": [
@@ -33866,6 +33915,11 @@
               },
               "enabled": {
                 "type": "boolean"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": true,
+                "nullable": true
               },
               "created-at": {
                 "type": "string",
@@ -33908,6 +33962,9 @@
               },
               "agent-pool": {
                 "$ref": "#/components/schemas/agent-pools-has-one"
+              },
+              "integration": {
+                "$ref": "#/components/schemas/integrations-has-one"
               }
             }
           },
