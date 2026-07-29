@@ -9,14 +9,14 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemOidcConfigurationsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\oidc-configurations
+// ItemOidcConfigurationsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\oidc-configurations
 type ItemOidcConfigurationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
 // NewItemOidcConfigurationsRequestBuilderInternal instantiates a new ItemOidcConfigurationsRequestBuilder and sets the default values.
 func NewItemOidcConfigurationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOidcConfigurationsRequestBuilder) {
     m := &ItemOidcConfigurationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/oidc-configurations", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/oidc-configurations", pathParameters),
     }
     return m
 }
@@ -26,7 +26,7 @@ func NewItemOidcConfigurationsRequestBuilder(rawUrl string, requestAdapter i2ae4
     urlParams["request-raw-url"] = rawUrl
     return NewItemOidcConfigurationsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post create a new OIDC configuration
+// Post create a new OIDC configurationThis operation is only available in HCP Terraform.
 // returns a OidcConfigurationEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemOidcConfigurationsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, error) {
@@ -46,7 +46,7 @@ func (m *ItemOidcConfigurationsRequestBuilder) Post(ctx context.Context, body i0
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable), nil
 }
-// ToPostRequestInformation create a new OIDC configuration
+// ToPostRequestInformation create a new OIDC configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemOidcConfigurationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

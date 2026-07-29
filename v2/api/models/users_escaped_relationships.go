@@ -11,7 +11,7 @@ type Users_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The authenticatedResource property
-    authenticatedResource Users_relationships_authenticatedResourceable
+    authenticatedResource AuthenticatedResourceHasOneable
     // The authenticationTokens property
     authenticationTokens Links_relatedable
     // The githubAppOauthTokens property
@@ -35,8 +35,8 @@ func (m *Users_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetAuthenticatedResource gets the authenticated-resource property value. The authenticatedResource property
-// returns a Users_relationships_authenticatedResourceable when successful
-func (m *Users_relationships) GetAuthenticatedResource()(Users_relationships_authenticatedResourceable) {
+// returns a AuthenticatedResourceHasOneable when successful
+func (m *Users_relationships) GetAuthenticatedResource()(AuthenticatedResourceHasOneable) {
     return m.authenticatedResource
 }
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
@@ -49,12 +49,12 @@ func (m *Users_relationships) GetAuthenticationTokens()(Links_relatedable) {
 func (m *Users_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["authenticated-resource"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsers_relationships_authenticatedResourceFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAuthenticatedResourceHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAuthenticatedResource(val.(Users_relationships_authenticatedResourceable))
+            m.SetAuthenticatedResource(val.(AuthenticatedResourceHasOneable))
         }
         return nil
     }
@@ -118,7 +118,7 @@ func (m *Users_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetAuthenticatedResource sets the authenticated-resource property value. The authenticatedResource property
-func (m *Users_relationships) SetAuthenticatedResource(value Users_relationships_authenticatedResourceable)() {
+func (m *Users_relationships) SetAuthenticatedResource(value AuthenticatedResourceHasOneable)() {
     m.authenticatedResource = value
 }
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
@@ -132,10 +132,10 @@ func (m *Users_relationships) SetGithubAppOauthTokens(value Links_relatedable)()
 type Users_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAuthenticatedResource()(Users_relationships_authenticatedResourceable)
+    GetAuthenticatedResource()(AuthenticatedResourceHasOneable)
     GetAuthenticationTokens()(Links_relatedable)
     GetGithubAppOauthTokens()(Links_relatedable)
-    SetAuthenticatedResource(value Users_relationships_authenticatedResourceable)()
+    SetAuthenticatedResource(value AuthenticatedResourceHasOneable)()
     SetAuthenticationTokens(value Links_relatedable)()
     SetGithubAppOauthTokens(value Links_relatedable)()
 }

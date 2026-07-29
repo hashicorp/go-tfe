@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    if08ef0ca045ee1f8b9d31eb862cf7a5266c334d3b20194949bbd1ab193a3e904 "github.com/hashicorp/go-tfe/v2/api/runs/item/actions/apply"
 )
 
 // ItemActionsApplyRequestBuilder builds and executes requests for operations under \runs\{-id}\actions\apply
@@ -27,20 +28,24 @@ func NewItemActionsApplyRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     return NewItemActionsApplyRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post apply a run that is paused waiting for confirmation.
+// returns a *ApplyPostResponse when successful
 // returns a Errors error when the service returns a 409 status code
-func (m *ItemActionsApplyRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ActionCommentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+func (m *ItemActionsApplyRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ActionCommentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*if08ef0ca045ee1f8b9d31eb862cf7a5266c334d3b20194949bbd1ab193a3e904.ApplyPostResponse, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
-        return err
+        return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "409": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.SendEnum(ctx, requestInfo, if08ef0ca045ee1f8b9d31eb862cf7a5266c334d3b20194949bbd1ab193a3e904.ParseApplyPostResponse, errorMapping)
     if err != nil {
-        return err
+        return nil, err
     }
-    return nil
+    if res == nil {
+        return nil, nil
+    }
+    return res.(*if08ef0ca045ee1f8b9d31eb862cf7a5266c334d3b20194949bbd1ab193a3e904.ApplyPostResponse), nil
 }
 // ToPostRequestInformation apply a run that is paused waiting for confirmation.
 // returns a *RequestInformation when successful

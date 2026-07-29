@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i6f2dce141547a574e4aebc99f4b2789ac2217377facfcd9ad98ebed289c76582 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/currentstateversion"
 )
 
 // ItemCurrentStateVersionRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\current-state-version
@@ -15,13 +16,13 @@ type ItemCurrentStateVersionRequestBuilder struct {
 }
 // ItemCurrentStateVersionRequestBuilderGetQueryParameters get the current state version for a workspace.
 type ItemCurrentStateVersionRequestBuilderGetQueryParameters struct {
-    // Optionally side-load relationships. For example, outputs or created-by.
-    Include *string "uriparametername:\"include\""
+    // Optionally side-load relationships.
+    Include []i6f2dce141547a574e4aebc99f4b2789ac2217377facfcd9ad98ebed289c76582.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemCurrentStateVersionRequestBuilderInternal instantiates a new ItemCurrentStateVersionRequestBuilder and sets the default values.
 func NewItemCurrentStateVersionRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCurrentStateVersionRequestBuilder) {
     m := &ItemCurrentStateVersionRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version{?include}", pathParameters),
     }
     return m
 }

@@ -9,11 +9,11 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemInvoicesRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\invoices
+// ItemInvoicesRequestBuilder builds and executes requests for operations under \organizations\{name-id}\invoices
 type ItemInvoicesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemInvoicesRequestBuilderGetQueryParameters lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
+// ItemInvoicesRequestBuilderGetQueryParameters lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.This operation is only available in HCP Terraform.
 type ItemInvoicesRequestBuilderGetQueryParameters struct {
     // The ID of the invoice where the page should start. If omitted, the endpoint returns the first page.
     Cursor *string "uriparametername:\"cursor\""
@@ -21,7 +21,7 @@ type ItemInvoicesRequestBuilderGetQueryParameters struct {
 // NewItemInvoicesRequestBuilderInternal instantiates a new ItemInvoicesRequestBuilder and sets the default values.
 func NewItemInvoicesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesRequestBuilder) {
     m := &ItemInvoicesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/invoices{?cursor*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/invoices{?cursor*}", pathParameters),
     }
     return m
 }
@@ -31,7 +31,7 @@ func NewItemInvoicesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     urlParams["request-raw-url"] = rawUrl
     return NewItemInvoicesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
+// Get lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.This operation is only available in HCP Terraform.
 // returns a ItemInvoicesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemInvoicesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemInvoicesRequestBuilderGetQueryParameters])(ItemInvoicesGetResponseable, error) {
@@ -56,7 +56,7 @@ func (m *ItemInvoicesRequestBuilder) Get(ctx context.Context, requestConfigurati
 func (m *ItemInvoicesRequestBuilder) Next()(*ItemInvoicesNextRequestBuilder) {
     return NewItemInvoicesNextRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// ToGetRequestInformation lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
+// ToGetRequestInformation lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemInvoicesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemInvoicesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

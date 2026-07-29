@@ -39,6 +39,16 @@ func (m *ItemRelationshipsRequestBuilder) ProjectExclusions()(*ItemRelationships
 func (m *ItemRelationshipsRequestBuilder) Projects()(*ItemRelationshipsProjectsRequestBuilder) {
     return NewItemRelationshipsProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// StackExclusions the stackExclusions property
+// returns a *ItemRelationshipsStackExclusionsRequestBuilder when successful
+func (m *ItemRelationshipsRequestBuilder) StackExclusions()(*ItemRelationshipsStackExclusionsRequestBuilder) {
+    return NewItemRelationshipsStackExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Stacks the stacks property
+// returns a *ItemRelationshipsStacksRequestBuilder when successful
+func (m *ItemRelationshipsRequestBuilder) Stacks()(*ItemRelationshipsStacksRequestBuilder) {
+    return NewItemRelationshipsStacksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // WorkspaceExclusions the workspaceExclusions property
 // returns a *ItemRelationshipsWorkspaceExclusionsRequestBuilder when successful
 func (m *ItemRelationshipsRequestBuilder) WorkspaceExclusions()(*ItemRelationshipsWorkspaceExclusionsRequestBuilder) {

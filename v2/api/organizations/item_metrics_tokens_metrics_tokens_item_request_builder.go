@@ -9,14 +9,14 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemMetricsTokensMetricsTokensItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\metrics-tokens\{id}
+// ItemMetricsTokensMetricsTokensItemRequestBuilder builds and executes requests for operations under \organizations\{name-id}\metrics-tokens\{id}
 type ItemMetricsTokensMetricsTokensItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
 // NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal instantiates a new ItemMetricsTokensMetricsTokensItemRequestBuilder and sets the default values.
 func NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemMetricsTokensMetricsTokensItemRequestBuilder) {
     m := &ItemMetricsTokensMetricsTokensItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/metrics-tokens/{id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/metrics-tokens/{id}", pathParameters),
     }
     return m
 }
@@ -26,7 +26,7 @@ func NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl string, requestA
     urlParams["request-raw-url"] = rawUrl
     return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete deletes a Metrics Service token.
+// Delete deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Co
     }
     return nil
 }
-// ToDeleteRequestInformation deletes a Metrics Service token.
+// ToDeleteRequestInformation deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

@@ -8,9 +8,10 @@ import (
     i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e "github.com/hashicorp/go-tfe/v2/api/organizations/item/vcsevents"
 )
 
-// ItemVcsEventsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs-events
+// ItemVcsEventsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\vcs-events
 type ItemVcsEventsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -24,8 +25,8 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
     Filteroauth_client_external_ids *string "uriparametername:\"filter%5Boauth_client_external_ids%5D\""
     // RFC3339 formatted UTC timestamp. If omitted, defaults to now.
     Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bto%5D\""
-    // Allows including related resource data. Only "oauth_client" is supported.
-    Include *string "uriparametername:\"include\""
+    // Allows including related resource data.
+    Include []ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -34,7 +35,7 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
 func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
     m := &ItemVcsEventsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/vcs-events{?filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

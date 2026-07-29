@@ -9,14 +9,14 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\registry-modules\{registry_name}\{namespace}\{name}\{provider}
+// ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder builds and executes requests for operations under \organizations\{name-id}\registry-modules\{registry_name}\{namespace}\{name}\{provider}
 type ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
 // NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal instantiates a new ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder and sets the default values.
 func NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) {
     m := &ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/registry-modules/{registry_name}/{namespace}/{name}/{provider}", pathParameters),
     }
     return m
 }

@@ -11,7 +11,7 @@ type Applies_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The stateVersions property
-    stateVersions Applies_relationships_stateVersionsable
+    stateVersions StateVersionsHasManyable
 }
 // NewApplies_relationships instantiates a new Applies_relationships and sets the default values.
 func NewApplies_relationships()(*Applies_relationships) {
@@ -35,20 +35,20 @@ func (m *Applies_relationships) GetAdditionalData()(map[string]any) {
 func (m *Applies_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["state-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateApplies_relationships_stateVersionsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateStateVersionsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetStateVersions(val.(Applies_relationships_stateVersionsable))
+            m.SetStateVersions(val.(StateVersionsHasManyable))
         }
         return nil
     }
     return res
 }
 // GetStateVersions gets the state-versions property value. The stateVersions property
-// returns a Applies_relationships_stateVersionsable when successful
-func (m *Applies_relationships) GetStateVersions()(Applies_relationships_stateVersionsable) {
+// returns a StateVersionsHasManyable when successful
+func (m *Applies_relationships) GetStateVersions()(StateVersionsHasManyable) {
     return m.stateVersions
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *Applies_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetStateVersions sets the state-versions property value. The stateVersions property
-func (m *Applies_relationships) SetStateVersions(value Applies_relationships_stateVersionsable)() {
+func (m *Applies_relationships) SetStateVersions(value StateVersionsHasManyable)() {
     m.stateVersions = value
 }
 type Applies_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetStateVersions()(Applies_relationships_stateVersionsable)
-    SetStateVersions(value Applies_relationships_stateVersionsable)()
+    GetStateVersions()(StateVersionsHasManyable)
+    SetStateVersions(value StateVersionsHasManyable)()
 }

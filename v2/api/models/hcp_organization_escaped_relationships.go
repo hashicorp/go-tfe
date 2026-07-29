@@ -11,9 +11,9 @@ type HcpOrganization_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The connectedPlans property
-    connectedPlans HcpOrganization_relationships_connectedPlansable
+    connectedPlans FeatureSetsHasManyable
     // The defaultAccount property
-    defaultAccount HcpBillingAccountsIdable
+    defaultAccount HcpBillingAccountsHasOneable
 }
 // NewHcpOrganization_relationships instantiates a new HcpOrganization_relationships and sets the default values.
 func NewHcpOrganization_relationships()(*HcpOrganization_relationships) {
@@ -33,13 +33,13 @@ func (m *HcpOrganization_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetConnectedPlans gets the connected-plans property value. The connectedPlans property
-// returns a HcpOrganization_relationships_connectedPlansable when successful
-func (m *HcpOrganization_relationships) GetConnectedPlans()(HcpOrganization_relationships_connectedPlansable) {
+// returns a FeatureSetsHasManyable when successful
+func (m *HcpOrganization_relationships) GetConnectedPlans()(FeatureSetsHasManyable) {
     return m.connectedPlans
 }
 // GetDefaultAccount gets the default-account property value. The defaultAccount property
-// returns a HcpBillingAccountsIdable when successful
-func (m *HcpOrganization_relationships) GetDefaultAccount()(HcpBillingAccountsIdable) {
+// returns a HcpBillingAccountsHasOneable when successful
+func (m *HcpOrganization_relationships) GetDefaultAccount()(HcpBillingAccountsHasOneable) {
     return m.defaultAccount
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -47,22 +47,22 @@ func (m *HcpOrganization_relationships) GetDefaultAccount()(HcpBillingAccountsId
 func (m *HcpOrganization_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["connected-plans"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHcpOrganization_relationships_connectedPlansFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateFeatureSetsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetConnectedPlans(val.(HcpOrganization_relationships_connectedPlansable))
+            m.SetConnectedPlans(val.(FeatureSetsHasManyable))
         }
         return nil
     }
     res["default-account"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHcpBillingAccountsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateHcpBillingAccountsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetDefaultAccount(val.(HcpBillingAccountsIdable))
+            m.SetDefaultAccount(val.(HcpBillingAccountsHasOneable))
         }
         return nil
     }
@@ -95,18 +95,18 @@ func (m *HcpOrganization_relationships) SetAdditionalData(value map[string]any)(
     m.additionalData = value
 }
 // SetConnectedPlans sets the connected-plans property value. The connectedPlans property
-func (m *HcpOrganization_relationships) SetConnectedPlans(value HcpOrganization_relationships_connectedPlansable)() {
+func (m *HcpOrganization_relationships) SetConnectedPlans(value FeatureSetsHasManyable)() {
     m.connectedPlans = value
 }
 // SetDefaultAccount sets the default-account property value. The defaultAccount property
-func (m *HcpOrganization_relationships) SetDefaultAccount(value HcpBillingAccountsIdable)() {
+func (m *HcpOrganization_relationships) SetDefaultAccount(value HcpBillingAccountsHasOneable)() {
     m.defaultAccount = value
 }
 type HcpOrganization_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetConnectedPlans()(HcpOrganization_relationships_connectedPlansable)
-    GetDefaultAccount()(HcpBillingAccountsIdable)
-    SetConnectedPlans(value HcpOrganization_relationships_connectedPlansable)()
-    SetDefaultAccount(value HcpBillingAccountsIdable)()
+    GetConnectedPlans()(FeatureSetsHasManyable)
+    GetDefaultAccount()(HcpBillingAccountsHasOneable)
+    SetConnectedPlans(value FeatureSetsHasManyable)()
+    SetDefaultAccount(value HcpBillingAccountsHasOneable)()
 }

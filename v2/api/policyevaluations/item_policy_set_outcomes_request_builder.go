@@ -35,6 +35,7 @@ func NewItemPolicySetOutcomesRequestBuilder(rawUrl string, requestAdapter i2ae41
 }
 // Get list the policy set outcomes associated with a policy evaluation.
 // returns a ItemPolicySetOutcomesGetResponseable when successful
+// returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemPolicySetOutcomesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetOutcomesRequestBuilderGetQueryParameters])(ItemPolicySetOutcomesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
@@ -42,6 +43,7 @@ func (m *ItemPolicySetOutcomesRequestBuilder) Get(ctx context.Context, requestCo
         return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
     res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetOutcomesGetResponseFromDiscriminatorValue, errorMapping)

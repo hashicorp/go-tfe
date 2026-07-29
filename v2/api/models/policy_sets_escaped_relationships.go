@@ -11,21 +11,25 @@ type PolicySets_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The currentVersion property
-    currentVersion PolicySetVersionsIdable
+    currentVersion PolicySetVersionsHasOneable
     // The newestVersion property
-    newestVersion PolicySetVersionsIdable
+    newestVersion PolicySetVersionsHasOneable
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
     // The policies property
-    policies PolicySets_relationships_policiesable
+    policies PoliciesHasManyable
     // The projectExclusions property
-    projectExclusions PolicySets_relationships_projectExclusionsable
+    projectExclusions ProjectsHasManyable
     // The projects property
-    projects PolicySets_relationships_projectsable
+    projects ProjectsHasManyable
+    // The stackExclusions property
+    stackExclusions StacksHasManyable
+    // The stacks property
+    stacks StacksHasManyable
     // The workspaceExclusions property
-    workspaceExclusions PolicySets_relationships_workspaceExclusionsable
+    workspaceExclusions WorkspacesHasManyable
     // The workspaces property
-    workspaces PolicySets_relationships_workspacesable
+    workspaces WorkspacesHasManyable
 }
 // NewPolicySets_relationships instantiates a new PolicySets_relationships and sets the default values.
 func NewPolicySets_relationships()(*PolicySets_relationships) {
@@ -45,8 +49,8 @@ func (m *PolicySets_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetCurrentVersion gets the current-version property value. The currentVersion property
-// returns a PolicySetVersionsIdable when successful
-func (m *PolicySets_relationships) GetCurrentVersion()(PolicySetVersionsIdable) {
+// returns a PolicySetVersionsHasOneable when successful
+func (m *PolicySets_relationships) GetCurrentVersion()(PolicySetVersionsHasOneable) {
     return m.currentVersion
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -54,120 +58,150 @@ func (m *PolicySets_relationships) GetCurrentVersion()(PolicySetVersionsIdable) 
 func (m *PolicySets_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["current-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetVersionsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicySetVersionsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetCurrentVersion(val.(PolicySetVersionsIdable))
+            m.SetCurrentVersion(val.(PolicySetVersionsHasOneable))
         }
         return nil
     }
     res["newest-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetVersionsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePolicySetVersionsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetNewestVersion(val.(PolicySetVersionsIdable))
+            m.SetNewestVersion(val.(PolicySetVersionsHasOneable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["policies"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_relationships_policiesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePoliciesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPolicies(val.(PolicySets_relationships_policiesable))
+            m.SetPolicies(val.(PoliciesHasManyable))
         }
         return nil
     }
     res["project-exclusions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_relationships_projectExclusionsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProjectExclusions(val.(PolicySets_relationships_projectExclusionsable))
+            m.SetProjectExclusions(val.(ProjectsHasManyable))
         }
         return nil
     }
     res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_relationships_projectsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProjects(val.(PolicySets_relationships_projectsable))
+            m.SetProjects(val.(ProjectsHasManyable))
+        }
+        return nil
+    }
+    res["stack-exclusions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackExclusions(val.(StacksHasManyable))
+        }
+        return nil
+    }
+    res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStacks(val.(StacksHasManyable))
         }
         return nil
     }
     res["workspace-exclusions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_relationships_workspaceExclusionsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaceExclusions(val.(PolicySets_relationships_workspaceExclusionsable))
+            m.SetWorkspaceExclusions(val.(WorkspacesHasManyable))
         }
         return nil
     }
     res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_relationships_workspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaces(val.(PolicySets_relationships_workspacesable))
+            m.SetWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
     return res
 }
 // GetNewestVersion gets the newest-version property value. The newestVersion property
-// returns a PolicySetVersionsIdable when successful
-func (m *PolicySets_relationships) GetNewestVersion()(PolicySetVersionsIdable) {
+// returns a PolicySetVersionsHasOneable when successful
+func (m *PolicySets_relationships) GetNewestVersion()(PolicySetVersionsHasOneable) {
     return m.newestVersion
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *PolicySets_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *PolicySets_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetPolicies gets the policies property value. The policies property
-// returns a PolicySets_relationships_policiesable when successful
-func (m *PolicySets_relationships) GetPolicies()(PolicySets_relationships_policiesable) {
+// returns a PoliciesHasManyable when successful
+func (m *PolicySets_relationships) GetPolicies()(PoliciesHasManyable) {
     return m.policies
 }
 // GetProjectExclusions gets the project-exclusions property value. The projectExclusions property
-// returns a PolicySets_relationships_projectExclusionsable when successful
-func (m *PolicySets_relationships) GetProjectExclusions()(PolicySets_relationships_projectExclusionsable) {
+// returns a ProjectsHasManyable when successful
+func (m *PolicySets_relationships) GetProjectExclusions()(ProjectsHasManyable) {
     return m.projectExclusions
 }
 // GetProjects gets the projects property value. The projects property
-// returns a PolicySets_relationships_projectsable when successful
-func (m *PolicySets_relationships) GetProjects()(PolicySets_relationships_projectsable) {
+// returns a ProjectsHasManyable when successful
+func (m *PolicySets_relationships) GetProjects()(ProjectsHasManyable) {
     return m.projects
 }
+// GetStackExclusions gets the stack-exclusions property value. The stackExclusions property
+// returns a StacksHasManyable when successful
+func (m *PolicySets_relationships) GetStackExclusions()(StacksHasManyable) {
+    return m.stackExclusions
+}
+// GetStacks gets the stacks property value. The stacks property
+// returns a StacksHasManyable when successful
+func (m *PolicySets_relationships) GetStacks()(StacksHasManyable) {
+    return m.stacks
+}
 // GetWorkspaceExclusions gets the workspace-exclusions property value. The workspaceExclusions property
-// returns a PolicySets_relationships_workspaceExclusionsable when successful
-func (m *PolicySets_relationships) GetWorkspaceExclusions()(PolicySets_relationships_workspaceExclusionsable) {
+// returns a WorkspacesHasManyable when successful
+func (m *PolicySets_relationships) GetWorkspaceExclusions()(WorkspacesHasManyable) {
     return m.workspaceExclusions
 }
 // GetWorkspaces gets the workspaces property value. The workspaces property
-// returns a PolicySets_relationships_workspacesable when successful
-func (m *PolicySets_relationships) GetWorkspaces()(PolicySets_relationships_workspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *PolicySets_relationships) GetWorkspaces()(WorkspacesHasManyable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
@@ -209,6 +243,18 @@ func (m *PolicySets_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteObjectValue("stack-exclusions", m.GetStackExclusions())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stacks", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("workspace-exclusions", m.GetWorkspaceExclusions())
         if err != nil {
             return err
@@ -233,54 +279,66 @@ func (m *PolicySets_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetCurrentVersion sets the current-version property value. The currentVersion property
-func (m *PolicySets_relationships) SetCurrentVersion(value PolicySetVersionsIdable)() {
+func (m *PolicySets_relationships) SetCurrentVersion(value PolicySetVersionsHasOneable)() {
     m.currentVersion = value
 }
 // SetNewestVersion sets the newest-version property value. The newestVersion property
-func (m *PolicySets_relationships) SetNewestVersion(value PolicySetVersionsIdable)() {
+func (m *PolicySets_relationships) SetNewestVersion(value PolicySetVersionsHasOneable)() {
     m.newestVersion = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *PolicySets_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *PolicySets_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetPolicies sets the policies property value. The policies property
-func (m *PolicySets_relationships) SetPolicies(value PolicySets_relationships_policiesable)() {
+func (m *PolicySets_relationships) SetPolicies(value PoliciesHasManyable)() {
     m.policies = value
 }
 // SetProjectExclusions sets the project-exclusions property value. The projectExclusions property
-func (m *PolicySets_relationships) SetProjectExclusions(value PolicySets_relationships_projectExclusionsable)() {
+func (m *PolicySets_relationships) SetProjectExclusions(value ProjectsHasManyable)() {
     m.projectExclusions = value
 }
 // SetProjects sets the projects property value. The projects property
-func (m *PolicySets_relationships) SetProjects(value PolicySets_relationships_projectsable)() {
+func (m *PolicySets_relationships) SetProjects(value ProjectsHasManyable)() {
     m.projects = value
 }
+// SetStackExclusions sets the stack-exclusions property value. The stackExclusions property
+func (m *PolicySets_relationships) SetStackExclusions(value StacksHasManyable)() {
+    m.stackExclusions = value
+}
+// SetStacks sets the stacks property value. The stacks property
+func (m *PolicySets_relationships) SetStacks(value StacksHasManyable)() {
+    m.stacks = value
+}
 // SetWorkspaceExclusions sets the workspace-exclusions property value. The workspaceExclusions property
-func (m *PolicySets_relationships) SetWorkspaceExclusions(value PolicySets_relationships_workspaceExclusionsable)() {
+func (m *PolicySets_relationships) SetWorkspaceExclusions(value WorkspacesHasManyable)() {
     m.workspaceExclusions = value
 }
 // SetWorkspaces sets the workspaces property value. The workspaces property
-func (m *PolicySets_relationships) SetWorkspaces(value PolicySets_relationships_workspacesable)() {
+func (m *PolicySets_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
     m.workspaces = value
 }
 type PolicySets_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCurrentVersion()(PolicySetVersionsIdable)
-    GetNewestVersion()(PolicySetVersionsIdable)
-    GetOrganization()(OrganizationsIdable)
-    GetPolicies()(PolicySets_relationships_policiesable)
-    GetProjectExclusions()(PolicySets_relationships_projectExclusionsable)
-    GetProjects()(PolicySets_relationships_projectsable)
-    GetWorkspaceExclusions()(PolicySets_relationships_workspaceExclusionsable)
-    GetWorkspaces()(PolicySets_relationships_workspacesable)
-    SetCurrentVersion(value PolicySetVersionsIdable)()
-    SetNewestVersion(value PolicySetVersionsIdable)()
-    SetOrganization(value OrganizationsIdable)()
-    SetPolicies(value PolicySets_relationships_policiesable)()
-    SetProjectExclusions(value PolicySets_relationships_projectExclusionsable)()
-    SetProjects(value PolicySets_relationships_projectsable)()
-    SetWorkspaceExclusions(value PolicySets_relationships_workspaceExclusionsable)()
-    SetWorkspaces(value PolicySets_relationships_workspacesable)()
+    GetCurrentVersion()(PolicySetVersionsHasOneable)
+    GetNewestVersion()(PolicySetVersionsHasOneable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetPolicies()(PoliciesHasManyable)
+    GetProjectExclusions()(ProjectsHasManyable)
+    GetProjects()(ProjectsHasManyable)
+    GetStackExclusions()(StacksHasManyable)
+    GetStacks()(StacksHasManyable)
+    GetWorkspaceExclusions()(WorkspacesHasManyable)
+    GetWorkspaces()(WorkspacesHasManyable)
+    SetCurrentVersion(value PolicySetVersionsHasOneable)()
+    SetNewestVersion(value PolicySetVersionsHasOneable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetPolicies(value PoliciesHasManyable)()
+    SetProjectExclusions(value ProjectsHasManyable)()
+    SetProjects(value ProjectsHasManyable)()
+    SetStackExclusions(value StacksHasManyable)()
+    SetStacks(value StacksHasManyable)()
+    SetWorkspaceExclusions(value WorkspacesHasManyable)()
+    SetWorkspaces(value WorkspacesHasManyable)()
 }

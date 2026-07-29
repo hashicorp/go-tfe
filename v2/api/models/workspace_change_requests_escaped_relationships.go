@@ -11,11 +11,11 @@ type WorkspaceChangeRequests_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The archivedByUser property
-    archivedByUser WorkspaceChangeRequests_relationships_archivedByUserable
+    archivedByUser UsersHasOneable
     // The createdBy property
-    createdBy WorkspaceChangeRequests_relationships_createdByable
+    createdBy UsersHasOneable
     // The workspace property
-    workspace WorkspacesIdable
+    workspace WorkspacesHasOneable
 }
 // NewWorkspaceChangeRequests_relationships instantiates a new WorkspaceChangeRequests_relationships and sets the default values.
 func NewWorkspaceChangeRequests_relationships()(*WorkspaceChangeRequests_relationships) {
@@ -35,13 +35,13 @@ func (m *WorkspaceChangeRequests_relationships) GetAdditionalData()(map[string]a
     return m.additionalData
 }
 // GetArchivedByUser gets the archived-by-user property value. The archivedByUser property
-// returns a WorkspaceChangeRequests_relationships_archivedByUserable when successful
-func (m *WorkspaceChangeRequests_relationships) GetArchivedByUser()(WorkspaceChangeRequests_relationships_archivedByUserable) {
+// returns a UsersHasOneable when successful
+func (m *WorkspaceChangeRequests_relationships) GetArchivedByUser()(UsersHasOneable) {
     return m.archivedByUser
 }
 // GetCreatedBy gets the created-by property value. The createdBy property
-// returns a WorkspaceChangeRequests_relationships_createdByable when successful
-func (m *WorkspaceChangeRequests_relationships) GetCreatedBy()(WorkspaceChangeRequests_relationships_createdByable) {
+// returns a UsersHasOneable when successful
+func (m *WorkspaceChangeRequests_relationships) GetCreatedBy()(UsersHasOneable) {
     return m.createdBy
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -49,40 +49,40 @@ func (m *WorkspaceChangeRequests_relationships) GetCreatedBy()(WorkspaceChangeRe
 func (m *WorkspaceChangeRequests_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["archived-by-user"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceChangeRequests_relationships_archivedByUserFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetArchivedByUser(val.(WorkspaceChangeRequests_relationships_archivedByUserable))
+            m.SetArchivedByUser(val.(UsersHasOneable))
         }
         return nil
     }
     res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceChangeRequests_relationships_createdByFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetCreatedBy(val.(WorkspaceChangeRequests_relationships_createdByable))
+            m.SetCreatedBy(val.(UsersHasOneable))
         }
         return nil
     }
     res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspace(val.(WorkspacesIdable))
+            m.SetWorkspace(val.(WorkspacesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetWorkspace gets the workspace property value. The workspace property
-// returns a WorkspacesIdable when successful
-func (m *WorkspaceChangeRequests_relationships) GetWorkspace()(WorkspacesIdable) {
+// returns a WorkspacesHasOneable when successful
+func (m *WorkspaceChangeRequests_relationships) GetWorkspace()(WorkspacesHasOneable) {
     return m.workspace
 }
 // Serialize serializes information the current object
@@ -118,24 +118,24 @@ func (m *WorkspaceChangeRequests_relationships) SetAdditionalData(value map[stri
     m.additionalData = value
 }
 // SetArchivedByUser sets the archived-by-user property value. The archivedByUser property
-func (m *WorkspaceChangeRequests_relationships) SetArchivedByUser(value WorkspaceChangeRequests_relationships_archivedByUserable)() {
+func (m *WorkspaceChangeRequests_relationships) SetArchivedByUser(value UsersHasOneable)() {
     m.archivedByUser = value
 }
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *WorkspaceChangeRequests_relationships) SetCreatedBy(value WorkspaceChangeRequests_relationships_createdByable)() {
+func (m *WorkspaceChangeRequests_relationships) SetCreatedBy(value UsersHasOneable)() {
     m.createdBy = value
 }
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *WorkspaceChangeRequests_relationships) SetWorkspace(value WorkspacesIdable)() {
+func (m *WorkspaceChangeRequests_relationships) SetWorkspace(value WorkspacesHasOneable)() {
     m.workspace = value
 }
 type WorkspaceChangeRequests_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetArchivedByUser()(WorkspaceChangeRequests_relationships_archivedByUserable)
-    GetCreatedBy()(WorkspaceChangeRequests_relationships_createdByable)
-    GetWorkspace()(WorkspacesIdable)
-    SetArchivedByUser(value WorkspaceChangeRequests_relationships_archivedByUserable)()
-    SetCreatedBy(value WorkspaceChangeRequests_relationships_createdByable)()
-    SetWorkspace(value WorkspacesIdable)()
+    GetArchivedByUser()(UsersHasOneable)
+    GetCreatedBy()(UsersHasOneable)
+    GetWorkspace()(WorkspacesHasOneable)
+    SetArchivedByUser(value UsersHasOneable)()
+    SetCreatedBy(value UsersHasOneable)()
+    SetWorkspace(value WorkspacesHasOneable)()
 }

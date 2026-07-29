@@ -7,14 +7,14 @@ import (
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
-// ItemWorkspacesItemActionsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\workspaces\{workspace_name}\actions
+// ItemWorkspacesItemActionsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\workspaces\{workspace_name}\actions
 type ItemWorkspacesItemActionsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
 // NewItemWorkspacesItemActionsRequestBuilderInternal instantiates a new ItemWorkspacesItemActionsRequestBuilder and sets the default values.
 func NewItemWorkspacesItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesItemActionsRequestBuilder) {
     m := &ItemWorkspacesItemActionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces/{workspace_name}/actions", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/workspaces/{workspace_name}/actions", pathParameters),
     }
     return m
 }

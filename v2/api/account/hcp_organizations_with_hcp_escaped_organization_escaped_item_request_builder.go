@@ -26,7 +26,7 @@ func NewHcpOrganizationsWithHcp_organization_ItemRequestBuilder(rawUrl string, r
     urlParams["request-raw-url"] = rawUrl
     return NewHcpOrganizationsWithHcp_organization_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get get details of a specific HCP organization
+// Get get details of a specific HCP organizationThis operation is only available in HCP Terraform.
 // returns a HcpOrganizationsItemWithHcp_organization_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(HcpOrganizationsItemWithHcp_organization_GetResponseable, error) {
@@ -46,7 +46,7 @@ func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) Get(ctx contex
     }
     return res.(HcpOrganizationsItemWithHcp_organization_GetResponseable), nil
 }
-// ToGetRequestInformation get details of a specific HCP organization
+// ToGetRequestInformation get details of a specific HCP organizationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

@@ -9,11 +9,11 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemFeatureSetsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\feature-sets
+// ItemFeatureSetsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\feature-sets
 type ItemFeatureSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemFeatureSetsRequestBuilderGetQueryParameters lists the feature sets a particular organization is eligible to access.
+// ItemFeatureSetsRequestBuilderGetQueryParameters lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 type ItemFeatureSetsRequestBuilderGetQueryParameters struct {
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
@@ -23,7 +23,7 @@ type ItemFeatureSetsRequestBuilderGetQueryParameters struct {
 // NewItemFeatureSetsRequestBuilderInternal instantiates a new ItemFeatureSetsRequestBuilder and sets the default values.
 func NewItemFeatureSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemFeatureSetsRequestBuilder) {
     m := &ItemFeatureSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/feature-sets{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/feature-sets{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -33,7 +33,7 @@ func NewItemFeatureSetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
     urlParams["request-raw-url"] = rawUrl
     return NewItemFeatureSetsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists the feature sets a particular organization is eligible to access.
+// Get lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 // returns a ItemFeatureSetsGetResponseable when successful
 // returns a Errors error when the service returns a 401 status code
 // returns a Errors error when the service returns a 403 status code
@@ -57,7 +57,7 @@ func (m *ItemFeatureSetsRequestBuilder) Get(ctx context.Context, requestConfigur
     }
     return res.(ItemFeatureSetsGetResponseable), nil
 }
-// ToGetRequestInformation lists the feature sets a particular organization is eligible to access.
+// ToGetRequestInformation lists the feature sets a particular organization is eligible to access.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemFeatureSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemFeatureSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

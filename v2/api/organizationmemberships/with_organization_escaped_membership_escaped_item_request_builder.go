@@ -17,12 +17,12 @@ type WithOrganization_membership_ItemRequestBuilder struct {
 // WithOrganization_membership_ItemRequestBuilderGetQueryParameters get details about a specific organization membership.
 type WithOrganization_membership_ItemRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. Can include "user" or "teams".
-    Include *ia94e955f3587e0e4f9abea0db3f19401ed3f606a0c7b14d310b670499708ecd2.GetIncludeQueryParameterType "uriparametername:\"include\""
+    Include []ia94e955f3587e0e4f9abea0db3f19401ed3f606a0c7b14d310b670499708ecd2.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithOrganization_membership_ItemRequestBuilderInternal instantiates a new WithOrganization_membership_ItemRequestBuilder and sets the default values.
 func NewWithOrganization_membership_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOrganization_membership_ItemRequestBuilder) {
     m := &WithOrganization_membership_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization-memberships/{organization_membership_id}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization-memberships/{organization_membership_id}{?include}", pathParameters),
     }
     return m
 }

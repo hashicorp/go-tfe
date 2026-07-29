@@ -11,7 +11,7 @@ type GithubAppOauthTokens_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The user property
-    user GithubAppOauthTokens_relationships_userable
+    user UsersHasOneable
 }
 // NewGithubAppOauthTokens_relationships instantiates a new GithubAppOauthTokens_relationships and sets the default values.
 func NewGithubAppOauthTokens_relationships()(*GithubAppOauthTokens_relationships) {
@@ -35,20 +35,20 @@ func (m *GithubAppOauthTokens_relationships) GetAdditionalData()(map[string]any)
 func (m *GithubAppOauthTokens_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["user"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateGithubAppOauthTokens_relationships_userFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetUser(val.(GithubAppOauthTokens_relationships_userable))
+            m.SetUser(val.(UsersHasOneable))
         }
         return nil
     }
     return res
 }
 // GetUser gets the user property value. The user property
-// returns a GithubAppOauthTokens_relationships_userable when successful
-func (m *GithubAppOauthTokens_relationships) GetUser()(GithubAppOauthTokens_relationships_userable) {
+// returns a UsersHasOneable when successful
+func (m *GithubAppOauthTokens_relationships) GetUser()(UsersHasOneable) {
     return m.user
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *GithubAppOauthTokens_relationships) SetAdditionalData(value map[string]
     m.additionalData = value
 }
 // SetUser sets the user property value. The user property
-func (m *GithubAppOauthTokens_relationships) SetUser(value GithubAppOauthTokens_relationships_userable)() {
+func (m *GithubAppOauthTokens_relationships) SetUser(value UsersHasOneable)() {
     m.user = value
 }
 type GithubAppOauthTokens_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetUser()(GithubAppOauthTokens_relationships_userable)
-    SetUser(value GithubAppOauthTokens_relationships_userable)()
+    GetUser()(UsersHasOneable)
+    SetUser(value UsersHasOneable)()
 }

@@ -26,7 +26,7 @@ func NewItemTagSelectorsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     urlParams["request-raw-url"] = rawUrl
     return NewItemTagSelectorsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete remove tag selectors from a policy set by their tag key and value.
+// Delete remove tag selectors from a policy set by their tag key and value.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemTagSelectorsRequestBuilder) Delete(ctx context.Context, body ItemTagSelectorsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
@@ -44,7 +44,7 @@ func (m *ItemTagSelectorsRequestBuilder) Delete(ctx context.Context, body ItemTa
     }
     return nil
 }
-// Post add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.
+// Post add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -64,7 +64,7 @@ func (m *ItemTagSelectorsRequestBuilder) Post(ctx context.Context, body ItemTagS
     }
     return nil
 }
-// ToDeleteRequestInformation remove tag selectors from a policy set by their tag key and value.
+// ToDeleteRequestInformation remove tag selectors from a policy set by their tag key and value.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemTagSelectorsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemTagSelectorsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -76,7 +76,7 @@ func (m *ItemTagSelectorsRequestBuilder) ToDeleteRequestInformation(ctx context.
     }
     return requestInfo, nil
 }
-// ToPostRequestInformation add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.
+// ToPostRequestInformation add tag selectors to a policy set. Tag selectors define tag-based scoping rules for the policy set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemTagSelectorsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemTagSelectorsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

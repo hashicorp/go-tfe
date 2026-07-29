@@ -12,11 +12,13 @@ type Organizations_attributes_permissions struct {
     additionalData map[string]any
     // The canAccessViaTeams property
     canAccessViaTeams *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    canCreateChangeRequests *bool
     // The canCreateModule property
     canCreateModule *bool
     // The canCreateProject property
     canCreateProject *bool
-    // The canCreateProjectInHcp property
+    // This attribute is only available in HCP Terraform.
     canCreateProjectInHcp *bool
     // The canCreateProvider property
     canCreateProvider *bool
@@ -32,9 +34,11 @@ type Organizations_attributes_permissions struct {
     canEnableStacks *bool
     // The canManageAssessments property
     canManageAssessments *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    canManageAuditing *bool
     // The canManageCustomProviders property
     canManageCustomProviders *bool
-    // The canManageGroupsInHcp property
+    // This attribute is only available in HCP Terraform.
     canManageGroupsInHcp *bool
     // The canManageNoCodeModules property
     canManageNoCodeModules *bool
@@ -46,10 +50,12 @@ type Organizations_attributes_permissions struct {
     canManagePublicModules *bool
     // The canManagePublicProviders property
     canManagePublicProviders *bool
-    // The canManageRecoverableItems property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     canManageRecoverableItems *bool
     // The canManageRunTasks property
     canManageRunTasks *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    canManageSavedViews *bool
     // The canManageSso property
     canManageSso *bool
     // The canManageSubscription property
@@ -64,6 +70,8 @@ type Organizations_attributes_permissions struct {
     canReadAssessments *bool
     // The canReadRunTasks property
     canReadRunTasks *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    canReadSavedViews *bool
     // The canReadVarsets property
     canReadVarsets *bool
     // The canTraverse property
@@ -76,7 +84,7 @@ type Organizations_attributes_permissions struct {
     canUpdateApiToken *bool
     // The canUpdateAuthenticationToken property
     canUpdateAuthenticationToken *bool
-    // The canUpdateHyokConfiguration property
+    // This attribute is only available in HCP Terraform.
     canUpdateHyokConfiguration *bool
     // The canUpdateOauth property
     canUpdateOauth *bool
@@ -115,6 +123,11 @@ func (m *Organizations_attributes_permissions) GetAdditionalData()(map[string]an
 func (m *Organizations_attributes_permissions) GetCanAccessViaTeams()(*bool) {
     return m.canAccessViaTeams
 }
+// GetCanCreateChangeRequests gets the can-create-change-requests property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanCreateChangeRequests()(*bool) {
+    return m.canCreateChangeRequests
+}
 // GetCanCreateModule gets the can-create-module property value. The canCreateModule property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateModule()(*bool) {
@@ -125,7 +138,7 @@ func (m *Organizations_attributes_permissions) GetCanCreateModule()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanCreateProject()(*bool) {
     return m.canCreateProject
 }
-// GetCanCreateProjectInHcp gets the can-create-project-in-hcp property value. The canCreateProjectInHcp property
+// GetCanCreateProjectInHcp gets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateProjectInHcp()(*bool) {
     return m.canCreateProjectInHcp
@@ -165,12 +178,17 @@ func (m *Organizations_attributes_permissions) GetCanEnableStacks()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanManageAssessments()(*bool) {
     return m.canManageAssessments
 }
+// GetCanManageAuditing gets the can-manage-auditing property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanManageAuditing()(*bool) {
+    return m.canManageAuditing
+}
 // GetCanManageCustomProviders gets the can-manage-custom-providers property value. The canManageCustomProviders property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageCustomProviders()(*bool) {
     return m.canManageCustomProviders
 }
-// GetCanManageGroupsInHcp gets the can-manage-groups-in-hcp property value. The canManageGroupsInHcp property
+// GetCanManageGroupsInHcp gets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageGroupsInHcp()(*bool) {
     return m.canManageGroupsInHcp
@@ -200,7 +218,7 @@ func (m *Organizations_attributes_permissions) GetCanManagePublicModules()(*bool
 func (m *Organizations_attributes_permissions) GetCanManagePublicProviders()(*bool) {
     return m.canManagePublicProviders
 }
-// GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+// GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageRecoverableItems()(*bool) {
     return m.canManageRecoverableItems
@@ -209,6 +227,11 @@ func (m *Organizations_attributes_permissions) GetCanManageRecoverableItems()(*b
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageRunTasks()(*bool) {
     return m.canManageRunTasks
+}
+// GetCanManageSavedViews gets the can-manage-saved-views property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanManageSavedViews()(*bool) {
+    return m.canManageSavedViews
 }
 // GetCanManageSso gets the can-manage-sso property value. The canManageSso property
 // returns a *bool when successful
@@ -245,6 +268,11 @@ func (m *Organizations_attributes_permissions) GetCanReadAssessments()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanReadRunTasks()(*bool) {
     return m.canReadRunTasks
 }
+// GetCanReadSavedViews gets the can-read-saved-views property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes_permissions) GetCanReadSavedViews()(*bool) {
+    return m.canReadSavedViews
+}
 // GetCanReadVarsets gets the can-read-varsets property value. The canReadVarsets property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadVarsets()(*bool) {
@@ -275,7 +303,7 @@ func (m *Organizations_attributes_permissions) GetCanUpdateApiToken()(*bool) {
 func (m *Organizations_attributes_permissions) GetCanUpdateAuthenticationToken()(*bool) {
     return m.canUpdateAuthenticationToken
 }
-// GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+// GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateHyokConfiguration()(*bool) {
     return m.canUpdateHyokConfiguration
@@ -326,6 +354,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         if val != nil {
             m.SetCanAccessViaTeams(val)
+        }
+        return nil
+    }
+    res["can-create-change-requests"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanCreateChangeRequests(val)
         }
         return nil
     }
@@ -429,6 +467,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["can-manage-auditing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanManageAuditing(val)
+        }
+        return nil
+    }
     res["can-manage-custom-providers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -519,6 +567,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["can-manage-saved-views"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanManageSavedViews(val)
+        }
+        return nil
+    }
     res["can-manage-sso"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -586,6 +644,16 @@ func (m *Organizations_attributes_permissions) GetFieldDeserializers()(map[strin
         }
         if val != nil {
             m.SetCanReadRunTasks(val)
+        }
+        return nil
+    }
+    res["can-read-saved-views"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanReadSavedViews(val)
         }
         return nil
     }
@@ -740,6 +808,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-create-change-requests", m.GetCanCreateChangeRequests())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-create-module", m.GetCanCreateModule())
         if err != nil {
             return err
@@ -800,6 +874,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-manage-auditing", m.GetCanManageAuditing())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-manage-custom-providers", m.GetCanManageCustomProviders())
         if err != nil {
             return err
@@ -854,6 +934,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
         }
     }
     {
+        err := writer.WriteBoolValue("can-manage-saved-views", m.GetCanManageSavedViews())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-manage-sso", m.GetCanManageSso())
         if err != nil {
             return err
@@ -891,6 +977,12 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
     }
     {
         err := writer.WriteBoolValue("can-read-run-tasks", m.GetCanReadRunTasks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("can-read-saved-views", m.GetCanReadSavedViews())
         if err != nil {
             return err
         }
@@ -995,6 +1087,10 @@ func (m *Organizations_attributes_permissions) SetAdditionalData(value map[strin
 func (m *Organizations_attributes_permissions) SetCanAccessViaTeams(value *bool)() {
     m.canAccessViaTeams = value
 }
+// SetCanCreateChangeRequests sets the can-create-change-requests property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes_permissions) SetCanCreateChangeRequests(value *bool)() {
+    m.canCreateChangeRequests = value
+}
 // SetCanCreateModule sets the can-create-module property value. The canCreateModule property
 func (m *Organizations_attributes_permissions) SetCanCreateModule(value *bool)() {
     m.canCreateModule = value
@@ -1003,7 +1099,7 @@ func (m *Organizations_attributes_permissions) SetCanCreateModule(value *bool)()
 func (m *Organizations_attributes_permissions) SetCanCreateProject(value *bool)() {
     m.canCreateProject = value
 }
-// SetCanCreateProjectInHcp sets the can-create-project-in-hcp property value. The canCreateProjectInHcp property
+// SetCanCreateProjectInHcp sets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanCreateProjectInHcp(value *bool)() {
     m.canCreateProjectInHcp = value
 }
@@ -1035,11 +1131,15 @@ func (m *Organizations_attributes_permissions) SetCanEnableStacks(value *bool)()
 func (m *Organizations_attributes_permissions) SetCanManageAssessments(value *bool)() {
     m.canManageAssessments = value
 }
+// SetCanManageAuditing sets the can-manage-auditing property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes_permissions) SetCanManageAuditing(value *bool)() {
+    m.canManageAuditing = value
+}
 // SetCanManageCustomProviders sets the can-manage-custom-providers property value. The canManageCustomProviders property
 func (m *Organizations_attributes_permissions) SetCanManageCustomProviders(value *bool)() {
     m.canManageCustomProviders = value
 }
-// SetCanManageGroupsInHcp sets the can-manage-groups-in-hcp property value. The canManageGroupsInHcp property
+// SetCanManageGroupsInHcp sets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanManageGroupsInHcp(value *bool)() {
     m.canManageGroupsInHcp = value
 }
@@ -1063,13 +1163,17 @@ func (m *Organizations_attributes_permissions) SetCanManagePublicModules(value *
 func (m *Organizations_attributes_permissions) SetCanManagePublicProviders(value *bool)() {
     m.canManagePublicProviders = value
 }
-// SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. The canManageRecoverableItems property
+// SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes_permissions) SetCanManageRecoverableItems(value *bool)() {
     m.canManageRecoverableItems = value
 }
 // SetCanManageRunTasks sets the can-manage-run-tasks property value. The canManageRunTasks property
 func (m *Organizations_attributes_permissions) SetCanManageRunTasks(value *bool)() {
     m.canManageRunTasks = value
+}
+// SetCanManageSavedViews sets the can-manage-saved-views property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes_permissions) SetCanManageSavedViews(value *bool)() {
+    m.canManageSavedViews = value
 }
 // SetCanManageSso sets the can-manage-sso property value. The canManageSso property
 func (m *Organizations_attributes_permissions) SetCanManageSso(value *bool)() {
@@ -1099,6 +1203,10 @@ func (m *Organizations_attributes_permissions) SetCanReadAssessments(value *bool
 func (m *Organizations_attributes_permissions) SetCanReadRunTasks(value *bool)() {
     m.canReadRunTasks = value
 }
+// SetCanReadSavedViews sets the can-read-saved-views property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes_permissions) SetCanReadSavedViews(value *bool)() {
+    m.canReadSavedViews = value
+}
 // SetCanReadVarsets sets the can-read-varsets property value. The canReadVarsets property
 func (m *Organizations_attributes_permissions) SetCanReadVarsets(value *bool)() {
     m.canReadVarsets = value
@@ -1123,7 +1231,7 @@ func (m *Organizations_attributes_permissions) SetCanUpdateApiToken(value *bool)
 func (m *Organizations_attributes_permissions) SetCanUpdateAuthenticationToken(value *bool)() {
     m.canUpdateAuthenticationToken = value
 }
-// SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. The canUpdateHyokConfiguration property
+// SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanUpdateHyokConfiguration(value *bool)() {
     m.canUpdateHyokConfiguration = value
 }
@@ -1159,6 +1267,7 @@ type Organizations_attributes_permissionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCanAccessViaTeams()(*bool)
+    GetCanCreateChangeRequests()(*bool)
     GetCanCreateModule()(*bool)
     GetCanCreateProject()(*bool)
     GetCanCreateProjectInHcp()(*bool)
@@ -1169,6 +1278,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanDestroy()(*bool)
     GetCanEnableStacks()(*bool)
     GetCanManageAssessments()(*bool)
+    GetCanManageAuditing()(*bool)
     GetCanManageCustomProviders()(*bool)
     GetCanManageGroupsInHcp()(*bool)
     GetCanManageNoCodeModules()(*bool)
@@ -1178,6 +1288,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanManagePublicProviders()(*bool)
     GetCanManageRecoverableItems()(*bool)
     GetCanManageRunTasks()(*bool)
+    GetCanManageSavedViews()(*bool)
     GetCanManageSso()(*bool)
     GetCanManageSubscription()(*bool)
     GetCanManageTags()(*bool)
@@ -1185,6 +1296,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanManageVarsets()(*bool)
     GetCanReadAssessments()(*bool)
     GetCanReadRunTasks()(*bool)
+    GetCanReadSavedViews()(*bool)
     GetCanReadVarsets()(*bool)
     GetCanTraverse()(*bool)
     GetCanUpdate()(*bool)
@@ -1200,6 +1312,7 @@ type Organizations_attributes_permissionsable interface {
     GetCanViewUsage()(*bool)
     GetCanViewUsers()(*bool)
     SetCanAccessViaTeams(value *bool)()
+    SetCanCreateChangeRequests(value *bool)()
     SetCanCreateModule(value *bool)()
     SetCanCreateProject(value *bool)()
     SetCanCreateProjectInHcp(value *bool)()
@@ -1210,6 +1323,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanDestroy(value *bool)()
     SetCanEnableStacks(value *bool)()
     SetCanManageAssessments(value *bool)()
+    SetCanManageAuditing(value *bool)()
     SetCanManageCustomProviders(value *bool)()
     SetCanManageGroupsInHcp(value *bool)()
     SetCanManageNoCodeModules(value *bool)()
@@ -1219,6 +1333,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanManagePublicProviders(value *bool)()
     SetCanManageRecoverableItems(value *bool)()
     SetCanManageRunTasks(value *bool)()
+    SetCanManageSavedViews(value *bool)()
     SetCanManageSso(value *bool)()
     SetCanManageSubscription(value *bool)()
     SetCanManageTags(value *bool)()
@@ -1226,6 +1341,7 @@ type Organizations_attributes_permissionsable interface {
     SetCanManageVarsets(value *bool)()
     SetCanReadAssessments(value *bool)()
     SetCanReadRunTasks(value *bool)()
+    SetCanReadSavedViews(value *bool)()
     SetCanReadVarsets(value *bool)()
     SetCanTraverse(value *bool)()
     SetCanUpdate(value *bool)()

@@ -11,7 +11,7 @@ type OauthTokens_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The oauthClient property
-    oauthClient OauthClientsIdable
+    oauthClient OauthClientsHasOneable
     // The vcsOrganizations property
     vcsOrganizations Links_relatedable
 }
@@ -37,12 +37,12 @@ func (m *OauthTokens_relationships) GetAdditionalData()(map[string]any) {
 func (m *OauthTokens_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["oauth-client"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthClientsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOauthClientsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOauthClient(val.(OauthClientsIdable))
+            m.SetOauthClient(val.(OauthClientsHasOneable))
         }
         return nil
     }
@@ -59,8 +59,8 @@ func (m *OauthTokens_relationships) GetFieldDeserializers()(map[string]func(i878
     return res
 }
 // GetOauthClient gets the oauth-client property value. The oauthClient property
-// returns a OauthClientsIdable when successful
-func (m *OauthTokens_relationships) GetOauthClient()(OauthClientsIdable) {
+// returns a OauthClientsHasOneable when successful
+func (m *OauthTokens_relationships) GetOauthClient()(OauthClientsHasOneable) {
     return m.oauthClient
 }
 // GetVcsOrganizations gets the vcs-organizations property value. The vcsOrganizations property
@@ -95,7 +95,7 @@ func (m *OauthTokens_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetOauthClient sets the oauth-client property value. The oauthClient property
-func (m *OauthTokens_relationships) SetOauthClient(value OauthClientsIdable)() {
+func (m *OauthTokens_relationships) SetOauthClient(value OauthClientsHasOneable)() {
     m.oauthClient = value
 }
 // SetVcsOrganizations sets the vcs-organizations property value. The vcsOrganizations property
@@ -105,8 +105,8 @@ func (m *OauthTokens_relationships) SetVcsOrganizations(value Links_relatedable)
 type OauthTokens_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOauthClient()(OauthClientsIdable)
+    GetOauthClient()(OauthClientsHasOneable)
     GetVcsOrganizations()(Links_relatedable)
-    SetOauthClient(value OauthClientsIdable)()
+    SetOauthClient(value OauthClientsHasOneable)()
     SetVcsOrganizations(value Links_relatedable)()
 }

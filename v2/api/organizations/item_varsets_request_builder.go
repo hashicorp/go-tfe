@@ -10,7 +10,7 @@ import (
     iaa4370d8ea01f45667d0554312eb3b9db07ee7e0ffbd736545f4f85ce8c471a3 "github.com/hashicorp/go-tfe/v2/api/organizations/item/varsets"
 )
 
-// ItemVarsetsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\varsets
+// ItemVarsetsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\varsets
 type ItemVarsetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -30,7 +30,7 @@ type ItemVarsetsRequestBuilderGetQueryParameters struct {
 // NewItemVarsetsRequestBuilderInternal instantiates a new ItemVarsetsRequestBuilder and sets the default values.
 func NewItemVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsRequestBuilder) {
     m := &ItemVarsetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/varsets{?filter%5Bglobal%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/varsets{?filter%5Bglobal%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
     }
     return m
 }

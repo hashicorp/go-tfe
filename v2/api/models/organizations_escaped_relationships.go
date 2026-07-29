@@ -10,24 +10,30 @@ import (
 type Organizations_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The auditConfiguration property
+    auditConfiguration Links_relatedable
     // The auditTrailsAuthenticationToken property
     auditTrailsAuthenticationToken Links_relatedable
     // The authenticationToken property
     authenticationToken Links_relatedable
     // The defaultAgentPool property
-    defaultAgentPool AgentPoolsIdable
+    defaultAgentPool AgentPoolsHasOneable
     // The defaultProject property
-    defaultProject ProjectsIdable
+    defaultProject ProjectsHasOneable
     // The entitlementSet property
-    entitlementSet EntitlementSetsIdable
+    entitlementSet EntitlementSetsHasOneable
+    // The meta property
+    meta Links_relatedable
     // The oauthTokens property
     oauthTokens Links_relatedable
+    // The onboardingTaskLists property
+    onboardingTaskLists Links_relatedable
     // The primaryHyokConfiguration property
-    primaryHyokConfiguration HyokConfigurationsIdable
+    primaryHyokConfiguration HyokConfigurationsHasOneable
     // The stacksDefaultAgentPool property
-    stacksDefaultAgentPool AgentPoolsIdable
+    stacksDefaultAgentPool AgentPoolsHasOneable
     // The subscription property
-    subscription SubscriptionsIdable
+    subscription SubscriptionsHasOneable
 }
 // NewOrganizations_relationships instantiates a new Organizations_relationships and sets the default values.
 func NewOrganizations_relationships()(*Organizations_relationships) {
@@ -46,6 +52,11 @@ func CreateOrganizations_relationshipsFromDiscriminatorValue(parseNode i878a80d2
 func (m *Organizations_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetAuditConfiguration gets the audit-configuration property value. The auditConfiguration property
+// returns a Links_relatedable when successful
+func (m *Organizations_relationships) GetAuditConfiguration()(Links_relatedable) {
+    return m.auditConfiguration
+}
 // GetAuditTrailsAuthenticationToken gets the audit-trails-authentication-token property value. The auditTrailsAuthenticationToken property
 // returns a Links_relatedable when successful
 func (m *Organizations_relationships) GetAuditTrailsAuthenticationToken()(Links_relatedable) {
@@ -57,24 +68,34 @@ func (m *Organizations_relationships) GetAuthenticationToken()(Links_relatedable
     return m.authenticationToken
 }
 // GetDefaultAgentPool gets the default-agent-pool property value. The defaultAgentPool property
-// returns a AgentPoolsIdable when successful
-func (m *Organizations_relationships) GetDefaultAgentPool()(AgentPoolsIdable) {
+// returns a AgentPoolsHasOneable when successful
+func (m *Organizations_relationships) GetDefaultAgentPool()(AgentPoolsHasOneable) {
     return m.defaultAgentPool
 }
 // GetDefaultProject gets the default-project property value. The defaultProject property
-// returns a ProjectsIdable when successful
-func (m *Organizations_relationships) GetDefaultProject()(ProjectsIdable) {
+// returns a ProjectsHasOneable when successful
+func (m *Organizations_relationships) GetDefaultProject()(ProjectsHasOneable) {
     return m.defaultProject
 }
 // GetEntitlementSet gets the entitlement-set property value. The entitlementSet property
-// returns a EntitlementSetsIdable when successful
-func (m *Organizations_relationships) GetEntitlementSet()(EntitlementSetsIdable) {
+// returns a EntitlementSetsHasOneable when successful
+func (m *Organizations_relationships) GetEntitlementSet()(EntitlementSetsHasOneable) {
     return m.entitlementSet
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["audit-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAuditConfiguration(val.(Links_relatedable))
+        }
+        return nil
+    }
     res["audit-trails-authentication-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
         if err != nil {
@@ -96,32 +117,42 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         return nil
     }
     res["default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetDefaultAgentPool(val.(AgentPoolsIdable))
+            m.SetDefaultAgentPool(val.(AgentPoolsHasOneable))
         }
         return nil
     }
     res["default-project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetDefaultProject(val.(ProjectsIdable))
+            m.SetDefaultProject(val.(ProjectsHasOneable))
         }
         return nil
     }
     res["entitlement-set"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateEntitlementSetsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateEntitlementSetsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetEntitlementSet(val.(EntitlementSetsIdable))
+            m.SetEntitlementSet(val.(EntitlementSetsHasOneable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(Links_relatedable))
         }
         return nil
     }
@@ -135,60 +166,86 @@ func (m *Organizations_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
-    res["primary-hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurationsIdFromDiscriminatorValue)
+    res["onboarding-task-lists"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPrimaryHyokConfiguration(val.(HyokConfigurationsIdable))
+            m.SetOnboardingTaskLists(val.(Links_relatedable))
+        }
+        return nil
+    }
+    res["primary-hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateHyokConfigurationsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPrimaryHyokConfiguration(val.(HyokConfigurationsHasOneable))
         }
         return nil
     }
     res["stacks-default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetStacksDefaultAgentPool(val.(AgentPoolsIdable))
+            m.SetStacksDefaultAgentPool(val.(AgentPoolsHasOneable))
         }
         return nil
     }
     res["subscription"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSubscriptionsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateSubscriptionsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetSubscription(val.(SubscriptionsIdable))
+            m.SetSubscription(val.(SubscriptionsHasOneable))
         }
         return nil
     }
     return res
+}
+// GetMeta gets the meta property value. The meta property
+// returns a Links_relatedable when successful
+func (m *Organizations_relationships) GetMeta()(Links_relatedable) {
+    return m.meta
 }
 // GetOauthTokens gets the oauth-tokens property value. The oauthTokens property
 // returns a Links_relatedable when successful
 func (m *Organizations_relationships) GetOauthTokens()(Links_relatedable) {
     return m.oauthTokens
 }
+// GetOnboardingTaskLists gets the onboarding-task-lists property value. The onboardingTaskLists property
+// returns a Links_relatedable when successful
+func (m *Organizations_relationships) GetOnboardingTaskLists()(Links_relatedable) {
+    return m.onboardingTaskLists
+}
 // GetPrimaryHyokConfiguration gets the primary-hyok-configuration property value. The primaryHyokConfiguration property
-// returns a HyokConfigurationsIdable when successful
-func (m *Organizations_relationships) GetPrimaryHyokConfiguration()(HyokConfigurationsIdable) {
+// returns a HyokConfigurationsHasOneable when successful
+func (m *Organizations_relationships) GetPrimaryHyokConfiguration()(HyokConfigurationsHasOneable) {
     return m.primaryHyokConfiguration
 }
 // GetStacksDefaultAgentPool gets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
-// returns a AgentPoolsIdable when successful
-func (m *Organizations_relationships) GetStacksDefaultAgentPool()(AgentPoolsIdable) {
+// returns a AgentPoolsHasOneable when successful
+func (m *Organizations_relationships) GetStacksDefaultAgentPool()(AgentPoolsHasOneable) {
     return m.stacksDefaultAgentPool
 }
 // GetSubscription gets the subscription property value. The subscription property
-// returns a SubscriptionsIdable when successful
-func (m *Organizations_relationships) GetSubscription()(SubscriptionsIdable) {
+// returns a SubscriptionsHasOneable when successful
+func (m *Organizations_relationships) GetSubscription()(SubscriptionsHasOneable) {
     return m.subscription
 }
 // Serialize serializes information the current object
 func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("audit-configuration", m.GetAuditConfiguration())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("audit-trails-authentication-token", m.GetAuditTrailsAuthenticationToken())
         if err != nil {
@@ -220,7 +277,19 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
         }
     }
     {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("oauth-tokens", m.GetOauthTokens())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("onboarding-task-lists", m.GetOnboardingTaskLists())
         if err != nil {
             return err
         }
@@ -255,6 +324,10 @@ func (m *Organizations_relationships) Serialize(writer i878a80d2330e89d26896388a
 func (m *Organizations_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetAuditConfiguration sets the audit-configuration property value. The auditConfiguration property
+func (m *Organizations_relationships) SetAuditConfiguration(value Links_relatedable)() {
+    m.auditConfiguration = value
+}
 // SetAuditTrailsAuthenticationToken sets the audit-trails-authentication-token property value. The auditTrailsAuthenticationToken property
 func (m *Organizations_relationships) SetAuditTrailsAuthenticationToken(value Links_relatedable)() {
     m.auditTrailsAuthenticationToken = value
@@ -264,52 +337,66 @@ func (m *Organizations_relationships) SetAuthenticationToken(value Links_related
     m.authenticationToken = value
 }
 // SetDefaultAgentPool sets the default-agent-pool property value. The defaultAgentPool property
-func (m *Organizations_relationships) SetDefaultAgentPool(value AgentPoolsIdable)() {
+func (m *Organizations_relationships) SetDefaultAgentPool(value AgentPoolsHasOneable)() {
     m.defaultAgentPool = value
 }
 // SetDefaultProject sets the default-project property value. The defaultProject property
-func (m *Organizations_relationships) SetDefaultProject(value ProjectsIdable)() {
+func (m *Organizations_relationships) SetDefaultProject(value ProjectsHasOneable)() {
     m.defaultProject = value
 }
 // SetEntitlementSet sets the entitlement-set property value. The entitlementSet property
-func (m *Organizations_relationships) SetEntitlementSet(value EntitlementSetsIdable)() {
+func (m *Organizations_relationships) SetEntitlementSet(value EntitlementSetsHasOneable)() {
     m.entitlementSet = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *Organizations_relationships) SetMeta(value Links_relatedable)() {
+    m.meta = value
 }
 // SetOauthTokens sets the oauth-tokens property value. The oauthTokens property
 func (m *Organizations_relationships) SetOauthTokens(value Links_relatedable)() {
     m.oauthTokens = value
 }
+// SetOnboardingTaskLists sets the onboarding-task-lists property value. The onboardingTaskLists property
+func (m *Organizations_relationships) SetOnboardingTaskLists(value Links_relatedable)() {
+    m.onboardingTaskLists = value
+}
 // SetPrimaryHyokConfiguration sets the primary-hyok-configuration property value. The primaryHyokConfiguration property
-func (m *Organizations_relationships) SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)() {
+func (m *Organizations_relationships) SetPrimaryHyokConfiguration(value HyokConfigurationsHasOneable)() {
     m.primaryHyokConfiguration = value
 }
 // SetStacksDefaultAgentPool sets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
-func (m *Organizations_relationships) SetStacksDefaultAgentPool(value AgentPoolsIdable)() {
+func (m *Organizations_relationships) SetStacksDefaultAgentPool(value AgentPoolsHasOneable)() {
     m.stacksDefaultAgentPool = value
 }
 // SetSubscription sets the subscription property value. The subscription property
-func (m *Organizations_relationships) SetSubscription(value SubscriptionsIdable)() {
+func (m *Organizations_relationships) SetSubscription(value SubscriptionsHasOneable)() {
     m.subscription = value
 }
 type Organizations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAuditConfiguration()(Links_relatedable)
     GetAuditTrailsAuthenticationToken()(Links_relatedable)
     GetAuthenticationToken()(Links_relatedable)
-    GetDefaultAgentPool()(AgentPoolsIdable)
-    GetDefaultProject()(ProjectsIdable)
-    GetEntitlementSet()(EntitlementSetsIdable)
+    GetDefaultAgentPool()(AgentPoolsHasOneable)
+    GetDefaultProject()(ProjectsHasOneable)
+    GetEntitlementSet()(EntitlementSetsHasOneable)
+    GetMeta()(Links_relatedable)
     GetOauthTokens()(Links_relatedable)
-    GetPrimaryHyokConfiguration()(HyokConfigurationsIdable)
-    GetStacksDefaultAgentPool()(AgentPoolsIdable)
-    GetSubscription()(SubscriptionsIdable)
+    GetOnboardingTaskLists()(Links_relatedable)
+    GetPrimaryHyokConfiguration()(HyokConfigurationsHasOneable)
+    GetStacksDefaultAgentPool()(AgentPoolsHasOneable)
+    GetSubscription()(SubscriptionsHasOneable)
+    SetAuditConfiguration(value Links_relatedable)()
     SetAuditTrailsAuthenticationToken(value Links_relatedable)()
     SetAuthenticationToken(value Links_relatedable)()
-    SetDefaultAgentPool(value AgentPoolsIdable)()
-    SetDefaultProject(value ProjectsIdable)()
-    SetEntitlementSet(value EntitlementSetsIdable)()
+    SetDefaultAgentPool(value AgentPoolsHasOneable)()
+    SetDefaultProject(value ProjectsHasOneable)()
+    SetEntitlementSet(value EntitlementSetsHasOneable)()
+    SetMeta(value Links_relatedable)()
     SetOauthTokens(value Links_relatedable)()
-    SetPrimaryHyokConfiguration(value HyokConfigurationsIdable)()
-    SetStacksDefaultAgentPool(value AgentPoolsIdable)()
-    SetSubscription(value SubscriptionsIdable)()
+    SetOnboardingTaskLists(value Links_relatedable)()
+    SetPrimaryHyokConfiguration(value HyokConfigurationsHasOneable)()
+    SetStacksDefaultAgentPool(value AgentPoolsHasOneable)()
+    SetSubscription(value SubscriptionsHasOneable)()
 }

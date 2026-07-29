@@ -10,10 +10,11 @@ const (
     TEAM_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
     USER_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
     AUDIT_TRAILS_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
+    METRICS_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
 )
 
 func (i TokenTtlPolicy_attributes_tokenType) String() string {
-    return []string{"organization", "team", "user", "audit_trails"}[i]
+    return []string{"organization", "team", "user", "audit_trails", "metrics"}[i]
 }
 func ParseTokenTtlPolicy_attributes_tokenType(v string) (any, error) {
     result := ORGANIZATION_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
@@ -26,6 +27,8 @@ func ParseTokenTtlPolicy_attributes_tokenType(v string) (any, error) {
             result = USER_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
         case "audit_trails":
             result = AUDIT_TRAILS_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
+        case "metrics":
+            result = METRICS_TOKENTTLPOLICY_ATTRIBUTES_TOKENTYPE
         default:
             return nil, nil
     }

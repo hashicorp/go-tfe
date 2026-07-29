@@ -11,13 +11,13 @@ type Subscriptions_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The featureSet property
-    featureSet FeatureSetsIdable
+    featureSet FeatureSetsHasOneable
     // The hcpBillingAccount property
     hcpBillingAccount Links_relatedable
     // The nextSubscription property
-    nextSubscription SubscriptionsIdable
+    nextSubscription SubscriptionsHasOneable
     // The organization property
-    organization OrganizationsIdable
+    organization OrganizationsHasOneable
 }
 // NewSubscriptions_relationships instantiates a new Subscriptions_relationships and sets the default values.
 func NewSubscriptions_relationships()(*Subscriptions_relationships) {
@@ -37,8 +37,8 @@ func (m *Subscriptions_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetFeatureSet gets the feature-set property value. The featureSet property
-// returns a FeatureSetsIdable when successful
-func (m *Subscriptions_relationships) GetFeatureSet()(FeatureSetsIdable) {
+// returns a FeatureSetsHasOneable when successful
+func (m *Subscriptions_relationships) GetFeatureSet()(FeatureSetsHasOneable) {
     return m.featureSet
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -46,12 +46,12 @@ func (m *Subscriptions_relationships) GetFeatureSet()(FeatureSetsIdable) {
 func (m *Subscriptions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["feature-set"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateFeatureSetsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateFeatureSetsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetFeatureSet(val.(FeatureSetsIdable))
+            m.SetFeatureSet(val.(FeatureSetsHasOneable))
         }
         return nil
     }
@@ -66,22 +66,22 @@ func (m *Subscriptions_relationships) GetFieldDeserializers()(map[string]func(i8
         return nil
     }
     res["next-subscription"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSubscriptionsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateSubscriptionsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetNextSubscription(val.(SubscriptionsIdable))
+            m.SetNextSubscription(val.(SubscriptionsHasOneable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
@@ -93,13 +93,13 @@ func (m *Subscriptions_relationships) GetHcpBillingAccount()(Links_relatedable) 
     return m.hcpBillingAccount
 }
 // GetNextSubscription gets the next-subscription property value. The nextSubscription property
-// returns a SubscriptionsIdable when successful
-func (m *Subscriptions_relationships) GetNextSubscription()(SubscriptionsIdable) {
+// returns a SubscriptionsHasOneable when successful
+func (m *Subscriptions_relationships) GetNextSubscription()(SubscriptionsHasOneable) {
     return m.nextSubscription
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *Subscriptions_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *Subscriptions_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // Serialize serializes information the current object
@@ -141,7 +141,7 @@ func (m *Subscriptions_relationships) SetAdditionalData(value map[string]any)() 
     m.additionalData = value
 }
 // SetFeatureSet sets the feature-set property value. The featureSet property
-func (m *Subscriptions_relationships) SetFeatureSet(value FeatureSetsIdable)() {
+func (m *Subscriptions_relationships) SetFeatureSet(value FeatureSetsHasOneable)() {
     m.featureSet = value
 }
 // SetHcpBillingAccount sets the hcp-billing-account property value. The hcpBillingAccount property
@@ -149,22 +149,22 @@ func (m *Subscriptions_relationships) SetHcpBillingAccount(value Links_relatedab
     m.hcpBillingAccount = value
 }
 // SetNextSubscription sets the next-subscription property value. The nextSubscription property
-func (m *Subscriptions_relationships) SetNextSubscription(value SubscriptionsIdable)() {
+func (m *Subscriptions_relationships) SetNextSubscription(value SubscriptionsHasOneable)() {
     m.nextSubscription = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *Subscriptions_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *Subscriptions_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 type Subscriptions_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetFeatureSet()(FeatureSetsIdable)
+    GetFeatureSet()(FeatureSetsHasOneable)
     GetHcpBillingAccount()(Links_relatedable)
-    GetNextSubscription()(SubscriptionsIdable)
-    GetOrganization()(OrganizationsIdable)
-    SetFeatureSet(value FeatureSetsIdable)()
+    GetNextSubscription()(SubscriptionsHasOneable)
+    GetOrganization()(OrganizationsHasOneable)
+    SetFeatureSet(value FeatureSetsHasOneable)()
     SetHcpBillingAccount(value Links_relatedable)()
-    SetNextSubscription(value SubscriptionsIdable)()
-    SetOrganization(value OrganizationsIdable)()
+    SetNextSubscription(value SubscriptionsHasOneable)()
+    SetOrganization(value OrganizationsHasOneable)()
 }

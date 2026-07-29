@@ -12,12 +12,18 @@ type AgentPools_relationships struct {
     additionalData map[string]any
     // The agents property
     agents Links_relatedable
+    // The allowedProjects property
+    allowedProjects ProjectsHasManyable
     // The allowedWorkspaces property
-    allowedWorkspaces AgentPools_relationships_allowedWorkspacesable
+    allowedWorkspaces WorkspacesHasManyable
     // The authenticationTokens property
     authenticationTokens Links_relatedable
+    // The excludedWorkspaces property
+    excludedWorkspaces WorkspacesHasManyable
+    // The organization property
+    organization OrganizationsHasOneable
     // The workspaces property
-    workspaces AgentPools_relationships_workspacesable
+    workspaces WorkspacesHasManyable
 }
 // NewAgentPools_relationships instantiates a new AgentPools_relationships and sets the default values.
 func NewAgentPools_relationships()(*AgentPools_relationships) {
@@ -41,15 +47,25 @@ func (m *AgentPools_relationships) GetAdditionalData()(map[string]any) {
 func (m *AgentPools_relationships) GetAgents()(Links_relatedable) {
     return m.agents
 }
+// GetAllowedProjects gets the allowed-projects property value. The allowedProjects property
+// returns a ProjectsHasManyable when successful
+func (m *AgentPools_relationships) GetAllowedProjects()(ProjectsHasManyable) {
+    return m.allowedProjects
+}
 // GetAllowedWorkspaces gets the allowed-workspaces property value. The allowedWorkspaces property
-// returns a AgentPools_relationships_allowedWorkspacesable when successful
-func (m *AgentPools_relationships) GetAllowedWorkspaces()(AgentPools_relationships_allowedWorkspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *AgentPools_relationships) GetAllowedWorkspaces()(WorkspacesHasManyable) {
     return m.allowedWorkspaces
 }
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
 // returns a Links_relatedable when successful
 func (m *AgentPools_relationships) GetAuthenticationTokens()(Links_relatedable) {
     return m.authenticationTokens
+}
+// GetExcludedWorkspaces gets the excluded-workspaces property value. The excludedWorkspaces property
+// returns a WorkspacesHasManyable when successful
+func (m *AgentPools_relationships) GetExcludedWorkspaces()(WorkspacesHasManyable) {
+    return m.excludedWorkspaces
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -65,13 +81,23 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
-    res["allowed-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPools_relationships_allowedWorkspacesFromDiscriminatorValue)
+    res["allowed-projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAllowedWorkspaces(val.(AgentPools_relationships_allowedWorkspacesable))
+            m.SetAllowedProjects(val.(ProjectsHasManyable))
+        }
+        return nil
+    }
+    res["allowed-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAllowedWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
@@ -85,27 +111,58 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
-    res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPools_relationships_workspacesFromDiscriminatorValue)
+    res["excluded-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaces(val.(AgentPools_relationships_workspacesable))
+            m.SetExcludedWorkspaces(val.(WorkspacesHasManyable))
+        }
+        return nil
+    }
+    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOrganization(val.(OrganizationsHasOneable))
+        }
+        return nil
+    }
+    res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
     return res
 }
+// GetOrganization gets the organization property value. The organization property
+// returns a OrganizationsHasOneable when successful
+func (m *AgentPools_relationships) GetOrganization()(OrganizationsHasOneable) {
+    return m.organization
+}
 // GetWorkspaces gets the workspaces property value. The workspaces property
-// returns a AgentPools_relationships_workspacesable when successful
-func (m *AgentPools_relationships) GetWorkspaces()(AgentPools_relationships_workspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *AgentPools_relationships) GetWorkspaces()(WorkspacesHasManyable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
 func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("agents", m.GetAgents())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("allowed-projects", m.GetAllowedProjects())
         if err != nil {
             return err
         }
@@ -118,6 +175,24 @@ func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteObjectValue("authentication-tokens", m.GetAuthenticationTokens())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("excluded-workspaces", m.GetExcludedWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("organization", m.GetOrganization())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("workspaces", m.GetWorkspaces())
         if err != nil {
             return err
         }
@@ -138,27 +213,45 @@ func (m *AgentPools_relationships) SetAdditionalData(value map[string]any)() {
 func (m *AgentPools_relationships) SetAgents(value Links_relatedable)() {
     m.agents = value
 }
+// SetAllowedProjects sets the allowed-projects property value. The allowedProjects property
+func (m *AgentPools_relationships) SetAllowedProjects(value ProjectsHasManyable)() {
+    m.allowedProjects = value
+}
 // SetAllowedWorkspaces sets the allowed-workspaces property value. The allowedWorkspaces property
-func (m *AgentPools_relationships) SetAllowedWorkspaces(value AgentPools_relationships_allowedWorkspacesable)() {
+func (m *AgentPools_relationships) SetAllowedWorkspaces(value WorkspacesHasManyable)() {
     m.allowedWorkspaces = value
 }
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
 func (m *AgentPools_relationships) SetAuthenticationTokens(value Links_relatedable)() {
     m.authenticationTokens = value
 }
+// SetExcludedWorkspaces sets the excluded-workspaces property value. The excludedWorkspaces property
+func (m *AgentPools_relationships) SetExcludedWorkspaces(value WorkspacesHasManyable)() {
+    m.excludedWorkspaces = value
+}
+// SetOrganization sets the organization property value. The organization property
+func (m *AgentPools_relationships) SetOrganization(value OrganizationsHasOneable)() {
+    m.organization = value
+}
 // SetWorkspaces sets the workspaces property value. The workspaces property
-func (m *AgentPools_relationships) SetWorkspaces(value AgentPools_relationships_workspacesable)() {
+func (m *AgentPools_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
     m.workspaces = value
 }
 type AgentPools_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgents()(Links_relatedable)
-    GetAllowedWorkspaces()(AgentPools_relationships_allowedWorkspacesable)
+    GetAllowedProjects()(ProjectsHasManyable)
+    GetAllowedWorkspaces()(WorkspacesHasManyable)
     GetAuthenticationTokens()(Links_relatedable)
-    GetWorkspaces()(AgentPools_relationships_workspacesable)
+    GetExcludedWorkspaces()(WorkspacesHasManyable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetWorkspaces()(WorkspacesHasManyable)
     SetAgents(value Links_relatedable)()
-    SetAllowedWorkspaces(value AgentPools_relationships_allowedWorkspacesable)()
+    SetAllowedProjects(value ProjectsHasManyable)()
+    SetAllowedWorkspaces(value WorkspacesHasManyable)()
     SetAuthenticationTokens(value Links_relatedable)()
-    SetWorkspaces(value AgentPools_relationships_workspacesable)()
+    SetExcludedWorkspaces(value WorkspacesHasManyable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetWorkspaces(value WorkspacesHasManyable)()
 }

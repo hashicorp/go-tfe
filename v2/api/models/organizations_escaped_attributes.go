@@ -9,6 +9,8 @@ import (
 )
 
 type Organizations_attributes struct {
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    accessBetaTools *bool
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The aggregatedCommitStatusEnabled property
@@ -31,15 +33,17 @@ type Organizations_attributes struct {
     externalId *string
     // The fairRunQueuingEnabled property
     fairRunQueuingEnabled *bool
-    // The hcpId property
+    // This attribute is only available in HCP Terraform.
     hcpId *string
     // The isInDegradedMode property
     isInDegradedMode *bool
-    // The isUnified property
+    // This attribute is only available in HCP Terraform.
     isUnified *bool
+    // This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+    maxTtlEnabled *bool
     // The name property
     name *string
-    // The overStacksResourceLimit property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     overStacksResourceLimit *bool
     // The ownersTeamSamlRoleId property
     ownersTeamSamlRoleId *string
@@ -55,7 +59,7 @@ type Organizations_attributes struct {
     planIsEnterprise *bool
     // The planIsTrial property
     planIsTrial *bool
-    // The recoverableItemsEnabled property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     recoverableItemsEnabled *bool
     // The remainingTestableCount property
     remainingTestableCount *int32
@@ -71,9 +75,9 @@ type Organizations_attributes struct {
     speculativePlanManagementEnabled *bool
     // The stacksDefaultExecutionMode property
     stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
-    // The stacksEnabled property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     stacksEnabled *bool
-    // The testGenerationEnabled property
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     testGenerationEnabled *bool
     // The twoFactorConformant property
     twoFactorConformant *bool
@@ -89,6 +93,11 @@ func NewOrganizations_attributes()(*Organizations_attributes) {
 // returns a Parsable when successful
 func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewOrganizations_attributes(), nil
+}
+// GetAccessBetaTools gets the access-beta-tools property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes) GetAccessBetaTools()(*bool) {
+    return m.accessBetaTools
 }
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
@@ -149,6 +158,16 @@ func (m *Organizations_attributes) GetFairRunQueuingEnabled()(*bool) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["access-beta-tools"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAccessBetaTools(val)
+        }
+        return nil
+    }
     res["aggregated-commit-status-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -276,6 +295,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetIsUnified(val)
+        }
+        return nil
+    }
+    res["max-ttl-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMaxTtlEnabled(val)
         }
         return nil
     }
@@ -481,7 +510,7 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
-// GetHcpId gets the hcp-id property value. The hcpId property
+// GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Organizations_attributes) GetHcpId()(*string) {
     return m.hcpId
@@ -491,17 +520,22 @@ func (m *Organizations_attributes) GetHcpId()(*string) {
 func (m *Organizations_attributes) GetIsInDegradedMode()(*bool) {
     return m.isInDegradedMode
 }
-// GetIsUnified gets the is-unified property value. The isUnified property
+// GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetIsUnified()(*bool) {
     return m.isUnified
+}
+// GetMaxTtlEnabled gets the max-ttl-enabled property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+// returns a *bool when successful
+func (m *Organizations_attributes) GetMaxTtlEnabled()(*bool) {
+    return m.maxTtlEnabled
 }
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Organizations_attributes) GetName()(*string) {
     return m.name
 }
-// GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+// GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetOverStacksResourceLimit()(*bool) {
     return m.overStacksResourceLimit
@@ -541,7 +575,7 @@ func (m *Organizations_attributes) GetPlanIsEnterprise()(*bool) {
 func (m *Organizations_attributes) GetPlanIsTrial()(*bool) {
     return m.planIsTrial
 }
-// GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. The recoverableItemsEnabled property
+// GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetRecoverableItemsEnabled()(*bool) {
     return m.recoverableItemsEnabled
@@ -581,12 +615,12 @@ func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled()(*bool) 
 func (m *Organizations_attributes) GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode) {
     return m.stacksDefaultExecutionMode
 }
-// GetStacksEnabled gets the stacks-enabled property value. The stacksEnabled property
+// GetStacksEnabled gets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetStacksEnabled()(*bool) {
     return m.stacksEnabled
 }
-// GetTestGenerationEnabled gets the test-generation-enabled property value. The testGenerationEnabled property
+// GetTestGenerationEnabled gets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetTestGenerationEnabled()(*bool) {
     return m.testGenerationEnabled
@@ -598,6 +632,12 @@ func (m *Organizations_attributes) GetTwoFactorConformant()(*bool) {
 }
 // Serialize serializes information the current object
 func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteBoolValue("access-beta-tools", m.GetAccessBetaTools())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteBoolValue("aggregated-commit-status-enabled", m.GetAggregatedCommitStatusEnabled())
         if err != nil {
@@ -638,6 +678,12 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteStringValue("email", m.GetEmail())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("max-ttl-enabled", m.GetMaxTtlEnabled())
         if err != nil {
             return err
         }
@@ -723,6 +769,10 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     return nil
 }
+// SetAccessBetaTools sets the access-beta-tools property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes) SetAccessBetaTools(value *bool)() {
+    m.accessBetaTools = value
+}
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Organizations_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
@@ -767,7 +817,7 @@ func (m *Organizations_attributes) SetExternalId(value *string)() {
 func (m *Organizations_attributes) SetFairRunQueuingEnabled(value *bool)() {
     m.fairRunQueuingEnabled = value
 }
-// SetHcpId sets the hcp-id property value. The hcpId property
+// SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetHcpId(value *string)() {
     m.hcpId = value
 }
@@ -775,15 +825,19 @@ func (m *Organizations_attributes) SetHcpId(value *string)() {
 func (m *Organizations_attributes) SetIsInDegradedMode(value *bool)() {
     m.isInDegradedMode = value
 }
-// SetIsUnified sets the is-unified property value. The isUnified property
+// SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetIsUnified(value *bool)() {
     m.isUnified = value
+}
+// SetMaxTtlEnabled sets the max-ttl-enabled property value. This attribute is considered INTERNAL BETA, is unavailable to most users, and should not be shared in public channels.
+func (m *Organizations_attributes) SetMaxTtlEnabled(value *bool)() {
+    m.maxTtlEnabled = value
 }
 // SetName sets the name property value. The name property
 func (m *Organizations_attributes) SetName(value *string)() {
     m.name = value
 }
-// SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+// SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetOverStacksResourceLimit(value *bool)() {
     m.overStacksResourceLimit = value
 }
@@ -815,7 +869,7 @@ func (m *Organizations_attributes) SetPlanIsEnterprise(value *bool)() {
 func (m *Organizations_attributes) SetPlanIsTrial(value *bool)() {
     m.planIsTrial = value
 }
-// SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. The recoverableItemsEnabled property
+// SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetRecoverableItemsEnabled(value *bool)() {
     m.recoverableItemsEnabled = value
 }
@@ -847,11 +901,11 @@ func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bo
 func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)() {
     m.stacksDefaultExecutionMode = value
 }
-// SetStacksEnabled sets the stacks-enabled property value. The stacksEnabled property
+// SetStacksEnabled sets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetStacksEnabled(value *bool)() {
     m.stacksEnabled = value
 }
-// SetTestGenerationEnabled sets the test-generation-enabled property value. The testGenerationEnabled property
+// SetTestGenerationEnabled sets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool)() {
     m.testGenerationEnabled = value
 }
@@ -862,6 +916,7 @@ func (m *Organizations_attributes) SetTwoFactorConformant(value *bool)() {
 type Organizations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAccessBetaTools()(*bool)
     GetAggregatedCommitStatusEnabled()(*bool)
     GetAllowForceDeleteWorkspaces()(*bool)
     GetAssessmentsEnforced()(*bool)
@@ -875,6 +930,7 @@ type Organizations_attributesable interface {
     GetHcpId()(*string)
     GetIsInDegradedMode()(*bool)
     GetIsUnified()(*bool)
+    GetMaxTtlEnabled()(*bool)
     GetName()(*string)
     GetOverStacksResourceLimit()(*bool)
     GetOwnersTeamSamlRoleId()(*string)
@@ -895,6 +951,7 @@ type Organizations_attributesable interface {
     GetStacksEnabled()(*bool)
     GetTestGenerationEnabled()(*bool)
     GetTwoFactorConformant()(*bool)
+    SetAccessBetaTools(value *bool)()
     SetAggregatedCommitStatusEnabled(value *bool)()
     SetAllowForceDeleteWorkspaces(value *bool)()
     SetAssessmentsEnforced(value *bool)()
@@ -908,6 +965,7 @@ type Organizations_attributesable interface {
     SetHcpId(value *string)()
     SetIsInDegradedMode(value *bool)()
     SetIsUnified(value *bool)()
+    SetMaxTtlEnabled(value *bool)()
     SetName(value *string)()
     SetOverStacksResourceLimit(value *bool)()
     SetOwnersTeamSamlRoleId(value *string)()

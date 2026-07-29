@@ -14,7 +14,7 @@ type TokenTtlPolicy_attributes struct {
     // When the policy was created
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The maximum time-to-live for the token in milliseconds
-    maxTtlMs *int32
+    maxTtlMs *int64
     // The type of the token TTL policy
     tokenType *TokenTtlPolicy_attributes_tokenType
     // When the policy was last updated
@@ -57,7 +57,7 @@ func (m *TokenTtlPolicy_attributes) GetFieldDeserializers()(map[string]func(i878
         return nil
     }
     res["max-ttl-ms"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
+        val, err := n.GetInt64Value()
         if err != nil {
             return err
         }
@@ -89,8 +89,8 @@ func (m *TokenTtlPolicy_attributes) GetFieldDeserializers()(map[string]func(i878
     return res
 }
 // GetMaxTtlMs gets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
-// returns a *int32 when successful
-func (m *TokenTtlPolicy_attributes) GetMaxTtlMs()(*int32) {
+// returns a *int64 when successful
+func (m *TokenTtlPolicy_attributes) GetMaxTtlMs()(*int64) {
     return m.maxTtlMs
 }
 // GetTokenType gets the token-type property value. The type of the token TTL policy
@@ -112,7 +112,7 @@ func (m *TokenTtlPolicy_attributes) Serialize(writer i878a80d2330e89d26896388a3f
         }
     }
     {
-        err := writer.WriteInt32Value("max-ttl-ms", m.GetMaxTtlMs())
+        err := writer.WriteInt64Value("max-ttl-ms", m.GetMaxTtlMs())
         if err != nil {
             return err
         }
@@ -147,7 +147,7 @@ func (m *TokenTtlPolicy_attributes) SetCreatedAt(value *i336074805fc853987abe6f7
     m.createdAt = value
 }
 // SetMaxTtlMs sets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
-func (m *TokenTtlPolicy_attributes) SetMaxTtlMs(value *int32)() {
+func (m *TokenTtlPolicy_attributes) SetMaxTtlMs(value *int64)() {
     m.maxTtlMs = value
 }
 // SetTokenType sets the token-type property value. The type of the token TTL policy
@@ -162,11 +162,11 @@ type TokenTtlPolicy_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetMaxTtlMs()(*int32)
+    GetMaxTtlMs()(*int64)
     GetTokenType()(*TokenTtlPolicy_attributes_tokenType)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetMaxTtlMs(value *int32)()
+    SetMaxTtlMs(value *int64)()
     SetTokenType(value *TokenTtlPolicy_attributes_tokenType)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
 }

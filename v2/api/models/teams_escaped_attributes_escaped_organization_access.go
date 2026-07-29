@@ -31,9 +31,9 @@ type Teams_attributes_organizationAccess struct {
     manageProjects *bool
     // The manageProviders property
     manageProviders *bool
-    // The managePublicModules property
+    // This attribute is only available in HCP Terraform.
     managePublicModules *bool
-    // The managePublicProviders property
+    // This attribute is only available in HCP Terraform.
     managePublicProviders *bool
     // The manageRegistryArtifactTags property
     manageRegistryArtifactTags *bool
@@ -337,12 +337,12 @@ func (m *Teams_attributes_organizationAccess) GetManageProjects()(*bool) {
 func (m *Teams_attributes_organizationAccess) GetManageProviders()(*bool) {
     return m.manageProviders
 }
-// GetManagePublicModules gets the manage-public-modules property value. The managePublicModules property
+// GetManagePublicModules gets the manage-public-modules property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Teams_attributes_organizationAccess) GetManagePublicModules()(*bool) {
     return m.managePublicModules
 }
-// GetManagePublicProviders gets the manage-public-providers property value. The managePublicProviders property
+// GetManagePublicProviders gets the manage-public-providers property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Teams_attributes_organizationAccess) GetManagePublicProviders()(*bool) {
     return m.managePublicProviders
@@ -572,11 +572,11 @@ func (m *Teams_attributes_organizationAccess) SetManageProjects(value *bool)() {
 func (m *Teams_attributes_organizationAccess) SetManageProviders(value *bool)() {
     m.manageProviders = value
 }
-// SetManagePublicModules sets the manage-public-modules property value. The managePublicModules property
+// SetManagePublicModules sets the manage-public-modules property value. This attribute is only available in HCP Terraform.
 func (m *Teams_attributes_organizationAccess) SetManagePublicModules(value *bool)() {
     m.managePublicModules = value
 }
-// SetManagePublicProviders sets the manage-public-providers property value. The managePublicProviders property
+// SetManagePublicProviders sets the manage-public-providers property value. This attribute is only available in HCP Terraform.
 func (m *Teams_attributes_organizationAccess) SetManagePublicProviders(value *bool)() {
     m.managePublicProviders = value
 }

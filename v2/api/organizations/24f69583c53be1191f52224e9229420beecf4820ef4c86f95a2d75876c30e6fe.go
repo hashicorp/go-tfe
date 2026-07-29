@@ -9,14 +9,19 @@ import (
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
-// ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\tests\registry-modules\{registry_name}\{namespace}\{name}\{provider}\test-runs\{test_run_id}\cleanups\{id}
+// ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder builds and executes requests for operations under \organizations\{name-id}\tests\registry-modules\{registry_name}\{namespace}\{name}\{provider}\test-runs\{test_run_id}\cleanups\{id}
 type ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// Cancel the cancel property
+// returns a *ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemCancelRequestBuilder when successful
+func (m *ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder) Cancel()(*ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemCancelRequestBuilder) {
+    return NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilderInternal instantiates a new ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder and sets the default values.
 func NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder) {
     m := &ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/tests/registry-modules/{registry_name}/{namespace}/{name}/{provider}/test-runs/{test_run_id}/cleanups/{id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/tests/registry-modules/{registry_name}/{namespace}/{name}/{provider}/test-runs/{test_run_id}/cleanups/{id}", pathParameters),
     }
     return m
 }
@@ -25,6 +30,11 @@ func NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItem
     urlParams := make(map[string]string)
     urlParams["request-raw-url"] = rawUrl
     return NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilderInternal(urlParams, requestAdapter)
+}
+// ForceCancel the forceCancel property
+// returns a *ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemForceCancelRequestBuilder when successful
+func (m *ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsCleanupsItemRequestBuilder) ForceCancel()(*ItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemForceCancelRequestBuilder) {
+    return NewItemTestsRegistryModulesItemItemItemItemTestRunsItemCleanupsItemForceCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Get get details about a specific cleanup attempt associated with a test run.
 // returns a TestRunCleanupsEnvelopeable when successful

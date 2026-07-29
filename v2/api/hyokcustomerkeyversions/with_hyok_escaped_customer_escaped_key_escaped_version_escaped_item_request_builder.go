@@ -31,7 +31,7 @@ func NewWithHyok_customer_key_version_ItemRequestBuilder(rawUrl string, requestA
     urlParams["request-raw-url"] = rawUrl
     return NewWithHyok_customer_key_version_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete delete a HYOK Customer Key Version. Can only be performed on unused key versions.
+// Delete delete a HYOK Customer Key Version. Can only be performed on unused key versions.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithHyok_customer_key_version_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
@@ -47,7 +47,7 @@ func (m *WithHyok_customer_key_version_ItemRequestBuilder) Delete(ctx context.Co
     }
     return nil
 }
-// Get get details about a HYOK Customer Key Version
+// Get get details about a HYOK Customer Key VersionThis operation is only available in HCP Terraform.
 // returns a HyokCustomerKeyVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithHyok_customer_key_version_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsEnvelopeable, error) {
@@ -67,7 +67,7 @@ func (m *WithHyok_customer_key_version_ItemRequestBuilder) Get(ctx context.Conte
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsEnvelopeable), nil
 }
-// ToDeleteRequestInformation delete a HYOK Customer Key Version. Can only be performed on unused key versions.
+// ToDeleteRequestInformation delete a HYOK Customer Key Version. Can only be performed on unused key versions.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithHyok_customer_key_version_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -75,7 +75,7 @@ func (m *WithHyok_customer_key_version_ItemRequestBuilder) ToDeleteRequestInform
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToGetRequestInformation get details about a HYOK Customer Key Version
+// ToGetRequestInformation get details about a HYOK Customer Key VersionThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithHyok_customer_key_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

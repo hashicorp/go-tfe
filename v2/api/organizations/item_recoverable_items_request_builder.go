@@ -11,11 +11,11 @@ import (
     i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657 "github.com/hashicorp/go-tfe/v2/api/organizations/item/recoverableitems"
 )
 
-// ItemRecoverableItemsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\recoverable-items
+// ItemRecoverableItemsRequestBuilder builds and executes requests for operations under \organizations\{name-id}\recoverable-items
 type ItemRecoverableItemsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.
+// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
     // Filter recoverable items that expire after the specified date and time.
     Filterexpires_after *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bexpires_after%5D\""
@@ -26,7 +26,7 @@ type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
     // Search term to filter recoverable items by name or project name.
     Filtersearch *string "uriparametername:\"filter%5Bsearch%5D\""
     // Optionally side-load relationships of the specified name. Multiple values can be comma-separated.
-    Include *i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657.GetIncludeQueryParameterType "uriparametername:\"include\""
+    Include []i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -37,7 +37,7 @@ type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
 // NewItemRecoverableItemsRequestBuilderInternal instantiates a new ItemRecoverableItemsRequestBuilder and sets the default values.
 func NewItemRecoverableItemsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRecoverableItemsRequestBuilder) {
     m := &ItemRecoverableItemsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/recoverable-items{?filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{name%2Did}/recoverable-items{?filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }
@@ -47,7 +47,7 @@ func NewItemRecoverableItemsRequestBuilder(rawUrl string, requestAdapter i2ae418
     urlParams["request-raw-url"] = rawUrl
     return NewItemRecoverableItemsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all recoverable items (soft-deleted resources) in an organization.
+// Get list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemRecoverableItemsGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -69,7 +69,7 @@ func (m *ItemRecoverableItemsRequestBuilder) Get(ctx context.Context, requestCon
     }
     return res.(ItemRecoverableItemsGetResponseable), nil
 }
-// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.
+// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemRecoverableItemsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRecoverableItemsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

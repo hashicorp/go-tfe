@@ -11,11 +11,11 @@ type ProviderSets_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The organization property
-    organization ProviderSets_relationships_organizationable
+    organization OrganizationsHasOneable
     // The projects property
-    projects ProviderSets_relationships_projectsable
+    projects ProjectsHasManyable
     // The workspaces property
-    workspaces ProviderSets_relationships_workspacesable
+    workspaces WorkspacesHasManyable
 }
 // NewProviderSets_relationships instantiates a new ProviderSets_relationships and sets the default values.
 func NewProviderSets_relationships()(*ProviderSets_relationships) {
@@ -39,50 +39,50 @@ func (m *ProviderSets_relationships) GetAdditionalData()(map[string]any) {
 func (m *ProviderSets_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProviderSets_relationships_organizationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(ProviderSets_relationships_organizationable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProviderSets_relationships_projectsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetProjects(val.(ProviderSets_relationships_projectsable))
+            m.SetProjects(val.(ProjectsHasManyable))
         }
         return nil
     }
     res["workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProviderSets_relationships_workspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetWorkspaces(val.(ProviderSets_relationships_workspacesable))
+            m.SetWorkspaces(val.(WorkspacesHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a ProviderSets_relationships_organizationable when successful
-func (m *ProviderSets_relationships) GetOrganization()(ProviderSets_relationships_organizationable) {
+// returns a OrganizationsHasOneable when successful
+func (m *ProviderSets_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
 // GetProjects gets the projects property value. The projects property
-// returns a ProviderSets_relationships_projectsable when successful
-func (m *ProviderSets_relationships) GetProjects()(ProviderSets_relationships_projectsable) {
+// returns a ProjectsHasManyable when successful
+func (m *ProviderSets_relationships) GetProjects()(ProjectsHasManyable) {
     return m.projects
 }
 // GetWorkspaces gets the workspaces property value. The workspaces property
-// returns a ProviderSets_relationships_workspacesable when successful
-func (m *ProviderSets_relationships) GetWorkspaces()(ProviderSets_relationships_workspacesable) {
+// returns a WorkspacesHasManyable when successful
+func (m *ProviderSets_relationships) GetWorkspaces()(WorkspacesHasManyable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
@@ -118,24 +118,24 @@ func (m *ProviderSets_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *ProviderSets_relationships) SetOrganization(value ProviderSets_relationships_organizationable)() {
+func (m *ProviderSets_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
 // SetProjects sets the projects property value. The projects property
-func (m *ProviderSets_relationships) SetProjects(value ProviderSets_relationships_projectsable)() {
+func (m *ProviderSets_relationships) SetProjects(value ProjectsHasManyable)() {
     m.projects = value
 }
 // SetWorkspaces sets the workspaces property value. The workspaces property
-func (m *ProviderSets_relationships) SetWorkspaces(value ProviderSets_relationships_workspacesable)() {
+func (m *ProviderSets_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
     m.workspaces = value
 }
 type ProviderSets_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(ProviderSets_relationships_organizationable)
-    GetProjects()(ProviderSets_relationships_projectsable)
-    GetWorkspaces()(ProviderSets_relationships_workspacesable)
-    SetOrganization(value ProviderSets_relationships_organizationable)()
-    SetProjects(value ProviderSets_relationships_projectsable)()
-    SetWorkspaces(value ProviderSets_relationships_workspacesable)()
+    GetOrganization()(OrganizationsHasOneable)
+    GetProjects()(ProjectsHasManyable)
+    GetWorkspaces()(WorkspacesHasManyable)
+    SetOrganization(value OrganizationsHasOneable)()
+    SetProjects(value ProjectsHasManyable)()
+    SetWorkspaces(value WorkspacesHasManyable)()
 }

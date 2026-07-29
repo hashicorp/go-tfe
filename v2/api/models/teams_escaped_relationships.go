@@ -15,11 +15,11 @@ type Teams_relationships struct {
     // The authenticationTokens property
     authenticationTokens Links_relatedable
     // The organization property
-    organization OrganizationsIdable
-    // Organization memberships for team members.
-    organizationMemberships Teams_relationships_organizationMembershipsable
-    // Team members (active users only).
-    users Teams_relationships_usersable
+    organization OrganizationsHasOneable
+    // The organizationMemberships property
+    organizationMemberships OrganizationMembershipsHasManyable
+    // The users property
+    users UsersHasManyable
 }
 // NewTeams_relationships instantiates a new Teams_relationships and sets the default values.
 func NewTeams_relationships()(*Teams_relationships) {
@@ -73,50 +73,50 @@ func (m *Teams_relationships) GetFieldDeserializers()(map[string]func(i878a80d23
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(OrganizationsIdable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
         }
         return nil
     }
     res["organization-memberships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeams_relationships_organizationMembershipsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationMembershipsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganizationMemberships(val.(Teams_relationships_organizationMembershipsable))
+            m.SetOrganizationMemberships(val.(OrganizationMembershipsHasManyable))
         }
         return nil
     }
     res["users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeams_relationships_usersFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetUsers(val.(Teams_relationships_usersable))
+            m.SetUsers(val.(UsersHasManyable))
         }
         return nil
     }
     return res
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a OrganizationsIdable when successful
-func (m *Teams_relationships) GetOrganization()(OrganizationsIdable) {
+// returns a OrganizationsHasOneable when successful
+func (m *Teams_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
 }
-// GetOrganizationMemberships gets the organization-memberships property value. Organization memberships for team members.
-// returns a Teams_relationships_organizationMembershipsable when successful
-func (m *Teams_relationships) GetOrganizationMemberships()(Teams_relationships_organizationMembershipsable) {
+// GetOrganizationMemberships gets the organization-memberships property value. The organizationMemberships property
+// returns a OrganizationMembershipsHasManyable when successful
+func (m *Teams_relationships) GetOrganizationMemberships()(OrganizationMembershipsHasManyable) {
     return m.organizationMemberships
 }
-// GetUsers gets the users property value. Team members (active users only).
-// returns a Teams_relationships_usersable when successful
-func (m *Teams_relationships) GetUsers()(Teams_relationships_usersable) {
+// GetUsers gets the users property value. The users property
+// returns a UsersHasManyable when successful
+func (m *Teams_relationships) GetUsers()(UsersHasManyable) {
     return m.users
 }
 // Serialize serializes information the current object
@@ -172,15 +172,15 @@ func (m *Teams_relationships) SetAuthenticationTokens(value Links_relatedable)()
     m.authenticationTokens = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *Teams_relationships) SetOrganization(value OrganizationsIdable)() {
+func (m *Teams_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
 }
-// SetOrganizationMemberships sets the organization-memberships property value. Organization memberships for team members.
-func (m *Teams_relationships) SetOrganizationMemberships(value Teams_relationships_organizationMembershipsable)() {
+// SetOrganizationMemberships sets the organization-memberships property value. The organizationMemberships property
+func (m *Teams_relationships) SetOrganizationMemberships(value OrganizationMembershipsHasManyable)() {
     m.organizationMemberships = value
 }
-// SetUsers sets the users property value. Team members (active users only).
-func (m *Teams_relationships) SetUsers(value Teams_relationships_usersable)() {
+// SetUsers sets the users property value. The users property
+func (m *Teams_relationships) SetUsers(value UsersHasManyable)() {
     m.users = value
 }
 type Teams_relationshipsable interface {
@@ -188,12 +188,12 @@ type Teams_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAuthenticationToken()(Links_relatedable)
     GetAuthenticationTokens()(Links_relatedable)
-    GetOrganization()(OrganizationsIdable)
-    GetOrganizationMemberships()(Teams_relationships_organizationMembershipsable)
-    GetUsers()(Teams_relationships_usersable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetOrganizationMemberships()(OrganizationMembershipsHasManyable)
+    GetUsers()(UsersHasManyable)
     SetAuthenticationToken(value Links_relatedable)()
     SetAuthenticationTokens(value Links_relatedable)()
-    SetOrganization(value OrganizationsIdable)()
-    SetOrganizationMemberships(value Teams_relationships_organizationMembershipsable)()
-    SetUsers(value Teams_relationships_usersable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetOrganizationMemberships(value OrganizationMembershipsHasManyable)()
+    SetUsers(value UsersHasManyable)()
 }

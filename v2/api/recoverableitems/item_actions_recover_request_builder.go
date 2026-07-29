@@ -26,7 +26,7 @@ func NewItemActionsRecoverRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     urlParams["request-raw-url"] = rawUrl
     return NewItemActionsRecoverRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Put recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.
+// Put recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemActionsRecoverRequestBuilder) Put(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
@@ -44,7 +44,7 @@ func (m *ItemActionsRecoverRequestBuilder) Put(ctx context.Context, requestConfi
     }
     return nil
 }
-// ToPutRequestInformation recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.
+// ToPutRequestInformation recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *ItemActionsRecoverRequestBuilder) ToPutRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PUT, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

@@ -11,7 +11,7 @@ type PlanExports_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The plan property
-    plan PlansIdable
+    plan PlansHasOneable
 }
 // NewPlanExports_relationships instantiates a new PlanExports_relationships and sets the default values.
 func NewPlanExports_relationships()(*PlanExports_relationships) {
@@ -35,20 +35,20 @@ func (m *PlanExports_relationships) GetAdditionalData()(map[string]any) {
 func (m *PlanExports_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlansIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreatePlansHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetPlan(val.(PlansIdable))
+            m.SetPlan(val.(PlansHasOneable))
         }
         return nil
     }
     return res
 }
 // GetPlan gets the plan property value. The plan property
-// returns a PlansIdable when successful
-func (m *PlanExports_relationships) GetPlan()(PlansIdable) {
+// returns a PlansHasOneable when successful
+func (m *PlanExports_relationships) GetPlan()(PlansHasOneable) {
     return m.plan
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *PlanExports_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetPlan sets the plan property value. The plan property
-func (m *PlanExports_relationships) SetPlan(value PlansIdable)() {
+func (m *PlanExports_relationships) SetPlan(value PlansHasOneable)() {
     m.plan = value
 }
 type PlanExports_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPlan()(PlansIdable)
-    SetPlan(value PlansIdable)()
+    GetPlan()(PlansHasOneable)
+    SetPlan(value PlansHasOneable)()
 }

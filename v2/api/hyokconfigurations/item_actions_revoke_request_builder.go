@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item/actions/revoke"
 )
 
 // ItemActionsRevokeRequestBuilder builds and executes requests for operations under \hyok-configurations\{hyok_configuration_id}\actions\revoke
@@ -26,23 +27,27 @@ func NewItemActionsRevokeRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     urlParams["request-raw-url"] = rawUrl
     return NewItemActionsRevokeRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.
+// Post revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.This operation is only available in HCP Terraform.
+// returns a *RevokePostResponse when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
-        return err
+        return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.SendEnum(ctx, requestInfo, i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.ParseRevokePostResponse, errorMapping)
     if err != nil {
-        return err
+        return nil, err
     }
-    return nil
+    if res == nil {
+        return nil, nil
+    }
+    return res.(*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse), nil
 }
-// ToPostRequestInformation revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.
+// ToPostRequestInformation revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *ItemActionsRevokeRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

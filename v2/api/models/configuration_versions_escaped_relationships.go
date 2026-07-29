@@ -11,7 +11,7 @@ type ConfigurationVersions_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The ingressAttributes property
-    ingressAttributes IngressAttributesIdable
+    ingressAttributes IngressAttributesHasOneable
 }
 // NewConfigurationVersions_relationships instantiates a new ConfigurationVersions_relationships and sets the default values.
 func NewConfigurationVersions_relationships()(*ConfigurationVersions_relationships) {
@@ -35,20 +35,20 @@ func (m *ConfigurationVersions_relationships) GetAdditionalData()(map[string]any
 func (m *ConfigurationVersions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["ingress-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateIngressAttributesIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateIngressAttributesHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetIngressAttributes(val.(IngressAttributesIdable))
+            m.SetIngressAttributes(val.(IngressAttributesHasOneable))
         }
         return nil
     }
     return res
 }
 // GetIngressAttributes gets the ingress-attributes property value. The ingressAttributes property
-// returns a IngressAttributesIdable when successful
-func (m *ConfigurationVersions_relationships) GetIngressAttributes()(IngressAttributesIdable) {
+// returns a IngressAttributesHasOneable when successful
+func (m *ConfigurationVersions_relationships) GetIngressAttributes()(IngressAttributesHasOneable) {
     return m.ingressAttributes
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *ConfigurationVersions_relationships) SetAdditionalData(value map[string
     m.additionalData = value
 }
 // SetIngressAttributes sets the ingress-attributes property value. The ingressAttributes property
-func (m *ConfigurationVersions_relationships) SetIngressAttributes(value IngressAttributesIdable)() {
+func (m *ConfigurationVersions_relationships) SetIngressAttributes(value IngressAttributesHasOneable)() {
     m.ingressAttributes = value
 }
 type ConfigurationVersions_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetIngressAttributes()(IngressAttributesIdable)
-    SetIngressAttributes(value IngressAttributesIdable)()
+    GetIngressAttributes()(IngressAttributesHasOneable)
+    SetIngressAttributes(value IngressAttributesHasOneable)()
 }

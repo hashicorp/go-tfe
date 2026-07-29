@@ -11,7 +11,7 @@ type HyokCustomerKeyVersions_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The hyokConfiguration property
-    hyokConfiguration HyokConfigurationsIdable
+    hyokConfiguration HyokConfigurationsHasOneable
 }
 // NewHyokCustomerKeyVersions_relationships instantiates a new HyokCustomerKeyVersions_relationships and sets the default values.
 func NewHyokCustomerKeyVersions_relationships()(*HyokCustomerKeyVersions_relationships) {
@@ -35,20 +35,20 @@ func (m *HyokCustomerKeyVersions_relationships) GetAdditionalData()(map[string]a
 func (m *HyokCustomerKeyVersions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurationsIdFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateHyokConfigurationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetHyokConfiguration(val.(HyokConfigurationsIdable))
+            m.SetHyokConfiguration(val.(HyokConfigurationsHasOneable))
         }
         return nil
     }
     return res
 }
 // GetHyokConfiguration gets the hyok-configuration property value. The hyokConfiguration property
-// returns a HyokConfigurationsIdable when successful
-func (m *HyokCustomerKeyVersions_relationships) GetHyokConfiguration()(HyokConfigurationsIdable) {
+// returns a HyokConfigurationsHasOneable when successful
+func (m *HyokCustomerKeyVersions_relationships) GetHyokConfiguration()(HyokConfigurationsHasOneable) {
     return m.hyokConfiguration
 }
 // Serialize serializes information the current object
@@ -72,12 +72,12 @@ func (m *HyokCustomerKeyVersions_relationships) SetAdditionalData(value map[stri
     m.additionalData = value
 }
 // SetHyokConfiguration sets the hyok-configuration property value. The hyokConfiguration property
-func (m *HyokCustomerKeyVersions_relationships) SetHyokConfiguration(value HyokConfigurationsIdable)() {
+func (m *HyokCustomerKeyVersions_relationships) SetHyokConfiguration(value HyokConfigurationsHasOneable)() {
     m.hyokConfiguration = value
 }
 type HyokCustomerKeyVersions_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetHyokConfiguration()(HyokConfigurationsIdable)
-    SetHyokConfiguration(value HyokConfigurationsIdable)()
+    GetHyokConfiguration()(HyokConfigurationsHasOneable)
+    SetHyokConfiguration(value HyokConfigurationsHasOneable)()
 }

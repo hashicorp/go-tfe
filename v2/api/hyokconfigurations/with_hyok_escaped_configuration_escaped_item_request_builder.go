@@ -31,7 +31,7 @@ func NewWithHyok_configuration_ItemRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewWithHyok_configuration_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete delete an HYOK configuration. Can only be performed on unused configurations.
+// Delete delete an HYOK configuration. Can only be performed on unused configurations.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithHyok_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
@@ -47,7 +47,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Delete(ctx context.Context, 
     }
     return nil
 }
-// Get get details about an HYOK configuration
+// Get get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
@@ -72,7 +72,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, req
 func (m *WithHyok_configuration_ItemRequestBuilder) HyokCustomerKeyVersions()(*ItemHyokCustomerKeyVersionsRequestBuilder) {
     return NewItemHyokCustomerKeyVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// Patch update an HYOK configuration
+// Patch update an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithHyok_configuration_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
@@ -92,7 +92,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Patch(ctx context.Context, b
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable), nil
 }
-// ToDeleteRequestInformation delete an HYOK configuration. Can only be performed on unused configurations.
+// ToDeleteRequestInformation delete an HYOK configuration. Can only be performed on unused configurations.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithHyok_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -100,7 +100,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) ToDeleteRequestInformation(c
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToGetRequestInformation get details about an HYOK configuration
+// ToGetRequestInformation get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -108,7 +108,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx 
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPatchRequestInformation update an HYOK configuration
+// ToPatchRequestInformation update an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
 func (m *WithHyok_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
