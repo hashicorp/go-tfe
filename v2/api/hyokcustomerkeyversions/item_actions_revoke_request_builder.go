@@ -30,8 +30,8 @@ func NewItemActionsRevokeRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
 // Post revoke a HYOK Customer Key Version.This operation is only available in HCP Terraform.
 // returns a *RevokePostResponse when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i6613c811d0562b976427d677cc68415dae0c160c071dbfce02762e5af7f9c9ed.RevokePostResponse, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
+func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i6613c811d0562b976427d677cc68415dae0c160c071dbfce02762e5af7f9c9ed.RevokePostResponse, error) {
+    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
     }
@@ -49,10 +49,14 @@ func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, requestConfi
 }
 // ToPostRequestInformation revoke a HYOK Customer Key Version.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *ItemActionsRevokeRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsRevokeRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+    if err != nil {
+        return nil, err
+    }
     return requestInfo, nil
 }
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
