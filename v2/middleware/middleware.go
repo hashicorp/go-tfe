@@ -101,11 +101,6 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 			ProductName:    "go-tfe",
 			ProductVersion: tfeSDKVersion,
 		}),
-		khttp.NewHeadersInspectionHandlerWithOptions(func() khttp.HeadersInspectionOptions {
-			opts := *khttp.NewHeadersInspectionOptions()
-			opts.InspectRequestHeaders = false
-			opts.InspectResponseHeaders = true
-			return opts
-		}()),
+		NewHeadersInspectionHandler(false, true),
 	}, nil
 }
