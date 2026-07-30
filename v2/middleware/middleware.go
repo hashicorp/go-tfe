@@ -101,11 +101,12 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 			ProductName:    "go-tfe",
 			ProductVersion: tfeSDKVersion,
 		}),
-		khttp.NewHeadersInspectionHandlerWithOptions(func() khttp.HeadersInspectionOptions {
-			opts := *khttp.NewHeadersInspectionOptions()
-			opts.InspectRequestHeaders = false
-			opts.InspectResponseHeaders = true
-			return opts
-		}()),
+		// safeHeadersInspectionHandler replaces khttp.HeadersInspectionHandler
+		// to fix a data race: the upstream handler shares a single
+		// HeadersInspectionOptions (and its ResponseHeaders map) across all
+		// concurrent requests that don't carry a per-request option, causing
+		// fatal concurrent map writes. Our implementation allocates fresh
+		// options per-request when none is provided by the caller.
+		newSafeHeadersInspectionHandler(false, true),
 	}, nil
 }
