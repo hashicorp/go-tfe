@@ -1145,6 +1145,16 @@
             "description": "Name of the organization"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/agent-pools-envelope"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Agent pool created",
@@ -12233,7 +12243,7 @@
                 }
               }
             },
-            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample — return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
+            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample \u2014 return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -16054,6 +16064,40 @@
             }
           }
         }
+      },
+      "delete": {
+        "operationId": "deleteOidcConfiguration",
+        "summary": "Delete OIDC Configuration",
+        "description": "Delete an OIDC configuration\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "hyok"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oidc_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "OIDC Configuration ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OIDC Configuration deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/authentication-tokens/{id}": {
@@ -16824,6 +16868,21 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to retrieve. Omit for the default organization token.",
+            "x-vis": [
+              "hcpt"
+            ]
           }
         ],
         "responses": {
@@ -16865,6 +16924,21 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to create. Omit for the default organization token.",
+            "x-vis": [
+              "hcpt"
+            ]
           }
         ],
         "requestBody": {
@@ -16916,6 +16990,21 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to delete. Omit for the default organization token.",
+            "x-vis": [
+              "hcpt"
+            ]
           }
         ],
         "responses": {
@@ -22936,6 +23025,112 @@
           }
         }
       }
+    },
+    "/projects/{project_id}/effective-tag-bindings": {
+      "get": {
+        "operationId": "listProjectEffectiveTagBindings",
+        "summary": "List Project Effective Tag Bindings",
+        "description": "List all effective (inherited and direct) tag bindings for a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of effective tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/effective-tag-bindings-collection"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to view project",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/effective-tag-bindings": {
+      "get": {
+        "operationId": "listWorkspaceEffectiveTagBindings",
+        "summary": "List Workspace Effective Tag Bindings",
+        "description": "List all effective (inherited and direct) tag bindings for a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of effective tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/effective-tag-bindings-collection"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to view workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -24063,6 +24258,15 @@
               },
               "allowed-workspaces": {
                 "$ref": "#/components/schemas/workspaces-has-many"
+              },
+              "allowed-projects": {
+                "$ref": "#/components/schemas/projects-has-many"
+              },
+              "excluded-workspaces": {
+                "$ref": "#/components/schemas/workspaces-has-many"
+              },
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
               }
             }
           }
@@ -31913,7 +32117,16 @@
               {
                 "$ref": "#/components/schemas/vault-oidc-configurations"
               }
-            ]
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "aws-oidc-configurations": "#/components/schemas/aws-oidc-configurations",
+                "gcp-oidc-configurations": "#/components/schemas/gcp-oidc-configurations",
+                "azure-oidc-configurations": "#/components/schemas/azure-oidc-configurations",
+                "vault-oidc-configurations": "#/components/schemas/vault-oidc-configurations"
+              }
+            }
           }
         }
       },
@@ -34697,6 +34910,84 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspace-transfers"
+          }
+        }
+      },
+      "inherited-from-has-one": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/projects-identifier"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "projects": "#/components/schemas/projects-identifier"
+              }
+            }
+          }
+        }
+      },
+      "effective-tag-bindings": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "example": "etb-7AHdkTVXrmxiB8vQ"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "effective-tag-bindings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "key"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "description": "Optional relationship indicating the project this binding was inherited from, if applicable.",
+            "properties": {
+              "inherited-from": {
+                "$ref": "#/components/schemas/inherited-from-has-one"
+              }
+            }
+          }
+        }
+      },
+      "effective-tag-bindings-collection": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/effective-tag-bindings"
+            }
           }
         }
       }

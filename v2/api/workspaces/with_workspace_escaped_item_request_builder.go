@@ -90,6 +90,11 @@ func (m *WithWorkspace_ItemRequestBuilder) Delete(ctx context.Context, requestCo
     }
     return nil
 }
+// EffectiveTagBindings the effectiveTagBindings property
+// returns a *ItemEffectiveTagBindingsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) EffectiveTagBindings()(*ItemEffectiveTagBindingsRequestBuilder) {
+    return NewItemEffectiveTagBindingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Get get details of a specific workspace by its external ID.
 // returns a ItemWithWorkspace_GetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
