@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "b3954fbd",
+    "version": "development",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -15718,6 +15718,17 @@
             "description": "HYOK Configuration ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
         "responses": {
           "202": {
             "description": "HYOK Configuration revocation initiated",
@@ -15886,6 +15897,17 @@
             "description": "HYOK Customer Key Version ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
         "responses": {
           "202": {
             "description": "HYOK Key Version revocation initiated",
@@ -16824,6 +16846,18 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to retrieve. Omit for the standard organization token; use \"audit-trails\" for the audit trail token."
           }
         ],
         "responses": {
@@ -16865,6 +16899,18 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to create. Omit for the standard organization token; use \"audit-trails\" for the audit trail token."
           }
         ],
         "requestBody": {
@@ -16916,6 +16962,18 @@
             },
             "required": true,
             "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "audit-trails"
+              ]
+            },
+            "required": false,
+            "description": "The type of organization token to delete. Omit for the standard organization token; use \"audit-trails\" for the audit trail token."
           }
         ],
         "responses": {
@@ -31655,6 +31713,24 @@
               "primary": {
                 "type": "boolean"
               },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "untested",
+                  "testing",
+                  "test_failed",
+                  "available",
+                  "errored",
+                  "revoking",
+                  "revoked"
+                ]
+              },
+              "error": {
+                "type": "string",
+                "readOnly": true,
+                "nullable": true
+              },
               "kms-options": {
                 "type": "object",
                 "nullable": true,
@@ -31670,6 +31746,10 @@
                   "key-ring-id": {
                     "type": "string",
                     "description": "Only required with GCP KMS"
+                  },
+                  "multi-region": {
+                    "type": "boolean",
+                    "description": "Optional for AWS KMS"
                   }
                 }
               }
