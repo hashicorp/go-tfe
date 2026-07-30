@@ -12,15 +12,11 @@ import (
 	khttp "github.com/microsoft/kiota-http-go"
 )
 
-// TestSafeHeadersInspectionHandler_NoConcurrentMapWrite reproduces the race
-// that was present when khttp.HeadersInspectionHandler was used directly in
-// the middleware pipeline. With default pipeline settings no per-request
-// HeadersInspectionOptions is placed in the context, so previously all
-// goroutines shared &middleware.options and raced on the embedded
-// ResponseHeaders map.
+// TestHeadersInspectionHandler_NoConcurrentMapWrite verifies that concurrent
+// requests do not race on a shared ResponseHeaders map.
 //
-// Run with: go test -race ./middleware/ -run TestSafeHeadersInspectionHandler_NoConcurrentMapWrite
-func TestSafeHeadersInspectionHandler_NoConcurrentMapWrite(t *testing.T) {
+// Run with: go test -race ./middleware/ -run TestHeadersInspectionHandler_NoConcurrentMapWrite
+func TestHeadersInspectionHandler_NoConcurrentMapWrite(t *testing.T) {
 	// Server that always responds with a handful of headers.
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("X-Request-Id", "abc123")
@@ -30,7 +26,7 @@ func TestSafeHeadersInspectionHandler_NoConcurrentMapWrite(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	handler := newSafeHeadersInspectionHandler(false, true)
+	handler := NewHeadersInspectionHandler(false, true)
 
 	// pipeline terminates at the test server.
 	pipeline := &testPipeline{transport: http.DefaultTransport}
@@ -59,18 +55,17 @@ func TestSafeHeadersInspectionHandler_NoConcurrentMapWrite(t *testing.T) {
 	wg.Wait()
 }
 
-// TestSafeHeadersInspectionHandler_PerRequestOptionHonoured verifies that
-// when a caller injects their own HeadersInspectionOptions into the request
-// context, the handler populates that caller-provided instance rather than
-// discarding it.
-func TestSafeHeadersInspectionHandler_PerRequestOptionHonoured(t *testing.T) {
+// TestHeadersInspectionHandler_PerRequestOptionHonoured verifies that when a
+// caller injects their own HeadersInspectionOptions into the request context,
+// the handler populates that instance rather than discarding it.
+func TestHeadersInspectionHandler_PerRequestOptionHonoured(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("X-Custom-Header", "hello")
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer srv.Close()
 
-	handler := newSafeHeadersInspectionHandler(false, true)
+	handler := NewHeadersInspectionHandler(false, true)
 	pipeline := &testPipeline{transport: http.DefaultTransport}
 
 	inspectionOpts := khttp.NewHeadersInspectionOptions()
@@ -94,16 +89,16 @@ func TestSafeHeadersInspectionHandler_PerRequestOptionHonoured(t *testing.T) {
 	}
 }
 
-// TestSafeHeadersInspectionHandler_RequestHeadersInspected verifies that when
+// TestHeadersInspectionHandler_RequestHeadersInspected verifies that when
 // InspectRequestHeaders is true the outgoing request headers are captured into
 // the RequestHeaders of the per-request option.
-func TestSafeHeadersInspectionHandler_RequestHeadersInspected(t *testing.T) {
+func TestHeadersInspectionHandler_RequestHeadersInspected(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer srv.Close()
 
-	handler := newSafeHeadersInspectionHandler(true, false)
+	handler := NewHeadersInspectionHandler(true, false)
 	pipeline := &testPipeline{transport: http.DefaultTransport}
 
 	inspectionOpts := khttp.NewHeadersInspectionOptions()
