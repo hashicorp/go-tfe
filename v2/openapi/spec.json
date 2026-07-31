@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "93b9ec4c",
+    "version": "7522f464",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -450,9 +450,63 @@
       "name": "tag-binding",
       "x-displayName": "Tag Bindings",
       "description": "Tag bindings on resources"
+    },
+    {
+      "name": "admin-banners",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Admin Banners",
+      "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
     }
   ],
   "paths": {
+    "/admin/banners": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "createAdminBanner",
+        "summary": "Create Site-Wide Announcement Banner",
+        "x-tfe-min-version": "v202601-1",
+        "description": "Creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-banners-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Banner created successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/details": {
       "get": {
         "operationId": "getAccountDetails",
@@ -22968,6 +23022,106 @@
       }
     },
     "schemas": {
+      "admin-banners": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the banner (e.g. ab-xxxxxxxxxxxxxxxx)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "admin-banners"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "title",
+              "body",
+              "style",
+              "audience"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Short heading for the banner (max 100 characters)."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 255,
+                "description": "Body text of the banner. Limited HTML is allowed: strong, em, b, i, and anchor tags with href. All other tags and attributes are stripped. Maximum 255 characters after sanitization.\n"
+              },
+              "style": {
+                "type": "string",
+                "enum": [
+                  "info",
+                  "warning",
+                  "critical"
+                ],
+                "description": "Visual style controlling how the banner is rendered."
+              },
+              "audience": {
+                "type": "string",
+                "enum": [
+                  "all_users",
+                  "authenticated_only"
+                ],
+                "description": "Which users see the banner."
+              },
+              "scheduled-publish-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.\n"
+              },
+              "scheduled-expire-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.\n"
+              },
+              "timezone": {
+                "type": "string",
+                "nullable": true,
+                "description": "IANA timezone identifier for the scheduled times (e.g. \"America/New_York\", \"UTC\"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.\n"
+              },
+              "published-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.\n"
+              },
+              "deactivated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.\n"
+              }
+            }
+          }
+        }
+      },
+      "admin-banners-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-banners"
+          }
+        }
+      },
       "errors": {
         "type": "object",
         "properties": {
