@@ -59,6 +59,8 @@ type Workspaces_attributes struct {
     lockedReason *string
     // The name property
     name *string
+    // Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
+    noCodeUpgradeAvailable *bool
     // Deprecated. Use execution-mode instead.
     operations *bool
     // The permissions property
@@ -79,6 +81,8 @@ type Workspaces_attributes struct {
     settingOverwrites Workspaces_attributes_settingOverwritesable
     // The source property
     source *string
+    // Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
+    sourceModuleId *string
     // The sourceName property
     sourceName *string
     // The sourceUrl property
@@ -442,6 +446,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["no-code-upgrade-available"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNoCodeUpgradeAvailable(val)
+        }
+        return nil
+    }
     res["operations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -539,6 +553,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetSource(val)
+        }
+        return nil
+    }
+    res["source-module-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSourceModuleId(val)
         }
         return nil
     }
@@ -737,6 +761,11 @@ func (m *Workspaces_attributes) GetLockedReason()(*string) {
 func (m *Workspaces_attributes) GetName()(*string) {
     return m.name
 }
+// GetNoCodeUpgradeAvailable gets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
+// returns a *bool when successful
+func (m *Workspaces_attributes) GetNoCodeUpgradeAvailable()(*bool) {
+    return m.noCodeUpgradeAvailable
+}
 // GetOperations gets the operations property value. Deprecated. Use execution-mode instead.
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetOperations()(*bool) {
@@ -786,6 +815,11 @@ func (m *Workspaces_attributes) GetSettingOverwrites()(Workspaces_attributes_set
 // returns a *string when successful
 func (m *Workspaces_attributes) GetSource()(*string) {
     return m.source
+}
+// GetSourceModuleId gets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
+// returns a *string when successful
+func (m *Workspaces_attributes) GetSourceModuleId()(*string) {
+    return m.sourceModuleId
 }
 // GetSourceName gets the source-name property value. The sourceName property
 // returns a *string when successful
@@ -1233,6 +1267,10 @@ func (m *Workspaces_attributes) SetLockedReason(value *string)() {
 func (m *Workspaces_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetNoCodeUpgradeAvailable sets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
+func (m *Workspaces_attributes) SetNoCodeUpgradeAvailable(value *bool)() {
+    m.noCodeUpgradeAvailable = value
+}
 // SetOperations sets the operations property value. Deprecated. Use execution-mode instead.
 func (m *Workspaces_attributes) SetOperations(value *bool)() {
     m.operations = value
@@ -1272,6 +1310,10 @@ func (m *Workspaces_attributes) SetSettingOverwrites(value Workspaces_attributes
 // SetSource sets the source property value. The source property
 func (m *Workspaces_attributes) SetSource(value *string)() {
     m.source = value
+}
+// SetSourceModuleId sets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
+func (m *Workspaces_attributes) SetSourceModuleId(value *string)() {
+    m.sourceModuleId = value
 }
 // SetSourceName sets the source-name property value. The sourceName property
 func (m *Workspaces_attributes) SetSourceName(value *string)() {
@@ -1352,6 +1394,7 @@ type Workspaces_attributesable interface {
     GetLocked()(*bool)
     GetLockedReason()(*string)
     GetName()(*string)
+    GetNoCodeUpgradeAvailable()(*bool)
     GetOperations()(*bool)
     GetPermissions()(Workspaces_attributes_permissionsable)
     GetPlanDurationAverage()(*int32)
@@ -1362,6 +1405,7 @@ type Workspaces_attributesable interface {
     GetRunFailures()(*int32)
     GetSettingOverwrites()(Workspaces_attributes_settingOverwritesable)
     GetSource()(*string)
+    GetSourceModuleId()(*string)
     GetSourceName()(*string)
     GetSourceUrl()(*string)
     GetSpeculativeEnabled()(*bool)
@@ -1399,6 +1443,7 @@ type Workspaces_attributesable interface {
     SetLocked(value *bool)()
     SetLockedReason(value *string)()
     SetName(value *string)()
+    SetNoCodeUpgradeAvailable(value *bool)()
     SetOperations(value *bool)()
     SetPermissions(value Workspaces_attributes_permissionsable)()
     SetPlanDurationAverage(value *int32)()
@@ -1409,6 +1454,7 @@ type Workspaces_attributesable interface {
     SetRunFailures(value *int32)()
     SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable)()
     SetSource(value *string)()
+    SetSourceModuleId(value *string)()
     SetSourceName(value *string)()
     SetSourceUrl(value *string)()
     SetSpeculativeEnabled(value *bool)()
