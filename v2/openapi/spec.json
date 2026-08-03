@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "b3954fbd",
+    "version": "development",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -450,9 +450,172 @@
       "name": "tag-binding",
       "x-displayName": "Tag Bindings",
       "description": "Tag bindings on resources"
+    },
+    {
+      "name": "admin-banners",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Admin Banners",
+      "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
     }
   ],
   "paths": {
+    "/admin/banners": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "createAdminBanner",
+        "summary": "Create Site-Wide Announcement Banner",
+        "description": "Creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-banners-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Banner created successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/banners/{id}": {
+      "x-vis": [
+        "tfe"
+      ],
+      "patch": {
+        "operationId": "updateAdminBanner",
+        "summary": "Update Site-Wide Announcement Banner",
+        "description": "Updates an existing site-wide announcement banner. Partial updates are supported: only fields present in the request body are modified. All model validations apply, including the schedule all-or-nothing rule. Returns the updated banner on success.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the banner to update (e.g. ab-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-banners-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Banner not found. The provided id does not match any banner.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deactivateAdminBanner",
+        "summary": "Deactivate Site-Wide Announcement Banner",
+        "description": "Deactivates a site-wide announcement banner. This is a soft delete: the banner row is retained for audit history, but deactivated-at is set to the current timestamp and the banner is no longer returned by the active banner endpoint. Returns 204 No Content on success.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the banner to deactivate (e.g. ab-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Banner deactivated successfully."
+          },
+          "404": {
+            "description": "Banner not found. The provided id does not match any banner.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/details": {
       "get": {
         "operationId": "getAccountDetails",
@@ -4521,6 +4684,59 @@
           },
           "404": {
             "description": "Project not found or user unauthorized to manage tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/effective-tag-bindings": {
+      "get": {
+        "operationId": "listProjectEffectiveTagBindings",
+        "summary": "List Project Effective Tag Bindings",
+        "description": "List all effective (inherited and direct) tag bindings for a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of effective tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/effective-tag-bindings-envelope-many"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to view project",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -9316,6 +9532,59 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/effective-tag-bindings": {
+      "get": {
+        "operationId": "listWorkspaceEffectiveTagBindings",
+        "summary": "List Workspace Effective Tag Bindings",
+        "description": "List all effective (inherited and direct) tag bindings for a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of effective tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/effective-tag-bindings-envelope-many"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to view workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/relationships/tags": {
       "get": {
         "operationId": "listWorkspaceTags",
@@ -12243,7 +12512,7 @@
                 }
               }
             },
-            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample \u2014 return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
+            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample — return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -15728,6 +15997,17 @@
             "description": "HYOK Configuration ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
         "responses": {
           "202": {
             "description": "HYOK Configuration revocation initiated",
@@ -15896,6 +16176,17 @@
             "description": "HYOK Customer Key Version ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
         "responses": {
           "202": {
             "description": "HYOK Key Version revocation initiated",
@@ -23025,112 +23316,6 @@
           }
         }
       }
-    },
-    "/projects/{project_id}/effective-tag-bindings": {
-      "get": {
-        "operationId": "listProjectEffectiveTagBindings",
-        "summary": "List Project Effective Tag Bindings",
-        "description": "List all effective (inherited and direct) tag bindings for a project.",
-        "tags": [
-          "projects"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "project_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the project."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of effective tag bindings",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/effective-tag-bindings-collection"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Project not found or user unauthorized to view project",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/workspaces/{workspace_id}/effective-tag-bindings": {
-      "get": {
-        "operationId": "listWorkspaceEffectiveTagBindings",
-        "summary": "List Workspace Effective Tag Bindings",
-        "description": "List all effective (inherited and direct) tag bindings for a workspace.",
-        "tags": [
-          "workspaces"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "workspace_id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ID of the workspace."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of effective tag bindings",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/effective-tag-bindings-collection"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workspace not found or user unauthorized to view workspace",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -23141,6 +23326,106 @@
       }
     },
     "schemas": {
+      "admin-banners": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the banner (e.g. ab-xxxxxxxxxxxxxxxx)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "admin-banners"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "title",
+              "body",
+              "style",
+              "audience"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Short heading for the banner (max 100 characters)."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 255,
+                "description": "Body text of the banner. Limited HTML is allowed: strong, em, b, i, and anchor tags with href. All other tags and attributes are stripped. Maximum 255 characters after sanitization.\n"
+              },
+              "style": {
+                "type": "string",
+                "enum": [
+                  "info",
+                  "warning",
+                  "critical"
+                ],
+                "description": "Visual style controlling how the banner is rendered."
+              },
+              "audience": {
+                "type": "string",
+                "enum": [
+                  "all_users",
+                  "authenticated_only"
+                ],
+                "description": "Which users see the banner."
+              },
+              "scheduled-publish-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.\n"
+              },
+              "scheduled-expire-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.\n"
+              },
+              "timezone": {
+                "type": "string",
+                "nullable": true,
+                "description": "IANA timezone identifier for the scheduled times (e.g. \"America/New_York\", \"UTC\"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.\n"
+              },
+              "published-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.\n"
+              },
+              "deactivated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.\n"
+              }
+            }
+          }
+        }
+      },
+      "admin-banners-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-banners"
+          }
+        }
+      },
       "errors": {
         "type": "object",
         "properties": {
@@ -24204,6 +24489,32 @@
           }
         }
       },
+      "projects-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "projects"
+            ]
+          }
+        }
+      },
+      "projects-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/projects-identifier"
+            }
+          }
+        }
+      },
       "agent-pools": {
         "type": "object",
         "required": [
@@ -24726,20 +25037,6 @@
           },
           "links": {
             "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "projects-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "projects"
-            ]
           }
         }
       },
@@ -26410,6 +26707,84 @@
           }
         }
       },
+      "inherited-from-has-one": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/projects-identifier"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "projects": "#/components/schemas/projects-identifier"
+              }
+            }
+          }
+        }
+      },
+      "effective-tag-bindings": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "example": "3JAnx3G4puQcjHu3"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "effective-tag-bindings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "key"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "description": "Optional relationship indicating the project this binding was inherited from, if applicable.",
+            "properties": {
+              "inherited-from": {
+                "$ref": "#/components/schemas/inherited-from-has-one"
+              }
+            }
+          }
+        }
+      },
+      "effective-tag-bindings-envelope-many": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/effective-tag-bindings"
+            }
+          }
+        }
+      },
       "ssh-keys-identifier": {
         "type": "object",
         "required": [
@@ -26977,6 +27352,18 @@
                 "type": "string",
                 "nullable": true
               },
+              "source-module-id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Identifier of the no-code module and version this workspace was created from\n(for example, private/<org>/<name>/<provider>/<version>). Present only for\nno-code workspaces; omitted otherwise. Prefer the no-code-module-version\nrelationship for a typed link to the current no-code module version.\n"
+              },
+              "no-code-upgrade-available": {
+                "type": "boolean",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Whether a newer no-code module version is available for this workspace.\nPresent only for no-code workspaces; omitted otherwise.\n"
+              },
               "tag-names": {
                 "type": "array",
                 "items": {
@@ -27498,18 +27885,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/vars"
-          }
-        }
-      },
-      "projects-has-many": {
-        "type": "object",
-        "nullable": true,
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/projects-identifier"
-            }
           }
         }
       },
@@ -31859,6 +32234,24 @@
               "primary": {
                 "type": "boolean"
               },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "untested",
+                  "testing",
+                  "test_failed",
+                  "available",
+                  "errored",
+                  "revoking",
+                  "revoked"
+                ]
+              },
+              "error": {
+                "type": "string",
+                "readOnly": true,
+                "nullable": true
+              },
               "kms-options": {
                 "type": "object",
                 "nullable": true,
@@ -31874,6 +32267,10 @@
                   "key-ring-id": {
                     "type": "string",
                     "description": "Only required with GCP KMS"
+                  },
+                  "multi-region": {
+                    "type": "boolean",
+                    "description": "Optional for AWS KMS"
                   }
                 }
               }
@@ -34910,84 +35307,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspace-transfers"
-          }
-        }
-      },
-      "inherited-from-has-one": {
-        "type": "object",
-        "nullable": true,
-        "properties": {
-          "data": {
-            "type": "object",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/projects-identifier"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "type",
-              "mapping": {
-                "projects": "#/components/schemas/projects-identifier"
-              }
-            }
-          }
-        }
-      },
-      "effective-tag-bindings": {
-        "type": "object",
-        "required": [
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true,
-            "example": "etb-7AHdkTVXrmxiB8vQ"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "effective-tag-bindings"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "key"
-            ],
-            "properties": {
-              "key": {
-                "type": "string"
-              },
-              "value": {
-                "type": "string"
-              }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "description": "Optional relationship indicating the project this binding was inherited from, if applicable.",
-            "properties": {
-              "inherited-from": {
-                "$ref": "#/components/schemas/inherited-from-has-one"
-              }
-            }
-          }
-        }
-      },
-      "effective-tag-bindings-collection": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/effective-tag-bindings"
-            }
           }
         }
       }

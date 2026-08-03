@@ -16,6 +16,8 @@ type HyokConfigurations_attributes_kmsOptions struct {
     keyRegion *string
     // Only required with GCP KMS
     keyRingId *string
+    // Optional for AWS KMS
+    multiRegion *bool
 }
 // NewHyokConfigurations_attributes_kmsOptions instantiates a new HyokConfigurations_attributes_kmsOptions and sets the default values.
 func NewHyokConfigurations_attributes_kmsOptions()(*HyokConfigurations_attributes_kmsOptions) {
@@ -68,6 +70,16 @@ func (m *HyokConfigurations_attributes_kmsOptions) GetFieldDeserializers()(map[s
         }
         return nil
     }
+    res["multi-region"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMultiRegion(val)
+        }
+        return nil
+    }
     return res
 }
 // GetKeyLocation gets the key-location property value. Only required with GCP KMS
@@ -85,6 +97,11 @@ func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRegion()(*string) {
 func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRingId()(*string) {
     return m.keyRingId
 }
+// GetMultiRegion gets the multi-region property value. Optional for AWS KMS
+// returns a *bool when successful
+func (m *HyokConfigurations_attributes_kmsOptions) GetMultiRegion()(*bool) {
+    return m.multiRegion
+}
 // Serialize serializes information the current object
 func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
@@ -101,6 +118,12 @@ func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330
     }
     {
         err := writer.WriteStringValue("key-ring-id", m.GetKeyRingId())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("multi-region", m.GetMultiRegion())
         if err != nil {
             return err
         }
@@ -129,13 +152,19 @@ func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRegion(value *string)()
 func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRingId(value *string)() {
     m.keyRingId = value
 }
+// SetMultiRegion sets the multi-region property value. Optional for AWS KMS
+func (m *HyokConfigurations_attributes_kmsOptions) SetMultiRegion(value *bool)() {
+    m.multiRegion = value
+}
 type HyokConfigurations_attributes_kmsOptionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetKeyLocation()(*string)
     GetKeyRegion()(*string)
     GetKeyRingId()(*string)
+    GetMultiRegion()(*bool)
     SetKeyLocation(value *string)()
     SetKeyRegion(value *string)()
     SetKeyRingId(value *string)()
+    SetMultiRegion(value *bool)()
 }
