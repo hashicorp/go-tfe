@@ -29,3 +29,53 @@ func NewAdminRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb
     urlParams["request-raw-url"] = rawUrl
     return NewAdminRequestBuilderInternal(urlParams, requestAdapter)
 }
+// OpaVersions the opaVersions property
+// returns a *OpaVersionsRequestBuilder when successful
+func (m *AdminRequestBuilder) OpaVersions()(*OpaVersionsRequestBuilder) {
+    return NewOpaVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Organizations the organizations property
+// returns a *OrganizationsRequestBuilder when successful
+func (m *AdminRequestBuilder) Organizations()(*OrganizationsRequestBuilder) {
+    return NewOrganizationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// SamlSettings the samlSettings property
+// returns a *SamlSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) SamlSettings()(*SamlSettingsRequestBuilder) {
+    return NewSamlSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ScimGroups the scimGroups property
+// returns a *ScimGroupsRequestBuilder when successful
+func (m *AdminRequestBuilder) ScimGroups()(*ScimGroupsRequestBuilder) {
+    return NewScimGroupsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ScimSettings the scimSettings property
+// returns a *ScimSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) ScimSettings()(*ScimSettingsRequestBuilder) {
+    return NewScimSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ScimTokens the scimTokens property
+// returns a *ScimTokensRequestBuilder when successful
+func (m *AdminRequestBuilder) ScimTokens()(*ScimTokensRequestBuilder) {
+    return NewScimTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// SentinelVersions the sentinelVersions property
+// returns a *SentinelVersionsRequestBuilder when successful
+func (m *AdminRequestBuilder) SentinelVersions()(*SentinelVersionsRequestBuilder) {
+    return NewSentinelVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// SmtpSettings the smtpSettings property
+// returns a *SmtpSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) SmtpSettings()(*SmtpSettingsRequestBuilder) {
+    return NewSmtpSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Teams the teams property
+// returns a *TeamsRequestBuilder when successful
+func (m *AdminRequestBuilder) Teams()(*TeamsRequestBuilder) {
+    return NewTeamsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TerraformVersions the terraformVersions property
+// returns a *TerraformVersionsRequestBuilder when successful
+func (m *AdminRequestBuilder) TerraformVersions()(*TerraformVersionsRequestBuilder) {
+    return NewTerraformVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
