@@ -1,5 +1,8 @@
 # Unreleased
 
+* Bug Fix: Set `Content-Type: application/vnd.api+json` on POST, PATCH, and DELETE requests without
+a body.
+
 * Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
 customize many more aspects of every request round trip.
 
