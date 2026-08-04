@@ -4814,21 +4814,46 @@
           },
           {
             "in": "query",
-            "name": "filter[tagged]",
+            "name": "search[tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag names."
+            "description": "Comma-separated list of legacy tag names that workspaces must have."
           },
           {
             "in": "query",
-            "name": "filter[tagged][value]",
+            "name": "search[exclude-tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag key=value pairs."
+            "description": "Comma-separated list of legacy tag names that workspaces must not have."
+          },
+          {
+            "in": "query",
+            "name": "filter[tagged]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": false,
+            "style": "deepObject",
+            "explode": true,
+            "description": "Filter workspaces by effective tag bindings. Example usage is `filter[tagged][0][key]=env&filter[tagged][0][value]=prod`."
           },
           {
             "in": "query",
@@ -9023,6 +9048,12 @@
             },
             "required": false,
             "description": "When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -9040,6 +9071,14 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/workspaces"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
                       }
                     }
                   }
@@ -27444,11 +27483,14 @@
               },
               "vars": {
                 "$ref": "#/components/schemas/vars-has-many"
+              },
+              "tags": {
+                "$ref": "#/components/schemas/tags-has-many"
               }
             }
           },
           "links": {
-            "$ref": "#/components/schemas/self"
+            "$ref": "#/components/schemas/workspace-links"
           }
         }
       },
@@ -35307,6 +35349,53 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspace-transfers"
+          }
+        }
+      },
+      "tags-has-many": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "tags"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "workspace-links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "self-html": {
+            "type": "string"
           }
         }
       }

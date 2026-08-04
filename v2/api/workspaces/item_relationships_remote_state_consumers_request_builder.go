@@ -15,13 +15,17 @@ type ItemRelationshipsRemoteStateConsumersRequestBuilder struct {
 }
 // ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters list the workspaces that are allowed to access this workspace's state. When global-remote-state is enabled on the workspace, this lists all workspaces in the organization; otherwise, it lists only the explicitly allowed consumers.
 type ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters struct {
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
     // When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.
     Show_only_configured *bool "uriparametername:\"show_only_configured\""
 }
 // NewItemRelationshipsRemoteStateConsumersRequestBuilderInternal instantiates a new ItemRelationshipsRemoteStateConsumersRequestBuilder and sets the default values.
 func NewItemRelationshipsRemoteStateConsumersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRemoteStateConsumersRequestBuilder) {
     m := &ItemRelationshipsRemoteStateConsumersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/relationships/remote-state-consumers{?show_only_configured*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/relationships/remote-state-consumers{?page%5Bnumber%5D*,page%5Bsize%5D*,show_only_configured*}", pathParameters),
     }
     return m
 }

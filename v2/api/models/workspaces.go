@@ -15,7 +15,7 @@ type Workspaces struct {
     // The id property
     id *string
     // The links property
-    links Selfable
+    links WorkspaceLinksable
     // The relationships property
     relationships Workspaces_relationshipsable
     // The type property
@@ -68,12 +68,12 @@ func (m *Workspaces) GetFieldDeserializers()(map[string]func(i878a80d2330e89d268
         return nil
     }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSelfFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateWorkspaceLinksFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetLinks(val.(Selfable))
+            m.SetLinks(val.(WorkspaceLinksable))
         }
         return nil
     }
@@ -105,8 +105,8 @@ func (m *Workspaces) GetId()(*string) {
     return m.id
 }
 // GetLinks gets the links property value. The links property
-// returns a Selfable when successful
-func (m *Workspaces) GetLinks()(Selfable) {
+// returns a WorkspaceLinksable when successful
+func (m *Workspaces) GetLinks()(WorkspaceLinksable) {
     return m.links
 }
 // GetRelationships gets the relationships property value. The relationships property
@@ -167,7 +167,7 @@ func (m *Workspaces) SetId(value *string)() {
     m.id = value
 }
 // SetLinks sets the links property value. The links property
-func (m *Workspaces) SetLinks(value Selfable)() {
+func (m *Workspaces) SetLinks(value WorkspaceLinksable)() {
     m.links = value
 }
 // SetRelationships sets the relationships property value. The relationships property
@@ -183,12 +183,12 @@ type Workspacesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAttributes()(Workspaces_attributesable)
     GetId()(*string)
-    GetLinks()(Selfable)
+    GetLinks()(WorkspaceLinksable)
     GetRelationships()(Workspaces_relationshipsable)
     GetTypeEscaped()(*Workspaces_type)
     SetAttributes(value Workspaces_attributesable)()
     SetId(value *string)()
-    SetLinks(value Selfable)()
+    SetLinks(value WorkspaceLinksable)()
     SetRelationships(value Workspaces_relationshipsable)()
     SetTypeEscaped(value *Workspaces_type)()
 }
