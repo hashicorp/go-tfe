@@ -12914,6 +12914,29 @@
             },
             "required": true,
             "description": "The ID of the policy set."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "policies",
+                  "workspaces",
+                  "workspace_exclusions",
+                  "projects",
+                  "current_version",
+                  "newest_version",
+                  "project_exclusions"
+                ]
+              }
+            },
+            "required": false,
+            "description": "A comma-separated list of related resources to include."
           }
         ],
         "responses": {
