@@ -42,6 +42,11 @@ func (m *WithProject_ItemRequestBuilder) Delete(ctx context.Context, requestConf
     }
     return nil
 }
+// EffectiveTagBindings the effectiveTagBindings property
+// returns a *ItemEffectiveTagBindingsRequestBuilder when successful
+func (m *WithProject_ItemRequestBuilder) EffectiveTagBindings()(*ItemEffectiveTagBindingsRequestBuilder) {
+    return NewItemEffectiveTagBindingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Get get details of a specific project.
 // returns a ProjectsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code

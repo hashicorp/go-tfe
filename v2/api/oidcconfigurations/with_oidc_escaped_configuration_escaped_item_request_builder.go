@@ -26,6 +26,22 @@ func NewWithOidc_configuration_ItemRequestBuilder(rawUrl string, requestAdapter 
     urlParams["request-raw-url"] = rawUrl
     return NewWithOidc_configuration_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+// Delete delete an OIDC configurationThis operation is only available in HCP Terraform.
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithOidc_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+    requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+    if err != nil {
+        return err
+    }
+    return nil
+}
 // Get get details about an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a OidcConfigurationEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -65,6 +81,14 @@ func (m *WithOidc_configuration_ItemRequestBuilder) Patch(ctx context.Context, b
         return nil, nil
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OidcConfigurationEnvelopeable), nil
+}
+// ToDeleteRequestInformation delete an OIDC configurationThis operation is only available in HCP Terraform.
+// returns a *RequestInformation when successful
+func (m *WithOidc_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
 }
 // ToGetRequestInformation get details about an OIDC configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
