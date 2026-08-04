@@ -43,14 +43,15 @@ func TestContentTypeMiddleware_setsMissingHeader(t *testing.T) {
 				req.Header.Set("Content-Type", tc.presetValue)
 			}
 
-			resp := &http.Response{StatusCode: http.StatusOK}
+			resp := &http.Response{StatusCode: http.StatusOK, Body: http.NoBody}
 			pipeline := &terminalPipeline{resp: resp}
 
 			m := &ContentTypeMiddleware{}
-			_, err := m.Intercept(pipeline, 0, req)
+			gotResp, err := m.Intercept(pipeline, 0, req)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			defer gotResp.Body.Close()
 
 			got := pipeline.capturedReq.Header.Get("Content-Type")
 
