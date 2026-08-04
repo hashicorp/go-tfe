@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -35,7 +36,7 @@ func NewOidcConfigurationEnvelope_OidcConfigurationEnvelope_data()(*OidcConfigur
 func CreateOidcConfigurationEnvelope_OidcConfigurationEnvelope_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     result := NewOidcConfigurationEnvelope_OidcConfigurationEnvelope_data()
     if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("")
+        mappingValueNode, err := parseNode.GetChildNode("type")
         if err != nil {
             return nil, err
         }
@@ -45,6 +46,15 @@ func CreateOidcConfigurationEnvelope_OidcConfigurationEnvelope_dataFromDiscrimin
                 return nil, err
             }
             if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "aws-oidc-configurations") {
+                    result.SetAwsOidcConfigurations(NewAwsOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "azure-oidc-configurations") {
+                    result.SetAzureOidcConfigurations(NewAzureOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "gcp-oidc-configurations") {
+                    result.SetGcpOidcConfigurations(NewGcpOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vault-oidc-configurations") {
+                    result.SetVaultOidcConfigurations(NewVaultOidcConfigurations())
+                }
             }
         }
     }

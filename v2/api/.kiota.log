@@ -3,3 +3,4 @@ Warning: KiotaBuilder OpenAPI warning: #/ - The schema /organizations/{organizat
 Warning: KiotaBuilder OpenAPI warning: #/paths/~1organizations~1{organization_name}~1organization-memberships/get/parameters/3/schema - The format email is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/organization-memberships/properties/attributes/properties/email - The format email is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder No server url found in the OpenAPI document. The base url will need to be set when using the client.
+Warning: KiotaBuilder Discriminator projects-identifier is not inherited from inheritedFromHasOne_data.
