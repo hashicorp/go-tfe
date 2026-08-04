@@ -21,8 +21,9 @@ func nilErrorFactory(_ *nethttp.Response, _ error) error {
 // This function replaces Kiota's built-in RetryHandler with a custom RetryMiddleware.
 // Kiota's RetryHandler has a hardcoded isRetriableErrorCode gate that only covers 429, 503, 504
 // and short-circuits before calling the ShouldRetry callback. Our custom middleware calls
-// ShouldRetry unconditionally, allowing retries on 429, 425, and all 5xx (when RetryServerErrors
-// is enabled).
+// ShouldRetry unconditionally, allowing retries on 429, 425, all 5xx, and transport/connection
+// errors. 5xx responses and transport/connection errors are retried when RetryServerErrors
+// is enabled.
 func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Middleware, error) {
 	var errFactory APIErrorFactory = nilErrorFactory
 	var retryOpts = RetryOptions{
@@ -64,7 +65,16 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 	retryMiddleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   retryOpts.MaxRetries,
 		DelaySeconds: 1,
-		ShouldRetry: func(executionCount int, request *nethttp.Request, response *nethttp.Response) bool {
+		ShouldRetry: func(executionCount int, request *nethttp.Request, response *nethttp.Response, err error) bool {
+			// Transport/connection errors are retried when RetryServerErrors
+			// is enabled. The hook receives a nil response in this case.
+			if err != nil || response == nil {
+				if retryOpts.RetryServerErrors {
+					retryOpts.Hook(executionCount, response)
+					return true
+				}
+				return false
+			}
 			// Retry on 429 (rate limited) and 425 (too early) when rate limit retries are enabled
 			if retryOpts.Enabled && (response.StatusCode == 429 || response.StatusCode == 425) {
 				retryOpts.Hook(executionCount, response)

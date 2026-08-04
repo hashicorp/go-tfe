@@ -4,6 +4,7 @@
 package middleware
 
 import (
+	"cmp"
 	"io"
 	"math"
 	nethttp "net/http"
@@ -23,8 +24,10 @@ const (
 	absoluteMaxDelaySeconds = 180
 )
 
-// ShouldRetryFunc determines whether a request should be retried based on the response.
-type ShouldRetryFunc func(executionCount int, request *nethttp.Request, response *nethttp.Response) bool
+// ShouldRetryFunc determines whether a request should be retried based on the response
+// and/or the error returned by the transport. When a transport/connection error occurs
+// (e.g. connection refused, DNS failure), response is nil and err is non-nil.
+type ShouldRetryFunc func(executionCount int, request *nethttp.Request, response *nethttp.Response, err error) bool
 
 // RetryMiddleware is a custom retry middleware that replaces Kiota's built-in RetryHandler.
 // Unlike Kiota's implementation, it does NOT gate retries behind a hardcoded isRetriableErrorCode
@@ -42,9 +45,9 @@ type RetryMiddlewareOptions struct {
 	MaxRetries int
 	// DelaySeconds is the base delay between retries (used for exponential backoff).
 	DelaySeconds int
-	// ShouldRetry determines whether a given response warrants a retry.
-	// This is called unconditionally for every non-nil response — there is no
-	// status code pre-filter.
+	// ShouldRetry determines whether a given response (or transport error) warrants
+	// a retry. It is called unconditionally for every attempt — there is no status
+	// code pre-filter, and transport errors are passed through with a nil response.
 	ShouldRetry ShouldRetryFunc
 }
 
@@ -66,7 +69,7 @@ func NewRetryMiddleware(opts RetryMiddlewareOptions) khttp.Middleware {
 
 	shouldRetry := opts.ShouldRetry
 	if shouldRetry == nil {
-		shouldRetry = func(_ int, _ *nethttp.Request, _ *nethttp.Response) bool {
+		shouldRetry = func(_ int, _ *nethttp.Request, _ *nethttp.Response, _ error) bool {
 			return false
 		}
 	}
@@ -81,10 +84,7 @@ func NewRetryMiddleware(opts RetryMiddlewareOptions) khttp.Middleware {
 // Intercept implements the khttp.Middleware interface.
 func (m *RetryMiddleware) Intercept(pipeline khttp.Pipeline, middlewareIndex int, req *nethttp.Request) (*nethttp.Response, error) {
 	response, err := pipeline.Next(req, middlewareIndex)
-	if err != nil {
-		return response, err
-	}
-	return m.retryRequest(pipeline, middlewareIndex, req, response, 0, 0)
+	return m.retryRequest(pipeline, middlewareIndex, req, response, err, 0, 0)
 }
 
 func (m *RetryMiddleware) retryRequest(
@@ -92,22 +92,23 @@ func (m *RetryMiddleware) retryRequest(
 	middlewareIndex int,
 	req *nethttp.Request,
 	resp *nethttp.Response,
+	respErr error,
 	executionCount int,
 	cumulativeDelay time.Duration,
 ) (*nethttp.Response, error) {
 	// Check all retry conditions. Unlike Kiota's RetryHandler, we do NOT pre-filter
 	// by status code. The ShouldRetry callback is the sole arbiter of whether to retry.
 	if !m.isRetriableRequest(req) {
-		return resp, nil
+		return resp, respErr
 	}
 	if executionCount >= m.maxRetries {
-		return resp, nil
+		return resp, respErr
 	}
 	if cumulativeDelay >= time.Duration(absoluteMaxDelaySeconds)*time.Second {
-		return resp, nil
+		return resp, respErr
 	}
-	if !m.shouldRetry(executionCount, req, resp) {
-		return resp, nil
+	if !m.shouldRetry(executionCount, req, resp, respErr) {
+		return resp, respErr
 	}
 
 	// Proceed with retry
@@ -121,7 +122,8 @@ func (m *RetryMiddleware) retryRequest(
 	if req.Body != nil {
 		if seeker, ok := req.Body.(io.Seeker); ok {
 			if _, err := seeker.Seek(0, io.SeekStart); err != nil {
-				return resp, err
+				// Prefer surfacing the original transport error over the seek error.
+				return resp, cmp.Or(respErr, err)
 			}
 		}
 	}
@@ -137,10 +139,7 @@ func (m *RetryMiddleware) retryRequest(
 	}
 
 	response, err := pipeline.Next(req, middlewareIndex)
-	if err != nil {
-		return response, err
-	}
-	return m.retryRequest(pipeline, middlewareIndex, req, response, executionCount, cumulativeDelay)
+	return m.retryRequest(pipeline, middlewareIndex, req, response, err, executionCount, cumulativeDelay)
 }
 
 // isRetriableRequest checks whether the request type supports retrying.

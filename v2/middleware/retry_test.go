@@ -4,6 +4,7 @@ package middleware
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -47,7 +48,7 @@ func TestRetryMiddleware_RetriesOn500(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   5,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -85,7 +86,7 @@ func TestRetryMiddleware_RetriesOn502(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -124,7 +125,7 @@ func TestRetryMiddleware_RetriesOn429(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode == 429 || resp.StatusCode == 425
 		},
 	})
@@ -162,7 +163,7 @@ func TestRetryMiddleware_RetriesOn425(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode == 429 || resp.StatusCode == 425
 		},
 	})
@@ -196,7 +197,7 @@ func TestRetryMiddleware_DoesNotRetryWhenShouldRetryReturnsFalse(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			// Only retry on 429, 425, 5xx
 			return resp.StatusCode == 429 || resp.StatusCode == 425 || resp.StatusCode >= 500
 		},
@@ -231,7 +232,7 @@ func TestRetryMiddleware_RespectsMaxRetries(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   2,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -266,7 +267,7 @@ func TestRetryMiddleware_DoesNotRetryStreamingBody(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -307,7 +308,7 @@ func TestRetryMiddleware_RetriesPostWithKnownContentLength(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -351,7 +352,7 @@ func TestRetryMiddleware_HookCalledOnRetry(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   5,
 		DelaySeconds: 1,
-		ShouldRetry: func(executionCount int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(executionCount int, _ *http.Request, resp *http.Response, _ error) bool {
 			if resp.StatusCode >= 500 {
 				atomic.AddInt32(&hookCalls, 1)
 				return true
@@ -393,7 +394,7 @@ func TestRetryMiddleware_SetsRetryAttemptHeader(t *testing.T) {
 	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
 		MaxRetries:   3,
 		DelaySeconds: 1,
-		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response) bool {
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, _ error) bool {
 			return resp.StatusCode >= 500
 		},
 	})
@@ -483,6 +484,221 @@ func TestGetForKiota_RetryDisabled(t *testing.T) {
 	// Should not retry when disabled
 	if atomic.LoadInt32(&attempts) != 1 {
 		t.Fatalf("expected 1 attempt (retry disabled), got %d", atomic.LoadInt32(&attempts))
+	}
+}
+
+// flakyPipeline implements khttp.Pipeline for testing transport errors. It returns
+// a transport error for the first `failures` attempts, then routes to the transport.
+type flakyPipeline struct {
+	transport http.RoundTripper
+	failures  int32
+	attempts  int32
+	err       error
+}
+
+func (p *flakyPipeline) Next(req *http.Request, _ int) (*http.Response, error) {
+	n := atomic.AddInt32(&p.attempts, 1)
+	if n <= p.failures {
+		return nil, p.err
+	}
+	return p.transport.RoundTrip(req)
+}
+
+func TestRetryMiddleware_RetriesTransportErrors(t *testing.T) {
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+	server := httptest.NewServer(handler)
+	defer server.Close()
+
+	pipeline := &flakyPipeline{
+		transport: http.DefaultTransport,
+		failures:  2,
+		err:       errors.New("connection refused"),
+	}
+
+	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
+		MaxRetries:   5,
+		DelaySeconds: 1,
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, err error) bool {
+			return err != nil || resp == nil
+		},
+	})
+
+	req, _ := http.NewRequest("GET", server.URL+"/test", nil)
+	resp, err := middleware.Intercept(pipeline, 0, req)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	// 2 failed attempts + 1 success
+	if atomic.LoadInt32(&pipeline.attempts) != 3 {
+		t.Fatalf("expected 3 attempts, got %d", atomic.LoadInt32(&pipeline.attempts))
+	}
+}
+
+func TestRetryMiddleware_ReturnsErrorWhenTransportRetriesExhausted(t *testing.T) {
+	transportErr := errors.New("connection reset by peer")
+	pipeline := &flakyPipeline{
+		transport: http.DefaultTransport,
+		failures:  100, // always fail
+		err:       transportErr,
+	}
+
+	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
+		MaxRetries:   2,
+		DelaySeconds: 1,
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, err error) bool {
+			return err != nil
+		},
+	})
+
+	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
+	resp, err := middleware.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+		t.Fatalf("expected nil response, got %v", resp)
+	}
+
+	if !errors.Is(err, transportErr) {
+		t.Fatalf("expected transport error, got %v", err)
+	}
+	// 1 initial + 2 retries = 3 total
+	if atomic.LoadInt32(&pipeline.attempts) != 3 {
+		t.Fatalf("expected 3 total attempts (1 initial + 2 retries), got %d", atomic.LoadInt32(&pipeline.attempts))
+	}
+}
+
+func TestRetryMiddleware_DoesNotRetryTransportErrorWhenShouldRetryReturnsFalse(t *testing.T) {
+	transportErr := errors.New("connection refused")
+	pipeline := &flakyPipeline{
+		transport: http.DefaultTransport,
+		failures:  100,
+		err:       transportErr,
+	}
+
+	middleware := NewRetryMiddleware(RetryMiddlewareOptions{
+		MaxRetries:   3,
+		DelaySeconds: 1,
+		ShouldRetry: func(_ int, _ *http.Request, resp *http.Response, err error) bool {
+			// Only retry on responses, never on transport errors
+			return resp != nil && resp.StatusCode >= 500
+		},
+	})
+
+	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
+	resp, err := middleware.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
+	if !errors.Is(err, transportErr) {
+		t.Fatalf("expected transport error, got %v", err)
+	}
+	if atomic.LoadInt32(&pipeline.attempts) != 1 {
+		t.Fatalf("expected 1 attempt (no retry), got %d", atomic.LoadInt32(&pipeline.attempts))
+	}
+}
+
+func TestGetForKiota_TransportErrorRetriedWhenRetryServerErrorsEnabled(t *testing.T) {
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+	server := httptest.NewServer(handler)
+	defer server.Close()
+
+	pipeline := &flakyPipeline{
+		transport: http.DefaultTransport,
+		failures:  1,
+		err:       errors.New("connection refused"),
+	}
+
+	var hookCalls int32
+	hook := func(retryCount int, response *http.Response) {
+		atomic.AddInt32(&hookCalls, 1)
+		if response != nil {
+			t.Errorf("expected nil response in hook for transport error, got %v", response)
+		}
+	}
+
+	middlewares, err := GetForKiota("1.0.0",
+		WithRetryOptions(false, true, 3, hook),
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var retryMW khttp.Middleware
+	for _, mw := range middlewares {
+		if _, ok := mw.(*RetryMiddleware); ok {
+			retryMW = mw
+			break
+		}
+	}
+	if retryMW == nil {
+		t.Fatal("RetryMiddleware not found in pipeline")
+	}
+
+	req, _ := http.NewRequest("GET", server.URL+"/test", nil)
+	resp, err := retryMW.Intercept(pipeline, 0, req)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	if atomic.LoadInt32(&pipeline.attempts) != 2 {
+		t.Fatalf("expected 2 attempts, got %d", atomic.LoadInt32(&pipeline.attempts))
+	}
+	if atomic.LoadInt32(&hookCalls) != 1 {
+		t.Fatalf("expected hook called 1 time, got %d", atomic.LoadInt32(&hookCalls))
+	}
+}
+
+func TestGetForKiota_TransportErrorNotRetriedWhenRetryServerErrorsDisabled(t *testing.T) {
+	transportErr := errors.New("connection refused")
+	pipeline := &flakyPipeline{
+		transport: http.DefaultTransport,
+		failures:  100,
+		err:       transportErr,
+	}
+
+	// RetryRateLimited=true but RetryServerErrors=false: transport errors must not retry
+	middlewares, err := GetForKiota("1.0.0",
+		WithRetryOptions(true, false, 3, nil),
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var retryMW khttp.Middleware
+	for _, mw := range middlewares {
+		if _, ok := mw.(*RetryMiddleware); ok {
+			retryMW = mw
+			break
+		}
+	}
+	if retryMW == nil {
+		t.Fatal("RetryMiddleware not found in pipeline")
+	}
+
+	req, _ := http.NewRequest("GET", "http://example.invalid/test", nil)
+	resp, err := retryMW.Intercept(pipeline, 0, req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
+	if !errors.Is(err, transportErr) {
+		t.Fatalf("expected transport error, got %v", err)
+	}
+	if atomic.LoadInt32(&pipeline.attempts) != 1 {
+		t.Fatalf("expected 1 attempt (no retry), got %d", atomic.LoadInt32(&pipeline.attempts))
 	}
 }
 

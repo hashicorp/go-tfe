@@ -21,6 +21,7 @@ func (o MiddlewareOption) Value(key string) any {
 }
 
 // RetryHookCallback is called before each retry attempt with the attempt number and response.
+// The response is nil when the retry is triggered by a transport/connection error.
 type RetryHookCallback func(retryCount int, response *nethttp.Response)
 
 // RetryOptions configures the retry behavior for the middleware pipeline.
