@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "9cfc1aef",
+    "version": "ccaa590b",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -465,6 +465,37 @@
       "x-vis": [
         "tfe"
       ],
+      "get": {
+        "operationId": "getActiveBanners",
+        "security": [],
+        "summary": "Retrieve Active Site-Wide Announcement Banners",
+        "description": "Returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Active banners retrieved successfully. Array is empty when none are active.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createAdminBanner",
         "summary": "Create Site-Wide Announcement Banner",
@@ -23326,6 +23357,28 @@
       }
     },
     "schemas": {
+      "errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "admin-banners": {
         "type": "object",
         "required": [
@@ -23415,6 +23468,20 @@
           }
         }
       },
+      "admin-banners-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/admin-banners"
+            }
+          }
+        }
+      },
       "admin-banners-envelope": {
         "type": "object",
         "required": [
@@ -23423,28 +23490,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-banners"
-          }
-        }
-      },
-      "errors": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "detail": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
