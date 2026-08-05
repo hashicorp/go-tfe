@@ -20,6 +20,8 @@ type RegistryModuleCreate_attributes struct {
     provider *string
     // The registryName property
     registryName *RegistryModuleCreate_attributes_registryName
+    // The testConfig property
+    testConfig RegistryModuleCreate_attributes_testConfigable
 }
 // NewRegistryModuleCreate_attributes instantiates a new RegistryModuleCreate_attributes and sets the default values.
 func NewRegistryModuleCreate_attributes()(*RegistryModuleCreate_attributes) {
@@ -94,6 +96,16 @@ func (m *RegistryModuleCreate_attributes) GetFieldDeserializers()(map[string]fun
         }
         return nil
     }
+    res["test-config"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModuleCreate_attributes_testConfigFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTestConfig(val.(RegistryModuleCreate_attributes_testConfigable))
+        }
+        return nil
+    }
     return res
 }
 // GetName gets the name property value. The name property
@@ -120,6 +132,11 @@ func (m *RegistryModuleCreate_attributes) GetProvider()(*string) {
 // returns a *RegistryModuleCreate_attributes_registryName when successful
 func (m *RegistryModuleCreate_attributes) GetRegistryName()(*RegistryModuleCreate_attributes_registryName) {
     return m.registryName
+}
+// GetTestConfig gets the test-config property value. The testConfig property
+// returns a RegistryModuleCreate_attributes_testConfigable when successful
+func (m *RegistryModuleCreate_attributes) GetTestConfig()(RegistryModuleCreate_attributes_testConfigable) {
+    return m.testConfig
 }
 // Serialize serializes information the current object
 func (m *RegistryModuleCreate_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -150,6 +167,12 @@ func (m *RegistryModuleCreate_attributes) Serialize(writer i878a80d2330e89d26896
     if m.GetRegistryName() != nil {
         cast := (*m.GetRegistryName()).String()
         err := writer.WriteStringValue("registry-name", &cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("test-config", m.GetTestConfig())
         if err != nil {
             return err
         }
@@ -186,6 +209,10 @@ func (m *RegistryModuleCreate_attributes) SetProvider(value *string)() {
 func (m *RegistryModuleCreate_attributes) SetRegistryName(value *RegistryModuleCreate_attributes_registryName)() {
     m.registryName = value
 }
+// SetTestConfig sets the test-config property value. The testConfig property
+func (m *RegistryModuleCreate_attributes) SetTestConfig(value RegistryModuleCreate_attributes_testConfigable)() {
+    m.testConfig = value
+}
 type RegistryModuleCreate_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -194,9 +221,11 @@ type RegistryModuleCreate_attributesable interface {
     GetNoCode()(*bool)
     GetProvider()(*string)
     GetRegistryName()(*RegistryModuleCreate_attributes_registryName)
+    GetTestConfig()(RegistryModuleCreate_attributes_testConfigable)
     SetName(value *string)()
     SetNamespace(value *string)()
     SetNoCode(value *bool)()
     SetProvider(value *string)()
     SetRegistryName(value *RegistryModuleCreate_attributes_registryName)()
+    SetTestConfig(value RegistryModuleCreate_attributes_testConfigable)()
 }

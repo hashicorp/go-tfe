@@ -12,6 +12,8 @@ type RegistryModuleVcsCreate_attributes struct {
     initialVersion *string
     // Optional unless the repository name does not follow the Terraform module naming convention.
     name *string
+    // The noCode property
+    noCode *bool
     // Optional unless the repository name does not follow the Terraform module naming convention.
     provider *string
     // The testConfig property
@@ -51,6 +53,16 @@ func (m *RegistryModuleVcsCreate_attributes) GetFieldDeserializers()(map[string]
         }
         if val != nil {
             m.SetName(val)
+        }
+        return nil
+    }
+    res["no-code"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNoCode(val)
         }
         return nil
     }
@@ -96,6 +108,11 @@ func (m *RegistryModuleVcsCreate_attributes) GetInitialVersion()(*string) {
 func (m *RegistryModuleVcsCreate_attributes) GetName()(*string) {
     return m.name
 }
+// GetNoCode gets the no-code property value. The noCode property
+// returns a *bool when successful
+func (m *RegistryModuleVcsCreate_attributes) GetNoCode()(*bool) {
+    return m.noCode
+}
 // GetProvider gets the provider property value. Optional unless the repository name does not follow the Terraform module naming convention.
 // returns a *string when successful
 func (m *RegistryModuleVcsCreate_attributes) GetProvider()(*string) {
@@ -121,6 +138,12 @@ func (m *RegistryModuleVcsCreate_attributes) Serialize(writer i878a80d2330e89d26
     }
     {
         err := writer.WriteStringValue("name", m.GetName())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("no-code", m.GetNoCode())
         if err != nil {
             return err
         }
@@ -153,6 +176,10 @@ func (m *RegistryModuleVcsCreate_attributes) SetInitialVersion(value *string)() 
 func (m *RegistryModuleVcsCreate_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetNoCode sets the no-code property value. The noCode property
+func (m *RegistryModuleVcsCreate_attributes) SetNoCode(value *bool)() {
+    m.noCode = value
+}
 // SetProvider sets the provider property value. Optional unless the repository name does not follow the Terraform module naming convention.
 func (m *RegistryModuleVcsCreate_attributes) SetProvider(value *string)() {
     m.provider = value
@@ -169,11 +196,13 @@ type RegistryModuleVcsCreate_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetInitialVersion()(*string)
     GetName()(*string)
+    GetNoCode()(*bool)
     GetProvider()(*string)
     GetTestConfig()(RegistryModuleVcsCreate_attributes_testConfigable)
     GetVcsRepo()(RegistryModuleVcsCreate_attributes_vcsRepoable)
     SetInitialVersion(value *string)()
     SetName(value *string)()
+    SetNoCode(value *bool)()
     SetProvider(value *string)()
     SetTestConfig(value RegistryModuleVcsCreate_attributes_testConfigable)()
     SetVcsRepo(value RegistryModuleVcsCreate_attributes_vcsRepoable)()

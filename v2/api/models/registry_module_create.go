@@ -12,6 +12,8 @@ type RegistryModuleCreate struct {
     additionalData map[string]any
     // The attributes property
     attributes RegistryModuleCreate_attributesable
+    // The relationships property
+    relationships RegistryModuleCreate_relationshipsable
     // The type property
     typeEscaped *RegistryModuleCreate_type
 }
@@ -51,6 +53,16 @@ func (m *RegistryModuleCreate) GetFieldDeserializers()(map[string]func(i878a80d2
         }
         return nil
     }
+    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModuleCreate_relationshipsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRelationships(val.(RegistryModuleCreate_relationshipsable))
+        }
+        return nil
+    }
     res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseRegistryModuleCreate_type)
         if err != nil {
@@ -63,6 +75,11 @@ func (m *RegistryModuleCreate) GetFieldDeserializers()(map[string]func(i878a80d2
     }
     return res
 }
+// GetRelationships gets the relationships property value. The relationships property
+// returns a RegistryModuleCreate_relationshipsable when successful
+func (m *RegistryModuleCreate) GetRelationships()(RegistryModuleCreate_relationshipsable) {
+    return m.relationships
+}
 // GetTypeEscaped gets the type property value. The type property
 // returns a *RegistryModuleCreate_type when successful
 func (m *RegistryModuleCreate) GetTypeEscaped()(*RegistryModuleCreate_type) {
@@ -72,6 +89,12 @@ func (m *RegistryModuleCreate) GetTypeEscaped()(*RegistryModuleCreate_type) {
 func (m *RegistryModuleCreate) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("attributes", m.GetAttributes())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("relationships", m.GetRelationships())
         if err != nil {
             return err
         }
@@ -99,6 +122,10 @@ func (m *RegistryModuleCreate) SetAdditionalData(value map[string]any)() {
 func (m *RegistryModuleCreate) SetAttributes(value RegistryModuleCreate_attributesable)() {
     m.attributes = value
 }
+// SetRelationships sets the relationships property value. The relationships property
+func (m *RegistryModuleCreate) SetRelationships(value RegistryModuleCreate_relationshipsable)() {
+    m.relationships = value
+}
 // SetTypeEscaped sets the type property value. The type property
 func (m *RegistryModuleCreate) SetTypeEscaped(value *RegistryModuleCreate_type)() {
     m.typeEscaped = value
@@ -107,7 +134,9 @@ type RegistryModuleCreateable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAttributes()(RegistryModuleCreate_attributesable)
+    GetRelationships()(RegistryModuleCreate_relationshipsable)
     GetTypeEscaped()(*RegistryModuleCreate_type)
     SetAttributes(value RegistryModuleCreate_attributesable)()
+    SetRelationships(value RegistryModuleCreate_relationshipsable)()
     SetTypeEscaped(value *RegistryModuleCreate_type)()
 }

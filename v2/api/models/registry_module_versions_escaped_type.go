@@ -6,16 +6,19 @@ type RegistryModuleVersions_type int
 
 const (
     REGISTRYMODULEVERSIONS_REGISTRYMODULEVERSIONS_TYPE RegistryModuleVersions_type = iota
+    PUBLICREGISTRYMODULEVERSIONS_REGISTRYMODULEVERSIONS_TYPE
 )
 
 func (i RegistryModuleVersions_type) String() string {
-    return []string{"registry-module-versions"}[i]
+    return []string{"registry-module-versions", "public-registry-module-versions"}[i]
 }
 func ParseRegistryModuleVersions_type(v string) (any, error) {
     result := REGISTRYMODULEVERSIONS_REGISTRYMODULEVERSIONS_TYPE
     switch v {
         case "registry-module-versions":
             result = REGISTRYMODULEVERSIONS_REGISTRYMODULEVERSIONS_TYPE
+        case "public-registry-module-versions":
+            result = PUBLICREGISTRYMODULEVERSIONS_REGISTRYMODULEVERSIONS_TYPE
         default:
             return nil, nil
     }

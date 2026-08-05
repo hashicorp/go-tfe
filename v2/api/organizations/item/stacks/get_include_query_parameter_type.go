@@ -5,23 +5,20 @@ package stacks
 type GetIncludeQueryParameterType int
 
 const (
-    ORGANIZATION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    PROJECT_GETINCLUDEQUERYPARAMETERTYPE
-    LATESTSTACKCONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+    PROJECT_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+    LATEST_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"organization", "project", "latest-stack-configuration"}[i]
+    return []string{"project", "latest_stack_configuration"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := ORGANIZATION_GETINCLUDEQUERYPARAMETERTYPE
+    result := PROJECT_GETINCLUDEQUERYPARAMETERTYPE
     switch v {
-        case "organization":
-            result = ORGANIZATION_GETINCLUDEQUERYPARAMETERTYPE
         case "project":
             result = PROJECT_GETINCLUDEQUERYPARAMETERTYPE
-        case "latest-stack-configuration":
-            result = LATESTSTACKCONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+        case "latest_stack_configuration":
+            result = LATEST_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

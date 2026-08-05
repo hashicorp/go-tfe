@@ -13,9 +13,9 @@ import (
 type WithStack_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithStack_ItemRequestBuilderDeleteQueryParameters delete a stackThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// WithStack_ItemRequestBuilderDeleteQueryParameters delete a stack.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type WithStack_ItemRequestBuilderDeleteQueryParameters struct {
-    // Force delete
+    // Delete the stack even if it contains active deployments or is locked.
     Force *bool "uriparametername:\"force\""
 }
 // NewWithStack_ItemRequestBuilderInternal instantiates a new WithStack_ItemRequestBuilder and sets the default values.
@@ -31,7 +31,7 @@ func NewWithStack_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7dae
     urlParams["request-raw-url"] = rawUrl
     return NewWithStack_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete delete a stackThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Delete delete a stack.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithStack_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_ItemRequestBuilderDeleteQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
@@ -87,7 +87,7 @@ func (m *WithStack_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksEnvelopeable), nil
 }
-// ToDeleteRequestInformation delete a stackThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToDeleteRequestInformation delete a stack.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *WithStack_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_ItemRequestBuilderDeleteQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

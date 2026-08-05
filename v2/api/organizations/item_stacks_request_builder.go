@@ -22,8 +22,8 @@ type ItemStacksRequestBuilderGetQueryParameters struct {
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
-    // Allows sorting the returned stacks. Valid values are "name" and "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
-    Sort *string "uriparametername:\"sort\""
+    // Allows sorting the returned stacks by name or latest configuration update time.
+    Sort *i70875ccd1b2bd0f77e8cd882fe31b81388ce6bbf5b12d7e55438120a9c0d3adc.GetSortQueryParameterType "uriparametername:\"sort\""
 }
 // NewItemStacksRequestBuilderInternal instantiates a new ItemStacksRequestBuilder and sets the default values.
 func NewItemStacksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStacksRequestBuilder) {

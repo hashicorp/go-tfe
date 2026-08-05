@@ -35,8 +35,6 @@ type OauthClients_attributes struct {
     oauthTokenString *string
     // The organizationScoped property
     organizationScoped *bool
-    // The privateKey property
-    privateKey *string
     // The rsaPublicKey property
     rsaPublicKey *string
     // The secret property
@@ -232,16 +230,6 @@ func (m *OauthClients_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
-    res["private-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrivateKey(val)
-        }
-        return nil
-    }
     res["rsa-public-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -328,11 +316,6 @@ func (m *OauthClients_attributes) GetOauthTokenString()(*string) {
 // returns a *bool when successful
 func (m *OauthClients_attributes) GetOrganizationScoped()(*bool) {
     return m.organizationScoped
-}
-// GetPrivateKey gets the private-key property value. The privateKey property
-// returns a *string when successful
-func (m *OauthClients_attributes) GetPrivateKey()(*string) {
-    return m.privateKey
 }
 // GetRsaPublicKey gets the rsa-public-key property value. The rsaPublicKey property
 // returns a *string when successful
@@ -421,12 +404,6 @@ func (m *OauthClients_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
         }
     }
     {
-        err := writer.WriteStringValue("private-key", m.GetPrivateKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteStringValue("rsa-public-key", m.GetRsaPublicKey())
         if err != nil {
             return err
@@ -504,10 +481,6 @@ func (m *OauthClients_attributes) SetOauthTokenString(value *string)() {
 func (m *OauthClients_attributes) SetOrganizationScoped(value *bool)() {
     m.organizationScoped = value
 }
-// SetPrivateKey sets the private-key property value. The privateKey property
-func (m *OauthClients_attributes) SetPrivateKey(value *string)() {
-    m.privateKey = value
-}
 // SetRsaPublicKey sets the rsa-public-key property value. The rsaPublicKey property
 func (m *OauthClients_attributes) SetRsaPublicKey(value *string)() {
     m.rsaPublicKey = value
@@ -547,7 +520,6 @@ type OauthClients_attributesable interface {
     GetName()(*string)
     GetOauthTokenString()(*string)
     GetOrganizationScoped()(*bool)
-    GetPrivateKey()(*string)
     GetRsaPublicKey()(*string)
     GetSecret()(*string)
     GetServiceProvider()(*string)
@@ -566,7 +538,6 @@ type OauthClients_attributesable interface {
     SetName(value *string)()
     SetOauthTokenString(value *string)()
     SetOrganizationScoped(value *bool)()
-    SetPrivateKey(value *string)()
     SetRsaPublicKey(value *string)()
     SetSecret(value *string)()
     SetServiceProvider(value *string)()

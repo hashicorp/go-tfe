@@ -631,7 +631,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/organizations"
+                        "$ref": "#/components/schemas/admin-organizations"
                       }
                     },
                     "meta": {
@@ -1237,7 +1237,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/admin-scim-group-mapping-envelope"
+                "$ref": "#/components/schemas/admin-scim-group-mapping-create"
               }
             }
           }
@@ -1270,7 +1270,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/admin-scim-group-mapping-envelope"
+                "$ref": "#/components/schemas/admin-scim-group-mapping-update"
               }
             }
           }
@@ -4158,10 +4158,16 @@
             "in": "query",
             "name": "sort",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "name",
+                "-name",
+                "latest-configuration.updated-at",
+                "-latest-configuration.updated-at"
+              ]
             },
             "required": false,
-            "description": "Allows sorting the returned stacks. Valid values are \"name\" and \"created-at\". Prepending a hyphen to the sort parameter will reverse the order (e.g. \"-name\")."
+            "description": "Allows sorting the returned stacks by name or latest configuration update time."
           },
           {
             "in": "query",
@@ -4173,9 +4179,8 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "organization",
                   "project",
-                  "latest-stack-configuration"
+                  "latest_stack_configuration"
                 ]
               }
             },
@@ -4257,7 +4262,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Stack created",
             "content": {
               "application/vnd.api+json": {
@@ -4379,7 +4384,7 @@
       "delete": {
         "operationId": "deleteStack",
         "summary": "Delete Stack",
-        "description": "Delete a stack\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Delete a stack.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "stacks"
         ],
@@ -4399,8 +4404,7 @@
             "schema": {
               "type": "boolean"
             },
-            "required": false,
-            "description": "Force delete"
+            "description": "Delete the stack even if it contains active deployments or is locked."
           }
         ],
         "responses": {
@@ -6976,21 +6980,46 @@
           },
           {
             "in": "query",
-            "name": "filter[tagged]",
+            "name": "search[tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag names."
+            "description": "Comma-separated list of legacy tag names that workspaces must have."
           },
           {
             "in": "query",
-            "name": "filter[tagged][value]",
+            "name": "search[exclude-tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag key=value pairs."
+            "description": "Comma-separated list of legacy tag names that workspaces must not have."
+          },
+          {
+            "in": "query",
+            "name": "filter[tagged]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": false,
+            "style": "deepObject",
+            "explode": true,
+            "description": "Filter workspaces by effective tag bindings. Example usage is `filter[tagged][0][key]=env&filter[tagged][0][value]=prod`."
           },
           {
             "in": "query",
@@ -11378,6 +11407,12 @@
             },
             "required": false,
             "description": "When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -11395,6 +11430,14 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/workspaces"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
                       }
                     }
                   }
@@ -11957,6 +12000,12 @@
             },
             "required": true,
             "description": "The external ID of the workspace."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -11994,6 +12043,17 @@
                           }
                         }
                       }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
                     }
                   }
                 }
@@ -12217,6 +12277,16 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "Data retention policy updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/data-retention-policy-envelope"
+                }
+              }
+            }
+          },
           "201": {
             "description": "Data retention policy created",
             "content": {
@@ -23008,7 +23078,7 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "$ref": "#/components/schemas/registry-provider-versions"
                       }
                     },
                     "links": {
@@ -23060,7 +23130,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/registry-provider-envelope"
+                "$ref": "#/components/schemas/registry-provider-create"
               }
             }
           }
@@ -23324,7 +23394,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/vars-envelope"
+                "$ref": "#/components/schemas/registry-module-test-variable"
               }
             }
           }
@@ -23449,7 +23519,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/vars-envelope"
+                "$ref": "#/components/schemas/registry-module-test-variable-update"
               }
             }
           }
@@ -24373,7 +24443,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/oauth-clients-envelope"
+                "$ref": "#/components/schemas/oauth-client-create"
               }
             }
           }
@@ -25658,6 +25728,397 @@
         }
       }
     },
+    "/organizations/{organization_name}/task-configs": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listTaskConfigs",
+        "summary": "List Run Task Configurations",
+        "description": "Lists global and project-scoped run task configurations that apply to a\nproject or workspace in an organization.\n\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "run-tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "filter[target-id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project or workspace to resolve configurations for."
+          },
+          {
+            "in": "query",
+            "name": "filter[target-type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "projects",
+                "workspaces"
+              ]
+            },
+            "required": true,
+            "description": "The type of target to resolve configurations for."
+          },
+          {
+            "in": "query",
+            "name": "filter[task-category]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "task",
+                "hook",
+                "native"
+              ]
+            },
+            "required": false,
+            "description": "Filter configurations by run task category."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "projects",
+                  "owner",
+                  "task",
+                  "organization"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Allows including related resource data."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of run task configurations",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/task-configs"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTaskConfig",
+        "summary": "Create a Run Task Configuration",
+        "description": "Create a global or project-scoped run task configuration.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "run-tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/task-configs-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Run task configuration created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/task-configs/for-owner": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getTaskConfigForOwner",
+        "summary": "Get a Run Task Configuration for an Owner",
+        "description": "Get the configuration for a run task and organization owner.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "run-tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "q[task-id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run task."
+          },
+          {
+            "in": "query",
+            "name": "q[owner-id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization that owns the configuration."
+          },
+          {
+            "in": "query",
+            "name": "q[owner-type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "organizations"
+              ]
+            },
+            "required": true,
+            "description": "The owner resource type."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "projects",
+                  "owner",
+                  "task",
+                  "organization"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Allows including related resource data."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Run task configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task-configs/{task_config_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getTaskConfig",
+        "summary": "Get a Run Task Configuration",
+        "description": "Get details about a run task configuration.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "run-tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_config_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run task configuration."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "projects",
+                  "owner",
+                  "task",
+                  "organization"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Allows including related resource data."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Run task configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateTaskConfig",
+        "summary": "Update a Run Task Configuration",
+        "description": "Update a run task configuration.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "run-tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_config_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run task configuration."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/task-configs-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Run task configuration updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tasks/{id}/relationships/workspace-tasks": {
       "get": {
         "operationId": "listTaskWorkspaceTasks",
@@ -26879,7 +27340,13 @@
         ],
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/feature-sets-identifier"
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/feature-sets-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -27047,614 +27514,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-organizations"
-          }
-        }
-      },
-      "self": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string"
-          }
-        }
-      },
-      "agent-pools-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "agent-pools"
-            ]
-          }
-        }
-      },
-      "agent-pools-has-one": {
-        "type": "object",
-        "nullable": true,
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/agent-pools-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "data-retention-policy-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "data-retention-policy-delete-olders",
-              "data-retention-policy-dont-deletes"
-            ]
-          }
-        }
-      },
-      "data-retention-policy-has-one": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/data-retention-policy-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "links_related": {
-        "type": "object",
-        "properties": {
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "entitlement-sets-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "entitlement-sets"
-            ]
-          }
-        }
-      },
-      "entitlement-sets-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entitlement-sets-identifier"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "projects-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "projects"
-            ]
-          }
-        }
-      },
-      "projects-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/projects-identifier"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "hyok-configurations-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "hyok-configurations"
-            ]
-          }
-        }
-      },
-      "hyok-configurations-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/hyok-configurations-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "organizations": {
-        "type": "object",
-        "required": [
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "organizations"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "external-id": {
-                "type": "string",
-                "readOnly": true
-              },
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "email": {
-                "type": "string"
-              },
-              "session-timeout": {
-                "type": "integer",
-                "nullable": true
-              },
-              "session-remember": {
-                "type": "integer",
-                "nullable": true
-              },
-              "collaborator-auth-policy": {
-                "type": "string",
-                "enum": [
-                  "password",
-                  "two_factor_mandatory"
-                ]
-              },
-              "plan-expired": {
-                "type": "boolean",
-                "readOnly": true
-              },
-              "plan-expires-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true,
-                "readOnly": true
-              },
-              "plan-is-trial": {
-                "type": "boolean",
-                "readOnly": true
-              },
-              "plan-is-enterprise": {
-                "type": "boolean",
-                "readOnly": true
-              },
-              "plan-identifier": {
-                "type": "string",
-                "readOnly": true
-              },
-              "cost-estimation-enabled": {
-                "type": "boolean"
-              },
-              "send-passing-statuses-for-untriggered-speculative-plans": {
-                "type": "boolean"
-              },
-              "aggregated-commit-status-enabled": {
-                "type": "boolean"
-              },
-              "speculative-plan-management-enabled": {
-                "type": "boolean"
-              },
-              "allow-force-delete-workspaces": {
-                "type": "boolean"
-              },
-              "name": {
-                "type": "string"
-              },
-              "hcp-id": {
-                "type": "string",
-                "readOnly": true,
-                "x-vis": [
-                  "hcpt"
-                ],
-                "description": "This attribute is only available in HCP Terraform."
-              },
-              "is-unified": {
-                "type": "boolean",
-                "readOnly": true,
-                "x-vis": [
-                  "hcpt"
-                ],
-                "description": "This attribute is only available in HCP Terraform."
-              },
-              "permissions": {
-                "type": "object",
-                "properties": {
-                  "can-update": {
-                    "type": "boolean"
-                  },
-                  "can-update-authentication-token": {
-                    "type": "boolean"
-                  },
-                  "can-view-authentication": {
-                    "type": "boolean"
-                  },
-                  "can-destroy": {
-                    "type": "boolean"
-                  },
-                  "can-access-via-teams": {
-                    "type": "boolean"
-                  },
-                  "can-create-module": {
-                    "type": "boolean"
-                  },
-                  "can-create-team": {
-                    "type": "boolean"
-                  },
-                  "can-create-workspace": {
-                    "type": "boolean"
-                  },
-                  "can-manage-users": {
-                    "type": "boolean"
-                  },
-                  "can-view-users": {
-                    "type": "boolean"
-                  },
-                  "can-manage-subscription": {
-                    "type": "boolean"
-                  },
-                  "can-manage-sso": {
-                    "type": "boolean"
-                  },
-                  "can-update-oauth": {
-                    "type": "boolean"
-                  },
-                  "can-update-sentinel": {
-                    "type": "boolean"
-                  },
-                  "can-update-ssh-keys": {
-                    "type": "boolean"
-                  },
-                  "can-update-api-token": {
-                    "type": "boolean"
-                  },
-                  "can-traverse": {
-                    "type": "boolean"
-                  },
-                  "can-view-usage": {
-                    "type": "boolean"
-                  },
-                  "can-update-agent-pools": {
-                    "type": "boolean"
-                  },
-                  "can-manage-tags": {
-                    "type": "boolean"
-                  },
-                  "can-manage-varsets": {
-                    "type": "boolean"
-                  },
-                  "can-read-varsets": {
-                    "type": "boolean"
-                  },
-                  "can-manage-public-providers": {
-                    "type": "boolean"
-                  },
-                  "can-create-provider": {
-                    "type": "boolean"
-                  },
-                  "can-manage-public-modules": {
-                    "type": "boolean"
-                  },
-                  "can-manage-custom-providers": {
-                    "type": "boolean"
-                  },
-                  "can-manage-run-tasks": {
-                    "type": "boolean"
-                  },
-                  "can-read-run-tasks": {
-                    "type": "boolean"
-                  },
-                  "can-create-project": {
-                    "type": "boolean"
-                  },
-                  "can-enable-stacks": {
-                    "type": "boolean"
-                  },
-                  "can-manage-org-public-providers": {
-                    "type": "boolean"
-                  },
-                  "can-manage-org-public-modules": {
-                    "type": "boolean"
-                  },
-                  "can-manage-assessments": {
-                    "type": "boolean"
-                  },
-                  "can-read-assessments": {
-                    "type": "boolean"
-                  },
-                  "can-view-explorer": {
-                    "type": "boolean"
-                  },
-                  "can-deploy-no-code-modules": {
-                    "type": "boolean"
-                  },
-                  "can-manage-no-code-modules": {
-                    "type": "boolean"
-                  },
-                  "can-manage-groups-in-hcp": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "hcpt"
-                    ],
-                    "description": "This attribute is only available in HCP Terraform."
-                  },
-                  "can-create-project-in-hcp": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "hcpt"
-                    ],
-                    "description": "This attribute is only available in HCP Terraform."
-                  },
-                  "can-update-hyok-configuration": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "hcpt"
-                    ],
-                    "description": "This attribute is only available in HCP Terraform."
-                  },
-                  "can-manage-recoverable-items": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "public-beta"
-                    ],
-                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
-                  },
-                  "can-read-policies": {
-                    "type": "boolean",
-                    "x-vis": [
-                      "tfe"
-                    ],
-                    "description": "This attribute is only available in Terraform Enterprise."
-                  }
-                }
-              },
-              "fair-run-queuing-enabled": {
-                "type": "boolean",
-                "readOnly": true
-              },
-              "saml-enabled": {
-                "type": "boolean"
-              },
-              "owners-team-saml-role-id": {
-                "type": "string",
-                "nullable": true
-              },
-              "two-factor-conformant": {
-                "type": "boolean"
-              },
-              "assessments-enforced": {
-                "type": "boolean"
-              },
-              "is-in-degraded-mode": {
-                "type": "boolean",
-                "readOnly": true
-              },
-              "global-module-sharing": {
-                "type": "boolean",
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This attribute is only available in Terraform Enterprise."
-              },
-              "global-provider-sharing": {
-                "type": "boolean",
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This attribute is only available in Terraform Enterprise."
-              },
-              "parent-data-retention-policy-info": {
-                "type": "string",
-                "readOnly": true,
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This attribute is only available in Terraform Enterprise."
-              },
-              "module-consuming-organizations-count": {
-                "type": "integer",
-                "readOnly": true,
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This attribute is only available in Terraform Enterprise."
-              },
-              "provider-consuming-organizations-count": {
-                "type": "integer",
-                "readOnly": true,
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This attribute is only available in Terraform Enterprise."
-              },
-              "remaining-testable-count": {
-                "type": "integer",
-                "readOnly": true
-              },
-              "stacks-enabled": {
-                "type": "boolean",
-                "x-vis": [
-                  "public-beta"
-                ],
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
-              },
-              "recoverable-items-enabled": {
-                "type": "boolean",
-                "x-vis": [
-                  "public-beta"
-                ],
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
-              },
-              "over-stacks-resource-limit": {
-                "type": "boolean",
-                "readOnly": true,
-                "x-vis": [
-                  "public-beta"
-                ],
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
-              },
-              "default-execution-mode": {
-                "type": "string",
-                "enum": [
-                  "remote",
-                  "local",
-                  "agent"
-                ]
-              },
-              "stacks-default-execution-mode": {
-                "type": "string",
-                "enum": [
-                  "remote",
-                  "agent"
-                ]
-              },
-              "test-generation-enabled": {
-                "type": "boolean",
-                "readOnly": true,
-                "x-vis": [
-                  "public-beta"
-                ],
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/self"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-has-one"
-              },
-              "stacks-default-agent-pool": {
-                "$ref": "#/components/schemas/agent-pools-has-one"
-              },
-              "data-retention-policy": {
-                "$ref": "#/components/schemas/data-retention-policy-has-one",
-                "x-vis": [
-                  "tfe"
-                ],
-                "description": "This relationship is only available in Terraform Enterprise."
-              },
-              "module-producers": {
-                "x-vis": [
-                  "tfe"
-                ],
-                "$ref": "#/components/schemas/links_related",
-                "description": "This relationship is only available in Terraform Enterprise."
-              },
-              "provider-producers": {
-                "x-vis": [
-                  "tfe"
-                ],
-                "$ref": "#/components/schemas/links_related",
-                "description": "This relationship is only available in Terraform Enterprise."
-              },
-              "oauth-tokens": {
-                "$ref": "#/components/schemas/links_related"
-              },
-              "authentication-token": {
-                "$ref": "#/components/schemas/links_related"
-              },
-              "audit-trails-authentication-token": {
-                "$ref": "#/components/schemas/links_related",
-                "x-vis": [
-                  "hcpt"
-                ],
-                "description": "This relationship is only available in HCP Terraform."
-              },
-              "entitlement-set": {
-                "$ref": "#/components/schemas/entitlement-sets-has-one"
-              },
-              "subscription": {
-                "$ref": "#/components/schemas/subscriptions-has-one"
-              },
-              "default-project": {
-                "$ref": "#/components/schemas/projects-has-one"
-              },
-              "primary-hyok-configuration": {
-                "x-vis": [
-                  "hcpt"
-                ],
-                "$ref": "#/components/schemas/hyok-configurations-has-one",
-                "description": "This relationship is only available in HCP Terraform."
-              }
-            }
           }
         }
       },
@@ -27924,8 +27783,7 @@
               },
               "private-key": {
                 "type": "string",
-                "nullable": true,
-                "writeOnly": true
+                "nullable": true
               },
               "authn-requests-signed": {
                 "type": "boolean"
@@ -28261,6 +28119,74 @@
           }
         }
       },
+      "admin-scim-group-mapping-create": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "scim-group-mappings"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "scim-group-id"
+                ],
+                "properties": {
+                  "scim-group-id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "admin-scim-group-mapping-update": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "scim-group-mappings"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "scim-sync-paused"
+                ],
+                "properties": {
+                  "scim-sync-paused": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "tool-version-architecture": {
         "type": "object",
         "required": [
@@ -28367,6 +28293,7 @@
               },
               "archs": {
                 "type": "array",
+                "nullable": true,
                 "items": {
                   "$ref": "#/components/schemas/tool-version-architecture"
                 }
@@ -28445,6 +28372,7 @@
               },
               "archs": {
                 "type": "array",
+                "nullable": true,
                 "items": {
                   "$ref": "#/components/schemas/tool-version-architecture"
                 }
@@ -28523,6 +28451,7 @@
               },
               "archs": {
                 "type": "array",
+                "nullable": true,
                 "items": {
                   "$ref": "#/components/schemas/tool-version-architecture"
                 }
@@ -28659,6 +28588,14 @@
           }
         }
       },
+      "links_related": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "authenticated-resource-identifier": {
         "type": "object",
         "required": [
@@ -28688,6 +28625,14 @@
           },
           "links": {
             "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "self": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
           }
         }
       },
@@ -29568,6 +29513,20 @@
           }
         }
       },
+      "projects-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "projects"
+            ]
+          }
+        }
+      },
       "projects-has-many": {
         "type": "object",
         "nullable": true,
@@ -29707,6 +29666,24 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/agents"
+          }
+        }
+      },
+      "agent-pools-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent-pools"
+            ]
           }
         }
       },
@@ -30002,6 +29979,41 @@
           }
         }
       },
+      "projects-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/projects-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "agent-pools-has-one": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/agent-pools-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "stack-configurations-identifier": {
         "type": "object",
         "required": [
@@ -30194,6 +30206,531 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/stacks"
+          }
+        }
+      },
+      "data-retention-policy-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "data-retention-policy-delete-olders",
+              "data-retention-policy-dont-deletes"
+            ]
+          }
+        }
+      },
+      "data-retention-policy-has-one": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/data-retention-policy-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "entitlement-sets-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "entitlement-sets"
+            ]
+          }
+        }
+      },
+      "entitlement-sets-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/entitlement-sets-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "hyok-configurations-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hyok-configurations"
+            ]
+          }
+        }
+      },
+      "hyok-configurations-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/hyok-configurations-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "organizations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external-id": {
+                "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "email": {
+                "type": "string"
+              },
+              "session-timeout": {
+                "type": "integer",
+                "nullable": true
+              },
+              "session-remember": {
+                "type": "integer",
+                "nullable": true
+              },
+              "collaborator-auth-policy": {
+                "type": "string",
+                "enum": [
+                  "password",
+                  "two_factor_mandatory"
+                ]
+              },
+              "plan-expired": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "plan-is-trial": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-is-enterprise": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-identifier": {
+                "type": "string",
+                "readOnly": true
+              },
+              "cost-estimation-enabled": {
+                "type": "boolean"
+              },
+              "send-passing-statuses-for-untriggered-speculative-plans": {
+                "type": "boolean"
+              },
+              "aggregated-commit-status-enabled": {
+                "type": "boolean"
+              },
+              "speculative-plan-management-enabled": {
+                "type": "boolean"
+              },
+              "allow-force-delete-workspaces": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "hcp-id": {
+                "type": "string",
+                "readOnly": true,
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "This attribute is only available in HCP Terraform."
+              },
+              "is-unified": {
+                "type": "boolean",
+                "readOnly": true,
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "This attribute is only available in HCP Terraform."
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-update": {
+                    "type": "boolean"
+                  },
+                  "can-update-authentication-token": {
+                    "type": "boolean"
+                  },
+                  "can-view-authentication": {
+                    "type": "boolean"
+                  },
+                  "can-destroy": {
+                    "type": "boolean"
+                  },
+                  "can-access-via-teams": {
+                    "type": "boolean"
+                  },
+                  "can-create-module": {
+                    "type": "boolean"
+                  },
+                  "can-create-team": {
+                    "type": "boolean"
+                  },
+                  "can-create-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-manage-users": {
+                    "type": "boolean"
+                  },
+                  "can-view-users": {
+                    "type": "boolean"
+                  },
+                  "can-manage-subscription": {
+                    "type": "boolean"
+                  },
+                  "can-manage-sso": {
+                    "type": "boolean"
+                  },
+                  "can-update-oauth": {
+                    "type": "boolean"
+                  },
+                  "can-update-sentinel": {
+                    "type": "boolean"
+                  },
+                  "can-update-ssh-keys": {
+                    "type": "boolean"
+                  },
+                  "can-update-api-token": {
+                    "type": "boolean"
+                  },
+                  "can-traverse": {
+                    "type": "boolean"
+                  },
+                  "can-view-usage": {
+                    "type": "boolean"
+                  },
+                  "can-update-agent-pools": {
+                    "type": "boolean"
+                  },
+                  "can-manage-tags": {
+                    "type": "boolean"
+                  },
+                  "can-manage-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-read-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-manage-public-providers": {
+                    "type": "boolean"
+                  },
+                  "can-create-provider": {
+                    "type": "boolean"
+                  },
+                  "can-manage-public-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-custom-providers": {
+                    "type": "boolean"
+                  },
+                  "can-manage-run-tasks": {
+                    "type": "boolean"
+                  },
+                  "can-read-run-tasks": {
+                    "type": "boolean"
+                  },
+                  "can-create-project": {
+                    "type": "boolean"
+                  },
+                  "can-enable-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-manage-org-public-providers": {
+                    "type": "boolean"
+                  },
+                  "can-manage-org-public-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-assessments": {
+                    "type": "boolean"
+                  },
+                  "can-read-assessments": {
+                    "type": "boolean"
+                  },
+                  "can-view-explorer": {
+                    "type": "boolean"
+                  },
+                  "can-deploy-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-groups-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
+                  },
+                  "can-create-project-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
+                  },
+                  "can-update-hyok-configuration": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ],
+                    "description": "This attribute is only available in HCP Terraform."
+                  },
+                  "can-manage-recoverable-items": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "public-beta"
+                    ],
+                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                  },
+                  "can-read-policies": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "tfe"
+                    ],
+                    "description": "This attribute is only available in Terraform Enterprise."
+                  }
+                }
+              },
+              "fair-run-queuing-enabled": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "saml-enabled": {
+                "type": "boolean"
+              },
+              "owners-team-saml-role-id": {
+                "type": "string",
+                "nullable": true
+              },
+              "two-factor-conformant": {
+                "type": "boolean"
+              },
+              "assessments-enforced": {
+                "type": "boolean"
+              },
+              "is-in-degraded-mode": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "global-module-sharing": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "global-provider-sharing": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "parent-data-retention-policy-info": {
+                "type": "string",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "module-consuming-organizations-count": {
+                "type": "integer",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "provider-consuming-organizations-count": {
+                "type": "integer",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
+              "remaining-testable-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "stacks-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "public-beta"
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "recoverable-items-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "public-beta"
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "over-stacks-resource-limit": {
+                "type": "boolean",
+                "readOnly": true,
+                "x-vis": [
+                  "public-beta"
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "local",
+                  "agent"
+                ]
+              },
+              "stacks-default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "agent"
+                ]
+              },
+              "test-generation-enabled": {
+                "type": "boolean",
+                "readOnly": true,
+                "x-vis": [
+                  "public-beta"
+                ],
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-has-one"
+              },
+              "stacks-default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-has-one"
+              },
+              "data-retention-policy": {
+                "$ref": "#/components/schemas/data-retention-policy-has-one",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
+              "module-producers": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "$ref": "#/components/schemas/links_related",
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
+              "provider-producers": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "$ref": "#/components/schemas/links_related",
+                "description": "This relationship is only available in Terraform Enterprise."
+              },
+              "oauth-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "authentication-token": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "audit-trails-authentication-token": {
+                "$ref": "#/components/schemas/links_related",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "This relationship is only available in HCP Terraform."
+              },
+              "entitlement-set": {
+                "$ref": "#/components/schemas/entitlement-sets-has-one"
+              },
+              "subscription": {
+                "$ref": "#/components/schemas/subscriptions-has-one"
+              },
+              "default-project": {
+                "$ref": "#/components/schemas/projects-has-one"
+              },
+              "primary-hyok-configuration": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "$ref": "#/components/schemas/hyok-configurations-has-one",
+                "description": "This relationship is only available in HCP Terraform."
+              }
+            }
           }
         }
       },
@@ -31098,7 +31635,8 @@
             "type": "object",
             "properties": {
               "delete-older-than-n-days": {
-                "type": "integer"
+                "type": "integer",
+                "nullable": true
               },
               "delete-state-versions": {
                 "type": "boolean"
@@ -32424,6 +32962,53 @@
           }
         }
       },
+      "tags-has-many": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "tags"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "workspace-links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "self-html": {
+            "type": "string"
+          }
+        }
+      },
       "workspaces": {
         "type": "object",
         "required": [
@@ -32810,11 +33395,14 @@
               },
               "vars": {
                 "$ref": "#/components/schemas/vars-has-many"
+              },
+              "tags": {
+                "$ref": "#/components/schemas/tags-has-many"
               }
             }
           },
           "links": {
-            "$ref": "#/components/schemas/self"
+            "$ref": "#/components/schemas/workspace-links"
           }
         }
       },
@@ -33209,7 +33797,8 @@
       "no-code-modules": {
         "type": "object",
         "required": [
-          "type"
+          "type",
+          "relationships"
         ],
         "properties": {
           "id": {
@@ -33236,6 +33825,9 @@
           },
           "relationships": {
             "type": "object",
+            "required": [
+              "registry-module"
+            ],
             "properties": {
               "organization": {
                 "allOf": [
@@ -38595,6 +39187,27 @@
           }
         }
       },
+      "tag-bindings-write-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "links": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/related"
+              }
+            ],
+            "readOnly": true
+          },
+          "data": {
+            "type": "array",
+            "writeOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/tag-bindings"
+            }
+          }
+        }
+      },
       "registry-module-create": {
         "type": "object",
         "required": [
@@ -38635,8 +39248,50 @@
               },
               "no-code": {
                 "type": "boolean"
+              },
+              "test-config": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "tests-enabled": {
+                    "type": "boolean"
+                  },
+                  "agent-execution-mode": {
+                    "type": "string",
+                    "enum": [
+                      "remote",
+                      "agent"
+                    ]
+                  },
+                  "agent-pool-id": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
               }
             }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "tag-bindings": {
+                "$ref": "#/components/schemas/tag-bindings-write-has-many"
+              }
+            }
+          }
+        }
+      },
+      "no-code-modules-has-many": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/no-code-modules-identifier"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -38696,7 +39351,19 @@
                 "type": "array",
                 "readOnly": true,
                 "items": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
                 }
               },
               "created-at": {
@@ -38813,10 +39480,13 @@
             "type": "object",
             "properties": {
               "organization": {
-                "$ref": "#/components/schemas/links_related"
+                "$ref": "#/components/schemas/organizations-has-one"
               },
               "no-code-modules": {
-                "$ref": "#/components/schemas/links_related"
+                "$ref": "#/components/schemas/no-code-modules-has-many"
+              },
+              "tag-bindings": {
+                "$ref": "#/components/schemas/tag-bindings-write-has-many"
               }
             }
           }
@@ -38830,27 +39500,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/registry-modules"
-          }
-        }
-      },
-      "tag-bindings-write-has-many": {
-        "type": "object",
-        "nullable": true,
-        "properties": {
-          "links": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/related"
-              }
-            ],
-            "readOnly": true
-          },
-          "data": {
-            "type": "array",
-            "writeOnly": true,
-            "items": {
-              "$ref": "#/components/schemas/tag-bindings"
-            }
           }
         }
       },
@@ -38884,6 +39533,9 @@
               "initial-version": {
                 "type": "string",
                 "description": "Initial version for branch-based publishing. Defaults to `0.0.0`."
+              },
+              "no-code": {
+                "type": "boolean"
               },
               "vcs-repo": {
                 "type": "object",
@@ -38983,7 +39635,8 @@
           "type": {
             "type": "string",
             "enum": [
-              "registry-module-versions"
+              "registry-module-versions",
+              "public-registry-module-versions"
             ]
           },
           "attributes": {
@@ -39193,6 +39846,211 @@
           }
         }
       },
+      "registry-providers-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-providers"
+            ]
+          }
+        }
+      },
+      "registry-providers-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/registry-providers-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "registry-provider-platforms-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-provider-platforms"
+            ]
+          }
+        }
+      },
+      "registry-provider-platforms-has-many": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/registry-provider-platforms-identifier"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "registry-provider-versions": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-provider-versions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "key-id": {
+                "type": "string",
+                "nullable": true
+              },
+              "protocols": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "shasums-uploaded": {
+                "type": "boolean"
+              },
+              "shasums-sig-uploaded": {
+                "type": "boolean"
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-delete": {
+                    "type": "boolean"
+                  },
+                  "can-upload-asset": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "registry-provider": {
+                "$ref": "#/components/schemas/registry-providers-has-one"
+              },
+              "registry-provider-platforms": {
+                "$ref": "#/components/schemas/registry-provider-platforms-has-many"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "shasums-upload": {
+                "type": "string"
+              },
+              "shasums-sig-upload": {
+                "type": "string"
+              },
+              "shasums-download": {
+                "type": "string"
+              },
+              "shasums-sig-download": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "registry-provider-create": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "registry-providers"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "namespace": {
+                    "type": "string"
+                  },
+                  "registry-name": {
+                    "type": "string",
+                    "default": "private"
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "tag-bindings": {
+                    "$ref": "#/components/schemas/tag-bindings-write-has-many"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "registry-provider-envelope": {
         "type": "object",
         "required": [
@@ -39207,6 +40065,108 @@
             "readOnly": true,
             "items": {
               "type": "object"
+            }
+          }
+        }
+      },
+      "registry-module-test-variable": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "vars"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "key",
+                  "category"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "sensitive": {
+                    "type": "boolean"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "env"
+                    ]
+                  },
+                  "hcl": {
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "registry-module-test-variable-update": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "vars"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "sensitive": {
+                    "type": "boolean"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "env"
+                    ]
+                  },
+                  "hcl": {
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
             }
           }
         }
@@ -39567,11 +40527,6 @@
                 "nullable": true,
                 "writeOnly": true
               },
-              "private-key": {
-                "type": "string",
-                "nullable": true,
-                "writeOnly": true
-              },
               "ado-entra-tenant-id": {
                 "type": "string",
                 "nullable": true
@@ -39631,6 +40586,89 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/oauth-clients"
+          }
+        }
+      },
+      "oauth-client-create": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "oauth-clients"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "service-provider",
+                  "http-url",
+                  "api-url"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "service-provider": {
+                    "type": "string"
+                  },
+                  "http-url": {
+                    "type": "string"
+                  },
+                  "api-url": {
+                    "type": "string"
+                  },
+                  "key": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "oauth-token-string": {
+                    "type": "string",
+                    "nullable": true,
+                    "writeOnly": true
+                  },
+                  "private-key": {
+                    "type": "string",
+                    "nullable": true,
+                    "writeOnly": true
+                  },
+                  "ado-entra-tenant-id": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "secret": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "rsa-public-key": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "organization-scoped": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "agent-pool": {
+                    "$ref": "#/components/schemas/agent-pools-has-one"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -40057,6 +41095,123 @@
           },
           "links": {
             "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "task-config-owner-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/organizations-identifier"
+              },
+              {
+                "$ref": "#/components/schemas/projects-identifier"
+              },
+              {
+                "$ref": "#/components/schemas/workspaces-identifier"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "organizations": "#/components/schemas/organizations-identifier",
+                "projects": "#/components/schemas/projects-identifier",
+                "workspaces": "#/components/schemas/workspaces-identifier"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "task-configs": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "task-configs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "allowed-stages": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "pre_plan",
+                    "post_plan",
+                    "pre_apply",
+                    "post_apply"
+                  ]
+                }
+              },
+              "enforcement-level": {
+                "type": "string",
+                "enum": [
+                  "advisory",
+                  "mandatory"
+                ]
+              },
+              "global": {
+                "type": "boolean"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "$ref": "#/components/schemas/tasks-has-one"
+              },
+              "owner": {
+                "$ref": "#/components/schemas/task-config-owner-has-one"
+              },
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "projects": {
+                "$ref": "#/components/schemas/projects-has-many"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "task-configs-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-configs"
           }
         }
       },

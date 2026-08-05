@@ -14,7 +14,7 @@ type ItemRegistryProvidersGetResponse struct {
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderable
     // The included property
-    included []ItemRegistryProvidersGetResponse_includedable
+    included []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
@@ -63,15 +63,15 @@ func (m *ItemRegistryProvidersGetResponse) GetFieldDeserializers()(map[string]fu
         return nil
     }
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateItemRegistryProvidersGetResponse_includedFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateRegistryProviderVersionsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ItemRegistryProvidersGetResponse_includedable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ItemRegistryProvidersGetResponse_includedable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable)
                 }
             }
             m.SetIncluded(res)
@@ -101,8 +101,8 @@ func (m *ItemRegistryProvidersGetResponse) GetFieldDeserializers()(map[string]fu
     return res
 }
 // GetIncluded gets the included property value. The included property
-// returns a []ItemRegistryProvidersGetResponse_includedable when successful
-func (m *ItemRegistryProvidersGetResponse) GetIncluded()([]ItemRegistryProvidersGetResponse_includedable) {
+// returns a []RegistryProviderVersionsable when successful
+func (m *ItemRegistryProvidersGetResponse) GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable) {
     return m.included
 }
 // GetLinks gets the links property value. The links property
@@ -170,7 +170,7 @@ func (m *ItemRegistryProvidersGetResponse) SetData(value []i05d5aa6b14db285c2e8d
     m.data = value
 }
 // SetIncluded sets the included property value. The included property
-func (m *ItemRegistryProvidersGetResponse) SetIncluded(value []ItemRegistryProvidersGetResponse_includedable)() {
+func (m *ItemRegistryProvidersGetResponse) SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable)() {
     m.included = value
 }
 // SetLinks sets the links property value. The links property
@@ -185,11 +185,11 @@ type ItemRegistryProvidersGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderable)
-    GetIncluded()([]ItemRegistryProvidersGetResponse_includedable)
+    GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemRegistryProvidersGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderable)()
-    SetIncluded(value []ItemRegistryProvidersGetResponse_includedable)()
+    SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryProviderVersionsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemRegistryProvidersGetResponse_metaable)()
 }

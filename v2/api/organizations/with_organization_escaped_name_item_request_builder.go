@@ -238,6 +238,11 @@ func (m *WithOrganization_nameItemRequestBuilder) Stacks()(*ItemStacksRequestBui
 func (m *WithOrganization_nameItemRequestBuilder) Subscription()(*ItemSubscriptionRequestBuilder) {
     return NewItemSubscriptionRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// TaskConfigs the taskConfigs property
+// returns a *ItemTaskConfigsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) TaskConfigs()(*ItemTaskConfigsRequestBuilder) {
+    return NewItemTaskConfigsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Tasks the tasks property
 // returns a *ItemTasksRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Tasks()(*ItemTasksRequestBuilder) {

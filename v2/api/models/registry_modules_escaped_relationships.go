@@ -11,9 +11,11 @@ type RegistryModules_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The noCodeModules property
-    noCodeModules Links_relatedable
+    noCodeModules NoCodeModulesHasManyable
     // The organization property
-    organization Links_relatedable
+    organization OrganizationsHasOneable
+    // The tagBindings property
+    tagBindings TagBindingsWriteHasManyable
 }
 // NewRegistryModules_relationships instantiates a new RegistryModules_relationships and sets the default values.
 func NewRegistryModules_relationships()(*RegistryModules_relationships) {
@@ -37,36 +39,51 @@ func (m *RegistryModules_relationships) GetAdditionalData()(map[string]any) {
 func (m *RegistryModules_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["no-code-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateNoCodeModulesHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetNoCodeModules(val.(Links_relatedable))
+            m.SetNoCodeModules(val.(NoCodeModulesHasManyable))
         }
         return nil
     }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetOrganization(val.(Links_relatedable))
+            m.SetOrganization(val.(OrganizationsHasOneable))
+        }
+        return nil
+    }
+    res["tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateTagBindingsWriteHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTagBindings(val.(TagBindingsWriteHasManyable))
         }
         return nil
     }
     return res
 }
 // GetNoCodeModules gets the no-code-modules property value. The noCodeModules property
-// returns a Links_relatedable when successful
-func (m *RegistryModules_relationships) GetNoCodeModules()(Links_relatedable) {
+// returns a NoCodeModulesHasManyable when successful
+func (m *RegistryModules_relationships) GetNoCodeModules()(NoCodeModulesHasManyable) {
     return m.noCodeModules
 }
 // GetOrganization gets the organization property value. The organization property
-// returns a Links_relatedable when successful
-func (m *RegistryModules_relationships) GetOrganization()(Links_relatedable) {
+// returns a OrganizationsHasOneable when successful
+func (m *RegistryModules_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
+}
+// GetTagBindings gets the tag-bindings property value. The tagBindings property
+// returns a TagBindingsWriteHasManyable when successful
+func (m *RegistryModules_relationships) GetTagBindings()(TagBindingsWriteHasManyable) {
+    return m.tagBindings
 }
 // Serialize serializes information the current object
 func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -78,6 +95,12 @@ func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d2689638
     }
     {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("tag-bindings", m.GetTagBindings())
         if err != nil {
             return err
         }
@@ -95,18 +118,24 @@ func (m *RegistryModules_relationships) SetAdditionalData(value map[string]any)(
     m.additionalData = value
 }
 // SetNoCodeModules sets the no-code-modules property value. The noCodeModules property
-func (m *RegistryModules_relationships) SetNoCodeModules(value Links_relatedable)() {
+func (m *RegistryModules_relationships) SetNoCodeModules(value NoCodeModulesHasManyable)() {
     m.noCodeModules = value
 }
 // SetOrganization sets the organization property value. The organization property
-func (m *RegistryModules_relationships) SetOrganization(value Links_relatedable)() {
+func (m *RegistryModules_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
+}
+// SetTagBindings sets the tag-bindings property value. The tagBindings property
+func (m *RegistryModules_relationships) SetTagBindings(value TagBindingsWriteHasManyable)() {
+    m.tagBindings = value
 }
 type RegistryModules_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetNoCodeModules()(Links_relatedable)
-    GetOrganization()(Links_relatedable)
-    SetNoCodeModules(value Links_relatedable)()
-    SetOrganization(value Links_relatedable)()
+    GetNoCodeModules()(NoCodeModulesHasManyable)
+    GetOrganization()(OrganizationsHasOneable)
+    GetTagBindings()(TagBindingsWriteHasManyable)
+    SetNoCodeModules(value NoCodeModulesHasManyable)()
+    SetOrganization(value OrganizationsHasOneable)()
+    SetTagBindings(value TagBindingsWriteHasManyable)()
 }

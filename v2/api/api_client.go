@@ -18,6 +18,7 @@ import (
     i23ea2412c77925f322e4fd9844216cd6fd2410527709257685138dba51892987 "github.com/hashicorp/go-tfe/v2/api/registrymodules"
     i26ba96034428bd95afb4756c98c2f79b92093a105f467d48dcb0fc1a5efcd2be "github.com/hashicorp/go-tfe/v2/api/stateversionoutputs"
     i2a8fd120a3d62202d37238161dd556baa5d28af6d9062658330422464a5d7e87 "github.com/hashicorp/go-tfe/v2/api/taskresults"
+    i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3 "github.com/hashicorp/go-tfe/v2/api/taskconfigs"
     i3300e5ec3dcdd21657ef64edbd7f5515b6a740b0e311496d0dcd07a497597df0 "github.com/hashicorp/go-tfe/v2/api/account"
     i390d7d3aa2f956072121cd387d359478b4fa952fdc05a88e1bb0846233f1f798 "github.com/hashicorp/go-tfe/v2/api/configurationversions"
     i3b5eed2f99b34576eec4b0e4f2cfa8ac7165e6054005d261091195786417f292 "github.com/hashicorp/go-tfe/v2/api/policysetoutcomes"
@@ -330,6 +331,11 @@ func (m *ApiClient) StateVersions()(*i1d7ed3bdd2628b6ecb2a00187778e1d42aae60563f
 // returns a *SubscriptionsRequestBuilder when successful
 func (m *ApiClient) Subscriptions()(*ib16403bde4e14a6aebbed947a047e503a09a66da273f5f8fdd4fe6ffa5481608.SubscriptionsRequestBuilder) {
     return ib16403bde4e14a6aebbed947a047e503a09a66da273f5f8fdd4fe6ffa5481608.NewSubscriptionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TaskConfigs the taskConfigs property
+// returns a *TaskConfigsRequestBuilder when successful
+func (m *ApiClient) TaskConfigs()(*i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3.TaskConfigsRequestBuilder) {
+    return i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3.NewTaskConfigsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // TaskResultOutcomes the taskResultOutcomes property
 // returns a *TaskResultOutcomesRequestBuilder when successful
