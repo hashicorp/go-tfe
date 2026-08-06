@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "9cfc1aef",
+    "version": "26b9b5c6",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -465,6 +465,37 @@
       "x-vis": [
         "tfe"
       ],
+      "get": {
+        "operationId": "getActiveBanners",
+        "security": [],
+        "summary": "Retrieve Active Site-Wide Announcement Banners",
+        "description": "Returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Active banners retrieved successfully. Array is empty when none are active.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createAdminBanner",
         "summary": "Create Site-Wide Announcement Banner",
@@ -4814,21 +4845,46 @@
           },
           {
             "in": "query",
-            "name": "filter[tagged]",
+            "name": "search[tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag names."
+            "description": "Comma-separated list of legacy tag names that workspaces must have."
           },
           {
             "in": "query",
-            "name": "filter[tagged][value]",
+            "name": "search[exclude-tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag key=value pairs."
+            "description": "Comma-separated list of legacy tag names that workspaces must not have."
+          },
+          {
+            "in": "query",
+            "name": "filter[tagged]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": false,
+            "style": "deepObject",
+            "explode": true,
+            "description": "Filter workspaces by effective tag bindings. Example usage is `filter[tagged][0][key]=env&filter[tagged][0][value]=prod`."
           },
           {
             "in": "query",
@@ -9023,6 +9079,12 @@
             },
             "required": false,
             "description": "When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -9040,6 +9102,14 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/workspaces"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
                       }
                     }
                   }
@@ -23326,6 +23396,28 @@
       }
     },
     "schemas": {
+      "errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "admin-banners": {
         "type": "object",
         "required": [
@@ -23415,6 +23507,20 @@
           }
         }
       },
+      "admin-banners-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/admin-banners"
+            }
+          }
+        }
+      },
       "admin-banners-envelope": {
         "type": "object",
         "required": [
@@ -23423,28 +23529,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-banners"
-          }
-        }
-      },
-      "errors": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "detail": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
@@ -27058,6 +27142,53 @@
           }
         }
       },
+      "tags-has-many": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "tags"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "workspace-links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "self-html": {
+            "type": "string"
+          }
+        }
+      },
       "workspaces": {
         "type": "object",
         "required": [
@@ -27444,11 +27575,14 @@
               },
               "vars": {
                 "$ref": "#/components/schemas/vars-has-many"
+              },
+              "tags": {
+                "$ref": "#/components/schemas/tags-has-many"
               }
             }
           },
           "links": {
-            "$ref": "#/components/schemas/self"
+            "$ref": "#/components/schemas/workspace-links"
           }
         }
       },
