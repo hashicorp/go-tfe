@@ -38,6 +38,26 @@ func NewBannersRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371
     urlParams["request-raw-url"] = rawUrl
     return NewBannersRequestBuilderInternal(urlParams, requestAdapter)
 }
+// Get returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.This operation is only available in Terraform Enterprise.
+// returns a AdminBannersCollectionEnvelopeable when successful
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *BannersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersCollectionEnvelopeable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAdminBannersCollectionEnvelopeFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersCollectionEnvelopeable), nil
+}
 // Post creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
 // returns a AdminBannersEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -57,6 +77,14 @@ func (m *BannersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c
         return nil, nil
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersEnvelopeable), nil
+}
+// ToGetRequestInformation returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.This operation is only available in Terraform Enterprise.
+// returns a *RequestInformation when successful
+func (m *BannersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
 }
 // ToPostRequestInformation creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful

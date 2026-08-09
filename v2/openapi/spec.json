@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "9cfc1aef",
+    "version": "c2c60381",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -465,6 +465,37 @@
       "x-vis": [
         "tfe"
       ],
+      "get": {
+        "operationId": "getActiveBanners",
+        "security": [],
+        "summary": "Retrieve Active Site-Wide Announcement Banners",
+        "description": "Returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Active banners retrieved successfully. Array is empty when none are active.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createAdminBanner",
         "summary": "Create Site-Wide Announcement Banner",
@@ -4814,21 +4845,46 @@
           },
           {
             "in": "query",
-            "name": "filter[tagged]",
+            "name": "search[tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag names."
+            "description": "Comma-separated list of legacy tag names that workspaces must have."
           },
           {
             "in": "query",
-            "name": "filter[tagged][value]",
+            "name": "search[exclude-tags]",
             "schema": {
               "type": "string"
             },
             "required": false,
-            "description": "Filter workspaces by tag key=value pairs."
+            "description": "Comma-separated list of legacy tag names that workspaces must not have."
+          },
+          {
+            "in": "query",
+            "name": "filter[tagged]",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": false,
+            "style": "deepObject",
+            "explode": true,
+            "description": "Filter workspaces by effective tag bindings. Example usage is `filter[tagged][0][key]=env&filter[tagged][0][value]=prod`."
           },
           {
             "in": "query",
@@ -4944,7 +5000,29 @@
                     "included": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/no-code-module-versions"
+                          },
+                          {
+                            "$ref": "#/components/schemas/no-code-modules"
+                          },
+                          {
+                            "$ref": "#/components/schemas/workspace-readme"
+                          },
+                          {
+                            "$ref": "#/components/schemas/workspace-outputs"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "no-code-module-versions": "#/components/schemas/no-code-module-versions",
+                            "no-code-modules": "#/components/schemas/no-code-modules",
+                            "workspace-readme": "#/components/schemas/workspace-readme",
+                            "workspace-outputs": "#/components/schemas/workspace-outputs"
+                          }
+                        }
                       }
                     }
                   }
@@ -5131,7 +5209,29 @@
                         "included": {
                           "type": "array",
                           "items": {
-                            "type": "object"
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/no-code-module-versions"
+                              },
+                              {
+                                "$ref": "#/components/schemas/no-code-modules"
+                              },
+                              {
+                                "$ref": "#/components/schemas/workspace-readme"
+                              },
+                              {
+                                "$ref": "#/components/schemas/workspace-outputs"
+                              }
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "no-code-module-versions": "#/components/schemas/no-code-module-versions",
+                                "no-code-modules": "#/components/schemas/no-code-modules",
+                                "workspace-readme": "#/components/schemas/workspace-readme",
+                                "workspace-outputs": "#/components/schemas/workspace-outputs"
+                              }
+                            }
                           }
                         }
                       }
@@ -6874,6 +6974,12 @@
             },
             "required": false,
             "example": "projects,workspaces"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -7113,6 +7219,12 @@
             },
             "required": true,
             "description": "The id of a project."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -7173,6 +7285,12 @@
             },
             "required": true,
             "description": "The id of a workspace."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -8541,7 +8659,29 @@
                         "included": {
                           "type": "array",
                           "items": {
-                            "type": "object"
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/no-code-module-versions"
+                              },
+                              {
+                                "$ref": "#/components/schemas/no-code-modules"
+                              },
+                              {
+                                "$ref": "#/components/schemas/workspace-readme"
+                              },
+                              {
+                                "$ref": "#/components/schemas/workspace-outputs"
+                              }
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "no-code-module-versions": "#/components/schemas/no-code-module-versions",
+                                "no-code-modules": "#/components/schemas/no-code-modules",
+                                "workspace-readme": "#/components/schemas/workspace-readme",
+                                "workspace-outputs": "#/components/schemas/workspace-outputs"
+                              }
+                            }
                           }
                         }
                       }
@@ -9023,6 +9163,12 @@
             },
             "required": false,
             "description": "When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
           }
         ],
         "responses": {
@@ -9040,6 +9186,14 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/workspaces"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
                       }
                     }
                   }
@@ -23326,6 +23480,28 @@
       }
     },
     "schemas": {
+      "errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "admin-banners": {
         "type": "object",
         "required": [
@@ -23415,6 +23591,20 @@
           }
         }
       },
+      "admin-banners-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/admin-banners"
+            }
+          }
+        }
+      },
       "admin-banners-envelope": {
         "type": "object",
         "required": [
@@ -23423,28 +23613,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-banners"
-          }
-        }
-      },
-      "errors": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "detail": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       },
@@ -24675,7 +24843,43 @@
           }
         }
       },
-      "cidr-ranges-identifier": {
+      "cidr-range-lists-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cidr-range-lists"
+            ]
+          }
+        }
+      },
+      "cidr-range-lists-has-one": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/cidr-range-lists-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "cidr-ranges": {
         "type": "object",
         "required": [
           "type"
@@ -24690,17 +24894,52 @@
             "enum": [
               "cidr-ranges"
             ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "range",
+              "enabled"
+            ],
+            "properties": {
+              "range": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "cidr-range-list": {
+                "$ref": "#/components/schemas/cidr-range-lists-has-one"
+              }
+            }
           }
         }
       },
-      "cidr-ranges-has-many": {
+      "cidr-ranges-envelope-many": {
         "type": "object",
         "nullable": true,
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/cidr-ranges-identifier"
+              "$ref": "#/components/schemas/cidr-ranges"
             }
           }
         }
@@ -24756,7 +24995,7 @@
                 "$ref": "#/components/schemas/agent-pools-has-many"
               },
               "cidr-ranges": {
-                "$ref": "#/components/schemas/cidr-ranges-has-many"
+                "$ref": "#/components/schemas/cidr-ranges-envelope-many"
               }
             }
           }
@@ -24770,96 +25009,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/cidr-range-lists"
-          }
-        }
-      },
-      "cidr-range-lists-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "cidr-range-lists"
-            ]
-          }
-        }
-      },
-      "cidr-range-lists-has-one": {
-        "type": "object",
-        "nullable": true,
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/cidr-range-lists-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "cidr-ranges": {
-        "type": "object",
-        "required": [
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "cidr-ranges"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "range",
-              "enabled"
-            ],
-            "properties": {
-              "range": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "enabled": {
-                "type": "boolean"
-              },
-              "updated-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "organization": {
-                "$ref": "#/components/schemas/organizations-has-one"
-              },
-              "cidr-range-list": {
-                "$ref": "#/components/schemas/cidr-range-lists-has-one"
-              }
-            }
           }
         }
       },
@@ -27032,6 +27181,38 @@
           }
         }
       },
+      "no-code-module-versions-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-module-versions"
+            ]
+          }
+        }
+      },
+      "no-code-module-versions-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/no-code-module-versions-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "vars-identifier": {
         "type": "object",
         "properties": {
@@ -27055,6 +27236,53 @@
             "items": {
               "$ref": "#/components/schemas/vars-identifier"
             }
+          }
+        }
+      },
+      "tags-has-many": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "tags"
+                  ]
+                },
+                "id": {
+                  "type": "string"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "workspace-links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "self-html": {
+            "type": "string"
           }
         }
       },
@@ -27442,13 +27670,314 @@
               "current-assessment-result": {
                 "$ref": "#/components/schemas/assessment-results-has-one"
               },
+              "no-code-module-version": {
+                "description": "The no-code module version this workspace was created from. Present\nonly for no-code workspaces; data is null or omitted otherwise.\n",
+                "$ref": "#/components/schemas/no-code-module-versions-has-one"
+              },
               "vars": {
                 "$ref": "#/components/schemas/vars-has-many"
+              },
+              "tags": {
+                "$ref": "#/components/schemas/tags-has-many"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/workspace-links"
+          }
+        }
+      },
+      "no-code-modules-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-modules"
+            ]
+          }
+        }
+      },
+      "no-code-modules-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/no-code-modules-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "variable-options-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "variable-options"
+            ]
+          }
+        }
+      },
+      "variable-options-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/variable-options-identifier"
+            }
+          }
+        }
+      },
+      "no-code-module-versions": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-module-versions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "module-version": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Registry module version string this no-code module version pins\n(for example, 1.0.0).\n"
+              },
+              "version-number": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "Monotonic version number for this no-code module version record.\n"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "no-code-module": {
+                "$ref": "#/components/schemas/no-code-modules-has-one"
+              },
+              "variable-options": {
+                "$ref": "#/components/schemas/variable-options-has-many"
+              }
+            }
+          }
+        }
+      },
+      "registry-modules-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-modules"
+            ]
+          }
+        }
+      },
+      "registry-modules-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/registry-modules-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "no-code-modules": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-modules"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Whether this no-code module is enabled for deployment."
+              },
+              "version-pin": {
+                "type": "string",
+                "nullable": true,
+                "description": "Optional pinned module version for no-code deployments."
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "registry-module": {
+                "$ref": "#/components/schemas/registry-modules-has-one"
+              },
+              "variable-options": {
+                "$ref": "#/components/schemas/variable-options-has-many"
+              },
+              "latest-version": {
+                "$ref": "#/components/schemas/no-code-module-versions-has-one"
               }
             }
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "workspace-readme": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-readme"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "raw-markdown": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Raw markdown contents of the workspace README."
+              }
+            }
+          }
+        }
+      },
+      "workspace-outputs": {
+        "type": "object",
+        "description": "Workspace outputs are Terraform output values associated with a workspace.\nThey include the name of the output and a sensitive boolean. There is an\nadditional attribute, \"value\", that can be any JSON type, including null when\nthe output is sensitive; it is intentionally omitted from this schema (same\npattern as state-version-outputs) because OpenAPI cannot express a nullable\nany-type under the project's nullable-type-sibling lint rule.\n",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "workspace-outputs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "sensitive": {
+                "type": "boolean"
+              },
+              "output-type": {
+                "type": "string",
+                "description": "The Terraform type of the output value (e.g. string, number, bool,\nlist, map, set, object, tuple).\n"
+              },
+              "detailed-type": {
+                "description": "A detailed representation of the output type. May be a string for\nsimple types or an array for complex types such as tuples and objects.\n"
+              },
+              "workspace-attributes": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "organization-attributes": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         }
       },
