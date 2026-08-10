@@ -13,10 +13,17 @@ import (
 type ItemProviderSetsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemProviderSetsRequestBuilderGetQueryParameters fetch details about all the provider sets assigned to a project.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+type ItemProviderSetsRequestBuilderGetQueryParameters struct {
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+}
 // NewItemProviderSetsRequestBuilderInternal instantiates a new ItemProviderSetsRequestBuilder and sets the default values.
 func NewItemProviderSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsRequestBuilder) {
     m := &ItemProviderSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/provider-sets", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/provider-sets{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -29,7 +36,7 @@ func NewItemProviderSetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
 // Get fetch details about all the provider sets assigned to a project.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ItemProviderSetsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemProviderSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemProviderSetsGetResponseable, error) {
+func (m *ItemProviderSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsRequestBuilderGetQueryParameters])(ItemProviderSetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +55,7 @@ func (m *ItemProviderSetsRequestBuilder) Get(ctx context.Context, requestConfigu
 }
 // ToGetRequestInformation fetch details about all the provider sets assigned to a project.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
-func (m *ItemProviderSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemProviderSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
