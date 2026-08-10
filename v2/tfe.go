@@ -183,3 +183,38 @@ func NewClient(cfg *Config) (*Client, error) {
 func (c Client) BaseURL() url.URL {
 	return *c.baseURL
 }
+
+// FindSideloadedResource retrieves a resource from the included sideloaded data based
+// on the relationship ID. The extract callback helps FindSideloadedResource identify the
+// type of resource it is looking for and should return the appropriate GetXXX() function call.
+// It returns the resource if found, otherwise it returns the zero value of the resource type.
+// To use this helper, your Get query must have used the Include query parameter to sideload
+// the relationship.
+//
+// Example usage:
+//
+//	userID := response.GetData().GetRelationships().GetUser().GetData().GetId()
+//	user := FindSideloadedResource(userID, response.GetIncluded(), func(item includedable) models.Usersable {
+//		return item.GetUsers()
+//	})
+func FindSideloadedResource[TIncluded any, TResource interface{ GetId() *string }](
+	relationshipID *string,
+	included []TIncluded,
+	extract func(TIncluded) TResource,
+) TResource {
+	var zero TResource
+	if relationshipID == nil {
+		return zero
+	}
+	for _, item := range included {
+		resource := extract(item)
+		if any(resource) == nil {
+			continue
+		}
+		id := resource.GetId()
+		if id != nil && *id == *relationshipID {
+			return resource
+		}
+	}
+	return zero
+}
