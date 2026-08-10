@@ -17,6 +17,10 @@ type ItemProviderSetsRequestBuilder struct {
 type ItemProviderSetsRequestBuilderGetQueryParameters struct {
     // Comma-separated list of related resources to include. Valid values: projects, workspaces.
     Include *string "uriparametername:\"include\""
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ByProvider_set_name gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item.providerSets.item collection
 // returns a *ItemProviderSetsWithProvider_set_nameItemRequestBuilder when successful
@@ -33,7 +37,7 @@ func (m *ItemProviderSetsRequestBuilder) ByProvider_set_name(provider_set_name s
 // NewItemProviderSetsRequestBuilderInternal instantiates a new ItemProviderSetsRequestBuilder and sets the default values.
 func NewItemProviderSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsRequestBuilder) {
     m := &ItemProviderSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets{?include*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

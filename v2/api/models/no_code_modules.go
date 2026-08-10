@@ -7,53 +7,53 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-type Workspaces struct {
+type NoCodeModules struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The attributes property
-    attributes Workspaces_attributesable
+    attributes NoCodeModules_attributesable
     // The id property
     id *string
     // The links property
-    links WorkspaceLinksable
+    links Selfable
     // The relationships property
-    relationships Workspaces_relationshipsable
+    relationships NoCodeModules_relationshipsable
     // The type property
-    typeEscaped *Workspaces_type
+    typeEscaped *NoCodeModules_type
 }
-// NewWorkspaces instantiates a new Workspaces and sets the default values.
-func NewWorkspaces()(*Workspaces) {
-    m := &Workspaces{
+// NewNoCodeModules instantiates a new NoCodeModules and sets the default values.
+func NewNoCodeModules()(*NoCodeModules) {
+    m := &NoCodeModules{
     }
     m.SetAdditionalData(make(map[string]any))
     return m
 }
-// CreateWorkspacesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// CreateNoCodeModulesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspacesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaces(), nil
+func CreateNoCodeModulesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    return NewNoCodeModules(), nil
 }
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Workspaces) GetAdditionalData()(map[string]any) {
+func (m *NoCodeModules) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetAttributes gets the attributes property value. The attributes property
-// returns a Workspaces_attributesable when successful
-func (m *Workspaces) GetAttributes()(Workspaces_attributesable) {
+// returns a NoCodeModules_attributesable when successful
+func (m *NoCodeModules) GetAttributes()(NoCodeModules_attributesable) {
     return m.attributes
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Workspaces) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+func (m *NoCodeModules) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_attributesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateNoCodeModules_attributesFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetAttributes(val.(Workspaces_attributesable))
+            m.SetAttributes(val.(NoCodeModules_attributesable))
         }
         return nil
     }
@@ -68,32 +68,32 @@ func (m *Workspaces) GetFieldDeserializers()(map[string]func(i878a80d2330e89d268
         return nil
     }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceLinksFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateSelfFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetLinks(val.(WorkspaceLinksable))
+            m.SetLinks(val.(Selfable))
         }
         return nil
     }
     res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_relationshipsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateNoCodeModules_relationshipsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetRelationships(val.(Workspaces_relationshipsable))
+            m.SetRelationships(val.(NoCodeModules_relationshipsable))
         }
         return nil
     }
     res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseWorkspaces_type)
+        val, err := n.GetEnumValue(ParseNoCodeModules_type)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTypeEscaped(val.(*Workspaces_type))
+            m.SetTypeEscaped(val.(*NoCodeModules_type))
         }
         return nil
     }
@@ -101,26 +101,26 @@ func (m *Workspaces) GetFieldDeserializers()(map[string]func(i878a80d2330e89d268
 }
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *Workspaces) GetId()(*string) {
+func (m *NoCodeModules) GetId()(*string) {
     return m.id
 }
 // GetLinks gets the links property value. The links property
-// returns a WorkspaceLinksable when successful
-func (m *Workspaces) GetLinks()(WorkspaceLinksable) {
+// returns a Selfable when successful
+func (m *NoCodeModules) GetLinks()(Selfable) {
     return m.links
 }
 // GetRelationships gets the relationships property value. The relationships property
-// returns a Workspaces_relationshipsable when successful
-func (m *Workspaces) GetRelationships()(Workspaces_relationshipsable) {
+// returns a NoCodeModules_relationshipsable when successful
+func (m *NoCodeModules) GetRelationships()(NoCodeModules_relationshipsable) {
     return m.relationships
 }
 // GetTypeEscaped gets the type property value. The type property
-// returns a *Workspaces_type when successful
-func (m *Workspaces) GetTypeEscaped()(*Workspaces_type) {
+// returns a *NoCodeModules_type when successful
+func (m *NoCodeModules) GetTypeEscaped()(*NoCodeModules_type) {
     return m.typeEscaped
 }
 // Serialize serializes information the current object
-func (m *Workspaces) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+func (m *NoCodeModules) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("attributes", m.GetAttributes())
         if err != nil {
@@ -155,40 +155,40 @@ func (m *Workspaces) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c
     return nil
 }
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Workspaces) SetAdditionalData(value map[string]any)() {
+func (m *NoCodeModules) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetAttributes sets the attributes property value. The attributes property
-func (m *Workspaces) SetAttributes(value Workspaces_attributesable)() {
+func (m *NoCodeModules) SetAttributes(value NoCodeModules_attributesable)() {
     m.attributes = value
 }
 // SetId sets the id property value. The id property
-func (m *Workspaces) SetId(value *string)() {
+func (m *NoCodeModules) SetId(value *string)() {
     m.id = value
 }
 // SetLinks sets the links property value. The links property
-func (m *Workspaces) SetLinks(value WorkspaceLinksable)() {
+func (m *NoCodeModules) SetLinks(value Selfable)() {
     m.links = value
 }
 // SetRelationships sets the relationships property value. The relationships property
-func (m *Workspaces) SetRelationships(value Workspaces_relationshipsable)() {
+func (m *NoCodeModules) SetRelationships(value NoCodeModules_relationshipsable)() {
     m.relationships = value
 }
 // SetTypeEscaped sets the type property value. The type property
-func (m *Workspaces) SetTypeEscaped(value *Workspaces_type)() {
+func (m *NoCodeModules) SetTypeEscaped(value *NoCodeModules_type)() {
     m.typeEscaped = value
 }
-type Workspacesable interface {
+type NoCodeModulesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(Workspaces_attributesable)
+    GetAttributes()(NoCodeModules_attributesable)
     GetId()(*string)
-    GetLinks()(WorkspaceLinksable)
-    GetRelationships()(Workspaces_relationshipsable)
-    GetTypeEscaped()(*Workspaces_type)
-    SetAttributes(value Workspaces_attributesable)()
+    GetLinks()(Selfable)
+    GetRelationships()(NoCodeModules_relationshipsable)
+    GetTypeEscaped()(*NoCodeModules_type)
+    SetAttributes(value NoCodeModules_attributesable)()
     SetId(value *string)()
-    SetLinks(value WorkspaceLinksable)()
-    SetRelationships(value Workspaces_relationshipsable)()
-    SetTypeEscaped(value *Workspaces_type)()
+    SetLinks(value Selfable)()
+    SetRelationships(value NoCodeModules_relationshipsable)()
+    SetTypeEscaped(value *NoCodeModules_type)()
 }
