@@ -2,7 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
-// The enforcement level of the policy. For Sentinel, valid values are hard-mandatory, soft-mandatory, and advisory. For OPA, valid values are mandatory and advisory.
+// The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 type Policies_attributes_enforcementLevel int
 
 const (
@@ -10,10 +10,11 @@ const (
     SOFTMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
     ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
     MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+    MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
 )
 
 func (i Policies_attributes_enforcementLevel) String() string {
-    return []string{"hard-mandatory", "soft-mandatory", "advisory", "mandatory"}[i]
+    return []string{"hard-mandatory", "soft-mandatory", "advisory", "mandatory", "mandatory_overridable"}[i]
 }
 func ParsePolicies_attributes_enforcementLevel(v string) (any, error) {
     result := HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
@@ -26,6 +27,8 @@ func ParsePolicies_attributes_enforcementLevel(v string) (any, error) {
             result = ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
         case "mandatory":
             result = MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+        case "mandatory_overridable":
+            result = MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
         default:
             return nil, nil
     }

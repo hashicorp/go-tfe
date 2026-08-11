@@ -14,6 +14,8 @@ type Policies struct {
     attributes Policies_attributesable
     // The id property
     id *string
+    // The links property
+    links Policies_linksable
     // The relationships property
     relationships Policies_relationshipsable
     // The type property
@@ -65,6 +67,16 @@ func (m *Policies) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreatePolicies_linksFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(Policies_linksable))
+        }
+        return nil
+    }
     res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreatePolicies_relationshipsFromDiscriminatorValue)
         if err != nil {
@@ -92,6 +104,11 @@ func (m *Policies) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896
 func (m *Policies) GetId()(*string) {
     return m.id
 }
+// GetLinks gets the links property value. The links property
+// returns a Policies_linksable when successful
+func (m *Policies) GetLinks()(Policies_linksable) {
+    return m.links
+}
 // GetRelationships gets the relationships property value. The relationships property
 // returns a Policies_relationshipsable when successful
 func (m *Policies) GetRelationships()(Policies_relationshipsable) {
@@ -106,6 +123,12 @@ func (m *Policies) GetTypeEscaped()(*Policies_type) {
 func (m *Policies) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("attributes", m.GetAttributes())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
         if err != nil {
             return err
         }
@@ -143,6 +166,10 @@ func (m *Policies) SetAttributes(value Policies_attributesable)() {
 func (m *Policies) SetId(value *string)() {
     m.id = value
 }
+// SetLinks sets the links property value. The links property
+func (m *Policies) SetLinks(value Policies_linksable)() {
+    m.links = value
+}
 // SetRelationships sets the relationships property value. The relationships property
 func (m *Policies) SetRelationships(value Policies_relationshipsable)() {
     m.relationships = value
@@ -156,10 +183,12 @@ type Policiesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAttributes()(Policies_attributesable)
     GetId()(*string)
+    GetLinks()(Policies_linksable)
     GetRelationships()(Policies_relationshipsable)
     GetTypeEscaped()(*Policies_type)
     SetAttributes(value Policies_attributesable)()
     SetId(value *string)()
+    SetLinks(value Policies_linksable)()
     SetRelationships(value Policies_relationshipsable)()
     SetTypeEscaped(value *Policies_type)()
 }

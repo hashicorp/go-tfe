@@ -42,7 +42,7 @@ func (m *ItemRelationshipsPoliciesRequestBuilder) Delete(ctx context.Context, bo
     }
     return nil
 }
-// Post add policies to a policy set. Relationships are additive; existing policy memberships are preserved.
+// Post add policies to a policy set. Additive; existing memberships are preserved. Each `data` item is either an existing policy reference (by id) or an inline OOTB selection that materializes a catalog policy into the set -- see the request schema for both shapes. A policy set cannot mix custom and OOTB policies.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsPoliciesRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PoliciesIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -70,7 +70,7 @@ func (m *ItemRelationshipsPoliciesRequestBuilder) ToDeleteRequestInformation(ctx
     }
     return requestInfo, nil
 }
-// ToPostRequestInformation add policies to a policy set. Relationships are additive; existing policy memberships are preserved.
+// ToPostRequestInformation add policies to a policy set. Additive; existing memberships are preserved. Each `data` item is either an existing policy reference (by id) or an inline OOTB selection that materializes a catalog policy into the set -- see the request schema for both shapes. A policy set cannot mix custom and OOTB policies.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsPoliciesRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PoliciesIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

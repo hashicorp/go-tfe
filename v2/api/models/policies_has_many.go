@@ -11,7 +11,7 @@ type PoliciesHasMany struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []PoliciesIdentifierable
+    data i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
 }
 // NewPoliciesHasMany instantiates a new PoliciesHasMany and sets the default values.
 func NewPoliciesHasMany()(*PoliciesHasMany) {
@@ -31,8 +31,8 @@ func (m *PoliciesHasMany) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []PoliciesIdentifierable when successful
-func (m *PoliciesHasMany) GetData()([]PoliciesIdentifierable) {
+// returns a UntypedNodeable when successful
+func (m *PoliciesHasMany) GetData()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,18 +40,12 @@ func (m *PoliciesHasMany) GetData()([]PoliciesIdentifierable) {
 func (m *PoliciesHasMany) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePoliciesIdentifierFromDiscriminatorValue)
+        val, err := n.GetObjectValue(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.CreateUntypedNodeFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]PoliciesIdentifierable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(PoliciesIdentifierable)
-                }
-            }
-            m.SetData(res)
+            m.SetData(val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable))
         }
         return nil
     }
@@ -59,14 +53,8 @@ func (m *PoliciesHasMany) GetFieldDeserializers()(map[string]func(i878a80d2330e8
 }
 // Serialize serializes information the current object
 func (m *PoliciesHasMany) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
+    {
+        err := writer.WriteObjectValue("data", m.GetData())
         if err != nil {
             return err
         }
@@ -84,12 +72,12 @@ func (m *PoliciesHasMany) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *PoliciesHasMany) SetData(value []PoliciesIdentifierable)() {
+func (m *PoliciesHasMany) SetData(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)() {
     m.data = value
 }
 type PoliciesHasManyable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]PoliciesIdentifierable)
-    SetData(value []PoliciesIdentifierable)()
+    GetData()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+    SetData(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
 }

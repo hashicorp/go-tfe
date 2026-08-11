@@ -15,7 +15,7 @@ type Policies_attributes struct {
     description *string
     // DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
     enforce []Policies_attributes_enforceable
-    // The enforcement level of the policy. For Sentinel, valid values are hard-mandatory, soft-mandatory, and advisory. For OPA, valid values are mandatory and advisory.
+    // The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
     enforcementLevel *Policies_attributes_enforcementLevel
     // The policy-as-code framework for the policy.
     kind *Policies_attributes_kind
@@ -55,7 +55,7 @@ func (m *Policies_attributes) GetDescription()(*string) {
 func (m *Policies_attributes) GetEnforce()([]Policies_attributes_enforceable) {
     return m.enforce
 }
-// GetEnforcementLevel gets the enforcement-level property value. The enforcement level of the policy. For Sentinel, valid values are hard-mandatory, soft-mandatory, and advisory. For OPA, valid values are mandatory and advisory.
+// GetEnforcementLevel gets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 // returns a *Policies_attributes_enforcementLevel when successful
 func (m *Policies_attributes) GetEnforcementLevel()(*Policies_attributes_enforcementLevel) {
     return m.enforcementLevel
@@ -243,7 +243,7 @@ func (m *Policies_attributes) SetDescription(value *string)() {
 func (m *Policies_attributes) SetEnforce(value []Policies_attributes_enforceable)() {
     m.enforce = value
 }
-// SetEnforcementLevel sets the enforcement-level property value. The enforcement level of the policy. For Sentinel, valid values are hard-mandatory, soft-mandatory, and advisory. For OPA, valid values are mandatory and advisory.
+// SetEnforcementLevel sets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 func (m *Policies_attributes) SetEnforcementLevel(value *Policies_attributes_enforcementLevel)() {
     m.enforcementLevel = value
 }
