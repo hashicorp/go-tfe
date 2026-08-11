@@ -15,7 +15,7 @@ echo "The results should NOT be committed to the public repo and should be used 
 read -r -p "Do you want to continue? [y/N] " response
 case "$response" in
     [yY][eE][sS]|[yY]) 
-        cp ../atlas/openapi/bundled/hcpt_v2_internal_beta.json v2/openapi/spec.json
+        cp ../atlas/openapi/bundled/internal_beta_v2.json v2/openapi/spec.json
         ;;
     *)
         echo "Canceled."
