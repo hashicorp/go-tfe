@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "c2c60381",
+    "version": "8d16f3cb",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -13424,7 +13424,7 @@
       "post": {
         "operationId": "addPolicySetPolicies",
         "summary": "Add Policies to a Policy Set",
-        "description": "Add policies to a policy set. Relationships are additive; existing policy memberships are preserved.",
+        "description": "Add policies to a policy set. Additive; existing memberships are preserved. Each `data` item is either an existing policy reference (by id) or an inline OOTB selection that materializes a catalog policy into the set -- see the request schema for both shapes. A policy set cannot mix custom and OOTB policies.",
         "tags": [
           "policy-sets"
         ],
@@ -30716,7 +30716,8 @@
                 "type": "string",
                 "enum": [
                   "sentinel",
-                  "opa"
+                  "opa",
+                  "tfpolicy"
                 ],
                 "description": "The policy-as-code framework for the policy."
               },
@@ -30731,9 +30732,10 @@
                   "hard-mandatory",
                   "soft-mandatory",
                   "advisory",
-                  "mandatory"
+                  "mandatory",
+                  "mandatory_overridable"
                 ],
-                "description": "The enforcement level of the policy. For Sentinel, valid values are hard-mandatory, soft-mandatory, and advisory. For OPA, valid values are mandatory and advisory."
+                "description": "The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable."
               },
               "enforce": {
                 "type": "array",
@@ -30772,6 +30774,27 @@
               },
               "policy-sets": {
                 "$ref": "#/components/schemas/policy-sets-has-many"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The canonical URL of this policy."
+              },
+              "upload": {
+                "type": "string",
+                "readOnly": true,
+                "description": "URL to upload new policy source content."
+              },
+              "download": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "URL to download the current policy source content. Absent when no version has been uploaded yet."
               }
             }
           }
@@ -31495,12 +31518,33 @@
       },
       "policies-has-many": {
         "type": "object",
-        "nullable": true,
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/policies-identifier"
+              "oneOf": [
+                {
+                  "description": "Existing local policy reference (response shape and update requests).",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/policies-identifier"
+                    },
+                    {
+                      "not": {
+                        "type": "object",
+                        "properties": {
+                          "attributes": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "attributes"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           }
         }
@@ -31717,6 +31761,14 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/policy-sets"
+          },
+          "included": {
+            "type": "array",
+            "description": "Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.",
+            "items": {
+              "type": "object",
+              "description": "A sideloaded resource. May be a `policies` resource (type \"policies\"), an `ootb-policies` resource (type \"ootb-policies\"), a `workspaces` resource (type \"workspaces\"), or another allowlisted type."
+            }
           }
         }
       },
@@ -31729,22 +31781,27 @@
           "data": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "policies"
-                  ]
-                },
-                "id": {
-                  "type": "string"
+              "oneOf": [
+                {
+                  "description": "Existing local policy reference, by id. Valid for both adding and removing policies from a policy set.",
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "id"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "policies"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
                 }
-              }
+              ]
             }
           }
         }
