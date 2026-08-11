@@ -1,10 +1,18 @@
-# Unreleased
+# v2.5.0
 
-* Bug Fix: Set `Content-Type: application/vnd.api+json` on POST, PATCH, and DELETE requests without
-a body.
+* The latest public endpoints are available
 
-* Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to
-customize many more aspects of every request round trip.
+* Bug Fix: Set `Content-Type: application/vnd.api+json` on POST, PATCH, and DELETE requests without a body.
+
+* Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to customize many more aspects of every request round trip. 
+
+# v2.4.0
+
+The latest public endpoints are available
+
+# v2.3.0
+
+The latest public endpoints are available
 
 # v2.2.0
 
