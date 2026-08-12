@@ -8,6 +8,8 @@
 
 * The latest public endpoints are available
 
+* Enhancement: Add support for stack-level notification configurations.
+
 # v2.8.0
 
 * The latest public endpoints are available
