@@ -6328,6 +6328,7 @@ type NotificationConfigurationList struct {
 // will be non-nil.
 type NotificationConfigurationSubscribableChoice struct {
 	Project   *Project
+	Stack     *Stack
 	Team      *Team
 	Workspace *Workspace
 }
@@ -6487,6 +6488,8 @@ func (s *notificationConfigurations) Create(ctx context.Context, subscribableID 
 		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Team: &Team{ID: subscribableID}}
 	} else if options.SubscribableChoice != nil && options.SubscribableChoice.Project != nil {
 		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Project: &Project{ID: subscribableID}}
+	} else if options.SubscribableChoice != nil && options.SubscribableChoice.Stack != nil {
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Stack: &Stack{ID: subscribableID}}
 	} else {
 		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
 	}
@@ -6669,6 +6672,12 @@ func notificationSubscribableURL(subscribableID string, choice *NotificationConf
 		}
 		return fmt.Sprintf("projects/%s/notification-configurations", url.PathEscape(subscribableID)), nil
 	}
+	if choice != nil && choice.Stack != nil {
+		if !validStringID(&subscribableID) {
+			return "", ErrInvalidStackID
+		}
+		return fmt.Sprintf("stacks/%s/notification-configurations", url.PathEscape(subscribableID)), nil
+	}
 	if choice == nil || !validStringID(&subscribableID) {
 		return "", ErrInvalidWorkspaceID
 	}
@@ -6685,6 +6694,12 @@ func validateSubscribableChoice(choice *NotificationConfigurationSubscribableCho
 	if choice != nil && choice.Project != nil {
 		if !validStringID(&choice.Project.ID) {
 			return ErrInvalidProjectID
+		}
+		return nil
+	}
+	if choice != nil && choice.Stack != nil {
+		if !validStringID(&choice.Stack.ID) {
+			return ErrInvalidStackID
 		}
 		return nil
 	}
