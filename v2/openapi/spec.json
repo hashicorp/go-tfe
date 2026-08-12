@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "8d16f3cb",
+    "version": "956901b5",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -74,17 +74,6 @@
       "description": "Subscription actions for HCP Terraform billing and feature access",
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/subscriptions"
-      }
-    },
-    {
-      "name": "billing-invoices",
-      "x-vis": [
-        "hcpt"
-      ],
-      "x-displayName": "Billing Invoices",
-      "description": "Billing invoice management for credit-card-billed HCP Terraform organizations",
-      "externalDocs": {
-        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/invoices"
       }
     },
     {
@@ -850,26 +839,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/hcp-organization-envelope"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "included": {
-                          "type": "array",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "$ref": "#/components/schemas/hcp-billing-account"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/hcp-organization-envelope"
                 }
               }
             }
@@ -1174,143 +1144,6 @@
             "description": "Error details",
             "content": {
               "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/organizations/{organization_name}/invoices": {
-      "x-vis": [
-        "hcpt"
-      ],
-      "get": {
-        "operationId": "listOrganizationInvoices",
-        "summary": "List organization invoices",
-        "description": "Lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.\n\nThis operation is only available in HCP Terraform.",
-        "tags": [
-          "billing-invoices"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "organization_name",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The name of the organization."
-          },
-          {
-            "in": "query",
-            "name": "cursor",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "The ID of the invoice where the page should start. If omitted, the endpoint returns the first page."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Invoice list",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/billing-invoices"
-                      }
-                    },
-                    "meta": {
-                      "type": "object",
-                      "properties": {
-                        "continuation": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "The cursor value to use for the next page request. Null when there are no more items."
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unauthorized, forbidden, or not found",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/organizations/{organization_name}/invoices/next": {
-      "x-vis": [
-        "hcpt"
-      ],
-      "get": {
-        "operationId": "showOrganizationNextInvoice",
-        "summary": "Get next invoice",
-        "description": "Returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.\n\nThis operation is only available in HCP Terraform.",
-        "tags": [
-          "billing-invoices"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "organization_name",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The name of the organization."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Upcoming invoice, or null if none is available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "type": "string",
-                      "enum": [
-                        "null"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/billing-invoices"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Unauthorized, forbidden, or not found",
-            "content": {
-              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors"
                 }
@@ -6303,6 +6136,321 @@
         }
       }
     },
+    "/queries": {
+      "post": {
+        "operationId": "createQuery",
+        "summary": "Create a Query Run",
+        "description": "Create a new query run.",
+        "tags": [
+          "queries"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/queries-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Query created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/queries-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/queries/{query_id}": {
+      "get": {
+        "operationId": "getQuery",
+        "summary": "Get Query",
+        "description": "Get details of a specific query.",
+        "tags": [
+          "queries"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "query_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/queries-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/queries/{query_id}/actions/cancel": {
+      "post": {
+        "operationId": "cancelQueryRun",
+        "summary": "Cancel a Query Run",
+        "description": "Cancel a query run that is currently pending or running.",
+        "tags": [
+          "queries"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "query_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Query ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successfully canceled a query run",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Query not found or user unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Failed to transition query run to a canceled state.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/queries": {
+      "get": {
+        "operationId": "getWorkspaceQueries",
+        "summary": "Get Queries for a Workspace",
+        "description": "Get list of queries for a particular workspace.",
+        "tags": [
+          "queries"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The id of the workspace."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Queries",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/queries"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/no-code-query": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "createNoCodeQuery",
+        "summary": "Create a No-Code Query",
+        "description": "Create a new no-code query for a workspace.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "queries"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/no-code-query"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "No-code query created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/no-code-query"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/no-code-query/{id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getNoCodeQuery",
+        "summary": "Get a No-Code Query",
+        "description": "Get the configuration of a specific no-code query.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "queries"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the no-code query."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No-code query details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/no-code-query"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/all-vars": {
       "get": {
         "operationId": "listAllVars",
@@ -7000,7 +7148,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -7245,7 +7398,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -7311,7 +7469,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -23875,35 +24038,6 @@
           }
         }
       },
-      "hcp-billing-accounts-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "hcp-billing-account"
-            ]
-          }
-        }
-      },
-      "hcp-billing-accounts-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/hcp-billing-accounts-identifier"
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
       "feature-sets-identifier": {
         "type": "object",
         "required": [
@@ -23971,13 +24105,9 @@
           "relationships": {
             "type": "object",
             "required": [
-              "default-account",
               "connected-plans"
             ],
             "properties": {
-              "default-account": {
-                "$ref": "#/components/schemas/hcp-billing-accounts-has-one"
-              },
               "connected-plans": {
                 "$ref": "#/components/schemas/feature-sets-has-many"
               }
@@ -23993,85 +24123,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/hcp-organization"
-          }
-        }
-      },
-      "hcp-billing-account": {
-        "type": "object",
-        "required": [
-          "id",
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "project-id",
-              "hcp-organization-name",
-              "hcp-organization-id",
-              "balance",
-              "card-brand",
-              "card-last4",
-              "card-exp-month",
-              "card-exp-year",
-              "account-type",
-              "status",
-              "payment-provider"
-            ],
-            "properties": {
-              "project-id": {
-                "type": "string"
-              },
-              "hcp-organization-name": {
-                "type": "string"
-              },
-              "hcp-organization-id": {
-                "type": "string"
-              },
-              "balance": {
-                "type": "number"
-              },
-              "card-brand": {
-                "type": "string",
-                "nullable": true
-              },
-              "card-last4": {
-                "type": "string",
-                "nullable": true
-              },
-              "card-exp-month": {
-                "type": "integer",
-                "nullable": true
-              },
-              "card-exp-year": {
-                "type": "integer",
-                "nullable": true
-              },
-              "account-type": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string"
-              },
-              "payment-provider": {
-                "type": "string",
-                "nullable": true
-              },
-              "is-payment-method-configured": {
-                "type": "boolean"
-              },
-              "flex-version": {
-                "type": "string",
-                "nullable": true
-              }
-            }
           }
         }
       },
@@ -24259,6 +24310,10 @@
               "stacks": {
                 "type": "boolean",
                 "description": "Whether the feature set includes stacks"
+              },
+              "task-project-scoping": {
+                "type": "boolean",
+                "description": "Whether the feature set includes the ability to scope tasks to projects"
               },
               "teams": {
                 "type": "boolean",
@@ -24564,9 +24619,6 @@
               "feature-set": {
                 "$ref": "#/components/schemas/feature-sets-has-one"
               },
-              "hcp-billing-account": {
-                "$ref": "#/components/schemas/links_related"
-              },
               "next-subscription": {
                 "$ref": "#/components/schemas/subscriptions-has-one"
               }
@@ -24582,52 +24634,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/subscriptions"
-          }
-        }
-      },
-      "billing-invoices": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "The Stripe invoice ID."
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "billing-invoices"
-            ],
-            "description": "The resource type identifier."
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "description": "The date the invoice was created."
-              },
-              "external-link": {
-                "type": "string",
-                "description": "A link to the Stripe-hosted invoice PDF."
-              },
-              "number": {
-                "type": "string",
-                "description": "The invoice number."
-              },
-              "paid": {
-                "type": "boolean",
-                "description": "Whether the invoice has been paid."
-              },
-              "status": {
-                "type": "string",
-                "description": "The invoice status (e.g., \"paid\", \"draft\")."
-              },
-              "total": {
-                "type": "integer",
-                "description": "The total invoice amount in cents."
-              }
-            }
           }
         }
       },
@@ -28223,6 +28229,349 @@
           }
         }
       },
+      "workspaces-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/workspaces-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "no-code-queries-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-queries"
+            ]
+          }
+        }
+      },
+      "no-code-queries-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/no-code-queries-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "queries": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "queries"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "actions": {
+                "type": "object",
+                "required": [
+                  "is-cancelable",
+                  "is-force-cancelable"
+                ],
+                "properties": {
+                  "is-cancelable": {
+                    "type": "boolean"
+                  },
+                  "is-force-cancelable": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "canceled-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "tfe-api",
+                  "tfe-ui",
+                  "tfe-module",
+                  "tfe-no-code-query",
+                  "terraform"
+                ]
+              },
+              "generate-config-out": {
+                "type": "boolean"
+              },
+              "resources-discovered": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "The number of resources discovered by the query run."
+              },
+              "status-timestamps": {
+                "type": "object",
+                "properties": {
+                  "pending-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "queued-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "canceled-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "finished-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "queued",
+                  "running",
+                  "finished",
+                  "canceled",
+                  "errored"
+                ]
+              },
+              "log-read-url": {
+                "type": "string",
+                "readOnly": true
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-cancel": {
+                    "type": "boolean"
+                  },
+                  "can-force-cancel": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "force-cancel-available-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "policy-paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "workspace",
+              "configuration-version"
+            ],
+            "properties": {
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-has-one"
+              },
+              "canceled-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "configuration-version": {
+                "$ref": "#/components/schemas/configuration-versions-has-one"
+              },
+              "created-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "no-code-query": {
+                "$ref": "#/components/schemas/no-code-queries-has-one",
+                "description": "The no-code query that triggered this query run, if any."
+              }
+            }
+          }
+        }
+      },
+      "queries-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/queries"
+          }
+        }
+      },
+      "queries-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "queries"
+            ]
+          }
+        }
+      },
+      "queries-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/queries-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "no-code-query": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-queries"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "generate-config-out": {
+                "type": "boolean",
+                "writeOnly": true,
+                "description": "Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false."
+              },
+              "no-code-query-providers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "namespace",
+                    "name",
+                    "version",
+                    "no-code-query-resources"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "namespace": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "no-code-query-resources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "readOnly": true
+                          },
+                          "body": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "workspace"
+            ],
+            "properties": {
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-has-one"
+              },
+              "latest-query-run": {
+                "$ref": "#/components/schemas/queries-has-one"
+              }
+            }
+          }
+        }
+      },
       "configurable-identifier": {
         "type": "object",
         "required": [
@@ -28286,23 +28635,6 @@
               }
             ],
             "nullable": true
-          }
-        }
-      },
-      "workspaces-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/workspaces-identifier"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },

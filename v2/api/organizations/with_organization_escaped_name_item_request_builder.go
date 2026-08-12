@@ -98,11 +98,6 @@ func (m *WithOrganization_nameItemRequestBuilder) GithubAppInstallations()(*Item
 func (m *WithOrganization_nameItemRequestBuilder) HyokConfigurations()(*ItemHyokConfigurationsRequestBuilder) {
     return NewItemHyokConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// Invoices the invoices property
-// returns a *ItemInvoicesRequestBuilder when successful
-func (m *WithOrganization_nameItemRequestBuilder) Invoices()(*ItemInvoicesRequestBuilder) {
-    return NewItemInvoicesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
 // MetricsTokens the metricsTokens property
 // returns a *ItemMetricsTokensRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) MetricsTokens()(*ItemMetricsTokensRequestBuilder) {

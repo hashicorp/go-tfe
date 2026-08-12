@@ -151,6 +151,11 @@ func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body i05d5
 func (m *WithWorkspace_ItemRequestBuilder) ProviderSets()(*ItemProviderSetsRequestBuilder) {
     return NewItemProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Queries the queries property
+// returns a *ItemQueriesRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
+    return NewItemQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Relationships the relationships property
 // returns a *ItemRelationshipsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {

@@ -16,7 +16,7 @@ type ItemProviderSetsGetResponse struct {
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
-    meta i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+    meta ItemProviderSetsGetResponse_metaable
 }
 // NewItemProviderSetsGetResponse instantiates a new ItemProviderSetsGetResponse and sets the default values.
 func NewItemProviderSetsGetResponse()(*ItemProviderSetsGetResponse) {
@@ -71,12 +71,12 @@ func (m *ItemProviderSetsGetResponse) GetFieldDeserializers()(map[string]func(i8
         return nil
     }
     res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemProviderSetsGetResponse_metaFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetMeta(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
+            m.SetMeta(val.(ItemProviderSetsGetResponse_metaable))
         }
         return nil
     }
@@ -88,8 +88,8 @@ func (m *ItemProviderSetsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a
     return m.links
 }
 // GetMeta gets the meta property value. The meta property
-// returns a Paginationable when successful
-func (m *ItemProviderSetsGetResponse) GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
+// returns a ItemProviderSetsGetResponse_metaable when successful
+func (m *ItemProviderSetsGetResponse) GetMeta()(ItemProviderSetsGetResponse_metaable) {
     return m.meta
 }
 // Serialize serializes information the current object
@@ -139,7 +139,7 @@ func (m *ItemProviderSetsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c91
     m.links = value
 }
 // SetMeta sets the meta property value. The meta property
-func (m *ItemProviderSetsGetResponse) SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)() {
+func (m *ItemProviderSetsGetResponse) SetMeta(value ItemProviderSetsGetResponse_metaable)() {
     m.meta = value
 }
 type ItemProviderSetsGetResponseable interface {
@@ -147,8 +147,8 @@ type ItemProviderSetsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
-    GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
+    GetMeta()(ItemProviderSetsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
-    SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)()
+    SetMeta(value ItemProviderSetsGetResponse_metaable)()
 }
