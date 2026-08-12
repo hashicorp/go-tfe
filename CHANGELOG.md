@@ -1,3 +1,7 @@
+# v2.6.0
+
+* The latest public endpoints are available
+
 # v2.5.0
 
 * The latest public endpoints are available
