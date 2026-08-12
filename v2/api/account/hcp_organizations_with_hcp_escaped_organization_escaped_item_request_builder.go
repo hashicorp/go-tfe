@@ -27,9 +27,9 @@ func NewHcpOrganizationsWithHcp_organization_ItemRequestBuilder(rawUrl string, r
     return NewHcpOrganizationsWithHcp_organization_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details of a specific HCP organizationThis operation is only available in HCP Terraform.
-// returns a HcpOrganizationsItemWithHcp_organization_GetResponseable when successful
+// returns a HcpOrganizationEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(HcpOrganizationsItemWithHcp_organization_GetResponseable, error) {
+func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HcpOrganizationEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -37,14 +37,14 @@ func (m *HcpOrganizationsWithHcp_organization_ItemRequestBuilder) Get(ctx contex
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateHcpOrganizationsItemWithHcp_organization_GetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateHcpOrganizationEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(HcpOrganizationsItemWithHcp_organization_GetResponseable), nil
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HcpOrganizationEnvelopeable), nil
 }
 // ToGetRequestInformation get details of a specific HCP organizationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful

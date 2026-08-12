@@ -88,6 +88,8 @@ type FeatureSets_attributes struct {
     sso *bool
     // Whether the feature set includes stacks
     stacks *bool
+    // Whether the feature set includes the ability to scope tasks to projects
+    taskProjectScoping *bool
     // Whether the feature set includes teams
     teams *bool
     // Whether the feature set includes Terraform Actions features
@@ -559,6 +561,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["task-project-scoping"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTaskProjectScoping(val)
+        }
+        return nil
+    }
     res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -780,6 +792,11 @@ func (m *FeatureSets_attributes) GetSso()(*bool) {
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetStacks()(*bool) {
     return m.stacks
+}
+// GetTaskProjectScoping gets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetTaskProjectScoping()(*bool) {
+    return m.taskProjectScoping
 }
 // GetTeams gets the teams property value. Whether the feature set includes teams
 // returns a *bool when successful
@@ -1053,6 +1070,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("task-project-scoping", m.GetTaskProjectScoping())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("teams", m.GetTeams())
         if err != nil {
             return err
@@ -1262,6 +1285,10 @@ func (m *FeatureSets_attributes) SetSso(value *bool)() {
 func (m *FeatureSets_attributes) SetStacks(value *bool)() {
     m.stacks = value
 }
+// SetTaskProjectScoping sets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
+func (m *FeatureSets_attributes) SetTaskProjectScoping(value *bool)() {
+    m.taskProjectScoping = value
+}
 // SetTeams sets the teams property value. Whether the feature set includes teams
 func (m *FeatureSets_attributes) SetTeams(value *bool)() {
     m.teams = value
@@ -1332,6 +1359,7 @@ type FeatureSets_attributesable interface {
     GetSentinel()(*bool)
     GetSso()(*bool)
     GetStacks()(*bool)
+    GetTaskProjectScoping()(*bool)
     GetTeams()(*bool)
     GetTerraformActions()(*bool)
     GetUserLimit()(*float64)
@@ -1378,6 +1406,7 @@ type FeatureSets_attributesable interface {
     SetSentinel(value *bool)()
     SetSso(value *bool)()
     SetStacks(value *bool)()
+    SetTaskProjectScoping(value *bool)()
     SetTeams(value *bool)()
     SetTerraformActions(value *bool)()
     SetUserLimit(value *float64)()

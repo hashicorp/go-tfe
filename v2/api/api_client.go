@@ -43,7 +43,9 @@ import (
     i8b0114affcc06c0adf129afa349f2e9e22f24e7e7706847598e5d961705590c9 "github.com/hashicorp/go-tfe/v2/api/runtriggers"
     i8c6b82e8fb2c75c6ded7fff41b32e80163047bc1e072bb86ea5aaa9bbb249d08 "github.com/hashicorp/go-tfe/v2/api/costestimates"
     i92891af49450a4497cd0765ce3ca5f9cbb4f5fdea5338247b5f997ade42df844 "github.com/hashicorp/go-tfe/v2/api/agents"
+    i92fd818c70a785b893303ae0eeee14ce67cf2a298b268f4629e1dea4145b257b "github.com/hashicorp/go-tfe/v2/api/search"
     i9f9da2e77dc194747c8849bf5f23201976b7405a8621a452cbd633269aee2779 "github.com/hashicorp/go-tfe/v2/api/oauthclients"
+    ia00388c0569045c747ae6bc4dc20a2d7fa59b605fa77a7edac2eee9a86072f8e "github.com/hashicorp/go-tfe/v2/api/queries"
     ia14dfa99771434ac181f57e417b736a27476422badf4c601913115c290aa5d51 "github.com/hashicorp/go-tfe/v2/api/changerequests"
     ia1674df6ad2f27dff7825753af17f524107b9492ec48709646162c2f89c834b2 "github.com/hashicorp/go-tfe/v2/api/agentpools"
     iabe579aca73193e5d8305da5a47b206ec58ca6b25283768d2ed2062b6e55d772 "github.com/hashicorp/go-tfe/v2/api/tfpolicyevaluations"
@@ -278,6 +280,11 @@ func (m *ApiClient) Projects()(*ic7d637b0cea32015f6fe8fdda69f69b83f2bfb9c9db69eb
 func (m *ApiClient) ProviderSets()(*ida37032331931bdbac35f8b15434de19f19da392d7e7a114a8246766075382a9.ProviderSetsRequestBuilder) {
     return ida37032331931bdbac35f8b15434de19f19da392d7e7a114a8246766075382a9.NewProviderSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Queries the queries property
+// returns a *QueriesRequestBuilder when successful
+func (m *ApiClient) Queries()(*ia00388c0569045c747ae6bc4dc20a2d7fa59b605fa77a7edac2eee9a86072f8e.QueriesRequestBuilder) {
+    return ia00388c0569045c747ae6bc4dc20a2d7fa59b605fa77a7edac2eee9a86072f8e.NewQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // RecoverableItems the recoverableItems property
 // returns a *RecoverableItemsRequestBuilder when successful
 func (m *ApiClient) RecoverableItems()(*i56237a61b835ea700b8287ca786bb035d37377a3f2b323fd8c325f3af009f712.RecoverableItemsRequestBuilder) {
@@ -292,6 +299,11 @@ func (m *ApiClient) Runs()(*i10a766e8a154db63834f14ad2e51a6f5b465f33a49c5268ef42
 // returns a *RunTriggersRequestBuilder when successful
 func (m *ApiClient) RunTriggers()(*i8b0114affcc06c0adf129afa349f2e9e22f24e7e7706847598e5d961705590c9.RunTriggersRequestBuilder) {
     return i8b0114affcc06c0adf129afa349f2e9e22f24e7e7706847598e5d961705590c9.NewRunTriggersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Search the search property
+// returns a *SearchRequestBuilder when successful
+func (m *ApiClient) Search()(*i92fd818c70a785b893303ae0eeee14ce67cf2a298b268f4629e1dea4145b257b.SearchRequestBuilder) {
+    return i92fd818c70a785b893303ae0eeee14ce67cf2a298b268f4629e1dea4145b257b.NewSearchRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // SshKeys the sshKeys property
 // returns a *SshKeysRequestBuilder when successful
