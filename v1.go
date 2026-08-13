@@ -4826,6 +4826,8 @@ var (
 
 	ErrTagSelectorMinLimit = errors.New("must provide at least one tag selector")
 
+	ErrInvalidTagSelectorMatchingLogic = errors.New(`tag selector matching logic must be "any" or "all"`)
+
 	ErrRequiredPlan = errors.New("plan is required")
 
 	ErrRequiredPolicies = errors.New("policies is required")
@@ -10047,6 +10049,11 @@ type PolicySet struct {
 	// The tag selectors for this policy set.
 	TagSelectors []*PolicySetTagSelectorAttr `jsonapi:"attr,tag-selectors"`
 
+	// TagSelectorMatchingLogic controls how multiple tag selectors are combined.
+	// "any" (default) means OR semantics — applies to workspaces matching any selector.
+	// "all" means AND semantics — applies only to workspaces matching all selectors.
+	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic"`
+
 	// Relations
 	// The organization to which the policy set belongs to.
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -10175,6 +10182,10 @@ type PolicySetCreateOptions struct {
 
 	// Optional: A list of tag selectors for enforcement/exclusion based on tags
 	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
+
+	// Optional: Matching logic for tag selectors.
+	// Valid values: "any" (OR, default) or "all" (AND — workspace must match all selectors).
+	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -10219,6 +10230,10 @@ type PolicySetUpdateOptions struct {
 	// directly-attached policies (*PolicySet.Policies). Specifying this
 	// option when policies are already present will result in an error.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+	
+	// Optional: Matching logic for tag selectors.
+	// Valid values: "any" (OR, default) or "all" (AND — workspace must match all selectors).
+	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetAddPoliciesOptions represents the options for adding policies
@@ -10656,6 +10671,12 @@ func (o PolicySetCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+	if o.TagSelectorMatchingLogic != nil {
+		v := *o.TagSelectorMatchingLogic
+		if v != "any" && v != "all" {
+			return ErrInvalidTagSelectorMatchingLogic
+		}
+	}
 	return nil
 }
 
@@ -10692,6 +10713,12 @@ func (o PolicySetRemoveProjectsOptions) valid() error {
 func (o PolicySetUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
+	}
+	if o.TagSelectorMatchingLogic != nil {
+		v := *o.TagSelectorMatchingLogic
+		if v != "any" && v != "all" {
+			return ErrInvalidTagSelectorMatchingLogic
+		}
 	}
 	return nil
 }
