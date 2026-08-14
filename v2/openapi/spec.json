@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "956901b5",
+    "version": "972f0967",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -13587,7 +13587,7 @@
       "post": {
         "operationId": "addPolicySetPolicies",
         "summary": "Add Policies to a Policy Set",
-        "description": "Add policies to a policy set. Additive; existing memberships are preserved. Each `data` item is either an existing policy reference (by id) or an inline OOTB selection that materializes a catalog policy into the set -- see the request schema for both shapes. A policy set cannot mix custom and OOTB policies.",
+        "description": "Add policies to a policy set. Additive; existing memberships are preserved. Each `data` item references an existing policy by id; see the request schema for accepted shapes.",
         "tags": [
           "policy-sets"
         ],
@@ -26420,6 +26420,11 @@
                 ],
                 "readOnly": true,
                 "description": "The provisioning status of the user.\n- \"provisioned\": User was created via SCIM provisioning\n- \"claimed\": User claimed their account or existed before SCIM\n"
+              },
+              "username": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The username/identity string from the SCIM provider."
               }
             }
           }
@@ -32096,10 +32101,10 @@
           },
           "included": {
             "type": "array",
-            "description": "Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.",
+            "description": "Sideloaded resources. `?include=policies` sideloads the full policy resources.",
             "items": {
               "type": "object",
-              "description": "A sideloaded resource. May be a `policies` resource (type \"policies\"), an `ootb-policies` resource (type \"ootb-policies\"), a `workspaces` resource (type \"workspaces\"), or another allowlisted type."
+              "description": "A sideloaded resource. May be a `policies` resource (type \"policies\"), a `workspaces` resource (type \"workspaces\"), or another allowlisted type."
             }
           }
         }
