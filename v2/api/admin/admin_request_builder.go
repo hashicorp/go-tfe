@@ -29,3 +29,8 @@ func NewAdminRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb
     urlParams["request-raw-url"] = rawUrl
     return NewAdminRequestBuilderInternal(urlParams, requestAdapter)
 }
+// GithubAppInstallations the githubAppInstallations property
+// returns a *GithubAppInstallationsRequestBuilder when successful
+func (m *AdminRequestBuilder) GithubAppInstallations()(*GithubAppInstallationsRequestBuilder) {
+    return NewGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
