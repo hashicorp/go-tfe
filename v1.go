@@ -6409,7 +6409,7 @@ type NotificationConfigurationCreateOptions struct {
 	// Optional: The list of users belonging to the organization that will receive notification emails.
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
 
-	// Required: The workspace, team, or project that the notification configuration is associated with.
+	// Required: The workspace, team, project, or stack that the notification configuration is associated with.
 	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable,omitempty"`
 }
 
