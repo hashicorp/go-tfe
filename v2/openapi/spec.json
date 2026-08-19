@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "956901b5",
+    "version": "7a4c7be3",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -13587,7 +13587,7 @@
       "post": {
         "operationId": "addPolicySetPolicies",
         "summary": "Add Policies to a Policy Set",
-        "description": "Add policies to a policy set. Additive; existing memberships are preserved. Each `data` item is either an existing policy reference (by id) or an inline OOTB selection that materializes a catalog policy into the set -- see the request schema for both shapes. A policy set cannot mix custom and OOTB policies.",
+        "description": "Add policies to a policy set. Additive; existing memberships are preserved. Each `data` item references an existing policy by id; see the request schema for accepted shapes.",
         "tags": [
           "policy-sets"
         ],
@@ -22052,6 +22052,135 @@
         }
       }
     },
+    "/admin/github-app-installations": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "adminListGithubAppInstallations",
+        "summary": "List GitHub App Installations (Admin)",
+        "description": "List the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "github-app-installations"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter[query]",
+            "schema": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "required": false,
+            "description": "Filter by GitHub account name (partial match) or exact GitHub installation ID."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "connected",
+                "disconnected",
+                "suspended"
+              ]
+            },
+            "required": false,
+            "description": "Filter by installation status. Defaults to all."
+          },
+          {
+            "in": "query",
+            "name": "filter[type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Organization",
+                "User"
+              ]
+            },
+            "required": false,
+            "description": "Filter by GitHub account type."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of GitHub App installations",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/github-app-installations"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        },
+                        "total-installation-count": {
+                          "type": "integer",
+                          "description": "The unfiltered number of synchronized installations for the app, independent of the filter and page parameters."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/github-app-installations/refresh": {
+      "x-vis": [
+        "tfe"
+      ],
+      "post": {
+        "operationId": "adminRefreshGithubAppInstallations",
+        "summary": "Refresh GitHub App Installations (Admin)",
+        "description": "Request an on-demand reconciliation of the Global GitHub App's installation inventory against GitHub, recovering installations whose webhook deliveries were missed. Only available when the app is hosted on GHE.com. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "github-app-installations"
+        ],
+        "responses": {
+          "204": {
+            "description": "Reconciliation enqueued"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organization_name}/github-app-installations": {
       "get": {
         "operationId": "listOrganizationGithubAppInstallations",
@@ -26420,6 +26549,11 @@
                 ],
                 "readOnly": true,
                 "description": "The provisioning status of the user.\n- \"provisioned\": User was created via SCIM provisioning\n- \"claimed\": User claimed their account or existed before SCIM\n"
+              },
+              "username": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The username/identity string from the SCIM provider."
               }
             }
           }
@@ -32096,10 +32230,10 @@
           },
           "included": {
             "type": "array",
-            "description": "Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.",
+            "description": "Sideloaded resources. `?include=policies` sideloads the full policy resources.",
             "items": {
               "type": "object",
-              "description": "A sideloaded resource. May be a `policies` resource (type \"policies\"), an `ootb-policies` resource (type \"ootb-policies\"), a `workspaces` resource (type \"workspaces\"), or another allowlisted type."
+              "description": "A sideloaded resource. May be a `policies` resource (type \"policies\"), a `workspaces` resource (type \"workspaces\"), or another allowlisted type."
             }
           }
         }
@@ -35287,6 +35421,14 @@
               "installation-url": {
                 "type": "string",
                 "nullable": true
+              },
+              "disconnected": {
+                "type": "boolean",
+                "description": "True when GitHub no longer reports this installation."
+              },
+              "suspended": {
+                "type": "boolean",
+                "description": "True when the installation is suspended on GitHub."
               }
             }
           }
