@@ -100,6 +100,12 @@ func (m *NoCodeModuleVersions_relationships) Serialize(writer i878a80d2330e89d26
         }
     }
     {
+        err := writer.WriteObjectValue("variable-options", m.GetVariableOptions())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err

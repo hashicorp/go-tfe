@@ -59,11 +59,6 @@ func (m *ItemRunsRequestBuilder) Get(ctx context.Context, requestConfiguration *
     }
     return res.(ItemRunsGetResponseable), nil
 }
-// Queue the queue property
-// returns a *ItemRunsQueueRequestBuilder when successful
-func (m *ItemRunsRequestBuilder) Queue()(*ItemRunsQueueRequestBuilder) {
-    return NewItemRunsQueueRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
 // ToGetRequestInformation list all runs in an organization.
 // returns a *RequestInformation when successful
 func (m *ItemRunsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRunsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {

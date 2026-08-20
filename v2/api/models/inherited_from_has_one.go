@@ -10,8 +10,8 @@ import (
 type InheritedFromHasOne struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The data property
-    data InheritedFromHasOne_dataable
+    // The links property
+    links Relatedable
 }
 // NewInheritedFromHasOne instantiates a new InheritedFromHasOne and sets the default values.
 func NewInheritedFromHasOne()(*InheritedFromHasOne) {
@@ -30,31 +30,31 @@ func CreateInheritedFromHasOneFromDiscriminatorValue(parseNode i878a80d2330e89d2
 func (m *InheritedFromHasOne) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetData gets the data property value. The data property
-// returns a InheritedFromHasOne_dataable when successful
-func (m *InheritedFromHasOne) GetData()(InheritedFromHasOne_dataable) {
-    return m.data
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *InheritedFromHasOne) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateInheritedFromHasOne_dataFromDiscriminatorValue)
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRelatedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(InheritedFromHasOne_dataable))
+            m.SetLinks(val.(Relatedable))
         }
         return nil
     }
     return res
 }
+// GetLinks gets the links property value. The links property
+// returns a Relatedable when successful
+func (m *InheritedFromHasOne) GetLinks()(Relatedable) {
+    return m.links
+}
 // Serialize serializes information the current object
 func (m *InheritedFromHasOne) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
-        err := writer.WriteObjectValue("data", m.GetData())
+        err := writer.WriteObjectValue("links", m.GetLinks())
         if err != nil {
             return err
         }
@@ -71,13 +71,13 @@ func (m *InheritedFromHasOne) Serialize(writer i878a80d2330e89d26896388a3f487eef
 func (m *InheritedFromHasOne) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetData sets the data property value. The data property
-func (m *InheritedFromHasOne) SetData(value InheritedFromHasOne_dataable)() {
-    m.data = value
+// SetLinks sets the links property value. The links property
+func (m *InheritedFromHasOne) SetLinks(value Relatedable)() {
+    m.links = value
 }
 type InheritedFromHasOneable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(InheritedFromHasOne_dataable)
-    SetData(value InheritedFromHasOne_dataable)()
+    GetLinks()(Relatedable)
+    SetLinks(value Relatedable)()
 }

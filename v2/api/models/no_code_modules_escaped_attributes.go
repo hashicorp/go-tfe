@@ -10,9 +10,9 @@ import (
 type NoCodeModules_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The enabled property
+    // Whether this no-code module is enabled for deployment.
     enabled *bool
-    // A semantic version or `latest`.
+    // Optional pinned module version for no-code deployments.
     versionPin *string
 }
 // NewNoCodeModules_attributes instantiates a new NoCodeModules_attributes and sets the default values.
@@ -32,7 +32,7 @@ func CreateNoCodeModules_attributesFromDiscriminatorValue(parseNode i878a80d2330
 func (m *NoCodeModules_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetEnabled gets the enabled property value. The enabled property
+// GetEnabled gets the enabled property value. Whether this no-code module is enabled for deployment.
 // returns a *bool when successful
 func (m *NoCodeModules_attributes) GetEnabled()(*bool) {
     return m.enabled
@@ -63,7 +63,7 @@ func (m *NoCodeModules_attributes) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
-// GetVersionPin gets the version-pin property value. A semantic version or `latest`.
+// GetVersionPin gets the version-pin property value. Optional pinned module version for no-code deployments.
 // returns a *string when successful
 func (m *NoCodeModules_attributes) GetVersionPin()(*string) {
     return m.versionPin
@@ -94,11 +94,11 @@ func (m *NoCodeModules_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
 func (m *NoCodeModules_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetEnabled sets the enabled property value. The enabled property
+// SetEnabled sets the enabled property value. Whether this no-code module is enabled for deployment.
 func (m *NoCodeModules_attributes) SetEnabled(value *bool)() {
     m.enabled = value
 }
-// SetVersionPin sets the version-pin property value. A semantic version or `latest`.
+// SetVersionPin sets the version-pin property value. Optional pinned module version for no-code deployments.
 func (m *NoCodeModules_attributes) SetVersionPin(value *string)() {
     m.versionPin = value
 }

@@ -101,7 +101,7 @@ type Workspaces_attributes struct {
     triggerPrefixes []string
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The vcsRepo property
+    // Omit this attribute during an update to leave the VCS connection unchanged, or set it to null to disconnect the workspace from VCS.
     vcsRepo Workspaces_attributes_vcsRepoable
     // The vcsRepoIdentifier property
     vcsRepoIdentifier *string
@@ -866,7 +866,7 @@ func (m *Workspaces_attributes) GetTriggerPrefixes()([]string) {
 func (m *Workspaces_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.updatedAt
 }
-// GetVcsRepo gets the vcs-repo property value. The vcsRepo property
+// GetVcsRepo gets the vcs-repo property value. Omit this attribute during an update to leave the VCS connection unchanged, or set it to null to disconnect the workspace from VCS.
 // returns a Workspaces_attributes_vcsRepoable when successful
 func (m *Workspaces_attributes) GetVcsRepo()(Workspaces_attributes_vcsRepoable) {
     return m.vcsRepo
@@ -1351,7 +1351,7 @@ func (m *Workspaces_attributes) SetTriggerPrefixes(value []string)() {
 func (m *Workspaces_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
 }
-// SetVcsRepo sets the vcs-repo property value. The vcsRepo property
+// SetVcsRepo sets the vcs-repo property value. Omit this attribute during an update to leave the VCS connection unchanged, or set it to null to disconnect the workspace from VCS.
 func (m *Workspaces_attributes) SetVcsRepo(value Workspaces_attributes_vcsRepoable)() {
     m.vcsRepo = value
 }

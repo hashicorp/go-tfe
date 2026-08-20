@@ -5,6 +5,7 @@ package workspaces
 
 import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
 
 type ItemRelationshipsTagsGetResponse struct {
@@ -12,6 +13,10 @@ type ItemRelationshipsTagsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []ItemRelationshipsTagsGetResponse_dataable
+    // The links property
+    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+    // The meta property
+    meta ItemRelationshipsTagsGetResponse_metaable
 }
 // NewItemRelationshipsTagsGetResponse instantiates a new ItemRelationshipsTagsGetResponse and sets the default values.
 func NewItemRelationshipsTagsGetResponse()(*ItemRelationshipsTagsGetResponse) {
@@ -55,7 +60,37 @@ func (m *ItemRelationshipsTagsGetResponse) GetFieldDeserializers()(map[string]fu
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateItemRelationshipsTagsGetResponse_metaFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(ItemRelationshipsTagsGetResponse_metaable))
+        }
+        return nil
+    }
     return res
+}
+// GetLinks gets the links property value. The links property
+// returns a SelfWithPaginationable when successful
+func (m *ItemRelationshipsTagsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
+    return m.links
+}
+// GetMeta gets the meta property value. The meta property
+// returns a ItemRelationshipsTagsGetResponse_metaable when successful
+func (m *ItemRelationshipsTagsGetResponse) GetMeta()(ItemRelationshipsTagsGetResponse_metaable) {
+    return m.meta
 }
 // Serialize serializes information the current object
 func (m *ItemRelationshipsTagsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -67,6 +102,18 @@ func (m *ItemRelationshipsTagsGetResponse) Serialize(writer i878a80d2330e89d2689
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
         if err != nil {
             return err
         }
@@ -87,9 +134,21 @@ func (m *ItemRelationshipsTagsGetResponse) SetAdditionalData(value map[string]an
 func (m *ItemRelationshipsTagsGetResponse) SetData(value []ItemRelationshipsTagsGetResponse_dataable)() {
     m.data = value
 }
+// SetLinks sets the links property value. The links property
+func (m *ItemRelationshipsTagsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
+    m.links = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *ItemRelationshipsTagsGetResponse) SetMeta(value ItemRelationshipsTagsGetResponse_metaable)() {
+    m.meta = value
+}
 type ItemRelationshipsTagsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]ItemRelationshipsTagsGetResponse_dataable)
+    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+    GetMeta()(ItemRelationshipsTagsGetResponse_metaable)
     SetData(value []ItemRelationshipsTagsGetResponse_dataable)()
+    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
+    SetMeta(value ItemRelationshipsTagsGetResponse_metaable)()
 }

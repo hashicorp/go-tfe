@@ -10,9 +10,9 @@ import (
 type NoCodeModuleVersions_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The moduleVersion property
+    // Registry module version string this no-code module version pins(for example, 1.0.0).
     moduleVersion *string
-    // The versionNumber property
+    // Monotonic version number for this no-code module version record.
     versionNumber *int32
 }
 // NewNoCodeModuleVersions_attributes instantiates a new NoCodeModuleVersions_attributes and sets the default values.
@@ -58,12 +58,12 @@ func (m *NoCodeModuleVersions_attributes) GetFieldDeserializers()(map[string]fun
     }
     return res
 }
-// GetModuleVersion gets the module-version property value. The moduleVersion property
+// GetModuleVersion gets the module-version property value. Registry module version string this no-code module version pins(for example, 1.0.0).
 // returns a *string when successful
 func (m *NoCodeModuleVersions_attributes) GetModuleVersion()(*string) {
     return m.moduleVersion
 }
-// GetVersionNumber gets the version-number property value. The versionNumber property
+// GetVersionNumber gets the version-number property value. Monotonic version number for this no-code module version record.
 // returns a *int32 when successful
 func (m *NoCodeModuleVersions_attributes) GetVersionNumber()(*int32) {
     return m.versionNumber
@@ -82,11 +82,11 @@ func (m *NoCodeModuleVersions_attributes) Serialize(writer i878a80d2330e89d26896
 func (m *NoCodeModuleVersions_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetModuleVersion sets the module-version property value. The moduleVersion property
+// SetModuleVersion sets the module-version property value. Registry module version string this no-code module version pins(for example, 1.0.0).
 func (m *NoCodeModuleVersions_attributes) SetModuleVersion(value *string)() {
     m.moduleVersion = value
 }
-// SetVersionNumber sets the version-number property value. The versionNumber property
+// SetVersionNumber sets the version-number property value. Monotonic version number for this no-code module version record.
 func (m *NoCodeModuleVersions_attributes) SetVersionNumber(value *int32)() {
     m.versionNumber = value
 }

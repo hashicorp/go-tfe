@@ -12,8 +12,6 @@ type Subscriptions_relationships struct {
     additionalData map[string]any
     // The featureSet property
     featureSet FeatureSetsHasOneable
-    // The hcpBillingAccount property
-    hcpBillingAccount Links_relatedable
     // The nextSubscription property
     nextSubscription SubscriptionsHasOneable
     // The organization property
@@ -55,16 +53,6 @@ func (m *Subscriptions_relationships) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
-    res["hcp-billing-account"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHcpBillingAccount(val.(Links_relatedable))
-        }
-        return nil
-    }
     res["next-subscription"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateSubscriptionsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -87,11 +75,6 @@ func (m *Subscriptions_relationships) GetFieldDeserializers()(map[string]func(i8
     }
     return res
 }
-// GetHcpBillingAccount gets the hcp-billing-account property value. The hcpBillingAccount property
-// returns a Links_relatedable when successful
-func (m *Subscriptions_relationships) GetHcpBillingAccount()(Links_relatedable) {
-    return m.hcpBillingAccount
-}
 // GetNextSubscription gets the next-subscription property value. The nextSubscription property
 // returns a SubscriptionsHasOneable when successful
 func (m *Subscriptions_relationships) GetNextSubscription()(SubscriptionsHasOneable) {
@@ -106,12 +89,6 @@ func (m *Subscriptions_relationships) GetOrganization()(OrganizationsHasOneable)
 func (m *Subscriptions_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("feature-set", m.GetFeatureSet())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("hcp-billing-account", m.GetHcpBillingAccount())
         if err != nil {
             return err
         }
@@ -144,10 +121,6 @@ func (m *Subscriptions_relationships) SetAdditionalData(value map[string]any)() 
 func (m *Subscriptions_relationships) SetFeatureSet(value FeatureSetsHasOneable)() {
     m.featureSet = value
 }
-// SetHcpBillingAccount sets the hcp-billing-account property value. The hcpBillingAccount property
-func (m *Subscriptions_relationships) SetHcpBillingAccount(value Links_relatedable)() {
-    m.hcpBillingAccount = value
-}
 // SetNextSubscription sets the next-subscription property value. The nextSubscription property
 func (m *Subscriptions_relationships) SetNextSubscription(value SubscriptionsHasOneable)() {
     m.nextSubscription = value
@@ -160,11 +133,9 @@ type Subscriptions_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetFeatureSet()(FeatureSetsHasOneable)
-    GetHcpBillingAccount()(Links_relatedable)
     GetNextSubscription()(SubscriptionsHasOneable)
     GetOrganization()(OrganizationsHasOneable)
     SetFeatureSet(value FeatureSetsHasOneable)()
-    SetHcpBillingAccount(value Links_relatedable)()
     SetNextSubscription(value SubscriptionsHasOneable)()
     SetOrganization(value OrganizationsHasOneable)()
 }

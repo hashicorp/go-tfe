@@ -11,7 +11,7 @@ type NoCodeModulesHasOne struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data NoCodeModulesIdentifierable
+    data NoCodeModulesHasOne_dataable
     // The links property
     links Relatedable
 }
@@ -33,8 +33,8 @@ func (m *NoCodeModulesHasOne) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a NoCodeModulesIdentifierable when successful
-func (m *NoCodeModulesHasOne) GetData()(NoCodeModulesIdentifierable) {
+// returns a NoCodeModulesHasOne_dataable when successful
+func (m *NoCodeModulesHasOne) GetData()(NoCodeModulesHasOne_dataable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -42,12 +42,12 @@ func (m *NoCodeModulesHasOne) GetData()(NoCodeModulesIdentifierable) {
 func (m *NoCodeModulesHasOne) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNoCodeModulesIdentifierFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateNoCodeModulesHasOne_dataFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(NoCodeModulesIdentifierable))
+            m.SetData(val.(NoCodeModulesHasOne_dataable))
         }
         return nil
     }
@@ -77,6 +77,12 @@ func (m *NoCodeModulesHasOne) Serialize(writer i878a80d2330e89d26896388a3f487eef
         }
     }
     {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -89,7 +95,7 @@ func (m *NoCodeModulesHasOne) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *NoCodeModulesHasOne) SetData(value NoCodeModulesIdentifierable)() {
+func (m *NoCodeModulesHasOne) SetData(value NoCodeModulesHasOne_dataable)() {
     m.data = value
 }
 // SetLinks sets the links property value. The links property
@@ -99,8 +105,8 @@ func (m *NoCodeModulesHasOne) SetLinks(value Relatedable)() {
 type NoCodeModulesHasOneable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(NoCodeModulesIdentifierable)
+    GetData()(NoCodeModulesHasOne_dataable)
     GetLinks()(Relatedable)
-    SetData(value NoCodeModulesIdentifierable)()
+    SetData(value NoCodeModulesHasOne_dataable)()
     SetLinks(value Relatedable)()
 }

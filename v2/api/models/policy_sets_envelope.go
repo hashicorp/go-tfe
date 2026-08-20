@@ -12,6 +12,8 @@ type PolicySetsEnvelope struct {
     additionalData map[string]any
     // The data property
     data PolicySetsable
+    // Sideloaded resources. `?include=policies` sideloads the full policy resources.
+    included []PolicySetsEnvelope_includedable
 }
 // NewPolicySetsEnvelope instantiates a new PolicySetsEnvelope and sets the default values.
 func NewPolicySetsEnvelope()(*PolicySetsEnvelope) {
@@ -49,12 +51,45 @@ func (m *PolicySetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreatePolicySetsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]PolicySetsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(PolicySetsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
+// returns a []PolicySetsEnvelope_includedable when successful
+func (m *PolicySetsEnvelope) GetIncluded()([]PolicySetsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *PolicySetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *PolicySetsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *PolicySetsEnvelope) SetData(value PolicySetsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
+func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_includedable)() {
+    m.included = value
+}
 type PolicySetsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(PolicySetsable)
+    GetIncluded()([]PolicySetsEnvelope_includedable)
     SetData(value PolicySetsable)()
+    SetIncluded(value []PolicySetsEnvelope_includedable)()
 }

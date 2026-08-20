@@ -8,10 +8,11 @@ type Policies_attributes_kind int
 const (
     SENTINEL_POLICIES_ATTRIBUTES_KIND Policies_attributes_kind = iota
     OPA_POLICIES_ATTRIBUTES_KIND
+    TFPOLICY_POLICIES_ATTRIBUTES_KIND
 )
 
 func (i Policies_attributes_kind) String() string {
-    return []string{"sentinel", "opa"}[i]
+    return []string{"sentinel", "opa", "tfpolicy"}[i]
 }
 func ParsePolicies_attributes_kind(v string) (any, error) {
     result := SENTINEL_POLICIES_ATTRIBUTES_KIND
@@ -20,6 +21,8 @@ func ParsePolicies_attributes_kind(v string) (any, error) {
             result = SENTINEL_POLICIES_ATTRIBUTES_KIND
         case "opa":
             result = OPA_POLICIES_ATTRIBUTES_KIND
+        case "tfpolicy":
+            result = TFPOLICY_POLICIES_ATTRIBUTES_KIND
         default:
             return nil, nil
     }

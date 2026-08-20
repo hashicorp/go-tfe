@@ -1,16 +1,4 @@
 Warning: KiotaBuilder OpenAPI warning: #/ - A servers entry (v3) or host + basePath + schemes properties (v2) was not present in the OpenAPI description. The root URL will need to be set manually with the request adapter.
-Warning: KiotaBuilder OpenAPI warning: #/ - The schema /organizations/{organization_name}/invoices/next is a polymorphic type but does not define a discriminator. This will result in serialization errors.
 Warning: KiotaBuilder OpenAPI warning: #/paths/~1organizations~1{organization_name}~1organization-memberships/get/parameters/3/schema - The format email is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-organizations/properties/attributes/properties/notification-email - The format email is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-smtp-settings/properties/attributes/properties/test-email-address - The format email is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-saml-settings/properties/attributes/properties/slo-endpoint-url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-saml-settings/properties/attributes/properties/sso-endpoint-url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-saml-settings/properties/attributes/properties/acs-consumer-url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-saml-settings/properties/attributes/properties/metadata-url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/tool-version-architecture/properties/url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/terraform-versions/properties/attributes/properties/url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/sentinel-versions/properties/attributes/properties/url - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder OpenAPI warning: #/components/schemas/opa-versions/properties/attributes/properties/url - The format uri is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/organization-memberships/properties/attributes/properties/email - The format email is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder No server url found in the OpenAPI document. The base url will need to be set when using the client.
-Warning: KiotaBuilder Discriminator projects-identifier is not inherited from inheritedFromHasOne_data.

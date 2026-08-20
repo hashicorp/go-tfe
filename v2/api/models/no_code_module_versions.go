@@ -110,6 +110,12 @@ func (m *NoCodeModuleVersions) Serialize(writer i878a80d2330e89d26896388a3f487ee
             return err
         }
     }
+    {
+        err := writer.WriteObjectValue("relationships", m.GetRelationships())
+        if err != nil {
+            return err
+        }
+    }
     if m.GetTypeEscaped() != nil {
         cast := (*m.GetTypeEscaped()).String()
         err := writer.WriteStringValue("type", &cast)

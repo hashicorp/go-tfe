@@ -13,6 +13,13 @@ import (
 type ItemRelationshipsVarsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemRelationshipsVarsRequestBuilderGetQueryParameters list all variables in a variable set.
+type ItemRelationshipsVarsRequestBuilderGetQueryParameters struct {
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+}
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.varsets.item.relationships.vars.item collection
 // returns a *ItemRelationshipsVarsVarsItemRequestBuilder when successful
 func (m *ItemRelationshipsVarsRequestBuilder) ById(id string)(*ItemRelationshipsVarsVarsItemRequestBuilder) {
@@ -28,7 +35,7 @@ func (m *ItemRelationshipsVarsRequestBuilder) ById(id string)(*ItemRelationships
 // NewItemRelationshipsVarsRequestBuilderInternal instantiates a new ItemRelationshipsVarsRequestBuilder and sets the default values.
 func NewItemRelationshipsVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsVarsRequestBuilder) {
     m := &ItemRelationshipsVarsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/varsets/{varset_id}/relationships/vars", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/varsets/{varset_id}/relationships/vars{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -41,7 +48,7 @@ func NewItemRelationshipsVarsRequestBuilder(rawUrl string, requestAdapter i2ae41
 // Get list all variables in a variable set.
 // returns a ItemRelationshipsVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemRelationshipsVarsGetResponseable, error) {
+func (m *ItemRelationshipsVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsVarsRequestBuilderGetQueryParameters])(ItemRelationshipsVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -80,7 +87,7 @@ func (m *ItemRelationshipsVarsRequestBuilder) Post(ctx context.Context, body i05
 }
 // ToGetRequestInformation list all variables in a variable set.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsVarsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
