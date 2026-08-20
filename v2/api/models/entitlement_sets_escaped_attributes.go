@@ -10,6 +10,8 @@ import (
 type EntitlementSets_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The teams property
+    teams *bool
 }
 // NewEntitlementSets_attributes instantiates a new EntitlementSets_attributes and sets the default values.
 func NewEntitlementSets_attributes()(*EntitlementSets_attributes) {
@@ -32,10 +34,31 @@ func (m *EntitlementSets_attributes) GetAdditionalData()(map[string]any) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *EntitlementSets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTeams(val)
+        }
+        return nil
+    }
     return res
+}
+// GetTeams gets the teams property value. The teams property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTeams()(*bool) {
+    return m.teams
 }
 // Serialize serializes information the current object
 func (m *EntitlementSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteBoolValue("teams", m.GetTeams())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
@@ -48,7 +71,13 @@ func (m *EntitlementSets_attributes) Serialize(writer i878a80d2330e89d26896388a3
 func (m *EntitlementSets_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetTeams sets the teams property value. The teams property
+func (m *EntitlementSets_attributes) SetTeams(value *bool)() {
+    m.teams = value
+}
 type EntitlementSets_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetTeams()(*bool)
+    SetTeams(value *bool)()
 }

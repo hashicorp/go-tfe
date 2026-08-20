@@ -29,3 +29,8 @@ func NewItemTestsRegistryModulesItemItemItemWithProviderItemRequestBuilder(rawUr
 func (m *ItemTestsRegistryModulesItemItemItemWithProviderItemRequestBuilder) TestRuns()(*ItemTestsRegistryModulesItemItemItemItemTestRunsRequestBuilder) {
     return NewItemTestsRegistryModulesItemItemItemItemTestRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Vars the vars property
+// returns a *ItemTestsRegistryModulesItemItemItemItemVarsRequestBuilder when successful
+func (m *ItemTestsRegistryModulesItemItemItemWithProviderItemRequestBuilder) Vars()(*ItemTestsRegistryModulesItemItemItemItemVarsRequestBuilder) {
+    return NewItemTestsRegistryModulesItemItemItemItemVarsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}

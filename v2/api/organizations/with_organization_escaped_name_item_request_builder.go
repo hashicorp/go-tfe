@@ -29,6 +29,11 @@ func (m *WithOrganization_nameItemRequestBuilder) AgentPools()(*ItemAgentPoolsRe
 func (m *WithOrganization_nameItemRequestBuilder) AuthenticationToken()(*ItemAuthenticationTokenRequestBuilder) {
     return NewItemAuthenticationTokenRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Capacity the capacity property
+// returns a *ItemCapacityRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Capacity()(*ItemCapacityRequestBuilder) {
+    return NewItemCapacityRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // CidrRangeLists the cidrRangeLists property
 // returns a *ItemCidrRangeListsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) CidrRangeLists()(*ItemCidrRangeListsRequestBuilder) {
@@ -102,6 +107,11 @@ func (m *WithOrganization_nameItemRequestBuilder) HyokConfigurations()(*ItemHyok
 // returns a *ItemMetricsTokensRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) MetricsTokens()(*ItemMetricsTokensRequestBuilder) {
     return NewItemMetricsTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// NoCodeModules the noCodeModules property
+// returns a *ItemNoCodeModulesRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) NoCodeModules()(*ItemNoCodeModulesRequestBuilder) {
+    return NewItemNoCodeModulesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // OauthClients the oauthClients property
 // returns a *ItemOauthClientsRequestBuilder when successful
@@ -193,6 +203,11 @@ func (m *WithOrganization_nameItemRequestBuilder) RecoverableItems()(*ItemRecove
 func (m *WithOrganization_nameItemRequestBuilder) RegistryModules()(*ItemRegistryModulesRequestBuilder) {
     return NewItemRegistryModulesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// RegistryProviders the registryProviders property
+// returns a *ItemRegistryProvidersRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) RegistryProviders()(*ItemRegistryProvidersRequestBuilder) {
+    return NewItemRegistryProvidersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Relationships the relationships property
 // returns a *ItemRelationshipsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
@@ -208,10 +223,25 @@ func (m *WithOrganization_nameItemRequestBuilder) Runs()(*ItemRunsRequestBuilder
 func (m *WithOrganization_nameItemRequestBuilder) SshKeys()(*ItemSshKeysRequestBuilder) {
     return NewItemSshKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Stacks the stacks property
+// returns a *ItemStacksRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Stacks()(*ItemStacksRequestBuilder) {
+    return NewItemStacksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Subscription the subscription property
 // returns a *ItemSubscriptionRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Subscription()(*ItemSubscriptionRequestBuilder) {
     return NewItemSubscriptionRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Tags the tags property
+// returns a *ItemTagsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Tags()(*ItemTagsRequestBuilder) {
+    return NewItemTagsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TaskConfigs the taskConfigs property
+// returns a *ItemTaskConfigsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) TaskConfigs()(*ItemTaskConfigsRequestBuilder) {
+    return NewItemTaskConfigsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Tasks the tasks property
 // returns a *ItemTasksRequestBuilder when successful

@@ -18,6 +18,8 @@ type StateVersionOutputs_attributes struct {
     sensitive *bool
     // The Terraform type of the output value (e.g. "string", "number", "bool", "list", "map", "set", "object", "tuple").
     typeEscaped *string
+    // The output value. This may be any JSON value and is null for sensitive outputs in collection responses.
+    value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
 }
 // NewStateVersionOutputs_attributes instantiates a new StateVersionOutputs_attributes and sets the default values.
 func NewStateVersionOutputs_attributes()(*StateVersionOutputs_attributes) {
@@ -85,6 +87,16 @@ func (m *StateVersionOutputs_attributes) GetFieldDeserializers()(map[string]func
         }
         return nil
     }
+    res["value"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.CreateUntypedNodeFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetValue(val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable))
+        }
+        return nil
+    }
     return res
 }
 // GetName gets the name property value. The name property
@@ -101,6 +113,11 @@ func (m *StateVersionOutputs_attributes) GetSensitive()(*bool) {
 // returns a *string when successful
 func (m *StateVersionOutputs_attributes) GetTypeEscaped()(*string) {
     return m.typeEscaped
+}
+// GetValue gets the value property value. The output value. This may be any JSON value and is null for sensitive outputs in collection responses.
+// returns a UntypedNodeable when successful
+func (m *StateVersionOutputs_attributes) GetValue()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
+    return m.value
 }
 // Serialize serializes information the current object
 func (m *StateVersionOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -124,6 +141,12 @@ func (m *StateVersionOutputs_attributes) Serialize(writer i878a80d2330e89d268963
     }
     {
         err := writer.WriteStringValue("type", m.GetTypeEscaped())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("value", m.GetValue())
         if err != nil {
             return err
         }
@@ -156,6 +179,10 @@ func (m *StateVersionOutputs_attributes) SetSensitive(value *bool)() {
 func (m *StateVersionOutputs_attributes) SetTypeEscaped(value *string)() {
     m.typeEscaped = value
 }
+// SetValue sets the value property value. The output value. This may be any JSON value and is null for sensitive outputs in collection responses.
+func (m *StateVersionOutputs_attributes) SetValue(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)() {
+    m.value = value
+}
 type StateVersionOutputs_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -163,8 +190,10 @@ type StateVersionOutputs_attributesable interface {
     GetName()(*string)
     GetSensitive()(*bool)
     GetTypeEscaped()(*string)
+    GetValue()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
     SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
     SetName(value *string)()
     SetSensitive(value *bool)()
     SetTypeEscaped(value *string)()
+    SetValue(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
 }

@@ -10,6 +10,12 @@ import (
 type RegistryModules_attributes_versionStatuses struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The error property
+    error *string
+    // The status property
+    status *string
+    // The version property
+    version *string
 }
 // NewRegistryModules_attributes_versionStatuses instantiates a new RegistryModules_attributes_versionStatuses and sets the default values.
 func NewRegistryModules_attributes_versionStatuses()(*RegistryModules_attributes_versionStatuses) {
@@ -28,14 +34,77 @@ func CreateRegistryModules_attributes_versionStatusesFromDiscriminatorValue(pars
 func (m *RegistryModules_attributes_versionStatuses) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetError gets the error property value. The error property
+// returns a *string when successful
+func (m *RegistryModules_attributes_versionStatuses) GetError()(*string) {
+    return m.error
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *RegistryModules_attributes_versionStatuses) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetError(val)
+        }
+        return nil
+    }
+    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStatus(val)
+        }
+        return nil
+    }
+    res["version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetVersion(val)
+        }
+        return nil
+    }
     return res
+}
+// GetStatus gets the status property value. The status property
+// returns a *string when successful
+func (m *RegistryModules_attributes_versionStatuses) GetStatus()(*string) {
+    return m.status
+}
+// GetVersion gets the version property value. The version property
+// returns a *string when successful
+func (m *RegistryModules_attributes_versionStatuses) GetVersion()(*string) {
+    return m.version
 }
 // Serialize serializes information the current object
 func (m *RegistryModules_attributes_versionStatuses) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteStringValue("error", m.GetError())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("status", m.GetStatus())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("version", m.GetVersion())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
@@ -48,7 +117,25 @@ func (m *RegistryModules_attributes_versionStatuses) Serialize(writer i878a80d23
 func (m *RegistryModules_attributes_versionStatuses) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetError sets the error property value. The error property
+func (m *RegistryModules_attributes_versionStatuses) SetError(value *string)() {
+    m.error = value
+}
+// SetStatus sets the status property value. The status property
+func (m *RegistryModules_attributes_versionStatuses) SetStatus(value *string)() {
+    m.status = value
+}
+// SetVersion sets the version property value. The version property
+func (m *RegistryModules_attributes_versionStatuses) SetVersion(value *string)() {
+    m.version = value
+}
 type RegistryModules_attributes_versionStatusesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetError()(*string)
+    GetStatus()(*string)
+    GetVersion()(*string)
+    SetError(value *string)()
+    SetStatus(value *string)()
+    SetVersion(value *string)()
 }

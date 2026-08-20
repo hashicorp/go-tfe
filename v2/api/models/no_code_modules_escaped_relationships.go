@@ -17,7 +17,7 @@ type NoCodeModules_relationships struct {
     // The registryModule property
     registryModule RegistryModulesHasOneable
     // The variableOptions property
-    variableOptions VariableOptionsHasManyable
+    variableOptions NoCodeVariableOptionsHasManyable
 }
 // NewNoCodeModules_relationships instantiates a new NoCodeModules_relationships and sets the default values.
 func NewNoCodeModules_relationships()(*NoCodeModules_relationships) {
@@ -71,12 +71,12 @@ func (m *NoCodeModules_relationships) GetFieldDeserializers()(map[string]func(i8
         return nil
     }
     res["variable-options"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVariableOptionsHasManyFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateNoCodeVariableOptionsHasManyFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetVariableOptions(val.(VariableOptionsHasManyable))
+            m.SetVariableOptions(val.(NoCodeVariableOptionsHasManyable))
         }
         return nil
     }
@@ -98,24 +98,12 @@ func (m *NoCodeModules_relationships) GetRegistryModule()(RegistryModulesHasOnea
     return m.registryModule
 }
 // GetVariableOptions gets the variable-options property value. The variableOptions property
-// returns a VariableOptionsHasManyable when successful
-func (m *NoCodeModules_relationships) GetVariableOptions()(VariableOptionsHasManyable) {
+// returns a NoCodeVariableOptionsHasManyable when successful
+func (m *NoCodeModules_relationships) GetVariableOptions()(NoCodeVariableOptionsHasManyable) {
     return m.variableOptions
 }
 // Serialize serializes information the current object
 func (m *NoCodeModules_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("latest-version", m.GetLatestVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
     {
         err := writer.WriteObjectValue("registry-module", m.GetRegistryModule())
         if err != nil {
@@ -153,7 +141,7 @@ func (m *NoCodeModules_relationships) SetRegistryModule(value RegistryModulesHas
     m.registryModule = value
 }
 // SetVariableOptions sets the variable-options property value. The variableOptions property
-func (m *NoCodeModules_relationships) SetVariableOptions(value VariableOptionsHasManyable)() {
+func (m *NoCodeModules_relationships) SetVariableOptions(value NoCodeVariableOptionsHasManyable)() {
     m.variableOptions = value
 }
 type NoCodeModules_relationshipsable interface {
@@ -162,9 +150,9 @@ type NoCodeModules_relationshipsable interface {
     GetLatestVersion()(NoCodeModuleVersionsHasOneable)
     GetOrganization()(OrganizationsHasOneable)
     GetRegistryModule()(RegistryModulesHasOneable)
-    GetVariableOptions()(VariableOptionsHasManyable)
+    GetVariableOptions()(NoCodeVariableOptionsHasManyable)
     SetLatestVersion(value NoCodeModuleVersionsHasOneable)()
     SetOrganization(value OrganizationsHasOneable)()
     SetRegistryModule(value RegistryModulesHasOneable)()
-    SetVariableOptions(value VariableOptionsHasManyable)()
+    SetVariableOptions(value NoCodeVariableOptionsHasManyable)()
 }

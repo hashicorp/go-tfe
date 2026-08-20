@@ -13,8 +13,10 @@ type ItemWithWorkspace_GetResponse struct {
     // The included property
     included []ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_includedable
 }
-// ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+// ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
 type ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+    effectiveTagBindings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
     noCodeModules i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
@@ -35,7 +37,14 @@ func NewItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included()(*Item
 func CreateItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     result := NewItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included()
     if parseNode != nil {
-        if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateNoCodeModulesFromDiscriminatorValue); val != nil {
+        if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateEffectiveTagBindingsFromDiscriminatorValue); val != nil {
+            if err != nil {
+                return nil, err
+            }
+            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable); ok {
+                result.SetEffectiveTagBindings(cast)
+            }
+        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateNoCodeModulesFromDiscriminatorValue); val != nil {
             if err != nil {
                 return nil, err
             }
@@ -66,6 +75,11 @@ func CreateItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_includedFromD
         }
     }
     return result, nil
+}
+// GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+// returns a EffectiveTagBindingsable when successful
+func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable) {
+    return m.effectiveTagBindings
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -99,7 +113,12 @@ func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) GetWo
 }
 // Serialize serializes information the current object
 func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetNoCodeModules() != nil {
+    if m.GetEffectiveTagBindings() != nil {
+        err := writer.WriteObjectValue("", m.GetEffectiveTagBindings())
+        if err != nil {
+            return err
+        }
+    } else if m.GetNoCodeModules() != nil {
         err := writer.WriteObjectValue("", m.GetNoCodeModules())
         if err != nil {
             return err
@@ -122,6 +141,10 @@ func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) Seria
     }
     return nil
 }
+// SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)() {
+    m.effectiveTagBindings = value
+}
 // SetNoCodeModules sets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
 func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)() {
     m.noCodeModules = value
@@ -140,10 +163,12 @@ func (m *ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_included) SetWo
 }
 type ItemWithWorkspace_GetResponse_WithWorkspace_GetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
     GetNoCodeModules()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)
     GetNoCodeModuleVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)
     GetWorkspaceOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)
     GetWorkspaceReadme()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)
+    SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)()
     SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)()
     SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)()
     SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)()
