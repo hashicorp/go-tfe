@@ -14,6 +14,8 @@ type Applies_attributes struct {
     actionInvocations *int32
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
+    backingDataState *Applies_attributes_backingDataState
     // The executionDetails property
     executionDetails Applies_attributes_executionDetailsable
     // The logReadUrl property
@@ -58,6 +60,11 @@ func (m *Applies_attributes) GetActionInvocations()(*int32) {
 func (m *Applies_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetBackingDataState gets the backing-data-state property value. Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
+// returns a *Applies_attributes_backingDataState when successful
+func (m *Applies_attributes) GetBackingDataState()(*Applies_attributes_backingDataState) {
+    return m.backingDataState
+}
 // GetExecutionDetails gets the execution-details property value. The executionDetails property
 // returns a Applies_attributes_executionDetailsable when successful
 func (m *Applies_attributes) GetExecutionDetails()(Applies_attributes_executionDetailsable) {
@@ -84,6 +91,16 @@ func (m *Applies_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         if val != nil {
             m.SetActionInvocations(val)
+        }
+        return nil
+    }
+    res["backing-data-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParseApplies_attributes_backingDataState)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetBackingDataState(val.(*Applies_attributes_backingDataState))
         }
         return nil
     }
@@ -226,6 +243,10 @@ func (m *Applies_attributes) SetActionInvocations(value *int32)() {
 func (m *Applies_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetBackingDataState sets the backing-data-state property value. Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
+func (m *Applies_attributes) SetBackingDataState(value *Applies_attributes_backingDataState)() {
+    m.backingDataState = value
+}
 // SetExecutionDetails sets the execution-details property value. The executionDetails property
 func (m *Applies_attributes) SetExecutionDetails(value Applies_attributes_executionDetailsable)() {
     m.executionDetails = value
@@ -263,6 +284,7 @@ type Applies_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActionFailures()(*int32)
     GetActionInvocations()(*int32)
+    GetBackingDataState()(*Applies_attributes_backingDataState)
     GetExecutionDetails()(Applies_attributes_executionDetailsable)
     GetLogReadUrl()(*string)
     GetResourceAdditions()(*int32)
@@ -273,6 +295,7 @@ type Applies_attributesable interface {
     GetStatusTimestamps()(Applies_attributes_statusTimestampsable)
     SetActionFailures(value *int32)()
     SetActionInvocations(value *int32)()
+    SetBackingDataState(value *Applies_attributes_backingDataState)()
     SetExecutionDetails(value Applies_attributes_executionDetailsable)()
     SetLogReadUrl(value *string)()
     SetResourceAdditions(value *int32)()
