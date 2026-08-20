@@ -12,6 +12,8 @@ type Plans_attributes struct {
     actions Plans_attributes_actionsable
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
+    backingDataState *Plans_attributes_backingDataState
     // Details about the execution of this plan. Null if plan has not started.
     executionDetails Plans_attributes_executionDetailsable
     // Whether the plan generated new configuration as part of this run
@@ -59,6 +61,11 @@ func (m *Plans_attributes) GetActions()(Plans_attributes_actionsable) {
 func (m *Plans_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetBackingDataState gets the backing-data-state property value. Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
+// returns a *Plans_attributes_backingDataState when successful
+func (m *Plans_attributes) GetBackingDataState()(*Plans_attributes_backingDataState) {
+    return m.backingDataState
+}
 // GetExecutionDetails gets the execution-details property value. Details about the execution of this plan. Null if plan has not started.
 // returns a Plans_attributes_executionDetailsable when successful
 func (m *Plans_attributes) GetExecutionDetails()(Plans_attributes_executionDetailsable) {
@@ -75,6 +82,16 @@ func (m *Plans_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         if val != nil {
             m.SetActions(val.(Plans_attributes_actionsable))
+        }
+        return nil
+    }
+    res["backing-data-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParsePlans_attributes_backingDataState)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetBackingDataState(val.(*Plans_attributes_backingDataState))
         }
         return nil
     }
@@ -352,6 +369,10 @@ func (m *Plans_attributes) SetActions(value Plans_attributes_actionsable)() {
 func (m *Plans_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetBackingDataState sets the backing-data-state property value. Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
+func (m *Plans_attributes) SetBackingDataState(value *Plans_attributes_backingDataState)() {
+    m.backingDataState = value
+}
 // SetExecutionDetails sets the execution-details property value. Details about the execution of this plan. Null if plan has not started.
 func (m *Plans_attributes) SetExecutionDetails(value Plans_attributes_executionDetailsable)() {
     m.executionDetails = value
@@ -404,6 +425,7 @@ type Plans_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActions()(Plans_attributes_actionsable)
+    GetBackingDataState()(*Plans_attributes_backingDataState)
     GetExecutionDetails()(Plans_attributes_executionDetailsable)
     GetGeneratedConfiguration()(*bool)
     GetHasChanges()(*bool)
@@ -417,6 +439,7 @@ type Plans_attributesable interface {
     GetStatusTimestamps()(Plans_attributes_statusTimestampsable)
     GetStructuredRunOutputEnabled()(*bool)
     SetActions(value Plans_attributes_actionsable)()
+    SetBackingDataState(value *Plans_attributes_backingDataState)()
     SetExecutionDetails(value Plans_attributes_executionDetailsable)()
     SetGeneratedConfiguration(value *bool)()
     SetHasChanges(value *bool)()

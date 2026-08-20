@@ -10,6 +10,8 @@ import (
 type GithubAppInstallations_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // True when GitHub no longer reports this installation.
+    disconnected *bool
     // The iconUrl property
     iconUrl *string
     // The installationId property
@@ -20,6 +22,8 @@ type GithubAppInstallations_attributes struct {
     installationUrl *string
     // The name property
     name *string
+    // True when the installation is suspended on GitHub.
+    suspended *bool
 }
 // NewGithubAppInstallations_attributes instantiates a new GithubAppInstallations_attributes and sets the default values.
 func NewGithubAppInstallations_attributes()(*GithubAppInstallations_attributes) {
@@ -38,10 +42,25 @@ func CreateGithubAppInstallations_attributesFromDiscriminatorValue(parseNode i87
 func (m *GithubAppInstallations_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetDisconnected gets the disconnected property value. True when GitHub no longer reports this installation.
+// returns a *bool when successful
+func (m *GithubAppInstallations_attributes) GetDisconnected()(*bool) {
+    return m.disconnected
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *GithubAppInstallations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["disconnected"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDisconnected(val)
+        }
+        return nil
+    }
     res["icon-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -92,6 +111,16 @@ func (m *GithubAppInstallations_attributes) GetFieldDeserializers()(map[string]f
         }
         return nil
     }
+    res["suspended"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSuspended(val)
+        }
+        return nil
+    }
     return res
 }
 // GetIconUrl gets the icon-url property value. The iconUrl property
@@ -119,8 +148,19 @@ func (m *GithubAppInstallations_attributes) GetInstallationUrl()(*string) {
 func (m *GithubAppInstallations_attributes) GetName()(*string) {
     return m.name
 }
+// GetSuspended gets the suspended property value. True when the installation is suspended on GitHub.
+// returns a *bool when successful
+func (m *GithubAppInstallations_attributes) GetSuspended()(*bool) {
+    return m.suspended
+}
 // Serialize serializes information the current object
 func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteBoolValue("disconnected", m.GetDisconnected())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteStringValue("icon-url", m.GetIconUrl())
         if err != nil {
@@ -152,6 +192,12 @@ func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d268
         }
     }
     {
+        err := writer.WriteBoolValue("suspended", m.GetSuspended())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -162,6 +208,10 @@ func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d268
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *GithubAppInstallations_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
+}
+// SetDisconnected sets the disconnected property value. True when GitHub no longer reports this installation.
+func (m *GithubAppInstallations_attributes) SetDisconnected(value *bool)() {
+    m.disconnected = value
 }
 // SetIconUrl sets the icon-url property value. The iconUrl property
 func (m *GithubAppInstallations_attributes) SetIconUrl(value *string)() {
@@ -183,17 +233,25 @@ func (m *GithubAppInstallations_attributes) SetInstallationUrl(value *string)() 
 func (m *GithubAppInstallations_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetSuspended sets the suspended property value. True when the installation is suspended on GitHub.
+func (m *GithubAppInstallations_attributes) SetSuspended(value *bool)() {
+    m.suspended = value
+}
 type GithubAppInstallations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetDisconnected()(*bool)
     GetIconUrl()(*string)
     GetInstallationId()(*int32)
     GetInstallationType()(*string)
     GetInstallationUrl()(*string)
     GetName()(*string)
+    GetSuspended()(*bool)
+    SetDisconnected(value *bool)()
     SetIconUrl(value *string)()
     SetInstallationId(value *int32)()
     SetInstallationType(value *string)()
     SetInstallationUrl(value *string)()
     SetName(value *string)()
+    SetSuspended(value *bool)()
 }
