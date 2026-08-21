@@ -8791,7 +8791,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/no-code-modules-envelope"
+                "$ref": "#/components/schemas/no-code-modules-write-envelope"
               }
             }
           }
@@ -8891,7 +8891,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/no-code-modules-envelope"
+                "$ref": "#/components/schemas/no-code-modules-write-envelope"
               }
             }
           }
@@ -34319,60 +34319,13 @@
           }
         }
       },
-      "no-code-variable-options": {
-        "type": "object",
-        "required": [
-          "type",
-          "attributes"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "variable-options"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "required": [
-              "variable-name",
-              "variable-type"
-            ],
-            "properties": {
-              "variable-name": {
-                "type": "string"
-              },
-              "variable-type": {
-                "type": "string"
-              },
-              "options": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
       "no-code-variable-options-has-many": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/variable-options-identifier"
-                },
-                {
-                  "$ref": "#/components/schemas/no-code-variable-options"
-                }
-              ]
+              "$ref": "#/components/schemas/variable-options-identifier"
             }
           }
         }
@@ -35099,6 +35052,112 @@
           }
         }
       },
+      "no-code-variable-options": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "variable-options"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "variable-name",
+              "variable-type"
+            ],
+            "properties": {
+              "variable-name": {
+                "type": "string"
+              },
+              "variable-type": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "no-code-variable-options-write-has-many": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/no-code-variable-options"
+            }
+          }
+        }
+      },
+      "no-code-modules-write": {
+        "type": "object",
+        "required": [
+          "type",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "no-code-modules"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "version-pin": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "registry-module"
+            ],
+            "properties": {
+              "registry-module": {
+                "$ref": "#/components/schemas/registry-modules-has-one"
+              },
+              "variable-options": {
+                "$ref": "#/components/schemas/no-code-variable-options-write-has-many"
+              }
+            }
+          }
+        }
+      },
+      "no-code-modules-write-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/no-code-modules-write"
+          }
+        }
+      },
       "no-code-modules-envelope": {
         "type": "object",
         "required": [
@@ -35119,7 +35178,14 @@
                 {
                   "$ref": "#/components/schemas/no-code-module-versions"
                 }
-              ]
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "variable-options": "#/components/schemas/no-code-variable-options",
+                  "no-code-module-versions": "#/components/schemas/no-code-module-versions"
+                }
+              }
             }
           }
         }

@@ -7,48 +7,48 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-type NoCodeVariableOptionsHasMany struct {
+type NoCodeVariableOptionsWriteHasMany struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []VariableOptionsIdentifierable
+    data []NoCodeVariableOptionsable
 }
-// NewNoCodeVariableOptionsHasMany instantiates a new NoCodeVariableOptionsHasMany and sets the default values.
-func NewNoCodeVariableOptionsHasMany()(*NoCodeVariableOptionsHasMany) {
-    m := &NoCodeVariableOptionsHasMany{
+// NewNoCodeVariableOptionsWriteHasMany instantiates a new NoCodeVariableOptionsWriteHasMany and sets the default values.
+func NewNoCodeVariableOptionsWriteHasMany()(*NoCodeVariableOptionsWriteHasMany) {
+    m := &NoCodeVariableOptionsWriteHasMany{
     }
     m.SetAdditionalData(make(map[string]any))
     return m
 }
-// CreateNoCodeVariableOptionsHasManyFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// CreateNoCodeVariableOptionsWriteHasManyFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateNoCodeVariableOptionsHasManyFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewNoCodeVariableOptionsHasMany(), nil
+func CreateNoCodeVariableOptionsWriteHasManyFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    return NewNoCodeVariableOptionsWriteHasMany(), nil
 }
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *NoCodeVariableOptionsHasMany) GetAdditionalData()(map[string]any) {
+func (m *NoCodeVariableOptionsWriteHasMany) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []VariableOptionsIdentifierable when successful
-func (m *NoCodeVariableOptionsHasMany) GetData()([]VariableOptionsIdentifierable) {
+// returns a []NoCodeVariableOptionsable when successful
+func (m *NoCodeVariableOptionsWriteHasMany) GetData()([]NoCodeVariableOptionsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *NoCodeVariableOptionsHasMany) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+func (m *NoCodeVariableOptionsWriteHasMany) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateVariableOptionsIdentifierFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateNoCodeVariableOptionsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]VariableOptionsIdentifierable, len(val))
+            res := make([]NoCodeVariableOptionsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(VariableOptionsIdentifierable)
+                    res[i] = v.(NoCodeVariableOptionsable)
                 }
             }
             m.SetData(res)
@@ -58,7 +58,7 @@ func (m *NoCodeVariableOptionsHasMany) GetFieldDeserializers()(map[string]func(i
     return res
 }
 // Serialize serializes information the current object
-func (m *NoCodeVariableOptionsHasMany) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+func (m *NoCodeVariableOptionsWriteHasMany) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetData() != nil {
         cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
         for i, v := range m.GetData() {
@@ -80,16 +80,16 @@ func (m *NoCodeVariableOptionsHasMany) Serialize(writer i878a80d2330e89d26896388
     return nil
 }
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *NoCodeVariableOptionsHasMany) SetAdditionalData(value map[string]any)() {
+func (m *NoCodeVariableOptionsWriteHasMany) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *NoCodeVariableOptionsHasMany) SetData(value []VariableOptionsIdentifierable)() {
+func (m *NoCodeVariableOptionsWriteHasMany) SetData(value []NoCodeVariableOptionsable)() {
     m.data = value
 }
-type NoCodeVariableOptionsHasManyable interface {
+type NoCodeVariableOptionsWriteHasManyable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]VariableOptionsIdentifierable)
-    SetData(value []VariableOptionsIdentifierable)()
+    GetData()([]NoCodeVariableOptionsable)
+    SetData(value []NoCodeVariableOptionsable)()
 }

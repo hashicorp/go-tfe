@@ -29,7 +29,7 @@ func NewItemNoCodeModulesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
 // Post create a no-code module
 // returns a NoCodeModulesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemNoCodeModulesRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesEnvelopeable, error) {
+func (m *ItemNoCodeModulesRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesWriteEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +48,7 @@ func (m *ItemNoCodeModulesRequestBuilder) Post(ctx context.Context, body i05d5aa
 }
 // ToPostRequestInformation create a no-code module
 // returns a *RequestInformation when successful
-func (m *ItemNoCodeModulesRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemNoCodeModulesRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesWriteEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
