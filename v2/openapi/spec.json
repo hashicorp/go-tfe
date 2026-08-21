@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "367441de",
+    "version": "df5b8da0",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -107,6 +107,11 @@
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships"
       }
+    },
+    {
+      "name": "recoverable-items",
+      "x-displayName": "Recoverable Items",
+      "description": "Recoverable items (soft-deleted resources) management"
     },
     {
       "name": "token-ttl-policies",
@@ -447,6 +452,11 @@
       ],
       "x-displayName": "Admin Banners",
       "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
+    },
+    {
+      "name": "admin-customization-settings",
+      "x-displayName": "Admin Customization Settings",
+      "description": "Admin customization settings for Terraform Enterprise and HCP Terraform. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are available only on Terraform Enterprise.\n"
     }
   ],
   "paths": {
@@ -615,6 +625,88 @@
           },
           "404": {
             "description": "Banner not found. The provided id does not match any banner.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/customization-settings": {
+      "get": {
+        "operationId": "getAdminCustomizationSettings",
+        "summary": "Retrieve Admin Customization Settings",
+        "description": "Returns the current admin customization settings singleton. This endpoint is available to all authenticated users (not restricted to site administrators) so that the UI can read customization values for display. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are only present in the response when running Terraform Enterprise.\n",
+        "tags": [
+          "admin-customization-settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Customization settings retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-customization-settings-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAdminCustomizationSettings",
+        "summary": "Update Admin Customization Settings",
+        "description": "Updates the admin customization settings singleton. Only site administrators may update these settings. Partial updates are supported: only attributes present in the request body are modified. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are silently ignored when submitted against an HCP Terraform instance. Setting an optional URL field to null or an empty string clears the override and restores the default HashiCorp link.\n",
+        "tags": [
+          "admin-customization-settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-customization-settings-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customization settings updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-customization-settings-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failed. For example, an invalid URL scheme was submitted.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -2272,6 +2364,2605 @@
         }
       }
     },
+    "/organizations/{organization_name}/stacks": {
+      "get": {
+        "operationId": "listStacks",
+        "summary": "List Stacks",
+        "description": "List stacks.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Allows sorting the returned stacks. Valid values are \"name\" and \"created-at\". Prepending a hyphen to the sort parameter will reverse the order (e.g. \"-name\")."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "organization",
+                  "project",
+                  "latest-stack-configuration"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Optionally side-load relationships of the specified name"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stacks",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stacks"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks": {
+      "post": {
+        "operationId": "createStack",
+        "summary": "Create Stack",
+        "description": "Create an stack for an organization.",
+        "tags": [
+          "stacks"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/stacks-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stack created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stacks-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}": {
+      "get": {
+        "operationId": "getStack",
+        "summary": "Get Stack details",
+        "description": "Get details about a stack",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stacks-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateStack",
+        "summary": "Update Stack",
+        "description": "Update a stack",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/stacks-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stack updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stacks-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteStack",
+        "summary": "Delete Stack",
+        "description": "Delete a stack",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack ID"
+          },
+          {
+            "in": "query",
+            "name": "force",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Force delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Stack deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-configuration-summaries": {
+      "get": {
+        "operationId": "listStackConfigurationSummaries",
+        "summary": "List stack configuration summaries.",
+        "description": "List stack configuration summaries.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary information for all stack configurations.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-configuration-summaries"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/fetch-latest-from-vcs": {
+      "post": {
+        "operationId": "fetchLatestConfigurationFromVCS",
+        "summary": "Fetch Latest Configuration from VCS",
+        "description": "Fetch the latest configuration from version control system.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Fetch successfuly started the process of retrieving the latest configuration from VCS."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/latest-output-summary": {
+      "get": {
+        "operationId": "getStackLatestOutputSummary",
+        "summary": "Get latest stack output summary",
+        "description": "Redirects to a short-lived URL where the latest aggregated output summary for the stack can be downloaded. Returns a 404 when the stack has no aggregated outputs yet.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack ID"
+          }
+        ],
+        "responses": {
+          "307": {
+            "description": "Temporary redirect to the URL where the stack output summary can be downloaded.",
+            "headers": {
+              "Location": {
+                "description": "URL where the stack output summary can be downloaded.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The stack has no aggregated outputs.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-configurations": {
+      "post": {
+        "operationId": "createStackConfiguration",
+        "summary": "Create stack configuration",
+        "description": "Create an stack configuration for a stack.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "manual",
+                "fetch",
+                "reuse"
+              ],
+              "default": "manual"
+            },
+            "description": "Whether to reuse the latest configuration content, fetch new content from VCS, or await manual upload to an upload URL."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/stack-configurations-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Stack configuration created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listStackConfigurations",
+        "summary": "List stack configurations",
+        "description": "List configurations for a stack.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ingress-attributes",
+                  "stack-configuration-summary"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack configurations list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-configurations"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}": {
+      "get": {
+        "operationId": "getStackConfigurations",
+        "summary": "Get Stack Configuration details",
+        "description": "Get details about a stack configuration",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack configuration ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ingress-attributes",
+                  "stack-configuration-summary",
+                  "stack-diagnostics",
+                  "stack-aggregate-outputs"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-configurations-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-deployments": {
+      "get": {
+        "operationId": "listStackDeployments",
+        "summary": "List stack deployments",
+        "description": "List deployments for a stack.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by deployment name, 'deployment' or '-deployment' for descending.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deployment,",
+                "-deployment"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Stack deployments are searchable by deployment name."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployments"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-deployments/{deployment}/stack-deployment-runs": {
+      "get": {
+        "operationId": "listDeploymentRuns",
+        "summary": "List stack deployment runs.",
+        "description": "List stack deployment runs.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack."
+          },
+          {
+            "in": "path",
+            "name": "deployment",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "To return the deployment runs for a specific deployment in a stack."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information for all stack deployment runs for a deployment.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-runs"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-states": {
+      "get": {
+        "operationId": "listStackStates",
+        "summary": "List stack states",
+        "description": "List states for a stack.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack state list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-states"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-output-consumers/upstream": {
+      "get": {
+        "operationId": "listStackOutputConsumers",
+        "summary": "List stack output consumers",
+        "description": "List output consumers for a stack(upstream or downstream).",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by deployment, stack_name, upstream_name, upstream_publish_output_address, for example 'deployment' or '-deployment' for descending.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deployment",
+                "-deployment",
+                "stack_name",
+                "upstream_name",
+                "upstream_publish_output_address",
+                "-stack_name",
+                "-upstream_name",
+                "-upstream_publish_output_address"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Stack output consumers are searchable by deployment, stack_name, upstream_name, upstream_publish_output_address."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack output consumer list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-output-consumers"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stacks/{stack_id}/stack-output-consumers/downstream": {
+      "get": {
+        "operationId": "listStackOutputConsumers",
+        "summary": "List stack output consumers",
+        "description": "List output consumers for a stack(upstream or downstream).",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by deployment, stack_name, upstream_name, upstream_publish_output_address, for example 'deployment' or '-deployment' for descending.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deployment",
+                "-deployment",
+                "stack_name",
+                "upstream_name",
+                "upstream_publish_output_address",
+                "-stack_name",
+                "-upstream_name",
+                "-upstream_publish_output_address"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Stack output consumers are searchable by deployment, stack_name, upstream_name, upstream_publish_output_address."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack output consumer list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-output-consumers"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-states/{stack_state_id}": {
+      "get": {
+        "operationId": "getStackState",
+        "summary": "Get Stack State Details",
+        "description": "Get details about a stack state",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_state_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack state ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack state details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-states-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-states/{stack_state_id}/description": {
+      "get": {
+        "operationId": "getStackStateDescription",
+        "summary": "Get stack state description",
+        "description": "Download the stack state description as a .json file.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_state_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack state ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ".json file containing the stack state description.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-deployment-runs": {
+      "get": {
+        "operationId": "getStackConfigurationDeploymentRunsCollection",
+        "summary": "Get collection of deployment runs for a stack configuration",
+        "description": "Index all deployment runs for a stack configuration.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack configuration ID"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "description": "A search query string. Stack deployment runs are searchable by deployment name and deployment group name.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by deployment or deployment-group-name e.g., 'deployment' or '-deployment' for descending.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deployment,",
+                "-deployment,",
+                "deployment-group-name,",
+                "-deployment-group-name"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "required": false,
+            "description": "Filter by deployment run status. Accepts a comma-separated list of statuses. Some statuses match multiple underlying run states: pending matches pending, acquiring-lock, and pending-capacity; running matches pre-deploying and deploying; pending-operator matches pre-deploying-pending-operator and deploying-pending-operator.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "running",
+                  "pending-operator",
+                  "succeeded",
+                  "failed",
+                  "abandoned"
+                ]
+              }
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack configurations list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-runs"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-deployment-group-summaries": {
+      "get": {
+        "operationId": "listStackDeploymentGroupSummaries",
+        "summary": "List stack deployment group summaries.",
+        "description": "List stack deployment group summaries for a given stack configuration.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack configuration."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary information for all deployment groups.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-group-summaries"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-diagnostics": {
+      "get": {
+        "operationId": "listStackConfigurationDiagnostics",
+        "summary": "List stack configuration diagnostics",
+        "description": "List the diagnostics for a given stack configuration.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack configuration"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diagnostics list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-diagnostics"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-diagnostics/{stack_diagnostic_id}": {
+      "get": {
+        "operationId": "getStackDiagnostic",
+        "summary": "Get stack diagnostic details",
+        "description": "Get details about a stack diagnostic",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_diagnostic_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack diagnostic ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack diagnostic details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/stack-diagnostics"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/upload-url": {
+      "get": {
+        "operationId": "getStackConfigurationUploadUrl",
+        "summary": "Get stack configuration upload URL",
+        "description": "Get a url to upload a stack configuration",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack configuration ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "source-upload-url": {
+                          "type": "string",
+                          "description": "URL to upload the stack configuration"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-published-outputs": {
+      "get": {
+        "operationId": "listStackConfigurationPublishedOutputs",
+        "summary": "List stack configuration published outputs",
+        "description": "List the published outputs for a given stack configuration.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack configuration"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack Published Outputs list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-published-outputs"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-deployment-groups": {
+      "get": {
+        "operationId": "listStackConfigurationDeploymentGroups",
+        "summary": "List Stack Deployment Groups",
+        "description": "List deployment groups for a stack configuration.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack configuration."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Stack deployment groups are searchable by group name."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by deployment group status. Accepts a comma-separated list of statuses: pending, pre-deploying, deploying, succeeded, failed, abandoned."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by group name or status priority, e.g. 'name' or '-name' for descending. Sorting by 'status-priority' orders groups from highest to lowest priority (failed, deploying, pre-deploying, pending, abandoned, succeeded).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "-name",
+                "status-priority",
+                "-status-priority"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "stack-deployment-group-summary"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack Deployment group list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-groups"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-configurations/{stack_configuration_id}/stack-deployment-groups/{stack_deployment_group_name}": {
+      "get": {
+        "operationId": "getStackDeploymentGroupByName",
+        "summary": "Get Stack Deployment Group by name",
+        "description": "Get details about a stack deployment group by name.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_configuration_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack configuration ID"
+          },
+          {
+            "in": "path",
+            "name": "stack_deployment_group_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment group name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment group details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-deployment-groups-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-groups/{stack_deployment_group_id}": {
+      "get": {
+        "operationId": "getStackDeploymentGroupById",
+        "summary": "Get Stack Deployment Group by ID",
+        "description": "Get details about a stack deployment group.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_group_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment group ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "stack-deployment-group-summary"
+                ]
+              }
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment group details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-deployment-groups-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-groups/{stack_deployment_group_id}/approve-all-plans": {
+      "post": {
+        "operationId": "approveStackDeploymentGroup",
+        "summary": "Approve Stack Deployment Group",
+        "description": "Approve a stack deployment group.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_group_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment group ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-reason"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Approve all plans successfully recieved for Stack Deployment Group"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-groups/{stack_deployment_group_id}/rerun": {
+      "post": {
+        "operationId": "rerunStackDeploymentInGroup",
+        "summary": "Rerun deployments within a Deployment Group",
+        "description": "Rerun deployments that have ended up in a failed or abandoned state. Provide the `deployments` query parameter to rerun specific deployments, or omit it to rerun every eligible (failed or abandoned) deployment in the group.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_group_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment group ID"
+          },
+          {
+            "in": "query",
+            "name": "deployments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": false,
+            "explode": false,
+            "description": "Stack deployments we wish to rerun. When omitted, every eligible deployment in the group is rerun."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Rerun successfully triggered for Stack Deployment Group"
+          },
+          "409": {
+            "description": "The deployments provided do not qualify for a rerun",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The deployments parameter was empty",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-groups/{stack_deployment_group_id}/stack-deployment-runs": {
+      "get": {
+        "operationId": "listStackDeploymentGroupRuns",
+        "summary": "List Stack Deployment Runs for a Stack Deployment Group",
+        "description": "List deployment runs for a stack deployment group.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_group_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack deployment group."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Stack deployment runs are searchable by deployment name."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run status. Accepts a comma-separated list of the logical statuses: failed, pending-operator (pre-deploying and deploying awaiting operator input), running (pre-deploying and deploying), pending (pending, acquiring-lock and pending-capacity), abandoned, succeeded."
+          },
+          {
+            "in": "query",
+            "name": "filter[latest_only]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true"
+              ]
+            },
+            "required": false,
+            "description": "When set to 'true', returns only the latest run for each deployment within the group."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by deployment name or status priority, e.g. 'deployment' or '-deployment' for descending. Sorting by 'status-priority' orders runs from highest to lowest priority (failed, deploying, deploying-pending-operator, pre-deploying, pre-deploying-pending-operator, acquiring-lock, pending-capacity, pending, abandoned, succeeded). Defaults to most recently created first.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deployment",
+                "-deployment",
+                "status-priority",
+                "-status-priority"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack Deployment run list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-runs"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-runs/{stack_deployment_run_id}": {
+      "get": {
+        "operationId": "getStackDeploymentRun",
+        "summary": "Get Stack Deployment Run",
+        "description": "Get details about a stack deployment run.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment run ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment run details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-deployment-runs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-runs/{stack_deployment_run_id}/approve-all-plans": {
+      "post": {
+        "operationId": "approveStackDeploymentRun",
+        "summary": "Approve Stack Deployment Run",
+        "description": "Approve a stack deployment run.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment run ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-reason"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Approve all plans successfuly recieved for Stack Deployment Run"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-runs/{stack_deployment_run_id}/cancel": {
+      "post": {
+        "operationId": "cancelStackDeploymentRun",
+        "summary": "Cancel Stack Deployment Run",
+        "description": "Cancel a stack deployment run.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment run ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Cancel successfully recieved for Stack Deployment Run",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-runs/{stack_deployment_run_id}/stack-deployment-steps": {
+      "get": {
+        "operationId": "listStackDeploymentSteps",
+        "summary": "List Stack Deployment Steps",
+        "description": "List deployment steps for a deployment run.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack deployment run."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "description": "Allows sorting by step order e.g., 'order' or '-order' for descending.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "order",
+                "-order"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment step list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-deployment-steps"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-steps/{stack_deployment_step_id}": {
+      "get": {
+        "operationId": "getStackDeploymentStep",
+        "summary": "Get Stack Deployment Step",
+        "description": "Get details about a stack deployment step.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_step_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment step ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack deployment step details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-deployment-steps-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-steps/{stack_deployment_step_id}/stack-diagnostics": {
+      "get": {
+        "operationId": "listStackDeploymentStepDiagnostics",
+        "summary": "List stack deployment step diagnostics",
+        "description": "List the diagnostics for a given stack deployment step.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_step_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the stack deployment step"
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diagnostics list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/stack-diagnostics"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-steps/{stack_deployment_step_id}/advance": {
+      "post": {
+        "operationId": "advanceStackDeploymentStep",
+        "summary": "Advance Stack Deployment Step",
+        "description": "Advance a stack deployment step when in the `pending_operator` state.",
+        "tags": [
+          "stacks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-reason"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_step_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment step ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Advance successfuly recieved for Stack Deployment Step"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-steps/{stack_deployment_step_id}/fail": {
+      "post": {
+        "operationId": "failStackDeploymentStep",
+        "summary": "Fail Stack Deployment Step",
+        "description": "Fail a stack deployment step.",
+        "tags": [
+          "stacks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-reason"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_step_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment step ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Fail successfuly recieved for Stack Deployment Step"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-deployment-steps/{stack_deployment_step_id}/artifacts": {
+      "get": {
+        "operationId": "getSpecificArtifact",
+        "summary": "Get Artifact for a Stack Deployment Step",
+        "description": "Get a specific artifact for a stack deployment step.",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_deployment_step_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack deployment step ID"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "description": "Name of the artifact to retrieve",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "plan-description",
+                "apply-description"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "307": {
+            "description": "Redirect to the artifact download URL",
+            "headers": {
+              "Location": {
+                "description": "The URL to download the artifact",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, missing or invalid artifact name",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found, artifact not found or not uploaded",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stack-approvals/{stack_approval_id}": {
+      "get": {
+        "operationId": "getStackApproval",
+        "summary": "Get Stack Approval Details",
+        "description": "Get details about a stack approval",
+        "tags": [
+          "stacks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stack_approval_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Stack approval ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stack approval details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stack-approvals-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations": {
       "get": {
         "operationId": "listOrganizations",
@@ -3312,13 +6003,10 @@
       }
     },
     "/organizations/{organization_name}/recoverable-items": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listRecoverableItems",
         "summary": "List Recoverable Items",
-        "description": "List all recoverable items (soft-deleted resources) in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List all recoverable items (soft-deleted resources) in an organization.",
         "tags": [
           "recoverable-items"
         ],
@@ -3465,13 +6153,10 @@
       }
     },
     "/recoverable-items/{id}/actions/recover": {
-      "x-vis": [
-        "public-beta"
-      ],
-      "put": {
+      "post": {
         "operationId": "recoverRecoverableItem",
         "summary": "Recover a Recoverable Item",
-        "description": "Recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Recover a soft-deleted resource by restoring it from a recoverable item. The resource must not be expired, permanently deleted, or already recovered.",
         "tags": [
           "recoverable-items"
         ],
@@ -3564,13 +6249,10 @@
       }
     },
     "/recoverable-items/{id}/actions/permanently-delete": {
-      "x-vis": [
-        "public-beta"
-      ],
-      "put": {
+      "post": {
         "operationId": "permanentlyDeleteRecoverableItem",
         "summary": "Permanently Delete a Recoverable Item",
-        "description": "Permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.",
         "tags": [
           "recoverable-items"
         ],
@@ -22732,6 +25414,336 @@
         }
       }
     },
+    "/task-configs/{external_id}": {
+      "get": {
+        "operationId": "getTaskConfig",
+        "summary": "Get a Task Configuration",
+        "description": "Get details about a task configuration.",
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the task configuration."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Allows including related resource data. Value must be a comma-separated list containing one or more of `projects`, `task`, `owner`, or `organization`.\n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateTaskConfig",
+        "summary": "Update a Task Configuration",
+        "description": "Update a task configuration.",
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the task configuration."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/task-configs-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task configuration updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/task-configs": {
+      "get": {
+        "operationId": "listOrganizationTaskConfigs",
+        "summary": "List Task Configurations",
+        "description": "List task configurations in an organization that apply to a given target project.\n",
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "filter[target_id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the target project to filter by."
+          },
+          {
+            "in": "query",
+            "name": "filter[target_type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "projects"
+              ]
+            },
+            "required": true,
+            "description": "The type of the target to filter by."
+          },
+          {
+            "in": "query",
+            "name": "filter[task_category]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hook",
+                "task",
+                "native"
+              ]
+            },
+            "required": false,
+            "description": "Restricts results to task configurations whose task belongs to the given category.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of task configurations",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/task-configs"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTaskConfig",
+        "summary": "Create a Task Configuration",
+        "description": "Create a task configuration in an organization.",
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/task-configs-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task configuration created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/task-configs/for-owner": {
+      "get": {
+        "operationId": "getTaskConfigForOwner",
+        "summary": "Get a Task Configuration for an Owner",
+        "description": "Get the task configuration for a specific task and owner within an organization.\n",
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "q[task_id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the task."
+          },
+          {
+            "in": "query",
+            "name": "q[owner_id]",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the owner. For organization owners, this is the organization name."
+          },
+          {
+            "in": "query",
+            "name": "q[owner_type]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "organizations"
+              ]
+            },
+            "required": true,
+            "description": "The type of the owner."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task configuration details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task-configs-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/tasks": {
       "get": {
         "operationId": "listWorkspaceTasks",
@@ -23905,6 +26917,140 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-banners"
+          }
+        }
+      },
+      "admin-customization-settings": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Always \"customization\"."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "customization-settings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "support-email-address": {
+                "type": "string",
+                "nullable": true,
+                "description": "The support email address shown in help text on the site. When set, it is rendered as a mailto: link in the support link chain.\n"
+              },
+              "support-url-address": {
+                "type": "string",
+                "description": "The support URL shown in help text on the site. Used as the fallback when support-email-address is not set.\n"
+              },
+              "login-help": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "HTML that overrides the default help text below the login form.\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "footer": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "HTML rendered just above the copyright/release in the application footer.\n\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "error": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "HTML that overrides the default error instructions.\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "new-user": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "HTML shown to users when they first create an account.\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "internal-support-url": {
+                "type": "string",
+                "nullable": true,
+                "maxLength": 2048,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "internal-documentation-url": {
+                "type": "string",
+                "nullable": true,
+                "maxLength": 2048,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Overrides documentation links in the TFE UI (Help menu). Accepts https:// or http:// only. Leave blank to use the default HashiCorp documentation URL.\n\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "internal-tutorials-url": {
+                "type": "string",
+                "nullable": true,
+                "maxLength": 2048,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Overrides tutorial links in the TFE UI (Help > Tutorials). Accepts https:// or http:// only. Leave blank to use the default HashiCorp tutorials URL.\n\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "avatar-sources": {
+                "type": "array",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Ordered catalog of configurable avatar sources with enabled/disabled flags. Initials is the implicit terminal fallback and is not included. PATCH accepts the same array format and performs a full replacement.\n\n\nThis attribute is only available in Terraform Enterprise.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "source",
+                    "enabled"
+                  ],
+                  "properties": {
+                    "source": {
+                      "type": "string",
+                      "enum": [
+                        "saml",
+                        "gravatar"
+                      ],
+                      "description": "The name of the avatar source."
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Whether the source is active."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "admin-customization-settings-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-customization-settings"
           }
         }
       },
@@ -25239,6 +28385,23 @@
           }
         }
       },
+      "projects-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/projects-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "agent-pools-has-one": {
         "type": "object",
         "nullable": true,
@@ -25254,6 +28417,1826 @@
               }
             ],
             "nullable": true
+          }
+        }
+      },
+      "stack-configurations-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-configurations"
+            ]
+          }
+        }
+      },
+      "stack-configurations-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-configurations-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stacks": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stacks"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "working-directory": {
+                "type": "string",
+                "maxLength": 100,
+                "nullable": true
+              },
+              "deleteable": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "speculative-enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "upstream-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "downstream-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "inputs-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "outputs-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "agent"
+                ]
+              },
+              "setting-overwrites": {
+                "type": "object",
+                "properties": {
+                  "execution-mode": {
+                    "type": "boolean"
+                  },
+                  "agent-pool": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "vcs-repo": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "branch": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "tags-regex": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "identifier": {
+                    "type": "string"
+                  },
+                  "display-identifier": {
+                    "type": "string"
+                  },
+                  "oauth-token-id": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "repository-http-url": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "service-provider": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "trigger-disabled": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "latest-output-summary": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-configurations": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "project": {
+                "$ref": "#/components/schemas/projects-has-one"
+              },
+              "agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-has-one"
+              },
+              "latest-stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stacks-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stacks"
+          }
+        }
+      },
+      "stack-configuration-summaries": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-configuration-summaries"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "queued",
+                  "preparing",
+                  "completed",
+                  "failed"
+                ],
+                "readOnly": true
+              },
+              "sequence-number": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "stack-deployment-group-status-summary": {
+                "type": "object",
+                "description": "Contains a count of the number of deployment groups in each state.",
+                "properties": {
+                  "pending": {
+                    "type": "integer"
+                  },
+                  "pre-deploying": {
+                    "type": "integer"
+                  },
+                  "deploying": {
+                    "type": "integer"
+                  },
+                  "succeeded": {
+                    "type": "integer"
+                  },
+                  "failed": {
+                    "type": "integer"
+                  },
+                  "abandoned": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "stack-deployment-run-status-summary": {
+                "type": "object",
+                "description": "Contains a count of the number of deployment runs in each state.",
+                "properties": {
+                  "pending": {
+                    "type": "integer"
+                  },
+                  "pending-capacity": {
+                    "type": "integer"
+                  },
+                  "pre-deploying": {
+                    "type": "integer"
+                  },
+                  "pre-deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "acquiring-lock": {
+                    "type": "integer"
+                  },
+                  "deploying": {
+                    "type": "integer"
+                  },
+                  "deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "succeeded": {
+                    "type": "integer"
+                  },
+                  "failed": {
+                    "type": "integer"
+                  },
+                  "abandoned": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stacks-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stacks"
+            ]
+          }
+        }
+      },
+      "stacks-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stacks-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "ingress-attributes-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ingress-attributes"
+            ]
+          }
+        }
+      },
+      "ingress-attributes-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ingress-attributes-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "stack-configuration-summaries-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-configuration-summaries"
+            ]
+          }
+        }
+      },
+      "stack-configuration-summaries-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-configuration-summaries-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-aggregate-outputs-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-aggregate-outputs"
+            ]
+          }
+        }
+      },
+      "stack-aggregate-outputs-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-aggregate-outputs-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-configurations": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-configurations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "queued",
+                  "preparing",
+                  "completed",
+                  "failed"
+                ],
+                "readOnly": true
+              },
+              "sequence-number": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true
+              },
+              "speculative": {
+                "type": "boolean",
+                "nullable": false,
+                "default": false,
+                "description": "Specifies if this is a speculative configuration that HCP Terraform cannot converge past the plan step."
+              },
+              "destroy-all": {
+                "type": "boolean",
+                "nullable": false,
+                "default": false,
+                "description": "If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`."
+              },
+              "preparing-event-stream-url": {
+                "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-deployment-groups": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "stack-diagnostics": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "stack-published-outputs": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              },
+              "ingress-attributes": {
+                "$ref": "#/components/schemas/ingress-attributes-has-one"
+              },
+              "stack-configuration-summary": {
+                "description": "Contains summed status counts for the deployment groups and deployment runs in this configuration.",
+                "$ref": "#/components/schemas/stack-configuration-summaries-has-one"
+              },
+              "group-status-summaries": {
+                "description": "Deprecated alias for stack-configuration-summary.",
+                "$ref": "#/components/schemas/stack-configuration-summaries-has-one"
+              },
+              "stack-aggregate-outputs": {
+                "$ref": "#/components/schemas/stack-aggregate-outputs-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-configurations-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-configurations"
+          }
+        }
+      },
+      "stack-deployments": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-deployments"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "stack-deployment-runs": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-deployment-groups-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-groups"
+            ]
+          }
+        }
+      },
+      "stack-deployment-groups-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-deployment-groups-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-approvals-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-approvals"
+            ]
+          }
+        }
+      },
+      "stack-approvals-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-approvals-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-deployment-steps-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-steps"
+            ]
+          }
+        }
+      },
+      "stack-deployment-steps-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-deployment-steps-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-deployment-runs-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-runs"
+            ]
+          }
+        }
+      },
+      "stack-deployment-runs-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-deployment-runs-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "stack-deployment-runs": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-deployment-runs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "plan-mode": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "destroy",
+                  "import"
+                ],
+                "readOnly": true
+              },
+              "deployment": {
+                "type": "string",
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "pending-capacity",
+                  "pre-deploying",
+                  "pre-deploying-pending-operator",
+                  "acquiring-lock",
+                  "deploying",
+                  "deploying-pending-operator",
+                  "succeeded",
+                  "failed",
+                  "abandoned"
+                ],
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "pre-deploying-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "pre-deploying-pending-operator-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "pending-capacity-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "acquiring-lock-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "deploying-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "deploying-pending-operator-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "succeeded-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "failed-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "abandoned-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-deployment-steps": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "stack-deployment-group": {
+                "$ref": "#/components/schemas/stack-deployment-groups-has-one"
+              },
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              },
+              "destroy-stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              },
+              "stack-approval": {
+                "$ref": "#/components/schemas/stack-approvals-has-one"
+              },
+              "current-step": {
+                "$ref": "#/components/schemas/stack-deployment-steps-has-one"
+              },
+              "blocked-by-deployment-group": {
+                "$ref": "#/components/schemas/stack-deployment-groups-has-one"
+              },
+              "latest-deployment-run-for-deployment": {
+                "$ref": "#/components/schemas/stack-deployment-runs-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-states": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-states"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "deployment"
+            ],
+            "properties": {
+              "generation": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true
+              },
+              "deployment": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "created",
+                  "stored",
+                  "completed",
+                  "discarded"
+                ]
+              },
+              "components": {
+                "type": "array",
+                "nullable": true,
+                "readOnly": true,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "component-address": {
+                      "type": "string"
+                    },
+                    "instance-correlator": {
+                      "type": "string"
+                    },
+                    "component-correlator": {
+                      "type": "string"
+                    },
+                    "resource-instance-count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "is-current": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "resource-instance-count": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              },
+              "stack-deployment-run": {
+                "$ref": "#/components/schemas/stack-deployment-runs-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-output-consumers": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-output-consumers"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "deployment": {
+                "type": "string",
+                "readOnly": true
+              },
+              "upstream-publish-output-address": {
+                "type": "string",
+                "readOnly": true
+              },
+              "stack-name": {
+                "type": "string",
+                "readOnly": true
+              },
+              "upstream-name": {
+                "type": "string",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              },
+              "upstream-stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-states-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-states"
+          }
+        }
+      },
+      "stack-deployment-group-summaries": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-deployment-group-summaries"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "pre-deploying",
+                  "deploying",
+                  "abandoned",
+                  "succeeded",
+                  "failed"
+                ],
+                "readOnly": true
+              },
+              "stack-deployment-run-status-summary": {
+                "type": "object",
+                "description": "Contains a count of the number of deployment runs in each state.",
+                "properties": {
+                  "pending": {
+                    "type": "integer"
+                  },
+                  "pending-capacity": {
+                    "type": "integer"
+                  },
+                  "pre-deploying": {
+                    "type": "integer"
+                  },
+                  "pre-deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "acquiring-lock": {
+                    "type": "integer"
+                  },
+                  "deploying": {
+                    "type": "integer"
+                  },
+                  "deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "succeeded": {
+                    "type": "integer"
+                  },
+                  "failed": {
+                    "type": "integer"
+                  },
+                  "abandoned": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "status-counts": {
+                "type": "object",
+                "description": "Deprecated alias for stack-deployment-run-status-summary.",
+                "properties": {
+                  "pending": {
+                    "type": "integer"
+                  },
+                  "pending-capacity": {
+                    "type": "integer"
+                  },
+                  "pre-deploying": {
+                    "type": "integer"
+                  },
+                  "pre-deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "acquiring-lock": {
+                    "type": "integer"
+                  },
+                  "deploying": {
+                    "type": "integer"
+                  },
+                  "deploying-pending-operator": {
+                    "type": "integer"
+                  },
+                  "succeeded": {
+                    "type": "integer"
+                  },
+                  "failed": {
+                    "type": "integer"
+                  },
+                  "abandoned": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-deployment-group": {
+                "$ref": "#/components/schemas/stack-deployment-groups-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-diagnostics": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-diagnostics"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "warning",
+                  "error"
+                ],
+                "readOnly": true
+              },
+              "summary": {
+                "type": "string",
+                "readOnly": true
+              },
+              "detail": {
+                "type": "string",
+                "readOnly": true
+              },
+              "diags": {
+                "type": "array",
+                "readOnly": true,
+                "nullable": true
+              },
+              "acknowledged": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "acknowledged-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "nullable": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              },
+              "stack-deployment-step": {
+                "$ref": "#/components/schemas/stack-deployment-steps-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-published-outputs": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-published-outputs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "readOnly": true
+              },
+              "action": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "current-value": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "previous-value": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "source-range": {
+                "type": "string",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-aggregate-output": {
+                "$ref": "#/components/schemas/stack-aggregate-outputs-has-one"
+              },
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-approvals-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/stack-approvals-identifier"
+            }
+          }
+        }
+      },
+      "stack-deployment-group-summaries-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-group-summaries"
+            ]
+          }
+        }
+      },
+      "stack-deployment-group-summaries-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-deployment-group-summaries-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "stack-deployment-groups": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-deployment-groups"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "pre-deploying",
+                  "deploying",
+                  "succeeded",
+                  "failed",
+                  "abandoned"
+                ],
+                "readOnly": true
+              },
+              "deployment-group-config": {
+                "type": "object",
+                "readOnly": true,
+                "properties": {
+                  "auto-approve-checks": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "eager-plan": {
+                    "type": "string",
+                    "readOnly": true
+                  },
+                  "failure-tolerance": {
+                    "type": "integer",
+                    "nullable": true,
+                    "readOnly": true
+                  },
+                  "custom": {
+                    "type": "boolean",
+                    "nullable": true,
+                    "readOnly": true
+                  }
+                }
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "pre-deploying-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "deploying-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "succeeded-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "failed-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "abandoned-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "stack-deployment-group-summaries": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              },
+              "stack-approvals": {
+                "$ref": "#/components/schemas/stack-approvals-has-many"
+              },
+              "stack-deployment-runs": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "stack-deployment-group-summary": {
+                "description": "Contains summed status counts for the the deployment runs in this group.",
+                "$ref": "#/components/schemas/stack-deployment-group-summaries-has-one"
+              },
+              "run-status-summaries": {
+                "description": "Deprecated alias for stack-deployment-group-summary.",
+                "$ref": "#/components/schemas/stack-deployment-group-summaries-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-deployment-groups-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-deployment-groups"
+          }
+        }
+      },
+      "action-reason": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "nullable": true,
+            "description": "An optional reason for locking the workspace."
+          }
+        }
+      },
+      "stack-deployment-runs-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-deployment-runs"
+          }
+        }
+      },
+      "stack-states-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-states"
+            ]
+          }
+        }
+      },
+      "stack-states-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-states-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "stack-deployment-steps": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-deployment-steps"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "operation-type": {
+                "type": "string",
+                "enum": [
+                  "plan",
+                  "apply",
+                  "allow-import",
+                  "import-state"
+                ],
+                "readOnly": true
+              },
+              "requires-state-lock": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "blocked",
+                  "abandoned",
+                  "queued",
+                  "running",
+                  "pending-operator",
+                  "completed",
+                  "failed"
+                ],
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "abandoned-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "queued-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "running-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "pending-operator-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "completed-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "failed-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "plan-description": {
+                "type": "string"
+              },
+              "apply-description": {
+                "type": "string"
+              },
+              "structured-log": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack-diagnostics": {
+                "type": "object",
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "meta": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "stack-state": {
+                "$ref": "#/components/schemas/stack-states-has-one"
+              },
+              "stack-deployment-run": {
+                "$ref": "#/components/schemas/stack-deployment-runs-has-one"
+              },
+              "stack-approval": {
+                "$ref": "#/components/schemas/stack-approvals-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-deployment-steps-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-deployment-steps"
+          }
+        }
+      },
+      "approved-by-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users",
+              "teams",
+              "organizations"
+            ]
+          }
+        }
+      },
+      "approved-by-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/approved-by-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "approval-on-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-steps",
+              "stack-deployment-runs",
+              "stack-deployment-groups"
+            ]
+          }
+        }
+      },
+      "approval-on-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/approval-on-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "stack-approvals": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-approvals"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "approved-by": {
+                "$ref": "#/components/schemas/approved-by-has-one"
+              },
+              "approval-on": {
+                "$ref": "#/components/schemas/approval-on-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-approvals-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/stack-approvals"
           }
         }
       },
@@ -25315,23 +30298,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/entitlement-sets-identifier"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "projects-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/projects-identifier"
               }
             ],
             "nullable": true
@@ -28990,20 +33956,6 @@
           }
         }
       },
-      "stacks-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "stacks"
-            ]
-          }
-        }
-      },
       "stacks-has-many": {
         "type": "object",
         "nullable": true,
@@ -29284,16 +34236,6 @@
                 "description": "The index of the resource when there are multiple instances with the same name"
               }
             }
-          }
-        }
-      },
-      "action-reason": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "nullable": true,
-            "description": "An optional reason for locking the workspace."
           }
         }
       },
@@ -30538,37 +35480,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/runs"
-          }
-        }
-      },
-      "ingress-attributes-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "ingress-attributes"
-            ]
-          }
-        }
-      },
-      "ingress-attributes-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ingress-attributes-identifier"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -35769,6 +40680,108 @@
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "task-config-owner-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/organizations-identifier"
+              }
+            ]
+          }
+        }
+      },
+      "task-configs": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "task-configs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "allowed-stages": {
+                "type": "array",
+                "description": "The run stages during which the task is evaluated.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "pre_plan",
+                    "post_plan",
+                    "pre_apply",
+                    "post_apply"
+                  ]
+                }
+              },
+              "enforcement-level": {
+                "type": "string",
+                "description": "The enforcement level applied to the task's stages.",
+                "enum": [
+                  "advisory",
+                  "mandatory"
+                ]
+              },
+              "global": {
+                "type": "boolean",
+                "description": "Whether the task configuration applies to all child resources owned for the owner. When `false`, the configuration only applies to the associated projects.\n"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "$ref": "#/components/schemas/tasks-has-one"
+              },
+              "owner": {
+                "$ref": "#/components/schemas/task-config-owner-has-one"
+              },
+              "organization": {
+                "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "projects": {
+                "$ref": "#/components/schemas/projects-has-many"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "task-configs-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/task-configs"
           }
         }
       },
