@@ -26,11 +26,11 @@ func NewItemActionsPermanentlyDeleteRequestBuilder(rawUrl string, requestAdapter
     urlParams["request-raw-url"] = rawUrl
     return NewItemActionsPermanentlyDeleteRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Put permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Post permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsPermanentlyDeleteRequestBuilder) Put(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
-    requestInfo, err := m.ToPutRequestInformation(ctx, requestConfiguration);
+func (m *ItemActionsPermanentlyDeleteRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
+    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
     }
@@ -44,10 +44,10 @@ func (m *ItemActionsPermanentlyDeleteRequestBuilder) Put(ctx context.Context, re
     }
     return nil
 }
-// ToPutRequestInformation permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPostRequestInformation permanently delete a recoverable item, making the soft-deleted resource unrecoverable. The item must not be expired, already permanently deleted, or recovered.
 // returns a *RequestInformation when successful
-func (m *ItemActionsPermanentlyDeleteRequestBuilder) ToPutRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PUT, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+func (m *ItemActionsPermanentlyDeleteRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
