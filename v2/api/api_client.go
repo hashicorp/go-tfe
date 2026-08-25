@@ -17,13 +17,17 @@ import (
     i1d7ed3bdd2628b6ecb2a00187778e1d42aae60563fa3ca8d39821e634d402006 "github.com/hashicorp/go-tfe/v2/api/stateversions"
     i26ba96034428bd95afb4756c98c2f79b92093a105f467d48dcb0fc1a5efcd2be "github.com/hashicorp/go-tfe/v2/api/stateversionoutputs"
     i2a8fd120a3d62202d37238161dd556baa5d28af6d9062658330422464a5d7e87 "github.com/hashicorp/go-tfe/v2/api/taskresults"
+    i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3 "github.com/hashicorp/go-tfe/v2/api/taskconfigs"
     i3300e5ec3dcdd21657ef64edbd7f5515b6a740b0e311496d0dcd07a497597df0 "github.com/hashicorp/go-tfe/v2/api/account"
+    i34634f193f07a372fd7ab53313782bd560610c66e8aff6fbd9ea9a792e6e4164 "github.com/hashicorp/go-tfe/v2/api/stackdeploymentgroups"
+    i352b2f74715493fe51a513f9a930051c9e8777442a9ab3afadde82c2c23051eb "github.com/hashicorp/go-tfe/v2/api/stackapprovals"
     i390d7d3aa2f956072121cd387d359478b4fa952fdc05a88e1bb0846233f1f798 "github.com/hashicorp/go-tfe/v2/api/configurationversions"
     i3b5eed2f99b34576eec4b0e4f2cfa8ac7165e6054005d261091195786417f292 "github.com/hashicorp/go-tfe/v2/api/policysetoutcomes"
     i3db271aef5726aeecd3987af65d23c89e74ca0092161ab6e3e00ca596b81b37d "github.com/hashicorp/go-tfe/v2/api/hyokencrypteddatakeys"
     i3f015b3de16a05679a59c27a98c9372435f6c1fdb001c4673be835dc61fd854c "github.com/hashicorp/go-tfe/v2/api/organization"
     i40cf176abd7a958d47ad56708262a3db390a6ba0d83434f718593db0b457ab3a "github.com/hashicorp/go-tfe/v2/api/featuresets"
     i42e837d9487358845d2439197b2d5d28c01021696da80abbb6649672763fb416 "github.com/hashicorp/go-tfe/v2/api/hyokcustomerkeyversions"
+    i463ffeb54eeae51cb0c3aeff51adc1e34e91b5ef2ed5d2a48191f6e34ce6ffb8 "github.com/hashicorp/go-tfe/v2/api/stackdiagnostics"
     i4865434068dff9574c876d79b3056aec81e487ad4f267d6900085f4d61636487 "github.com/hashicorp/go-tfe/v2/api/teamworkspaces"
     i525577aa7fb32a9c53b1cbf123d003d3ddd83214724c3d4df685e451b75961e3 "github.com/hashicorp/go-tfe/v2/api/workspaces"
     i55ad988dad1596070ac3a3b391f698551c7a1139fdc41b0e5ae1af201b098b33 "github.com/hashicorp/go-tfe/v2/api/varsets"
@@ -35,6 +39,7 @@ import (
     i69974089fcc59cc8dd4a4c196d6662b0a0ecbf463756ad5b59990cc5bfa93941 "github.com/hashicorp/go-tfe/v2/api/planexports"
     i6ad87ee3ef3106c6472068d25921fc73e150b6ce5e0df0bc84963f3386e50035 "github.com/hashicorp/go-tfe/v2/api/cidrrangelists"
     i6deddaa1c7f639a3972e6e85d970773ee131b52cfe7b6df0e9888ecf5fe79337 "github.com/hashicorp/go-tfe/v2/api/applies"
+    i6f30b1c546be9fdd86fa13ffd486beba48dc6b3a7f40a416fe5b26fbed9c33a0 "github.com/hashicorp/go-tfe/v2/api/stackdeploymentsteps"
     i79327cbcdc2f3f24a4f101b27d947e7e656f6977e65952ac2b6b41bc920f0fe9 "github.com/hashicorp/go-tfe/v2/api/taskstages"
     i7a5f736e1df88248f9b5b3a07e6f1f005fff8f5f64b203c9b45b93571284fba0 "github.com/hashicorp/go-tfe/v2/api/githubappinstallations"
     i841fe89e4abad2b5898cc30eafeff1f5137d38c88542273546674326c8cf4c98 "github.com/hashicorp/go-tfe/v2/api/organizations"
@@ -55,16 +60,20 @@ import (
     ibf7fd1fa2ca0bf7fb12935559937de9677520241442b7cdbac8246a8cd14147d "github.com/hashicorp/go-tfe/v2/api/plans"
     ic7d637b0cea32015f6fe8fdda69f69b83f2bfb9c9db69ebd650f42d7037fccf7 "github.com/hashicorp/go-tfe/v2/api/projects"
     icb14f7803522f70670dfb51a8f10d6fe7cf82358c4fcfbd434ce7b83bc7fa67f "github.com/hashicorp/go-tfe/v2/api/emailrecipientstatuses"
+    icbcddf85972cc20a622a9d6c94202891e7df60ee16895ccd937c26fe9c9bc6c7 "github.com/hashicorp/go-tfe/v2/api/stackdeploymentruns"
     ice175c2bc5dca7fd242eaf5d94389218212237a00a32175e232d6873e8576627 "github.com/hashicorp/go-tfe/v2/api/oauthtokens"
     id37f321ec9d929c628c7d6b68b52c0895a210904bdfe553054b3b8144f73ba73 "github.com/hashicorp/go-tfe/v2/api/assessmentresults"
+    id5ec4c82a134dcd79c70d0d55525fbbe00a46f7a637bb7d1f1f818bdbb15d0f9 "github.com/hashicorp/go-tfe/v2/api/stackstates"
     id6f566863c53cc08116f3b49bdb31efb7ba723bea06fdf6c76b4f1e4af545a6d "github.com/hashicorp/go-tfe/v2/api/policychecks"
     ida37032331931bdbac35f8b15434de19f19da392d7e7a114a8246766075382a9 "github.com/hashicorp/go-tfe/v2/api/providersets"
     ie130cfa8b5f3763f675a0be8d887bc5a809e7f419969393d0dc9004d3aea5218 "github.com/hashicorp/go-tfe/v2/api/users"
     ie4e8a5e7741c39653d7b61de8102e5a34b061be78730b4d7d13dc8f5e67e0774 "github.com/hashicorp/go-tfe/v2/api/comments"
     ie7f103338a127a9846f577d50b43931980f000c0d8edc3ae070082b7b7bba397 "github.com/hashicorp/go-tfe/v2/api/policies"
+    iea5097442934a1157207be9849ca51a8424fd810c26b13a889ff3d2e03b1c666 "github.com/hashicorp/go-tfe/v2/api/stacks"
     ieb79cb648e16b8204e44d31953cbeb69ce4431321cb3895fc1e167f241b3e60b "github.com/hashicorp/go-tfe/v2/api/policysetversions"
     if00db4a554f0df47f70e810f5d47a4fbcb78fee344e4c731136fe1b04279c101 "github.com/hashicorp/go-tfe/v2/api/policysets"
     if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94 "github.com/hashicorp/go-tfe/v2/api/oidcconfigurations"
+    if62cb42e6a9a5327fac2cf84142d95dbc88474af75df60dbb8ec3ed267b382e7 "github.com/hashicorp/go-tfe/v2/api/stackconfigurations"
     if79c79bd91715cf771fcf71d144e7813d4a746ac43c33fe4d933a83cbd521b8f "github.com/hashicorp/go-tfe/v2/api/tfpolicysetoutcomes"
     if94c078d5d8f26ba6f3ae698b1697e4858390c0c376a84b3fbb0588e1c49ca59 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations"
     if98345fbfcbf35d9802ff0f86c47b887991578f3c045956773765f5ed9880f45 "github.com/hashicorp/go-tfe/v2/api/taskresultoutcomes"
@@ -310,6 +319,46 @@ func (m *ApiClient) Search()(*i92fd818c70a785b893303ae0eeee14ce67cf2a298b268f462
 func (m *ApiClient) SshKeys()(*i05496462d94c58c9aff2d5982bc9ac17c0cf963c1f6d2733dc734dc395a46613.SshKeysRequestBuilder) {
     return i05496462d94c58c9aff2d5982bc9ac17c0cf963c1f6d2733dc734dc395a46613.NewSshKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// StackApprovals the stackApprovals property
+// returns a *StackApprovalsRequestBuilder when successful
+func (m *ApiClient) StackApprovals()(*i352b2f74715493fe51a513f9a930051c9e8777442a9ab3afadde82c2c23051eb.StackApprovalsRequestBuilder) {
+    return i352b2f74715493fe51a513f9a930051c9e8777442a9ab3afadde82c2c23051eb.NewStackApprovalsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackConfigurations the stackConfigurations property
+// returns a *StackConfigurationsRequestBuilder when successful
+func (m *ApiClient) StackConfigurations()(*if62cb42e6a9a5327fac2cf84142d95dbc88474af75df60dbb8ec3ed267b382e7.StackConfigurationsRequestBuilder) {
+    return if62cb42e6a9a5327fac2cf84142d95dbc88474af75df60dbb8ec3ed267b382e7.NewStackConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackDeploymentGroups the stackDeploymentGroups property
+// returns a *StackDeploymentGroupsRequestBuilder when successful
+func (m *ApiClient) StackDeploymentGroups()(*i34634f193f07a372fd7ab53313782bd560610c66e8aff6fbd9ea9a792e6e4164.StackDeploymentGroupsRequestBuilder) {
+    return i34634f193f07a372fd7ab53313782bd560610c66e8aff6fbd9ea9a792e6e4164.NewStackDeploymentGroupsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackDeploymentRuns the stackDeploymentRuns property
+// returns a *StackDeploymentRunsRequestBuilder when successful
+func (m *ApiClient) StackDeploymentRuns()(*icbcddf85972cc20a622a9d6c94202891e7df60ee16895ccd937c26fe9c9bc6c7.StackDeploymentRunsRequestBuilder) {
+    return icbcddf85972cc20a622a9d6c94202891e7df60ee16895ccd937c26fe9c9bc6c7.NewStackDeploymentRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackDeploymentSteps the stackDeploymentSteps property
+// returns a *StackDeploymentStepsRequestBuilder when successful
+func (m *ApiClient) StackDeploymentSteps()(*i6f30b1c546be9fdd86fa13ffd486beba48dc6b3a7f40a416fe5b26fbed9c33a0.StackDeploymentStepsRequestBuilder) {
+    return i6f30b1c546be9fdd86fa13ffd486beba48dc6b3a7f40a416fe5b26fbed9c33a0.NewStackDeploymentStepsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackDiagnostics the stackDiagnostics property
+// returns a *StackDiagnosticsRequestBuilder when successful
+func (m *ApiClient) StackDiagnostics()(*i463ffeb54eeae51cb0c3aeff51adc1e34e91b5ef2ed5d2a48191f6e34ce6ffb8.StackDiagnosticsRequestBuilder) {
+    return i463ffeb54eeae51cb0c3aeff51adc1e34e91b5ef2ed5d2a48191f6e34ce6ffb8.NewStackDiagnosticsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Stacks the stacks property
+// returns a *StacksRequestBuilder when successful
+func (m *ApiClient) Stacks()(*iea5097442934a1157207be9849ca51a8424fd810c26b13a889ff3d2e03b1c666.StacksRequestBuilder) {
+    return iea5097442934a1157207be9849ca51a8424fd810c26b13a889ff3d2e03b1c666.NewStacksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackStates the stackStates property
+// returns a *StackStatesRequestBuilder when successful
+func (m *ApiClient) StackStates()(*id5ec4c82a134dcd79c70d0d55525fbbe00a46f7a637bb7d1f1f818bdbb15d0f9.StackStatesRequestBuilder) {
+    return id5ec4c82a134dcd79c70d0d55525fbbe00a46f7a637bb7d1f1f818bdbb15d0f9.NewStackStatesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // StateVersionOutputs the stateVersionOutputs property
 // returns a *StateVersionOutputsRequestBuilder when successful
 func (m *ApiClient) StateVersionOutputs()(*i26ba96034428bd95afb4756c98c2f79b92093a105f467d48dcb0fc1a5efcd2be.StateVersionOutputsRequestBuilder) {
@@ -324,6 +373,11 @@ func (m *ApiClient) StateVersions()(*i1d7ed3bdd2628b6ecb2a00187778e1d42aae60563f
 // returns a *SubscriptionsRequestBuilder when successful
 func (m *ApiClient) Subscriptions()(*ib16403bde4e14a6aebbed947a047e503a09a66da273f5f8fdd4fe6ffa5481608.SubscriptionsRequestBuilder) {
     return ib16403bde4e14a6aebbed947a047e503a09a66da273f5f8fdd4fe6ffa5481608.NewSubscriptionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TaskConfigs the taskConfigs property
+// returns a *TaskConfigsRequestBuilder when successful
+func (m *ApiClient) TaskConfigs()(*i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3.TaskConfigsRequestBuilder) {
+    return i3048c7f4e27795bdab61155e04fecb76bdb551ed9aec8090039e38ff7081f9e3.NewTaskConfigsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // TaskResultOutcomes the taskResultOutcomes property
 // returns a *TaskResultOutcomesRequestBuilder when successful
