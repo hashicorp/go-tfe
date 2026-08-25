@@ -29,8 +29,23 @@ func NewAdminRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb
     urlParams["request-raw-url"] = rawUrl
     return NewAdminRequestBuilderInternal(urlParams, requestAdapter)
 }
+// CustomizationSettings the customizationSettings property
+// returns a *CustomizationSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) CustomizationSettings()(*CustomizationSettingsRequestBuilder) {
+    return NewCustomizationSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // GithubAppInstallations the githubAppInstallations property
 // returns a *GithubAppInstallationsRequestBuilder when successful
 func (m *AdminRequestBuilder) GithubAppInstallations()(*GithubAppInstallationsRequestBuilder) {
     return NewGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// SamlSettings the samlSettings property
+// returns a *SamlSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) SamlSettings()(*SamlSettingsRequestBuilder) {
+    return NewSamlSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ScimSettings the scimSettings property
+// returns a *ScimSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) ScimSettings()(*ScimSettingsRequestBuilder) {
+    return NewScimSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

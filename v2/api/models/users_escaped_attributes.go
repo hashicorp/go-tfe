@@ -14,6 +14,8 @@ type Users_attributes struct {
     authMethod *string
     // The avatarUrl property
     avatarUrl *string
+    // Human-readable display name for the user.
+    displayName *string
     // The email property
     email *string
     // The enterpriseSupport property
@@ -76,6 +78,11 @@ func (m *Users_attributes) GetAuthMethod()(*string) {
 func (m *Users_attributes) GetAvatarUrl()(*string) {
     return m.avatarUrl
 }
+// GetDisplayName gets the display-name property value. Human-readable display name for the user.
+// returns a *string when successful
+func (m *Users_attributes) GetDisplayName()(*string) {
+    return m.displayName
+}
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
 func (m *Users_attributes) GetEmail()(*string) {
@@ -107,6 +114,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         if val != nil {
             m.SetAvatarUrl(val)
+        }
+        return nil
+    }
+    res["display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDisplayName(val)
         }
         return nil
     }
@@ -493,6 +510,10 @@ func (m *Users_attributes) SetAuthMethod(value *string)() {
 func (m *Users_attributes) SetAvatarUrl(value *string)() {
     m.avatarUrl = value
 }
+// SetDisplayName sets the display-name property value. Human-readable display name for the user.
+func (m *Users_attributes) SetDisplayName(value *string)() {
+    m.displayName = value
+}
 // SetEmail sets the email property value. The email property
 func (m *Users_attributes) SetEmail(value *string)() {
     m.email = value
@@ -566,6 +587,7 @@ type Users_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAuthMethod()(*string)
     GetAvatarUrl()(*string)
+    GetDisplayName()(*string)
     GetEmail()(*string)
     GetEnterpriseSupport()(*bool)
     GetHasGitHubAppToken()(*bool)
@@ -585,6 +607,7 @@ type Users_attributesable interface {
     GetV2Only()(*bool)
     SetAuthMethod(value *string)()
     SetAvatarUrl(value *string)()
+    SetDisplayName(value *string)()
     SetEmail(value *string)()
     SetEnterpriseSupport(value *bool)()
     SetHasGitHubAppToken(value *bool)()
