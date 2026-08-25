@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type roundTripperFunc func(*http.Request) (*http.Response, error)
@@ -188,6 +189,42 @@ func TestClient_API(t *testing.T) {
 			t.Fatalf("expected nil organization response, got %v", response)
 		}
 	})
+}
+
+func TestClient_ConfigurationVersionIngressAttributes(t *testing.T) {
+	ts := testServer(t, map[string]http.HandlerFunc{
+		"/api/v2/configuration-versions/cv-123/ingress-attributes": func(w http.ResponseWriter, r *http.Request) {
+			setDefaultServerHeaders(w)
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{
+	"data": {
+		"id": "ia-123",
+		"type": "ingress-attributes",
+		"attributes": {
+			"branch": "main",
+			"commit-sha": "abc123"
+		}
+	}
+}`))
+		},
+	})
+
+	client, err := NewClient(&Config{
+		Address: ts.URL,
+		Token:   "test-token",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	response, err := client.API.ConfigurationVersions().ByConfiguration_version_id("cv-123").IngressAttributes().Get(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("failed to fetch ingress attributes: %v", err)
+	}
+
+	require.NotNil(t, response.GetAttributes())
+	assert.Equal(t, "main", *response.GetAttributes().GetBranch())
+	assert.Equal(t, "abc123", *response.GetAttributes().GetCommitSha())
 }
 
 func TestClient_defaultConfig(t *testing.T) {
