@@ -19598,7 +19598,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ingress-attributes"
+                  "$ref": "#/components/schemas/ingress-attributes-envelope"
                 }
               }
             }
@@ -34466,6 +34466,17 @@
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "ingress-attributes-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ingress-attributes"
           }
         }
       },

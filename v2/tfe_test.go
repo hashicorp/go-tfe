@@ -222,9 +222,9 @@ func TestClient_ConfigurationVersionIngressAttributes(t *testing.T) {
 		t.Fatalf("failed to fetch ingress attributes: %v", err)
 	}
 
-	require.NotNil(t, response.GetAttributes())
-	assert.Equal(t, "main", *response.GetAttributes().GetBranch())
-	assert.Equal(t, "abc123", *response.GetAttributes().GetCommitSha())
+	require.NotNil(t, response.GetData().GetAttributes())
+	assert.Equal(t, "main", *response.GetData().GetAttributes().GetBranch())
+	assert.Equal(t, "abc123", *response.GetData().GetAttributes().GetCommitSha())
 }
 
 func TestClient_defaultConfig(t *testing.T) {
