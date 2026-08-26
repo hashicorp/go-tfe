@@ -4238,7 +4238,8 @@ type CostEstimates interface {
 	Read(ctx context.Context, costEstimateID string) (*CostEstimate, error)
 
 	// Logs retrieves the logs of a costEstimate.
-	// Warning: This method is deprecated and will be removed from a future version of go-tfe. There is no replacement.
+
+	// Deprecated: Cost estimate logs are unsupported. There is no replacement.
 	Logs(ctx context.Context, costEstimateID string) (io.Reader, error)
 }
 
@@ -4306,9 +4307,10 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 }
 
 // Logs retrieves the logs of a costEstimate.
-// Warning: This method is deprecated and will be removed from a future version of go-tfe. There is no replacement.
+
+// Deprecated: Cost estimate logs are unsupported. There is no replacement.
 func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Reader, error) {
-	return nil, ErrCostEstimatesLogsUnsupported
+	return nil, ErrUnsupportedCostEstimateLogs
 }
 
 // DataRetentionPolicyChoice is a choice type struct that represents the possible types
@@ -4930,7 +4932,8 @@ var (
 
 // functionality which has been removed since v1
 var (
-	ErrCostEstimatesLogsUnsupported = errors.New("CostEstimates Logs() is now unsupported")
+	// ErrUnsupportedCostEstimateLogs is returned when cost estimate logs are requested.
+	ErrUnsupportedCostEstimateLogs = errors.New("cost estimate logs are unsupported")
 )
 
 // Copyright IBM Corp. 2018, 2026
