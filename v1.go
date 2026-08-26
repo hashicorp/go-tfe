@@ -4238,6 +4238,7 @@ type CostEstimates interface {
 	Read(ctx context.Context, costEstimateID string) (*CostEstimate, error)
 
 	// Logs retrieves the logs of a costEstimate.
+	// Warning: This method is deprecated and will be removed from a future version of go-tfe. There is no replacement.
 	Logs(ctx context.Context, costEstimateID string) (io.Reader, error)
 }
 
@@ -4305,45 +4306,9 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 }
 
 // Logs retrieves the logs of a costEstimate.
+// Warning: This method is deprecated and will be removed from a future version of go-tfe. There is no replacement.
 func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Reader, error) {
-	if !validStringID(&costEstimateID) {
-		return nil, ErrInvalidCostEstimateID
-	}
-
-	// Loop until the context is canceled or the cost estimate is finished
-	// running. The cost estimate logs are not streamed and so only available
-	// once the estimate is finished.
-	for {
-		// Get the costEstimate to make sure it exists.
-		ce, err := s.Read(ctx, costEstimateID)
-		if err != nil {
-			return nil, err
-		}
-
-		switch ce.Status {
-		case CostEstimateQueued:
-			select {
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			case <-time.After(1000 * time.Millisecond):
-				continue
-			}
-		}
-
-		u := fmt.Sprintf("cost-estimates/%s/output", url.PathEscape(costEstimateID))
-		req, err := s.client.NewRequest("GET", u, nil)
-		if err != nil {
-			return nil, err
-		}
-
-		logs := bytes.NewBuffer(nil)
-		err = req.Do(ctx, logs)
-		if err != nil {
-			return nil, err
-		}
-
-		return logs, nil
-	}
+	return nil, ErrCostEstimatesLogsUnsupported
 }
 
 // DataRetentionPolicyChoice is a choice type struct that represents the possible types
@@ -4961,6 +4926,11 @@ var (
 	ErrRequiredSCIMGroupMappingCreateOps = errors.New("Create Options are required to create a SCIM Group Mapping")
 
 	ErrRequiredSCIMGroupMappingUpdateOps = errors.New("Update Options are required to update SCIM Group Mapping")
+)
+
+// functionality which has been removed since v1
+var (
+	ErrCostEstimatesLogsUnsupported = errors.New("CostEstimates Logs() is now unsupported")
 )
 
 // Copyright IBM Corp. 2018, 2026
