@@ -26,7 +26,8 @@ func NewSamlSettingsActionsRevokeOldCertificateRequestBuilder(rawUrl string, req
     urlParams["request-raw-url"] = rawUrl
     return NewSamlSettingsActionsRevokeOldCertificateRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Returns 400 when SAML is disabled or when there is no old certificate to revoke.This operation is only available in Terraform Enterprise.
+// Post **Deprecated.** Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Use `DELETE /admin/saml-settings/idp-certificates/{external_id}` instead. Returns 400 when SAML is disabled or when there is no old certificate to revoke.This operation is only available in Terraform Enterprise.
+// Deprecated: 
 // returns a AdminSamlSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -48,7 +49,8 @@ func (m *SamlSettingsActionsRevokeOldCertificateRequestBuilder) Post(ctx context
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminSamlSettingsEnvelopeable), nil
 }
-// ToPostRequestInformation revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Returns 400 when SAML is disabled or when there is no old certificate to revoke.This operation is only available in Terraform Enterprise.
+// ToPostRequestInformation **Deprecated.** Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Use `DELETE /admin/saml-settings/idp-certificates/{external_id}` instead. Returns 400 when SAML is disabled or when there is no old certificate to revoke.This operation is only available in Terraform Enterprise.
+// Deprecated: 
 // returns a *RequestInformation when successful
 func (m *SamlSettingsActionsRevokeOldCertificateRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -57,6 +59,7 @@ func (m *SamlSettingsActionsRevokeOldCertificateRequestBuilder) ToPostRequestInf
     return requestInfo, nil
 }
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
+// Deprecated: 
 // returns a *SamlSettingsActionsRevokeOldCertificateRequestBuilder when successful
 func (m *SamlSettingsActionsRevokeOldCertificateRequestBuilder) WithUrl(rawUrl string)(*SamlSettingsActionsRevokeOldCertificateRequestBuilder) {
     return NewSamlSettingsActionsRevokeOldCertificateRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);

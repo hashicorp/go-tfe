@@ -23,6 +23,8 @@ type StackDeploymentRuns_attributes struct {
     deployingPendingOperatorAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The deployment property
     deployment *string
+    // The eligibleForRerun property
+    eligibleForRerun *bool
     // The failedAt property
     failedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The pendingCapacityAt property
@@ -86,6 +88,11 @@ func (m *StackDeploymentRuns_attributes) GetDeployingPendingOperatorAt()(*i33607
 // returns a *string when successful
 func (m *StackDeploymentRuns_attributes) GetDeployment()(*string) {
     return m.deployment
+}
+// GetEligibleForRerun gets the eligible-for-rerun property value. The eligibleForRerun property
+// returns a *bool when successful
+func (m *StackDeploymentRuns_attributes) GetEligibleForRerun()(*bool) {
+    return m.eligibleForRerun
 }
 // GetFailedAt gets the failed-at property value. The failedAt property
 // returns a *Time when successful
@@ -153,6 +160,16 @@ func (m *StackDeploymentRuns_attributes) GetFieldDeserializers()(map[string]func
         }
         if val != nil {
             m.SetDeployment(val)
+        }
+        return nil
+    }
+    res["eligible-for-rerun"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEligibleForRerun(val)
         }
         return nil
     }
@@ -311,6 +328,10 @@ func (m *StackDeploymentRuns_attributes) SetDeployingPendingOperatorAt(value *i3
 func (m *StackDeploymentRuns_attributes) SetDeployment(value *string)() {
     m.deployment = value
 }
+// SetEligibleForRerun sets the eligible-for-rerun property value. The eligibleForRerun property
+func (m *StackDeploymentRuns_attributes) SetEligibleForRerun(value *bool)() {
+    m.eligibleForRerun = value
+}
 // SetFailedAt sets the failed-at property value. The failedAt property
 func (m *StackDeploymentRuns_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.failedAt = value
@@ -352,6 +373,7 @@ type StackDeploymentRuns_attributesable interface {
     GetDeployingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDeployingPendingOperatorAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDeployment()(*string)
+    GetEligibleForRerun()(*bool)
     GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetPendingCapacityAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetPlanMode()(*StackDeploymentRuns_attributes_planMode)
@@ -366,6 +388,7 @@ type StackDeploymentRuns_attributesable interface {
     SetDeployingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDeployingPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDeployment(value *string)()
+    SetEligibleForRerun(value *bool)()
     SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetPendingCapacityAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetPlanMode(value *StackDeploymentRuns_attributes_planMode)()

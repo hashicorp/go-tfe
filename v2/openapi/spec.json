@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "9380f321",
+    "version": "804475d2",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -462,6 +462,15 @@
       "description": "Site-wide SAML single sign-on configuration for Terraform Enterprise administrators."
     },
     {
+      "name": "saml-idp-certificates",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "x-displayName": "SAML IdP Certificates",
+      "description": "Management of SAML Identity Provider (IdP) certificates for Terraform Enterprise. Allows site administrators to list, show, create, update, delete, and download trusted IdP certificates used for SAML SSO verification.\n"
+    },
+    {
       "name": "admin-scim-settings",
       "x-vis": [
         "tfe"
@@ -476,7 +485,7 @@
     }
   ],
   "paths": {
-    "/admin/banners": {
+    "/banners": {
       "x-vis": [
         "tfe"
       ],
@@ -486,11 +495,46 @@
         "summary": "Retrieve Active Site-Wide Announcement Banners",
         "description": "Returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.\n\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
-          "admin-banners"
+          "banners"
         ],
         "responses": {
           "200": {
             "description": "Active banners retrieved successfully. Array is empty when none are active.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/banners": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "listAdminBanners",
+        "summary": "List All Non-Deactivated Site-Wide Announcement Banners (Admin)",
+        "description": "Returns all non-deactivated banners (deactivated_at IS NULL), regardless of scheduling. Scheduled-but-not-yet-published banners are included so that the admin customization form can pre-populate them for editing or cancellation. Requires site-admin authentication; unauthenticated or non-admin requests receive 404. Returns an empty array when no non-deactivated banner exists. For the public display endpoint (publish-window filtered, no auth required) use GET /api/v2/banners.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Non-deactivated banners retrieved successfully. Array is empty when none exist.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -753,8 +797,9 @@
       ],
       "post": {
         "operationId": "revokeAdminSamlOldCertificate",
+        "deprecated": true,
         "summary": "Revoke Old SAML Certificate",
-        "description": "Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Returns 400 when SAML is disabled or when there is no old certificate to revoke.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "description": "**Deprecated.** Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Use `DELETE /admin/saml-settings/idp-certificates/{external_id}` instead. Returns 400 when SAML is disabled or when there is no old certificate to revoke.\n\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
           "admin-saml-settings"
         ],
@@ -771,6 +816,126 @@
           },
           "400": {
             "description": "SAML is not enabled, or there is no old certificate to revoke.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/actions/cert-validation": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "post": {
+        "operationId": "validateSamlIdpCert",
+        "summary": "Validate an IdP Certificate",
+        "description": "Validates a PEM-encoded X.509 certificate without persisting it. Returns whether the certificate is valid (non-expired and parseable), along with parsed metadata when the certificate is well-formed. Returns 422 when the `cert` attribute is absent or blank.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "admin-saml-settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "attributes"
+                    ],
+                    "properties": {
+                      "attributes": {
+                        "type": "object",
+                        "required": [
+                          "cert"
+                        ],
+                        "properties": {
+                          "cert": {
+                            "type": "string",
+                            "description": "PEM-encoded X.509 certificate to validate."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation result. `is-valid` is `false` for expired or unparseable certificates; remaining attributes are only present when the certificate is parseable.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "saml-cert-validations"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "required": [
+                            "is-valid"
+                          ],
+                          "properties": {
+                            "is-valid": {
+                              "type": "boolean",
+                              "description": "Whether the certificate is parseable and non-expired."
+                            },
+                            "issuer": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "Human-readable issuer derived from the O and CN fields of the certificate. Only present when parseable.\n"
+                            },
+                            "expires-at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "ISO 8601 UTC datetime when the certificate expires. Only present when parseable.\n"
+                            },
+                            "signature-algorithm": {
+                              "type": "string",
+                              "description": "Signature algorithm of the certificate (e.g. `sha256WithRSAEncryption`). Only present when parseable.\n"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The `cert` attribute is missing or blank.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -890,6 +1055,341 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/admin-scim-settings-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/idp-certificates": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "listSamlIdpCertificates",
+        "summary": "List IdP Certificates",
+        "description": "Returns all IdP certificates associated with the SAML settings singleton. Results are ordered: `legacy_primary` first, `legacy_old` second, then `managed` certificates sorted by `updated-at` ascending.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "responses": {
+          "200": {
+            "description": "IdP certificates retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSamlIdpCertificate",
+        "summary": "Create an IdP Certificate",
+        "description": "Creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "IdP certificate created successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, or display-name is missing.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/idp-certificates/{external_id}": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "getSamlIdpCertificate",
+        "summary": "Show an IdP Certificate",
+        "description": "Returns a single IdP certificate by its external ID.\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IdP certificate retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSamlIdpCertificate",
+        "summary": "Update an IdP Certificate",
+        "description": "Updates an IdP certificate. Only `display-name` may be changed for `legacy_primary` and `legacy_old` certificates; attempting to update the `cert` body of those roles returns 422. For `managed` certificates, both `display-name` and `cert` may be updated.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "IdP certificate updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, or invalid cert content.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSamlIdpCertificate",
+        "summary": "Delete an IdP Certificate",
+        "description": "Deletes an IdP certificate. If SAML is enabled and this is the last trusted certificate (`cert-role` of `managed` or `legacy_primary`), deletion is rejected with 422.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to delete."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "IdP certificate deleted successfully."
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Cannot delete the last trusted certificate while SAML is enabled.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/idp-certificates/{external_id}/download": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "downloadSamlIdpCertificate",
+        "summary": "Download an IdP Certificate",
+        "description": "Downloads the PEM-encoded certificate body as an attachment (`application/x-pem-file`). The filename is derived from the certificate's external ID (e.g. `idp-cert-idpc-xxxxxxxxxxxxxxxx.pem`).\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to download."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PEM certificate file returned as attachment.",
+            "content": {
+              "application/x-pem-file": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Vault is unavailable; the encrypted certificate could not be retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -9146,7 +9646,37 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/queries-envelope"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/queries-envelope"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "attributes": {
+                              "type": "object",
+                              "required": [
+                                "list-completions"
+                              ],
+                              "properties": {
+                                "list-completions": {
+                                  "type": "array",
+                                  "readOnly": true,
+                                  "description": "A summary of each list completion returned by the query run.",
+                                  "items": {
+                                    "$ref": "#/components/schemas/query-completion-summary"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -27223,13 +27753,15 @@
               "idp-cert": {
                 "type": "string",
                 "nullable": true,
-                "description": "PEM encoded X.509 certificate used to verify SAML assertions."
+                "deprecated": true,
+                "description": "**Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.\n"
               },
               "old-idp-cert": {
                 "type": "string",
                 "nullable": true,
+                "deprecated": true,
                 "readOnly": true,
-                "description": "Previous identity provider certificate, retained after a rotation until it is explicitly revoked.\n"
+                "description": "**Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.\n"
               },
               "attr-username": {
                 "type": "string",
@@ -27350,9 +27882,6 @@
                     "type": "boolean"
                   },
                   "can-update": {
-                    "type": "boolean"
-                  },
-                  "can-revoke-old-certificate": {
                     "type": "boolean"
                   }
                 }
@@ -27482,6 +28011,100 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-scim-settings"
+          }
+        }
+      },
+      "saml-idp-certificates": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx).",
+            "example": "idpc-xxxxxxxxxxxxxxxx"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "saml-idp-certificates"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "display-name": {
+                "type": "string",
+                "description": "A human-readable label for this certificate.",
+                "example": "Primary IdP Cert"
+              },
+              "cert": {
+                "type": "string",
+                "description": "PEM-encoded X.509 certificate body."
+              },
+              "fingerprint": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Colon-separated uppercase SHA-256 fingerprint of the certificate.",
+                "example": "AB:CD:EF:..."
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when the certificate expires."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when this record was created."
+              },
+              "cert-role": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.\n",
+                "enum": [
+                  "managed",
+                  "legacy_primary",
+                  "legacy_old"
+                ]
+              },
+              "issuer": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Human-readable issuer string derived from the O and CN fields of the certificate."
+              }
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/saml-idp-certificates"
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/saml-idp-certificates"
           }
         }
       },
@@ -29804,6 +30427,10 @@
                 "type": "string",
                 "format": "date-time",
                 "nullable": true,
+                "readOnly": true
+              },
+              "eligible-for-rerun": {
+                "type": "boolean",
                 "readOnly": true
               }
             }
@@ -32246,39 +32873,39 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "deleteOlderThanNDays": {
+              "delete-older-than-n-days": {
                 "type": "integer"
               },
-              "deleteStateVersions": {
+              "delete-state-versions": {
                 "type": "boolean"
               },
-              "deleteConfigurationVersions": {
+              "delete-configuration-versions": {
                 "type": "boolean"
               },
-              "deleteRunDataAndLogs": {
+              "delete-run-data-and-logs": {
                 "type": "boolean"
               },
-              "stateVersionsDeleteAfterNDays": {
+              "state-versions-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "configurationVersionsDeleteAfterNDays": {
+              "configuration-versions-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "runDataAndLogsDeleteAfterNDays": {
+              "run-data-and-logs-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "stateVersionsKeepLatestCount": {
+              "state-versions-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               },
-              "configurationVersionsKeepLatestCount": {
+              "configuration-versions-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               },
-              "runDataKeepLatestCount": {
+              "run-data-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               }
@@ -34107,6 +34734,41 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/queries"
+          }
+        }
+      },
+      "query-completion-summary": {
+        "type": "object",
+        "required": [
+          "address",
+          "resource-type",
+          "total"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The resource address as it appeared in the query list completion."
+          },
+          "resource-type": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The Terraform resource type for this list completion."
+          },
+          "total": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The total number of resources discovered for this address."
+          },
+          "policies-passed": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The number of policies that passed for this resource address. Omitted when the query-policy feature is disabled for the organization.\n"
+          },
+          "policies-failed": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The number of policies that failed for this resource address. Omitted when the query-policy feature is disabled for the organization.\n"
           }
         }
       },
@@ -39046,7 +39708,7 @@
               "auth-path": {
                 "type": "string"
               },
-              "encoded-ca-cert": {
+              "encoded-cacert": {
                 "type": "string"
               }
             }

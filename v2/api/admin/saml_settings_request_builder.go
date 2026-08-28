@@ -51,6 +51,11 @@ func (m *SamlSettingsRequestBuilder) Get(ctx context.Context, requestConfigurati
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminSamlSettingsEnvelopeable), nil
 }
+// IdpCertificates the idpCertificates property
+// returns a *SamlSettingsIdpCertificatesRequestBuilder when successful
+func (m *SamlSettingsRequestBuilder) IdpCertificates()(*SamlSettingsIdpCertificatesRequestBuilder) {
+    return NewSamlSettingsIdpCertificatesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Patch updates the site-wide SAML single sign-on configuration. Partial updates are supported: only attributes present in the request body are modified. Rotating `idp-cert` retains the previous certificate as `old-idp-cert` until it is revoked.This operation is only available in Terraform Enterprise.
 // returns a AdminSamlSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 422 status code
