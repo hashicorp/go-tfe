@@ -13,10 +13,17 @@ import (
 type ItemRelationshipsDataRetentionPolicyRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemRelationshipsDataRetentionPolicyRequestBuilderGetQueryParameters show the data retention policy set explicitly on the organization.This operation is only available in Terraform Enterprise.
+type ItemRelationshipsDataRetentionPolicyRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for data-retention-policy-delete-olders resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsdataRetentionPolicyDeleteOlders []string "uriparametername:\"fields%5Bdata%2Dretention%2Dpolicy%2Ddelete%2Dolders%5D\""
+    // Return only the specified fields for data-retention-policy-dont-deletes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsdataRetentionPolicyDontDeletes []string "uriparametername:\"fields%5Bdata%2Dretention%2Dpolicy%2Ddont%2Ddeletes%5D\""
+}
 // NewItemRelationshipsDataRetentionPolicyRequestBuilderInternal instantiates a new ItemRelationshipsDataRetentionPolicyRequestBuilder and sets the default values.
 func NewItemRelationshipsDataRetentionPolicyRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsDataRetentionPolicyRequestBuilder) {
     m := &ItemRelationshipsDataRetentionPolicyRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/relationships/data-retention-policy", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/relationships/data-retention-policy{?fields%5Bdata%2Dretention%2Dpolicy%2Ddelete%2Dolders%5D,fields%5Bdata%2Dretention%2Dpolicy%2Ddont%2Ddeletes%5D}", pathParameters),
     }
     return m
 }
@@ -45,7 +52,7 @@ func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) Delete(ctx context.
 // Get show the data retention policy set explicitly on the organization.This operation is only available in Terraform Enterprise.
 // returns a DataRetentionPolicyEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.DataRetentionPolicyEnvelopeable, error) {
+func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsDataRetentionPolicyRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.DataRetentionPolicyEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -104,7 +111,7 @@ func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) ToDeleteRequestInfo
 }
 // ToGetRequestInformation show the data retention policy set explicitly on the organization.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsDataRetentionPolicyRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsDataRetentionPolicyRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

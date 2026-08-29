@@ -16,6 +16,8 @@ type ItemStackOutputConsumersUpstreamRequestBuilder struct {
 }
 // ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters list output consumers for a stack(upstream or downstream).
 type ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-output-consumers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackOutputConsumers []string "uriparametername:\"fields%5Bstack%2Doutput%2Dconsumers%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -28,7 +30,7 @@ type ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters struct {
 // NewItemStackOutputConsumersUpstreamRequestBuilderInternal instantiates a new ItemStackOutputConsumersUpstreamRequestBuilder and sets the default values.
 func NewItemStackOutputConsumersUpstreamRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackOutputConsumersUpstreamRequestBuilder) {
     m := &ItemStackOutputConsumersUpstreamRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-output-consumers/upstream{?page%5Bnumber%5D*,page%5Bsize%5D*,search*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-output-consumers/upstream{?fields%5Bstack%2Doutput%2Dconsumers%5D,page%5Bnumber%5D*,page%5Bsize%5D*,search*,sort*}", pathParameters),
     }
     return m
 }

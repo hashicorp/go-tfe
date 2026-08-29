@@ -13,10 +13,15 @@ import (
 type CustomizationSettingsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// CustomizationSettingsRequestBuilderGetQueryParameters returns the current admin customization settings singleton. This endpoint is available to all authenticated users (not restricted to site administrators) so that the UI can read customization values for display. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are only present in the response when running Terraform Enterprise.
+type CustomizationSettingsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for customization-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldscustomizationSettings []string "uriparametername:\"fields%5Bcustomization%2Dsettings%5D\""
+}
 // NewCustomizationSettingsRequestBuilderInternal instantiates a new CustomizationSettingsRequestBuilder and sets the default values.
 func NewCustomizationSettingsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*CustomizationSettingsRequestBuilder) {
     m := &CustomizationSettingsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/customization-settings", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/customization-settings{?fields%5Bcustomization%2Dsettings%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewCustomizationSettingsRequestBuilder(rawUrl string, requestAdapter i2ae41
 // Get returns the current admin customization settings singleton. This endpoint is available to all authenticated users (not restricted to site administrators) so that the UI can read customization values for display. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are only present in the response when running Terraform Enterprise.
 // returns a AdminCustomizationSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *CustomizationSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminCustomizationSettingsEnvelopeable, error) {
+func (m *CustomizationSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[CustomizationSettingsRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminCustomizationSettingsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -70,7 +75,7 @@ func (m *CustomizationSettingsRequestBuilder) Patch(ctx context.Context, body i0
 }
 // ToGetRequestInformation returns the current admin customization settings singleton. This endpoint is available to all authenticated users (not restricted to site administrators) so that the UI can read customization values for display. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are only present in the response when running Terraform Enterprise.
 // returns a *RequestInformation when successful
-func (m *CustomizationSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *CustomizationSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[CustomizationSettingsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

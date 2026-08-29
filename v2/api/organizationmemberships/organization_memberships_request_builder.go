@@ -15,6 +15,8 @@ type OrganizationMembershipsRequestBuilder struct {
 }
 // OrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for the currently authenticated user.
 type OrganizationMembershipsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsorganizationMemberships []string "uriparametername:\"fields%5Borganization%2Dmemberships%5D\""
     // Optionally side-load relationships. Can include "user", "teams", or "organization".
     Include []GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
@@ -37,7 +39,7 @@ func (m *OrganizationMembershipsRequestBuilder) ByOrganization_membership_id(org
 // NewOrganizationMembershipsRequestBuilderInternal instantiates a new OrganizationMembershipsRequestBuilder and sets the default values.
 func NewOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*OrganizationMembershipsRequestBuilder) {
     m := &OrganizationMembershipsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization-memberships{?include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization-memberships{?fields%5Borganization%2Dmemberships%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

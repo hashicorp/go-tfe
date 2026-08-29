@@ -17,6 +17,8 @@ type ItemVcsEventsRequestBuilder struct {
 }
 // ItemVcsEventsRequestBuilderGetQueryParameters list VCS events for an organization.
 type ItemVcsEventsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for vcs-events resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsvcsEvents []string "uriparametername:\"fields%5Bvcs%2Devents%5D\""
     // RFC3339 formatted UTC timestamp. If omitted, defaults to 10 days ago.
     Filterfrom *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bfrom%5D\""
     // Comma-separated list of event levels to filter by. Accepted values are "info" and "error".
@@ -35,7 +37,7 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
 func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
     m := &ItemVcsEventsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?fields%5Bvcs%2Devents%5D,filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

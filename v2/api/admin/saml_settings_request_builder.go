@@ -13,6 +13,11 @@ import (
 type SamlSettingsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// SamlSettingsRequestBuilderGetQueryParameters returns the site-wide SAML single sign-on configuration. SAML settings are a singleton resource; the returned resource always has the id `saml`.This operation is only available in Terraform Enterprise.
+type SamlSettingsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for saml-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldssamlSettings []string "uriparametername:\"fields%5Bsaml%2Dsettings%5D\""
+}
 // Actions the actions property
 // returns a *SamlSettingsActionsRequestBuilder when successful
 func (m *SamlSettingsRequestBuilder) Actions()(*SamlSettingsActionsRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *SamlSettingsRequestBuilder) Actions()(*SamlSettingsActionsRequestBuilde
 // NewSamlSettingsRequestBuilderInternal instantiates a new SamlSettingsRequestBuilder and sets the default values.
 func NewSamlSettingsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*SamlSettingsRequestBuilder) {
     m := &SamlSettingsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/saml-settings", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/saml-settings{?fields%5Bsaml%2Dsettings%5D}", pathParameters),
     }
     return m
 }
@@ -34,7 +39,7 @@ func NewSamlSettingsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
 // Get returns the site-wide SAML single sign-on configuration. SAML settings are a singleton resource; the returned resource always has the id `saml`.This operation is only available in Terraform Enterprise.
 // returns a AdminSamlSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *SamlSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminSamlSettingsEnvelopeable, error) {
+func (m *SamlSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[SamlSettingsRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminSamlSettingsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -50,6 +55,11 @@ func (m *SamlSettingsRequestBuilder) Get(ctx context.Context, requestConfigurati
         return nil, nil
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminSamlSettingsEnvelopeable), nil
+}
+// IdpCertificates the idpCertificates property
+// returns a *SamlSettingsIdpCertificatesRequestBuilder when successful
+func (m *SamlSettingsRequestBuilder) IdpCertificates()(*SamlSettingsIdpCertificatesRequestBuilder) {
+    return NewSamlSettingsIdpCertificatesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Patch updates the site-wide SAML single sign-on configuration. Partial updates are supported: only attributes present in the request body are modified. Rotating `idp-cert` retains the previous certificate as `old-idp-cert` until it is revoked.This operation is only available in Terraform Enterprise.
 // returns a AdminSamlSettingsEnvelopeable when successful
@@ -75,7 +85,7 @@ func (m *SamlSettingsRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14
 }
 // ToGetRequestInformation returns the site-wide SAML single sign-on configuration. SAML settings are a singleton resource; the returned resource always has the id `saml`.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
-func (m *SamlSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *SamlSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[SamlSettingsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

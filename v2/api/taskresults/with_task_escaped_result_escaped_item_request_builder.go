@@ -13,6 +13,13 @@ import (
 type WithTask_result_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithTask_result_ItemRequestBuilderGetQueryParameters get details about a specific run task result.
+type WithTask_result_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for task_results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldstask_results []string "uriparametername:\"fields%5Btask_results%5D\""
+    // Return only the specified fields for task-results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstaskResults []string "uriparametername:\"fields%5Btask%2Dresults%5D\""
+}
 // Body the body property
 // returns a *ItemBodyRequestBuilder when successful
 func (m *WithTask_result_ItemRequestBuilder) Body()(*ItemBodyRequestBuilder) {
@@ -26,7 +33,7 @@ func (m *WithTask_result_ItemRequestBuilder) Callback()(*ItemCallbackRequestBuil
 // NewWithTask_result_ItemRequestBuilderInternal instantiates a new WithTask_result_ItemRequestBuilder and sets the default values.
 func NewWithTask_result_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithTask_result_ItemRequestBuilder) {
     m := &WithTask_result_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-results/{task_result_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-results/{task_result_id}{?fields%5Btask%2Dresults%5D,fields%5Btask_results%5D}", pathParameters),
     }
     return m
 }
@@ -39,7 +46,7 @@ func NewWithTask_result_ItemRequestBuilder(rawUrl string, requestAdapter i2ae418
 // Get get details about a specific run task result.
 // returns a TaskResultsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithTask_result_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskResultsEnvelopeable, error) {
+func (m *WithTask_result_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_result_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskResultsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -63,7 +70,7 @@ func (m *WithTask_result_ItemRequestBuilder) Outcomes()(*ItemOutcomesRequestBuil
 }
 // ToGetRequestInformation get details about a specific run task result.
 // returns a *RequestInformation when successful
-func (m *WithTask_result_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithTask_result_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_result_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

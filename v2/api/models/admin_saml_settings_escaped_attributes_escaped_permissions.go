@@ -12,8 +12,6 @@ type AdminSamlSettings_attributes_permissions struct {
     additionalData map[string]any
     // The canRead property
     canRead *bool
-    // The canRevokeOldCertificate property
-    canRevokeOldCertificate *bool
     // The canUpdate property
     canUpdate *bool
 }
@@ -39,11 +37,6 @@ func (m *AdminSamlSettings_attributes_permissions) GetAdditionalData()(map[strin
 func (m *AdminSamlSettings_attributes_permissions) GetCanRead()(*bool) {
     return m.canRead
 }
-// GetCanRevokeOldCertificate gets the can-revoke-old-certificate property value. The canRevokeOldCertificate property
-// returns a *bool when successful
-func (m *AdminSamlSettings_attributes_permissions) GetCanRevokeOldCertificate()(*bool) {
-    return m.canRevokeOldCertificate
-}
 // GetCanUpdate gets the can-update property value. The canUpdate property
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes_permissions) GetCanUpdate()(*bool) {
@@ -63,16 +56,6 @@ func (m *AdminSamlSettings_attributes_permissions) GetFieldDeserializers()(map[s
         }
         return nil
     }
-    res["can-revoke-old-certificate"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanRevokeOldCertificate(val)
-        }
-        return nil
-    }
     res["can-update"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -89,12 +72,6 @@ func (m *AdminSamlSettings_attributes_permissions) GetFieldDeserializers()(map[s
 func (m *AdminSamlSettings_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteBoolValue("can-read", m.GetCanRead())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-revoke-old-certificate", m.GetCanRevokeOldCertificate())
         if err != nil {
             return err
         }
@@ -121,10 +98,6 @@ func (m *AdminSamlSettings_attributes_permissions) SetAdditionalData(value map[s
 func (m *AdminSamlSettings_attributes_permissions) SetCanRead(value *bool)() {
     m.canRead = value
 }
-// SetCanRevokeOldCertificate sets the can-revoke-old-certificate property value. The canRevokeOldCertificate property
-func (m *AdminSamlSettings_attributes_permissions) SetCanRevokeOldCertificate(value *bool)() {
-    m.canRevokeOldCertificate = value
-}
 // SetCanUpdate sets the can-update property value. The canUpdate property
 func (m *AdminSamlSettings_attributes_permissions) SetCanUpdate(value *bool)() {
     m.canUpdate = value
@@ -133,9 +106,7 @@ type AdminSamlSettings_attributes_permissionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCanRead()(*bool)
-    GetCanRevokeOldCertificate()(*bool)
     GetCanUpdate()(*bool)
     SetCanRead(value *bool)()
-    SetCanRevokeOldCertificate(value *bool)()
     SetCanUpdate(value *bool)()
 }

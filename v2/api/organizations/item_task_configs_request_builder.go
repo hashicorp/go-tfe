@@ -16,6 +16,8 @@ type ItemTaskConfigsRequestBuilder struct {
 }
 // ItemTaskConfigsRequestBuilderGetQueryParameters list task configurations in an organization that apply to a given target project.
 type ItemTaskConfigsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstaskConfigs []string "uriparametername:\"fields%5Btask%2Dconfigs%5D\""
     // The ID of the target project to filter by.
     Filtertarget_id *string "uriparametername:\"filter%5Btarget_id%5D\""
     // The type of the target to filter by.
@@ -30,7 +32,7 @@ type ItemTaskConfigsRequestBuilderGetQueryParameters struct {
 // NewItemTaskConfigsRequestBuilderInternal instantiates a new ItemTaskConfigsRequestBuilder and sets the default values.
 func NewItemTaskConfigsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTaskConfigsRequestBuilder) {
     m := &ItemTaskConfigsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs?filter[target_id]={filter%5Btarget_id%5D}&filter[target_type]={filter%5Btarget_type%5D}{&filter%5Btask_category%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs?filter[target_id]={filter%5Btarget_id%5D}&filter[target_type]={filter%5Btarget_type%5D}{&fields%5Btask%2Dconfigs%5D,filter%5Btask_category%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

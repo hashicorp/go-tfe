@@ -15,6 +15,8 @@ type WorkspaceTransfersRequestBuilder struct {
 }
 // WorkspaceTransfersRequestBuilderGetQueryParameters list all workspace transfers you have access to.
 type WorkspaceTransfersRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -35,7 +37,7 @@ func (m *WorkspaceTransfersRequestBuilder) ByWorkspace_transfer_id(workspace_tra
 // NewWorkspaceTransfersRequestBuilderInternal instantiates a new WorkspaceTransfersRequestBuilder and sets the default values.
 func NewWorkspaceTransfersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WorkspaceTransfersRequestBuilder) {
     m := &WorkspaceTransfersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers{?fields%5Bworkspace%2Dtransfers%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

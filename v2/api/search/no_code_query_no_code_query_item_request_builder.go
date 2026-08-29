@@ -13,10 +13,15 @@ import (
 type NoCodeQueryNoCodeQueryItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+type NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for no-code-queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsnoCodeQueries []string "uriparametername:\"fields%5Bno%2Dcode%2Dqueries%5D\""
+}
 // NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal instantiates a new NoCodeQueryNoCodeQueryItemRequestBuilder and sets the default values.
 func NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*NoCodeQueryNoCodeQueryItemRequestBuilder) {
     m := &NoCodeQueryNoCodeQueryItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/search/no-code-query/{id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/search/no-code-query/{id}{?fields%5Bno%2Dcode%2Dqueries%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewNoCodeQueryNoCodeQueryItemRequestBuilder(rawUrl string, requestAdapter i
 // Get get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a NoCodeQueryItemNoCodeQueryGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(NoCodeQueryItemNoCodeQueryGetResponseable, error) {
+func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters])(NoCodeQueryItemNoCodeQueryGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +53,7 @@ func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) Get(ctx context.Context, requ
 }
 // ToGetRequestInformation get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
-func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
