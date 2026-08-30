@@ -11,6 +11,11 @@ import (
 type SamlSettingsActionsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// CertValidation the certValidation property
+// returns a *SamlSettingsActionsCertValidationRequestBuilder when successful
+func (m *SamlSettingsActionsRequestBuilder) CertValidation()(*SamlSettingsActionsCertValidationRequestBuilder) {
+    return NewSamlSettingsActionsCertValidationRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewSamlSettingsActionsRequestBuilderInternal instantiates a new SamlSettingsActionsRequestBuilder and sets the default values.
 func NewSamlSettingsActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*SamlSettingsActionsRequestBuilder) {
     m := &SamlSettingsActionsRequestBuilder{

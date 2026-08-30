@@ -16,6 +16,8 @@ type GithubAppInstallationsRequestBuilder struct {
 }
 // GithubAppInstallationsRequestBuilderGetQueryParameters list the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.This operation is only available in Terraform Enterprise.
 type GithubAppInstallationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
     // Filter by GitHub account name (partial match) or exact GitHub installation ID.
     Filterquery *string "uriparametername:\"filter%5Bquery%5D\""
     // Filter by installation status. Defaults to all.
@@ -30,7 +32,7 @@ type GithubAppInstallationsRequestBuilderGetQueryParameters struct {
 // NewGithubAppInstallationsRequestBuilderInternal instantiates a new GithubAppInstallationsRequestBuilder and sets the default values.
 func NewGithubAppInstallationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*GithubAppInstallationsRequestBuilder) {
     m := &GithubAppInstallationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/github-app-installations{?filter%5Bquery%5D*,filter%5Bstatus%5D*,filter%5Btype%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/github-app-installations{?fields%5Bgithub%2Dapp%2Dinstallations%5D,filter%5Bquery%5D*,filter%5Bstatus%5D*,filter%5Btype%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

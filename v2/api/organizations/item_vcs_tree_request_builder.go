@@ -17,6 +17,8 @@ type ItemVcsTreeRequestBuilder struct {
 type ItemVcsTreeRequestBuilderGetQueryParameters struct {
     // The branch, tag, or commit SHA to list directories for. If not provided, the default branch will be used.
     Branch *string "uriparametername:\"branch\""
+    // Return only the specified fields for vcs-tree resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsvcsTree []string "uriparametername:\"fields%5Bvcs%2Dtree%5D\""
     // The GitHub App installation ID (only needed when using GitHub App authentication)
     GithubAppInstallationId *string "uriparametername:\"githubAppInstallationId\""
     // The repository identifier (e.g., "owner/repo")
@@ -27,7 +29,7 @@ type ItemVcsTreeRequestBuilderGetQueryParameters struct {
 // NewItemVcsTreeRequestBuilderInternal instantiates a new ItemVcsTreeRequestBuilder and sets the default values.
 func NewItemVcsTreeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsTreeRequestBuilder) {
     m := &ItemVcsTreeRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/tree?identifier={identifier}&oauth_token_id={oauth_token_id}{&branch*,githubAppInstallationId*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/tree?identifier={identifier}&oauth_token_id={oauth_token_id}{&branch*,fields%5Bvcs%2Dtree%5D,githubAppInstallationId*}", pathParameters),
     }
     return m
 }

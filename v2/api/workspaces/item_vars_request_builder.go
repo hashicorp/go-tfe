@@ -13,6 +13,11 @@ import (
 type ItemVarsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemVarsRequestBuilderGetQueryParameters list variables for a workspace.
+type ItemVarsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+}
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.workspaces.item.vars.item collection
 // returns a *ItemVarsVarsItemRequestBuilder when successful
 func (m *ItemVarsRequestBuilder) ById(id string)(*ItemVarsVarsItemRequestBuilder) {
@@ -28,7 +33,7 @@ func (m *ItemVarsRequestBuilder) ById(id string)(*ItemVarsVarsItemRequestBuilder
 // NewItemVarsRequestBuilderInternal instantiates a new ItemVarsRequestBuilder and sets the default values.
 func NewItemVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsRequestBuilder) {
     m := &ItemVarsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars{?fields%5Bvars%5D}", pathParameters),
     }
     return m
 }
@@ -41,7 +46,7 @@ func NewItemVarsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26337
 // Get list variables for a workspace.
 // returns a ItemVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsGetResponseable, error) {
+func (m *ItemVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsRequestBuilderGetQueryParameters])(ItemVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -80,7 +85,7 @@ func (m *ItemVarsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285
 }
 // ToGetRequestInformation list variables for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

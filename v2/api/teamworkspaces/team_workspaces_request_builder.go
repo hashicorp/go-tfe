@@ -15,6 +15,8 @@ type TeamWorkspacesRequestBuilder struct {
 }
 // TeamWorkspacesRequestBuilderGetQueryParameters list all team access relationships. Optionally filter by workspace or team ID.
 type TeamWorkspacesRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for team-workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsteamWorkspaces []string "uriparametername:\"fields%5Bteam%2Dworkspaces%5D\""
     // The team ID to list workspace access for.
     Filterteamid *string "uriparametername:\"filter%5Bteam%5D%5Bid%5D\""
     // The workspace ID to list team access for.
@@ -39,7 +41,7 @@ func (m *TeamWorkspacesRequestBuilder) ByTeam_workspace_id(team_workspace_id str
 // NewTeamWorkspacesRequestBuilderInternal instantiates a new TeamWorkspacesRequestBuilder and sets the default values.
 func NewTeamWorkspacesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TeamWorkspacesRequestBuilder) {
     m := &TeamWorkspacesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-workspaces{?filter%5Bteam%5D%5Bid%5D*,filter%5Bworkspace%5D%5Bid%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-workspaces{?fields%5Bteam%2Dworkspaces%5D,filter%5Bteam%5D%5Bid%5D*,filter%5Bworkspace%5D%5Bid%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

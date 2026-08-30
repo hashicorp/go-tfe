@@ -16,6 +16,8 @@ type ItemTaskConfigsForOwnerRequestBuilder struct {
 }
 // ItemTaskConfigsForOwnerRequestBuilderGetQueryParameters get the task configuration for a specific task and owner within an organization.
 type ItemTaskConfigsForOwnerRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstaskConfigs []string "uriparametername:\"fields%5Btask%2Dconfigs%5D\""
     // The ID of the owner. For organization owners, this is the organization name.
     Qowner_id *string "uriparametername:\"q%5Bowner_id%5D\""
     // The type of the owner.
@@ -26,7 +28,7 @@ type ItemTaskConfigsForOwnerRequestBuilderGetQueryParameters struct {
 // NewItemTaskConfigsForOwnerRequestBuilderInternal instantiates a new ItemTaskConfigsForOwnerRequestBuilder and sets the default values.
 func NewItemTaskConfigsForOwnerRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTaskConfigsForOwnerRequestBuilder) {
     m := &ItemTaskConfigsForOwnerRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs/for-owner?q[owner_id]={q%5Bowner_id%5D}&q[owner_type]={q%5Bowner_type%5D}&q[task_id]={q%5Btask_id%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs/for-owner?q[owner_id]={q%5Bowner_id%5D}&q[owner_type]={q%5Bowner_type%5D}&q[task_id]={q%5Btask_id%5D}{&fields%5Btask%2Dconfigs%5D}", pathParameters),
     }
     return m
 }

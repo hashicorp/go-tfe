@@ -13,6 +13,11 @@ import (
 type BannersRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// BannersRequestBuilderGetQueryParameters returns all non-deactivated banners (deactivated_at IS NULL), regardless of scheduling. Scheduled-but-not-yet-published banners are included so that the admin customization form can pre-populate them for editing or cancellation. Requires site-admin authentication; unauthenticated or non-admin requests receive 404. Returns an empty array when no non-deactivated banner exists. For the public display endpoint (publish-window filtered, no auth required) use GET /api/v2/banners.This operation is only available in Terraform Enterprise.
+type BannersRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for admin-banners resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsadminBanners []string "uriparametername:\"fields%5Badmin%2Dbanners%5D\""
+}
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.admin.banners.item collection
 // returns a *BannersBannersItemRequestBuilder when successful
 func (m *BannersRequestBuilder) ById(id string)(*BannersBannersItemRequestBuilder) {
@@ -28,7 +33,7 @@ func (m *BannersRequestBuilder) ById(id string)(*BannersBannersItemRequestBuilde
 // NewBannersRequestBuilderInternal instantiates a new BannersRequestBuilder and sets the default values.
 func NewBannersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*BannersRequestBuilder) {
     m := &BannersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/banners", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/banners{?fields%5Badmin%2Dbanners%5D}", pathParameters),
     }
     return m
 }
@@ -38,10 +43,10 @@ func NewBannersRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371
     urlParams["request-raw-url"] = rawUrl
     return NewBannersRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.This operation is only available in Terraform Enterprise.
+// Get returns all non-deactivated banners (deactivated_at IS NULL), regardless of scheduling. Scheduled-but-not-yet-published banners are included so that the admin customization form can pre-populate them for editing or cancellation. Requires site-admin authentication; unauthenticated or non-admin requests receive 404. Returns an empty array when no non-deactivated banner exists. For the public display endpoint (publish-window filtered, no auth required) use GET /api/v2/banners.This operation is only available in Terraform Enterprise.
 // returns a AdminBannersCollectionEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *BannersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersCollectionEnvelopeable, error) {
+func (m *BannersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[BannersRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersCollectionEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -78,9 +83,9 @@ func (m *BannersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersEnvelopeable), nil
 }
-// ToGetRequestInformation returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.This operation is only available in Terraform Enterprise.
+// ToGetRequestInformation returns all non-deactivated banners (deactivated_at IS NULL), regardless of scheduling. Scheduled-but-not-yet-published banners are included so that the admin customization form can pre-populate them for editing or cancellation. Requires site-admin authentication; unauthenticated or non-admin requests receive 404. Returns an empty array when no non-deactivated banner exists. For the public display endpoint (publish-window filtered, no auth required) use GET /api/v2/banners.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
-func (m *BannersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *BannersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[BannersRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

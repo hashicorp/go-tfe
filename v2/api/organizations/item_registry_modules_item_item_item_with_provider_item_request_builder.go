@@ -13,10 +13,15 @@ import (
 type ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemRegistryModulesItemItemItemWithProviderItemRequestBuilderGetQueryParameters returns details for a registry module, including its status, publishingmechanism, version statuses, and VCS settings when available to therequesting organization.
+type ItemRegistryModulesItemItemItemWithProviderItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for registry-modules resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsregistryModules []string "uriparametername:\"fields%5Bregistry%2Dmodules%5D\""
+}
 // NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal instantiates a new ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder and sets the default values.
 func NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) {
     m := &ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}{?fields%5Bregistry%2Dmodules%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilder(rawUrl str
 // Get returns details for a registry module, including its status, publishingmechanism, version statuses, and VCS settings when available to therequesting organization.
 // returns a RegistryModulesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable, error) {
+func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRegistryModulesItemItemItemWithProviderItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -68,7 +73,7 @@ func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) Patch(ct
 }
 // ToGetRequestInformation returns details for a registry module, including its status, publishingmechanism, version statuses, and VCS settings when available to therequesting organization.
 // returns a *RequestInformation when successful
-func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRegistryModulesItemItemItemWithProviderItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

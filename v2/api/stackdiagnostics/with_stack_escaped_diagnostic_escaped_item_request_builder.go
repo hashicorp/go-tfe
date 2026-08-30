@@ -13,10 +13,15 @@ import (
 type WithStack_diagnostic_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithStack_diagnostic_ItemRequestBuilderGetQueryParameters get details about a stack diagnostic
+type WithStack_diagnostic_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-diagnostics resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDiagnostics []string "uriparametername:\"fields%5Bstack%2Ddiagnostics%5D\""
+}
 // NewWithStack_diagnostic_ItemRequestBuilderInternal instantiates a new WithStack_diagnostic_ItemRequestBuilder and sets the default values.
 func NewWithStack_diagnostic_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_diagnostic_ItemRequestBuilder) {
     m := &WithStack_diagnostic_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-diagnostics/{stack_diagnostic_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-diagnostics/{stack_diagnostic_id}{?fields%5Bstack%2Ddiagnostics%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewWithStack_diagnostic_ItemRequestBuilder(rawUrl string, requestAdapter i2
 // Get get details about a stack diagnostic
 // returns a ItemWithStack_diagnostic_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithStack_diagnostic_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithStack_diagnostic_GetResponseable, error) {
+func (m *WithStack_diagnostic_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_diagnostic_ItemRequestBuilderGetQueryParameters])(ItemWithStack_diagnostic_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +53,7 @@ func (m *WithStack_diagnostic_ItemRequestBuilder) Get(ctx context.Context, reque
 }
 // ToGetRequestInformation get details about a stack diagnostic
 // returns a *RequestInformation when successful
-func (m *WithStack_diagnostic_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithStack_diagnostic_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_diagnostic_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

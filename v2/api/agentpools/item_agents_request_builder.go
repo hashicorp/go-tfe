@@ -16,6 +16,8 @@ type ItemAgentsRequestBuilder struct {
 }
 // ItemAgentsRequestBuilderGetQueryParameters list all agents in the specified agent pool.
 type ItemAgentsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for agents resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsagents []string "uriparametername:\"fields%5Bagents%5D\""
     // Accepts a date in ISO8601 format (ex. `2020-08-11T10:41:23Z`).
     FilterlastPingSince *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Blast%2Dping%2Dsince%5D\""
     // The page number to retrieve.
@@ -28,7 +30,7 @@ type ItemAgentsRequestBuilderGetQueryParameters struct {
 // NewItemAgentsRequestBuilderInternal instantiates a new ItemAgentsRequestBuilder and sets the default values.
 func NewItemAgentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentsRequestBuilder) {
     m := &ItemAgentsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}/agents{?filter%5Blast%2Dping%2Dsince%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}/agents{?fields%5Bagents%5D,filter%5Blast%2Dping%2Dsince%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

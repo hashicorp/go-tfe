@@ -15,6 +15,8 @@ type StateVersionsRequestBuilder struct {
 }
 // StateVersionsRequestBuilderGetQueryParameters list state versions for a workspace, filtered by organization and workspace name.
 type StateVersionsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstateVersions []string "uriparametername:\"fields%5Bstate%2Dversions%5D\""
     // The name of the organization that owns the workspace.
     Filterorganizationname *string "uriparametername:\"filter%5Borganization%5D%5Bname%5D\""
     // Filter state versions by status. One or more comma-separated values from pending, finalized, or discarded.
@@ -41,7 +43,7 @@ func (m *StateVersionsRequestBuilder) ByState_version_id(state_version_id string
 // NewStateVersionsRequestBuilderInternal instantiates a new StateVersionsRequestBuilder and sets the default values.
 func NewStateVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*StateVersionsRequestBuilder) {
     m := &StateVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions?filter[organization][name]={filter%5Borganization%5D%5Bname%5D}&filter[workspace][name]={filter%5Bworkspace%5D%5Bname%5D}{&filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions?filter[organization][name]={filter%5Borganization%5D%5Bname%5D}&filter[workspace][name]={filter%5Bworkspace%5D%5Bname%5D}{&fields%5Bstate%2Dversions%5D,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

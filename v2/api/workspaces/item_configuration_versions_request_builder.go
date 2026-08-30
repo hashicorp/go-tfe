@@ -15,6 +15,8 @@ type ItemConfigurationVersionsRequestBuilder struct {
 }
 // ItemConfigurationVersionsRequestBuilderGetQueryParameters list configuration versions for a workspace.
 type ItemConfigurationVersionsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsconfigurationVersions []string "uriparametername:\"fields%5Bconfiguration%2Dversions%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemConfigurationVersionsRequestBuilderGetQueryParameters struct {
 // NewItemConfigurationVersionsRequestBuilderInternal instantiates a new ItemConfigurationVersionsRequestBuilder and sets the default values.
 func NewItemConfigurationVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemConfigurationVersionsRequestBuilder) {
     m := &ItemConfigurationVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/configuration-versions{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/configuration-versions{?fields%5Bconfiguration%2Dversions%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
