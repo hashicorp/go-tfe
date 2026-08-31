@@ -17,7 +17,7 @@ type HcpOrganization struct {
     // The relationships property
     relationships HcpOrganization_relationshipsable
     // The type property
-    typeEscaped *string
+    typeEscaped *HcpOrganization_type
 }
 // NewHcpOrganization instantiates a new HcpOrganization and sets the default values.
 func NewHcpOrganization()(*HcpOrganization) {
@@ -76,12 +76,12 @@ func (m *HcpOrganization) GetFieldDeserializers()(map[string]func(i878a80d2330e8
         return nil
     }
     res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+        val, err := n.GetEnumValue(ParseHcpOrganization_type)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTypeEscaped(val)
+            m.SetTypeEscaped(val.(*HcpOrganization_type))
         }
         return nil
     }
@@ -98,8 +98,8 @@ func (m *HcpOrganization) GetRelationships()(HcpOrganization_relationshipsable) 
     return m.relationships
 }
 // GetTypeEscaped gets the type property value. The type property
-// returns a *string when successful
-func (m *HcpOrganization) GetTypeEscaped()(*string) {
+// returns a *HcpOrganization_type when successful
+func (m *HcpOrganization) GetTypeEscaped()(*HcpOrganization_type) {
     return m.typeEscaped
 }
 // Serialize serializes information the current object
@@ -122,8 +122,9 @@ func (m *HcpOrganization) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0
             return err
         }
     }
-    {
-        err := writer.WriteStringValue("type", m.GetTypeEscaped())
+    if m.GetTypeEscaped() != nil {
+        cast := (*m.GetTypeEscaped()).String()
+        err := writer.WriteStringValue("type", &cast)
         if err != nil {
             return err
         }
@@ -153,7 +154,7 @@ func (m *HcpOrganization) SetRelationships(value HcpOrganization_relationshipsab
     m.relationships = value
 }
 // SetTypeEscaped sets the type property value. The type property
-func (m *HcpOrganization) SetTypeEscaped(value *string)() {
+func (m *HcpOrganization) SetTypeEscaped(value *HcpOrganization_type)() {
     m.typeEscaped = value
 }
 type HcpOrganizationable interface {
@@ -162,9 +163,9 @@ type HcpOrganizationable interface {
     GetAttributes()(HcpOrganization_attributesable)
     GetId()(*string)
     GetRelationships()(HcpOrganization_relationshipsable)
-    GetTypeEscaped()(*string)
+    GetTypeEscaped()(*HcpOrganization_type)
     SetAttributes(value HcpOrganization_attributesable)()
     SetId(value *string)()
     SetRelationships(value HcpOrganization_relationshipsable)()
-    SetTypeEscaped(value *string)()
+    SetTypeEscaped(value *HcpOrganization_type)()
 }

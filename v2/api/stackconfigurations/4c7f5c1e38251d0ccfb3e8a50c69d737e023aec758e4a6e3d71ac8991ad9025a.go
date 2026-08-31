@@ -13,10 +13,15 @@ import (
 type ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderGetQueryParameters get details about a stack deployment group by name.
+type ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
+}
 // NewItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderInternal instantiates a new ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder and sets the default values.
 func NewItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) {
     m := &ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups/{stack_deployment_group_name}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups/{stack_deployment_group_name}{?fields%5Bstack%2Ddeployment%2Dgroups%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuild
 // Get get details about a stack deployment group by name.
 // returns a StackDeploymentGroupsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentGroupsEnvelopeable, error) {
+func (m *ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentGroupsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +53,7 @@ func (m *ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuil
 }
 // ToGetRequestInformation get details about a stack deployment group by name.
 // returns a *RequestInformation when successful
-func (m *ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

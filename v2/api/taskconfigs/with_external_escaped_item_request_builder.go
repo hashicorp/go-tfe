@@ -15,13 +15,15 @@ type WithExternal_ItemRequestBuilder struct {
 }
 // WithExternal_ItemRequestBuilderGetQueryParameters get details about a task configuration.
 type WithExternal_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstaskConfigs []string "uriparametername:\"fields%5Btask%2Dconfigs%5D\""
     // Allows including related resource data. Value must be a comma-separated list containing one or more of `projects`, `task`, `owner`, or `organization`.
     Include *string "uriparametername:\"include\""
 }
 // NewWithExternal_ItemRequestBuilderInternal instantiates a new WithExternal_ItemRequestBuilder and sets the default values.
 func NewWithExternal_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithExternal_ItemRequestBuilder) {
     m := &WithExternal_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-configs/{external_id}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-configs/{external_id}{?fields%5Btask%2Dconfigs%5D,include*}", pathParameters),
     }
     return m
 }

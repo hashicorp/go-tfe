@@ -16,6 +16,8 @@ type ItemWorkspacesRequestBuilder struct {
 }
 // ItemWorkspacesRequestBuilderGetQueryParameters list all workspaces in an organization.
 type ItemWorkspacesRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsworkspaces []string "uriparametername:\"fields%5Bworkspaces%5D\""
     // Comma-separated list of run statuses to filter workspaces by.
     FiltercurrentRunstatus *string "uriparametername:\"filter%5Bcurrent%2Drun%5D%5Bstatus%5D\""
     // Filter workspaces by project external ID.
@@ -58,7 +60,7 @@ func (m *ItemWorkspacesRequestBuilder) ByWorkspace_name(workspace_name string)(*
 // NewItemWorkspacesRequestBuilderInternal instantiates a new ItemWorkspacesRequestBuilder and sets the default values.
 func NewItemWorkspacesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesRequestBuilder) {
     m := &ItemWorkspacesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces{?filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btag%2Dunion%5D*,filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D*,filter%5Btagged%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bexclude%2Dtags%5D*,search%5Bname%5D*,search%5Btags%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/workspaces{?fields%5Bworkspaces%5D,filter%5Bcurrent%2Drun%5D%5Bstatus%5D*,filter%5Bproject%5D%5Bid%5D*,filter%5Btag%2Dunion%5D*,filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D*,filter%5Btagged%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bexclude%2Dtags%5D*,search%5Bname%5D*,search%5Btags%5D*,search%5Bwildcard%2Dname%5D*,sort*}", pathParameters),
     }
     return m
 }

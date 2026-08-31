@@ -16,6 +16,8 @@ type ItemVarsetsRequestBuilder struct {
 }
 // ItemVarsetsRequestBuilderGetQueryParameters list all variable sets for an organization.
 type ItemVarsetsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsvarsets []string "uriparametername:\"fields%5Bvarsets%5D\""
     // When true, returns only global variable sets. When false, returns only non-global variable sets.
     Filterglobal *bool "uriparametername:\"filter%5Bglobal%5D\""
     // The page number to retrieve.
@@ -30,7 +32,7 @@ type ItemVarsetsRequestBuilderGetQueryParameters struct {
 // NewItemVarsetsRequestBuilderInternal instantiates a new ItemVarsetsRequestBuilder and sets the default values.
 func NewItemVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsRequestBuilder) {
     m := &ItemVarsetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/varsets{?filter%5Bglobal%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/varsets{?fields%5Bvarsets%5D,filter%5Bglobal%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
     }
     return m
 }

@@ -15,6 +15,8 @@ type UnsubscribeRequestBuilder struct {
 }
 // UnsubscribeRequestBuilderGetQueryParameters unsubscribe an email recipient from notifications using a signed token. This endpoint is public and does not require authentication.
 type UnsubscribeRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for email-recipient-statuses resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsemailRecipientStatuses []string "uriparametername:\"fields%5Bemail%2Drecipient%2Dstatuses%5D\""
     // The signed token for unsubscribing the email address
     Token *string "uriparametername:\"token\""
 }
@@ -26,7 +28,7 @@ type UnsubscribeRequestBuilderPostQueryParameters struct {
 // NewUnsubscribeRequestBuilderInternal instantiates a new UnsubscribeRequestBuilder and sets the default values.
 func NewUnsubscribeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*UnsubscribeRequestBuilder) {
     m := &UnsubscribeRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/email-recipient-statuses/unsubscribe?token={token}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/email-recipient-statuses/unsubscribe?token={token}{&fields%5Bemail%2Drecipient%2Dstatuses%5D}", pathParameters),
     }
     return m
 }
@@ -85,7 +87,7 @@ func (m *UnsubscribeRequestBuilder) ToGetRequestInformation(ctx context.Context,
 // ToPostRequestInformation save email unsubscribe preferences using a signed token. This endpoint is public and does not require authentication.
 // returns a *RequestInformation when successful
 func (m *UnsubscribeRequestBuilder) ToPostRequestInformation(ctx context.Context, body UnsubscribePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[UnsubscribeRequestBuilderPostQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, "{+baseurl}/email-recipient-statuses/unsubscribe?token={token}", m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "text/html")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/x-www-form-urlencoded", body)

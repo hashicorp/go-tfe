@@ -15,6 +15,8 @@ type ItemRunsRequestBuilder struct {
 }
 // ItemRunsRequestBuilderGetQueryParameters list all runs in a workspace.
 type ItemRunsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsruns []string "uriparametername:\"fields%5Bruns%5D\""
     // Filter by run operation.
     Filteroperation *string "uriparametername:\"filter%5Boperation%5D\""
     // Filter by run status.
@@ -27,7 +29,7 @@ type ItemRunsRequestBuilderGetQueryParameters struct {
 // NewItemRunsRequestBuilderInternal instantiates a new ItemRunsRequestBuilder and sets the default values.
 func NewItemRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunsRequestBuilder) {
     m := &ItemRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/runs{?filter%5Boperation%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/runs{?fields%5Bruns%5D,filter%5Boperation%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

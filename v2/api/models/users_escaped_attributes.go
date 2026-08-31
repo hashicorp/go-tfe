@@ -12,7 +12,9 @@ type Users_attributes struct {
     additionalData map[string]any
     // The authMethod property
     authMethod *string
-    // The avatarUrl property
+    // TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
+    avatarColorIndex *int32
+    // Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
     avatarUrl *string
     // Human-readable display name for the user.
     displayName *string
@@ -24,6 +26,8 @@ type Users_attributes struct {
     hasGitHubAppToken *bool
     // The hasLinkedHcp property
     hasLinkedHcp *bool
+    // TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
+    initials *string
     // The isAdmin property
     isAdmin *bool
     // The isConfirmed property
@@ -73,7 +77,12 @@ func (m *Users_attributes) GetAdditionalData()(map[string]any) {
 func (m *Users_attributes) GetAuthMethod()(*string) {
     return m.authMethod
 }
-// GetAvatarUrl gets the avatar-url property value. The avatarUrl property
+// GetAvatarColorIndex gets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
+// returns a *int32 when successful
+func (m *Users_attributes) GetAvatarColorIndex()(*int32) {
+    return m.avatarColorIndex
+}
+// GetAvatarUrl gets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
 // returns a *string when successful
 func (m *Users_attributes) GetAvatarUrl()(*string) {
     return m.avatarUrl
@@ -104,6 +113,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         if val != nil {
             m.SetAuthMethod(val)
+        }
+        return nil
+    }
+    res["avatar-color-index"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAvatarColorIndex(val)
         }
         return nil
     }
@@ -164,6 +183,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         if val != nil {
             m.SetHasLinkedHcp(val)
+        }
+        return nil
+    }
+    res["initials"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInitials(val)
         }
         return nil
     }
@@ -308,6 +337,11 @@ func (m *Users_attributes) GetHasGitHubAppToken()(*bool) {
 // returns a *bool when successful
 func (m *Users_attributes) GetHasLinkedHcp()(*bool) {
     return m.hasLinkedHcp
+}
+// GetInitials gets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
+// returns a *string when successful
+func (m *Users_attributes) GetInitials()(*string) {
+    return m.initials
 }
 // GetIsAdmin gets the is-admin property value. The isAdmin property
 // returns a *bool when successful
@@ -506,7 +540,11 @@ func (m *Users_attributes) SetAdditionalData(value map[string]any)() {
 func (m *Users_attributes) SetAuthMethod(value *string)() {
     m.authMethod = value
 }
-// SetAvatarUrl sets the avatar-url property value. The avatarUrl property
+// SetAvatarColorIndex sets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
+func (m *Users_attributes) SetAvatarColorIndex(value *int32)() {
+    m.avatarColorIndex = value
+}
+// SetAvatarUrl sets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
 func (m *Users_attributes) SetAvatarUrl(value *string)() {
     m.avatarUrl = value
 }
@@ -529,6 +567,10 @@ func (m *Users_attributes) SetHasGitHubAppToken(value *bool)() {
 // SetHasLinkedHcp sets the has-linked-hcp property value. The hasLinkedHcp property
 func (m *Users_attributes) SetHasLinkedHcp(value *bool)() {
     m.hasLinkedHcp = value
+}
+// SetInitials sets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
+func (m *Users_attributes) SetInitials(value *string)() {
+    m.initials = value
 }
 // SetIsAdmin sets the is-admin property value. The isAdmin property
 func (m *Users_attributes) SetIsAdmin(value *bool)() {
@@ -586,12 +628,14 @@ type Users_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAuthMethod()(*string)
+    GetAvatarColorIndex()(*int32)
     GetAvatarUrl()(*string)
     GetDisplayName()(*string)
     GetEmail()(*string)
     GetEnterpriseSupport()(*bool)
     GetHasGitHubAppToken()(*bool)
     GetHasLinkedHcp()(*bool)
+    GetInitials()(*string)
     GetIsAdmin()(*bool)
     GetIsConfirmed()(*bool)
     GetIsServiceAccount()(*bool)
@@ -606,12 +650,14 @@ type Users_attributesable interface {
     GetUsername()(*string)
     GetV2Only()(*bool)
     SetAuthMethod(value *string)()
+    SetAvatarColorIndex(value *int32)()
     SetAvatarUrl(value *string)()
     SetDisplayName(value *string)()
     SetEmail(value *string)()
     SetEnterpriseSupport(value *bool)()
     SetHasGitHubAppToken(value *bool)()
     SetHasLinkedHcp(value *bool)()
+    SetInitials(value *string)()
     SetIsAdmin(value *bool)()
     SetIsConfirmed(value *bool)()
     SetIsServiceAccount(value *bool)()

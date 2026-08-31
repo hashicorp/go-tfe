@@ -15,6 +15,8 @@ type ItemProjectsRequestBuilder struct {
 }
 // ItemProjectsRequestBuilderGetQueryParameters list all projects in an organization.
 type ItemProjectsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsprojects []string "uriparametername:\"fields%5Bprojects%5D\""
     // Comma-separated list of project names to filter by.
     Filternames *string "uriparametername:\"filter%5Bnames%5D\""
     // If present, returns a list of projects that the authenticated user can create workspaces in.
@@ -31,7 +33,7 @@ type ItemProjectsRequestBuilderGetQueryParameters struct {
 // NewItemProjectsRequestBuilderInternal instantiates a new ItemProjectsRequestBuilder and sets the default values.
 func NewItemProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProjectsRequestBuilder) {
     m := &ItemProjectsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/projects{?filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/projects{?fields%5Bprojects%5D,filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

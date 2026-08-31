@@ -13,10 +13,15 @@ import (
 type ItemConfigurationVersionRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemConfigurationVersionRequestBuilderGetQueryParameters get details of a specific configuration version.
+type ItemConfigurationVersionRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsconfigurationVersions []string "uriparametername:\"fields%5Bconfiguration%2Dversions%5D\""
+}
 // NewItemConfigurationVersionRequestBuilderInternal instantiates a new ItemConfigurationVersionRequestBuilder and sets the default values.
 func NewItemConfigurationVersionRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemConfigurationVersionRequestBuilder) {
     m := &ItemConfigurationVersionRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/configuration-version", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/configuration-version{?fields%5Bconfiguration%2Dversions%5D}", pathParameters),
     }
     return m
 }
@@ -34,7 +39,7 @@ func (m *ItemConfigurationVersionRequestBuilder) Download()(*ItemConfigurationVe
 // Get get details of a specific configuration version.
 // returns a ConfigurationVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemConfigurationVersionRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsEnvelopeable, error) {
+func (m *ItemConfigurationVersionRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemConfigurationVersionRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -53,7 +58,7 @@ func (m *ItemConfigurationVersionRequestBuilder) Get(ctx context.Context, reques
 }
 // ToGetRequestInformation get details of a specific configuration version.
 // returns a *RequestInformation when successful
-func (m *ItemConfigurationVersionRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemConfigurationVersionRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemConfigurationVersionRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
