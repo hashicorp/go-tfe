@@ -16,6 +16,8 @@ type ItemStackDeploymentsRequestBuilder struct {
 }
 // ItemStackDeploymentsRequestBuilderGetQueryParameters list deployments for a stack.
 type ItemStackDeploymentsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeployments []string "uriparametername:\"fields%5Bstack%2Ddeployments%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -40,7 +42,7 @@ func (m *ItemStackDeploymentsRequestBuilder) ByDeployment(deployment string)(*It
 // NewItemStackDeploymentsRequestBuilderInternal instantiates a new ItemStackDeploymentsRequestBuilder and sets the default values.
 func NewItemStackDeploymentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsRequestBuilder) {
     m := &ItemStackDeploymentsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments{?page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments{?fields%5Bstack%2Ddeployments%5D,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

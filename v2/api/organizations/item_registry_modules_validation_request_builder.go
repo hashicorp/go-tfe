@@ -15,6 +15,8 @@ type ItemRegistryModulesValidationRequestBuilder struct {
 }
 // ItemRegistryModulesValidationRequestBuilderGetQueryParameters this endpoint checks if a module name and provider combination is available for use within an organization.It returns a validation result indicating whether the name is already in use.
 type ItemRegistryModulesValidationRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for registry-module-address-validations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsregistryModuleAddressValidations []string "uriparametername:\"fields%5Bregistry%2Dmodule%2Daddress%2Dvalidations%5D\""
     // The name of the module to validate
     Name *string "uriparametername:\"name\""
     // The provider of the module to validate
@@ -23,7 +25,7 @@ type ItemRegistryModulesValidationRequestBuilderGetQueryParameters struct {
 // NewItemRegistryModulesValidationRequestBuilderInternal instantiates a new ItemRegistryModulesValidationRequestBuilder and sets the default values.
 func NewItemRegistryModulesValidationRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesValidationRequestBuilder) {
     m := &ItemRegistryModulesValidationRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/validation?name={name}&provider={provider}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/validation?name={name}&provider={provider}{&fields%5Bregistry%2Dmodule%2Daddress%2Dvalidations%5D}", pathParameters),
     }
     return m
 }

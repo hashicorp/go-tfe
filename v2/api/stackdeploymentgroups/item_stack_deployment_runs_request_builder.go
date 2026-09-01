@@ -16,6 +16,8 @@ type ItemStackDeploymentRunsRequestBuilder struct {
 }
 // ItemStackDeploymentRunsRequestBuilderGetQueryParameters list deployment runs for a stack deployment group.
 type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
     // When set to 'true', returns only the latest run for each deployment within the group.
     Filterlatest_only *ic5468d8c4eb8d0735677d258cf5e97b2f6ac566d1ab10d998dc8b477a5c97310.GetFilterLatest_onlyQueryParameterType "uriparametername:\"filter%5Blatest_only%5D\""
     // Filter by run status. Accepts a comma-separated list of the logical statuses: failed, pending-operator (pre-deploying and deploying awaiting operator input), running (pre-deploying and deploying), pending (pending, acquiring-lock and pending-capacity), abandoned, succeeded.
@@ -32,7 +34,7 @@ type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
 // NewItemStackDeploymentRunsRequestBuilderInternal instantiates a new ItemStackDeploymentRunsRequestBuilder and sets the default values.
 func NewItemStackDeploymentRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentRunsRequestBuilder) {
     m := &ItemStackDeploymentRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}/stack-deployment-runs{?filter%5Blatest_only%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,filter%5Blatest_only%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

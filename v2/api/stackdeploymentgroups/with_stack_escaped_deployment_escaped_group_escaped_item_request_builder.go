@@ -16,6 +16,8 @@ type WithStack_deployment_group_ItemRequestBuilder struct {
 }
 // WithStack_deployment_group_ItemRequestBuilderGetQueryParameters get details about a stack deployment group.
 type WithStack_deployment_group_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
     // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
     Include []i168e8b5818149f916e1d4279c1f66330e436d123653daacab7ce187ca22b329b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -27,7 +29,7 @@ func (m *WithStack_deployment_group_ItemRequestBuilder) ApproveAllPlans()(*ItemA
 // NewWithStack_deployment_group_ItemRequestBuilderInternal instantiates a new WithStack_deployment_group_ItemRequestBuilder and sets the default values.
 func NewWithStack_deployment_group_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_deployment_group_ItemRequestBuilder) {
     m := &WithStack_deployment_group_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}{?fields%5Bstack%2Ddeployment%2Dgroups%5D,include}", pathParameters),
     }
     return m
 }

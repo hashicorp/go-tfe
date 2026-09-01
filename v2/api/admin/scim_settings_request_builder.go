@@ -13,10 +13,15 @@ import (
 type ScimSettingsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ScimSettingsRequestBuilderGetQueryParameters returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
+type ScimSettingsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for scim-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsscimSettings []string "uriparametername:\"fields%5Bscim%2Dsettings%5D\""
+}
 // NewScimSettingsRequestBuilderInternal instantiates a new ScimSettingsRequestBuilder and sets the default values.
 func NewScimSettingsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ScimSettingsRequestBuilder) {
     m := &ScimSettingsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/scim-settings", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/scim-settings{?fields%5Bscim%2Dsettings%5D}", pathParameters),
     }
     return m
 }
@@ -49,7 +54,7 @@ func (m *ScimSettingsRequestBuilder) Delete(ctx context.Context, requestConfigur
 // Get returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
 // returns a AdminScimSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ScimSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable, error) {
+func (m *ScimSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ScimSettingsRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -98,7 +103,7 @@ func (m *ScimSettingsRequestBuilder) ToDeleteRequestInformation(ctx context.Cont
 }
 // ToGetRequestInformation returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
-func (m *ScimSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ScimSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ScimSettingsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

@@ -15,6 +15,8 @@ type ItemAuthorizedReposRequestBuilder struct {
 }
 // ItemAuthorizedReposRequestBuilderGetQueryParameters list all repositories that the OAuth token is authorized to access.
 type ItemAuthorizedReposRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for authorized-repos resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsauthorizedRepos []string "uriparametername:\"fields%5Bauthorized%2Drepos%5D\""
     // The VCS organization name to scope repositories to. Required for Azure DevOps providers.
     Organization *string "uriparametername:\"organization\""
     // The page number to retrieve.
@@ -25,7 +27,7 @@ type ItemAuthorizedReposRequestBuilderGetQueryParameters struct {
 // NewItemAuthorizedReposRequestBuilderInternal instantiates a new ItemAuthorizedReposRequestBuilder and sets the default values.
 func NewItemAuthorizedReposRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthorizedReposRequestBuilder) {
     m := &ItemAuthorizedReposRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}/authorized-repos{?organization*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}/authorized-repos{?fields%5Bauthorized%2Drepos%5D,organization*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

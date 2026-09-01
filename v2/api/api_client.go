@@ -79,6 +79,7 @@ import (
     if98345fbfcbf35d9802ff0f86c47b887991578f3c045956773765f5ed9880f45 "github.com/hashicorp/go-tfe/v2/api/taskresultoutcomes"
     ifb7790691092242fcedaef3a1b1e29d95535948dd928a2e61584e4377325be57 "github.com/hashicorp/go-tfe/v2/api/assessments"
     ifdc5f7656139cba3d476719e11926e5c5420f749e4486c10560f10ea71688721 "github.com/hashicorp/go-tfe/v2/api/organizationmemberships"
+    iffd662f220c8f0be2b7dc553f32d47ca230f7d4b2a0ed0bf11b64c5e368c5746 "github.com/hashicorp/go-tfe/v2/api/banners"
 )
 
 // ApiClient the main entry point of the SDK, exposes the configuration and the fluent API.
@@ -124,6 +125,11 @@ func (m *ApiClient) Assessments()(*ifb7790691092242fcedaef3a1b1e29d95535948dd928
 // returns a *AuthenticationTokensRequestBuilder when successful
 func (m *ApiClient) AuthenticationTokens()(*i0ae2ae9d88057585bfca3fdbf34a0ec8417615763272a662d91ab2a32ce1dfd3.AuthenticationTokensRequestBuilder) {
     return i0ae2ae9d88057585bfca3fdbf34a0ec8417615763272a662d91ab2a32ce1dfd3.NewAuthenticationTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Banners the banners property
+// returns a *BannersRequestBuilder when successful
+func (m *ApiClient) Banners()(*iffd662f220c8f0be2b7dc553f32d47ca230f7d4b2a0ed0bf11b64c5e368c5746.BannersRequestBuilder) {
+    return iffd662f220c8f0be2b7dc553f32d47ca230f7d4b2a0ed0bf11b64c5e368c5746.NewBannersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ChangeRequests the changeRequests property
 // returns a *ChangeRequestsRequestBuilder when successful

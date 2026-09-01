@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "9380f321",
+    "version": "0b4885e7",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -462,6 +462,15 @@
       "description": "Site-wide SAML single sign-on configuration for Terraform Enterprise administrators."
     },
     {
+      "name": "saml-idp-certificates",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "x-displayName": "SAML IdP Certificates",
+      "description": "Management of SAML Identity Provider (IdP) certificates for Terraform Enterprise. Allows site administrators to list, show, create, update, delete, and download trusted IdP certificates used for SAML SSO verification.\n"
+    },
+    {
       "name": "admin-scim-settings",
       "x-vis": [
         "tfe"
@@ -476,7 +485,7 @@
     }
   ],
   "paths": {
-    "/admin/banners": {
+    "/banners": {
       "x-vis": [
         "tfe"
       ],
@@ -486,7 +495,7 @@
         "summary": "Retrieve Active Site-Wide Announcement Banners",
         "description": "Returns the currently active site-wide announcement banners as an array. Scheduling is evaluated at request time: banners whose scheduled-publish-at has not yet passed or whose scheduled-expire-at has already passed are excluded. Audience filtering is applied server-side: unauthenticated callers receive only all_users banners; authenticated callers receive all active banners regardless of audience. Returns an empty array when no matching banner exists.\n\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
-          "admin-banners"
+          "banners"
         ],
         "responses": {
           "200": {
@@ -509,7 +518,72 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[admin-banners]",
+            "description": "Return only the specified fields for admin-banners resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/admin/banners": {
+      "x-vis": [
+        "tfe"
+      ],
+      "get": {
+        "operationId": "listAdminBanners",
+        "summary": "List All Non-Deactivated Site-Wide Announcement Banners (Admin)",
+        "description": "Returns all non-deactivated banners (deactivated_at IS NULL), regardless of scheduling. Scheduled-but-not-yet-published banners are included so that the admin customization form can pre-populate them for editing or cancellation. Requires site-admin authentication; unauthenticated or non-admin requests receive 404. Returns an empty array when no non-deactivated banner exists. For the public display endpoint (publish-window filtered, no auth required) use GET /api/v2/banners.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "tags": [
+          "admin-banners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Non-deactivated banners retrieved successfully. Array is empty when none exist.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-banners-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[admin-banners]",
+            "description": "Return only the specified fields for admin-banners resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "post": {
         "operationId": "createAdminBanner",
@@ -694,7 +768,22 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[saml-settings]",
+            "description": "Return only the specified fields for saml-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "patch": {
         "operationId": "updateAdminSamlSettings",
@@ -753,8 +842,9 @@
       ],
       "post": {
         "operationId": "revokeAdminSamlOldCertificate",
+        "deprecated": true,
         "summary": "Revoke Old SAML Certificate",
-        "description": "Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Returns 400 when SAML is disabled or when there is no old certificate to revoke.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "description": "**Deprecated.** Revokes the previous identity provider certificate that was retained when `idp-cert` was last rotated. Use `DELETE /admin/saml-settings/idp-certificates/{external_id}` instead. Returns 400 when SAML is disabled or when there is no old certificate to revoke.\n\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
           "admin-saml-settings"
         ],
@@ -771,6 +861,126 @@
           },
           "400": {
             "description": "SAML is not enabled, or there is no old certificate to revoke.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/actions/cert-validation": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "post": {
+        "operationId": "validateSamlIdpCert",
+        "summary": "Validate an IdP Certificate",
+        "description": "Validates a PEM-encoded X.509 certificate without persisting it. Returns whether the certificate is valid (non-expired and parseable), along with parsed metadata when the certificate is well-formed. Returns 422 when the `cert` attribute is absent or blank.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "admin-saml-settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "attributes"
+                    ],
+                    "properties": {
+                      "attributes": {
+                        "type": "object",
+                        "required": [
+                          "cert"
+                        ],
+                        "properties": {
+                          "cert": {
+                            "type": "string",
+                            "description": "PEM-encoded X.509 certificate to validate."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation result. `is-valid` is `false` for expired or unparseable certificates; remaining attributes are only present when the certificate is parseable.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "saml-cert-validations"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "required": [
+                            "is-valid"
+                          ],
+                          "properties": {
+                            "is-valid": {
+                              "type": "boolean",
+                              "description": "Whether the certificate is parseable and non-expired."
+                            },
+                            "issuer": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "Human-readable issuer derived from the O and CN fields of the certificate. Only present when parseable.\n"
+                            },
+                            "expires-at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "ISO 8601 UTC datetime when the certificate expires. Only present when parseable.\n"
+                            },
+                            "signature-algorithm": {
+                              "type": "string",
+                              "description": "Signature algorithm of the certificate (e.g. `sha256WithRSAEncryption`). Only present when parseable.\n"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The `cert` attribute is missing or blank.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -824,7 +1034,22 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[scim-settings]",
+            "description": "Return only the specified fields for scim-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "patch": {
         "operationId": "updateAdminScimSettings",
@@ -907,6 +1132,369 @@
         }
       }
     },
+    "/admin/saml-settings/idp-certificates": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "listSamlIdpCertificates",
+        "summary": "List IdP Certificates",
+        "description": "Returns all IdP certificates associated with the SAML settings singleton. Results are ordered: `legacy_primary` first, `legacy_old` second, then `managed` certificates sorted by `updated-at` ascending.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "responses": {
+          "200": {
+            "description": "IdP certificates retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[saml-idp-certificates]",
+            "description": "Return only the specified fields for saml-idp-certificates resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createSamlIdpCertificate",
+        "summary": "Create an IdP Certificate",
+        "description": "Creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "IdP certificate created successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, or display-name is missing.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/idp-certificates/{external_id}": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "getSamlIdpCertificate",
+        "summary": "Show an IdP Certificate",
+        "description": "Returns a single IdP certificate by its external ID.\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx)."
+          },
+          {
+            "in": "query",
+            "name": "fields[saml-idp-certificates]",
+            "description": "Return only the specified fields for saml-idp-certificates resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IdP certificate retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSamlIdpCertificate",
+        "summary": "Update an IdP Certificate",
+        "description": "Updates an IdP certificate. Only `display-name` may be changed for `legacy_primary` and `legacy_old` certificates; attempting to update the `cert` body of those roles returns 422. For `managed` certificates, both `display-name` and `cert` may be updated.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "IdP certificate updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/saml-idp-certificates-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, or invalid cert content.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSamlIdpCertificate",
+        "summary": "Delete an IdP Certificate",
+        "description": "Deletes an IdP certificate. If SAML is enabled and this is the last trusted certificate (`cert-role` of `managed` or `legacy_primary`), deletion is rejected with 422.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to delete."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "IdP certificate deleted successfully."
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Cannot delete the last trusted certificate while SAML is enabled.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/saml-settings/idp-certificates/{external_id}/download": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.1.0",
+      "get": {
+        "operationId": "downloadSamlIdpCertificate",
+        "summary": "Download an IdP Certificate",
+        "description": "Downloads the PEM-encoded certificate body as an attachment (`application/x-pem-file`). The filename is derived from the certificate's external ID (e.g. `idp-cert-idpc-xxxxxxxxxxxxxxxx.pem`).\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "tags": [
+          "saml-idp-certificates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the IdP certificate to download."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PEM certificate file returned as attachment.",
+            "content": {
+              "application/x-pem-file": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Certificate not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Vault is unavailable; the encrypted certificate could not be retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/customization-settings": {
       "get": {
         "operationId": "getAdminCustomizationSettings",
@@ -936,7 +1524,22 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[customization-settings]",
+            "description": "Return only the specified fields for customization-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "patch": {
         "operationId": "updateAdminCustomizationSettings",
@@ -1041,7 +1644,22 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[users]",
+            "description": "Return only the specified fields for users resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       }
     },
     "/account/update": {
@@ -1184,6 +1802,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[hcp-organization]",
+            "description": "Return only the specified fields for hcp-organization resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1227,6 +1858,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[feature-sets]",
+            "description": "Return only the specified fields for feature-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1308,6 +1952,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[feature-sets]",
+            "description": "Return only the specified fields for feature-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1392,6 +2049,19 @@
             "description": "The ID of the subscription to show.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[subscriptions]",
+            "description": "Return only the specified fields for subscriptions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -1607,6 +2277,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[agent-pools]",
+            "description": "Return only the specified fields for agent-pools resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1672,6 +2355,19 @@
             },
             "required": true,
             "description": "Agent Pool ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[agent-pools]",
+            "description": "Return only the specified fields for agent-pools resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1825,6 +2521,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[agents]",
+            "description": "Return only the specified fields for agents resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1887,6 +2596,19 @@
             },
             "required": true,
             "description": "Agent ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[agents]",
+            "description": "Return only the specified fields for agents resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -1967,6 +2689,19 @@
             },
             "required": true,
             "description": "CIDR Range List ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[cidr-range-lists]",
+            "description": "Return only the specified fields for cidr-range-lists resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2104,6 +2839,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[cidr-ranges]",
+            "description": "Return only the specified fields for cidr-ranges resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2313,6 +3061,19 @@
             },
             "required": true,
             "description": "CIDR Range ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[cidr-ranges]",
+            "description": "Return only the specified fields for cidr-ranges resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2444,6 +3205,19 @@
             },
             "required": true,
             "description": "The name of the organization to list tokens for."
+          },
+          {
+            "in": "query",
+            "name": "fields[metrics-tokens]",
+            "description": "Return only the specified fields for metrics-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2676,6 +3450,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stacks]",
+            "description": "Return only the specified fields for stacks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2783,6 +3570,19 @@
             },
             "required": true,
             "description": "Stack ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stacks]",
+            "description": "Return only the specified fields for stacks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -2926,6 +3726,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-configuration-summaries]",
+            "description": "Return only the specified fields for stack-configuration-summaries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3170,6 +3983,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-configurations]",
+            "description": "Return only the specified fields for stack-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3255,6 +4081,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-configurations]",
+            "description": "Return only the specified fields for stack-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3326,6 +4165,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployments]",
+            "description": "Return only the specified fields for stack-deployments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3395,6 +4247,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-runs]",
+            "description": "Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3466,6 +4331,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-states]",
+            "description": "Return only the specified fields for stack-states resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3554,6 +4432,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-output-consumers]",
+            "description": "Return only the specified fields for stack-output-consumers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3642,6 +4533,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-output-consumers]",
+            "description": "Return only the specified fields for stack-output-consumers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3696,6 +4600,19 @@
             },
             "required": true,
             "description": "Stack state ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-states]",
+            "description": "Return only the specified fields for stack-states resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3835,6 +4752,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-runs]",
+            "description": "Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3906,6 +4836,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-group-summaries]",
+            "description": "Return only the specified fields for stack-deployment-group-summaries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -3977,6 +4920,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-diagnostics]",
+            "description": "Return only the specified fields for stack-diagnostics resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4042,6 +4998,19 @@
             },
             "required": true,
             "description": "Stack diagnostic ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-diagnostics]",
+            "description": "Return only the specified fields for stack-diagnostics resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4159,6 +5128,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-published-outputs]",
+            "description": "Return only the specified fields for stack-published-outputs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4280,6 +5262,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-groups]",
+            "description": "Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4354,6 +5349,19 @@
             },
             "required": true,
             "description": "Stack deployment group name"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-groups]",
+            "description": "Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4414,6 +5422,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships. Accepts a comma-separated list of the enumerated values."
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-groups]",
+            "description": "Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4622,6 +5643,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-runs]",
+            "description": "Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4687,6 +5721,19 @@
             },
             "required": true,
             "description": "Stack deployment run ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-runs]",
+            "description": "Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4840,6 +5887,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-steps]",
+            "description": "Return only the specified fields for stack-deployment-steps resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4905,6 +5965,19 @@
             },
             "required": true,
             "description": "Stack deployment step ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-deployment-steps]",
+            "description": "Return only the specified fields for stack-deployment-steps resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4966,6 +6039,19 @@
             },
             "required": false,
             "description": "If omitted, the endpoint will return 20 per page."
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-diagnostics]",
+            "description": "Return only the specified fields for stack-diagnostics resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -5198,6 +6284,19 @@
             },
             "required": true,
             "description": "Stack approval ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[stack-approvals]",
+            "description": "Return only the specified fields for stack-approvals resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -5282,6 +6381,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[organizations]",
+            "description": "Return only the specified fields for organizations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -5416,6 +6528,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships of the specified name"
+          },
+          {
+            "in": "query",
+            "name": "fields[organizations]",
+            "description": "Return only the specified fields for organizations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -5629,6 +6754,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[cidr-range-lists]",
+            "description": "Return only the specified fields for cidr-range-lists resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -5800,6 +6938,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[organization-memberships]",
+            "description": "Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6037,6 +7188,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[organization-memberships]",
+            "description": "Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6144,6 +7308,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"user\" or \"teams\"."
+          },
+          {
+            "in": "query",
+            "name": "fields[organization-memberships]",
+            "description": "Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6363,6 +7540,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[recoverable-items]",
+            "description": "Return only the specified fields for recoverable-items resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6619,6 +7809,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[organizations]",
+            "description": "Return only the specified fields for organizations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6688,6 +7891,32 @@
             },
             "required": true,
             "description": "The name of the organization to show the data retention policy for."
+          },
+          {
+            "in": "query",
+            "name": "fields[data-retention-policy-delete-olders]",
+            "description": "Return only the specified fields for data-retention-policy-delete-olders resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[data-retention-policy-dont-deletes]",
+            "description": "Return only the specified fields for data-retention-policy-dont-deletes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -6898,6 +8127,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[projects]",
+            "description": "Return only the specified fields for projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7006,6 +8248,19 @@
             },
             "required": true,
             "description": "The name of the organization to list token TTL policies for"
+          },
+          {
+            "in": "query",
+            "name": "fields[organization-token-ttl-policies]",
+            "description": "Return only the specified fields for organization-token-ttl-policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7194,6 +8449,19 @@
             },
             "required": true,
             "description": "The ID of the project."
+          },
+          {
+            "in": "query",
+            "name": "fields[projects]",
+            "description": "Return only the specified fields for projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7368,6 +8636,19 @@
             },
             "required": true,
             "description": "The ID of the project."
+          },
+          {
+            "in": "query",
+            "name": "fields[tag-bindings]",
+            "description": "Return only the specified fields for tag-bindings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7529,6 +8810,19 @@
             },
             "required": true,
             "description": "The ID of the project."
+          },
+          {
+            "in": "query",
+            "name": "fields[effective-tag-bindings]",
+            "description": "Return only the specified fields for effective-tag-bindings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7737,6 +9031,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspaces]",
+            "description": "Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -7967,6 +9274,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships.\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspaces]",
+            "description": "Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -8255,6 +9575,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[notification-configurations]",
+            "description": "Return only the specified fields for notification-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -8383,6 +9716,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[notification-configurations]",
+            "description": "Return only the specified fields for notification-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -8502,6 +9848,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[notification-configurations]",
+            "description": "Return only the specified fields for notification-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -8615,6 +9974,19 @@
             },
             "required": true,
             "description": "The ID of the notification configuration."
+          },
+          {
+            "in": "query",
+            "name": "fields[notification-configurations]",
+            "description": "Return only the specified fields for notification-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -8964,6 +10336,19 @@
             },
             "required": true,
             "description": "The signed token for unsubscribing the email address"
+          },
+          {
+            "in": "query",
+            "name": "fields[email-recipient-statuses]",
+            "description": "Return only the specified fields for email-recipient-statuses resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9138,6 +10523,19 @@
             },
             "required": true,
             "description": "The ID of the query."
+          },
+          {
+            "in": "query",
+            "name": "fields[queries]",
+            "description": "Return only the specified fields for queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9146,7 +10544,37 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/queries-envelope"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/queries-envelope"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "attributes": {
+                              "type": "object",
+                              "required": [
+                                "list-completions"
+                              ],
+                              "properties": {
+                                "list-completions": {
+                                  "type": "array",
+                                  "readOnly": true,
+                                  "description": "A summary of each list completion returned by the query run.",
+                                  "items": {
+                                    "$ref": "#/components/schemas/query-completion-summary"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -9253,6 +10681,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[queries]",
+            "description": "Return only the specified fields for queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9363,6 +10804,19 @@
             },
             "required": true,
             "description": "The ID of the no-code query."
+          },
+          {
+            "in": "query",
+            "name": "fields[no-code-queries]",
+            "description": "Return only the specified fields for no-code-queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9411,6 +10865,19 @@
             },
             "required": true,
             "description": "The ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9465,6 +10932,19 @@
             },
             "required": true,
             "description": "The ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9579,6 +11059,19 @@
             },
             "required": true,
             "description": "The ID of the variable."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -9738,6 +11231,19 @@
             },
             "required": false,
             "example": "projects,workspaces"
+          },
+          {
+            "in": "query",
+            "name": "fields[provider-sets]",
+            "description": "Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10071,6 +11577,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[provider-sets]",
+            "description": "Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10269,6 +11788,19 @@
             },
             "required": false,
             "example": "projects,workspaces"
+          },
+          {
+            "in": "query",
+            "name": "fields[provider-sets]",
+            "description": "Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10321,6 +11853,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[provider-sets]",
+            "description": "Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10392,6 +11937,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[provider-sets]",
+            "description": "Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10454,6 +12012,19 @@
             },
             "required": true,
             "description": "The ID of the variable set."
+          },
+          {
+            "in": "query",
+            "name": "fields[varsets]",
+            "description": "Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10669,6 +12240,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[varsets]",
+            "description": "Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10777,6 +12361,19 @@
             },
             "required": true,
             "description": "The ID of the variable set."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -10894,6 +12491,19 @@
             },
             "required": true,
             "description": "The ID of the variable."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11058,6 +12668,19 @@
             },
             "required": true,
             "description": "The ID of the variable."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11110,6 +12733,19 @@
             },
             "required": true,
             "description": "The ID of the variable set."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11467,6 +13103,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[varsets]",
+            "description": "Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11539,6 +13188,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[varsets]",
+            "description": "Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11634,6 +13296,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[resources]",
+            "description": "Return only the specified fields for resources resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -11747,6 +13422,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships.\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspaces]",
+            "description": "Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -12275,6 +13963,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspaces]",
+            "description": "Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -12648,6 +14349,19 @@
             },
             "required": true,
             "description": "The ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[tag-bindings]",
+            "description": "Return only the specified fields for tag-bindings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -12809,6 +14523,19 @@
             },
             "required": true,
             "description": "The ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[effective-tag-bindings]",
+            "description": "Return only the specified fields for effective-tag-bindings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -12862,6 +14589,19 @@
             },
             "required": true,
             "description": "The external ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[tags]",
+            "description": "Return only the specified fields for tags resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13057,6 +14797,32 @@
             },
             "required": true,
             "description": "The external ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[data-retention-policy-delete-olders]",
+            "description": "Return only the specified fields for data-retention-policy-delete-olders resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[data-retention-policy-dont-deletes]",
+            "description": "Return only the specified fields for data-retention-policy-dont-deletes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13244,6 +15010,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships.\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[state-versions]",
+            "description": "Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13297,6 +15076,19 @@
             },
             "required": true,
             "description": "The external ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "fields[assessment-results]",
+            "description": "Return only the specified fields for assessment-results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13365,6 +15157,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[varsets]",
+            "description": "Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13567,6 +15372,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[runs]",
+            "description": "Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13654,6 +15472,19 @@
             },
             "required": false,
             "description": "Available side-load related resources. Multiple values can be comma-separated.\n\nAvailable includes:\n- `plan` - The plan for this run\n- `apply` - The apply for this run\n- `created_by` - The user who created this run\n- `configuration_version` - The configuration version used\n- `configuration_version.ingress_attributes` - VCS ingress details\n- `cost_estimate` - Cost estimation for this run\n- `workspace` - The workspace this run belongs to\n- `task_stages` - Run task stages\n- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[runs]",
+            "description": "Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13697,6 +15528,19 @@
             },
             "required": true,
             "description": "The ID of the run"
+          },
+          {
+            "in": "query",
+            "name": "fields[configuration-versions]",
+            "description": "Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13790,6 +15634,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[comments]",
+            "description": "Return only the specified fields for comments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -13903,6 +15760,19 @@
             },
             "required": true,
             "description": "Comment ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[comments]",
+            "description": "Return only the specified fields for comments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -14026,6 +15896,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[runs]",
+            "description": "Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -14107,6 +15990,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[run-triggers]",
+            "description": "Return only the specified fields for run-triggers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -14220,6 +16116,19 @@
             },
             "required": true,
             "description": "Run Trigger ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[run-triggers]",
+            "description": "Return only the specified fields for run-triggers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -14331,6 +16240,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[runs]",
+            "description": "Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -14386,6 +16308,19 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[plans]",
+            "description": "Return only the specified fields for plans resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -14801,6 +16736,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[plans]",
+            "description": "Return only the specified fields for plans resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "operationId": "getRunPlan",
@@ -14907,6 +16855,19 @@
             "schema": {
               "type": "string",
               "example": "pol-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[policies]",
+            "description": "Return only the specified fields for policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -15076,6 +17037,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policies]",
+            "description": "Return only the specified fields for policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15291,6 +17265,19 @@
             },
             "required": true,
             "description": "The ID of the policy check to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-checks]",
+            "description": "Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15447,6 +17434,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-checks]",
+            "description": "Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15518,6 +17518,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tf-policy-evaluations]",
+            "description": "Return only the specified fields for tf-policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15600,6 +17613,19 @@
             },
             "required": false,
             "description": "Comma-separated list of related resources to include."
+          },
+          {
+            "in": "query",
+            "name": "fields[tf-policy-evaluations]",
+            "description": "Return only the specified fields for tf-policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15779,6 +17805,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tf-policy-set-outcomes]",
+            "description": "Return only the specified fields for tf-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15854,6 +17893,19 @@
             },
             "required": true,
             "description": "The ID of the Terraform Policy set outcome to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[tf-policy-set-outcomes]",
+            "description": "Return only the specified fields for tf-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -15903,6 +17955,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -16028,6 +18093,19 @@
             },
             "required": true,
             "description": "The ID of the parameter."
+          },
+          {
+            "in": "query",
+            "name": "fields[vars]",
+            "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -16174,6 +18252,19 @@
             },
             "required": true,
             "description": "The ID of the policy set."
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-sets]",
+            "description": "Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -16340,6 +18431,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-sets]",
+            "description": "Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17088,6 +19192,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-set-versions]",
+            "description": "Return only the specified fields for policy-set-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17191,6 +19308,19 @@
             },
             "required": true,
             "description": "The ID of the policy set version."
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-set-versions]",
+            "description": "Return only the specified fields for policy-set-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17234,6 +19364,19 @@
             },
             "required": true,
             "description": "The ID of the policy evaluation to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-evaluations]",
+            "description": "Return only the specified fields for policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17283,6 +19426,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-set-outcomes]",
+            "description": "Return only the specified fields for policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17355,6 +19511,19 @@
             },
             "required": true,
             "description": "The ID of the policy set outcome to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-set-outcomes]",
+            "description": "Return only the specified fields for policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17404,6 +19573,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[policy-evaluations]",
+            "description": "Return only the specified fields for policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17508,6 +19690,19 @@
             },
             "required": true,
             "description": "The ID of the plan export to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[plan-exports]",
+            "description": "Return only the specified fields for plan-exports resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -17627,6 +19822,19 @@
             "description": "The external ID of the assessment result to show.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[assessment-results]",
+            "description": "Return only the specified fields for assessment-results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -17903,6 +20111,19 @@
             "description": "The ID of the apply to show.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[applies]",
+            "description": "Return only the specified fields for applies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -18223,6 +20444,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[cost-estimates]",
+            "description": "Return only the specified fields for cost-estimates resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -18290,6 +20524,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[state-versions]",
+            "description": "Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -18352,6 +20599,19 @@
             },
             "required": true,
             "description": "The ID of the state version to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[state-versions]",
+            "description": "Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -18401,6 +20661,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[state-version-outputs]",
+            "description": "Return only the specified fields for state-version-outputs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -18684,6 +20957,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[state-version-outputs]",
+            "description": "Return only the specified fields for state-version-outputs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -18726,6 +21012,19 @@
             "description": "The ID of the workspace to read outputs from.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[state-version-outputs]",
+            "description": "Return only the specified fields for state-version-outputs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -18797,6 +21096,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[hyok-configurations]",
+            "description": "Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19053,6 +21365,19 @@
             },
             "required": true,
             "description": "HYOK Configuration ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[hyok-configurations]",
+            "description": "Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19190,6 +21515,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[hyok-customer-key-versions]",
+            "description": "Return only the specified fields for hyok-customer-key-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19354,6 +21692,19 @@
             },
             "required": true,
             "description": "HYOK Customer Key Version ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[hyok-customer-key-versions]",
+            "description": "Return only the specified fields for hyok-customer-key-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19494,6 +21845,19 @@
             },
             "required": true,
             "description": "HYOK Encrypted Data Key ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[hyok-encrypted-data-keys]",
+            "description": "Return only the specified fields for hyok-encrypted-data-keys resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19540,6 +21904,58 @@
             },
             "required": true,
             "description": "OIDC Configuration ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[aws-oidc-configurations]",
+            "description": "Return only the specified fields for aws-oidc-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[gcp-oidc-configurations]",
+            "description": "Return only the specified fields for gcp-oidc-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[azure-oidc-configurations]",
+            "description": "Return only the specified fields for azure-oidc-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[vault-oidc-configurations]",
+            "description": "Return only the specified fields for vault-oidc-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19668,6 +22084,19 @@
             },
             "required": true,
             "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19745,6 +22174,19 @@
             },
             "required": true,
             "description": "The ID of the desired user."
+          },
+          {
+            "in": "query",
+            "name": "fields[users]",
+            "description": "Return only the specified fields for users resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19794,6 +22236,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-oauth-tokens]",
+            "description": "Return only the specified fields for github-app-oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19862,6 +22317,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -19981,6 +22449,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -20124,6 +22605,19 @@
             },
             "required": true,
             "description": "Team ID"
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -20434,6 +22928,19 @@
             "x-vis": [
               "hcpt"
             ]
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -20616,6 +23123,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -20785,6 +23305,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[teams]",
+            "description": "Return only the specified fields for teams resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -20989,6 +23522,19 @@
             },
             "required": false,
             "description": "Optionally side-load relationships. Can include \"users\" or \"organization-memberships\"."
+          },
+          {
+            "in": "query",
+            "name": "fields[teams]",
+            "description": "Return only the specified fields for teams resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -21402,6 +23948,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[organization-memberships]",
+            "description": "Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -21650,6 +24209,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[team-projects]",
+            "description": "Return only the specified fields for team-projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -21782,6 +24354,19 @@
             },
             "required": true,
             "description": "The ID of the team/project relationship."
+          },
+          {
+            "in": "query",
+            "name": "fields[team-projects]",
+            "description": "Return only the specified fields for team-projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -21965,6 +24550,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[team-workspaces]",
+            "description": "Return only the specified fields for team-workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22097,6 +24695,19 @@
             },
             "required": true,
             "description": "The team/workspace relationship ID."
+          },
+          {
+            "in": "query",
+            "name": "fields[team-workspaces]",
+            "description": "Return only the specified fields for team-workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22296,6 +24907,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[integrations]",
+            "description": "Return only the specified fields for integrations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22374,6 +24998,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[configuration-versions]",
+            "description": "Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22490,6 +25127,19 @@
             },
             "required": true,
             "description": "The ID of the configuration version."
+          },
+          {
+            "in": "query",
+            "name": "fields[configuration-versions]",
+            "description": "Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22533,6 +25183,19 @@
             },
             "required": true,
             "description": "The ID of the configuration version."
+          },
+          {
+            "in": "query",
+            "name": "fields[ingress-attributes]",
+            "description": "Return only the specified fields for ingress-attributes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22541,7 +25204,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ingress-attributes"
+                  "$ref": "#/components/schemas/ingress-attributes-envelope"
                 }
               }
             }
@@ -22854,6 +25517,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[vcs-events]",
+            "description": "Return only the specified fields for vcs-events resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -22952,6 +25628,19 @@
               "type": "string"
             },
             "description": "The GitHub App installation ID (only needed when using GitHub App authentication)"
+          },
+          {
+            "in": "query",
+            "name": "fields[vcs-tree]",
+            "description": "Return only the specified fields for vcs-tree resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23041,6 +25730,19 @@
               "type": "string"
             },
             "description": "The repository identifier (e.g., \"owner/repo\")"
+          },
+          {
+            "in": "query",
+            "name": "fields[vcs-repo-check]",
+            "description": "Return only the specified fields for vcs-repo-check resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23100,6 +25802,19 @@
               "type": "string"
             },
             "description": "The provider of the module to validate"
+          },
+          {
+            "in": "query",
+            "name": "fields[registry-module-address-validations]",
+            "description": "Return only the specified fields for registry-module-address-validations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23209,6 +25924,19 @@
             },
             "required": true,
             "description": "The provider of the module."
+          },
+          {
+            "in": "query",
+            "name": "fields[registry-modules]",
+            "description": "Return only the specified fields for registry-modules resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23393,6 +26121,19 @@
               "type": "string"
             },
             "description": "The ID of the test run cleanup."
+          },
+          {
+            "in": "query",
+            "name": "fields[test-run-cleanups]",
+            "description": "Return only the specified fields for test-run-cleanups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23453,6 +26194,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[ssh-keys]",
+            "description": "Return only the specified fields for ssh-keys resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23577,6 +26331,19 @@
             "schema": {
               "type": "string",
               "example": "sshkey-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[ssh-keys]",
+            "description": "Return only the specified fields for ssh-keys resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -23733,6 +26500,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-change-requests]",
+            "description": "Return only the specified fields for workspace-change-requests resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23795,6 +26575,19 @@
             },
             "required": true,
             "description": "The change request ID."
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-change-requests]",
+            "description": "Return only the specified fields for workspace-change-requests resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23838,6 +26631,19 @@
             },
             "required": true,
             "description": "The change request ID."
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-change-requests]",
+            "description": "Return only the specified fields for workspace-change-requests resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -23941,6 +26747,19 @@
             },
             "required": false,
             "description": "If true, includes names of up to 25 affected workspaces and the total count."
+          },
+          {
+            "in": "query",
+            "name": "fields[oauth-clients]",
+            "description": "Return only the specified fields for oauth-clients resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24126,6 +26945,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[oauth-clients]",
+            "description": "Return only the specified fields for oauth-clients resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24330,6 +27162,19 @@
               "type": "string",
               "example": "ot-xxxxxxxxxxxxxxxx"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields[oauth-tokens]",
+            "description": "Return only the specified fields for oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24487,6 +27332,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[oauth-tokens]",
+            "description": "Return only the specified fields for oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24556,6 +27414,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[oauth-tokens]",
+            "description": "Return only the specified fields for oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24634,6 +27505,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[authorized-repos]",
+            "description": "Return only the specified fields for authorized-repos resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24695,6 +27579,19 @@
             "schema": {
               "type": "string",
               "example": "ot-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[vcs-organization]",
+            "description": "Return only the specified fields for vcs-organization resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -24762,6 +27659,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-installations]",
+            "description": "Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24830,6 +27740,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-repos]",
+            "description": "Return only the specified fields for github-app-repos resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24892,6 +27815,19 @@
             },
             "required": true,
             "description": "The ID of the GitHub App installation."
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-installations]",
+            "description": "Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -24950,6 +27886,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-installations]",
+            "description": "Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25050,6 +27999,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-installations]",
+            "description": "Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25147,6 +28109,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-installations]",
+            "description": "Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25224,6 +28199,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[github-app-repos]",
+            "description": "Return only the specified fields for github-app-repos resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25359,6 +28347,19 @@
             },
             "required": false,
             "description": "Allows including related resource data.\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[tasks]",
+            "description": "Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25511,6 +28512,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tasks]",
+            "description": "Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25630,6 +28644,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-tasks]",
+            "description": "Return only the specified fields for workspace-tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25701,6 +28728,19 @@
             },
             "required": false,
             "description": "Allows including related resource data. Value must be a comma-separated list containing one or more of `projects`, `task`, `owner`, or `organization`.\n"
+          },
+          {
+            "in": "query",
+            "name": "fields[task-configs]",
+            "description": "Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25836,6 +28876,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[task-configs]",
+            "description": "Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -25979,6 +29032,19 @@
             },
             "required": true,
             "description": "The type of the owner."
+          },
+          {
+            "in": "query",
+            "name": "fields[task-configs]",
+            "description": "Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26028,6 +29094,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-tasks]",
+            "description": "Return only the specified fields for workspace-tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26150,6 +29229,19 @@
             },
             "required": true,
             "description": "The ID of the workspace run task."
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-tasks]",
+            "description": "Return only the specified fields for workspace-tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26317,6 +29409,19 @@
             },
             "required": false,
             "description": "A comma-separated list of related resources to include."
+          },
+          {
+            "in": "query",
+            "name": "fields[task-stages]",
+            "description": "Return only the specified fields for task-stages resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26419,6 +29524,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[task-stages]",
+            "description": "Return only the specified fields for task-stages resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26481,6 +29599,32 @@
             },
             "required": true,
             "description": "The ID of the task result to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[task-results]",
+            "description": "Return only the specified fields for task-results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[task_results]",
+            "description": "Return only the specified fields for task_results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26666,6 +29810,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[task-result-outcomes]",
+            "description": "Return only the specified fields for task-result-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26728,6 +29885,19 @@
             },
             "required": true,
             "description": "The ID of the task result outcome to show."
+          },
+          {
+            "in": "query",
+            "name": "fields[task-result-outcomes]",
+            "description": "Return only the specified fields for task-result-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26768,6 +29938,19 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-transfers]",
+            "description": "Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -26894,6 +30077,19 @@
             },
             "required": false,
             "description": "Allows including related resource data."
+          },
+          {
+            "in": "query",
+            "name": "fields[workspace-transfers]",
+            "description": "Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -27223,13 +30419,15 @@
               "idp-cert": {
                 "type": "string",
                 "nullable": true,
-                "description": "PEM encoded X.509 certificate used to verify SAML assertions."
+                "deprecated": true,
+                "description": "**Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.\n"
               },
               "old-idp-cert": {
                 "type": "string",
                 "nullable": true,
+                "deprecated": true,
                 "readOnly": true,
-                "description": "Previous identity provider certificate, retained after a rotation until it is explicitly revoked.\n"
+                "description": "**Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.\n"
               },
               "attr-username": {
                 "type": "string",
@@ -27350,9 +30548,6 @@
                     "type": "boolean"
                   },
                   "can-update": {
-                    "type": "boolean"
-                  },
-                  "can-revoke-old-certificate": {
                     "type": "boolean"
                   }
                 }
@@ -27482,6 +30677,100 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-scim-settings"
+          }
+        }
+      },
+      "saml-idp-certificates": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx).",
+            "example": "idpc-xxxxxxxxxxxxxxxx"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "saml-idp-certificates"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "display-name": {
+                "type": "string",
+                "description": "A human-readable label for this certificate.",
+                "example": "Primary IdP Cert"
+              },
+              "cert": {
+                "type": "string",
+                "description": "PEM-encoded X.509 certificate body."
+              },
+              "fingerprint": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Colon-separated uppercase SHA-256 fingerprint of the certificate.",
+                "example": "AB:CD:EF:..."
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when the certificate expires."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when this record was created."
+              },
+              "cert-role": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.\n",
+                "enum": [
+                  "managed",
+                  "legacy_primary",
+                  "legacy_old"
+                ]
+              },
+              "issuer": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Human-readable issuer string derived from the O and CN fields of the certificate."
+              }
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/saml-idp-certificates"
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/saml-idp-certificates"
           }
         }
       },
@@ -27696,7 +30985,18 @@
               },
               "avatar-url": {
                 "type": "string",
-                "nullable": true
+                "nullable": true,
+                "description": "Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting."
+              },
+              "initials": {
+                "type": "string",
+                "readOnly": true,
+                "description": "TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns \"?\" when neither is available."
+              },
+              "avatar-color-index": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed."
               },
               "auth-method": {
                 "type": "string"
@@ -27911,7 +31211,10 @@
             "type": "string"
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "hcp-organization"
+            ]
           },
           "attributes": {
             "type": "object",
@@ -29804,6 +33107,10 @@
                 "type": "string",
                 "format": "date-time",
                 "nullable": true,
+                "readOnly": true
+              },
+              "eligible-for-rerun": {
+                "type": "boolean",
                 "readOnly": true
               }
             }
@@ -32246,39 +35553,39 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "deleteOlderThanNDays": {
+              "delete-older-than-n-days": {
                 "type": "integer"
               },
-              "deleteStateVersions": {
+              "delete-state-versions": {
                 "type": "boolean"
               },
-              "deleteConfigurationVersions": {
+              "delete-configuration-versions": {
                 "type": "boolean"
               },
-              "deleteRunDataAndLogs": {
+              "delete-run-data-and-logs": {
                 "type": "boolean"
               },
-              "stateVersionsDeleteAfterNDays": {
+              "state-versions-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "configurationVersionsDeleteAfterNDays": {
+              "configuration-versions-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "runDataAndLogsDeleteAfterNDays": {
+              "run-data-and-logs-delete-after-n-days": {
                 "type": "integer",
                 "nullable": true
               },
-              "stateVersionsKeepLatestCount": {
+              "state-versions-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               },
-              "configurationVersionsKeepLatestCount": {
+              "configuration-versions-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               },
-              "runDataKeepLatestCount": {
+              "run-data-keep-latest-count": {
                 "type": "integer",
                 "nullable": true
               }
@@ -34107,6 +37414,41 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/queries"
+          }
+        }
+      },
+      "query-completion-summary": {
+        "type": "object",
+        "required": [
+          "address",
+          "resource-type",
+          "total"
+        ],
+        "properties": {
+          "address": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The resource address as it appeared in the query list completion."
+          },
+          "resource-type": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The Terraform resource type for this list completion."
+          },
+          "total": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The total number of resources discovered for this address."
+          },
+          "policies-passed": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The number of policies that passed for this resource address. Omitted when the query-policy feature is disabled for the organization.\n"
+          },
+          "policies-failed": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "The number of policies that failed for this resource address. Omitted when the query-policy feature is disabled for the organization.\n"
           }
         }
       },
@@ -39046,7 +42388,7 @@
               "auth-path": {
                 "type": "string"
               },
-              "encoded-ca-cert": {
+              "encoded-cacert": {
                 "type": "string"
               }
             }
@@ -39953,6 +43295,17 @@
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "ingress-attributes-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ingress-attributes"
           }
         }
       },

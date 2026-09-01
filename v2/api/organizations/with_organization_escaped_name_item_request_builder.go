@@ -16,6 +16,8 @@ type WithOrganization_nameItemRequestBuilder struct {
 }
 // WithOrganization_nameItemRequestBuilderGetQueryParameters get details about an organization.
 type WithOrganization_nameItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organizations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsorganizations []string "uriparametername:\"fields%5Borganizations%5D\""
     // Optionally side-load relationships of the specified name
     Include []ie2df6f8ca632983851e9b70ae51c492c03f10856a92344a23745af367f86e679.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -37,7 +39,7 @@ func (m *WithOrganization_nameItemRequestBuilder) CidrRangeLists()(*ItemCidrRang
 // NewWithOrganization_nameItemRequestBuilderInternal instantiates a new WithOrganization_nameItemRequestBuilder and sets the default values.
 func NewWithOrganization_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOrganization_nameItemRequestBuilder) {
     m := &WithOrganization_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}{?fields%5Borganizations%5D,include}", pathParameters),
     }
     return m
 }

@@ -16,6 +16,8 @@ type ItemRunTriggersRequestBuilder struct {
 }
 // ItemRunTriggersRequestBuilderGetQueryParameters list all run triggers for a workspace.
 type ItemRunTriggersRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for run-triggers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsrunTriggers []string "uriparametername:\"fields%5Brun%2Dtriggers%5D\""
     // Filter by run trigger type (inbound or outbound)
     FilterrunTriggertype *ic38f326f4d812cb9ab62309ba491d5f8a4049c6eb3a658e68f9fd98877773a08.GetFilterRunTriggerTypeQueryParameterType "uriparametername:\"filter%5Brun%2Dtrigger%5D%5Btype%5D\""
     // The page number to retrieve.
@@ -26,7 +28,7 @@ type ItemRunTriggersRequestBuilderGetQueryParameters struct {
 // NewItemRunTriggersRequestBuilderInternal instantiates a new ItemRunTriggersRequestBuilder and sets the default values.
 func NewItemRunTriggersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunTriggersRequestBuilder) {
     m := &ItemRunTriggersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/run-triggers?filter[run-trigger][type]={filter%5Brun%2Dtrigger%5D%5Btype%5D}{&page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/run-triggers?filter[run-trigger][type]={filter%5Brun%2Dtrigger%5D%5Btype%5D}{&fields%5Brun%2Dtriggers%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

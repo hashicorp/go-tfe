@@ -15,6 +15,8 @@ type TeamProjectsRequestBuilder struct {
 }
 // TeamProjectsRequestBuilderGetQueryParameters list all team access grants for a project.
 type TeamProjectsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for team-projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsteamProjects []string "uriparametername:\"fields%5Bteam%2Dprojects%5D\""
     // The project ID to list team access for.
     Filterprojectid *string "uriparametername:\"filter%5Bproject%5D%5Bid%5D\""
     // Optionally filter by team ID.
@@ -39,7 +41,7 @@ func (m *TeamProjectsRequestBuilder) ByTeam_project_id(team_project_id string)(*
 // NewTeamProjectsRequestBuilderInternal instantiates a new TeamProjectsRequestBuilder and sets the default values.
 func NewTeamProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TeamProjectsRequestBuilder) {
     m := &TeamProjectsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects?filter[project][id]={filter%5Bproject%5D%5Bid%5D}{&filter%5Bteam%5D%5Bid%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects?filter[project][id]={filter%5Bproject%5D%5Bid%5D}{&fields%5Bteam%2Dprojects%5D,filter%5Bteam%5D%5Bid%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
