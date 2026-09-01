@@ -1,3 +1,7 @@
+# v2.9.0
+
+* The latest public endpoints are available
+
 # v2.8.0
 
 * The latest public endpoints are available
