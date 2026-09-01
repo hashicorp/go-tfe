@@ -16,6 +16,8 @@ type WithTask_stage_ItemRequestBuilder struct {
 }
 // WithTask_stage_ItemRequestBuilderGetQueryParameters get details about a specific run task stage.
 type WithTask_stage_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for task-stages resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstaskStages []string "uriparametername:\"fields%5Btask%2Dstages%5D\""
     // A comma-separated list of related resources to include.
     Include []i283000583e96756a18675aaa45aa11e952f0b89c4a527082daf59c813896d028.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -27,7 +29,7 @@ func (m *WithTask_stage_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder
 // NewWithTask_stage_ItemRequestBuilderInternal instantiates a new WithTask_stage_ItemRequestBuilder and sets the default values.
 func NewWithTask_stage_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithTask_stage_ItemRequestBuilder) {
     m := &WithTask_stage_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-stages/{task_stage_id}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-stages/{task_stage_id}{?fields%5Btask%2Dstages%5D,include}", pathParameters),
     }
     return m
 }

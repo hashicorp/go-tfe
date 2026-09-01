@@ -16,6 +16,8 @@ type ItemStacksRequestBuilder struct {
 }
 // ItemStacksRequestBuilderGetQueryParameters list stacks.
 type ItemStacksRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stacks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsstacks []string "uriparametername:\"fields%5Bstacks%5D\""
     // Optionally side-load relationships of the specified name
     Include []i70875ccd1b2bd0f77e8cd882fe31b81388ce6bbf5b12d7e55438120a9c0d3adc.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
@@ -28,7 +30,7 @@ type ItemStacksRequestBuilderGetQueryParameters struct {
 // NewItemStacksRequestBuilderInternal instantiates a new ItemStacksRequestBuilder and sets the default values.
 func NewItemStacksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStacksRequestBuilder) {
     m := &ItemStacksRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/stacks{?include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/stacks{?fields%5Bstacks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

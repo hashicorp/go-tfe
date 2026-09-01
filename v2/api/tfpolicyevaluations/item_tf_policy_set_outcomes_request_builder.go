@@ -15,6 +15,8 @@ type ItemTfPolicySetOutcomesRequestBuilder struct {
 }
 // ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for tf-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstfPolicySetOutcomes []string "uriparametername:\"fields%5Btf%2Dpolicy%2Dset%2Doutcomes%5D\""
     // Filter outcomes using OR-grouped AND conditions. Each numeric index definesan independent AND-condition group; groups are combined with OR.Example — return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):```filter[0][status]=errored&filter[1][status]=failed&filter[1][enforcement_level]=mandatory&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable```
     Filter []string "uriparametername:\"filter\""
     // The page number to retrieve.
@@ -25,7 +27,7 @@ type ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters struct {
 // NewItemTfPolicySetOutcomesRequestBuilderInternal instantiates a new ItemTfPolicySetOutcomesRequestBuilder and sets the default values.
 func NewItemTfPolicySetOutcomesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTfPolicySetOutcomesRequestBuilder) {
     m := &ItemTfPolicySetOutcomesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}/tf-policy-set-outcomes{?filter*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}/tf-policy-set-outcomes{?fields%5Btf%2Dpolicy%2Dset%2Doutcomes%5D,filter*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

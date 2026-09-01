@@ -28,13 +28,15 @@ type AdminSamlSettings_attributes struct {
     debug *bool
     // Whether SAML single sign-on is enabled.
     enabled *bool
-    // PEM encoded X.509 certificate used to verify SAML assertions.
+    // **Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.
+    // Deprecated: 
     idpCert *string
     // Maximum accepted size of a SAML message, in bytes.
     maxMessageSizeInBytes *int32
     // Service provider metadata URL.
     metadataUrl *string
-    // Previous identity provider certificate, retained after a rotation until it is explicitly revoked.
+    // **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
+    // Deprecated: 
     oldIdpCert *string
     // The permissions property
     permissions AdminSamlSettings_attributes_permissionsable
@@ -379,7 +381,8 @@ func (m *AdminSamlSettings_attributes) GetFieldDeserializers()(map[string]func(i
     }
     return res
 }
-// GetIdpCert gets the idp-cert property value. PEM encoded X.509 certificate used to verify SAML assertions.
+// GetIdpCert gets the idp-cert property value. **Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.
+// Deprecated: 
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetIdpCert()(*string) {
     return m.idpCert
@@ -394,7 +397,8 @@ func (m *AdminSamlSettings_attributes) GetMaxMessageSizeInBytes()(*int32) {
 func (m *AdminSamlSettings_attributes) GetMetadataUrl()(*string) {
     return m.metadataUrl
 }
-// GetOldIdpCert gets the old-idp-cert property value. Previous identity provider certificate, retained after a rotation until it is explicitly revoked.
+// GetOldIdpCert gets the old-idp-cert property value. **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
+// Deprecated: 
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetOldIdpCert()(*string) {
     return m.oldIdpCert
@@ -638,7 +642,8 @@ func (m *AdminSamlSettings_attributes) SetDebug(value *bool)() {
 func (m *AdminSamlSettings_attributes) SetEnabled(value *bool)() {
     m.enabled = value
 }
-// SetIdpCert sets the idp-cert property value. PEM encoded X.509 certificate used to verify SAML assertions.
+// SetIdpCert sets the idp-cert property value. **Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.
+// Deprecated: 
 func (m *AdminSamlSettings_attributes) SetIdpCert(value *string)() {
     m.idpCert = value
 }
@@ -650,7 +655,8 @@ func (m *AdminSamlSettings_attributes) SetMaxMessageSizeInBytes(value *int32)() 
 func (m *AdminSamlSettings_attributes) SetMetadataUrl(value *string)() {
     m.metadataUrl = value
 }
-// SetOldIdpCert sets the old-idp-cert property value. Previous identity provider certificate, retained after a rotation until it is explicitly revoked.
+// SetOldIdpCert sets the old-idp-cert property value. **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
+// Deprecated: 
 func (m *AdminSamlSettings_attributes) SetOldIdpCert(value *string)() {
     m.oldIdpCert = value
 }

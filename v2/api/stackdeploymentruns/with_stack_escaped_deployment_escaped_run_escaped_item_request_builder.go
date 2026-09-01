@@ -13,6 +13,11 @@ import (
 type WithStack_deployment_run_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithStack_deployment_run_ItemRequestBuilderGetQueryParameters get details about a stack deployment run.
+type WithStack_deployment_run_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
+}
 // ApproveAllPlans the approveAllPlans property
 // returns a *ItemApproveAllPlansRequestBuilder when successful
 func (m *WithStack_deployment_run_ItemRequestBuilder) ApproveAllPlans()(*ItemApproveAllPlansRequestBuilder) {
@@ -26,7 +31,7 @@ func (m *WithStack_deployment_run_ItemRequestBuilder) Cancel()(*ItemCancelReques
 // NewWithStack_deployment_run_ItemRequestBuilderInternal instantiates a new WithStack_deployment_run_ItemRequestBuilder and sets the default values.
 func NewWithStack_deployment_run_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_deployment_run_ItemRequestBuilder) {
     m := &WithStack_deployment_run_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}{?fields%5Bstack%2Ddeployment%2Druns%5D}", pathParameters),
     }
     return m
 }
@@ -39,7 +44,7 @@ func NewWithStack_deployment_run_ItemRequestBuilder(rawUrl string, requestAdapte
 // Get get details about a stack deployment run.
 // returns a StackDeploymentRunsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithStack_deployment_run_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsEnvelopeable, error) {
+func (m *WithStack_deployment_run_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_deployment_run_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -63,7 +68,7 @@ func (m *WithStack_deployment_run_ItemRequestBuilder) StackDeploymentSteps()(*It
 }
 // ToGetRequestInformation get details about a stack deployment run.
 // returns a *RequestInformation when successful
-func (m *WithStack_deployment_run_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithStack_deployment_run_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_deployment_run_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

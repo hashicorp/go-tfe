@@ -13,10 +13,15 @@ import (
 type WithSsh_key_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithSsh_key_ItemRequestBuilderGetQueryParameters retrieve the details of a single SSH key.
+type WithSsh_key_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for ssh-keys resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldssshKeys []string "uriparametername:\"fields%5Bssh%2Dkeys%5D\""
+}
 // NewWithSsh_key_ItemRequestBuilderInternal instantiates a new WithSsh_key_ItemRequestBuilder and sets the default values.
 func NewWithSsh_key_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithSsh_key_ItemRequestBuilder) {
     m := &WithSsh_key_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/ssh-keys/{ssh_key_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/ssh-keys/{ssh_key_id}{?fields%5Bssh%2Dkeys%5D}", pathParameters),
     }
     return m
 }
@@ -45,7 +50,7 @@ func (m *WithSsh_key_ItemRequestBuilder) Delete(ctx context.Context, requestConf
 // Get retrieve the details of a single SSH key.
 // returns a SshKeysEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *WithSsh_key_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SshKeysEnvelopeable, error) {
+func (m *WithSsh_key_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithSsh_key_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SshKeysEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -94,7 +99,7 @@ func (m *WithSsh_key_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.
 }
 // ToGetRequestInformation retrieve the details of a single SSH key.
 // returns a *RequestInformation when successful
-func (m *WithSsh_key_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithSsh_key_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithSsh_key_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

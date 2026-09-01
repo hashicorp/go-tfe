@@ -16,6 +16,8 @@ type ItemStackDeploymentGroupsRequestBuilder struct {
 }
 // ItemStackDeploymentGroupsRequestBuilderGetQueryParameters list deployment groups for a stack configuration.
 type ItemStackDeploymentGroupsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
     // Filter by deployment group status. Accepts a comma-separated list of statuses: pending, pre-deploying, deploying, succeeded, failed, abandoned.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
     // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
@@ -44,7 +46,7 @@ func (m *ItemStackDeploymentGroupsRequestBuilder) ByStack_deployment_group_name(
 // NewItemStackDeploymentGroupsRequestBuilderInternal instantiates a new ItemStackDeploymentGroupsRequestBuilder and sets the default values.
 func NewItemStackDeploymentGroupsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentGroupsRequestBuilder) {
     m := &ItemStackDeploymentGroupsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups{?filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups{?fields%5Bstack%2Ddeployment%2Dgroups%5D,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }
