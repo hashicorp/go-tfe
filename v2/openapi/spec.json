@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0b4885e7",
+    "version": "83b49993",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -31357,6 +31357,10 @@
               "name": {
                 "type": "string",
                 "description": "Name of the feature set"
+              },
+              "native-tasks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes native tasks"
               },
               "no-code-modules": {
                 "type": "boolean",
