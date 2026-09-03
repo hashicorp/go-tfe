@@ -16,7 +16,7 @@ type ItemRecoverableItemsGetResponse struct {
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
-    meta i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+    meta ItemRecoverableItemsGetResponse_metaable
 }
 // NewItemRecoverableItemsGetResponse instantiates a new ItemRecoverableItemsGetResponse and sets the default values.
 func NewItemRecoverableItemsGetResponse()(*ItemRecoverableItemsGetResponse) {
@@ -71,12 +71,12 @@ func (m *ItemRecoverableItemsGetResponse) GetFieldDeserializers()(map[string]fun
         return nil
     }
     res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemRecoverableItemsGetResponse_metaFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetMeta(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
+            m.SetMeta(val.(ItemRecoverableItemsGetResponse_metaable))
         }
         return nil
     }
@@ -88,8 +88,8 @@ func (m *ItemRecoverableItemsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c91
     return m.links
 }
 // GetMeta gets the meta property value. The meta property
-// returns a Paginationable when successful
-func (m *ItemRecoverableItemsGetResponse) GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
+// returns a ItemRecoverableItemsGetResponse_metaable when successful
+func (m *ItemRecoverableItemsGetResponse) GetMeta()(ItemRecoverableItemsGetResponse_metaable) {
     return m.meta
 }
 // Serialize serializes information the current object
@@ -139,7 +139,7 @@ func (m *ItemRecoverableItemsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df4
     m.links = value
 }
 // SetMeta sets the meta property value. The meta property
-func (m *ItemRecoverableItemsGetResponse) SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)() {
+func (m *ItemRecoverableItemsGetResponse) SetMeta(value ItemRecoverableItemsGetResponse_metaable)() {
     m.meta = value
 }
 type ItemRecoverableItemsGetResponseable interface {
@@ -147,8 +147,8 @@ type ItemRecoverableItemsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RecoverableItemsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
-    GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
+    GetMeta()(ItemRecoverableItemsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RecoverableItemsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
-    SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)()
+    SetMeta(value ItemRecoverableItemsGetResponse_metaable)()
 }

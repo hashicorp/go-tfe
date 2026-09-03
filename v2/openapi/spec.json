@@ -7573,7 +7573,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -8160,7 +8165,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -10714,7 +10724,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -12273,7 +12288,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -13136,7 +13156,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -13221,7 +13246,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -17798,7 +17828,7 @@
                 }
               }
             },
-            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample — return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
+            "description": "Filter outcomes using OR-grouped AND conditions. Each numeric index defines\nan independent AND-condition group; groups are combined with OR.\n\nExample \u2014 return outcomes that are errored OR (failed + mandatory) OR (failed + mandatory_overridable):\n```\nfilter[0][status]=errored\n&filter[1][status]=failed&filter[1][enforcement_level]=mandatory\n&filter[2][status]=failed&filter[2][enforcement_level]=mandatory_overridable\n```\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
