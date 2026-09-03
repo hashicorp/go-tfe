@@ -50,6 +50,8 @@ type FeatureSets_attributes struct {
     moduleTestsGeneration *bool
     // Name of the feature set
     name *string
+    // Whether the feature set includes native tasks
+    nativeTasks *bool
     // Whether the feature set includes no-code modules
     noCodeModules *bool
     // Associated plan ID
@@ -368,6 +370,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetName(val)
+        }
+        return nil
+    }
+    res["native-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNativeTasks(val)
         }
         return nil
     }
@@ -698,6 +710,11 @@ func (m *FeatureSets_attributes) GetModuleTestsGeneration()(*bool) {
 func (m *FeatureSets_attributes) GetName()(*string) {
     return m.name
 }
+// GetNativeTasks gets the native-tasks property value. Whether the feature set includes native tasks
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetNativeTasks()(*bool) {
+    return m.nativeTasks
+}
 // GetNoCodeModules gets the no-code-modules property value. Whether the feature set includes no-code modules
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetNoCodeModules()(*bool) {
@@ -956,6 +973,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("native-tasks", m.GetNativeTasks())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("no-code-modules", m.GetNoCodeModules())
         if err != nil {
             return err
@@ -1209,6 +1232,10 @@ func (m *FeatureSets_attributes) SetModuleTestsGeneration(value *bool)() {
 func (m *FeatureSets_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetNativeTasks sets the native-tasks property value. Whether the feature set includes native tasks
+func (m *FeatureSets_attributes) SetNativeTasks(value *bool)() {
+    m.nativeTasks = value
+}
 // SetNoCodeModules sets the no-code-modules property value. Whether the feature set includes no-code modules
 func (m *FeatureSets_attributes) SetNoCodeModules(value *bool)() {
     m.noCodeModules = value
@@ -1340,6 +1367,7 @@ type FeatureSets_attributesable interface {
     GetModuleTestsAgentSupport()(*bool)
     GetModuleTestsGeneration()(*bool)
     GetName()(*string)
+    GetNativeTasks()(*bool)
     GetNoCodeModules()(*bool)
     GetPlan()(*string)
     GetPolicyEnforcement()(*bool)
@@ -1387,6 +1415,7 @@ type FeatureSets_attributesable interface {
     SetModuleTestsAgentSupport(value *bool)()
     SetModuleTestsGeneration(value *bool)()
     SetName(value *string)()
+    SetNativeTasks(value *bool)()
     SetNoCodeModules(value *bool)()
     SetPlan(value *string)()
     SetPolicyEnforcement(value *bool)()
