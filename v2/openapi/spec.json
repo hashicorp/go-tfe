@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0b4885e7",
+    "version": "c57064f3",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -30881,7 +30881,6 @@
                     "source": {
                       "type": "string",
                       "enum": [
-                        "saml",
                         "gravatar"
                       ],
                       "description": "The name of the avatar source."
@@ -31358,6 +31357,10 @@
                 "type": "string",
                 "description": "Name of the feature set"
               },
+              "native-tasks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes native tasks"
+              },
               "no-code-modules": {
                 "type": "boolean",
                 "description": "Whether the feature set includes no-code modules"
@@ -31451,6 +31454,10 @@
               "teams": {
                 "type": "boolean",
                 "description": "Whether the feature set includes teams"
+              },
+              "tf-policy-init-enforcement": {
+                "type": "boolean",
+                "description": "Whether the feature set includes init-stage Terraform policy enforcement"
               },
               "user-limit": {
                 "type": "number",
@@ -44054,6 +44061,11 @@
               "ado-entra-tenant-id": {
                 "type": "string",
                 "nullable": true
+              },
+              "ado-org-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. \"my-company\"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.\n"
               },
               "secret": {
                 "type": "string",
