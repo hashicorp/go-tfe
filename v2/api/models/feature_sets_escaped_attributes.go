@@ -50,6 +50,8 @@ type FeatureSets_attributes struct {
     moduleTestsGeneration *bool
     // Name of the feature set
     name *string
+    // Whether the feature set includes native tasks
+    nativeTasks *bool
     // Whether the feature set includes no-code modules
     noCodeModules *bool
     // Associated plan ID
@@ -94,6 +96,8 @@ type FeatureSets_attributes struct {
     teams *bool
     // Whether the feature set includes Terraform Actions features
     terraformActions *bool
+    // Whether the feature set includes init-stage Terraform policy enforcement
+    tfPolicyInitEnforcement *bool
     // Maximum number of users (null means unlimited)
     userLimit *float64
     // Whether the feature set uses HCP RUM billing resource
@@ -371,6 +375,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["native-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNativeTasks(val)
+        }
+        return nil
+    }
     res["no-code-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -591,6 +605,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["tf-policy-init-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyInitEnforcement(val)
+        }
+        return nil
+    }
     res["user-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetFloat64Value()
         if err != nil {
@@ -697,6 +721,11 @@ func (m *FeatureSets_attributes) GetModuleTestsGeneration()(*bool) {
 // returns a *string when successful
 func (m *FeatureSets_attributes) GetName()(*string) {
     return m.name
+}
+// GetNativeTasks gets the native-tasks property value. Whether the feature set includes native tasks
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetNativeTasks()(*bool) {
+    return m.nativeTasks
 }
 // GetNoCodeModules gets the no-code-modules property value. Whether the feature set includes no-code modules
 // returns a *bool when successful
@@ -807,6 +836,11 @@ func (m *FeatureSets_attributes) GetTeams()(*bool) {
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetTerraformActions()(*bool) {
     return m.terraformActions
+}
+// GetTfPolicyInitEnforcement gets the tf-policy-init-enforcement property value. Whether the feature set includes init-stage Terraform policy enforcement
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetTfPolicyInitEnforcement()(*bool) {
+    return m.tfPolicyInitEnforcement
 }
 // GetUserLimit gets the user-limit property value. Maximum number of users (null means unlimited)
 // returns a *float64 when successful
@@ -956,6 +990,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("native-tasks", m.GetNativeTasks())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("no-code-modules", m.GetNoCodeModules())
         if err != nil {
             return err
@@ -1088,6 +1128,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("tf-policy-init-enforcement", m.GetTfPolicyInitEnforcement())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteFloat64Value("user-limit", m.GetUserLimit())
         if err != nil {
             return err
@@ -1209,6 +1255,10 @@ func (m *FeatureSets_attributes) SetModuleTestsGeneration(value *bool)() {
 func (m *FeatureSets_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetNativeTasks sets the native-tasks property value. Whether the feature set includes native tasks
+func (m *FeatureSets_attributes) SetNativeTasks(value *bool)() {
+    m.nativeTasks = value
+}
 // SetNoCodeModules sets the no-code-modules property value. Whether the feature set includes no-code modules
 func (m *FeatureSets_attributes) SetNoCodeModules(value *bool)() {
     m.noCodeModules = value
@@ -1297,6 +1347,10 @@ func (m *FeatureSets_attributes) SetTeams(value *bool)() {
 func (m *FeatureSets_attributes) SetTerraformActions(value *bool)() {
     m.terraformActions = value
 }
+// SetTfPolicyInitEnforcement sets the tf-policy-init-enforcement property value. Whether the feature set includes init-stage Terraform policy enforcement
+func (m *FeatureSets_attributes) SetTfPolicyInitEnforcement(value *bool)() {
+    m.tfPolicyInitEnforcement = value
+}
 // SetUserLimit sets the user-limit property value. Maximum number of users (null means unlimited)
 func (m *FeatureSets_attributes) SetUserLimit(value *float64)() {
     m.userLimit = value
@@ -1340,6 +1394,7 @@ type FeatureSets_attributesable interface {
     GetModuleTestsAgentSupport()(*bool)
     GetModuleTestsGeneration()(*bool)
     GetName()(*string)
+    GetNativeTasks()(*bool)
     GetNoCodeModules()(*bool)
     GetPlan()(*string)
     GetPolicyEnforcement()(*bool)
@@ -1362,6 +1417,7 @@ type FeatureSets_attributesable interface {
     GetTaskProjectScoping()(*bool)
     GetTeams()(*bool)
     GetTerraformActions()(*bool)
+    GetTfPolicyInitEnforcement()(*bool)
     GetUserLimit()(*float64)
     GetUsesHcpRumBillingResource()(*bool)
     GetVersionedPolicySetLimit()(*float64)
@@ -1387,6 +1443,7 @@ type FeatureSets_attributesable interface {
     SetModuleTestsAgentSupport(value *bool)()
     SetModuleTestsGeneration(value *bool)()
     SetName(value *string)()
+    SetNativeTasks(value *bool)()
     SetNoCodeModules(value *bool)()
     SetPlan(value *string)()
     SetPolicyEnforcement(value *bool)()
@@ -1409,6 +1466,7 @@ type FeatureSets_attributesable interface {
     SetTaskProjectScoping(value *bool)()
     SetTeams(value *bool)()
     SetTerraformActions(value *bool)()
+    SetTfPolicyInitEnforcement(value *bool)()
     SetUserLimit(value *float64)()
     SetUsesHcpRumBillingResource(value *bool)()
     SetVersionedPolicySetLimit(value *float64)()
