@@ -13,6 +13,8 @@ type OauthClients_attributes struct {
     additionalData map[string]any
     // The adoEntraTenantId property
     adoEntraTenantId *string
+    // The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
+    adoOrgName *string
     // The affectedWorkspaces property
     affectedWorkspaces []string
     // The affectedWorkspacesCount property
@@ -68,6 +70,11 @@ func (m *OauthClients_attributes) GetAdditionalData()(map[string]any) {
 func (m *OauthClients_attributes) GetAdoEntraTenantId()(*string) {
     return m.adoEntraTenantId
 }
+// GetAdoOrgName gets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
+// returns a *string when successful
+func (m *OauthClients_attributes) GetAdoOrgName()(*string) {
+    return m.adoOrgName
+}
 // GetAffectedWorkspaces gets the affected-workspaces property value. The affectedWorkspaces property
 // returns a []string when successful
 func (m *OauthClients_attributes) GetAffectedWorkspaces()([]string) {
@@ -109,6 +116,16 @@ func (m *OauthClients_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         if val != nil {
             m.SetAdoEntraTenantId(val)
+        }
+        return nil
+    }
+    res["ado-org-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAdoOrgName(val)
         }
         return nil
     }
@@ -338,6 +355,12 @@ func (m *OauthClients_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
             return err
         }
     }
+    {
+        err := writer.WriteStringValue("ado-org-name", m.GetAdoOrgName())
+        if err != nil {
+            return err
+        }
+    }
     if m.GetAffectedWorkspaces() != nil {
         err := writer.WriteCollectionOfStringValues("affected-workspaces", m.GetAffectedWorkspaces())
         if err != nil {
@@ -414,6 +437,10 @@ func (m *OauthClients_attributes) SetAdditionalData(value map[string]any)() {
 func (m *OauthClients_attributes) SetAdoEntraTenantId(value *string)() {
     m.adoEntraTenantId = value
 }
+// SetAdoOrgName sets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
+func (m *OauthClients_attributes) SetAdoOrgName(value *string)() {
+    m.adoOrgName = value
+}
 // SetAffectedWorkspaces sets the affected-workspaces property value. The affectedWorkspaces property
 func (m *OauthClients_attributes) SetAffectedWorkspaces(value []string)() {
     m.affectedWorkspaces = value
@@ -482,6 +509,7 @@ type OauthClients_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAdoEntraTenantId()(*string)
+    GetAdoOrgName()(*string)
     GetAffectedWorkspaces()([]string)
     GetAffectedWorkspacesCount()(*int32)
     GetApiUrl()(*string)
@@ -499,6 +527,7 @@ type OauthClients_attributesable interface {
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetUuid()(*string)
     SetAdoEntraTenantId(value *string)()
+    SetAdoOrgName(value *string)()
     SetAffectedWorkspaces(value []string)()
     SetAffectedWorkspacesCount(value *int32)()
     SetApiUrl(value *string)()
