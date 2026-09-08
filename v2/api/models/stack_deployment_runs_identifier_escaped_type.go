@@ -6,16 +6,19 @@ type StackDeploymentRunsIdentifier_type int
 
 const (
     STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE StackDeploymentRunsIdentifier_type = iota
+    STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
 )
 
 func (i StackDeploymentRunsIdentifier_type) String() string {
-    return []string{"stack-deployment-runs"}[i]
+    return []string{"stack-deployment-runs", "stack-states"}[i]
 }
 func ParseStackDeploymentRunsIdentifier_type(v string) (any, error) {
     result := STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
     switch v {
         case "stack-deployment-runs":
             result = STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
+        case "stack-states":
+            result = STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
         default:
             return nil, nil
     }

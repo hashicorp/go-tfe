@@ -18,6 +18,8 @@ type StackDeploymentRuns_relationships struct {
     destroyStackConfiguration StackConfigurationsHasOneable
     // The latestDeploymentRunForDeployment property
     latestDeploymentRunForDeployment StackDeploymentRunsHasOneable
+    // The rollbackedState property
+    rollbackedState StackDeploymentRunsHasOneable
     // The stackApproval property
     stackApproval StackApprovalsHasOneable
     // The stackConfiguration property
@@ -103,6 +105,16 @@ func (m *StackDeploymentRuns_relationships) GetFieldDeserializers()(map[string]f
         }
         return nil
     }
+    res["rollbacked-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRollbackedState(val.(StackDeploymentRunsHasOneable))
+        }
+        return nil
+    }
     res["stack-approval"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateStackApprovalsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -150,6 +162,11 @@ func (m *StackDeploymentRuns_relationships) GetFieldDeserializers()(map[string]f
 func (m *StackDeploymentRuns_relationships) GetLatestDeploymentRunForDeployment()(StackDeploymentRunsHasOneable) {
     return m.latestDeploymentRunForDeployment
 }
+// GetRollbackedState gets the rollbacked-state property value. The rollbackedState property
+// returns a StackDeploymentRunsHasOneable when successful
+func (m *StackDeploymentRuns_relationships) GetRollbackedState()(StackDeploymentRunsHasOneable) {
+    return m.rollbackedState
+}
 // GetStackApproval gets the stack-approval property value. The stackApproval property
 // returns a StackApprovalsHasOneable when successful
 func (m *StackDeploymentRuns_relationships) GetStackApproval()(StackApprovalsHasOneable) {
@@ -192,6 +209,12 @@ func (m *StackDeploymentRuns_relationships) Serialize(writer i878a80d2330e89d268
     }
     {
         err := writer.WriteObjectValue("latest-deployment-run-for-deployment", m.GetLatestDeploymentRunForDeployment())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("rollbacked-state", m.GetRollbackedState())
         if err != nil {
             return err
         }
@@ -248,6 +271,10 @@ func (m *StackDeploymentRuns_relationships) SetDestroyStackConfiguration(value S
 func (m *StackDeploymentRuns_relationships) SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)() {
     m.latestDeploymentRunForDeployment = value
 }
+// SetRollbackedState sets the rollbacked-state property value. The rollbackedState property
+func (m *StackDeploymentRuns_relationships) SetRollbackedState(value StackDeploymentRunsHasOneable)() {
+    m.rollbackedState = value
+}
 // SetStackApproval sets the stack-approval property value. The stackApproval property
 func (m *StackDeploymentRuns_relationships) SetStackApproval(value StackApprovalsHasOneable)() {
     m.stackApproval = value
@@ -271,6 +298,7 @@ type StackDeploymentRuns_relationshipsable interface {
     GetCurrentStep()(StackDeploymentStepsHasOneable)
     GetDestroyStackConfiguration()(StackConfigurationsHasOneable)
     GetLatestDeploymentRunForDeployment()(StackDeploymentRunsHasOneable)
+    GetRollbackedState()(StackDeploymentRunsHasOneable)
     GetStackApproval()(StackApprovalsHasOneable)
     GetStackConfiguration()(StackConfigurationsHasOneable)
     GetStackDeploymentGroup()(StackDeploymentGroupsHasOneable)
@@ -279,6 +307,7 @@ type StackDeploymentRuns_relationshipsable interface {
     SetCurrentStep(value StackDeploymentStepsHasOneable)()
     SetDestroyStackConfiguration(value StackConfigurationsHasOneable)()
     SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)()
+    SetRollbackedState(value StackDeploymentRunsHasOneable)()
     SetStackApproval(value StackApprovalsHasOneable)()
     SetStackConfiguration(value StackConfigurationsHasOneable)()
     SetStackDeploymentGroup(value StackDeploymentGroupsHasOneable)()
