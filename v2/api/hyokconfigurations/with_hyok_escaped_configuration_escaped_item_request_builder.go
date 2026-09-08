@@ -13,6 +13,11 @@ import (
 type WithHyok_configuration_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithHyok_configuration_ItemRequestBuilderGetQueryParameters get details about an HYOK configurationThis operation is only available in HCP Terraform.
+type WithHyok_configuration_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldshyokConfigurations []string "uriparametername:\"fields%5Bhyok%2Dconfigurations%5D\""
+}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithHyok_configuration_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Actions()(*ItemActionsReques
 // NewWithHyok_configuration_ItemRequestBuilderInternal instantiates a new WithHyok_configuration_ItemRequestBuilder and sets the default values.
 func NewWithHyok_configuration_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithHyok_configuration_ItemRequestBuilder) {
     m := &WithHyok_configuration_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}{?fields%5Bhyok%2Dconfigurations%5D}", pathParameters),
     }
     return m
 }
@@ -50,7 +55,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Delete(ctx context.Context, 
 // Get get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
+func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -102,7 +107,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) ToDeleteRequestInformation(c
 }
 // ToGetRequestInformation get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

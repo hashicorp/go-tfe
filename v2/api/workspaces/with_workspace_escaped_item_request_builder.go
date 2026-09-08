@@ -16,6 +16,8 @@ type WithWorkspace_ItemRequestBuilder struct {
 }
 // WithWorkspace_ItemRequestBuilderGetQueryParameters get details of a specific workspace by its external ID.
 type WithWorkspace_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsworkspaces []string "uriparametername:\"fields%5Bworkspaces%5D\""
     // Optionally side-load relationships.
     Include []ie528eac21284f8672aaa47fa355616c8ce1cd05239efef6f9ab3d7a226aefe49.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -47,7 +49,7 @@ func (m *WithWorkspace_ItemRequestBuilder) ConfigurationVersions()(*ItemConfigur
 // NewWithWorkspace_ItemRequestBuilderInternal instantiates a new WithWorkspace_ItemRequestBuilder and sets the default values.
 func NewWithWorkspace_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_ItemRequestBuilder) {
     m := &WithWorkspace_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}{?fields%5Bworkspaces%5D,include}", pathParameters),
     }
     return m
 }

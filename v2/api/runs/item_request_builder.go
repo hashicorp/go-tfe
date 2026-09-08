@@ -16,6 +16,8 @@ type ItemRequestBuilder struct {
 }
 // ItemRequestBuilderGetQueryParameters get details about a run.
 type ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsruns []string "uriparametername:\"fields%5Bruns%5D\""
     // Available side-load related resources. Multiple values can be comma-separated.Available includes:- `plan` - The plan for this run- `apply` - The apply for this run- `created_by` - The user who created this run- `configuration_version` - The configuration version used- `configuration_version.ingress_attributes` - VCS ingress details- `cost_estimate` - Cost estimation for this run- `workspace` - The workspace this run belongs to- `task_stages` - Run task stages- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*
     Include []icc0ca48df140a853150a5d96ec2689643da46b686f730d4d65f29d007e31ed03.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -37,7 +39,7 @@ func (m *ItemRequestBuilder) ConfigurationVersion()(*ItemConfigurationVersionReq
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
 func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
     m := &ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}{?fields%5Bruns%5D,include}", pathParameters),
     }
     return m
 }

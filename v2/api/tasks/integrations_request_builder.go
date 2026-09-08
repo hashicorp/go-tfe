@@ -18,6 +18,8 @@ type IntegrationsRequestBuilder struct {
 type IntegrationsRequestBuilderGetQueryParameters struct {
     // Filter integrations by category.
     Category *string "uriparametername:\"category\""
+    // Return only the specified fields for integrations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsintegrations []string "uriparametername:\"fields%5Bintegrations%5D\""
     // Include inactive integrations in the results.
     Include_inactive *i4ec19e3dd5dcc866a730b46570a0913c02df95f5fb18682d5f150f505e1bfb04.GetInclude_inactiveQueryParameterType "uriparametername:\"include_inactive\""
     // The page number to retrieve.
@@ -30,7 +32,7 @@ type IntegrationsRequestBuilderGetQueryParameters struct {
 // NewIntegrationsRequestBuilderInternal instantiates a new IntegrationsRequestBuilder and sets the default values.
 func NewIntegrationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*IntegrationsRequestBuilder) {
     m := &IntegrationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/integrations{?category*,include_inactive*,page%5Bnumber%5D*,page%5Bsize%5D*,search*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/integrations{?category*,fields%5Bintegrations%5D,include_inactive*,page%5Bnumber%5D*,page%5Bsize%5D*,search*}", pathParameters),
     }
     return m
 }

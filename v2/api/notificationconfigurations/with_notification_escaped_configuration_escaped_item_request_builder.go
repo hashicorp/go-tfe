@@ -13,6 +13,11 @@ import (
 type WithNotification_configuration_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithNotification_configuration_ItemRequestBuilderGetQueryParameters get details about a notification configuration.
+type WithNotification_configuration_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for notification-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsnotificationConfigurations []string "uriparametername:\"fields%5Bnotification%2Dconfigurations%5D\""
+}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithNotification_configuration_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *WithNotification_configuration_ItemRequestBuilder) Actions()(*ItemActio
 // NewWithNotification_configuration_ItemRequestBuilderInternal instantiates a new WithNotification_configuration_ItemRequestBuilder and sets the default values.
 func NewWithNotification_configuration_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithNotification_configuration_ItemRequestBuilder) {
     m := &WithNotification_configuration_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/notification-configurations/{notification_configuration_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/notification-configurations/{notification_configuration_id}{?fields%5Bnotification%2Dconfigurations%5D}", pathParameters),
     }
     return m
 }
@@ -50,7 +55,7 @@ func (m *WithNotification_configuration_ItemRequestBuilder) Delete(ctx context.C
 // Get get details about a notification configuration.
 // returns a NotificationConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NotificationConfigurationsEnvelopeable, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithNotification_configuration_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NotificationConfigurationsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -97,7 +102,7 @@ func (m *WithNotification_configuration_ItemRequestBuilder) ToDeleteRequestInfor
 }
 // ToGetRequestInformation get details about a notification configuration.
 // returns a *RequestInformation when successful
-func (m *WithNotification_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithNotification_configuration_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

@@ -7,7 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// PolicySetsEnvelope_included a sideloaded resource. May be a `policies` resource (type "policies"), an `ootb-policies` resource (type "ootb-policies"), a `workspaces` resource (type "workspaces"), or another allowlisted type.
+// PolicySetsEnvelope_included a sideloaded resource. May be a `policies` resource (type "policies"), a `workspaces` resource (type "workspaces"), or another allowlisted type.
 type PolicySetsEnvelope_included struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any

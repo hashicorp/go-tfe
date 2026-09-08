@@ -15,6 +15,8 @@ type ItemCidrRangeListsRequestBuilder struct {
 }
 // ItemCidrRangeListsRequestBuilderGetQueryParameters list all CIDR Range Lists in an organizationThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemCidrRangeListsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for cidr-range-lists resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldscidrRangeLists []string "uriparametername:\"fields%5Bcidr%2Drange%2Dlists%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemCidrRangeListsRequestBuilderGetQueryParameters struct {
 // NewItemCidrRangeListsRequestBuilderInternal instantiates a new ItemCidrRangeListsRequestBuilder and sets the default values.
 func NewItemCidrRangeListsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCidrRangeListsRequestBuilder) {
     m := &ItemCidrRangeListsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/cidr-range-lists{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/cidr-range-lists{?fields%5Bcidr%2Drange%2Dlists%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

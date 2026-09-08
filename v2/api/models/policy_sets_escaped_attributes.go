@@ -37,6 +37,8 @@ type PolicySets_attributes struct {
     projectCount *int32
     // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     scopingType *PolicySets_attributes_scopingType
+    // Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
     // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     tagSelectors []PolicySets_attributes_tagSelectorsable
     // The updatedAt property
@@ -220,6 +222,16 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["tag-selector-matching-logic"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParsePolicySets_attributes_tagSelectorMatchingLogic)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTagSelectorMatchingLogic(val.(*PolicySets_attributes_tagSelectorMatchingLogic))
+        }
+        return nil
+    }
     res["tag-selectors"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(CreatePolicySets_attributes_tagSelectorsFromDiscriminatorValue)
         if err != nil {
@@ -328,6 +340,11 @@ func (m *PolicySets_attributes) GetProjectCount()(*int32) {
 func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
     return m.scopingType
 }
+// GetTagSelectorMatchingLogic gets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *PolicySets_attributes_tagSelectorMatchingLogic when successful
+func (m *PolicySets_attributes) GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic) {
+    return m.tagSelectorMatchingLogic
+}
 // GetTagSelectors gets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a []PolicySets_attributes_tagSelectorsable when successful
 func (m *PolicySets_attributes) GetTagSelectors()([]PolicySets_attributes_tagSelectorsable) {
@@ -417,6 +434,13 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
             return err
         }
     }
+    if m.GetTagSelectorMatchingLogic() != nil {
+        cast := (*m.GetTagSelectorMatchingLogic()).String()
+        err := writer.WriteStringValue("tag-selector-matching-logic", &cast)
+        if err != nil {
+            return err
+        }
+    }
     if m.GetTagSelectors() != nil {
         cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTagSelectors()))
         for i, v := range m.GetTagSelectors() {
@@ -499,6 +523,10 @@ func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
     m.scopingType = value
 }
+// SetTagSelectorMatchingLogic sets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+func (m *PolicySets_attributes) SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)() {
+    m.tagSelectorMatchingLogic = value
+}
 // SetTagSelectors sets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
     m.tagSelectors = value
@@ -535,6 +563,7 @@ type PolicySets_attributesable interface {
     GetPolicyUpdatePatterns()([]string)
     GetProjectCount()(*int32)
     GetScopingType()(*PolicySets_attributes_scopingType)
+    GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic)
     GetTagSelectors()([]PolicySets_attributes_tagSelectorsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(PolicySets_attributes_vcsRepoable)
@@ -553,6 +582,7 @@ type PolicySets_attributesable interface {
     SetPolicyUpdatePatterns(value []string)()
     SetProjectCount(value *int32)()
     SetScopingType(value *PolicySets_attributes_scopingType)()
+    SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)()
     SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value PolicySets_attributes_vcsRepoable)()

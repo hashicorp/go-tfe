@@ -15,6 +15,8 @@ type ItemVersionsRequestBuilder struct {
 }
 // ItemVersionsRequestBuilderGetQueryParameters list all versions of a policy set.
 type ItemVersionsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for policy-set-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldspolicySetVersions []string "uriparametername:\"fields%5Bpolicy%2Dset%2Dversions%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemVersionsRequestBuilderGetQueryParameters struct {
 // NewItemVersionsRequestBuilderInternal instantiates a new ItemVersionsRequestBuilder and sets the default values.
 func NewItemVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVersionsRequestBuilder) {
     m := &ItemVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}/versions{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}/versions{?fields%5Bpolicy%2Dset%2Dversions%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

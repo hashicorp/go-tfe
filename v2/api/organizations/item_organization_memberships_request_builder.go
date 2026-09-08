@@ -16,6 +16,8 @@ type ItemOrganizationMembershipsRequestBuilder struct {
 }
 // ItemOrganizationMembershipsRequestBuilderGetQueryParameters list all memberships in an organization. This includes active/inactive members and invited users who have not yet accepted their invitation.
 type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsorganizationMemberships []string "uriparametername:\"fields%5Borganization%2Dmemberships%5D\""
     // Filter memberships by exact email address match.
     Filteremail *string "uriparametername:\"filter%5Bemail%5D\""
     // Filter memberships by status. Can be "active", "invited", or "inactive".
@@ -32,7 +34,7 @@ type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
 // NewItemOrganizationMembershipsRequestBuilderInternal instantiates a new ItemOrganizationMembershipsRequestBuilder and sets the default values.
 func NewItemOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOrganizationMembershipsRequestBuilder) {
     m := &ItemOrganizationMembershipsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/organization-memberships{?filter%5Bemail%5D*,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/organization-memberships{?fields%5Borganization%2Dmemberships%5D,filter%5Bemail%5D*,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
     }
     return m
 }

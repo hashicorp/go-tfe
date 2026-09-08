@@ -15,6 +15,8 @@ type ItemOauthTokensRequestBuilder struct {
 }
 // ItemOauthTokensRequestBuilderGetQueryParameters list all OAuth tokens for a given organization.
 type ItemOauthTokensRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsoauthTokens []string "uriparametername:\"fields%5Boauth%2Dtokens%5D\""
     // Filter tokens by VCS provider name.
     Filterprovider *string "uriparametername:\"filter%5Bprovider%5D\""
     // The page number to retrieve.
@@ -25,7 +27,7 @@ type ItemOauthTokensRequestBuilderGetQueryParameters struct {
 // NewItemOauthTokensRequestBuilderInternal instantiates a new ItemOauthTokensRequestBuilder and sets the default values.
 func NewItemOauthTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOauthTokensRequestBuilder) {
     m := &ItemOauthTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/oauth-tokens{?filter%5Bprovider%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/oauth-tokens{?fields%5Boauth%2Dtokens%5D,filter%5Bprovider%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

@@ -15,6 +15,8 @@ type ItemTfPolicyEvaluationsRequestBuilder struct {
 }
 // ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters list the Terraform Policy evaluations associated with a run.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for tf-policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldstfPolicyEvaluations []string "uriparametername:\"fields%5Btf%2Dpolicy%2Devaluations%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemTfPolicyEvaluationsRequestBuilderGetQueryParameters struct {
 // NewItemTfPolicyEvaluationsRequestBuilderInternal instantiates a new ItemTfPolicyEvaluationsRequestBuilder and sets the default values.
 func NewItemTfPolicyEvaluationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTfPolicyEvaluationsRequestBuilder) {
     m := &ItemTfPolicyEvaluationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/tf-policy-evaluations{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/tf-policy-evaluations{?fields%5Btf%2Dpolicy%2Devaluations%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

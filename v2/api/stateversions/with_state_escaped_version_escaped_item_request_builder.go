@@ -13,6 +13,11 @@ import (
 type WithState_version_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithState_version_ItemRequestBuilderGetQueryParameters show details for a specific state version.
+type WithState_version_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstateVersions []string "uriparametername:\"fields%5Bstate%2Dversions%5D\""
+}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithState_version_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *WithState_version_ItemRequestBuilder) Actions()(*ItemActionsRequestBuil
 // NewWithState_version_ItemRequestBuilderInternal instantiates a new WithState_version_ItemRequestBuilder and sets the default values.
 func NewWithState_version_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithState_version_ItemRequestBuilder) {
     m := &WithState_version_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions/{state_version_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions/{state_version_id}{?fields%5Bstate%2Dversions%5D}", pathParameters),
     }
     return m
 }
@@ -34,7 +39,7 @@ func NewWithState_version_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4
 // Get show details for a specific state version.
 // returns a StateVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithState_version_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsEnvelopeable, error) {
+func (m *WithState_version_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithState_version_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -58,7 +63,7 @@ func (m *WithState_version_ItemRequestBuilder) Outputs()(*ItemOutputsRequestBuil
 }
 // ToGetRequestInformation show details for a specific state version.
 // returns a *RequestInformation when successful
-func (m *WithState_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithState_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithState_version_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

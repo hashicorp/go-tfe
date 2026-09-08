@@ -21,6 +21,8 @@ type ItemAuthenticationTokenRequestBuilderDeleteQueryParameters struct {
 }
 // ItemAuthenticationTokenRequestBuilderGetQueryParameters get details about an organization token
 type ItemAuthenticationTokenRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsauthenticationTokens []string "uriparametername:\"fields%5Bauthentication%2Dtokens%5D\""
     // The type of organization token to retrieve. Omit for the default organization token.
     Token *id4b852bd71ad03f70caf4b4d96531b02b2c582a15b4e6d4690a25b3cc9b00d49.GetTokenQueryParameterType "uriparametername:\"token\""
 }
@@ -32,7 +34,7 @@ type ItemAuthenticationTokenRequestBuilderPostQueryParameters struct {
 // NewItemAuthenticationTokenRequestBuilderInternal instantiates a new ItemAuthenticationTokenRequestBuilder and sets the default values.
 func NewItemAuthenticationTokenRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthenticationTokenRequestBuilder) {
     m := &ItemAuthenticationTokenRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/authentication-token{?token*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/authentication-token{?fields%5Bauthentication%2Dtokens%5D,token*}", pathParameters),
     }
     return m
 }

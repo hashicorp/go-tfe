@@ -16,6 +16,8 @@ type WithWorkspace_transfer_ItemRequestBuilder struct {
 }
 // WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters get details about a workspace transfer.
 type WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
     // Allows including related resource data.
     Include []i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -27,7 +29,7 @@ func (m *WithWorkspace_transfer_ItemRequestBuilder) Actions()(*ItemActionsReques
 // NewWithWorkspace_transfer_ItemRequestBuilderInternal instantiates a new WithWorkspace_transfer_ItemRequestBuilder and sets the default values.
 func NewWithWorkspace_transfer_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_transfer_ItemRequestBuilder) {
     m := &WithWorkspace_transfer_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?fields%5Bworkspace%2Dtransfers%5D,include}", pathParameters),
     }
     return m
 }

@@ -12,7 +12,7 @@ type PolicySetsEnvelope struct {
     additionalData map[string]any
     // The data property
     data PolicySetsable
-    // Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.
+    // Sideloaded resources. `?include=policies` sideloads the full policy resources.
     included []PolicySetsEnvelope_includedable
 }
 // NewPolicySetsEnvelope instantiates a new PolicySetsEnvelope and sets the default values.
@@ -69,7 +69,7 @@ func (m *PolicySetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d233
     }
     return res
 }
-// GetIncluded gets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.
+// GetIncluded gets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
 // returns a []PolicySetsEnvelope_includedable when successful
 func (m *PolicySetsEnvelope) GetIncluded()([]PolicySetsEnvelope_includedable) {
     return m.included
@@ -110,7 +110,7 @@ func (m *PolicySetsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *PolicySetsEnvelope) SetData(value PolicySetsable)() {
     m.data = value
 }
-// SetIncluded sets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources, including OOTB-origin ones. It does NOT sideload their `ootb-policies` catalog resources (control source, catalog metadata, download identity) — request `?include=policies.ootb-policy` for those.
+// SetIncluded sets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
 func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_includedable)() {
     m.included = value
 }

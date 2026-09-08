@@ -13,6 +13,11 @@ import (
 type WithOauth_token_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithOauth_token_ItemRequestBuilderGetQueryParameters get details about an OAuth token.
+type WithOauth_token_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for oauth-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsoauthTokens []string "uriparametername:\"fields%5Boauth%2Dtokens%5D\""
+}
 // AuthorizedRepos the authorizedRepos property
 // returns a *ItemAuthorizedReposRequestBuilder when successful
 func (m *WithOauth_token_ItemRequestBuilder) AuthorizedRepos()(*ItemAuthorizedReposRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *WithOauth_token_ItemRequestBuilder) AuthorizedRepos()(*ItemAuthorizedRe
 // NewWithOauth_token_ItemRequestBuilderInternal instantiates a new WithOauth_token_ItemRequestBuilder and sets the default values.
 func NewWithOauth_token_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOauth_token_ItemRequestBuilder) {
     m := &WithOauth_token_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}{?fields%5Boauth%2Dtokens%5D}", pathParameters),
     }
     return m
 }
@@ -50,7 +55,7 @@ func (m *WithOauth_token_ItemRequestBuilder) Delete(ctx context.Context, request
 // Get get details about an OAuth token.
 // returns a OauthTokensEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *WithOauth_token_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensEnvelopeable, error) {
+func (m *WithOauth_token_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOauth_token_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -99,7 +104,7 @@ func (m *WithOauth_token_ItemRequestBuilder) ToDeleteRequestInformation(ctx cont
 }
 // ToGetRequestInformation get details about an OAuth token.
 // returns a *RequestInformation when successful
-func (m *WithOauth_token_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_token_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOauth_token_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

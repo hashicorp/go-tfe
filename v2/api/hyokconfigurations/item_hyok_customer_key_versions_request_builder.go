@@ -15,6 +15,8 @@ type ItemHyokCustomerKeyVersionsRequestBuilder struct {
 }
 // ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters list all HYOK Customer Key Versions for an HYOK ConfigurationThis operation is only available in HCP Terraform.
 type ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for hyok-customer-key-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldshyokCustomerKeyVersions []string "uriparametername:\"fields%5Bhyok%2Dcustomer%2Dkey%2Dversions%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemHyokCustomerKeyVersionsRequestBuilderGetQueryParameters struct {
 // NewItemHyokCustomerKeyVersionsRequestBuilderInternal instantiates a new ItemHyokCustomerKeyVersionsRequestBuilder and sets the default values.
 func NewItemHyokCustomerKeyVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemHyokCustomerKeyVersionsRequestBuilder) {
     m := &ItemHyokCustomerKeyVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}/hyok-customer-key-versions{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}/hyok-customer-key-versions{?fields%5Bhyok%2Dcustomer%2Dkey%2Dversions%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

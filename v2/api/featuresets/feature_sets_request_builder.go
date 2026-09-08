@@ -15,6 +15,8 @@ type FeatureSetsRequestBuilder struct {
 }
 // FeatureSetsRequestBuilderGetQueryParameters lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.This operation is only available in HCP Terraform.
 type FeatureSetsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for feature-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsfeatureSets []string "uriparametername:\"fields%5Bfeature%2Dsets%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type FeatureSetsRequestBuilderGetQueryParameters struct {
 // NewFeatureSetsRequestBuilderInternal instantiates a new FeatureSetsRequestBuilder and sets the default values.
 func NewFeatureSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*FeatureSetsRequestBuilder) {
     m := &FeatureSetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/feature-sets{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/feature-sets{?fields%5Bfeature%2Dsets%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

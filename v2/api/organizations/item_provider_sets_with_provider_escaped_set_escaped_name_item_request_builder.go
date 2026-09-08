@@ -15,13 +15,15 @@ type ItemProviderSetsWithProvider_set_nameItemRequestBuilder struct {
 }
 // ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters fetch details about the specified provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsproviderSets []string "uriparametername:\"fields%5Bprovider%2Dsets%5D\""
     // Comma-separated list of related resources to include. Valid values: projects, workspaces.
     Include *string "uriparametername:\"include\""
 }
 // NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal instantiates a new ItemProviderSetsWithProvider_set_nameItemRequestBuilder and sets the default values.
 func NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsWithProvider_set_nameItemRequestBuilder) {
     m := &ItemProviderSetsWithProvider_set_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets/{provider_set_name}{?include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets/{provider_set_name}{?fields%5Bprovider%2Dsets%5D,include*}", pathParameters),
     }
     return m
 }

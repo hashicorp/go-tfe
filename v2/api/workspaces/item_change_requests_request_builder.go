@@ -17,6 +17,8 @@ type ItemChangeRequestsRequestBuilder struct {
 type ItemChangeRequestsRequestBuilderGetQueryParameters struct {
     // When true, returns only archived change requests. When false, returns only unarchived change requests. When omitted, returns all change requests ordered by creation date.
     Archive *bool "uriparametername:\"archive\""
+    // Return only the specified fields for workspace-change-requests resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsworkspaceChangeRequests []string "uriparametername:\"fields%5Bworkspace%2Dchange%2Drequests%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -25,7 +27,7 @@ type ItemChangeRequestsRequestBuilderGetQueryParameters struct {
 // NewItemChangeRequestsRequestBuilderInternal instantiates a new ItemChangeRequestsRequestBuilder and sets the default values.
 func NewItemChangeRequestsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemChangeRequestsRequestBuilder) {
     m := &ItemChangeRequestsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/change-requests{?archive*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/change-requests{?archive*,fields%5Bworkspace%2Dchange%2Drequests%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

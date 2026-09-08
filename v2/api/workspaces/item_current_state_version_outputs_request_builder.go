@@ -13,10 +13,15 @@ import (
 type ItemCurrentStateVersionOutputsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemCurrentStateVersionOutputsRequestBuilderGetQueryParameters list the current state version outputs for a workspace. Sensitive output values are not revealed and will be returned as null. Organization users who do not have permission to read state versions may use this endpoint to fetch the latest output values for a workspace.
+type ItemCurrentStateVersionOutputsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for state-version-outputs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstateVersionOutputs []string "uriparametername:\"fields%5Bstate%2Dversion%2Doutputs%5D\""
+}
 // NewItemCurrentStateVersionOutputsRequestBuilderInternal instantiates a new ItemCurrentStateVersionOutputsRequestBuilder and sets the default values.
 func NewItemCurrentStateVersionOutputsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCurrentStateVersionOutputsRequestBuilder) {
     m := &ItemCurrentStateVersionOutputsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version-outputs", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version-outputs{?fields%5Bstate%2Dversion%2Doutputs%5D}", pathParameters),
     }
     return m
 }
@@ -30,7 +35,7 @@ func NewItemCurrentStateVersionOutputsRequestBuilder(rawUrl string, requestAdapt
 // returns a ItemCurrentStateVersionOutputsGetResponseable when successful
 // returns a Errors error when the service returns a 503 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemCurrentStateVersionOutputsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemCurrentStateVersionOutputsGetResponseable, error) {
+func (m *ItemCurrentStateVersionOutputsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCurrentStateVersionOutputsRequestBuilderGetQueryParameters])(ItemCurrentStateVersionOutputsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -50,7 +55,7 @@ func (m *ItemCurrentStateVersionOutputsRequestBuilder) Get(ctx context.Context, 
 }
 // ToGetRequestInformation list the current state version outputs for a workspace. Sensitive output values are not revealed and will be returned as null. Organization users who do not have permission to read state versions may use this endpoint to fetch the latest output values for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemCurrentStateVersionOutputsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemCurrentStateVersionOutputsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCurrentStateVersionOutputsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

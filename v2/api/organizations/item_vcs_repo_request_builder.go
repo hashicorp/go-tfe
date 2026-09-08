@@ -15,6 +15,8 @@ type ItemVcsRepoRequestBuilder struct {
 }
 // ItemVcsRepoRequestBuilderGetQueryParameters this endpoint checks if a repository exists and is accessible to the user.
 type ItemVcsRepoRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for vcs-repo-check resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsvcsRepoCheck []string "uriparametername:\"fields%5Bvcs%2Drepo%2Dcheck%5D\""
     // The repository identifier (e.g., "owner/repo")
     Identifier *string "uriparametername:\"identifier\""
     // The OAuth token ID to authenticate with the VCS provider
@@ -23,7 +25,7 @@ type ItemVcsRepoRequestBuilderGetQueryParameters struct {
 // NewItemVcsRepoRequestBuilderInternal instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
 func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {
     m := &ItemVcsRepoRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}{&fields%5Bvcs%2Drepo%2Dcheck%5D}", pathParameters),
     }
     return m
 }

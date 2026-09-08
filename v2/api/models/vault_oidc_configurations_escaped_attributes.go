@@ -14,8 +14,8 @@ type VaultOidcConfigurations_attributes struct {
     address *string
     // The authPath property
     authPath *string
-    // The encodedCaCert property
-    encodedCaCert *string
+    // The encodedCacert property
+    encodedCacert *string
     // The namespace property
     namespace *string
     // The role property
@@ -48,10 +48,10 @@ func (m *VaultOidcConfigurations_attributes) GetAddress()(*string) {
 func (m *VaultOidcConfigurations_attributes) GetAuthPath()(*string) {
     return m.authPath
 }
-// GetEncodedCaCert gets the encoded-ca-cert property value. The encodedCaCert property
+// GetEncodedCacert gets the encoded-cacert property value. The encodedCacert property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetEncodedCaCert()(*string) {
-    return m.encodedCaCert
+func (m *VaultOidcConfigurations_attributes) GetEncodedCacert()(*string) {
+    return m.encodedCacert
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -77,13 +77,13 @@ func (m *VaultOidcConfigurations_attributes) GetFieldDeserializers()(map[string]
         }
         return nil
     }
-    res["encoded-ca-cert"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+    res["encoded-cacert"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetEncodedCaCert(val)
+            m.SetEncodedCacert(val)
         }
         return nil
     }
@@ -134,7 +134,7 @@ func (m *VaultOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26
         }
     }
     {
-        err := writer.WriteStringValue("encoded-ca-cert", m.GetEncodedCaCert())
+        err := writer.WriteStringValue("encoded-cacert", m.GetEncodedCacert())
         if err != nil {
             return err
         }
@@ -171,9 +171,9 @@ func (m *VaultOidcConfigurations_attributes) SetAddress(value *string)() {
 func (m *VaultOidcConfigurations_attributes) SetAuthPath(value *string)() {
     m.authPath = value
 }
-// SetEncodedCaCert sets the encoded-ca-cert property value. The encodedCaCert property
-func (m *VaultOidcConfigurations_attributes) SetEncodedCaCert(value *string)() {
-    m.encodedCaCert = value
+// SetEncodedCacert sets the encoded-cacert property value. The encodedCacert property
+func (m *VaultOidcConfigurations_attributes) SetEncodedCacert(value *string)() {
+    m.encodedCacert = value
 }
 // SetNamespace sets the namespace property value. The namespace property
 func (m *VaultOidcConfigurations_attributes) SetNamespace(value *string)() {
@@ -188,12 +188,12 @@ type VaultOidcConfigurations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAddress()(*string)
     GetAuthPath()(*string)
-    GetEncodedCaCert()(*string)
+    GetEncodedCacert()(*string)
     GetNamespace()(*string)
     GetRole()(*string)
     SetAddress(value *string)()
     SetAuthPath(value *string)()
-    SetEncodedCaCert(value *string)()
+    SetEncodedCacert(value *string)()
     SetNamespace(value *string)()
     SetRole(value *string)()
 }

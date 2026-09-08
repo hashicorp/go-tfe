@@ -16,6 +16,8 @@ type ItemPoliciesRequestBuilder struct {
 }
 // ItemPoliciesRequestBuilderGetQueryParameters list all policies for an organization.
 type ItemPoliciesRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldspolicies []string "uriparametername:\"fields%5Bpolicies%5D\""
     // Filter policies by kind. Valid values are sentinel and opa.
     Filterkind *ieeda671510118658dce37ec4adc9dc98dfde056c5e2589d03657530d4a5526ae.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
     // The page number to retrieve.
@@ -30,7 +32,7 @@ type ItemPoliciesRequestBuilderGetQueryParameters struct {
 // NewItemPoliciesRequestBuilderInternal instantiates a new ItemPoliciesRequestBuilder and sets the default values.
 func NewItemPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPoliciesRequestBuilder) {
     m := &ItemPoliciesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policies{?filter%5Bkind%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policies{?fields%5Bpolicies%5D,filter%5Bkind%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*,sort*}", pathParameters),
     }
     return m
 }

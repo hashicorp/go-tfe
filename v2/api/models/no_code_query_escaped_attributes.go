@@ -14,6 +14,8 @@ type NoCodeQuery_attributes struct {
     generateConfigOut *bool
     // The noCodeQueryProviders property
     noCodeQueryProviders []NoCodeQuery_attributes_noCodeQueryProvidersable
+    // The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
+    source *NoCodeQuery_attributes_source
 }
 // NewNoCodeQuery_attributes instantiates a new NoCodeQuery_attributes and sets the default values.
 func NewNoCodeQuery_attributes()(*NoCodeQuery_attributes) {
@@ -62,6 +64,16 @@ func (m *NoCodeQuery_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParseNoCodeQuery_attributes_source)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSource(val.(*NoCodeQuery_attributes_source))
+        }
+        return nil
+    }
     return res
 }
 // GetGenerateConfigOut gets the generate-config-out property value. Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false.
@@ -73,6 +85,11 @@ func (m *NoCodeQuery_attributes) GetGenerateConfigOut()(*bool) {
 // returns a []NoCodeQuery_attributes_noCodeQueryProvidersable when successful
 func (m *NoCodeQuery_attributes) GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable) {
     return m.noCodeQueryProviders
+}
+// GetSource gets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
+// returns a *NoCodeQuery_attributes_source when successful
+func (m *NoCodeQuery_attributes) GetSource()(*NoCodeQuery_attributes_source) {
+    return m.source
 }
 // Serialize serializes information the current object
 func (m *NoCodeQuery_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -90,6 +107,13 @@ func (m *NoCodeQuery_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
             }
         }
         err := writer.WriteCollectionOfObjectValues("no-code-query-providers", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetSource() != nil {
+        cast := (*m.GetSource()).String()
+        err := writer.WriteStringValue("source", &cast)
         if err != nil {
             return err
         }
@@ -114,11 +138,17 @@ func (m *NoCodeQuery_attributes) SetGenerateConfigOut(value *bool)() {
 func (m *NoCodeQuery_attributes) SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)() {
     m.noCodeQueryProviders = value
 }
+// SetSource sets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
+func (m *NoCodeQuery_attributes) SetSource(value *NoCodeQuery_attributes_source)() {
+    m.source = value
+}
 type NoCodeQuery_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetGenerateConfigOut()(*bool)
     GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable)
+    GetSource()(*NoCodeQuery_attributes_source)
     SetGenerateConfigOut(value *bool)()
     SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)()
+    SetSource(value *NoCodeQuery_attributes_source)()
 }

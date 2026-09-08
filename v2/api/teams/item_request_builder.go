@@ -16,6 +16,8 @@ type ItemRequestBuilder struct {
 }
 // ItemRequestBuilderGetQueryParameters get details about a team.
 type ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for teams resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsteams []string "uriparametername:\"fields%5Bteams%5D\""
     // Optionally side-load relationships. Can include "users" or "organization-memberships".
     Include []ie10571cf190b80b6fd30ffeea982800a2ed15e926bb667f8977c9950586c059a.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
@@ -27,7 +29,7 @@ func (m *ItemRequestBuilder) AuthenticationToken()(*ItemAuthenticationTokenReque
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
 func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
     m := &ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/teams/{%2Did}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/teams/{%2Did}{?fields%5Bteams%5D,include}", pathParameters),
     }
     return m
 }

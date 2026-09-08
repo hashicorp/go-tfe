@@ -15,6 +15,8 @@ type ItemGithubAppInstallationsRequestBuilder struct {
 }
 // ItemGithubAppInstallationsRequestBuilderGetQueryParameters list GitHub App installations linked to an organization.
 type ItemGithubAppInstallationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -35,7 +37,7 @@ func (m *ItemGithubAppInstallationsRequestBuilder) ByGithub_app_installation_id(
 // NewItemGithubAppInstallationsRequestBuilderInternal instantiates a new ItemGithubAppInstallationsRequestBuilder and sets the default values.
 func NewItemGithubAppInstallationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppInstallationsRequestBuilder) {
     m := &ItemGithubAppInstallationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/github-app-installations{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/github-app-installations{?fields%5Bgithub%2Dapp%2Dinstallations%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

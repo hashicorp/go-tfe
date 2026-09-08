@@ -15,6 +15,8 @@ type InstallationsRequestBuilder struct {
 }
 // InstallationsRequestBuilderGetQueryParameters list GitHub App installations accessible to the current authenticated user.
 type InstallationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
     // Filter by GitHub installation ID.
     Filterinstallation_id *string "uriparametername:\"filter%5Binstallation_id%5D\""
     // Filter by GitHub organization or login name.
@@ -27,7 +29,7 @@ type InstallationsRequestBuilderGetQueryParameters struct {
 // NewInstallationsRequestBuilderInternal instantiates a new InstallationsRequestBuilder and sets the default values.
 func NewInstallationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InstallationsRequestBuilder) {
     m := &InstallationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/github-app/installations{?filter%5Binstallation_id%5D*,filter%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/github-app/installations{?fields%5Bgithub%2Dapp%2Dinstallations%5D,filter%5Binstallation_id%5D*,filter%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

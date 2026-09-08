@@ -15,8 +15,10 @@ import (
 type ItemRecoverableItemsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ItemRecoverableItemsRequestBuilderGetQueryParameters list all recoverable items (soft-deleted resources) in an organization.
 type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for recoverable-items resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsrecoverableItems []string "uriparametername:\"fields%5Brecoverable%2Ditems%5D\""
     // Filter recoverable items that expire after the specified date and time.
     Filterexpires_after *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bexpires_after%5D\""
     // If true, filter recoverable items that have managed resources. False has no effect.
@@ -37,7 +39,7 @@ type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
 // NewItemRecoverableItemsRequestBuilderInternal instantiates a new ItemRecoverableItemsRequestBuilder and sets the default values.
 func NewItemRecoverableItemsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRecoverableItemsRequestBuilder) {
     m := &ItemRecoverableItemsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/recoverable-items{?filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/recoverable-items{?fields%5Brecoverable%2Ditems%5D,filter%5Bexpires_after%5D*,filter%5Bhaving_managed_resources%5D*,filter%5Brecoverable_type%5D*,filter%5Bsearch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }
@@ -47,7 +49,7 @@ func NewItemRecoverableItemsRequestBuilder(rawUrl string, requestAdapter i2ae418
     urlParams["request-raw-url"] = rawUrl
     return NewItemRecoverableItemsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get list all recoverable items (soft-deleted resources) in an organization.
 // returns a ItemRecoverableItemsGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -69,7 +71,7 @@ func (m *ItemRecoverableItemsRequestBuilder) Get(ctx context.Context, requestCon
     }
     return res.(ItemRecoverableItemsGetResponseable), nil
 }
-// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation list all recoverable items (soft-deleted resources) in an organization.
 // returns a *RequestInformation when successful
 func (m *ItemRecoverableItemsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRecoverableItemsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

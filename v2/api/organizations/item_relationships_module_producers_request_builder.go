@@ -15,6 +15,8 @@ type ItemRelationshipsModuleProducersRequestBuilder struct {
 }
 // ItemRelationshipsModuleProducersRequestBuilderGetQueryParameters list organizations that are configured to share modules with an organization.This operation is only available in Terraform Enterprise.
 type ItemRelationshipsModuleProducersRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organizations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsorganizations []string "uriparametername:\"fields%5Borganizations%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -23,7 +25,7 @@ type ItemRelationshipsModuleProducersRequestBuilderGetQueryParameters struct {
 // NewItemRelationshipsModuleProducersRequestBuilderInternal instantiates a new ItemRelationshipsModuleProducersRequestBuilder and sets the default values.
 func NewItemRelationshipsModuleProducersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsModuleProducersRequestBuilder) {
     m := &ItemRelationshipsModuleProducersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/relationships/module-producers{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/relationships/module-producers{?fields%5Borganizations%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

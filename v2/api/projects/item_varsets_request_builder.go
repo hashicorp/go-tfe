@@ -16,6 +16,8 @@ type ItemVarsetsRequestBuilder struct {
 }
 // ItemVarsetsRequestBuilderGetQueryParameters list all variable sets for a project. This includes global variable sets from the project's organization.
 type ItemVarsetsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldsvarsets []string "uriparametername:\"fields%5Bvarsets%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -28,7 +30,7 @@ type ItemVarsetsRequestBuilderGetQueryParameters struct {
 // NewItemVarsetsRequestBuilderInternal instantiates a new ItemVarsetsRequestBuilder and sets the default values.
 func NewItemVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsRequestBuilder) {
     m := &ItemVarsetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/varsets{?page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/varsets{?fields%5Bvarsets%5D,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
     }
     return m
 }

@@ -13,10 +13,15 @@ import (
 type ItemVcsOrganizationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemVcsOrganizationsRequestBuilderGetQueryParameters list all VCS organizations accessible via the OAuth token. Only applicable to Azure DevOps providers.
+type ItemVcsOrganizationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for vcs-organization resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsvcsOrganization []string "uriparametername:\"fields%5Bvcs%2Dorganization%5D\""
+}
 // NewItemVcsOrganizationsRequestBuilderInternal instantiates a new ItemVcsOrganizationsRequestBuilder and sets the default values.
 func NewItemVcsOrganizationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsOrganizationsRequestBuilder) {
     m := &ItemVcsOrganizationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}/vcs-organizations", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-tokens/{oauth_token_id}/vcs-organizations{?fields%5Bvcs%2Dorganization%5D}", pathParameters),
     }
     return m
 }
@@ -29,7 +34,7 @@ func NewItemVcsOrganizationsRequestBuilder(rawUrl string, requestAdapter i2ae418
 // Get list all VCS organizations accessible via the OAuth token. Only applicable to Azure DevOps providers.
 // returns a ItemVcsOrganizationsGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *ItemVcsOrganizationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVcsOrganizationsGetResponseable, error) {
+func (m *ItemVcsOrganizationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsOrganizationsRequestBuilderGetQueryParameters])(ItemVcsOrganizationsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -48,7 +53,7 @@ func (m *ItemVcsOrganizationsRequestBuilder) Get(ctx context.Context, requestCon
 }
 // ToGetRequestInformation list all VCS organizations accessible via the OAuth token. Only applicable to Azure DevOps providers.
 // returns a *RequestInformation when successful
-func (m *ItemVcsOrganizationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVcsOrganizationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsOrganizationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

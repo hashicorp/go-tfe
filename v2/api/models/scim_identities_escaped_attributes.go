@@ -12,6 +12,8 @@ type ScimIdentities_attributes struct {
     additionalData map[string]any
     // The provisioning status of the user.- "provisioned": User was created via SCIM provisioning- "claimed": User claimed their account or existed before SCIM
     status *ScimIdentities_attributes_status
+    // The username/identity string from the SCIM provider.
+    username *string
 }
 // NewScimIdentities_attributes instantiates a new ScimIdentities_attributes and sets the default values.
 func NewScimIdentities_attributes()(*ScimIdentities_attributes) {
@@ -44,12 +46,27 @@ func (m *ScimIdentities_attributes) GetFieldDeserializers()(map[string]func(i878
         }
         return nil
     }
+    res["username"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUsername(val)
+        }
+        return nil
+    }
     return res
 }
 // GetStatus gets the status property value. The provisioning status of the user.- "provisioned": User was created via SCIM provisioning- "claimed": User claimed their account or existed before SCIM
 // returns a *ScimIdentities_attributes_status when successful
 func (m *ScimIdentities_attributes) GetStatus()(*ScimIdentities_attributes_status) {
     return m.status
+}
+// GetUsername gets the username property value. The username/identity string from the SCIM provider.
+// returns a *string when successful
+func (m *ScimIdentities_attributes) GetUsername()(*string) {
+    return m.username
 }
 // Serialize serializes information the current object
 func (m *ScimIdentities_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -69,9 +86,15 @@ func (m *ScimIdentities_attributes) SetAdditionalData(value map[string]any)() {
 func (m *ScimIdentities_attributes) SetStatus(value *ScimIdentities_attributes_status)() {
     m.status = value
 }
+// SetUsername sets the username property value. The username/identity string from the SCIM provider.
+func (m *ScimIdentities_attributes) SetUsername(value *string)() {
+    m.username = value
+}
 type ScimIdentities_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetStatus()(*ScimIdentities_attributes_status)
+    GetUsername()(*string)
     SetStatus(value *ScimIdentities_attributes_status)()
+    SetUsername(value *string)()
 }

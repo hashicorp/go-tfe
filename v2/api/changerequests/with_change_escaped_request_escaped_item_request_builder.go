@@ -13,6 +13,11 @@ import (
 type WithChange_request_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithChange_request_ItemRequestBuilderGetQueryParameters get details about a specific change request.
+type WithChange_request_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for workspace-change-requests resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsworkspaceChangeRequests []string "uriparametername:\"fields%5Bworkspace%2Dchange%2Drequests%5D\""
+}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithChange_request_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -21,7 +26,7 @@ func (m *WithChange_request_ItemRequestBuilder) Actions()(*ItemActionsRequestBui
 // NewWithChange_request_ItemRequestBuilderInternal instantiates a new WithChange_request_ItemRequestBuilder and sets the default values.
 func NewWithChange_request_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithChange_request_ItemRequestBuilder) {
     m := &WithChange_request_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/change-requests/{change_request_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/change-requests/{change_request_id}{?fields%5Bworkspace%2Dchange%2Drequests%5D}", pathParameters),
     }
     return m
 }
@@ -34,7 +39,7 @@ func NewWithChange_request_ItemRequestBuilder(rawUrl string, requestAdapter i2ae
 // Get get details about a specific change request.
 // returns a WorkspaceChangeRequestsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithChange_request_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceChangeRequestsEnvelopeable, error) {
+func (m *WithChange_request_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithChange_request_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceChangeRequestsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -53,7 +58,7 @@ func (m *WithChange_request_ItemRequestBuilder) Get(ctx context.Context, request
 }
 // ToGetRequestInformation get details about a specific change request.
 // returns a *RequestInformation when successful
-func (m *WithChange_request_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithChange_request_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithChange_request_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

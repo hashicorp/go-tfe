@@ -15,6 +15,8 @@ type ItemAgentPoolsRequestBuilder struct {
 }
 // ItemAgentPoolsRequestBuilderGetQueryParameters list agent pools, their agents, and their tokens for an organization.
 type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for agent-pools resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsagentPools []string "uriparametername:\"fields%5Bagent%2Dpools%5D\""
     // Filters agent pools to those associated with the given workspace. The workspace must have permission to use the agent pool.
     FilterallowedWorkspacesname *string "uriparametername:\"filter%5Ballowed%2Dworkspaces%5D%5Bname%5D\""
     // The page number to retrieve.
@@ -29,7 +31,7 @@ type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
 // NewItemAgentPoolsRequestBuilderInternal instantiates a new ItemAgentPoolsRequestBuilder and sets the default values.
 func NewItemAgentPoolsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentPoolsRequestBuilder) {
     m := &ItemAgentPoolsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/agent-pools{?filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/agent-pools{?fields%5Bagent%2Dpools%5D,filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

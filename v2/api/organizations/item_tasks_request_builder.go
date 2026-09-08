@@ -16,6 +16,8 @@ type ItemTasksRequestBuilder struct {
 }
 // ItemTasksRequestBuilderGetQueryParameters list all run tasks in an organization.
 type ItemTasksRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldstasks []string "uriparametername:\"fields%5Btasks%5D\""
     // Allows including related resource data.
     Include []id9db6e1e278b291e17b54ca19afa8f7736669f87912b14a7310a3a39d8e10e3c.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
@@ -26,7 +28,7 @@ type ItemTasksRequestBuilderGetQueryParameters struct {
 // NewItemTasksRequestBuilderInternal instantiates a new ItemTasksRequestBuilder and sets the default values.
 func NewItemTasksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTasksRequestBuilder) {
     m := &ItemTasksRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/tasks{?include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/tasks{?fields%5Btasks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

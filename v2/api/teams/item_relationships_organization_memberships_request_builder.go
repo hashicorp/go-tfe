@@ -16,6 +16,8 @@ type ItemRelationshipsOrganizationMembershipsRequestBuilder struct {
 }
 // ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for a team. Returns both active members and invited users.
 type ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organization-memberships resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsorganizationMemberships []string "uriparametername:\"fields%5Borganization%2Dmemberships%5D\""
     // Filter to include only service account members.
     Filteris_service_account *i55866a5b5305bf32e8c63ade424f6db8c4707af03285bdc013b3a0b31da9a074.GetFilterIs_service_accountQueryParameterType "uriparametername:\"filter%5Bis_service_account%5D\""
     // Filter memberships by status.
@@ -30,7 +32,7 @@ type ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters st
 // NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal instantiates a new ItemRelationshipsOrganizationMembershipsRequestBuilder and sets the default values.
 func NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsOrganizationMembershipsRequestBuilder) {
     m := &ItemRelationshipsOrganizationMembershipsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/teams/{%2Did}/relationships/organization-memberships{?filter%5Bis_service_account%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/teams/{%2Did}/relationships/organization-memberships{?fields%5Borganization%2Dmemberships%5D,filter%5Bis_service_account%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

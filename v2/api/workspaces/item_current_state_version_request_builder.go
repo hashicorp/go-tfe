@@ -16,13 +16,15 @@ type ItemCurrentStateVersionRequestBuilder struct {
 }
 // ItemCurrentStateVersionRequestBuilderGetQueryParameters get the current state version for a workspace.
 type ItemCurrentStateVersionRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsstateVersions []string "uriparametername:\"fields%5Bstate%2Dversions%5D\""
     // Optionally side-load relationships.
     Include []i6f2dce141547a574e4aebc99f4b2789ac2217377facfcd9ad98ebed289c76582.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemCurrentStateVersionRequestBuilderInternal instantiates a new ItemCurrentStateVersionRequestBuilder and sets the default values.
 func NewItemCurrentStateVersionRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCurrentStateVersionRequestBuilder) {
     m := &ItemCurrentStateVersionRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/current-state-version{?fields%5Bstate%2Dversions%5D,include}", pathParameters),
     }
     return m
 }

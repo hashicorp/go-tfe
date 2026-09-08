@@ -13,10 +13,15 @@ import (
 type ItemTokenTtlPoliciesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemTokenTtlPoliciesRequestBuilderGetQueryParameters list all token TTL policies for an organization.
+type ItemTokenTtlPoliciesRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for organization-token-ttl-policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsorganizationTokenTtlPolicies []string "uriparametername:\"fields%5Borganization%2Dtoken%2Dttl%2Dpolicies%5D\""
+}
 // NewItemTokenTtlPoliciesRequestBuilderInternal instantiates a new ItemTokenTtlPoliciesRequestBuilder and sets the default values.
 func NewItemTokenTtlPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTokenTtlPoliciesRequestBuilder) {
     m := &ItemTokenTtlPoliciesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/token-ttl-policies", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/token-ttl-policies{?fields%5Borganization%2Dtoken%2Dttl%2Dpolicies%5D}", pathParameters),
     }
     return m
 }
@@ -31,7 +36,7 @@ func NewItemTokenTtlPoliciesRequestBuilder(rawUrl string, requestAdapter i2ae418
 // returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTokenTtlPoliciesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemTokenTtlPoliciesGetResponseable, error) {
+func (m *ItemTokenTtlPoliciesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemTokenTtlPoliciesRequestBuilderGetQueryParameters])(ItemTokenTtlPoliciesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -78,7 +83,7 @@ func (m *ItemTokenTtlPoliciesRequestBuilder) Patch(ctx context.Context, body i05
 }
 // ToGetRequestInformation list all token TTL policies for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemTokenTtlPoliciesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemTokenTtlPoliciesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemTokenTtlPoliciesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")

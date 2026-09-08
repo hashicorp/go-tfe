@@ -16,13 +16,15 @@ type TasksItemRequestBuilder struct {
 }
 // TasksItemRequestBuilderGetQueryParameters get details about a run task.
 type TasksItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    Fieldstasks []string "uriparametername:\"fields%5Btasks%5D\""
     // Allows including related resource data.
     Include []iaad17ee58633d1bcb69c36c294867edc7605bc892a131b243a6107cfc310349e.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewTasksItemRequestBuilderInternal instantiates a new TasksItemRequestBuilder and sets the default values.
 func NewTasksItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TasksItemRequestBuilder) {
     m := &TasksItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}{?include}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}{?fields%5Btasks%5D,include}", pathParameters),
     }
     return m
 }

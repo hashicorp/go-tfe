@@ -10,10 +10,11 @@ const (
     TFEMODULE_QUERIES_ATTRIBUTES_SOURCE
     TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
     TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
+    TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
 )
 
 func (i Queries_attributes_source) String() string {
-    return []string{"tfe-api", "tfe-ui", "tfe-module", "tfe-no-code-query", "terraform"}[i]
+    return []string{"tfe-api", "tfe-ui", "tfe-module", "tfe-no-code-query", "terraform", "terraform-mcp"}[i]
 }
 func ParseQueries_attributes_source(v string) (any, error) {
     result := TFEAPI_QUERIES_ATTRIBUTES_SOURCE
@@ -28,6 +29,8 @@ func ParseQueries_attributes_source(v string) (any, error) {
             result = TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
         case "terraform":
             result = TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
+        case "terraform-mcp":
+            result = TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
         default:
             return nil, nil
     }

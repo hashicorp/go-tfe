@@ -1,10 +1,20 @@
 # Unreleased
 
-* Enhancement: Workspace reads in the v2 client now include No-Code metadata: nullable
-  `source-module-id` and `no-code-upgrade-available` attributes, plus a `no-code-module-version`
-  relationship to a typed `no-code-module-versions` resource (`module-version`, `version-number`).
-  These fields are omitted or null when the workspace is not No-Code. Prefer the relationship over
-  `source-module-id` for a typed link to the current module version.
+# v2.10.0
+
+* The latest public endpoints are available
+
+# v2.9.0
+
+* The latest public endpoints are available
+
+# v2.8.0
+
+* The latest public endpoints are available
+
+# v2.7.0
+
+* The latest public endpoints are available
 
 # v2.6.0
 
@@ -17,7 +27,12 @@
 * Bug Fix: Set `Content-Type: application/vnd.api+json` on POST, PATCH, and DELETE requests without a body.
 
 * Enhancement: NewClient configuration now supports `HTTPTransport` option, allowing you to customize many more aspects of every request round trip. 
-
+* Enhancement: Workspace reads in the v2 client now include No-Code metadata: nullable
+  `source-module-id` and `no-code-upgrade-available` attributes, plus a `no-code-module-version`
+  relationship to a typed `no-code-module-versions` resource (`module-version`, `version-number`).
+  These fields are omitted or null when the workspace is not No-Code. Prefer the relationship over
+  `source-module-id` for a typed link to the current module version.
+  
 # v2.4.0
 
 The latest public endpoints are available

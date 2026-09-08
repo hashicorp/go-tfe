@@ -13,6 +13,11 @@ import (
 type WithAgent_pool_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithAgent_pool_ItemRequestBuilderGetQueryParameters get details about an agent pool
+type WithAgent_pool_ItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for agent-pools resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsagentPools []string "uriparametername:\"fields%5Bagent%2Dpools%5D\""
+}
 // Agents the agents property
 // returns a *ItemAgentsRequestBuilder when successful
 func (m *WithAgent_pool_ItemRequestBuilder) Agents()(*ItemAgentsRequestBuilder) {
@@ -26,7 +31,7 @@ func (m *WithAgent_pool_ItemRequestBuilder) AuthenticationTokens()(*ItemAuthenti
 // NewWithAgent_pool_ItemRequestBuilderInternal instantiates a new WithAgent_pool_ItemRequestBuilder and sets the default values.
 func NewWithAgent_pool_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithAgent_pool_ItemRequestBuilder) {
     m := &WithAgent_pool_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}{?fields%5Bagent%2Dpools%5D}", pathParameters),
     }
     return m
 }
@@ -55,7 +60,7 @@ func (m *WithAgent_pool_ItemRequestBuilder) Delete(ctx context.Context, requestC
 // Get get details about an agent pool
 // returns a AgentPoolsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithAgent_pool_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsEnvelopeable, error) {
+func (m *WithAgent_pool_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithAgent_pool_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -102,7 +107,7 @@ func (m *WithAgent_pool_ItemRequestBuilder) ToDeleteRequestInformation(ctx conte
 }
 // ToGetRequestInformation get details about an agent pool
 // returns a *RequestInformation when successful
-func (m *WithAgent_pool_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithAgent_pool_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithAgent_pool_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
