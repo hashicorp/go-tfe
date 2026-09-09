@@ -16,7 +16,7 @@ type ItemProjectsGetResponse struct {
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
-    meta i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+    meta ItemProjectsGetResponse_metaable
 }
 // NewItemProjectsGetResponse instantiates a new ItemProjectsGetResponse and sets the default values.
 func NewItemProjectsGetResponse()(*ItemProjectsGetResponse) {
@@ -71,12 +71,12 @@ func (m *ItemProjectsGetResponse) GetFieldDeserializers()(map[string]func(i878a8
         return nil
     }
     res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemProjectsGetResponse_metaFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetMeta(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
+            m.SetMeta(val.(ItemProjectsGetResponse_metaable))
         }
         return nil
     }
@@ -88,8 +88,8 @@ func (m *ItemProjectsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082
     return m.links
 }
 // GetMeta gets the meta property value. The meta property
-// returns a Paginationable when successful
-func (m *ItemProjectsGetResponse) GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
+// returns a ItemProjectsGetResponse_metaable when successful
+func (m *ItemProjectsGetResponse) GetMeta()(ItemProjectsGetResponse_metaable) {
     return m.meta
 }
 // Serialize serializes information the current object
@@ -139,7 +139,7 @@ func (m *ItemProjectsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a
     m.links = value
 }
 // SetMeta sets the meta property value. The meta property
-func (m *ItemProjectsGetResponse) SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)() {
+func (m *ItemProjectsGetResponse) SetMeta(value ItemProjectsGetResponse_metaable)() {
     m.meta = value
 }
 type ItemProjectsGetResponseable interface {
@@ -147,8 +147,8 @@ type ItemProjectsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
-    GetMeta()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
+    GetMeta()(ItemProjectsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
-    SetMeta(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)()
+    SetMeta(value ItemProjectsGetResponse_metaable)()
 }

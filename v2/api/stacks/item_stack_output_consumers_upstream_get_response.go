@@ -13,6 +13,10 @@ type ItemStackOutputConsumersUpstreamGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOutputConsumersable
+    // The links property
+    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+    // The meta property
+    meta ItemStackOutputConsumersUpstreamGetResponse_metaable
 }
 // NewItemStackOutputConsumersUpstreamGetResponse instantiates a new ItemStackOutputConsumersUpstreamGetResponse and sets the default values.
 func NewItemStackOutputConsumersUpstreamGetResponse()(*ItemStackOutputConsumersUpstreamGetResponse) {
@@ -56,7 +60,37 @@ func (m *ItemStackOutputConsumersUpstreamGetResponse) GetFieldDeserializers()(ma
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateItemStackOutputConsumersUpstreamGetResponse_metaFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(ItemStackOutputConsumersUpstreamGetResponse_metaable))
+        }
+        return nil
+    }
     return res
+}
+// GetLinks gets the links property value. The links property
+// returns a SelfWithPaginationable when successful
+func (m *ItemStackOutputConsumersUpstreamGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
+    return m.links
+}
+// GetMeta gets the meta property value. The meta property
+// returns a ItemStackOutputConsumersUpstreamGetResponse_metaable when successful
+func (m *ItemStackOutputConsumersUpstreamGetResponse) GetMeta()(ItemStackOutputConsumersUpstreamGetResponse_metaable) {
+    return m.meta
 }
 // Serialize serializes information the current object
 func (m *ItemStackOutputConsumersUpstreamGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -68,6 +102,18 @@ func (m *ItemStackOutputConsumersUpstreamGetResponse) Serialize(writer i878a80d2
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
         if err != nil {
             return err
         }
@@ -88,9 +134,21 @@ func (m *ItemStackOutputConsumersUpstreamGetResponse) SetAdditionalData(value ma
 func (m *ItemStackOutputConsumersUpstreamGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOutputConsumersable)() {
     m.data = value
 }
+// SetLinks sets the links property value. The links property
+func (m *ItemStackOutputConsumersUpstreamGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
+    m.links = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *ItemStackOutputConsumersUpstreamGetResponse) SetMeta(value ItemStackOutputConsumersUpstreamGetResponse_metaable)() {
+    m.meta = value
+}
 type ItemStackOutputConsumersUpstreamGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOutputConsumersable)
+    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+    GetMeta()(ItemStackOutputConsumersUpstreamGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOutputConsumersable)()
+    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
+    SetMeta(value ItemStackOutputConsumersUpstreamGetResponse_metaable)()
 }

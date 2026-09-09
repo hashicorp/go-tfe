@@ -17,6 +17,10 @@ type ItemVarsetsItemRelationshipsVarsRequestBuilder struct {
 type ItemVarsetsItemRelationshipsVarsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.workspaces.item.varsets.item.relationships.vars.item collection
 // returns a *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder when successful
@@ -33,7 +37,7 @@ func (m *ItemVarsetsItemRelationshipsVarsRequestBuilder) ById(id string)(*ItemVa
 // NewItemVarsetsItemRelationshipsVarsRequestBuilderInternal instantiates a new ItemVarsetsItemRelationshipsVarsRequestBuilder and sets the default values.
 func NewItemVarsetsItemRelationshipsVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsItemRelationshipsVarsRequestBuilder) {
     m := &ItemVarsetsItemRelationshipsVarsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars{?fields%5Bvars%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars{?fields%5Bvars%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

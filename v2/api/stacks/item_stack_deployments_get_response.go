@@ -13,6 +13,10 @@ type ItemStackDeploymentsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentsable
+    // The links property
+    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+    // The meta property
+    meta ItemStackDeploymentsGetResponse_metaable
 }
 // NewItemStackDeploymentsGetResponse instantiates a new ItemStackDeploymentsGetResponse and sets the default values.
 func NewItemStackDeploymentsGetResponse()(*ItemStackDeploymentsGetResponse) {
@@ -56,7 +60,37 @@ func (m *ItemStackDeploymentsGetResponse) GetFieldDeserializers()(map[string]fun
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateItemStackDeploymentsGetResponse_metaFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(ItemStackDeploymentsGetResponse_metaable))
+        }
+        return nil
+    }
     return res
+}
+// GetLinks gets the links property value. The links property
+// returns a SelfWithPaginationable when successful
+func (m *ItemStackDeploymentsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
+    return m.links
+}
+// GetMeta gets the meta property value. The meta property
+// returns a ItemStackDeploymentsGetResponse_metaable when successful
+func (m *ItemStackDeploymentsGetResponse) GetMeta()(ItemStackDeploymentsGetResponse_metaable) {
+    return m.meta
 }
 // Serialize serializes information the current object
 func (m *ItemStackDeploymentsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -68,6 +102,18 @@ func (m *ItemStackDeploymentsGetResponse) Serialize(writer i878a80d2330e89d26896
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
         if err != nil {
             return err
         }
@@ -88,9 +134,21 @@ func (m *ItemStackDeploymentsGetResponse) SetAdditionalData(value map[string]any
 func (m *ItemStackDeploymentsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentsable)() {
     m.data = value
 }
+// SetLinks sets the links property value. The links property
+func (m *ItemStackDeploymentsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
+    m.links = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *ItemStackDeploymentsGetResponse) SetMeta(value ItemStackDeploymentsGetResponse_metaable)() {
+    m.meta = value
+}
 type ItemStackDeploymentsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentsable)
+    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+    GetMeta()(ItemStackDeploymentsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentsable)()
+    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
+    SetMeta(value ItemStackDeploymentsGetResponse_metaable)()
 }
