@@ -10038,8 +10038,9 @@ type PolicySet struct {
 	TagSelectors []*PolicySetTagSelectorAttr `jsonapi:"attr,tag-selectors"`
 
 	// TagSelectorMatchingLogic controls how multiple tag selectors are combined.
-	// "any" (default) means OR semantics — applies to workspaces matching any selector.
+	// "any" means OR semantics — applies to workspaces matching any selector.
 	// "all" means AND semantics — applies only to workspaces matching all selectors.
+	// nil when no tag selectors are active.
 	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic"`
 
 	// Relations
@@ -10220,8 +10221,8 @@ type PolicySetUpdateOptions struct {
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 	
 	// Optional: Matching logic for tag selectors.
-	// Valid values: "any" (OR, default) or "all" (AND — workspace must match all selectors).
-	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
+	// Valid values: "any" or "all". Required when tag selectors are present.
+	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic"`
 }
 
 // PolicySetAddPoliciesOptions represents the options for adding policies
