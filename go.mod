@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/jsonapi v1.4.3-0.20250220162346-81a76b606f3e
 	go.uber.org/mock v0.4.0
 	golang.org/x/sync v0.23.0
-	golang.org/x/time v0.15.0
+	golang.org/x/time v0.16.0
 )
 
 require golang.org/x/sys v0.35.0 // indirect
