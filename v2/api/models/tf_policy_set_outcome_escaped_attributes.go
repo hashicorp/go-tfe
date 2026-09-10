@@ -10,7 +10,8 @@ import (
 type TfPolicySetOutcome_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // List of policy outcomes, each representing the evaluation result of a single policy within the policy set
+    // Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
+    // Deprecated: 
     outcomes []TfPolicySetOutcome_attributes_outcomesable
     // Indicates if the policy set outcome can be overridden when policies fail
     overridable *bool
@@ -18,6 +19,8 @@ type TfPolicySetOutcome_attributes struct {
     policySetDescription *string
     // Name of the policy set that was evaluated
     policySetName *string
+    // URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
+    policySetResultUrl *string
     // The resultCount property
     resultCount TfPolicySetOutcome_attributes_resultCountable
 }
@@ -88,6 +91,16 @@ func (m *TfPolicySetOutcome_attributes) GetFieldDeserializers()(map[string]func(
         }
         return nil
     }
+    res["policy-set-result-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicySetResultUrl(val)
+        }
+        return nil
+    }
     res["result-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateTfPolicySetOutcome_attributes_resultCountFromDiscriminatorValue)
         if err != nil {
@@ -100,7 +113,8 @@ func (m *TfPolicySetOutcome_attributes) GetFieldDeserializers()(map[string]func(
     }
     return res
 }
-// GetOutcomes gets the outcomes property value. List of policy outcomes, each representing the evaluation result of a single policy within the policy set
+// GetOutcomes gets the outcomes property value. Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
+// Deprecated: 
 // returns a []TfPolicySetOutcome_attributes_outcomesable when successful
 func (m *TfPolicySetOutcome_attributes) GetOutcomes()([]TfPolicySetOutcome_attributes_outcomesable) {
     return m.outcomes
@@ -119,6 +133,11 @@ func (m *TfPolicySetOutcome_attributes) GetPolicySetDescription()(*string) {
 // returns a *string when successful
 func (m *TfPolicySetOutcome_attributes) GetPolicySetName()(*string) {
     return m.policySetName
+}
+// GetPolicySetResultUrl gets the policy-set-result-url property value. URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
+// returns a *string when successful
+func (m *TfPolicySetOutcome_attributes) GetPolicySetResultUrl()(*string) {
+    return m.policySetResultUrl
 }
 // GetResultCount gets the result-count property value. The resultCount property
 // returns a TfPolicySetOutcome_attributes_resultCountable when successful
@@ -175,7 +194,8 @@ func (m *TfPolicySetOutcome_attributes) Serialize(writer i878a80d2330e89d2689638
 func (m *TfPolicySetOutcome_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetOutcomes sets the outcomes property value. List of policy outcomes, each representing the evaluation result of a single policy within the policy set
+// SetOutcomes sets the outcomes property value. Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
+// Deprecated: 
 func (m *TfPolicySetOutcome_attributes) SetOutcomes(value []TfPolicySetOutcome_attributes_outcomesable)() {
     m.outcomes = value
 }
@@ -191,6 +211,10 @@ func (m *TfPolicySetOutcome_attributes) SetPolicySetDescription(value *string)()
 func (m *TfPolicySetOutcome_attributes) SetPolicySetName(value *string)() {
     m.policySetName = value
 }
+// SetPolicySetResultUrl sets the policy-set-result-url property value. URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
+func (m *TfPolicySetOutcome_attributes) SetPolicySetResultUrl(value *string)() {
+    m.policySetResultUrl = value
+}
 // SetResultCount sets the result-count property value. The resultCount property
 func (m *TfPolicySetOutcome_attributes) SetResultCount(value TfPolicySetOutcome_attributes_resultCountable)() {
     m.resultCount = value
@@ -202,10 +226,12 @@ type TfPolicySetOutcome_attributesable interface {
     GetOverridable()(*bool)
     GetPolicySetDescription()(*string)
     GetPolicySetName()(*string)
+    GetPolicySetResultUrl()(*string)
     GetResultCount()(TfPolicySetOutcome_attributes_resultCountable)
     SetOutcomes(value []TfPolicySetOutcome_attributes_outcomesable)()
     SetOverridable(value *bool)()
     SetPolicySetDescription(value *string)()
     SetPolicySetName(value *string)()
+    SetPolicySetResultUrl(value *string)()
     SetResultCount(value TfPolicySetOutcome_attributes_resultCountable)()
 }

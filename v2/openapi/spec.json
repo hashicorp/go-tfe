@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "d375bcc2",
+    "version": "d97c77dc",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -4196,6 +4196,17 @@
                       "items": {
                         "$ref": "#/components/schemas/stack-deployments"
                       }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -4362,6 +4373,17 @@
                       "items": {
                         "$ref": "#/components/schemas/stack-states"
                       }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -4463,6 +4485,17 @@
                       "items": {
                         "$ref": "#/components/schemas/stack-output-consumers"
                       }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -4563,6 +4596,17 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/stack-output-consumers"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
                       }
                     }
                   }
@@ -7573,7 +7617,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -8160,7 +8209,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -10714,7 +10768,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -12273,7 +12332,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -12363,6 +12427,12 @@
             "description": "The ID of the variable set."
           },
           {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
             "in": "query",
             "name": "fields[vars]",
             "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
@@ -12395,6 +12465,14 @@
                     },
                     "links": {
                       "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -12735,6 +12813,12 @@
             "description": "The ID of the variable set."
           },
           {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
             "in": "query",
             "name": "fields[vars]",
             "description": "Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
@@ -12767,6 +12851,14 @@
                     },
                     "links": {
                       "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -13136,7 +13228,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -13221,7 +13318,12 @@
                       "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/pagination"
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
                     }
                   }
                 }
@@ -13994,6 +14096,9 @@
                       "items": {
                         "$ref": "#/components/schemas/workspaces"
                       }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
                       "type": "object",
@@ -28028,6 +28133,9 @@
                         "$ref": "#/components/schemas/github-app-installations"
                       }
                     },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
                     "meta": {
                       "type": "object",
                       "properties": {
@@ -29966,6 +30074,9 @@
                       "items": {
                         "$ref": "#/components/schemas/workspace-transfers"
                       }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
                     },
                     "meta": {
                       "type": "object",
@@ -40429,23 +40540,27 @@
                 "properties": {
                   "advisory-failed": {
                     "type": "integer",
-                    "description": "Total number of policies with advisory enforcement level that failed across all policy sets"
+                    "description": "Policies with advisory enforcement level that failed"
                   },
                   "mandatory-failed": {
                     "type": "integer",
-                    "description": "Total number of policies with mandatory or mandatory-overridable enforcement level that failed across all policy sets"
+                    "description": "Policies with mandatory enforcement level that failed"
+                  },
+                  "mandatory-overridable-failed": {
+                    "type": "integer",
+                    "description": "Policies with mandatory-overridable enforcement level that failed"
                   },
                   "passed": {
                     "type": "integer",
-                    "description": "Total number of policies that passed across all policy sets"
+                    "description": "Policies that passed"
                   },
                   "errored": {
                     "type": "integer",
-                    "description": "Total number of policies that encountered errors during evaluation across all policy sets"
+                    "description": "Policies that errored during evaluation"
                   },
                   "unknown": {
                     "type": "integer",
-                    "description": "Total number of policies with unknown evaluation results across all policy sets"
+                    "description": "Policies with an unknown evaluation result"
                   }
                 }
               },
@@ -40472,10 +40587,10 @@
                   }
                 }
               },
-              "organized-log": {
+              "archivist-supported": {
                 "type": "boolean",
-                "deprecated": true,
-                "description": "Deprecated. Always `true`."
+                "readOnly": true,
+                "description": "Whether this evaluation supports archivist-backed outcome storage. When `true`,\nfull policy results are available via `policy-set-result-url` on each\n`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.\n"
               },
               "permissions": {
                 "type": "object",
@@ -40568,7 +40683,8 @@
               "outcomes": {
                 "type": "array",
                 "nullable": true,
-                "description": "List of policy outcomes, each representing the evaluation result of a single policy within the policy set",
+                "deprecated": true,
+                "description": "Deprecated. Populated for runs that did not support archivist-backed storage.\nUse `policy-set-result-url` to retrieve full policy results for new runs.\n",
                 "items": {
                   "type": "object",
                   "properties": {
@@ -40736,25 +40852,35 @@
                 "properties": {
                   "advisory-failed": {
                     "type": "integer",
-                    "description": "Number of policies with advisory enforcement level that failed"
+                    "description": "Policies with advisory enforcement level that failed"
                   },
                   "mandatory-failed": {
                     "type": "integer",
-                    "description": "Number of policies with mandatory or mandatory-overridable enforcement level that failed"
+                    "description": "Policies with mandatory enforcement level that failed"
+                  },
+                  "mandatory-overridable-failed": {
+                    "type": "integer",
+                    "description": "Policies with mandatory-overridable enforcement level that failed"
                   },
                   "passed": {
                     "type": "integer",
-                    "description": "Number of policies that passed"
+                    "description": "Policies that passed"
                   },
                   "errored": {
                     "type": "integer",
-                    "description": "Number of policies that encountered errors during evaluation"
+                    "description": "Policies that errored during evaluation"
                   },
                   "unknown": {
                     "type": "integer",
-                    "description": "Number of policies with unknown evaluation results (e.g., due to unknown Terraform values)"
+                    "description": "Policies with an unknown evaluation result"
                   }
                 }
+              },
+              "policy-set-result-url": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "URL to download the full policy result blob from Archivist.\nPresent only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.\nWhen `null`, fall back to the `outcomes` array.\n"
               }
             }
           },

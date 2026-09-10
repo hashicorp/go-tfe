@@ -10,15 +10,17 @@ import (
 type TfPolicySetOutcome_attributes_resultCount struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // Number of policies with advisory enforcement level that failed
+    // Policies with advisory enforcement level that failed
     advisoryFailed *int32
-    // Number of policies that encountered errors during evaluation
+    // Policies that errored during evaluation
     errored *int32
-    // Number of policies with mandatory or mandatory-overridable enforcement level that failed
+    // Policies with mandatory enforcement level that failed
     mandatoryFailed *int32
-    // Number of policies that passed
+    // Policies with mandatory-overridable enforcement level that failed
+    mandatoryOverridableFailed *int32
+    // Policies that passed
     passed *int32
-    // Number of policies with unknown evaluation results (e.g., due to unknown Terraform values)
+    // Policies with an unknown evaluation result
     unknown *int32
 }
 // NewTfPolicySetOutcome_attributes_resultCount instantiates a new TfPolicySetOutcome_attributes_resultCount and sets the default values.
@@ -38,12 +40,12 @@ func CreateTfPolicySetOutcome_attributes_resultCountFromDiscriminatorValue(parse
 func (m *TfPolicySetOutcome_attributes_resultCount) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetAdvisoryFailed gets the advisory-failed property value. Number of policies with advisory enforcement level that failed
+// GetAdvisoryFailed gets the advisory-failed property value. Policies with advisory enforcement level that failed
 // returns a *int32 when successful
 func (m *TfPolicySetOutcome_attributes_resultCount) GetAdvisoryFailed()(*int32) {
     return m.advisoryFailed
 }
-// GetErrored gets the errored property value. Number of policies that encountered errors during evaluation
+// GetErrored gets the errored property value. Policies that errored during evaluation
 // returns a *int32 when successful
 func (m *TfPolicySetOutcome_attributes_resultCount) GetErrored()(*int32) {
     return m.errored
@@ -82,6 +84,16 @@ func (m *TfPolicySetOutcome_attributes_resultCount) GetFieldDeserializers()(map[
         }
         return nil
     }
+    res["mandatory-overridable-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMandatoryOverridableFailed(val)
+        }
+        return nil
+    }
     res["passed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -104,17 +116,22 @@ func (m *TfPolicySetOutcome_attributes_resultCount) GetFieldDeserializers()(map[
     }
     return res
 }
-// GetMandatoryFailed gets the mandatory-failed property value. Number of policies with mandatory or mandatory-overridable enforcement level that failed
+// GetMandatoryFailed gets the mandatory-failed property value. Policies with mandatory enforcement level that failed
 // returns a *int32 when successful
 func (m *TfPolicySetOutcome_attributes_resultCount) GetMandatoryFailed()(*int32) {
     return m.mandatoryFailed
 }
-// GetPassed gets the passed property value. Number of policies that passed
+// GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+// returns a *int32 when successful
+func (m *TfPolicySetOutcome_attributes_resultCount) GetMandatoryOverridableFailed()(*int32) {
+    return m.mandatoryOverridableFailed
+}
+// GetPassed gets the passed property value. Policies that passed
 // returns a *int32 when successful
 func (m *TfPolicySetOutcome_attributes_resultCount) GetPassed()(*int32) {
     return m.passed
 }
-// GetUnknown gets the unknown property value. Number of policies with unknown evaluation results (e.g., due to unknown Terraform values)
+// GetUnknown gets the unknown property value. Policies with an unknown evaluation result
 // returns a *int32 when successful
 func (m *TfPolicySetOutcome_attributes_resultCount) GetUnknown()(*int32) {
     return m.unknown
@@ -135,6 +152,12 @@ func (m *TfPolicySetOutcome_attributes_resultCount) Serialize(writer i878a80d233
     }
     {
         err := writer.WriteInt32Value("mandatory-failed", m.GetMandatoryFailed())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteInt32Value("mandatory-overridable-failed", m.GetMandatoryOverridableFailed())
         if err != nil {
             return err
         }
@@ -163,23 +186,27 @@ func (m *TfPolicySetOutcome_attributes_resultCount) Serialize(writer i878a80d233
 func (m *TfPolicySetOutcome_attributes_resultCount) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetAdvisoryFailed sets the advisory-failed property value. Number of policies with advisory enforcement level that failed
+// SetAdvisoryFailed sets the advisory-failed property value. Policies with advisory enforcement level that failed
 func (m *TfPolicySetOutcome_attributes_resultCount) SetAdvisoryFailed(value *int32)() {
     m.advisoryFailed = value
 }
-// SetErrored sets the errored property value. Number of policies that encountered errors during evaluation
+// SetErrored sets the errored property value. Policies that errored during evaluation
 func (m *TfPolicySetOutcome_attributes_resultCount) SetErrored(value *int32)() {
     m.errored = value
 }
-// SetMandatoryFailed sets the mandatory-failed property value. Number of policies with mandatory or mandatory-overridable enforcement level that failed
+// SetMandatoryFailed sets the mandatory-failed property value. Policies with mandatory enforcement level that failed
 func (m *TfPolicySetOutcome_attributes_resultCount) SetMandatoryFailed(value *int32)() {
     m.mandatoryFailed = value
 }
-// SetPassed sets the passed property value. Number of policies that passed
+// SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+func (m *TfPolicySetOutcome_attributes_resultCount) SetMandatoryOverridableFailed(value *int32)() {
+    m.mandatoryOverridableFailed = value
+}
+// SetPassed sets the passed property value. Policies that passed
 func (m *TfPolicySetOutcome_attributes_resultCount) SetPassed(value *int32)() {
     m.passed = value
 }
-// SetUnknown sets the unknown property value. Number of policies with unknown evaluation results (e.g., due to unknown Terraform values)
+// SetUnknown sets the unknown property value. Policies with an unknown evaluation result
 func (m *TfPolicySetOutcome_attributes_resultCount) SetUnknown(value *int32)() {
     m.unknown = value
 }
@@ -189,11 +216,13 @@ type TfPolicySetOutcome_attributes_resultCountable interface {
     GetAdvisoryFailed()(*int32)
     GetErrored()(*int32)
     GetMandatoryFailed()(*int32)
+    GetMandatoryOverridableFailed()(*int32)
     GetPassed()(*int32)
     GetUnknown()(*int32)
     SetAdvisoryFailed(value *int32)()
     SetErrored(value *int32)()
     SetMandatoryFailed(value *int32)()
+    SetMandatoryOverridableFailed(value *int32)()
     SetPassed(value *int32)()
     SetUnknown(value *int32)()
 }

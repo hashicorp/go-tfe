@@ -13,13 +13,12 @@ type TfPolicyEvaluation_attributes struct {
     actions TfPolicyEvaluation_attributes_actionsable
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
+    archivistSupported *bool
     // When the evaluation was created
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // Error information if the entire evaluation failed (not policy-specific errors)
     error TfPolicyEvaluation_attributes_errorable
-    // Deprecated. Always `true`.
-    // Deprecated: 
-    organizedLog *bool
     // User permissions for this evaluation
     permissions TfPolicyEvaluation_attributes_permissionsable
     // Aggregated counts of policy results across all policy sets in this evaluation
@@ -55,6 +54,11 @@ func (m *TfPolicyEvaluation_attributes) GetActions()(TfPolicyEvaluation_attribut
 func (m *TfPolicyEvaluation_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetArchivistSupported gets the archivist-supported property value. Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
+// returns a *bool when successful
+func (m *TfPolicyEvaluation_attributes) GetArchivistSupported()(*bool) {
+    return m.archivistSupported
+}
 // GetCreatedAt gets the created-at property value. When the evaluation was created
 // returns a *Time when successful
 func (m *TfPolicyEvaluation_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -79,6 +83,16 @@ func (m *TfPolicyEvaluation_attributes) GetFieldDeserializers()(map[string]func(
         }
         return nil
     }
+    res["archivist-supported"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetArchivistSupported(val)
+        }
+        return nil
+    }
     res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -96,16 +110,6 @@ func (m *TfPolicyEvaluation_attributes) GetFieldDeserializers()(map[string]func(
         }
         if val != nil {
             m.SetError(val.(TfPolicyEvaluation_attributes_errorable))
-        }
-        return nil
-    }
-    res["organized-log"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganizedLog(val)
         }
         return nil
     }
@@ -171,12 +175,6 @@ func (m *TfPolicyEvaluation_attributes) GetFieldDeserializers()(map[string]func(
     }
     return res
 }
-// GetOrganizedLog gets the organized-log property value. Deprecated. Always `true`.
-// Deprecated: 
-// returns a *bool when successful
-func (m *TfPolicyEvaluation_attributes) GetOrganizedLog()(*bool) {
-    return m.organizedLog
-}
 // GetPermissions gets the permissions property value. User permissions for this evaluation
 // returns a TfPolicyEvaluation_attributes_permissionsable when successful
 func (m *TfPolicyEvaluation_attributes) GetPermissions()(TfPolicyEvaluation_attributes_permissionsable) {
@@ -217,12 +215,6 @@ func (m *TfPolicyEvaluation_attributes) Serialize(writer i878a80d2330e89d2689638
     }
     {
         err := writer.WriteObjectValue("error", m.GetError())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("organized-log", m.GetOrganizedLog())
         if err != nil {
             return err
         }
@@ -274,6 +266,10 @@ func (m *TfPolicyEvaluation_attributes) SetActions(value TfPolicyEvaluation_attr
 func (m *TfPolicyEvaluation_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetArchivistSupported sets the archivist-supported property value. Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
+func (m *TfPolicyEvaluation_attributes) SetArchivistSupported(value *bool)() {
+    m.archivistSupported = value
+}
 // SetCreatedAt sets the created-at property value. When the evaluation was created
 func (m *TfPolicyEvaluation_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
@@ -281,11 +277,6 @@ func (m *TfPolicyEvaluation_attributes) SetCreatedAt(value *i336074805fc853987ab
 // SetError sets the error property value. Error information if the entire evaluation failed (not policy-specific errors)
 func (m *TfPolicyEvaluation_attributes) SetError(value TfPolicyEvaluation_attributes_errorable)() {
     m.error = value
-}
-// SetOrganizedLog sets the organized-log property value. Deprecated. Always `true`.
-// Deprecated: 
-func (m *TfPolicyEvaluation_attributes) SetOrganizedLog(value *bool)() {
-    m.organizedLog = value
 }
 // SetPermissions sets the permissions property value. User permissions for this evaluation
 func (m *TfPolicyEvaluation_attributes) SetPermissions(value TfPolicyEvaluation_attributes_permissionsable)() {
@@ -315,9 +306,9 @@ type TfPolicyEvaluation_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActions()(TfPolicyEvaluation_attributes_actionsable)
+    GetArchivistSupported()(*bool)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetError()(TfPolicyEvaluation_attributes_errorable)
-    GetOrganizedLog()(*bool)
     GetPermissions()(TfPolicyEvaluation_attributes_permissionsable)
     GetResultCount()(TfPolicyEvaluation_attributes_resultCountable)
     GetStageType()(*string)
@@ -325,9 +316,9 @@ type TfPolicyEvaluation_attributesable interface {
     GetStatusTimestamps()(TfPolicyEvaluation_attributes_statusTimestampsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetActions(value TfPolicyEvaluation_attributes_actionsable)()
+    SetArchivistSupported(value *bool)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetError(value TfPolicyEvaluation_attributes_errorable)()
-    SetOrganizedLog(value *bool)()
     SetPermissions(value TfPolicyEvaluation_attributes_permissionsable)()
     SetResultCount(value TfPolicyEvaluation_attributes_resultCountable)()
     SetStageType(value *string)()
