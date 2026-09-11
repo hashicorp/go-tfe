@@ -10173,8 +10173,9 @@ type PolicySetCreateOptions struct {
 	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
 
 	// Optional: Matching logic for tag selectors.
-	// Valid values: "any" (OR, default) or "all" (AND — workspace must match all selectors).
-	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
+	// Three-state: zero value (unset) = field omitted from request body (don't touch);
+	// NullableString("any"/"all") = set value; NullString() = explicitly clear.
+	TagSelectorMatchingLogic jsonapi.NullableAttr[string] `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -10221,8 +10222,9 @@ type PolicySetUpdateOptions struct {
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 	
 	// Optional: Matching logic for tag selectors.
-	// Valid values: "any" or "all". Required when tag selectors are present.
-	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic"`
+	// Three-state: zero value (unset) = field omitted from request body (don't touch);
+	// NullableString("any"/"all") = set value; NullString() = explicitly clear.
+	TagSelectorMatchingLogic jsonapi.NullableAttr[string] `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetAddPoliciesOptions represents the options for adding policies
@@ -10660,8 +10662,11 @@ func (o PolicySetCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
-	if o.TagSelectorMatchingLogic != nil {
-		v := *o.TagSelectorMatchingLogic
+	if o.TagSelectorMatchingLogic.IsSpecified() && !o.TagSelectorMatchingLogic.IsNull() {
+		v, err := o.TagSelectorMatchingLogic.Get()
+		if err != nil {
+			return err
+		}
 		if v != "any" && v != "all" {
 			return ErrInvalidTagSelectorMatchingLogic
 		}
@@ -10703,8 +10708,11 @@ func (o PolicySetUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
 	}
-	if o.TagSelectorMatchingLogic != nil {
-		v := *o.TagSelectorMatchingLogic
+	if o.TagSelectorMatchingLogic.IsSpecified() && !o.TagSelectorMatchingLogic.IsNull() {
+		v, err := o.TagSelectorMatchingLogic.Get()
+		if err != nil {
+			return err
+		}
 		if v != "any" && v != "all" {
 			return ErrInvalidTagSelectorMatchingLogic
 		}
