@@ -45,6 +45,10 @@ jobs:
       - name: verify no changes
         run: git diff --exit-code
 
+      - name: run v1 tests
+        run: |
+          make test_v1
+
       - name: run tests
         run: |
           make test

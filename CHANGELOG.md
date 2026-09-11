@@ -1,30 +1,33 @@
-# Unreleased
+# v2.11.0
+
+* Bug Fix: Some pagingation parameter types in get responses were incorrectly shaped and, as a result, returned null.
+* Bug Fix: PolicySetUpdateOptions: TagSelectorMatchingLogic type has been changed to NullableString to make it possible to clear that field.
+* Enhancement: Add support for stack-level notification configurations.
+* Enhancement: The latest API operations are available.
 
 # v2.10.0
 
-* The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.9.0
 
-* The latest public endpoints are available
-
-* Enhancement: Add support for stack-level notification configurations.
+* Enhancement: The latest API operations are available.
 
 # v2.8.0
 
-* The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.7.0
 
-* The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.6.0
 
-* The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.5.0
 
-* The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 * Bug Fix: Set `Content-Type: application/vnd.api+json` on POST, PATCH, and DELETE requests without a body.
 
@@ -37,19 +40,19 @@
   
 # v2.4.0
 
-The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.3.0
 
-The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.2.0
 
-The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.1.0
 
-The latest public endpoints are available
+* Enhancement: The latest API operations are available.
 
 # v2.0.0
 

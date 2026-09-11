@@ -1,4 +1,4 @@
-.PHONY: vet fmt lint test spec api
+.PHONY: vet fmt lint test spec api test_v1 lint_v1 api_internal spec_internal
 
 vet:
 	go vet
@@ -14,6 +14,9 @@ lint:
 
 lint_v1:
 	golangci-lint run
+
+test_v1:
+	go test ./... $(TESTARGS)
 
 test:
 	cd v2 && go test ./... $(TESTARGS)
