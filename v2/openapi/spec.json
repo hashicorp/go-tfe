@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "d97c77dc",
+    "version": "42e0a3ed",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -30450,14 +30450,7 @@
                 "format": "date-time",
                 "nullable": true,
                 "readOnly": true,
-                "description": "Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.\n"
-              },
-              "deactivated-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true,
-                "readOnly": true,
-                "description": "Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.\n"
+                "description": "Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.\n"
               }
             }
           }
@@ -37426,6 +37419,11 @@
               },
               "generate-config-out": {
                 "type": "boolean"
+              },
+              "policy-evaluation-opt-in": {
+                "type": "boolean",
+                "writeOnly": true,
+                "description": "Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted."
               },
               "resources-discovered": {
                 "type": "integer",
