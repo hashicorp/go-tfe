@@ -15,9 +15,7 @@ type AdminBanners_attributes struct {
     audience *AdminBanners_attributes_audience
     // Body text of the banner. Limited HTML is allowed: strong, em, b, i, and anchor tags with href. All other tags and attributes are stripped. Maximum 255 characters after sanitization.
     body *string
-    // Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.
-    deactivatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.
+    // Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
     publishedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.
     scheduledExpireAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -57,11 +55,6 @@ func (m *AdminBanners_attributes) GetAudience()(*AdminBanners_attributes_audienc
 func (m *AdminBanners_attributes) GetBody()(*string) {
     return m.body
 }
-// GetDeactivatedAt gets the deactivated-at property value. Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.
-// returns a *Time when successful
-func (m *AdminBanners_attributes) GetDeactivatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.deactivatedAt
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *AdminBanners_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -83,16 +76,6 @@ func (m *AdminBanners_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         if val != nil {
             m.SetBody(val)
-        }
-        return nil
-    }
-    res["deactivated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeactivatedAt(val)
         }
         return nil
     }
@@ -158,7 +141,7 @@ func (m *AdminBanners_attributes) GetFieldDeserializers()(map[string]func(i878a8
     }
     return res
 }
-// GetPublishedAt gets the published-at property value. Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.
+// GetPublishedAt gets the published-at property value. Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
 // returns a *Time when successful
 func (m *AdminBanners_attributes) GetPublishedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.publishedAt
@@ -254,11 +237,7 @@ func (m *AdminBanners_attributes) SetAudience(value *AdminBanners_attributes_aud
 func (m *AdminBanners_attributes) SetBody(value *string)() {
     m.body = value
 }
-// SetDeactivatedAt sets the deactivated-at property value. Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.
-func (m *AdminBanners_attributes) SetDeactivatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.deactivatedAt = value
-}
-// SetPublishedAt sets the published-at property value. Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.
+// SetPublishedAt sets the published-at property value. Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
 func (m *AdminBanners_attributes) SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.publishedAt = value
 }
@@ -287,7 +266,6 @@ type AdminBanners_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAudience()(*AdminBanners_attributes_audience)
     GetBody()(*string)
-    GetDeactivatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetPublishedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetScheduledExpireAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetScheduledPublishAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -296,7 +274,6 @@ type AdminBanners_attributesable interface {
     GetTitle()(*string)
     SetAudience(value *AdminBanners_attributes_audience)()
     SetBody(value *string)()
-    SetDeactivatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetScheduledExpireAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetScheduledPublishAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
