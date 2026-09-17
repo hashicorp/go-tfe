@@ -16,9 +16,9 @@ documentation and API, the platform will always be stated as 'Terraform
 Enterprise' - but a feature will be explicitly noted as only supported in one or
 the other, if applicable (rare).
 
-## Version Information
+## Important Service Maintenance Notice
 
-Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
+go-tfe module v1 is deprecated, only receiving critical patches and seldom releases. [go-tfe/v2](https://github.com/hashicorp/go-tfe) is under active development and receives frequent platform API updates. Please migrate to the v2 of this module if you need to access the latest HCP Terraform / Terraform Enterprise platform features.
 
 ## Example Usage
 
