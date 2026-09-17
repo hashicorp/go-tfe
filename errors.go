@@ -384,6 +384,8 @@ var (
 
 	ErrTagSelectorMinLimit = errors.New("must provide at least one tag selector")
 
+	ErrInvalidTagSelectorMatchingLogic = errors.New(`tag selector matching logic must be "any" or "all"`)
+
 	ErrRequiredPlan = errors.New("plan is required")
 
 	ErrRequiredPolicies = errors.New("policies is required")

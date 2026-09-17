@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"net/url"
 	"time"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -118,6 +120,12 @@ type PolicySet struct {
 	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns"`
 	// BETA: The tag selectors for this policy set.
 	TagSelectors []*PolicySetTagSelectorAttr `jsonapi:"attr,tag-selectors"`
+
+	// TagSelectorMatchingLogic controls how multiple tag selectors are combined.
+	// "any" means OR semantics — applies to workspaces matching any selector.
+	// "all" means AND semantics — applies only to workspaces matching all selectors.
+	// nil when no tag selectors are active.
+	TagSelectorMatchingLogic *string `jsonapi:"attr,tag-selector-matching-logic"`
 
 	// Relations
 	// The organization to which the policy set belongs to.
@@ -247,6 +255,10 @@ type PolicySetCreateOptions struct {
 
 	// BETA: Optional: A list of tag selectors for enforcement/exclusion based on tags
 	TagSelectors []*PolicySetTagSelector `jsonapi:"attr,tag-selectors,omitempty"`
+
+	// Three-state: zero value (unset) = field omitted from request body (don't touch);
+	// NullableString("any"/"all") = set value; NullString() = explicitly clear.
+	TagSelectorMatchingLogic jsonapi.NullableAttr[string] `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -291,6 +303,10 @@ type PolicySetUpdateOptions struct {
 	// directly-attached policies (*PolicySet.Policies). Specifying this
 	// option when policies are already present will result in an error.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// Three-state: zero value (unset) = field omitted from request body (don't touch);
+	// NullableString("any"/"all") = set value; NullString() = explicitly clear.
+	TagSelectorMatchingLogic jsonapi.NullableAttr[string] `jsonapi:"attr,tag-selector-matching-logic,omitempty"`
 }
 
 // PolicySetAddPoliciesOptions represents the options for adding policies
@@ -728,6 +744,15 @@ func (o PolicySetCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+	if o.TagSelectorMatchingLogic.IsSpecified() && !o.TagSelectorMatchingLogic.IsNull() {
+		v, err := o.TagSelectorMatchingLogic.Get()
+		if err != nil {
+			return err
+		}
+		if v != "any" && v != "all" {
+			return ErrInvalidTagSelectorMatchingLogic
+		}
+	}
 	return nil
 }
 
@@ -764,6 +789,15 @@ func (o PolicySetRemoveProjectsOptions) valid() error {
 func (o PolicySetUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
+	}
+	if o.TagSelectorMatchingLogic.IsSpecified() && !o.TagSelectorMatchingLogic.IsNull() {
+		v, err := o.TagSelectorMatchingLogic.Get()
+		if err != nil {
+			return err
+		}
+		if v != "any" && v != "all" {
+			return ErrInvalidTagSelectorMatchingLogic
+		}
 	}
 	return nil
 }

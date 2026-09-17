@@ -1,4 +1,18 @@
-# Unreleased
+# v1.111.1
+
+## Bug Fixes
+* PolicySets: Changes the type of `TagSelectorMatchingLogic` added in v1.111.0 to support clearing the value using `null`
+
+# v1.111.0
+
+## Enhancements
+* Adds `TagSelectorMatchingLogic` field to policy set structs by @anubhav-goel [#1436](https://github.com/hashicorp/go-tfe/pull/1436)
+
+# v1.110.0
+
+## Enhancements
+* Add support for listing `AgentTokens` with`ListWithOptions` by @Uk1288 [#1409](https://github.com/hashicorp/go-tfe/pull/1409)
+* Adds `PolicyEvaluationQueued` to `PolicyEvaluationStatus` enum by @sagarp917 [#1402](https://github.com/hashicorp/go-tfe/pull/1402)
 
 # v1.109.0
 
