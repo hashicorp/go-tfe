@@ -7,11 +7,9 @@ The github.com/hashicorp/go-tfe/v2 package will be generated from the
 [US production OpenAPI endpoint](https://app.terraform.io/openapi/prerelease.json) specification
 nightly and will include the new functionality.
 
-### v1 package (root directory) Contributions
+### v1.x Contributions
 
-v1.go contains the final version of the go-tfe (v1) package. You may add critical fixes or security
-updates to v1.go, but the functionality is NO LONGER TESTED and SHOULD NOT BE EXTENDED except for
-in uncommon situations as determined by @hashicorp/tf-core-cloud.
+You may create a PR containing critical fixes or security using branch `1.x` as a base, but please be aware that the functionality is NO LONGER TESTED BY CI and SHOULD NOT BE EXTENDED except for in uncommon situations as determined by @hashicorp/tf-core-cloud. Consider migrating callers to use the v2 module if new platform features are required.
 
 ### go-tfe Core Contributions
 
