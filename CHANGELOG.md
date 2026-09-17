@@ -1,7 +1,7 @@
-# v1.112.0
+# v1.111.2
 
-## Enhancements
-* NotificationConfigurations: Add support for stack-level notification configurations.
+## Bug Fixes
+* Fixes a missing backport on 1.x for stack-level notification configurations
 
 # v1.111.1
 
