@@ -220,6 +220,10 @@ This API client is a wrapper around a client generated from an OpenAPI specifica
 likely there is an issue in the upstream API definition. To contribute to the wrapper portion of the
 API client, see [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
+At this stage, most issues may be attributed to the upstream internal API specification. Please [create a new issue](https://github.com/hashicorp/go-tfe/issues/new?template=bug_report.md) if you observe unexpected behavior.
+
+Looking to patch the go-tfe v1 module? That module is released from [the 1.x branch](https://github.com/hashicorp/go-tfe/tree/1.x) so you must base your changes from that branch. More scrutiny is applied to 1.x patches, as we recommend callers migrate to the v2 module when possible.
+
 ## Updating the SDK Client from Spec
 
 Run `make api`
