@@ -14,6 +14,8 @@ type NoCodeQuery_attributes struct {
     generateConfigOut *bool
     // The noCodeQueryProviders property
     noCodeQueryProviders []NoCodeQuery_attributes_noCodeQueryProvidersable
+    // Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+    policyEvaluationOptIn *bool
     // The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
     source *NoCodeQuery_attributes_source
 }
@@ -64,6 +66,16 @@ func (m *NoCodeQuery_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["policy-evaluation-opt-in"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicyEvaluationOptIn(val)
+        }
+        return nil
+    }
     res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseNoCodeQuery_attributes_source)
         if err != nil {
@@ -86,6 +98,11 @@ func (m *NoCodeQuery_attributes) GetGenerateConfigOut()(*bool) {
 func (m *NoCodeQuery_attributes) GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable) {
     return m.noCodeQueryProviders
 }
+// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+// returns a *bool when successful
+func (m *NoCodeQuery_attributes) GetPolicyEvaluationOptIn()(*bool) {
+    return m.policyEvaluationOptIn
+}
 // GetSource gets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
 // returns a *NoCodeQuery_attributes_source when successful
 func (m *NoCodeQuery_attributes) GetSource()(*NoCodeQuery_attributes_source) {
@@ -107,6 +124,12 @@ func (m *NoCodeQuery_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
             }
         }
         err := writer.WriteCollectionOfObjectValues("no-code-query-providers", cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("policy-evaluation-opt-in", m.GetPolicyEvaluationOptIn())
         if err != nil {
             return err
         }
@@ -138,6 +161,10 @@ func (m *NoCodeQuery_attributes) SetGenerateConfigOut(value *bool)() {
 func (m *NoCodeQuery_attributes) SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)() {
     m.noCodeQueryProviders = value
 }
+// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+func (m *NoCodeQuery_attributes) SetPolicyEvaluationOptIn(value *bool)() {
+    m.policyEvaluationOptIn = value
+}
 // SetSource sets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
 func (m *NoCodeQuery_attributes) SetSource(value *NoCodeQuery_attributes_source)() {
     m.source = value
@@ -147,8 +174,10 @@ type NoCodeQuery_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetGenerateConfigOut()(*bool)
     GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable)
+    GetPolicyEvaluationOptIn()(*bool)
     GetSource()(*NoCodeQuery_attributes_source)
     SetGenerateConfigOut(value *bool)()
     SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)()
+    SetPolicyEvaluationOptIn(value *bool)()
     SetSource(value *NoCodeQuery_attributes_source)()
 }
