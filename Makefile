@@ -1,22 +1,16 @@
-.PHONY: vet fmt lint test spec api test_v1 lint_v1 api_internal spec_internal
+.PHONY: vet fmt lint test spec api api_internal spec_internal
 
 vet:
-	go vet
+	cd v2 && go vet
 
 fmt:
-	gofmt -s -l -w .
+	cd v2 && gofmt -s -l -w .
 
 fmtcheck:
 	./scripts/gofmtcheck.sh
 
 lint:
 	cd v2 && golangci-lint run
-
-lint_v1:
-	golangci-lint run
-
-test_v1:
-	go test ./... $(TESTARGS)
 
 test:
 	cd v2 && go test ./... $(TESTARGS)
