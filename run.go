@@ -144,6 +144,7 @@ type Run struct {
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
 	InvokeActionAddrs      []string             `jsonapi:"attr,invoke-action-addrs,omitempty"`
 	Message                string               `jsonapi:"attr,message"`
+	MinimalRefresh         bool                 `jsonapi:"attr,minimal-refresh"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PolicyPaths            []string             `jsonapi:"attr,policy-paths,omitempty"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
@@ -356,6 +357,10 @@ type RunCreateOptions struct {
 	// provisioned resources.
 	IsDestroy *bool `jsonapi:"attr,is-destroy,omitempty"`
 
+	// MinimalRefresh determines if the run should
+	// only refresh the state of resources that have changed.
+	MinimalRefresh *bool `jsonapi:"attr,minimal-refresh,omitempty"`
+	
 	// Refresh determines if the run should
 	// update the state prior to checking for differences
 	Refresh *bool `jsonapi:"attr,refresh,omitempty"`
