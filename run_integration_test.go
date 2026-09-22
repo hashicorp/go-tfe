@@ -248,6 +248,61 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 		assert.Equal(t, "1.0.0", r.TerraformVersion)
 	})
 
+	t.Run("with minimal refresh set to true", func(t *testing.T) {
+		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TerraformVersion: String("1.17.0-beta1"),
+		})
+		defer minWorkspaceCleanup()
+
+		createUploadedConfigurationVersion(t, client, minWorkspace)
+
+		options := RunCreateOptions{
+			Workspace:      minWorkspace,
+			MinimalRefresh: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.MinimalRefresh)
+	})
+
+	t.Run("with minimal refresh set to false", func(t *testing.T) {
+		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TerraformVersion: String("1.17.0-beta1"),
+		})
+		defer minWorkspaceCleanup()
+
+		createUploadedConfigurationVersion(t, client, minWorkspace)
+
+		options := RunCreateOptions{
+			Workspace:      minWorkspace,
+			MinimalRefresh: Bool(false),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, false, r.MinimalRefresh)
+	})
+
+	t.Run("with minimal refresh not set", func(t *testing.T) {
+		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TerraformVersion: String("1.17.0-beta1"),
+		})
+		defer minWorkspaceCleanup()
+
+		createUploadedConfigurationVersion(t, client, minWorkspace)
+		options := RunCreateOptions{
+			Workspace: minWorkspace,
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, false, r.MinimalRefresh)
+	})
+
 	t.Run("refresh defaults to true if not set as a create option", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace: wTest,
