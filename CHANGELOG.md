@@ -1,3 +1,7 @@
+# v2.12.0
+
+* Enhancement: The latest API operations are available.
+
 # v2.11.0
 
 * Bug Fix: Some pagingation parameter types in get responses were incorrectly shaped and, as a result, returned null.
