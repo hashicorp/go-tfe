@@ -63,8 +63,9 @@ func (m *BannersRequestBuilder) Get(ctx context.Context, requestConfiguration *i
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersCollectionEnvelopeable), nil
 }
-// Post creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
+// Post creates a site-wide announcement banner. Only one banner can be active at a time; attempting to create a banner while an active banner exists returns a 409 Conflict and does not modify the existing banner. Deactivate the existing banner before creating a replacement. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
 // returns a AdminBannersEnvelopeable when successful
+// returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *BannersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersEnvelopeable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -72,6 +73,7 @@ func (m *BannersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c
         return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "409": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
     res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAdminBannersEnvelopeFromDiscriminatorValue, errorMapping)
@@ -91,7 +93,7 @@ func (m *BannersRequestBuilder) ToGetRequestInformation(ctx context.Context, req
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
+// ToPostRequestInformation creates a site-wide announcement banner. Only one banner can be active at a time; attempting to create a banner while an active banner exists returns a 409 Conflict and does not modify the existing banner. Deactivate the existing banner before creating a replacement. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
 func (m *BannersRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminBannersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

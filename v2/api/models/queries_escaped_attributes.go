@@ -25,6 +25,8 @@ type Queries_attributes struct {
     logReadUrl *string
     // The permissions property
     permissions Queries_attributes_permissionsable
+    // Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+    policyEvaluationOptIn *bool
     // The policyPaths property
     policyPaths []string
     // The number of resources discovered by the query run.
@@ -144,6 +146,16 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["policy-evaluation-opt-in"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicyEvaluationOptIn(val)
+        }
+        return nil
+    }
     res["policy-paths"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfPrimitiveValues("string")
         if err != nil {
@@ -232,6 +244,11 @@ func (m *Queries_attributes) GetLogReadUrl()(*string) {
 func (m *Queries_attributes) GetPermissions()(Queries_attributes_permissionsable) {
     return m.permissions
 }
+// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+// returns a *bool when successful
+func (m *Queries_attributes) GetPolicyEvaluationOptIn()(*bool) {
+    return m.policyEvaluationOptIn
+}
 // GetPolicyPaths gets the policy-paths property value. The policyPaths property
 // returns a []string when successful
 func (m *Queries_attributes) GetPolicyPaths()([]string) {
@@ -278,6 +295,12 @@ func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
     }
     {
         err := writer.WriteObjectValue("permissions", m.GetPermissions())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("policy-evaluation-opt-in", m.GetPolicyEvaluationOptIn())
         if err != nil {
             return err
         }
@@ -348,6 +371,10 @@ func (m *Queries_attributes) SetLogReadUrl(value *string)() {
 func (m *Queries_attributes) SetPermissions(value Queries_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+func (m *Queries_attributes) SetPolicyEvaluationOptIn(value *bool)() {
+    m.policyEvaluationOptIn = value
+}
 // SetPolicyPaths sets the policy-paths property value. The policyPaths property
 func (m *Queries_attributes) SetPolicyPaths(value []string)() {
     m.policyPaths = value
@@ -382,6 +409,7 @@ type Queries_attributesable interface {
     GetGenerateConfigOut()(*bool)
     GetLogReadUrl()(*string)
     GetPermissions()(Queries_attributes_permissionsable)
+    GetPolicyEvaluationOptIn()(*bool)
     GetPolicyPaths()([]string)
     GetResourcesDiscovered()(*int32)
     GetSource()(*Queries_attributes_source)
@@ -395,6 +423,7 @@ type Queries_attributesable interface {
     SetGenerateConfigOut(value *bool)()
     SetLogReadUrl(value *string)()
     SetPermissions(value Queries_attributes_permissionsable)()
+    SetPolicyEvaluationOptIn(value *bool)()
     SetPolicyPaths(value []string)()
     SetResourcesDiscovered(value *int32)()
     SetSource(value *Queries_attributes_source)()

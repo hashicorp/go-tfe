@@ -67,6 +67,7 @@ import (
     id6f566863c53cc08116f3b49bdb31efb7ba723bea06fdf6c76b4f1e4af545a6d "github.com/hashicorp/go-tfe/v2/api/policychecks"
     ida37032331931bdbac35f8b15434de19f19da392d7e7a114a8246766075382a9 "github.com/hashicorp/go-tfe/v2/api/providersets"
     ie130cfa8b5f3763f675a0be8d887bc5a809e7f419969393d0dc9004d3aea5218 "github.com/hashicorp/go-tfe/v2/api/users"
+    ie2b6f65e0ac6e3a6aba4cd5de53d011fa531de082deb1f856f12056e20ac40d0 "github.com/hashicorp/go-tfe/v2/api/devportal"
     ie4e8a5e7741c39653d7b61de8102e5a34b061be78730b4d7d13dc8f5e67e0774 "github.com/hashicorp/go-tfe/v2/api/comments"
     ie7f103338a127a9846f577d50b43931980f000c0d8edc3ae070082b7b7bba397 "github.com/hashicorp/go-tfe/v2/api/policies"
     iea5097442934a1157207be9849ca51a8424fd810c26b13a889ff3d2e03b1c666 "github.com/hashicorp/go-tfe/v2/api/stacks"
@@ -174,6 +175,11 @@ func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa52901
 // returns a *CostEstimatesRequestBuilder when successful
 func (m *ApiClient) CostEstimates()(*i8c6b82e8fb2c75c6ded7fff41b32e80163047bc1e072bb86ea5aaa9bbb249d08.CostEstimatesRequestBuilder) {
     return i8c6b82e8fb2c75c6ded7fff41b32e80163047bc1e072bb86ea5aaa9bbb249d08.NewCostEstimatesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// DevPortal the devPortal property
+// returns a *DevPortalRequestBuilder when successful
+func (m *ApiClient) DevPortal()(*ie2b6f65e0ac6e3a6aba4cd5de53d011fa531de082deb1f856f12056e20ac40d0.DevPortalRequestBuilder) {
+    return ie2b6f65e0ac6e3a6aba4cd5de53d011fa531de082deb1f856f12056e20ac40d0.NewDevPortalRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // EmailRecipientStatuses the emailRecipientStatuses property
 // returns a *EmailRecipientStatusesRequestBuilder when successful
