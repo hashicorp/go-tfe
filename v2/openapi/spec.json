@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "d97c77dc",
+    "version": "2af413d3",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -19,6 +19,14 @@
     }
   ],
   "tags": [
+    {
+      "name": "developer-portal",
+      "x-vis": [
+        "public-beta"
+      ],
+      "x-displayName": "Developer Portal",
+      "description": "Developer Portal actions"
+    },
     {
       "name": "accounts",
       "x-displayName": "Accounts",
@@ -588,7 +596,7 @@
       "post": {
         "operationId": "createAdminBanner",
         "summary": "Create Site-Wide Announcement Banner",
-        "description": "Creates a site-wide announcement banner. Only one banner can be active at a time; creating a new banner automatically deactivates any existing active banner. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.\n\n\nThis operation is only available in Terraform Enterprise.",
+        "description": "Creates a site-wide announcement banner. Only one banner can be active at a time; attempting to create a banner while an active banner exists returns a 409 Conflict and does not modify the existing banner. Deactivate the existing banner before creating a replacement. If neither scheduled-publish-at nor scheduled-expire-at are provided, the banner is published immediately.\n\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
           "admin-banners"
         ],
@@ -609,6 +617,16 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/admin-banners-envelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "An active banner already exists.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -8974,7 +8992,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Comma-separated list of legacy tag names that workspaces must have."
+            "description": "Comma-separated list of up to 10 tag names that workspaces must have."
           },
           {
             "in": "query",
@@ -8983,7 +9001,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "Comma-separated list of legacy tag names that workspaces must not have."
+            "description": "Comma-separated list of up to 10 tag names that workspaces must not have."
           },
           {
             "in": "query",
@@ -15230,6 +15248,87 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/assessment-results": {
+      "get": {
+        "operationId": "listWorkspaceAssessmentResults",
+        "summary": "List Assessment Results for a Workspace",
+        "description": "List all assessment results for a workspace, most recent first.",
+        "tags": [
+          "assessment-results"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[assessment-results]",
+            "description": "Return only the specified fields for assessment-results resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of assessment results for the workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/assessment-results"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/applicable-varsets": {
       "get": {
         "operationId": "listApplicableVarsets",
@@ -18521,6 +18620,18 @@
             },
             "required": false,
             "description": "Filter policy sets by kind.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n"
+          },
+          {
+            "in": "query",
+            "name": "filter[ootb-policy]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when the OOTB policy feature is enabled for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.",
+            "x-vis": [
+              "hcpt"
+            ]
           },
           {
             "in": "query",
@@ -22548,6 +22659,15 @@
             },
             "required": true,
             "description": "The ID of the Agent Pool"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Sort tokens by creation time. Valid values are \"created-at\" (oldest first) and \"-created-at\" (newest first). Tokens with the same creation time are sorted by ID in the same direction. When omitted, no explicit ordering is applied.\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -30342,6 +30462,1469 @@
           }
         }
       }
+    },
+    "/dev-portal/organizations/{organization_name}/applications": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "searchDeveloperPortalApplications",
+        "summary": "Search Developer Portal applications",
+        "description": "Returns all applications across all projects in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-applications]",
+            "description": "Return only the specified fields for tdp-applications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of applications",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/applications/{application_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getDeveloperPortalApplicationOrgScoped",
+        "summary": "Get a Developer Portal application (org-scoped)",
+        "description": "Returns details of a specific application by its ID or name without requiring a project ID.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-applications]",
+            "description": "Return only the specified fields for tdp-applications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/projects/{project_external_id}/applications": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listDeveloperPortalApplications",
+        "summary": "List Developer Portal applications",
+        "description": "Returns all applications in a project.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-applications]",
+            "description": "Return only the specified fields for tdp-applications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of applications",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDeveloperPortalApplication",
+        "summary": "Create a Developer Portal application",
+        "description": "Creates a new application in a project from a template.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-application-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Application created successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/projects/{project_external_id}/applications/{application_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getDeveloperPortalApplication",
+        "summary": "Get a Developer Portal application",
+        "description": "Returns details of a specific application by its ID or name.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-applications]",
+            "description": "Return only the specified fields for tdp-applications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateDeveloperPortalApplication",
+        "summary": "Update a Developer Portal application",
+        "description": "Updates an existing application.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-application-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application updated successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-application-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDeveloperPortalApplication",
+        "summary": "Delete a Developer Portal application",
+        "description": "Deletes an application from a project.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Application deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/addon-definitions": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listDeveloperPortalAddOnDefinitions",
+        "summary": "List Developer Portal add-on definitions",
+        "description": "Returns all add-on definitions available in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-addon-definitions]",
+            "description": "Return only the specified fields for tdp-addon-definitions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of add-on definitions",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-definition-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDeveloperPortalAddOnDefinition",
+        "summary": "Create a Developer Portal add-on definition",
+        "description": "Creates a new add-on definition in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-addon-definition-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Add-on definition created successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-definition-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/addon-definitions/{add_on_definition_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getDeveloperPortalAddOnDefinition",
+        "summary": "Get a Developer Portal add-on definition",
+        "description": "Returns details of a specific add-on definition by its ID or name.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_definition_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the add-on definition.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-addon-definitions]",
+            "description": "Return only the specified fields for tdp-addon-definitions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Add-on definition details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-definition-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateDeveloperPortalAddOnDefinition",
+        "summary": "Update a Developer Portal add-on definition",
+        "description": "Updates an existing add-on definition.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_definition_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the add-on definition.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-addon-definition-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add-on definition updated successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-definition-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDeveloperPortalAddOnDefinition",
+        "summary": "Delete a Developer Portal add-on definition",
+        "description": "Deletes an add-on definition from an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_definition_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the add-on definition.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Add-on definition deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/templates": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listDeveloperPortalTemplates",
+        "summary": "List Developer Portal templates",
+        "description": "Returns all application templates available in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-templates]",
+            "description": "Return only the specified fields for tdp-templates resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of templates",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-template-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDeveloperPortalTemplate",
+        "summary": "Create a Developer Portal template",
+        "description": "Creates a new application template in an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-template-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template created successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-template-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/templates/{template_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getDeveloperPortalTemplate",
+        "summary": "Get a Developer Portal template",
+        "description": "Returns details of a specific application template by its ID or name.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "template_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the template.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-templates]",
+            "description": "Return only the specified fields for tdp-templates resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-template-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateDeveloperPortalTemplate",
+        "summary": "Update a Developer Portal template",
+        "description": "Updates an existing application template.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "template_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the template.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-template-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template updated successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-template-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDeveloperPortalTemplate",
+        "summary": "Delete a Developer Portal template",
+        "description": "Deletes an application template from an organization.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "template_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the template.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Template deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/projects/{project_external_id}/add-ons": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listDeveloperPortalProjectAddOns",
+        "summary": "List Developer Portal add-ons in a project",
+        "description": "Returns all add-ons installed within a project, across all applications.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-addons]",
+            "description": "Return only the specified fields for tdp-addons resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of add-ons",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/projects/{project_external_id}/applications/{application_id}/add-ons": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "listDeveloperPortalAddOns",
+        "summary": "List Developer Portal add-ons",
+        "description": "Returns all add-ons installed within a specific application.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-addons]",
+            "description": "Return only the specified fields for tdp-addons resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of add-ons",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDeveloperPortalAddOn",
+        "summary": "Create a Developer Portal add-on",
+        "description": "Installs a new add-on into an application from an add-on definition.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the application.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-addon-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Add-on created successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev-portal/organizations/{organization_name}/projects/{project_external_id}/add-ons/{add_on_id}": {
+      "x-vis": [
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getDeveloperPortalAddOn",
+        "summary": "Get a Developer Portal add-on",
+        "description": "Returns details of a specific installed add-on by its ID or name.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project containing the add-on.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the installed add-on.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[tdp-addons]",
+            "description": "Return only the specified fields for tdp-addons resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Add-on details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateDeveloperPortalAddOn",
+        "summary": "Rename a Developer Portal add-on",
+        "description": "Renames an installed add-on and its backing HCP Terraform workspace.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project containing the add-on.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the installed add-on.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tdp-addon-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add-on renamed successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tdp-addon-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDeveloperPortalAddOn",
+        "summary": "Delete a Developer Portal add-on",
+        "description": "Deletes an installed add-on and its backing HCP Terraform workspace.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "developer-portal"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the project containing the add-on.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "add_on_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID or name of the installed add-on.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Add-on deleted successfully"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -30408,8 +31991,8 @@
               },
               "body": {
                 "type": "string",
-                "maxLength": 255,
-                "description": "Body text of the banner. Limited HTML is allowed: strong, em, b, i, and anchor tags with href. All other tags and attributes are stripped. Maximum 255 characters after sanitization.\n"
+                "maxLength": 500,
+                "description": "Body text of the banner. Accepts the same HTML as the other customization settings (footer, login help, error and new user instructions): Rails' default allow-list, which permits common formatting such as bold, italic, links, lists, headings and code, and strips scripts, inline styles and form controls. Maximum 500 characters after sanitization.\n"
               },
               "style": {
                 "type": "string",
@@ -30450,14 +32033,7 @@
                 "format": "date-time",
                 "nullable": true,
                 "readOnly": true,
-                "description": "Set automatically when the banner is created without a schedule, or when the scheduled publish time is reached.\n"
-              },
-              "deactivated-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true,
-                "readOnly": true,
-                "description": "Set when the banner is deactivated, either because a newer banner was created or because the scheduled expiry time was reached.\n"
+                "description": "Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.\n"
               }
             }
           }
@@ -35249,7 +36825,7 @@
               "description": {
                 "type": "string",
                 "nullable": true,
-                "description": "Team description. Only available when effective permissions are enabled for unified organizations."
+                "description": "Team description. Can be manually entered for all teams."
               },
               "sso-team-id": {
                 "type": "string",
@@ -37427,6 +39003,11 @@
               "generate-config-out": {
                 "type": "boolean"
               },
+              "policy-evaluation-opt-in": {
+                "type": "boolean",
+                "writeOnly": true,
+                "description": "Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted."
+              },
               "resources-discovered": {
                 "type": "integer",
                 "readOnly": true,
@@ -37638,6 +39219,11 @@
                 "type": "boolean",
                 "writeOnly": true,
                 "description": "Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false."
+              },
+              "policy-evaluation-opt-in": {
+                "type": "boolean",
+                "writeOnly": true,
+                "description": "Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false."
               },
               "no-code-query-providers": {
                 "type": "array",
@@ -39152,6 +40738,9 @@
               },
               "message": {
                 "type": "string"
+              },
+              "minimal-refresh": {
+                "type": "boolean"
               },
               "plan-only": {
                 "type": "boolean"
@@ -45479,6 +47068,716 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/workspace-transfers"
+          }
+        }
+      },
+      "tdp-addons-has-many": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "tdp-applications": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tdp-applications"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "readme-markdown": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The rendered Markdown output of the readme. Computed by the server from the raw readme content. Read-only."
+              },
+              "readme": {
+                "type": "string",
+                "description": "User-authored raw readme content for this application instance."
+              },
+              "template-name": {
+                "type": "string",
+                "description": "The name of the template this application was created from."
+              },
+              "application-template": {
+                "type": "object",
+                "readOnly": true,
+                "description": "The template this application was created from, including its configuration.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the template."
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "A short one-line summary of what this template provisions."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A longer description of this template."
+                  },
+                  "module-source": {
+                    "type": "string",
+                    "description": "The Terraform registry source address of the module backing this template."
+                  },
+                  "module-id": {
+                    "type": "string",
+                    "description": "The internal ID of the Terraform module version backing this template."
+                  },
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "readme-template": {
+                    "type": "string",
+                    "description": "A Markdown template used to generate the readme for applications created from this template."
+                  },
+                  "action-cfg-refs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "variable-options": {
+                    "type": "array",
+                    "description": "The input variable definitions exposed to users when creating an application from this template.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "variable-name": {
+                          "type": "string",
+                          "description": "The name of the variable."
+                        },
+                        "variable-type": {
+                          "type": "string",
+                          "description": "The type of the variable."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "A human-readable description of the variable."
+                        },
+                        "user-editable": {
+                          "type": "boolean",
+                          "description": "Whether the user can edit this variable when creating an application."
+                        },
+                        "options": {
+                          "type": "array",
+                          "description": "Allowed values for this variable.",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "tags": {
+                "type": "array",
+                "description": "Tags attached to this application for categorization.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "action-cfg-refs": {
+                "type": "array",
+                "readOnly": true,
+                "description": "References to action configurations associated with this application.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "output-values": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Output values produced by this application's backing Terraform workspace.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "input-variables": {
+                "type": "array",
+                "description": "Input variables to pass when creating an application from a template.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "variable-name": {
+                      "type": "string",
+                      "description": "The name of the variable."
+                    },
+                    "variable-type": {
+                      "type": "string",
+                      "description": "The type of the variable."
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value to assign to the variable."
+                    }
+                  }
+                }
+              },
+              "tfc-workspace-id": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The ID of the HCP Terraform workspace provisioned for this application."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-has-one"
+              },
+              "project": {
+                "$ref": "#/components/schemas/projects-has-one"
+              },
+              "add-ons": {
+                "$ref": "#/components/schemas/tdp-addons-has-many"
+              }
+            }
+          }
+        }
+      },
+      "tdp-application-collection-envelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tdp-applications"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          }
+        }
+      },
+      "tdp-application-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tdp-applications"
+          }
+        }
+      },
+      "tdp-addon-definitions": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tdp-addon-definitions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "summary": {
+                "type": "string",
+                "description": "A short one-line summary of what this add-on definition provisions."
+              },
+              "description": {
+                "type": "string",
+                "description": "A longer description of this add-on definition and its intended use."
+              },
+              "module-source": {
+                "type": "string",
+                "description": "The Terraform registry source address of the module backing this add-on definition."
+              },
+              "module-id": {
+                "type": "string",
+                "description": "The internal ID of the Terraform module version backing this add-on definition."
+              },
+              "variable-options": {
+                "type": "array",
+                "description": "The input variable definitions exposed to users when creating an add-on from this definition.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "variable-name": {
+                      "type": "string",
+                      "description": "The name of the variable."
+                    },
+                    "variable-type": {
+                      "type": "string",
+                      "description": "The type of the variable."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A human-readable description of the variable."
+                    },
+                    "user-editable": {
+                      "type": "boolean",
+                      "description": "Whether the user can edit this variable when creating an add-on."
+                    },
+                    "options": {
+                      "type": "array",
+                      "description": "Allowed values for this variable.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "readme-template": {
+                "type": "string",
+                "description": "A Markdown template used to generate the readme for add-ons created from this definition."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          }
+        }
+      },
+      "tdp-addon-definition-collection-envelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tdp-addon-definitions"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          }
+        }
+      },
+      "tdp-addon-definition-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tdp-addon-definitions"
+          }
+        }
+      },
+      "tdp-templates": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tdp-templates"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "summary": {
+                "type": "string",
+                "description": "A short one-line summary of what this template provisions."
+              },
+              "description": {
+                "type": "string",
+                "description": "A longer description of this template and its intended use."
+              },
+              "module-source": {
+                "type": "string",
+                "description": "The Terraform registry source address of the module backing this template."
+              },
+              "module-id": {
+                "type": "string",
+                "description": "The internal ID of the Terraform module version backing this template."
+              },
+              "variable-options": {
+                "type": "array",
+                "description": "The input variable definitions exposed to users when creating an application from this template.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "variable-name": {
+                      "type": "string",
+                      "description": "The name of the variable."
+                    },
+                    "variable-type": {
+                      "type": "string",
+                      "description": "The type of the variable."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A human-readable description of the variable."
+                    },
+                    "user-editable": {
+                      "type": "boolean",
+                      "description": "Whether the user can edit this variable when creating an application."
+                    },
+                    "options": {
+                      "type": "array",
+                      "description": "Allowed values for this variable.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "readme-template": {
+                "type": "string",
+                "description": "A Markdown template used to generate the readme for applications created from this template."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          }
+        }
+      },
+      "tdp-template-collection-envelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tdp-templates"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          }
+        }
+      },
+      "tdp-template-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tdp-templates"
+          }
+        }
+      },
+      "tdp-addon-definitions-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tdp-addon-definitions"
+            ]
+          }
+        }
+      },
+      "tdp-addon-definitions-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/tdp-addon-definitions-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "tdp-addons": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tdp-addons"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "application": {
+                "type": "object",
+                "readOnly": true,
+                "description": "The application this add-on is installed into.",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The ID of the application."
+                  }
+                }
+              },
+              "definition": {
+                "type": "object",
+                "readOnly": true,
+                "description": "The add-on definition this add-on was created from, including its name.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the add-on definition."
+                  }
+                }
+              },
+              "readme": {
+                "type": "string",
+                "description": "User-authored readme content for this add-on instance."
+              },
+              "labels": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Key-value labels attached to this add-on for categorization.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "summary": {
+                "type": "string",
+                "readOnly": true,
+                "description": "A short one-line summary of what this add-on does."
+              },
+              "description": {
+                "type": "string",
+                "readOnly": true,
+                "description": "A longer description of this add-on instance."
+              },
+              "count": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The number of workspace resources provisioned by this add-on."
+              },
+              "tags": {
+                "type": "array",
+                "description": "Tags attached to this add-on for categorization.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "module-source": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The Terraform registry source address of the module backing this add-on."
+              },
+              "terraform-workspace-id": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The ID of the HCP Terraform workspace provisioned for this add-on."
+              },
+              "module-id": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The internal ID of the Terraform module version backing this add-on."
+              },
+              "input-variables": {
+                "type": "array",
+                "description": "Input variables to pass when creating an add-on from a definition.",
+                "writeOnly": true,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "variable-name": {
+                      "type": "string",
+                      "description": "The name of the variable."
+                    },
+                    "variable-type": {
+                      "type": "string",
+                      "description": "The type of the variable."
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value to assign to the variable."
+                    }
+                  }
+                }
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "addon-definition": {
+                "$ref": "#/components/schemas/tdp-addon-definitions-has-one"
+              },
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-has-one"
+              },
+              "project": {
+                "$ref": "#/components/schemas/projects-has-one"
+              }
+            }
+          }
+        }
+      },
+      "tdp-addon-collection-envelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tdp-addons"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          }
+        }
+      },
+      "tdp-addon-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/tdp-addons"
           }
         }
       }
