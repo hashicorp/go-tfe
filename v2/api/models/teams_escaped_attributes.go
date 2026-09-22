@@ -13,7 +13,7 @@ type Teams_attributes struct {
     additionalData map[string]any
     // Whether team members are allowed to manage their own authentication tokens.
     allowMemberTokenManagement *bool
-    // Team description. Only available when effective permissions are enabled for unified organizations.
+    // Team description. Can be manually entered for all teams.
     description *string
     // The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
     hcpResourceName *string
@@ -64,7 +64,7 @@ func (m *Teams_attributes) GetAdditionalData()(map[string]any) {
 func (m *Teams_attributes) GetAllowMemberTokenManagement()(*bool) {
     return m.allowMemberTokenManagement
 }
-// GetDescription gets the description property value. Team description. Only available when effective permissions are enabled for unified organizations.
+// GetDescription gets the description property value. Team description. Can be manually entered for all teams.
 // returns a *string when successful
 func (m *Teams_attributes) GetDescription()(*string) {
     return m.description
@@ -345,7 +345,7 @@ func (m *Teams_attributes) SetAdditionalData(value map[string]any)() {
 func (m *Teams_attributes) SetAllowMemberTokenManagement(value *bool)() {
     m.allowMemberTokenManagement = value
 }
-// SetDescription sets the description property value. Team description. Only available when effective permissions are enabled for unified organizations.
+// SetDescription sets the description property value. Team description. Can be manually entered for all teams.
 func (m *Teams_attributes) SetDescription(value *string)() {
     m.description = value
 }

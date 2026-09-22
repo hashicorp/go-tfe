@@ -36,6 +36,11 @@ func (m *WithWorkspace_ItemRequestBuilder) AllVars()(*ItemAllVarsRequestBuilder)
 func (m *WithWorkspace_ItemRequestBuilder) ApplicableVarsets()(*ItemApplicableVarsetsRequestBuilder) {
     return NewItemApplicableVarsetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// AssessmentResults the assessmentResults property
+// returns a *ItemAssessmentResultsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) AssessmentResults()(*ItemAssessmentResultsRequestBuilder) {
+    return NewItemAssessmentResultsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ChangeRequests the changeRequests property
 // returns a *ItemChangeRequestsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) ChangeRequests()(*ItemChangeRequestsRequestBuilder) {

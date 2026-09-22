@@ -34,11 +34,11 @@ type ItemWorkspacesRequestBuilderGetQueryParameters struct {
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
-    // Comma-separated list of legacy tag names that workspaces must not have.
+    // Comma-separated list of up to 10 tag names that workspaces must not have.
     SearchexcludeTags *string "uriparametername:\"search%5Bexclude%2Dtags%5D\""
     // Partial name to filter workspaces by name.
     Searchname *string "uriparametername:\"search%5Bname%5D\""
-    // Comma-separated list of legacy tag names that workspaces must have.
+    // Comma-separated list of up to 10 tag names that workspaces must have.
     Searchtags *string "uriparametername:\"search%5Btags%5D\""
     // Wildcard name filter for workspaces.
     SearchwildcardName *string "uriparametername:\"search%5Bwildcard%2Dname%5D\""
