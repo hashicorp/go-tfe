@@ -14,7 +14,7 @@ type NoCodeQuery_attributes struct {
     generateConfigOut *bool
     // The noCodeQueryProviders property
     noCodeQueryProviders []NoCodeQuery_attributes_noCodeQueryProvidersable
-    // Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+    // Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration for both UI and Terraform MCP queries. When the feature is inactive, all values resolve to false and workspace policy evaluation retains its existing query-policy behavior.
     policyEvaluationOptIn *bool
     // The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
     source *NoCodeQuery_attributes_source
@@ -98,7 +98,7 @@ func (m *NoCodeQuery_attributes) GetGenerateConfigOut()(*bool) {
 func (m *NoCodeQuery_attributes) GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable) {
     return m.noCodeQueryProviders
 }
-// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration for both UI and Terraform MCP queries. When the feature is inactive, all values resolve to false and workspace policy evaluation retains its existing query-policy behavior.
 // returns a *bool when successful
 func (m *NoCodeQuery_attributes) GetPolicyEvaluationOptIn()(*bool) {
     return m.policyEvaluationOptIn
@@ -161,7 +161,7 @@ func (m *NoCodeQuery_attributes) SetGenerateConfigOut(value *bool)() {
 func (m *NoCodeQuery_attributes) SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)() {
     m.noCodeQueryProviders = value
 }
-// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false.
+// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration for both UI and Terraform MCP queries. When the feature is inactive, all values resolve to false and workspace policy evaluation retains its existing query-policy behavior.
 func (m *NoCodeQuery_attributes) SetPolicyEvaluationOptIn(value *bool)() {
     m.policyEvaluationOptIn = value
 }

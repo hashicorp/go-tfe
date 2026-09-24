@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "2af413d3",
+    "version": "a21525d7",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -490,6 +490,11 @@
       "name": "admin-customization-settings",
       "x-displayName": "Admin Customization Settings",
       "description": "Admin customization settings for Terraform Enterprise and HCP Terraform. TFE-only attributes (internal-support-url, internal-documentation-url, internal-tutorials-url, avatar-sources) are available only on Terraform Enterprise.\n"
+    },
+    {
+      "name": "admin-general-settings",
+      "x-displayName": "Admin General Settings",
+      "description": "Admin general settings for Terraform Enterprise and HCP Terraform. The enable-public-registration attribute is available only on Terraform Enterprise.\n"
     }
   ],
   "paths": {
@@ -1589,6 +1594,103 @@
           },
           "422": {
             "description": "Validation failed. For example, an invalid URL scheme was submitted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/general-settings": {
+      "get": {
+        "operationId": "getAdminGeneralSettings",
+        "summary": "Retrieve Admin General Settings",
+        "description": "Returns the current admin general settings singleton. This endpoint is available to all authenticated users so that the UI can read general settings values for display. The enable-public-registration attribute is only present in the response when running Terraform Enterprise.\n",
+        "tags": [
+          "admin-general-settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "General settings retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-general-settings-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[general-settings]",
+            "description": "Return only the specified fields for general-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateAdminGeneralSettings",
+        "summary": "Update Admin General Settings",
+        "description": "Updates the admin general settings singleton. Only site administrators may update these settings. Partial updates are supported: only attributes present in the request body are modified. The enable-public-registration attribute is silently ignored when submitted against an HCP Terraform instance.\n",
+        "tags": [
+          "admin-general-settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-general-settings-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "General settings updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-general-settings-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failed. For example, an out-of-range value was submitted.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -16437,7 +16539,7 @@
               "default": "year"
             },
             "required": false,
-            "description": "Filter by timeframe. Must be a numeric year or \"year\" for the last 12 months (the default)."
+            "description": "Filter by timeframe. Must be a numeric year from 2018 through the current calendar year, or \"year\" for the last 12 months (the default)."
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -32594,6 +32696,143 @@
           }
         }
       },
+      "admin-general-settings": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Always \"general\"."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "general-settings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "require-two-factor-for-admins": {
+                "type": "boolean",
+                "description": "Whether two-factor authentication is required for site administrators."
+              },
+              "limit-user-organization-creation": {
+                "type": "boolean",
+                "description": "Whether the creation of new organizations is limited to site administrators."
+              },
+              "api-rate-limiting-enabled": {
+                "type": "boolean",
+                "description": "Whether API rate limiting is enabled."
+              },
+              "api-rate-limit": {
+                "type": "integer",
+                "description": "The number of API requests allowed per second, per user token or IP address."
+              },
+              "agent-polling-retry-after": {
+                "type": "integer",
+                "description": "The number of seconds agents wait before polling for new work."
+              },
+              "agents-enabled": {
+                "type": "boolean",
+                "description": "Whether HCP Terraform agents are enabled."
+              },
+              "fair-run-queuing-enabled": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Deprecated. Always returns false. Retained for backwards compatibility with the public API contract.\n"
+              },
+              "limit-organizations-per-user": {
+                "type": "boolean",
+                "description": "Whether the number of organizations a user may create is limited."
+              },
+              "default-organizations-per-user-ceiling": {
+                "type": "integer",
+                "description": "The default maximum number of organizations a single user may create."
+              },
+              "limit-workspaces-per-organization": {
+                "type": "boolean",
+                "description": "Whether the number of workspaces per organization is limited."
+              },
+              "default-workspaces-per-organization-ceiling": {
+                "type": "integer",
+                "description": "The default maximum number of workspaces per organization."
+              },
+              "terraform-build-worker-apply-timeout": {
+                "type": "string",
+                "description": "The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string (for example, \"24h\").\n"
+              },
+              "terraform-build-worker-plan-timeout": {
+                "type": "string",
+                "description": "The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string (for example, \"24h\").\n"
+              },
+              "apply-timeout": {
+                "type": "string",
+                "description": "Alias of terraform-build-worker-apply-timeout. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string.\n"
+              },
+              "plan-timeout": {
+                "type": "string",
+                "description": "Alias of terraform-build-worker-plan-timeout. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string.\n"
+              },
+              "send-passing-statuses-for-untriggered-speculative-plans": {
+                "type": "boolean",
+                "description": "Whether passing commit statuses are sent for untriggered speculative plans.\n"
+              },
+              "allow-speculative-plans-on-pull-requests-from-forks": {
+                "type": "boolean",
+                "description": "Whether speculative plans are allowed on pull requests originating from forked repositories.\n"
+              },
+              "default-remote-state-access": {
+                "type": "boolean",
+                "description": "Whether new workspaces allow global remote state access by default.\n"
+              },
+              "automatic-assessment-interval": {
+                "type": "integer",
+                "description": "The interval, in hours, at which automatic health assessments run.\n"
+              },
+              "maximum-concurrent-assessments": {
+                "type": "integer",
+                "description": "The maximum number of health assessments that may run concurrently."
+              },
+              "stacks-entitled": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the instance is licensed to use stacks."
+              },
+              "stacks-enabled": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Whether stacks are enabled for use in this instance.\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "enable-public-registration": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Whether public (self-service) user registration is enabled. Available only on Terraform Enterprise; silently ignored on HCP Terraform.\n\n\nThis attribute is only available in Terraform Enterprise."
+              }
+            }
+          }
+        }
+      },
+      "admin-general-settings-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-general-settings"
+          }
+        }
+      },
       "authenticated-resource-identifier": {
         "type": "object",
         "required": [
@@ -38991,6 +39230,7 @@
               },
               "source": {
                 "type": "string",
+                "description": "The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.",
                 "enum": [
                   "tfe-api",
                   "tfe-ui",
@@ -39006,7 +39246,7 @@
               "policy-evaluation-opt-in": {
                 "type": "boolean",
                 "writeOnly": true,
-                "description": "Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted."
+                "description": "Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI, API, or MCP source and generated configuration. Explicit false opts out for those sources. Terraform CLI queries (source terraform) retain workspace policy evaluation regardless of this preference or generate-config-out, subject to the existing query-policy gates. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted; workspace policy evaluation retains its existing query-policy behavior."
               },
               "resources-discovered": {
                 "type": "integer",
@@ -39223,7 +39463,7 @@
               "policy-evaluation-opt-in": {
                 "type": "boolean",
                 "writeOnly": true,
-                "description": "Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration and is invalid for Terraform MCP queries. When the feature is inactive, all values resolve to false."
+                "description": "Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration for both UI and Terraform MCP queries. When the feature is inactive, all values resolve to false and workspace policy evaluation retains its existing query-policy behavior."
               },
               "no-code-query-providers": {
                 "type": "array",
@@ -43906,6 +44146,10 @@
                   "multi-region": {
                     "type": "boolean",
                     "description": "Optional for AWS KMS"
+                  },
+                  "transit-path": {
+                    "type": "string",
+                    "description": "Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to \"transit\"."
                   }
                 }
               }
