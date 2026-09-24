@@ -250,6 +250,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 	})
 
 	t.Run("with minimal refresh set to true", func(t *testing.T) {
+		t.Skip("Requires an organization with terraform beta versions enabled")
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
 			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
@@ -269,6 +270,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 	})
 
 	t.Run("with minimal refresh set to false", func(t *testing.T) {
+		t.Skip("Requires an organization with terraform beta versions enabled")
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
 			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
@@ -288,6 +290,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 	})
 
 	t.Run("with minimal refresh not set", func(t *testing.T) {
+		t.Skip("Requires an organization with terraform beta versions enabled")
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
 			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
@@ -955,6 +958,7 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 
 func TestRunCreateOptionsMinimalRefresh_Marshal(t *testing.T) {
 	t.Parallel()
+	t.Skip("Requires an organization with terraform beta versions enabled")
 	client := testClient(t)
 
 	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
