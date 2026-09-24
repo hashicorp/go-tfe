@@ -393,7 +393,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 }
 
 func TestRunsCreate_MinimalRefresh(t *testing.T) {
-	t.Skip("Requires an organization with terraform beta versions enabled")
+	t.Skip("Requires Terraform version 1.17.0+. To run before then, use an organization with terraform beta versions enabled and local Atlas with a lower minimum minimal refresh version (e.g. 1.17.0-beta1)")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -946,7 +946,7 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 
 func TestRunCreateOptionsMinimalRefresh_Marshal(t *testing.T) {
 	t.Parallel()
-	t.Skip("Requires an organization with terraform beta versions enabled")
+	t.Skip("Requires Terraform version 1.17.0+. To run before then, use an organization with terraform beta versions enabled and local Atlas with a lower minimum minimal refresh version (e.g. 1.17.0-beta1)")
 	client := testClient(t)
 
 	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
