@@ -1,3 +1,7 @@
+# Unreleased
+
+* Enhancement: Add `Client.Admin.Customization` and `Client.Admin.General` support for admin customization and general settings, including the `InternalSupportURL`, `InternalDocumentationURL`, `InternalTutorialsURL`, `AvatarSources`, and `EnablePublicRegistration` fields.
+
 # v2.12.0
 
 * Enhancement: The latest API operations are available.
