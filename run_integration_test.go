@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -250,7 +251,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 
 	t.Run("with minimal refresh set to true", func(t *testing.T) {
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
+			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
 		})
 		defer minWorkspaceCleanup()
@@ -269,7 +270,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 
 	t.Run("with minimal refresh set to false", func(t *testing.T) {
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
+			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
 		})
 		defer minWorkspaceCleanup()
@@ -288,7 +289,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 
 	t.Run("with minimal refresh not set", func(t *testing.T) {
 		minWorkspace, minWorkspaceCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
+			Name:             String(randomString(t)),
 			TerraformVersion: String("1.17.0-beta1"),
 		})
 		defer minWorkspaceCleanup()
@@ -950,6 +951,74 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 `, wTest.ID)
 
 	assert.Equal(t, string(bodyBytes), expectedBody)
+}
+
+func TestRunCreateOptionsMinimalRefresh_Marshal(t *testing.T) {
+	t.Parallel()
+	client := testClient(t)
+
+	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, nil, WorkspaceCreateOptions{
+		Name:             String(randomString(t)),
+		TerraformVersion: String("1.17.0-beta1"),
+	})
+	defer wTestCleanup()
+
+	t.Run("minimal refresh is left out when nil", func(t *testing.T) {
+		opts := RunCreateOptions{
+			Workspace:      wTest,
+			MinimalRefresh: nil,
+		}
+
+		reqBody, err := serializeRequestBody(&opts)
+		require.NoError(t, err)
+		req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+		require.NoError(t, err)
+		bodyBytes, err := req.BodyBytes()
+		require.NoError(t, err)
+
+		expectedBody := strings.TrimRight(fmt.Sprintf(`{"data":{"type":"runs","relationships":{"configuration-version":{"data":null},"workspace":{"data":{"type":"workspaces","id":"%s"}}}}}
+	`, wTest.ID), "\t")
+
+		assert.Equal(t, expectedBody, string(bodyBytes))
+	})
+
+	t.Run("minimal refresh is set to false", func(t *testing.T) {
+		opts := RunCreateOptions{
+			Workspace:      wTest,
+			MinimalRefresh: Bool(false),
+		}
+
+		reqBody, err := serializeRequestBody(&opts)
+		require.NoError(t, err)
+		req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+		require.NoError(t, err)
+		bodyBytes, err := req.BodyBytes()
+		require.NoError(t, err)
+
+		expectedBody := strings.TrimRight(fmt.Sprintf(`{"data":{"type":"runs","attributes":{"minimal-refresh":false},"relationships":{"configuration-version":{"data":null},"workspace":{"data":{"type":"workspaces","id":"%s"}}}}}
+	`, wTest.ID), "\t")
+
+		assert.Equal(t, expectedBody, string(bodyBytes))
+	})
+
+	t.Run("minimal refresh is set to true", func(t *testing.T) {
+		opts := RunCreateOptions{
+			Workspace:      wTest,
+			MinimalRefresh: Bool(true),
+		}
+
+		reqBody, err := serializeRequestBody(&opts)
+		require.NoError(t, err)
+		req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+		require.NoError(t, err)
+		bodyBytes, err := req.BodyBytes()
+		require.NoError(t, err)
+
+		expectedBody := strings.TrimRight(fmt.Sprintf(`{"data":{"type":"runs","attributes":{"minimal-refresh":true},"relationships":{"configuration-version":{"data":null},"workspace":{"data":{"type":"workspaces","id":"%s"}}}}}
+	`, wTest.ID), "\t")
+
+		assert.Equal(t, expectedBody, string(bodyBytes))
+	})
 }
 
 func TestRunsListForOrganization_RunDependent(t *testing.T) {
