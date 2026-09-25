@@ -11,7 +11,7 @@ type TasksEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data Tasksable
+    data ItemTasksGetResponse_Tasksable
 }
 // NewTasksEnvelope instantiates a new TasksEnvelope and sets the default values.
 func NewTasksEnvelope()(*TasksEnvelope) {
@@ -31,8 +31,8 @@ func (m *TasksEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a Tasksable when successful
-func (m *TasksEnvelope) GetData()(Tasksable) {
+// returns a ItemTasksGetResponse_Tasksable when successful
+func (m *TasksEnvelope) GetData()(ItemTasksGetResponse_Tasksable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *TasksEnvelope) GetData()(Tasksable) {
 func (m *TasksEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasksFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemTasksGetResponse_TasksFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(Tasksable))
+            m.SetData(val.(ItemTasksGetResponse_Tasksable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *TasksEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *TasksEnvelope) SetData(value Tasksable)() {
+func (m *TasksEnvelope) SetData(value ItemTasksGetResponse_Tasksable)() {
     m.data = value
 }
 type TasksEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(Tasksable)
-    SetData(value Tasksable)()
+    GetData()(ItemTasksGetResponse_Tasksable)
+    SetData(value ItemTasksGetResponse_Tasksable)()
 }

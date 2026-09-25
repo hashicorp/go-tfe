@@ -13,7 +13,7 @@ type CurrentStateVersionEnvelope struct {
     // The data property
     data StateVersionsable
     // The included property
-    included []CurrentStateVersionEnvelope_includedable
+    included []StateVersionOutputsable
 }
 // NewCurrentStateVersionEnvelope instantiates a new CurrentStateVersionEnvelope and sets the default values.
 func NewCurrentStateVersionEnvelope()(*CurrentStateVersionEnvelope) {
@@ -52,15 +52,15 @@ func (m *CurrentStateVersionEnvelope) GetFieldDeserializers()(map[string]func(i8
         return nil
     }
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateCurrentStateVersionEnvelope_includedFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateStateVersionOutputsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]CurrentStateVersionEnvelope_includedable, len(val))
+            res := make([]StateVersionOutputsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(CurrentStateVersionEnvelope_includedable)
+                    res[i] = v.(StateVersionOutputsable)
                 }
             }
             m.SetIncluded(res)
@@ -70,8 +70,8 @@ func (m *CurrentStateVersionEnvelope) GetFieldDeserializers()(map[string]func(i8
     return res
 }
 // GetIncluded gets the included property value. The included property
-// returns a []CurrentStateVersionEnvelope_includedable when successful
-func (m *CurrentStateVersionEnvelope) GetIncluded()([]CurrentStateVersionEnvelope_includedable) {
+// returns a []StateVersionOutputsable when successful
+func (m *CurrentStateVersionEnvelope) GetIncluded()([]StateVersionOutputsable) {
     return m.included
 }
 // Serialize serializes information the current object
@@ -111,14 +111,14 @@ func (m *CurrentStateVersionEnvelope) SetData(value StateVersionsable)() {
     m.data = value
 }
 // SetIncluded sets the included property value. The included property
-func (m *CurrentStateVersionEnvelope) SetIncluded(value []CurrentStateVersionEnvelope_includedable)() {
+func (m *CurrentStateVersionEnvelope) SetIncluded(value []StateVersionOutputsable)() {
     m.included = value
 }
 type CurrentStateVersionEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(StateVersionsable)
-    GetIncluded()([]CurrentStateVersionEnvelope_includedable)
+    GetIncluded()([]StateVersionOutputsable)
     SetData(value StateVersionsable)()
-    SetIncluded(value []CurrentStateVersionEnvelope_includedable)()
+    SetIncluded(value []StateVersionOutputsable)()
 }

@@ -18,6 +18,8 @@ type HyokConfigurations_attributes_kmsOptions struct {
     keyRingId *string
     // Optional for AWS KMS
     multiRegion *bool
+    // Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
+    transitPath *string
 }
 // NewHyokConfigurations_attributes_kmsOptions instantiates a new HyokConfigurations_attributes_kmsOptions and sets the default values.
 func NewHyokConfigurations_attributes_kmsOptions()(*HyokConfigurations_attributes_kmsOptions) {
@@ -80,6 +82,16 @@ func (m *HyokConfigurations_attributes_kmsOptions) GetFieldDeserializers()(map[s
         }
         return nil
     }
+    res["transit-path"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTransitPath(val)
+        }
+        return nil
+    }
     return res
 }
 // GetKeyLocation gets the key-location property value. Only required with GCP KMS
@@ -101,6 +113,11 @@ func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRingId()(*string) {
 // returns a *bool when successful
 func (m *HyokConfigurations_attributes_kmsOptions) GetMultiRegion()(*bool) {
     return m.multiRegion
+}
+// GetTransitPath gets the transit-path property value. Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
+// returns a *string when successful
+func (m *HyokConfigurations_attributes_kmsOptions) GetTransitPath()(*string) {
+    return m.transitPath
 }
 // Serialize serializes information the current object
 func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -124,6 +141,12 @@ func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330
     }
     {
         err := writer.WriteBoolValue("multi-region", m.GetMultiRegion())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("transit-path", m.GetTransitPath())
         if err != nil {
             return err
         }
@@ -156,6 +179,10 @@ func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRingId(value *string)()
 func (m *HyokConfigurations_attributes_kmsOptions) SetMultiRegion(value *bool)() {
     m.multiRegion = value
 }
+// SetTransitPath sets the transit-path property value. Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
+func (m *HyokConfigurations_attributes_kmsOptions) SetTransitPath(value *string)() {
+    m.transitPath = value
+}
 type HyokConfigurations_attributes_kmsOptionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -163,8 +190,10 @@ type HyokConfigurations_attributes_kmsOptionsable interface {
     GetKeyRegion()(*string)
     GetKeyRingId()(*string)
     GetMultiRegion()(*bool)
+    GetTransitPath()(*string)
     SetKeyLocation(value *string)()
     SetKeyRegion(value *string)()
     SetKeyRingId(value *string)()
     SetMultiRegion(value *bool)()
+    SetTransitPath(value *string)()
 }

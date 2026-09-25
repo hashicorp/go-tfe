@@ -11,7 +11,7 @@ type WorkspacesEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data Workspacesable
+    data ItemWorkspacesGetResponse_Workspacesable
 }
 // NewWorkspacesEnvelope instantiates a new WorkspacesEnvelope and sets the default values.
 func NewWorkspacesEnvelope()(*WorkspacesEnvelope) {
@@ -31,8 +31,8 @@ func (m *WorkspacesEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a Workspacesable when successful
-func (m *WorkspacesEnvelope) GetData()(Workspacesable) {
+// returns a ItemWorkspacesGetResponse_Workspacesable when successful
+func (m *WorkspacesEnvelope) GetData()(ItemWorkspacesGetResponse_Workspacesable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *WorkspacesEnvelope) GetData()(Workspacesable) {
 func (m *WorkspacesEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemWorkspacesGetResponse_WorkspacesFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(Workspacesable))
+            m.SetData(val.(ItemWorkspacesGetResponse_Workspacesable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *WorkspacesEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *WorkspacesEnvelope) SetData(value Workspacesable)() {
+func (m *WorkspacesEnvelope) SetData(value ItemWorkspacesGetResponse_Workspacesable)() {
     m.data = value
 }
 type WorkspacesEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(Workspacesable)
-    SetData(value Workspacesable)()
+    GetData()(ItemWorkspacesGetResponse_Workspacesable)
+    SetData(value ItemWorkspacesGetResponse_Workspacesable)()
 }
