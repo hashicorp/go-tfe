@@ -11,7 +11,7 @@ type StacksEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data Stacksable
+    data ItemStacksGetResponse_Stacksable
 }
 // NewStacksEnvelope instantiates a new StacksEnvelope and sets the default values.
 func NewStacksEnvelope()(*StacksEnvelope) {
@@ -31,8 +31,8 @@ func (m *StacksEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a Stacksable when successful
-func (m *StacksEnvelope) GetData()(Stacksable) {
+// returns a ItemStacksGetResponse_Stacksable when successful
+func (m *StacksEnvelope) GetData()(ItemStacksGetResponse_Stacksable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *StacksEnvelope) GetData()(Stacksable) {
 func (m *StacksEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStacksFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateItemStacksGetResponse_StacksFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(Stacksable))
+            m.SetData(val.(ItemStacksGetResponse_Stacksable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *StacksEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *StacksEnvelope) SetData(value Stacksable)() {
+func (m *StacksEnvelope) SetData(value ItemStacksGetResponse_Stacksable)() {
     m.data = value
 }
 type StacksEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(Stacksable)
-    SetData(value Stacksable)()
+    GetData()(ItemStacksGetResponse_Stacksable)
+    SetData(value ItemStacksGetResponse_Stacksable)()
 }

@@ -40,9 +40,9 @@ func NewWithTask_stage_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187
     return NewWithTask_stage_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a specific run task stage.
-// returns a TaskStagesEnvelopeable when successful
+// returns a ItemWithTask_stage_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithTask_stage_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_stage_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesEnvelopeable, error) {
+func (m *WithTask_stage_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_stage_ItemRequestBuilderGetQueryParameters])(ItemWithTask_stage_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -50,14 +50,14 @@ func (m *WithTask_stage_ItemRequestBuilder) Get(ctx context.Context, requestConf
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTaskStagesEnvelopeFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithTask_stage_GetResponseFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesEnvelopeable), nil
+    return res.(ItemWithTask_stage_GetResponseable), nil
 }
 // PolicyEvaluations the policyEvaluations property
 // returns a *ItemPolicyEvaluationsRequestBuilder when successful

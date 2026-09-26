@@ -34,6 +34,11 @@ func NewAdminRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb
 func (m *AdminRequestBuilder) CustomizationSettings()(*CustomizationSettingsRequestBuilder) {
     return NewCustomizationSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// GeneralSettings the generalSettings property
+// returns a *GeneralSettingsRequestBuilder when successful
+func (m *AdminRequestBuilder) GeneralSettings()(*GeneralSettingsRequestBuilder) {
+    return NewGeneralSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // GithubAppInstallations the githubAppInstallations property
 // returns a *GithubAppInstallationsRequestBuilder when successful
 func (m *AdminRequestBuilder) GithubAppInstallations()(*GithubAppInstallationsRequestBuilder) {
@@ -48,4 +53,9 @@ func (m *AdminRequestBuilder) SamlSettings()(*SamlSettingsRequestBuilder) {
 // returns a *ScimSettingsRequestBuilder when successful
 func (m *AdminRequestBuilder) ScimSettings()(*ScimSettingsRequestBuilder) {
     return NewScimSettingsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TfpolicyVersions the tfpolicyVersions property
+// returns a *TfpolicyVersionsRequestBuilder when successful
+func (m *AdminRequestBuilder) TfpolicyVersions()(*TfpolicyVersionsRequestBuilder) {
+    return NewTfpolicyVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
