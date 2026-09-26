@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,12 +14,38 @@ type ItemWorkspacesItemWithWorkspace_nameGetResponse struct {
     // The included property
     included []ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_includedable
 }
-// ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+// ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
 type ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+    applies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+    assessmentResults i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+    configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+    effectiveTagBindings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+    ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
     noCodeModules i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
     noCodeModuleVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable
+    organizations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+    plans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+    runs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+    stateVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+    users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+    vars i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
     workspaceOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
@@ -35,42 +62,125 @@ func NewItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRes
 func CreateItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     result := NewItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included()
     if parseNode != nil {
-        if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateNoCodeModulesFromDiscriminatorValue); val != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
             if err != nil {
                 return nil, err
             }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable); ok {
-                result.SetNoCodeModules(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateNoCodeModuleVersionsFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable); ok {
-                result.SetNoCodeModuleVersions(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceOutputsFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable); ok {
-                result.SetWorkspaceOutputs(cast)
-            }
-        } else if val, err := parseNode.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceReadmeFromDiscriminatorValue); val != nil {
-            if err != nil {
-                return nil, err
-            }
-            if cast, ok := val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable); ok {
-                result.SetWorkspaceReadme(cast)
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+                    result.SetAgentPools(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAgentPools())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "applies") {
+                    result.SetApplies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewApplies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "assessment-results") {
+                    result.SetAssessmentResults(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAssessmentResults())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+                    result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "effective-tag-bindings") {
+                    result.SetEffectiveTagBindings(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewEffectiveTagBindings())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+                    result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-modules") {
+                    result.SetNoCodeModules(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModules())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-module-versions") {
+                    result.SetNoCodeModuleVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModuleVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+                    result.SetOrganizations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOrganizationsGetResponse_Organizations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "plans") {
+                    result.SetPlans(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewPlans())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+                    result.SetRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewRuns())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-versions") {
+                    result.SetStateVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStateVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
+                    result.SetVars(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewVars())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-outputs") {
+                    result.SetWorkspaceOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceOutputs())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-readme") {
+                    result.SetWorkspaceReadme(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceReadme())
+                }
             }
         }
     }
     return result, nil
 }
+// GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+// returns a AgentPoolsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
+    return m.agentPools
+}
+// GetApplies gets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+// returns a Appliesable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable) {
+    return m.applies
+}
+// GetAssessmentResults gets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+// returns a AssessmentResultsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetAssessmentResults()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable) {
+    return m.assessmentResults
+}
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+// returns a ConfigurationVersionsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
+    return m.configurationVersions
+}
+// GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+// returns a EffectiveTagBindingsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable) {
+    return m.effectiveTagBindings
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAgentPools() != nil {
+        return m.GetAgentPools().GetFieldDeserializers()
+    } else if m.GetApplies() != nil {
+        return m.GetApplies().GetFieldDeserializers()
+    } else if m.GetAssessmentResults() != nil {
+        return m.GetAssessmentResults().GetFieldDeserializers()
+    } else if m.GetConfigurationVersions() != nil {
+        return m.GetConfigurationVersions().GetFieldDeserializers()
+    } else if m.GetEffectiveTagBindings() != nil {
+        return m.GetEffectiveTagBindings().GetFieldDeserializers()
+    } else if m.GetIngressAttributes() != nil {
+        return m.GetIngressAttributes().GetFieldDeserializers()
+    } else if m.GetNoCodeModules() != nil {
+        return m.GetNoCodeModules().GetFieldDeserializers()
+    } else if m.GetNoCodeModuleVersions() != nil {
+        return m.GetNoCodeModuleVersions().GetFieldDeserializers()
+    } else if m.GetOrganizations() != nil {
+        return m.GetOrganizations().GetFieldDeserializers()
+    } else if m.GetPlans() != nil {
+        return m.GetPlans().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetRuns() != nil {
+        return m.GetRuns().GetFieldDeserializers()
+    } else if m.GetStateVersions() != nil {
+        return m.GetStateVersions().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    } else if m.GetVars() != nil {
+        return m.GetVars().GetFieldDeserializers()
+    } else if m.GetWorkspaceOutputs() != nil {
+        return m.GetWorkspaceOutputs().GetFieldDeserializers()
+    } else if m.GetWorkspaceReadme() != nil {
+        return m.GetWorkspaceReadme().GetFieldDeserializers()
+    }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+// returns a IngressAttributesable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
+    return m.ingressAttributes
 }
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
@@ -87,6 +197,41 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRe
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetNoCodeModuleVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable) {
     return m.noCodeModuleVersions
 }
+// GetOrganizations gets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable
+// returns a OrganizationsGetResponse_Organizationsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetOrganizations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable) {
+    return m.organizations
+}
+// GetPlans gets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+// returns a Plansable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable) {
+    return m.plans
+}
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// returns a Projectsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+    return m.projects
+}
+// GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+// returns a Runsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
+    return m.runs
+}
+// GetStateVersions gets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+// returns a StateVersionsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetStateVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
+    return m.stateVersions
+}
+// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// returns a Usersable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
+    return m.users
+}
+// GetVars gets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+// returns a Varsable when successful
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
+    return m.vars
+}
 // GetWorkspaceOutputs gets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
 // returns a WorkspaceOutputsable when successful
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) GetWorkspaceOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable) {
@@ -99,13 +244,78 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRe
 }
 // Serialize serializes information the current object
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetNoCodeModules() != nil {
+    if m.GetAgentPools() != nil {
+        err := writer.WriteObjectValue("", m.GetAgentPools())
+        if err != nil {
+            return err
+        }
+    } else if m.GetApplies() != nil {
+        err := writer.WriteObjectValue("", m.GetApplies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetAssessmentResults() != nil {
+        err := writer.WriteObjectValue("", m.GetAssessmentResults())
+        if err != nil {
+            return err
+        }
+    } else if m.GetConfigurationVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetEffectiveTagBindings() != nil {
+        err := writer.WriteObjectValue("", m.GetEffectiveTagBindings())
+        if err != nil {
+            return err
+        }
+    } else if m.GetIngressAttributes() != nil {
+        err := writer.WriteObjectValue("", m.GetIngressAttributes())
+        if err != nil {
+            return err
+        }
+    } else if m.GetNoCodeModules() != nil {
         err := writer.WriteObjectValue("", m.GetNoCodeModules())
         if err != nil {
             return err
         }
     } else if m.GetNoCodeModuleVersions() != nil {
         err := writer.WriteObjectValue("", m.GetNoCodeModuleVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOrganizations() != nil {
+        err := writer.WriteObjectValue("", m.GetOrganizations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPlans() != nil {
+        err := writer.WriteObjectValue("", m.GetPlans())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetRuns() != nil {
+        err := writer.WriteObjectValue("", m.GetRuns())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStateVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetStateVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    } else if m.GetVars() != nil {
+        err := writer.WriteObjectValue("", m.GetVars())
         if err != nil {
             return err
         }
@@ -122,6 +332,30 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRe
     }
     return nil
 }
+// SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)() {
+    m.agentPools = value
+}
+// SetApplies sets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)() {
+    m.applies = value
+}
+// SetAssessmentResults sets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)() {
+    m.assessmentResults = value
+}
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)() {
+    m.configurationVersions = value
+}
+// SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)() {
+    m.effectiveTagBindings = value
+}
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)() {
+    m.ingressAttributes = value
+}
 // SetNoCodeModules sets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)() {
     m.noCodeModules = value
@@ -129,6 +363,34 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRe
 // SetNoCodeModuleVersions sets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)() {
     m.noCodeModuleVersions = value
+}
+// SetOrganizations sets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)() {
+    m.organizations = value
+}
+// SetPlans sets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)() {
+    m.plans = value
+}
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
+    m.projects = value
+}
+// SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)() {
+    m.runs = value
+}
+// SetStateVersions sets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)() {
+    m.stateVersions = value
+}
+// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
+    m.users = value
+}
+// SetVars sets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)() {
+    m.vars = value
 }
 // SetWorkspaceOutputs sets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
 func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_included) SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)() {
@@ -140,12 +402,38 @@ func (m *ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetRe
 }
 type ItemWorkspacesItemWithWorkspace_nameGetResponse_WithWorkspace_nameGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
+    GetApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)
+    GetAssessmentResults()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)
+    GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+    GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
+    GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
     GetNoCodeModules()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)
     GetNoCodeModuleVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)
+    GetOrganizations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)
+    GetPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)
+    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+    GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
+    GetStateVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+    GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
+    GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
     GetWorkspaceOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)
     GetWorkspaceReadme()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)
+    SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)()
+    SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)()
+    SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)()
+    SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)()
+    SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)()
+    SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
     SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)()
     SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)()
+    SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)()
+    SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)()
+    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
+    SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)()
+    SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)()
+    SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
+    SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)()
     SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)()
     SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)()
 }

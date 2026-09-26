@@ -40,10 +40,10 @@ func NewWithWorkspace_transfer_ItemRequestBuilder(rawUrl string, requestAdapter 
     return NewWithWorkspace_transfer_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a workspace transfer.
-// returns a WorkspaceTransfersEnvelopeable when successful
+// returns a ItemWithWorkspace_transfer_GetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithWorkspace_transfer_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, error) {
+func (m *WithWorkspace_transfer_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters])(ItemWithWorkspace_transfer_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -52,14 +52,14 @@ func (m *WithWorkspace_transfer_ItemRequestBuilder) Get(ctx context.Context, req
         "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceTransfersEnvelopeFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_transfer_GetResponseFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable), nil
+    return res.(ItemWithWorkspace_transfer_GetResponseable), nil
 }
 // ToGetRequestInformation get details about a workspace transfer.
 // returns a *RequestInformation when successful

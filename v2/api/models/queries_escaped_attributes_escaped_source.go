@@ -2,6 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+// The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 type Queries_attributes_source int
 
 const (
