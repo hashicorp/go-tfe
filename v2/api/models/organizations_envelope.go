@@ -11,7 +11,7 @@ type OrganizationsEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data Organizationsable
+    data OrganizationsGetResponse_Organizationsable
 }
 // NewOrganizationsEnvelope instantiates a new OrganizationsEnvelope and sets the default values.
 func NewOrganizationsEnvelope()(*OrganizationsEnvelope) {
@@ -31,8 +31,8 @@ func (m *OrganizationsEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a Organizationsable when successful
-func (m *OrganizationsEnvelope) GetData()(Organizationsable) {
+// returns a OrganizationsGetResponse_Organizationsable when successful
+func (m *OrganizationsEnvelope) GetData()(OrganizationsGetResponse_Organizationsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *OrganizationsEnvelope) GetData()(Organizationsable) {
 func (m *OrganizationsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateOrganizationsGetResponse_OrganizationsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(Organizationsable))
+            m.SetData(val.(OrganizationsGetResponse_Organizationsable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *OrganizationsEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *OrganizationsEnvelope) SetData(value Organizationsable)() {
+func (m *OrganizationsEnvelope) SetData(value OrganizationsGetResponse_Organizationsable)() {
     m.data = value
 }
 type OrganizationsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(Organizationsable)
-    SetData(value Organizationsable)()
+    GetData()(OrganizationsGetResponse_Organizationsable)
+    SetData(value OrganizationsGetResponse_Organizationsable)()
 }
