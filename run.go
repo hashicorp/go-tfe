@@ -358,7 +358,7 @@ type RunCreateOptions struct {
 	IsDestroy *bool `jsonapi:"attr,is-destroy,omitempty"`
 
 	// MinimalRefresh determines if the run should
-	// only refresh resources that have changed since the previous state.
+	// only refresh resources that have proposed changes to the previous state.
 	MinimalRefresh *bool `jsonapi:"attr,minimal-refresh,omitempty"`
 
 	// Refresh determines if the run should
