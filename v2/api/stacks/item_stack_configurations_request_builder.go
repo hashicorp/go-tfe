@@ -18,7 +18,7 @@ type ItemStackConfigurationsRequestBuilder struct {
 type ItemStackConfigurationsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackConfigurations []string "uriparametername:\"fields%5Bstack%2Dconfigurations%5D\""
-    // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
+    // Optionally side-load the specified relationships.
     Include []i7d313464c19387042159ed878778983443002789ff55ded1d0066f956b25c5bf.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

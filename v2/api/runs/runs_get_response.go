@@ -21,7 +21,7 @@ type RunsGetResponse struct {
     // The meta property
     meta RunsGetResponse_metaable
 }
-// RunsGetResponse_RunsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CostEstimatesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// RunsGetResponse_RunsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CostEstimatesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
 type RunsGetResponse_RunsGetResponse_included struct {
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
     applies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
@@ -35,12 +35,12 @@ type RunsGetResponse_RunsGetResponse_included struct {
     plans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable
     taskStages i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable
-    tfPolicyEvaluation i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable
+    tfPolicyEvaluations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
     users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
 }
 // NewRunsGetResponse_RunsGetResponse_included instantiates a new RunsGetResponse_RunsGetResponse_included and sets the default values.
 func NewRunsGetResponse_RunsGetResponse_included()(*RunsGetResponse_RunsGetResponse_included) {
@@ -76,11 +76,11 @@ func CreateRunsGetResponse_RunsGetResponse_includedFromDiscriminatorValue(parseN
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "task-stages") {
                     result.SetTaskStages(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewTaskStages())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "tf-policy-evaluations") {
-                    result.SetTfPolicyEvaluation(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewTfPolicyEvaluation())
+                    result.SetTfPolicyEvaluations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewTfPolicyEvaluations())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
                     result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
-                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewItemWorkspacesGetResponse_Workspaces())
+                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaces())
                 }
             }
         }
@@ -117,8 +117,8 @@ func (m *RunsGetResponse_RunsGetResponse_included) GetFieldDeserializers()(map[s
         return m.GetPlans().GetFieldDeserializers()
     } else if m.GetTaskStages() != nil {
         return m.GetTaskStages().GetFieldDeserializers()
-    } else if m.GetTfPolicyEvaluation() != nil {
-        return m.GetTfPolicyEvaluation().GetFieldDeserializers()
+    } else if m.GetTfPolicyEvaluations() != nil {
+        return m.GetTfPolicyEvaluations().GetFieldDeserializers()
     } else if m.GetUsers() != nil {
         return m.GetUsers().GetFieldDeserializers()
     } else if m.GetWorkspaces() != nil {
@@ -146,19 +146,19 @@ func (m *RunsGetResponse_RunsGetResponse_included) GetPlans()(i05d5aa6b14db285c2
 func (m *RunsGetResponse_RunsGetResponse_included) GetTaskStages()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable) {
     return m.taskStages
 }
-// GetTfPolicyEvaluation gets the tfPolicyEvaluation property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable
-// returns a TfPolicyEvaluationable when successful
-func (m *RunsGetResponse_RunsGetResponse_included) GetTfPolicyEvaluation()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable) {
-    return m.tfPolicyEvaluation
+// GetTfPolicyEvaluations gets the tfPolicyEvaluations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable
+// returns a TfPolicyEvaluationsable when successful
+func (m *RunsGetResponse_RunsGetResponse_included) GetTfPolicyEvaluations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable) {
+    return m.tfPolicyEvaluations
 }
 // GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
 // returns a Usersable when successful
 func (m *RunsGetResponse_RunsGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
     return m.users
 }
-// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-// returns a ItemWorkspacesGetResponse_Workspacesable when successful
-func (m *RunsGetResponse_RunsGetResponse_included) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable) {
+// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+// returns a Workspacesable when successful
+func (m *RunsGetResponse_RunsGetResponse_included) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
     return m.workspaces
 }
 // Serialize serializes information the current object
@@ -193,8 +193,8 @@ func (m *RunsGetResponse_RunsGetResponse_included) Serialize(writer i878a80d2330
         if err != nil {
             return err
         }
-    } else if m.GetTfPolicyEvaluation() != nil {
-        err := writer.WriteObjectValue("", m.GetTfPolicyEvaluation())
+    } else if m.GetTfPolicyEvaluations() != nil {
+        err := writer.WriteObjectValue("", m.GetTfPolicyEvaluations())
         if err != nil {
             return err
         }
@@ -235,16 +235,16 @@ func (m *RunsGetResponse_RunsGetResponse_included) SetPlans(value i05d5aa6b14db2
 func (m *RunsGetResponse_RunsGetResponse_included) SetTaskStages(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable)() {
     m.taskStages = value
 }
-// SetTfPolicyEvaluation sets the tfPolicyEvaluation property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable
-func (m *RunsGetResponse_RunsGetResponse_included) SetTfPolicyEvaluation(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)() {
-    m.tfPolicyEvaluation = value
+// SetTfPolicyEvaluations sets the tfPolicyEvaluations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable
+func (m *RunsGetResponse_RunsGetResponse_included) SetTfPolicyEvaluations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)() {
+    m.tfPolicyEvaluations = value
 }
 // SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
 func (m *RunsGetResponse_RunsGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
     m.users = value
 }
-// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-func (m *RunsGetResponse_RunsGetResponse_included) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)() {
+// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+func (m *RunsGetResponse_RunsGetResponse_included) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
     m.workspaces = value
 }
 type RunsGetResponse_RunsGetResponse_includedable interface {
@@ -255,18 +255,18 @@ type RunsGetResponse_RunsGetResponse_includedable interface {
     GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
     GetPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)
     GetTaskStages()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable)
-    GetTfPolicyEvaluation()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)
+    GetTfPolicyEvaluations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)
     GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
-    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)
+    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
     SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)()
     SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)()
     SetCostEstimates(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CostEstimatesable)()
     SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
     SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)()
     SetTaskStages(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskStagesable)()
-    SetTfPolicyEvaluation(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)()
+    SetTfPolicyEvaluations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)()
     SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
-    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)()
+    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
 }
 // NewRunsGetResponse instantiates a new RunsGetResponse and sets the default values.
 func NewRunsGetResponse()(*RunsGetResponse) {

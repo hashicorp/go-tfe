@@ -18,7 +18,7 @@ type ItemRequestBuilder struct {
 type ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for teams resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsteams []string "uriparametername:\"fields%5Bteams%5D\""
-    // Optionally side-load relationships. Can include "users" or "organization-memberships".
+    // Optionally side-load the specified relationships.
     Include []ie10571cf190b80b6fd30ffeea982800a2ed15e926bb667f8977c9950586c059a.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // AuthenticationToken the authenticationToken property

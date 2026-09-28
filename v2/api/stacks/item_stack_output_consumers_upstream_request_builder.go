@@ -14,7 +14,7 @@ import (
 type ItemStackOutputConsumersUpstreamRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters list output consumers for a stack(upstream or downstream).
+// ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters list upstream output consumers for a stack.
 type ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-output-consumers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackOutputConsumers []string "uriparametername:\"fields%5Bstack%2Doutput%2Dconsumers%5D\""
@@ -40,7 +40,7 @@ func NewItemStackOutputConsumersUpstreamRequestBuilder(rawUrl string, requestAda
     urlParams["request-raw-url"] = rawUrl
     return NewItemStackOutputConsumersUpstreamRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list output consumers for a stack(upstream or downstream).
+// Get list upstream output consumers for a stack.
 // returns a ItemStackOutputConsumersUpstreamGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemStackOutputConsumersUpstreamRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters])(ItemStackOutputConsumersUpstreamGetResponseable, error) {
@@ -60,7 +60,7 @@ func (m *ItemStackOutputConsumersUpstreamRequestBuilder) Get(ctx context.Context
     }
     return res.(ItemStackOutputConsumersUpstreamGetResponseable), nil
 }
-// ToGetRequestInformation list output consumers for a stack(upstream or downstream).
+// ToGetRequestInformation list upstream output consumers for a stack.
 // returns a *RequestInformation when successful
 func (m *ItemStackOutputConsumersUpstreamRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackOutputConsumersUpstreamRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

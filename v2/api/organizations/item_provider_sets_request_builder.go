@@ -18,7 +18,7 @@ type ItemProviderSetsRequestBuilder struct {
 type ItemProviderSetsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsproviderSets []string "uriparametername:\"fields%5Bprovider%2Dsets%5D\""
-    // Comma-separated list of related resources to include.
+    // Optionally side-load the specified relationships.
     Include []i4d2258e86a88b1e2d87bab80c93f231487cbf97938134a31c2d84dd287aca2cb.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

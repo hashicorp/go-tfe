@@ -13,35 +13,31 @@ type ItemStackConfigurationsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable
+    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable
     // The included property
-    included []ItemStackConfigurationsGetResponse_StackConfigurationsable
+    included []ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemStackConfigurationsGetResponse_metaable
 }
-// ItemStackConfigurationsGetResponse_StackConfigurations composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
-type ItemStackConfigurationsGetResponse_StackConfigurations struct {
+// ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
+type ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included struct {
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
     ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable
-    stackAggregateOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
     stackConfigurationSummaries i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
-    stackDiagnostics i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
 }
-// NewItemStackConfigurationsGetResponse_StackConfigurations instantiates a new ItemStackConfigurationsGetResponse_StackConfigurations and sets the default values.
-func NewItemStackConfigurationsGetResponse_StackConfigurations()(*ItemStackConfigurationsGetResponse_StackConfigurations) {
-    m := &ItemStackConfigurationsGetResponse_StackConfigurations{
+// NewItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included instantiates a new ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included and sets the default values.
+func NewItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included()(*ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) {
+    m := &ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included{
     }
     return m
 }
-// CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// CreateItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewItemStackConfigurationsGetResponse_StackConfigurations()
+func CreateItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included()
     if parseNode != nil {
         mappingValueNode, err := parseNode.GetChildNode("type")
         if err != nil {
@@ -55,12 +51,8 @@ func CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminat
             if mappingValue != nil {
                 if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
                     result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-aggregate-outputs") {
-                    result.SetStackAggregateOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackAggregateOutputs())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configuration-summaries") {
                     result.SetStackConfigurationSummaries(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackConfigurationSummaries())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-diagnostics") {
-                    result.SetStackDiagnostics(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackDiagnostics())
                 }
             }
         }
@@ -69,52 +61,33 @@ func CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminat
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     if m.GetIngressAttributes() != nil {
         return m.GetIngressAttributes().GetFieldDeserializers()
-    } else if m.GetStackAggregateOutputs() != nil {
-        return m.GetStackAggregateOutputs().GetFieldDeserializers()
     } else if m.GetStackConfigurationSummaries() != nil {
         return m.GetStackConfigurationSummaries().GetFieldDeserializers()
-    } else if m.GetStackDiagnostics() != nil {
-        return m.GetStackDiagnostics().GetFieldDeserializers()
     }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
 }
 // GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
 // returns a IngressAttributesable when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
     return m.ingressAttributes
 }
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetIsComposedType()(bool) {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetIsComposedType()(bool) {
     return true
-}
-// GetStackAggregateOutputs gets the stackAggregateOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable
-// returns a StackAggregateOutputsable when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetStackAggregateOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable) {
-    return m.stackAggregateOutputs
 }
 // GetStackConfigurationSummaries gets the stackConfigurationSummaries property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
 // returns a StackConfigurationSummariesable when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetStackConfigurationSummaries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable) {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetStackConfigurationSummaries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable) {
     return m.stackConfigurationSummaries
 }
-// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
-// returns a StackDiagnosticsable when successful
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) GetStackDiagnostics()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable) {
-    return m.stackDiagnostics
-}
 // Serialize serializes information the current object
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetIngressAttributes() != nil {
         err := writer.WriteObjectValue("", m.GetIngressAttributes())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStackAggregateOutputs() != nil {
-        err := writer.WriteObjectValue("", m.GetStackAggregateOutputs())
         if err != nil {
             return err
         }
@@ -123,40 +96,23 @@ func (m *ItemStackConfigurationsGetResponse_StackConfigurations) Serialize(write
         if err != nil {
             return err
         }
-    } else if m.GetStackDiagnostics() != nil {
-        err := writer.WriteObjectValue("", m.GetStackDiagnostics())
-        if err != nil {
-            return err
-        }
     }
     return nil
 }
 // SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)() {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)() {
     m.ingressAttributes = value
 }
-// SetStackAggregateOutputs sets the stackAggregateOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) SetStackAggregateOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable)() {
-    m.stackAggregateOutputs = value
-}
 // SetStackConfigurationSummaries sets the stackConfigurationSummaries property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) SetStackConfigurationSummaries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)() {
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) SetStackConfigurationSummaries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)() {
     m.stackConfigurationSummaries = value
 }
-// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
-func (m *ItemStackConfigurationsGetResponse_StackConfigurations) SetStackDiagnostics(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)() {
-    m.stackDiagnostics = value
-}
-type ItemStackConfigurationsGetResponse_StackConfigurationsable interface {
+type ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
-    GetStackAggregateOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable)
     GetStackConfigurationSummaries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)
-    GetStackDiagnostics()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)
     SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
-    SetStackAggregateOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackAggregateOutputsable)()
     SetStackConfigurationSummaries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)()
-    SetStackDiagnostics(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)()
 }
 // NewItemStackConfigurationsGetResponse instantiates a new ItemStackConfigurationsGetResponse and sets the default values.
 func NewItemStackConfigurationsGetResponse()(*ItemStackConfigurationsGetResponse) {
@@ -176,8 +132,8 @@ func (m *ItemStackConfigurationsGetResponse) GetAdditionalData()(map[string]any)
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []ItemStackConfigurationsGetResponse_StackConfigurationsable when successful
-func (m *ItemStackConfigurationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable) {
+// returns a []StackConfigurationsable when successful
+func (m *ItemStackConfigurationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -185,15 +141,15 @@ func (m *ItemStackConfigurationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df4
 func (m *ItemStackConfigurationsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStackConfigurationsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)
                 }
             }
             m.SetData(res)
@@ -201,15 +157,15 @@ func (m *ItemStackConfigurationsGetResponse) GetFieldDeserializers()(map[string]
         return nil
     }
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateItemStackConfigurationsGetResponse_StackConfigurationsFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ItemStackConfigurationsGetResponse_StackConfigurationsable, len(val))
+            res := make([]ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ItemStackConfigurationsGetResponse_StackConfigurationsable)
+                    res[i] = v.(ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable)
                 }
             }
             m.SetIncluded(res)
@@ -239,8 +195,8 @@ func (m *ItemStackConfigurationsGetResponse) GetFieldDeserializers()(map[string]
     return res
 }
 // GetIncluded gets the included property value. The included property
-// returns a []ItemStackConfigurationsGetResponse_StackConfigurationsable when successful
-func (m *ItemStackConfigurationsGetResponse) GetIncluded()([]ItemStackConfigurationsGetResponse_StackConfigurationsable) {
+// returns a []ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable when successful
+func (m *ItemStackConfigurationsGetResponse) GetIncluded()([]ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable) {
     return m.included
 }
 // GetLinks gets the links property value. The links property
@@ -304,11 +260,11 @@ func (m *ItemStackConfigurationsGetResponse) SetAdditionalData(value map[string]
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemStackConfigurationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable)() {
+func (m *ItemStackConfigurationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)() {
     m.data = value
 }
 // SetIncluded sets the included property value. The included property
-func (m *ItemStackConfigurationsGetResponse) SetIncluded(value []ItemStackConfigurationsGetResponse_StackConfigurationsable)() {
+func (m *ItemStackConfigurationsGetResponse) SetIncluded(value []ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable)() {
     m.included = value
 }
 // SetLinks sets the links property value. The links property
@@ -322,12 +278,12 @@ func (m *ItemStackConfigurationsGetResponse) SetMeta(value ItemStackConfiguratio
 type ItemStackConfigurationsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable)
-    GetIncluded()([]ItemStackConfigurationsGetResponse_StackConfigurationsable)
+    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)
+    GetIncluded()([]ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemStackConfigurationsGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemStackConfigurationsGetResponse_StackConfigurationsable)()
-    SetIncluded(value []ItemStackConfigurationsGetResponse_StackConfigurationsable)()
+    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)()
+    SetIncluded(value []ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemStackConfigurationsGetResponse_metaable)()
 }

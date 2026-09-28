@@ -13,31 +13,31 @@ type ItemTasksGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable
+    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable
     // The included property
-    included []ItemTasksGetResponse_Tasksable
+    included []ItemTasksGetResponse_TasksGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemTasksGetResponse_metaable
 }
-// ItemTasksGetResponse_Tasks composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
-type ItemTasksGetResponse_Tasks struct {
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
+// ItemTasksGetResponse_TasksGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
+type ItemTasksGetResponse_TasksGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
     workspaceTasks i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
 }
-// NewItemTasksGetResponse_Tasks instantiates a new ItemTasksGetResponse_Tasks and sets the default values.
-func NewItemTasksGetResponse_Tasks()(*ItemTasksGetResponse_Tasks) {
-    m := &ItemTasksGetResponse_Tasks{
+// NewItemTasksGetResponse_TasksGetResponse_included instantiates a new ItemTasksGetResponse_TasksGetResponse_included and sets the default values.
+func NewItemTasksGetResponse_TasksGetResponse_included()(*ItemTasksGetResponse_TasksGetResponse_included) {
+    m := &ItemTasksGetResponse_TasksGetResponse_included{
     }
     return m
 }
-// CreateItemTasksGetResponse_TasksFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// CreateItemTasksGetResponse_TasksGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemTasksGetResponse_TasksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewItemTasksGetResponse_Tasks()
+func CreateItemTasksGetResponse_TasksGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemTasksGetResponse_TasksGetResponse_included()
     if parseNode != nil {
         mappingValueNode, err := parseNode.GetChildNode("type")
         if err != nil {
@@ -50,7 +50,7 @@ func CreateItemTasksGetResponse_TasksFromDiscriminatorValue(parseNode i878a80d23
             }
             if mappingValue != nil {
                 if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
-                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewItemWorkspacesGetResponse_Workspaces())
+                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaces())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-tasks") {
                     result.SetWorkspaceTasks(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceTasks())
                 }
@@ -61,7 +61,7 @@ func CreateItemTasksGetResponse_TasksFromDiscriminatorValue(parseNode i878a80d23
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemTasksGetResponse_Tasks) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+func (m *ItemTasksGetResponse_TasksGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     if m.GetWorkspaces() != nil {
         return m.GetWorkspaces().GetFieldDeserializers()
     } else if m.GetWorkspaceTasks() != nil {
@@ -71,21 +71,21 @@ func (m *ItemTasksGetResponse_Tasks) GetFieldDeserializers()(map[string]func(i87
 }
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *ItemTasksGetResponse_Tasks) GetIsComposedType()(bool) {
+func (m *ItemTasksGetResponse_TasksGetResponse_included) GetIsComposedType()(bool) {
     return true
 }
-// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-// returns a ItemWorkspacesGetResponse_Workspacesable when successful
-func (m *ItemTasksGetResponse_Tasks) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable) {
+// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+// returns a Workspacesable when successful
+func (m *ItemTasksGetResponse_TasksGetResponse_included) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
     return m.workspaces
 }
 // GetWorkspaceTasks gets the workspaceTasks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
 // returns a WorkspaceTasksable when successful
-func (m *ItemTasksGetResponse_Tasks) GetWorkspaceTasks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable) {
+func (m *ItemTasksGetResponse_TasksGetResponse_included) GetWorkspaceTasks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable) {
     return m.workspaceTasks
 }
 // Serialize serializes information the current object
-func (m *ItemTasksGetResponse_Tasks) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+func (m *ItemTasksGetResponse_TasksGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetWorkspaces() != nil {
         err := writer.WriteObjectValue("", m.GetWorkspaces())
         if err != nil {
@@ -99,19 +99,19 @@ func (m *ItemTasksGetResponse_Tasks) Serialize(writer i878a80d2330e89d26896388a3
     }
     return nil
 }
-// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
-func (m *ItemTasksGetResponse_Tasks) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)() {
+// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+func (m *ItemTasksGetResponse_TasksGetResponse_included) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
     m.workspaces = value
 }
 // SetWorkspaceTasks sets the workspaceTasks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable
-func (m *ItemTasksGetResponse_Tasks) SetWorkspaceTasks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable)() {
+func (m *ItemTasksGetResponse_TasksGetResponse_included) SetWorkspaceTasks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable)() {
     m.workspaceTasks = value
 }
-type ItemTasksGetResponse_Tasksable interface {
+type ItemTasksGetResponse_TasksGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)
+    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
     GetWorkspaceTasks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable)
-    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)()
+    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
     SetWorkspaceTasks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTasksable)()
 }
 // NewItemTasksGetResponse instantiates a new ItemTasksGetResponse and sets the default values.
@@ -132,8 +132,8 @@ func (m *ItemTasksGetResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []ItemTasksGetResponse_Tasksable when successful
-func (m *ItemTasksGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable) {
+// returns a []Tasksable when successful
+func (m *ItemTasksGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -141,15 +141,15 @@ func (m *ItemTasksGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b7
 func (m *ItemTasksGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateItemTasksGetResponse_TasksFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTasksFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable)
                 }
             }
             m.SetData(res)
@@ -157,15 +157,15 @@ func (m *ItemTasksGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2
         return nil
     }
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateItemTasksGetResponse_TasksFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreateItemTasksGetResponse_TasksGetResponse_includedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ItemTasksGetResponse_Tasksable, len(val))
+            res := make([]ItemTasksGetResponse_TasksGetResponse_includedable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ItemTasksGetResponse_Tasksable)
+                    res[i] = v.(ItemTasksGetResponse_TasksGetResponse_includedable)
                 }
             }
             m.SetIncluded(res)
@@ -195,8 +195,8 @@ func (m *ItemTasksGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2
     return res
 }
 // GetIncluded gets the included property value. The included property
-// returns a []ItemTasksGetResponse_Tasksable when successful
-func (m *ItemTasksGetResponse) GetIncluded()([]ItemTasksGetResponse_Tasksable) {
+// returns a []ItemTasksGetResponse_TasksGetResponse_includedable when successful
+func (m *ItemTasksGetResponse) GetIncluded()([]ItemTasksGetResponse_TasksGetResponse_includedable) {
     return m.included
 }
 // GetLinks gets the links property value. The links property
@@ -260,11 +260,11 @@ func (m *ItemTasksGetResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemTasksGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable)() {
+func (m *ItemTasksGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable)() {
     m.data = value
 }
 // SetIncluded sets the included property value. The included property
-func (m *ItemTasksGetResponse) SetIncluded(value []ItemTasksGetResponse_Tasksable)() {
+func (m *ItemTasksGetResponse) SetIncluded(value []ItemTasksGetResponse_TasksGetResponse_includedable)() {
     m.included = value
 }
 // SetLinks sets the links property value. The links property
@@ -278,12 +278,12 @@ func (m *ItemTasksGetResponse) SetMeta(value ItemTasksGetResponse_metaable)() {
 type ItemTasksGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable)
-    GetIncluded()([]ItemTasksGetResponse_Tasksable)
+    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable)
+    GetIncluded()([]ItemTasksGetResponse_TasksGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemTasksGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemTasksGetResponse_Tasksable)()
-    SetIncluded(value []ItemTasksGetResponse_Tasksable)()
+    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Tasksable)()
+    SetIncluded(value []ItemTasksGetResponse_TasksGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemTasksGetResponse_metaable)()
 }

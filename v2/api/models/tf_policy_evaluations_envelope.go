@@ -11,7 +11,7 @@ type TfPolicyEvaluationsEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
-    data TfPolicyEvaluationable
+    data TfPolicyEvaluationsable
 }
 // NewTfPolicyEvaluationsEnvelope instantiates a new TfPolicyEvaluationsEnvelope and sets the default values.
 func NewTfPolicyEvaluationsEnvelope()(*TfPolicyEvaluationsEnvelope) {
@@ -31,8 +31,8 @@ func (m *TfPolicyEvaluationsEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
-// returns a TfPolicyEvaluationable when successful
-func (m *TfPolicyEvaluationsEnvelope) GetData()(TfPolicyEvaluationable) {
+// returns a TfPolicyEvaluationsable when successful
+func (m *TfPolicyEvaluationsEnvelope) GetData()(TfPolicyEvaluationsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -40,12 +40,12 @@ func (m *TfPolicyEvaluationsEnvelope) GetData()(TfPolicyEvaluationable) {
 func (m *TfPolicyEvaluationsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluationFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTfPolicyEvaluationsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetData(val.(TfPolicyEvaluationable))
+            m.SetData(val.(TfPolicyEvaluationsable))
         }
         return nil
     }
@@ -72,12 +72,12 @@ func (m *TfPolicyEvaluationsEnvelope) SetAdditionalData(value map[string]any)() 
     m.additionalData = value
 }
 // SetData sets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
-func (m *TfPolicyEvaluationsEnvelope) SetData(value TfPolicyEvaluationable)() {
+func (m *TfPolicyEvaluationsEnvelope) SetData(value TfPolicyEvaluationsable)() {
     m.data = value
 }
 type TfPolicyEvaluationsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(TfPolicyEvaluationable)
-    SetData(value TfPolicyEvaluationable)()
+    GetData()(TfPolicyEvaluationsable)
+    SetData(value TfPolicyEvaluationsable)()
 }

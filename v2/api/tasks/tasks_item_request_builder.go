@@ -18,7 +18,7 @@ type TasksItemRequestBuilder struct {
 type TasksItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldstasks []string "uriparametername:\"fields%5Btasks%5D\""
-    // Allows including related resource data.
+    // Optionally side-load the specified relationships.
     Include []iaad17ee58633d1bcb69c36c294867edc7605bc892a131b243a6107cfc310349e.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewTasksItemRequestBuilderInternal instantiates a new TasksItemRequestBuilder and sets the default values.
@@ -51,9 +51,9 @@ func (m *TasksItemRequestBuilder) Delete(ctx context.Context, requestConfigurati
     return nil
 }
 // Get get details about a run task.
-// returns a ItemTasksGetResponseable when successful
+// returns a TasksEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TasksItemRequestBuilderGetQueryParameters])(ItemTasksGetResponseable, error) {
+func (m *TasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TasksItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TasksEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -61,14 +61,14 @@ func (m *TasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration 
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemTasksGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTasksEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemTasksGetResponseable), nil
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TasksEnvelopeable), nil
 }
 // Patch update a run task.
 // returns a TasksEnvelopeable when successful

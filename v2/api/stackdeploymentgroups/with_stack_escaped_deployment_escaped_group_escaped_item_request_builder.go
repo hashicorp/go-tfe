@@ -18,7 +18,7 @@ type WithStack_deployment_group_ItemRequestBuilder struct {
 type WithStack_deployment_group_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
-    // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
+    // Optionally side-load the specified relationships.
     Include []i168e8b5818149f916e1d4279c1f66330e436d123653daacab7ce187ca22b329b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // ApproveAllPlans the approveAllPlans property
@@ -40,9 +40,9 @@ func NewWithStack_deployment_group_ItemRequestBuilder(rawUrl string, requestAdap
     return NewWithStack_deployment_group_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a stack deployment group.
-// returns a ItemWithStack_deployment_group_GetResponseable when successful
+// returns a StackDeploymentGroupsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithStack_deployment_group_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_deployment_group_ItemRequestBuilderGetQueryParameters])(ItemWithStack_deployment_group_GetResponseable, error) {
+func (m *WithStack_deployment_group_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_deployment_group_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentGroupsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -50,14 +50,14 @@ func (m *WithStack_deployment_group_ItemRequestBuilder) Get(ctx context.Context,
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithStack_deployment_group_GetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStackDeploymentGroupsEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemWithStack_deployment_group_GetResponseable), nil
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentGroupsEnvelopeable), nil
 }
 // Rerun the rerun property
 // returns a *ItemRerunRequestBuilder when successful

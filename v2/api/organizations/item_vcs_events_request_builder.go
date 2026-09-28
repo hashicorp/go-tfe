@@ -27,7 +27,7 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
     Filteroauth_client_external_ids *string "uriparametername:\"filter%5Boauth_client_external_ids%5D\""
     // RFC3339 formatted UTC timestamp. If omitted, defaults to now.
     Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bto%5D\""
-    // Allows including related resource data.
+    // Optionally side-load the specified relationships.
     Include []ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

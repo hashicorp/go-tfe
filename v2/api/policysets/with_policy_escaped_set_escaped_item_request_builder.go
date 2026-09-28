@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ib4032290f0e3b2e810de95e092424c16936fad4fe1b1b4fe84f7b7ac59592fb4 "github.com/hashicorp/go-tfe/v2/api/policysets/item"
 )
 
 // WithPolicy_set_ItemRequestBuilder builds and executes requests for operations under \policy-sets\{policy_set_id}
@@ -17,11 +18,13 @@ type WithPolicy_set_ItemRequestBuilder struct {
 type WithPolicy_set_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ib4032290f0e3b2e810de95e092424c16936fad4fe1b1b4fe84f7b7ac59592fb4.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithPolicy_set_ItemRequestBuilderInternal instantiates a new WithPolicy_set_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_set_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_set_ItemRequestBuilder) {
     m := &WithPolicy_set_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}{?fields%5Bpolicy%2Dsets%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}{?fields%5Bpolicy%2Dsets%5D,include}", pathParameters),
     }
     return m
 }
