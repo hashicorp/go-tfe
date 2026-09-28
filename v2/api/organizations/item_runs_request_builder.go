@@ -21,7 +21,7 @@ type ItemRunsRequestBuilderGetQueryParameters struct {
     Filteroperation *string "uriparametername:\"filter%5Boperation%5D\""
     // Filter by run status.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
-    // Filter by timeframe. Must be a numeric year or "year" for the last 12 months (the default).
+    // Filter by timeframe. Must be a numeric year from 2018 through the current calendar year, or "year" for the last 12 months (the default).
     Filtertimeframe *string "uriparametername:\"filter%5Btimeframe%5D\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
