@@ -7019,7 +7019,9 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "subscription"
+                  "subscription",
+                  "default_project",
+                  "entitlement_set"
                 ]
               }
             }
@@ -7059,12 +7061,20 @@
                         "oneOf": [
                           {
                             "$ref": "#/components/schemas/subscriptions"
+                          },
+                          {
+                            "$ref": "#/components/schemas/projects"
+                          },
+                          {
+                            "$ref": "#/components/schemas/entitlement-sets"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
-                            "subscriptions": "#/components/schemas/subscriptions"
+                            "subscriptions": "#/components/schemas/subscriptions",
+                            "projects": "#/components/schemas/projects",
+                            "entitlement-sets": "#/components/schemas/entitlement-sets"
                           }
                         }
                       }
@@ -7171,8 +7181,8 @@
                 "type": "string",
                 "enum": [
                   "subscription",
-                  "entitlement_set",
-                  "default-project"
+                  "default_project",
+                  "entitlement_set"
                 ]
               }
             }
@@ -7194,18 +7204,18 @@
                             "$ref": "#/components/schemas/subscriptions"
                           },
                           {
-                            "$ref": "#/components/schemas/entitlement-sets"
+                            "$ref": "#/components/schemas/projects"
                           },
                           {
-                            "$ref": "#/components/schemas/projects"
+                            "$ref": "#/components/schemas/entitlement-sets"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
                             "subscriptions": "#/components/schemas/subscriptions",
-                            "entitlement-sets": "#/components/schemas/entitlement-sets",
-                            "projects": "#/components/schemas/projects"
+                            "projects": "#/components/schemas/projects",
+                            "entitlement-sets": "#/components/schemas/entitlement-sets"
                           }
                         }
                       }

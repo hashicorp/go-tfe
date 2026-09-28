@@ -6,16 +6,22 @@ type GetIncludeQueryParameterType int
 
 const (
     SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+    DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+    ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"subscription"}[i]
+    return []string{"subscription", "default_project", "entitlement_set"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
     switch v {
         case "subscription":
             result = SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
+        case "default_project":
+            result = DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+        case "entitlement_set":
+            result = ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }
