@@ -408,6 +408,69 @@ func TestAdminBannersUpdate(t *testing.T) {
 		})
 		require.Error(t, err)
 	})
+
+	t.Run("clears schedule", func(t *testing.T) {
+		var captured map[string]any
+		server, client := testServerWithClient(t, "/api/v2", map[string]http.HandlerFunc{
+			"/api/v2/admin/banners/ab-123": func(w http.ResponseWriter, r *http.Request) {
+				require.Equal(t, http.MethodPatch, r.Method)
+				captured = attributesFromBody(t, captureBody(t, r))
+				setDefaultServerHeaders(w)
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte(`{
+					"data": {
+						"id": "ab-123",
+						"type": "admin-banners",
+						"attributes": {
+							"title": "Maintenance",
+							"body": "<p>Scheduled downtime.</p>",
+							"style": "info",
+							"audience": "all_users",
+							"timezone": null,
+							"published-at": "2026-10-01T02:00:00Z",
+							"scheduled-publish-at": null,
+							"scheduled-expire-at": null
+						}
+					}
+				}`))
+			},
+		})
+		defer server.Close()
+
+		banner, err := client.Admin.Banners.Update(context.Background(), "ab-123", AdminBannerUpdateOptions{
+			ClearSchedule: true,
+		})
+		require.NoError(t, err)
+		require.NotNil(t, banner)
+
+		assert.Nil(t, captured["scheduled-publish-at"], "must send explicit null for scheduled-publish-at")
+		assert.Nil(t, captured["scheduled-expire-at"], "must send explicit null for scheduled-expire-at")
+		assert.Nil(t, captured["timezone"], "must send explicit null for timezone")
+		assert.NotNil(t, banner.PublishedAt)
+		assert.Nil(t, banner.ScheduledPublishAt)
+		assert.Nil(t, banner.ScheduledExpireAt)
+	})
+
+	t.Run("rejects ClearSchedule with schedule fields", func(t *testing.T) {
+		called := false
+		server, client := testServerWithClient(t, "/api/v2", map[string]http.HandlerFunc{
+			"/api/v2/admin/banners/ab-123": func(w http.ResponseWriter, r *http.Request) {
+				called = true
+				setDefaultServerHeaders(w)
+				w.WriteHeader(http.StatusOK)
+			},
+		})
+		defer server.Close()
+
+		publishAt := mustParseTime("2026-10-01T02:00:00Z")
+		_, err := client.Admin.Banners.Update(context.Background(), "ab-123", AdminBannerUpdateOptions{
+			ClearSchedule:      true,
+			ScheduledPublishAt: &publishAt,
+		})
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "ClearSchedule")
+		assert.False(t, called, "no request must be issued when validation fails")
+	})
 }
 
 func TestAdminBannersDelete(t *testing.T) {

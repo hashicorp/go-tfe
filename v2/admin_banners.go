@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"time"
 
+	absser "github.com/microsoft/kiota-abstractions-go/serialization"
+
 	"github.com/hashicorp/go-tfe/v2/api/models"
 )
 
@@ -84,6 +86,9 @@ type AdminBannerCreateOptions struct {
 // A nil pointer leaves the field unchanged on the server.
 // ScheduledPublishAt, ScheduledExpireAt, and Timezone must all be provided
 // together or all omitted; providing a subset is a validation error.
+// Set ClearSchedule to true to remove an existing schedule and make the banner
+// immediately active. ClearSchedule is mutually exclusive with
+// ScheduledPublishAt, ScheduledExpireAt, and Timezone.
 type AdminBannerUpdateOptions struct {
 	Title    *string
 	Body     *string
@@ -93,6 +98,18 @@ type AdminBannerUpdateOptions struct {
 
 	ScheduledPublishAt *time.Time
 	ScheduledExpireAt  *time.Time
+
+	// ClearSchedule removes an existing schedule, making the banner immediately
+	// active. It is mutually exclusive with ScheduledPublishAt,
+	// ScheduledExpireAt, and Timezone.
+	//
+	// Kiota's JSON serialiser skips nil pointer fields entirely — it does not
+	// emit "null" — so there is no way to express "send null for this field"
+	// through the normal typed setters. ClearSchedule works around this by
+	// injecting absser.NewUntypedNull() via AdditionalData, which the
+	// serialiser does emit as an explicit JSON null. All three schedule fields
+	// must be nulled together to satisfy the API's all-or-nothing constraint.
+	ClearSchedule bool
 }
 
 type adminBanners struct {
@@ -237,6 +254,10 @@ func parseBannerAudience(s string) (*models.AdminBanners_attributes_audience, er
 }
 
 func (a *adminBanners) Update(ctx context.Context, bannerID string, options AdminBannerUpdateOptions) (*AdminBanner, error) {
+	if options.ClearSchedule && (options.ScheduledPublishAt != nil || options.ScheduledExpireAt != nil || options.Timezone != nil) {
+		return nil, fmt.Errorf("ClearSchedule is mutually exclusive with ScheduledPublishAt, ScheduledExpireAt, and Timezone")
+	}
+
 	attrs := models.NewAdminBanners_attributes()
 
 	if options.Title != nil {
@@ -267,6 +288,14 @@ func (a *adminBanners) Update(ctx context.Context, bannerID string, options Admi
 	}
 	if options.ScheduledExpireAt != nil {
 		attrs.SetScheduledExpireAt(options.ScheduledExpireAt)
+	}
+	if options.ClearSchedule {
+		null := absser.NewUntypedNull()
+		attrs.SetAdditionalData(map[string]any{
+			"scheduled-publish-at": null,
+			"scheduled-expire-at":  null,
+			"timezone":             null,
+		})
 	}
 
 	bannerType := models.ADMINBANNERS_ADMINBANNERS_TYPE
