@@ -210,7 +210,10 @@ func bannerFromEnvelope(envelope models.AdminBannersEnvelopeable) *AdminBanner {
 // Returns an error for unrecognised values to prevent them being silently
 // dropped during Kiota serialisation.
 func parseBannerStyle(s string) (*models.AdminBanners_attributes_style, error) {
-	parsed, _ := models.ParseAdminBanners_attributes_style(s)
+	parsed, err := models.ParseAdminBanners_attributes_style(s)
+	if err != nil {
+		return nil, fmt.Errorf("invalid banner style %q: %w", s, err)
+	}
 	v, ok := parsed.(*models.AdminBanners_attributes_style)
 	if !ok || v == nil {
 		return nil, fmt.Errorf("invalid banner style %q: valid values are info, warning, critical", s)
@@ -222,7 +225,10 @@ func parseBannerStyle(s string) (*models.AdminBanners_attributes_style, error) {
 // Returns an error for unrecognised values to prevent them being silently
 // dropped during Kiota serialisation.
 func parseBannerAudience(s string) (*models.AdminBanners_attributes_audience, error) {
-	parsed, _ := models.ParseAdminBanners_attributes_audience(s)
+	parsed, err := models.ParseAdminBanners_attributes_audience(s)
+	if err != nil {
+		return nil, fmt.Errorf("invalid banner audience %q: %w", s, err)
+	}
 	v, ok := parsed.(*models.AdminBanners_attributes_audience)
 	if !ok || v == nil {
 		return nil, fmt.Errorf("invalid banner audience %q: valid values are all_users, authenticated_only", s)
