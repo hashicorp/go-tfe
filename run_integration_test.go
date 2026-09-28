@@ -393,7 +393,7 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 }
 
 func TestRunsCreate_MinimalRefresh(t *testing.T) {
-	// TODO: Remove this skip once Terraform v1.17.0 is released
+	// TODO: Remove the skip once Terraform v1.17.0 is released
 	t.Skip("Requires Terraform version 1.17.0+. To run before then, use an organization with terraform beta versions enabled and local Atlas with a lower minimum minimal refresh version (e.g. 1.17.0-beta1)")
 	client := testClient(t)
 	ctx := context.Background()
