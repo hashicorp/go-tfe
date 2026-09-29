@@ -12,7 +12,7 @@ type ItemRelationshipsRemoteStateConsumersGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
@@ -36,8 +36,8 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetAdditionalData()(m
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []Workspacesable when successful
-func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
+// returns a []ItemWorkspacesGetResponse_Workspacesable when successful
+func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -45,15 +45,15 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetData()([]i05d5aa6b
 func (m *ItemRelationshipsRemoteStateConsumersGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspacesFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateItemWorkspacesGetResponse_WorkspacesFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)
                 }
             }
             m.SetData(res)
@@ -131,7 +131,7 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetAdditionalData(val
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
+func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)() {
     m.data = value
 }
 // SetLinks sets the links property value. The links property
@@ -145,10 +145,10 @@ func (m *ItemRelationshipsRemoteStateConsumersGetResponse) SetMeta(value ItemRel
 type ItemRelationshipsRemoteStateConsumersGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemRelationshipsRemoteStateConsumersGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
+    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ItemWorkspacesGetResponse_Workspacesable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemRelationshipsRemoteStateConsumersGetResponse_metaable)()
 }

@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,255 @@ type RunsEnvelope struct {
     additionalData map[string]any
     // The data property
     data Runsable
+    // The included property
+    included []RunsEnvelope_RunsEnvelope_includedable
+}
+// RunsEnvelope_RunsEnvelope_included composed type wrapper for classes Appliesable, ConfigurationVersionsable, CostEstimatesable, IngressAttributesable, ItemWorkspacesGetResponse_Workspacesable, Plansable, TaskStagesable, TfPolicyEvaluationable, Usersable
+type RunsEnvelope_RunsEnvelope_included struct {
+    // Composed type representation for type Appliesable
+    applies Appliesable
+    // Composed type representation for type ConfigurationVersionsable
+    configurationVersions ConfigurationVersionsable
+    // Composed type representation for type CostEstimatesable
+    costEstimates CostEstimatesable
+    // Composed type representation for type IngressAttributesable
+    ingressAttributes IngressAttributesable
+    // Composed type representation for type Plansable
+    plans Plansable
+    // Composed type representation for type TaskStagesable
+    taskStages TaskStagesable
+    // Composed type representation for type TfPolicyEvaluationable
+    tfPolicyEvaluation TfPolicyEvaluationable
+    // Composed type representation for type Usersable
+    users Usersable
+    // Composed type representation for type ItemWorkspacesGetResponse_Workspacesable
+    workspaces ItemWorkspacesGetResponse_Workspacesable
+}
+// NewRunsEnvelope_RunsEnvelope_included instantiates a new RunsEnvelope_RunsEnvelope_included and sets the default values.
+func NewRunsEnvelope_RunsEnvelope_included()(*RunsEnvelope_RunsEnvelope_included) {
+    m := &RunsEnvelope_RunsEnvelope_included{
+    }
+    return m
+}
+// CreateRunsEnvelope_RunsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateRunsEnvelope_RunsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewRunsEnvelope_RunsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "applies") {
+                    result.SetApplies(NewApplies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+                    result.SetConfigurationVersions(NewConfigurationVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cost-estimates") {
+                    result.SetCostEstimates(NewCostEstimates())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+                    result.SetIngressAttributes(NewIngressAttributes())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "plans") {
+                    result.SetPlans(NewPlans())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "task-stages") {
+                    result.SetTaskStages(NewTaskStages())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "tf-policy-evaluations") {
+                    result.SetTfPolicyEvaluation(NewTfPolicyEvaluation())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(NewUsers())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(NewItemWorkspacesGetResponse_Workspaces())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetApplies gets the applies property value. Composed type representation for type Appliesable
+// returns a Appliesable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetApplies()(Appliesable) {
+    return m.applies
+}
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// returns a ConfigurationVersionsable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetConfigurationVersions()(ConfigurationVersionsable) {
+    return m.configurationVersions
+}
+// GetCostEstimates gets the costEstimates property value. Composed type representation for type CostEstimatesable
+// returns a CostEstimatesable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetCostEstimates()(CostEstimatesable) {
+    return m.costEstimates
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetApplies() != nil {
+        return m.GetApplies().GetFieldDeserializers()
+    } else if m.GetConfigurationVersions() != nil {
+        return m.GetConfigurationVersions().GetFieldDeserializers()
+    } else if m.GetCostEstimates() != nil {
+        return m.GetCostEstimates().GetFieldDeserializers()
+    } else if m.GetIngressAttributes() != nil {
+        return m.GetIngressAttributes().GetFieldDeserializers()
+    } else if m.GetPlans() != nil {
+        return m.GetPlans().GetFieldDeserializers()
+    } else if m.GetTaskStages() != nil {
+        return m.GetTaskStages().GetFieldDeserializers()
+    } else if m.GetTfPolicyEvaluation() != nil {
+        return m.GetTfPolicyEvaluation().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    } else if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+// returns a IngressAttributesable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetIngressAttributes()(IngressAttributesable) {
+    return m.ingressAttributes
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetPlans gets the plans property value. Composed type representation for type Plansable
+// returns a Plansable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetPlans()(Plansable) {
+    return m.plans
+}
+// GetTaskStages gets the taskStages property value. Composed type representation for type TaskStagesable
+// returns a TaskStagesable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetTaskStages()(TaskStagesable) {
+    return m.taskStages
+}
+// GetTfPolicyEvaluation gets the tfPolicyEvaluation property value. Composed type representation for type TfPolicyEvaluationable
+// returns a TfPolicyEvaluationable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetTfPolicyEvaluation()(TfPolicyEvaluationable) {
+    return m.tfPolicyEvaluation
+}
+// GetUsers gets the users property value. Composed type representation for type Usersable
+// returns a Usersable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetUsers()(Usersable) {
+    return m.users
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type ItemWorkspacesGetResponse_Workspacesable
+// returns a ItemWorkspacesGetResponse_Workspacesable when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetWorkspaces()(ItemWorkspacesGetResponse_Workspacesable) {
+    return m.workspaces
+}
+// Serialize serializes information the current object
+func (m *RunsEnvelope_RunsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetApplies() != nil {
+        err := writer.WriteObjectValue("", m.GetApplies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetConfigurationVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetCostEstimates() != nil {
+        err := writer.WriteObjectValue("", m.GetCostEstimates())
+        if err != nil {
+            return err
+        }
+    } else if m.GetIngressAttributes() != nil {
+        err := writer.WriteObjectValue("", m.GetIngressAttributes())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPlans() != nil {
+        err := writer.WriteObjectValue("", m.GetPlans())
+        if err != nil {
+            return err
+        }
+    } else if m.GetTaskStages() != nil {
+        err := writer.WriteObjectValue("", m.GetTaskStages())
+        if err != nil {
+            return err
+        }
+    } else if m.GetTfPolicyEvaluation() != nil {
+        err := writer.WriteObjectValue("", m.GetTfPolicyEvaluation())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetApplies sets the applies property value. Composed type representation for type Appliesable
+func (m *RunsEnvelope_RunsEnvelope_included) SetApplies(value Appliesable)() {
+    m.applies = value
+}
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+func (m *RunsEnvelope_RunsEnvelope_included) SetConfigurationVersions(value ConfigurationVersionsable)() {
+    m.configurationVersions = value
+}
+// SetCostEstimates sets the costEstimates property value. Composed type representation for type CostEstimatesable
+func (m *RunsEnvelope_RunsEnvelope_included) SetCostEstimates(value CostEstimatesable)() {
+    m.costEstimates = value
+}
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+func (m *RunsEnvelope_RunsEnvelope_included) SetIngressAttributes(value IngressAttributesable)() {
+    m.ingressAttributes = value
+}
+// SetPlans sets the plans property value. Composed type representation for type Plansable
+func (m *RunsEnvelope_RunsEnvelope_included) SetPlans(value Plansable)() {
+    m.plans = value
+}
+// SetTaskStages sets the taskStages property value. Composed type representation for type TaskStagesable
+func (m *RunsEnvelope_RunsEnvelope_included) SetTaskStages(value TaskStagesable)() {
+    m.taskStages = value
+}
+// SetTfPolicyEvaluation sets the tfPolicyEvaluation property value. Composed type representation for type TfPolicyEvaluationable
+func (m *RunsEnvelope_RunsEnvelope_included) SetTfPolicyEvaluation(value TfPolicyEvaluationable)() {
+    m.tfPolicyEvaluation = value
+}
+// SetUsers sets the users property value. Composed type representation for type Usersable
+func (m *RunsEnvelope_RunsEnvelope_included) SetUsers(value Usersable)() {
+    m.users = value
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type ItemWorkspacesGetResponse_Workspacesable
+func (m *RunsEnvelope_RunsEnvelope_included) SetWorkspaces(value ItemWorkspacesGetResponse_Workspacesable)() {
+    m.workspaces = value
+}
+type RunsEnvelope_RunsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetApplies()(Appliesable)
+    GetConfigurationVersions()(ConfigurationVersionsable)
+    GetCostEstimates()(CostEstimatesable)
+    GetIngressAttributes()(IngressAttributesable)
+    GetPlans()(Plansable)
+    GetTaskStages()(TaskStagesable)
+    GetTfPolicyEvaluation()(TfPolicyEvaluationable)
+    GetUsers()(Usersable)
+    GetWorkspaces()(ItemWorkspacesGetResponse_Workspacesable)
+    SetApplies(value Appliesable)()
+    SetConfigurationVersions(value ConfigurationVersionsable)()
+    SetCostEstimates(value CostEstimatesable)()
+    SetIngressAttributes(value IngressAttributesable)()
+    SetPlans(value Plansable)()
+    SetTaskStages(value TaskStagesable)()
+    SetTfPolicyEvaluation(value TfPolicyEvaluationable)()
+    SetUsers(value Usersable)()
+    SetWorkspaces(value ItemWorkspacesGetResponse_Workspacesable)()
 }
 // NewRunsEnvelope instantiates a new RunsEnvelope and sets the default values.
 func NewRunsEnvelope()(*RunsEnvelope) {
@@ -49,12 +299,45 @@ func (m *RunsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d2
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateRunsEnvelope_RunsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]RunsEnvelope_RunsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(RunsEnvelope_RunsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []RunsEnvelope_RunsEnvelope_includedable when successful
+func (m *RunsEnvelope) GetIncluded()([]RunsEnvelope_RunsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *RunsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +358,15 @@ func (m *RunsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *RunsEnvelope) SetData(value Runsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *RunsEnvelope) SetIncluded(value []RunsEnvelope_RunsEnvelope_includedable)() {
+    m.included = value
+}
 type RunsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Runsable)
+    GetIncluded()([]RunsEnvelope_RunsEnvelope_includedable)
     SetData(value Runsable)()
+    SetIncluded(value []RunsEnvelope_RunsEnvelope_includedable)()
 }

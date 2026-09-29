@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i42462dc6584d5465d4564f70e24254d294ef50e2cbf66cf71340733a7ea71be0 "github.com/hashicorp/go-tfe/v2/api/taskconfigs/item"
 )
 
 // WithExternal_ItemRequestBuilder builds and executes requests for operations under \task-configs\{external_id}
@@ -18,12 +19,12 @@ type WithExternal_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for task-configs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstaskConfigs []string "uriparametername:\"fields%5Btask%2Dconfigs%5D\""
     // Allows including related resource data. Value must be a comma-separated list containing one or more of `projects`, `task`, `owner`, or `organization`.
-    Include *string "uriparametername:\"include\""
+    Include []i42462dc6584d5465d4564f70e24254d294ef50e2cbf66cf71340733a7ea71be0.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithExternal_ItemRequestBuilderInternal instantiates a new WithExternal_ItemRequestBuilder and sets the default values.
 func NewWithExternal_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithExternal_ItemRequestBuilder) {
     m := &WithExternal_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-configs/{external_id}{?fields%5Btask%2Dconfigs%5D,include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/task-configs/{external_id}{?fields%5Btask%2Dconfigs%5D,include}", pathParameters),
     }
     return m
 }
@@ -34,9 +35,9 @@ func NewWithExternal_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewWithExternal_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a task configuration.
-// returns a TaskConfigsEnvelopeable when successful
+// returns a ItemWithExternal_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithExternal_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithExternal_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskConfigsEnvelopeable, error) {
+func (m *WithExternal_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithExternal_ItemRequestBuilderGetQueryParameters])(ItemWithExternal_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -44,14 +45,14 @@ func (m *WithExternal_ItemRequestBuilder) Get(ctx context.Context, requestConfig
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTaskConfigsEnvelopeFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithExternal_GetResponseFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TaskConfigsEnvelopeable), nil
+    return res.(ItemWithExternal_GetResponseable), nil
 }
 // Patch update a task configuration.
 // returns a TaskConfigsEnvelopeable when successful
