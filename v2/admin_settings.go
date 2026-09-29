@@ -41,11 +41,13 @@ type AdminAvatarSource struct {
 type AdminCustomizationSetting struct {
 	ID           string
 	SupportEmail string
-	SupportURL   string
-	LoginHelp    string
-	Footer       string
-	Error        string
-	NewUser      string
+	// SupportURLAddress is a bare hostname, for example "support.example.com";
+	// the server prepends the scheme when rendering the link.
+	SupportURLAddress string
+	LoginHelp         string
+	Footer            string
+	Error             string
+	NewUser           string
 
 	InternalSupportURL       string
 	InternalDocumentationURL string
@@ -55,15 +57,18 @@ type AdminCustomizationSetting struct {
 
 // AdminCustomizationSettingsUpdateOptions represents the options for updating
 // the admin customization settings. A nil pointer leaves the attribute
-// unchanged; setting a URL to an empty string clears the override so the
-// default link is restored.
+// unchanged. Setting one of the Internal* URLs to an empty string clears that
+// override, restoring the default link.
 type AdminCustomizationSettingsUpdateOptions struct {
 	SupportEmail *string
-	SupportURL   *string
-	LoginHelp    *string
-	Footer       *string
-	Error        *string
-	NewUser      *string
+	// SupportURLAddress is a bare hostname, for example "support.example.com";
+	// the server prepends the scheme when rendering the link. A value that
+	// already includes a scheme is accepted but renders as "https://https://...".
+	SupportURLAddress *string
+	LoginHelp         *string
+	Footer            *string
+	Error             *string
+	NewUser           *string
 
 	InternalSupportURL       *string
 	InternalDocumentationURL *string
@@ -132,8 +137,8 @@ func (a *adminCustomizationSettings) Update(ctx context.Context, options AdminCu
 	if options.SupportEmail != nil {
 		attrs.SetSupportEmailAddress(options.SupportEmail)
 	}
-	if options.SupportURL != nil {
-		attrs.SetSupportUrlAddress(options.SupportURL)
+	if options.SupportURLAddress != nil {
+		attrs.SetSupportUrlAddress(options.SupportURLAddress)
 	}
 	if options.LoginHelp != nil {
 		attrs.SetLoginHelp(options.LoginHelp)
@@ -235,7 +240,7 @@ func customizationSettingFromEnvelope(envelope models.AdminCustomizationSettings
 	}
 
 	setting.SupportEmail = derefString(attrs.GetSupportEmailAddress())
-	setting.SupportURL = derefString(attrs.GetSupportUrlAddress())
+	setting.SupportURLAddress = derefString(attrs.GetSupportUrlAddress())
 	setting.LoginHelp = derefString(attrs.GetLoginHelp())
 	setting.Footer = derefString(attrs.GetFooter())
 	setting.Error = derefString(attrs.GetError())

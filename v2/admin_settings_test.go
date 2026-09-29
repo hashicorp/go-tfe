@@ -75,7 +75,7 @@ func TestAdminCustomizationSettingsRead(t *testing.T) {
 
 	assert.Equal(t, "customization", setting.ID)
 	assert.Equal(t, "support@example.com", setting.SupportEmail)
-	assert.Equal(t, "support.example.com", setting.SupportURL)
+	assert.Equal(t, "support.example.com", setting.SupportURLAddress)
 	assert.Equal(t, "<p>login</p>", setting.LoginHelp)
 	assert.Equal(t, "<p>footer</p>", setting.Footer)
 	assert.Equal(t, "<p>error</p>", setting.Error)
@@ -119,7 +119,7 @@ func TestAdminCustomizationSettingsUpdate(t *testing.T) {
 		defer server.Close()
 
 		setting, err := client.Admin.Settings.Customization.Update(context.Background(), AdminCustomizationSettingsUpdateOptions{
-			SupportURL:               new("support.example.com"),
+			SupportURLAddress:        new("support.example.com"),
 			InternalSupportURL:       new("https://internal.example.com/support"),
 			InternalDocumentationURL: new("https://internal.example.com/docs"),
 			InternalTutorialsURL:     new("https://internal.example.com/tutorials"),
