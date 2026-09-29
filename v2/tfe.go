@@ -89,6 +89,7 @@ type Client struct {
 // Admin groups the site administration APIs.
 type Admin struct {
 	Settings AdminSettings
+	Banners  AdminBanners
 }
 
 // Meta contains any HCP Terraform APIs which provide data about the API itself.
@@ -179,6 +180,7 @@ func NewClient(cfg *Config) (*Client, error) {
 			Customization: &adminCustomizationSettings{client: client},
 			General:       &adminGeneralSettings{client: client},
 		},
+		Banners: &adminBanners{client: client},
 	}
 	client.Meta = Meta{
 		IPRanges: &ipRanges{
