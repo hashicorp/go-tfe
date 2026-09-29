@@ -81,7 +81,14 @@ type Client struct {
 	adapter *TFERequestAdapter
 	API     *api.ApiClient
 
+	Admin Admin
+
 	Meta Meta
+}
+
+// Admin groups the site administration APIs.
+type Admin struct {
+	Settings AdminSettings
 }
 
 // Meta contains any HCP Terraform APIs which provide data about the API itself.
@@ -167,6 +174,12 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	client.API = api.NewApiClient(adapter)
+	client.Admin = Admin{
+		Settings: AdminSettings{
+			Customization: &adminCustomizationSettings{client: client},
+			General:       &adminGeneralSettings{client: client},
+		},
+	}
 	client.Meta = Meta{
 		IPRanges: &ipRanges{
 			client: client,
