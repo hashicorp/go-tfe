@@ -1,3 +1,9 @@
+# v1.112.0
+
+## Enhancements
+
+* Adds MinimalRefresh field to Run and RunCreateOptions to support the minimal-refresh run attribute
+
 # v1.111.2
 
 ## Bug Fixes
