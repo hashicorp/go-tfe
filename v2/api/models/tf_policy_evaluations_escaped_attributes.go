@@ -23,8 +23,8 @@ type TfPolicyEvaluations_attributes struct {
     permissions TfPolicyEvaluations_attributes_permissionsable
     // Aggregated counts of policy results across all policy sets in this evaluation
     resultCount TfPolicyEvaluations_attributes_resultCountable
-    // The type of stage this evaluation is associated with (e.g., 'Plan', 'Apply', 'Init')
-    stageType *string
+    // The type of stage this evaluation is associated with.
+    stageType *TfPolicyEvaluations_attributes_stageType
     // Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
     status *TfPolicyEvaluations_attributes_status
     // Timestamps for each status transition during the evaluation lifecycle
@@ -134,12 +134,12 @@ func (m *TfPolicyEvaluations_attributes) GetFieldDeserializers()(map[string]func
         return nil
     }
     res["stage-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+        val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_stageType)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetStageType(val)
+            m.SetStageType(val.(*TfPolicyEvaluations_attributes_stageType))
         }
         return nil
     }
@@ -185,9 +185,9 @@ func (m *TfPolicyEvaluations_attributes) GetPermissions()(TfPolicyEvaluations_at
 func (m *TfPolicyEvaluations_attributes) GetResultCount()(TfPolicyEvaluations_attributes_resultCountable) {
     return m.resultCount
 }
-// GetStageType gets the stage-type property value. The type of stage this evaluation is associated with (e.g., 'Plan', 'Apply', 'Init')
-// returns a *string when successful
-func (m *TfPolicyEvaluations_attributes) GetStageType()(*string) {
+// GetStageType gets the stage-type property value. The type of stage this evaluation is associated with.
+// returns a *TfPolicyEvaluations_attributes_stageType when successful
+func (m *TfPolicyEvaluations_attributes) GetStageType()(*TfPolicyEvaluations_attributes_stageType) {
     return m.stageType
 }
 // GetStatus gets the status property value. Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
@@ -231,8 +231,9 @@ func (m *TfPolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d268963
             return err
         }
     }
-    {
-        err := writer.WriteStringValue("stage-type", m.GetStageType())
+    if m.GetStageType() != nil {
+        cast := (*m.GetStageType()).String()
+        err := writer.WriteStringValue("stage-type", &cast)
         if err != nil {
             return err
         }
@@ -286,8 +287,8 @@ func (m *TfPolicyEvaluations_attributes) SetPermissions(value TfPolicyEvaluation
 func (m *TfPolicyEvaluations_attributes) SetResultCount(value TfPolicyEvaluations_attributes_resultCountable)() {
     m.resultCount = value
 }
-// SetStageType sets the stage-type property value. The type of stage this evaluation is associated with (e.g., 'Plan', 'Apply', 'Init')
-func (m *TfPolicyEvaluations_attributes) SetStageType(value *string)() {
+// SetStageType sets the stage-type property value. The type of stage this evaluation is associated with.
+func (m *TfPolicyEvaluations_attributes) SetStageType(value *TfPolicyEvaluations_attributes_stageType)() {
     m.stageType = value
 }
 // SetStatus sets the status property value. Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
@@ -311,7 +312,7 @@ type TfPolicyEvaluations_attributesable interface {
     GetError()(TfPolicyEvaluations_attributes_errorable)
     GetPermissions()(TfPolicyEvaluations_attributes_permissionsable)
     GetResultCount()(TfPolicyEvaluations_attributes_resultCountable)
-    GetStageType()(*string)
+    GetStageType()(*TfPolicyEvaluations_attributes_stageType)
     GetStatus()(*TfPolicyEvaluations_attributes_status)
     GetStatusTimestamps()(TfPolicyEvaluations_attributes_statusTimestampsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -321,7 +322,7 @@ type TfPolicyEvaluations_attributesable interface {
     SetError(value TfPolicyEvaluations_attributes_errorable)()
     SetPermissions(value TfPolicyEvaluations_attributes_permissionsable)()
     SetResultCount(value TfPolicyEvaluations_attributes_resultCountable)()
-    SetStageType(value *string)()
+    SetStageType(value *TfPolicyEvaluations_attributes_stageType)()
     SetStatus(value *TfPolicyEvaluations_attributes_status)()
     SetStatusTimestamps(value TfPolicyEvaluations_attributes_statusTimestampsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()

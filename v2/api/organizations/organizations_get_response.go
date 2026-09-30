@@ -21,10 +21,12 @@ type OrganizationsGetResponse struct {
     // The meta property
     meta OrganizationsGetResponse_metaable
 }
-// OrganizationsGetResponse_OrganizationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+// OrganizationsGetResponse_OrganizationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
 type OrganizationsGetResponse_OrganizationsGetResponse_included struct {
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
     entitlementSets i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
+    onboardingTaskLists i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
     projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
@@ -53,6 +55,8 @@ func CreateOrganizationsGetResponse_OrganizationsGetResponse_includedFromDiscrim
             if mappingValue != nil {
                 if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "entitlement-sets") {
                     result.SetEntitlementSets(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewEntitlementSets())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "onboarding-task-lists") {
+                    result.SetOnboardingTaskLists(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOnboardingTaskLists())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
                     result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "subscriptions") {
@@ -73,6 +77,8 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetEntitlem
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     if m.GetEntitlementSets() != nil {
         return m.GetEntitlementSets().GetFieldDeserializers()
+    } else if m.GetOnboardingTaskLists() != nil {
+        return m.GetOnboardingTaskLists().GetFieldDeserializers()
     } else if m.GetProjects() != nil {
         return m.GetProjects().GetFieldDeserializers()
     } else if m.GetSubscriptions() != nil {
@@ -84,6 +90,11 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetFieldDes
 // returns a bool when successful
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetIsComposedType()(bool) {
     return true
+}
+// GetOnboardingTaskLists gets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
+// returns a OnboardingTaskListsable when successful
+func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetOnboardingTaskLists()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable) {
+    return m.onboardingTaskLists
 }
 // GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
 // returns a Projectsable when successful
@@ -99,6 +110,11 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetSubscrip
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetEntitlementSets() != nil {
         err := writer.WriteObjectValue("", m.GetEntitlementSets())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOnboardingTaskLists() != nil {
+        err := writer.WriteObjectValue("", m.GetOnboardingTaskLists())
         if err != nil {
             return err
         }
@@ -119,6 +135,10 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) Serialize(w
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)() {
     m.entitlementSets = value
 }
+// SetOnboardingTaskLists sets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
+func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetOnboardingTaskLists(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable)() {
+    m.onboardingTaskLists = value
+}
 // SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
     m.projects = value
@@ -130,9 +150,11 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetSubscrip
 type OrganizationsGetResponse_OrganizationsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetEntitlementSets()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)
+    GetOnboardingTaskLists()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable)
     GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
     GetSubscriptions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)
     SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)()
+    SetOnboardingTaskLists(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable)()
     SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
     SetSubscriptions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)()
 }

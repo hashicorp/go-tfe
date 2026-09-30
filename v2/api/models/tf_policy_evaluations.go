@@ -7,7 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// TfPolicyEvaluations represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
+// TfPolicyEvaluations represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Init or Plan or Apply) in the run lifecycle.
 type TfPolicyEvaluations struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any

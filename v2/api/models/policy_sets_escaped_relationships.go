@@ -22,6 +22,10 @@ type PolicySets_relationships struct {
     projectExclusions ProjectsHasManyable
     // The projects property
     projects ProjectsHasManyable
+    // The stackExclusions property
+    stackExclusions StacksHasManyable
+    // The stacks property
+    stacks StacksHasManyable
     // The workspaceExclusions property
     workspaceExclusions WorkspacesHasManyable
     // The workspaces property
@@ -113,6 +117,26 @@ func (m *PolicySets_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["stack-exclusions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackExclusions(val.(StacksHasManyable))
+        }
+        return nil
+    }
+    res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStacks(val.(StacksHasManyable))
+        }
+        return nil
+    }
     res["workspace-exclusions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
@@ -160,6 +184,16 @@ func (m *PolicySets_relationships) GetProjectExclusions()(ProjectsHasManyable) {
 func (m *PolicySets_relationships) GetProjects()(ProjectsHasManyable) {
     return m.projects
 }
+// GetStackExclusions gets the stack-exclusions property value. The stackExclusions property
+// returns a StacksHasManyable when successful
+func (m *PolicySets_relationships) GetStackExclusions()(StacksHasManyable) {
+    return m.stackExclusions
+}
+// GetStacks gets the stacks property value. The stacks property
+// returns a StacksHasManyable when successful
+func (m *PolicySets_relationships) GetStacks()(StacksHasManyable) {
+    return m.stacks
+}
 // GetWorkspaceExclusions gets the workspace-exclusions property value. The workspaceExclusions property
 // returns a WorkspacesHasManyable when successful
 func (m *PolicySets_relationships) GetWorkspaceExclusions()(WorkspacesHasManyable) {
@@ -204,6 +238,18 @@ func (m *PolicySets_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteObjectValue("projects", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stack-exclusions", m.GetStackExclusions())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stacks", m.GetStacks())
         if err != nil {
             return err
         }
@@ -256,6 +302,14 @@ func (m *PolicySets_relationships) SetProjectExclusions(value ProjectsHasManyabl
 func (m *PolicySets_relationships) SetProjects(value ProjectsHasManyable)() {
     m.projects = value
 }
+// SetStackExclusions sets the stack-exclusions property value. The stackExclusions property
+func (m *PolicySets_relationships) SetStackExclusions(value StacksHasManyable)() {
+    m.stackExclusions = value
+}
+// SetStacks sets the stacks property value. The stacks property
+func (m *PolicySets_relationships) SetStacks(value StacksHasManyable)() {
+    m.stacks = value
+}
 // SetWorkspaceExclusions sets the workspace-exclusions property value. The workspaceExclusions property
 func (m *PolicySets_relationships) SetWorkspaceExclusions(value WorkspacesHasManyable)() {
     m.workspaceExclusions = value
@@ -273,6 +327,8 @@ type PolicySets_relationshipsable interface {
     GetPolicies()(PoliciesHasManyable)
     GetProjectExclusions()(ProjectsHasManyable)
     GetProjects()(ProjectsHasManyable)
+    GetStackExclusions()(StacksHasManyable)
+    GetStacks()(StacksHasManyable)
     GetWorkspaceExclusions()(WorkspacesHasManyable)
     GetWorkspaces()(WorkspacesHasManyable)
     SetCurrentVersion(value PolicySetVersionsHasOneable)()
@@ -281,6 +337,8 @@ type PolicySets_relationshipsable interface {
     SetPolicies(value PoliciesHasManyable)()
     SetProjectExclusions(value ProjectsHasManyable)()
     SetProjects(value ProjectsHasManyable)()
+    SetStackExclusions(value StacksHasManyable)()
+    SetStacks(value StacksHasManyable)()
     SetWorkspaceExclusions(value WorkspacesHasManyable)()
     SetWorkspaces(value WorkspacesHasManyable)()
 }

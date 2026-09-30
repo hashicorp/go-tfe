@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,145 @@ type StacksEnvelope struct {
     additionalData map[string]any
     // The data property
     data Stacksable
+    // The included property
+    included []StacksEnvelope_StacksEnvelope_includedable
+}
+// StacksEnvelope_StacksEnvelope_included composed type wrapper for classes Organizationsable, Projectsable, StackConfigurationsable, StackDiagnosticsable
+type StacksEnvelope_StacksEnvelope_included struct {
+    // Composed type representation for type Organizationsable
+    organizations Organizationsable
+    // Composed type representation for type Projectsable
+    projects Projectsable
+    // Composed type representation for type StackConfigurationsable
+    stackConfigurations StackConfigurationsable
+    // Composed type representation for type StackDiagnosticsable
+    stackDiagnostics StackDiagnosticsable
+}
+// NewStacksEnvelope_StacksEnvelope_included instantiates a new StacksEnvelope_StacksEnvelope_included and sets the default values.
+func NewStacksEnvelope_StacksEnvelope_included()(*StacksEnvelope_StacksEnvelope_included) {
+    m := &StacksEnvelope_StacksEnvelope_included{
+    }
+    return m
+}
+// CreateStacksEnvelope_StacksEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateStacksEnvelope_StacksEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewStacksEnvelope_StacksEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+                    result.SetOrganizations(NewOrganizations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configurations") {
+                    result.SetStackConfigurations(NewStackConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-diagnostics") {
+                    result.SetStackDiagnostics(NewStackDiagnostics())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetOrganizations() != nil {
+        return m.GetOrganizations().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetStackConfigurations() != nil {
+        return m.GetStackConfigurations().GetFieldDeserializers()
+    } else if m.GetStackDiagnostics() != nil {
+        return m.GetStackDiagnostics().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetOrganizations gets the organizations property value. Composed type representation for type Organizationsable
+// returns a Organizationsable when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetOrganizations()(Organizationsable) {
+    return m.organizations
+}
+// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// returns a Projectsable when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetProjects()(Projectsable) {
+    return m.projects
+}
+// GetStackConfigurations gets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+// returns a StackConfigurationsable when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetStackConfigurations()(StackConfigurationsable) {
+    return m.stackConfigurations
+}
+// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
+// returns a StackDiagnosticsable when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetStackDiagnostics()(StackDiagnosticsable) {
+    return m.stackDiagnostics
+}
+// Serialize serializes information the current object
+func (m *StacksEnvelope_StacksEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetOrganizations() != nil {
+        err := writer.WriteObjectValue("", m.GetOrganizations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetStackConfigurations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackDiagnostics() != nil {
+        err := writer.WriteObjectValue("", m.GetStackDiagnostics())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetOrganizations sets the organizations property value. Composed type representation for type Organizationsable
+func (m *StacksEnvelope_StacksEnvelope_included) SetOrganizations(value Organizationsable)() {
+    m.organizations = value
+}
+// SetProjects sets the projects property value. Composed type representation for type Projectsable
+func (m *StacksEnvelope_StacksEnvelope_included) SetProjects(value Projectsable)() {
+    m.projects = value
+}
+// SetStackConfigurations sets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+func (m *StacksEnvelope_StacksEnvelope_included) SetStackConfigurations(value StackConfigurationsable)() {
+    m.stackConfigurations = value
+}
+// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
+func (m *StacksEnvelope_StacksEnvelope_included) SetStackDiagnostics(value StackDiagnosticsable)() {
+    m.stackDiagnostics = value
+}
+type StacksEnvelope_StacksEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetOrganizations()(Organizationsable)
+    GetProjects()(Projectsable)
+    GetStackConfigurations()(StackConfigurationsable)
+    GetStackDiagnostics()(StackDiagnosticsable)
+    SetOrganizations(value Organizationsable)()
+    SetProjects(value Projectsable)()
+    SetStackConfigurations(value StackConfigurationsable)()
+    SetStackDiagnostics(value StackDiagnosticsable)()
 }
 // NewStacksEnvelope instantiates a new StacksEnvelope and sets the default values.
 func NewStacksEnvelope()(*StacksEnvelope) {
@@ -49,12 +189,45 @@ func (m *StacksEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateStacksEnvelope_StacksEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]StacksEnvelope_StacksEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(StacksEnvelope_StacksEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []StacksEnvelope_StacksEnvelope_includedable when successful
+func (m *StacksEnvelope) GetIncluded()([]StacksEnvelope_StacksEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *StacksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +248,15 @@ func (m *StacksEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *StacksEnvelope) SetData(value Stacksable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *StacksEnvelope) SetIncluded(value []StacksEnvelope_StacksEnvelope_includedable)() {
+    m.included = value
+}
 type StacksEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Stacksable)
+    GetIncluded()([]StacksEnvelope_StacksEnvelope_includedable)
     SetData(value Stacksable)()
+    SetIncluded(value []StacksEnvelope_StacksEnvelope_includedable)()
 }

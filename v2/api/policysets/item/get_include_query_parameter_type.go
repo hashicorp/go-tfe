@@ -7,17 +7,19 @@ type GetIncludeQueryParameterType int
 const (
     POLICIES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
     WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
-    PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
-    CURRENTVERSION_GETINCLUDEQUERYPARAMETERTYPE
-    NEWESTVERSION_GETINCLUDEQUERYPARAMETERTYPE
-    WORKSPACEEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
-    PROJECTEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+    WORKSPACE_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
     STACKS_GETINCLUDEQUERYPARAMETERTYPE
-    STACKEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+    STACK_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+    PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+    PROJECT_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+    CURRENT_VERSION_GETINCLUDEQUERYPARAMETERTYPE
+    NEWEST_VERSION_GETINCLUDEQUERYPARAMETERTYPE
+    POLICIESOOTB_POLICY_GETINCLUDEQUERYPARAMETERTYPE
+    POLICIESOOTB_POLICYOOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"policies", "workspaces", "projects", "current-version", "newest-version", "workspace-exclusions", "project-exclusions", "stacks", "stack-exclusions"}[i]
+    return []string{"policies", "workspaces", "workspace_exclusions", "stacks", "stack_exclusions", "projects", "project_exclusions", "current_version", "newest_version", "policies.ootb_policy", "policies.ootb_policy.ootb_policy_libraries"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := POLICIES_GETINCLUDEQUERYPARAMETERTYPE
@@ -26,20 +28,24 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = POLICIES_GETINCLUDEQUERYPARAMETERTYPE
         case "workspaces":
             result = WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
-        case "projects":
-            result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
-        case "current-version":
-            result = CURRENTVERSION_GETINCLUDEQUERYPARAMETERTYPE
-        case "newest-version":
-            result = NEWESTVERSION_GETINCLUDEQUERYPARAMETERTYPE
-        case "workspace-exclusions":
-            result = WORKSPACEEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
-        case "project-exclusions":
-            result = PROJECTEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+        case "workspace_exclusions":
+            result = WORKSPACE_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
         case "stacks":
             result = STACKS_GETINCLUDEQUERYPARAMETERTYPE
-        case "stack-exclusions":
-            result = STACKEXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+        case "stack_exclusions":
+            result = STACK_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+        case "projects":
+            result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+        case "project_exclusions":
+            result = PROJECT_EXCLUSIONS_GETINCLUDEQUERYPARAMETERTYPE
+        case "current_version":
+            result = CURRENT_VERSION_GETINCLUDEQUERYPARAMETERTYPE
+        case "newest_version":
+            result = NEWEST_VERSION_GETINCLUDEQUERYPARAMETERTYPE
+        case "policies.ootb_policy":
+            result = POLICIESOOTB_POLICY_GETINCLUDEQUERYPARAMETERTYPE
+        case "policies.ootb_policy.ootb_policy_libraries":
+            result = POLICIESOOTB_POLICYOOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

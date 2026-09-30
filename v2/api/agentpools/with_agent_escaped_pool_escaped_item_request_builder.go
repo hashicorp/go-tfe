@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic137be8a5e75ec616f0b09953984e7eba8a829ecdb0b3c53d02faf36cb79a913 "github.com/hashicorp/go-tfe/v2/api/agentpools/item"
 )
 
 // WithAgent_pool_ItemRequestBuilder builds and executes requests for operations under \agent-pools\{agent_pool_id}
@@ -17,6 +18,8 @@ type WithAgent_pool_ItemRequestBuilder struct {
 type WithAgent_pool_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for agent-pools resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsagentPools []string "uriparametername:\"fields%5Bagent%2Dpools%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic137be8a5e75ec616f0b09953984e7eba8a829ecdb0b3c53d02faf36cb79a913.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Agents the agents property
 // returns a *ItemAgentsRequestBuilder when successful
@@ -31,7 +34,7 @@ func (m *WithAgent_pool_ItemRequestBuilder) AuthenticationTokens()(*ItemAuthenti
 // NewWithAgent_pool_ItemRequestBuilderInternal instantiates a new WithAgent_pool_ItemRequestBuilder and sets the default values.
 func NewWithAgent_pool_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithAgent_pool_ItemRequestBuilder) {
     m := &WithAgent_pool_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}{?fields%5Bagent%2Dpools%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}{?fields%5Bagent%2Dpools%5D,include}", pathParameters),
     }
     return m
 }

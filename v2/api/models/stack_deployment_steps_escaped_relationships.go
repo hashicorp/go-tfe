@@ -16,6 +16,8 @@ type StackDeploymentSteps_relationships struct {
     stackDeploymentRun StackDeploymentRunsHasOneable
     // The stackDiagnostics property
     stackDiagnostics StackDeploymentSteps_relationships_stackDiagnosticsable
+    // The stackOperation property
+    stackOperation StackOperationHasOneable
     // The stackState property
     stackState StackStatesHasOneable
 }
@@ -70,6 +72,16 @@ func (m *StackDeploymentSteps_relationships) GetFieldDeserializers()(map[string]
         }
         return nil
     }
+    res["stack-operation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackOperationHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackOperation(val.(StackOperationHasOneable))
+        }
+        return nil
+    }
     res["stack-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateStackStatesHasOneFromDiscriminatorValue)
         if err != nil {
@@ -97,6 +109,11 @@ func (m *StackDeploymentSteps_relationships) GetStackDeploymentRun()(StackDeploy
 func (m *StackDeploymentSteps_relationships) GetStackDiagnostics()(StackDeploymentSteps_relationships_stackDiagnosticsable) {
     return m.stackDiagnostics
 }
+// GetStackOperation gets the stack-operation property value. The stackOperation property
+// returns a StackOperationHasOneable when successful
+func (m *StackDeploymentSteps_relationships) GetStackOperation()(StackOperationHasOneable) {
+    return m.stackOperation
+}
 // GetStackState gets the stack-state property value. The stackState property
 // returns a StackStatesHasOneable when successful
 func (m *StackDeploymentSteps_relationships) GetStackState()(StackStatesHasOneable) {
@@ -118,6 +135,12 @@ func (m *StackDeploymentSteps_relationships) Serialize(writer i878a80d2330e89d26
     }
     {
         err := writer.WriteObjectValue("stack-diagnostics", m.GetStackDiagnostics())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stack-operation", m.GetStackOperation())
         if err != nil {
             return err
         }
@@ -152,6 +175,10 @@ func (m *StackDeploymentSteps_relationships) SetStackDeploymentRun(value StackDe
 func (m *StackDeploymentSteps_relationships) SetStackDiagnostics(value StackDeploymentSteps_relationships_stackDiagnosticsable)() {
     m.stackDiagnostics = value
 }
+// SetStackOperation sets the stack-operation property value. The stackOperation property
+func (m *StackDeploymentSteps_relationships) SetStackOperation(value StackOperationHasOneable)() {
+    m.stackOperation = value
+}
 // SetStackState sets the stack-state property value. The stackState property
 func (m *StackDeploymentSteps_relationships) SetStackState(value StackStatesHasOneable)() {
     m.stackState = value
@@ -162,9 +189,11 @@ type StackDeploymentSteps_relationshipsable interface {
     GetStackApproval()(StackApprovalsHasOneable)
     GetStackDeploymentRun()(StackDeploymentRunsHasOneable)
     GetStackDiagnostics()(StackDeploymentSteps_relationships_stackDiagnosticsable)
+    GetStackOperation()(StackOperationHasOneable)
     GetStackState()(StackStatesHasOneable)
     SetStackApproval(value StackApprovalsHasOneable)()
     SetStackDeploymentRun(value StackDeploymentRunsHasOneable)()
     SetStackDiagnostics(value StackDeploymentSteps_relationships_stackDiagnosticsable)()
+    SetStackOperation(value StackOperationHasOneable)()
     SetStackState(value StackStatesHasOneable)()
 }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i35de644a8ac92f69b57518dc605cd832d42403de8e2f7fefdbfe55ad1171a626 "github.com/hashicorp/go-tfe/v2/api/organizations/item/cidrrangelists"
 )
 
 // ItemCidrRangeListsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\cidr-range-lists
@@ -17,6 +18,8 @@ type ItemCidrRangeListsRequestBuilder struct {
 type ItemCidrRangeListsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for cidr-range-lists resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldscidrRangeLists []string "uriparametername:\"fields%5Bcidr%2Drange%2Dlists%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i35de644a8ac92f69b57518dc605cd832d42403de8e2f7fefdbfe55ad1171a626.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -25,7 +28,7 @@ type ItemCidrRangeListsRequestBuilderGetQueryParameters struct {
 // NewItemCidrRangeListsRequestBuilderInternal instantiates a new ItemCidrRangeListsRequestBuilder and sets the default values.
 func NewItemCidrRangeListsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCidrRangeListsRequestBuilder) {
     m := &ItemCidrRangeListsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/cidr-range-lists{?fields%5Bcidr%2Drange%2Dlists%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/cidr-range-lists{?fields%5Bcidr%2Drange%2Dlists%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

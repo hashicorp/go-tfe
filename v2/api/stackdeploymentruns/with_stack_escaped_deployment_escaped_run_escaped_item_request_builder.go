@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i8a422263b0a62c92be45a1765d7f2fa63967cb728ac2720dcd1866b25ee2a4eb "github.com/hashicorp/go-tfe/v2/api/stackdeploymentruns/item"
 )
 
 // WithStack_deployment_run_ItemRequestBuilder builds and executes requests for operations under \stack-deployment-runs\{stack_deployment_run_id}
@@ -17,6 +18,8 @@ type WithStack_deployment_run_ItemRequestBuilder struct {
 type WithStack_deployment_run_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i8a422263b0a62c92be45a1765d7f2fa63967cb728ac2720dcd1866b25ee2a4eb.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // ApproveAllPlans the approveAllPlans property
 // returns a *ItemApproveAllPlansRequestBuilder when successful
@@ -31,7 +34,7 @@ func (m *WithStack_deployment_run_ItemRequestBuilder) Cancel()(*ItemCancelReques
 // NewWithStack_deployment_run_ItemRequestBuilderInternal instantiates a new WithStack_deployment_run_ItemRequestBuilder and sets the default values.
 func NewWithStack_deployment_run_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_deployment_run_ItemRequestBuilder) {
     m := &WithStack_deployment_run_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}{?fields%5Bstack%2Ddeployment%2Druns%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}{?fields%5Bstack%2Ddeployment%2Druns%5D,include}", pathParameters),
     }
     return m
 }

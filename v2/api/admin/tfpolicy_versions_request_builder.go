@@ -14,7 +14,7 @@ import (
 type TfpolicyVersionsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// TfpolicyVersionsRequestBuilderGetQueryParameters lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// TfpolicyVersionsRequestBuilderGetQueryParameters lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 type TfpolicyVersionsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tfpolicy-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstfpolicyVersions []string "uriparametername:\"fields%5Btfpolicy%2Dversions%5D\""
@@ -54,7 +54,7 @@ func NewTfpolicyVersionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     urlParams["request-raw-url"] = rawUrl
     return NewTfpolicyVersionsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a AdminTfpolicyVersionsCollectionEnvelopeable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -76,7 +76,7 @@ func (m *TfpolicyVersionsRequestBuilder) Get(ctx context.Context, requestConfigu
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionsCollectionEnvelopeable), nil
 }
-// Post registers a new TFPolicy version. Requires administrator access. Provide at least one entry in `archs`, or both top-level `url` and `sha` fields. We recommend using `archs` to specify binary URLs and SHA-256 checksums. If both forms are given and include a linux/amd64 architecture, their `url`/`sha` values must match exactly or the request returns 422 Unprocessable Content. Omitting both `archs` and `url`/`sha` returns 400 Bad Request.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Post registers a new TFPolicy version. Requires administrator access. Provide at least one entry in `archs`, or both top-level `url` and `sha` fields. We recommend using `archs` to specify binary URLs and SHA-256 checksums. If both forms are given and include a linux/amd64 architecture, their `url`/`sha` values must match exactly or the request returns 422 Unprocessable Content. Omitting both `archs` and `url`/`sha` returns 400 Bad Request.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a AdminTfpolicyVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 422 status code
@@ -100,7 +100,7 @@ func (m *TfpolicyVersionsRequestBuilder) Post(ctx context.Context, body i05d5aa6
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionsEnvelopeable), nil
 }
-// ToGetRequestInformation lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation lists the TFPolicy versions registered on this installation. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *TfpolicyVersionsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TfpolicyVersionsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -108,7 +108,7 @@ func (m *TfpolicyVersionsRequestBuilder) ToGetRequestInformation(ctx context.Con
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation registers a new TFPolicy version. Requires administrator access. Provide at least one entry in `archs`, or both top-level `url` and `sha` fields. We recommend using `archs` to specify binary URLs and SHA-256 checksums. If both forms are given and include a linux/amd64 architecture, their `url`/`sha` values must match exactly or the request returns 422 Unprocessable Content. Omitting both `archs` and `url`/`sha` returns 400 Bad Request.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPostRequestInformation registers a new TFPolicy version. Requires administrator access. Provide at least one entry in `archs`, or both top-level `url` and `sha` fields. We recommend using `archs` to specify binary URLs and SHA-256 checksums. If both forms are given and include a linux/amd64 architecture, their `url`/`sha` values must match exactly or the request returns 422 Unprocessable Content. Omitting both `archs` and `url`/`sha` returns 400 Bad Request.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *TfpolicyVersionsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionCreateEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

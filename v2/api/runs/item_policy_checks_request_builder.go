@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6 "github.com/hashicorp/go-tfe/v2/api/runs/item/policychecks"
 )
 
 // ItemPolicyChecksRequestBuilder builds and executes requests for operations under \runs\{-id}\policy-checks
@@ -17,6 +18,8 @@ type ItemPolicyChecksRequestBuilder struct {
 type ItemPolicyChecksRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicyChecks []string "uriparametername:\"fields%5Bpolicy%2Dchecks%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -25,7 +28,7 @@ type ItemPolicyChecksRequestBuilderGetQueryParameters struct {
 // NewItemPolicyChecksRequestBuilderInternal instantiates a new ItemPolicyChecksRequestBuilder and sets the default values.
 func NewItemPolicyChecksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicyChecksRequestBuilder) {
     m := &ItemPolicyChecksRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/policy-checks{?fields%5Bpolicy%2Dchecks%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/policy-checks{?fields%5Bpolicy%2Dchecks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

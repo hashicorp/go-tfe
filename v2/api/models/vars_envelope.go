@@ -12,6 +12,8 @@ type VarsEnvelope struct {
     additionalData map[string]any
     // The data property
     data Varsable
+    // The included property
+    included []Varsable
 }
 // NewVarsEnvelope instantiates a new VarsEnvelope and sets the default values.
 func NewVarsEnvelope()(*VarsEnvelope) {
@@ -49,12 +51,45 @@ func (m *VarsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d2
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateVarsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]Varsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Varsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []Varsable when successful
+func (m *VarsEnvelope) GetIncluded()([]Varsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *VarsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *VarsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *VarsEnvelope) SetData(value Varsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *VarsEnvelope) SetIncluded(value []Varsable)() {
+    m.included = value
+}
 type VarsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Varsable)
+    GetIncluded()([]Varsable)
     SetData(value Varsable)()
+    SetIncluded(value []Varsable)()
 }

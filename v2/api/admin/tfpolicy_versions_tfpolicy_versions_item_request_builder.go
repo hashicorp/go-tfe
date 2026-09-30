@@ -13,7 +13,7 @@ import (
 type TfpolicyVersionsTfpolicyVersionsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// TfpolicyVersionsTfpolicyVersionsItemRequestBuilderGetQueryParameters returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// TfpolicyVersionsTfpolicyVersionsItemRequestBuilderGetQueryParameters returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 type TfpolicyVersionsTfpolicyVersionsItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tfpolicy-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstfpolicyVersions []string "uriparametername:\"fields%5Btfpolicy%2Dversions%5D\""
@@ -31,7 +31,7 @@ func NewTfpolicyVersionsTfpolicyVersionsItemRequestBuilder(rawUrl string, reques
     urlParams["request-raw-url"] = rawUrl
     return NewTfpolicyVersionsTfpolicyVersionsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete deletes a TFPolicy version. Official or in-use versions cannot be destroyed. Requires administrator access. Returns 204 No Content on success.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Delete deletes a TFPolicy version. Official or in-use versions cannot be destroyed. Requires administrator access. Returns 204 No Content on success.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
@@ -49,7 +49,7 @@ func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) Delete(ctx context.
     }
     return nil
 }
-// Get returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a AdminTfpolicyVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -71,7 +71,7 @@ func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) Get(ctx context.Con
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionsEnvelopeable), nil
 }
-// Patch partially updates an existing TFPolicy version. Only attributes present in the request body are modified. Requires administrator access. Setting `enabled` to `false` while the version is in use returns 409 Conflict. Providing `archs` as an empty array returns 422 Unprocessable Content, since a TFPolicy version must always have at least one architecture; omitting `archs` leaves existing architectures unchanged.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Patch partially updates an existing TFPolicy version. Only attributes present in the request body are modified. Requires administrator access. Setting `enabled` to `false` while the version is in use returns 409 Conflict. Providing `archs` as an empty array returns 422 Unprocessable Content, since a TFPolicy version must always have at least one architecture; omitting `archs` leaves existing architectures unchanged.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a AdminTfpolicyVersionsEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
@@ -97,7 +97,7 @@ func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) Patch(ctx context.C
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionsEnvelopeable), nil
 }
-// ToDeleteRequestInformation deletes a TFPolicy version. Official or in-use versions cannot be destroyed. Requires administrator access. Returns 204 No Content on success.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToDeleteRequestInformation deletes a TFPolicy version. Official or in-use versions cannot be destroyed. Requires administrator access. Returns 204 No Content on success.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -105,7 +105,7 @@ func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) ToDeleteRequestInfo
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToGetRequestInformation returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation returns a single TFPolicy version by its external ID. Requires administrator access.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TfpolicyVersionsTfpolicyVersionsItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -113,7 +113,7 @@ func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) ToGetRequestInforma
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPatchRequestInformation partially updates an existing TFPolicy version. Only attributes present in the request body are modified. Requires administrator access. Setting `enabled` to `false` while the version is in use returns 409 Conflict. Providing `archs` as an empty array returns 422 Unprocessable Content, since a TFPolicy version must always have at least one architecture; omitting `archs` leaves existing architectures unchanged.This operation is only available in Terraform Enterprise.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPatchRequestInformation partially updates an existing TFPolicy version. Only attributes present in the request body are modified. Requires administrator access. Setting `enabled` to `false` while the version is in use returns 409 Conflict. Providing `archs` as an empty array returns 422 Unprocessable Content, since a TFPolicy version must always have at least one architecture; omitting `archs` leaves existing architectures unchanged.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *TfpolicyVersionsTfpolicyVersionsItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminTfpolicyVersionsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

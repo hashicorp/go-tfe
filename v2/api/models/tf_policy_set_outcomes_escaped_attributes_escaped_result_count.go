@@ -7,6 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
+// TfPolicySetOutcomes_attributes_resultCount counts of policy results for this policy set
 type TfPolicySetOutcomes_attributes_resultCount struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
@@ -16,7 +17,7 @@ type TfPolicySetOutcomes_attributes_resultCount struct {
     errored *int32
     // Policies with mandatory enforcement level that failed
     mandatoryFailed *int32
-    // Policies with mandatory-overridable enforcement level that failed
+    // Policies with `mandatory_overridable` enforcement level that failed.
     mandatoryOverridableFailed *int32
     // Policies that passed
     passed *int32
@@ -121,7 +122,7 @@ func (m *TfPolicySetOutcomes_attributes_resultCount) GetFieldDeserializers()(map
 func (m *TfPolicySetOutcomes_attributes_resultCount) GetMandatoryFailed()(*int32) {
     return m.mandatoryFailed
 }
-// GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+// GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 // returns a *int32 when successful
 func (m *TfPolicySetOutcomes_attributes_resultCount) GetMandatoryOverridableFailed()(*int32) {
     return m.mandatoryOverridableFailed
@@ -198,7 +199,7 @@ func (m *TfPolicySetOutcomes_attributes_resultCount) SetErrored(value *int32)() 
 func (m *TfPolicySetOutcomes_attributes_resultCount) SetMandatoryFailed(value *int32)() {
     m.mandatoryFailed = value
 }
-// SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+// SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 func (m *TfPolicySetOutcomes_attributes_resultCount) SetMandatoryOverridableFailed(value *int32)() {
     m.mandatoryOverridableFailed = value
 }

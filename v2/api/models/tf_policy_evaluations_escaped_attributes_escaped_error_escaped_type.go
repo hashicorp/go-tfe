@@ -7,19 +7,25 @@ type TfPolicyEvaluations_attributes_error_type int
 
 const (
     SETUP_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE TfPolicyEvaluations_attributes_error_type = iota
+    TOOL_VERSION_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
     INCOMPATIBLE_AGENT_VERSION_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
+    INCOMPATIBLE_TERRAFORM_VERSION_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
 )
 
 func (i TfPolicyEvaluations_attributes_error_type) String() string {
-    return []string{"setup_error", "incompatible_agent_version"}[i]
+    return []string{"setup_error", "tool_version_error", "incompatible_agent_version", "incompatible_terraform_version_error"}[i]
 }
 func ParseTfPolicyEvaluations_attributes_error_type(v string) (any, error) {
     result := SETUP_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
     switch v {
         case "setup_error":
             result = SETUP_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
+        case "tool_version_error":
+            result = TOOL_VERSION_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
         case "incompatible_agent_version":
             result = INCOMPATIBLE_AGENT_VERSION_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
+        case "incompatible_terraform_version_error":
+            result = INCOMPATIBLE_TERRAFORM_VERSION_ERROR_TFPOLICYEVALUATIONS_ATTRIBUTES_ERROR_TYPE
         default:
             return nil, nil
     }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i66bba72cca8aa4ddbdde42e0c4b0e5420f921574895484b21bb4a444be9c3d5a "github.com/hashicorp/go-tfe/v2/api/organizations/item/registrymodules/item/item/item/item"
 )
 
 // ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\registry-modules\{registry_name}\{namespace}\{name}\{provider}
@@ -17,11 +18,13 @@ type ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder struct {
 type ItemRegistryModulesItemItemItemWithProviderItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for registry-modules resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsregistryModules []string "uriparametername:\"fields%5Bregistry%2Dmodules%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i66bba72cca8aa4ddbdde42e0c4b0e5420f921574895484b21bb4a444be9c3d5a.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal instantiates a new ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder and sets the default values.
 func NewItemRegistryModulesItemItemItemWithProviderItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) {
     m := &ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}{?fields%5Bregistry%2Dmodules%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules/{registry_name}/{namespace}/{name}/{provider}{?fields%5Bregistry%2Dmodules%5D,include}", pathParameters),
     }
     return m
 }

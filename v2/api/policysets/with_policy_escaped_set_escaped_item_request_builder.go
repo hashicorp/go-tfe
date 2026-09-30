@@ -18,7 +18,7 @@ type WithPolicy_set_ItemRequestBuilder struct {
 type WithPolicy_set_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
-    // Optionally side-load the specified relationships.
+    // Available side-load related resources. Multiple values can be comma-separated.Project exclusion, stack, and stack exclusion relationship data is onlyreturned when included.Available includes:- `policies` - The policies in this policy set- `workspaces` - The workspaces this policy set is attached to- `workspace_exclusions` - The workspaces excluded from this policy set- `stacks` - The stacks this policy set is attached to (`tfpolicy` policy sets only) *(public-beta)*- `stack_exclusions` - The stacks excluded from this policy set (`tfpolicy` policy sets only) *(public-beta)*- `projects` - The projects this policy set is attached to- `project_exclusions` - The projects excluded from this policy set- `current_version` - The current policy set version- `newest_version` - The newest policy set version- `policies.ootb_policy` - The OOTB policy for each policy *(public-beta)*- `policies.ootb_policy.ootb_policy_libraries` - The OOTB policy libraries for each OOTB policy *(public-beta)*
     Include []ib4032290f0e3b2e810de95e092424c16936fad4fe1b1b4fe84f7b7ac59592fb4.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithPolicy_set_ItemRequestBuilderInternal instantiates a new WithPolicy_set_ItemRequestBuilder and sets the default values.

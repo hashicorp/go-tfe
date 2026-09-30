@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i1c02e1c12746a6de1bc3aef70ac934596358835569ad4764a47dba88f62eab89 "github.com/hashicorp/go-tfe/v2/api/policies/item"
 )
 
 // WithPolicy_ItemRequestBuilder builds and executes requests for operations under \policies\{policy_id}
@@ -17,11 +18,13 @@ type WithPolicy_ItemRequestBuilder struct {
 type WithPolicy_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldspolicies []string "uriparametername:\"fields%5Bpolicies%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i1c02e1c12746a6de1bc3aef70ac934596358835569ad4764a47dba88f62eab89.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithPolicy_ItemRequestBuilderInternal instantiates a new WithPolicy_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_ItemRequestBuilder) {
     m := &WithPolicy_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policies/{policy_id}{?fields%5Bpolicies%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policies/{policy_id}{?fields%5Bpolicies%5D,include}", pathParameters),
     }
     return m
 }
