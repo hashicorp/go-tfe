@@ -27,6 +27,8 @@ type Stacks_attributes struct {
     name *string
     // The outputsCount property
     outputsCount *int32
+    // The resourceCount property
+    resourceCount *int32
     // The settingOverwrites property
     settingOverwrites Stacks_attributes_settingOverwritesable
     // The speculativeEnabled property
@@ -166,6 +168,16 @@ func (m *Stacks_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330
         }
         return nil
     }
+    res["resource-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetResourceCount(val)
+        }
+        return nil
+    }
     res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateStacks_attributes_settingOverwritesFromDiscriminatorValue)
         if err != nil {
@@ -242,6 +254,11 @@ func (m *Stacks_attributes) GetName()(*string) {
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetOutputsCount()(*int32) {
     return m.outputsCount
+}
+// GetResourceCount gets the resource-count property value. The resourceCount property
+// returns a *int32 when successful
+func (m *Stacks_attributes) GetResourceCount()(*int32) {
+    return m.resourceCount
 }
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Stacks_attributes_settingOverwritesable when successful
@@ -362,6 +379,10 @@ func (m *Stacks_attributes) SetName(value *string)() {
 func (m *Stacks_attributes) SetOutputsCount(value *int32)() {
     m.outputsCount = value
 }
+// SetResourceCount sets the resource-count property value. The resourceCount property
+func (m *Stacks_attributes) SetResourceCount(value *int32)() {
+    m.resourceCount = value
+}
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
 func (m *Stacks_attributes) SetSettingOverwrites(value Stacks_attributes_settingOverwritesable)() {
     m.settingOverwrites = value
@@ -397,6 +418,7 @@ type Stacks_attributesable interface {
     GetInputsCount()(*int32)
     GetName()(*string)
     GetOutputsCount()(*int32)
+    GetResourceCount()(*int32)
     GetSettingOverwrites()(Stacks_attributes_settingOverwritesable)
     GetSpeculativeEnabled()(*bool)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -411,6 +433,7 @@ type Stacks_attributesable interface {
     SetInputsCount(value *int32)()
     SetName(value *string)()
     SetOutputsCount(value *int32)()
+    SetResourceCount(value *int32)()
     SetSettingOverwrites(value Stacks_attributes_settingOverwritesable)()
     SetSpeculativeEnabled(value *bool)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()

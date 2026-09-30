@@ -10,7 +10,7 @@ import (
 type TfPolicyEvaluationsEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
+    // Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Init or Plan or Apply) in the run lifecycle.
     data TfPolicyEvaluationable
 }
 // NewTfPolicyEvaluationsEnvelope instantiates a new TfPolicyEvaluationsEnvelope and sets the default values.
@@ -30,7 +30,7 @@ func CreateTfPolicyEvaluationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2
 func (m *TfPolicyEvaluationsEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetData gets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
+// GetData gets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Init or Plan or Apply) in the run lifecycle.
 // returns a TfPolicyEvaluationable when successful
 func (m *TfPolicyEvaluationsEnvelope) GetData()(TfPolicyEvaluationable) {
     return m.data
@@ -71,7 +71,7 @@ func (m *TfPolicyEvaluationsEnvelope) Serialize(writer i878a80d2330e89d26896388a
 func (m *TfPolicyEvaluationsEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetData sets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Setup or Plan or Apply) in the run lifecycle.
+// SetData sets the data property value. Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Init or Plan or Apply) in the run lifecycle.
 func (m *TfPolicyEvaluationsEnvelope) SetData(value TfPolicyEvaluationable)() {
     m.data = value
 }

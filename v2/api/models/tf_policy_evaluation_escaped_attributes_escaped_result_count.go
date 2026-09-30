@@ -17,7 +17,7 @@ type TfPolicyEvaluation_attributes_resultCount struct {
     errored *int32
     // Policies with mandatory enforcement level that failed
     mandatoryFailed *int32
-    // Policies with mandatory-overridable enforcement level that failed
+    // Policies with `mandatory_overridable` enforcement level that failed.
     mandatoryOverridableFailed *int32
     // Policies that passed
     passed *int32
@@ -122,7 +122,7 @@ func (m *TfPolicyEvaluation_attributes_resultCount) GetFieldDeserializers()(map[
 func (m *TfPolicyEvaluation_attributes_resultCount) GetMandatoryFailed()(*int32) {
     return m.mandatoryFailed
 }
-// GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+// GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 // returns a *int32 when successful
 func (m *TfPolicyEvaluation_attributes_resultCount) GetMandatoryOverridableFailed()(*int32) {
     return m.mandatoryOverridableFailed
@@ -199,7 +199,7 @@ func (m *TfPolicyEvaluation_attributes_resultCount) SetErrored(value *int32)() {
 func (m *TfPolicyEvaluation_attributes_resultCount) SetMandatoryFailed(value *int32)() {
     m.mandatoryFailed = value
 }
-// SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with mandatory-overridable enforcement level that failed
+// SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 func (m *TfPolicyEvaluation_attributes_resultCount) SetMandatoryOverridableFailed(value *int32)() {
     m.mandatoryOverridableFailed = value
 }

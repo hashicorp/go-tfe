@@ -60,6 +60,7 @@ import (
     ibf7fd1fa2ca0bf7fb12935559937de9677520241442b7cdbac8246a8cd14147d "github.com/hashicorp/go-tfe/v2/api/plans"
     ic7d637b0cea32015f6fe8fdda69f69b83f2bfb9c9db69ebd650f42d7037fccf7 "github.com/hashicorp/go-tfe/v2/api/projects"
     icb14f7803522f70670dfb51a8f10d6fe7cf82358c4fcfbd434ce7b83bc7fa67f "github.com/hashicorp/go-tfe/v2/api/emailrecipientstatuses"
+    icb6dd076d83cbc04bd2b9b36bb31809cf9d30789d2cb530a59a6a0363b7d4aa9 "github.com/hashicorp/go-tfe/v2/api/stackpolicyevaluations"
     icbcddf85972cc20a622a9d6c94202891e7df60ee16895ccd937c26fe9c9bc6c7 "github.com/hashicorp/go-tfe/v2/api/stackdeploymentruns"
     ice175c2bc5dca7fd242eaf5d94389218212237a00a32175e232d6873e8576627 "github.com/hashicorp/go-tfe/v2/api/oauthtokens"
     id37f321ec9d929c628c7d6b68b52c0895a210904bdfe553054b3b8144f73ba73 "github.com/hashicorp/go-tfe/v2/api/assessmentresults"
@@ -360,6 +361,11 @@ func (m *ApiClient) StackDeploymentSteps()(*i6f30b1c546be9fdd86fa13ffd486beba48d
 // returns a *StackDiagnosticsRequestBuilder when successful
 func (m *ApiClient) StackDiagnostics()(*i463ffeb54eeae51cb0c3aeff51adc1e34e91b5ef2ed5d2a48191f6e34ce6ffb8.StackDiagnosticsRequestBuilder) {
     return i463ffeb54eeae51cb0c3aeff51adc1e34e91b5ef2ed5d2a48191f6e34ce6ffb8.NewStackDiagnosticsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StackPolicyEvaluations the stackPolicyEvaluations property
+// returns a *StackPolicyEvaluationsRequestBuilder when successful
+func (m *ApiClient) StackPolicyEvaluations()(*icb6dd076d83cbc04bd2b9b36bb31809cf9d30789d2cb530a59a6a0363b7d4aa9.StackPolicyEvaluationsRequestBuilder) {
+    return icb6dd076d83cbc04bd2b9b36bb31809cf9d30789d2cb530a59a6a0363b7d4aa9.NewStackPolicyEvaluationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Stacks the stacks property
 // returns a *StacksRequestBuilder when successful

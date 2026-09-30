@@ -4,6 +4,7 @@
 package stackdeploymentruns
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,171 @@ type ItemStackDeploymentStepsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentStepsable
+    // The included property
+    included []ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemStackDeploymentStepsGetResponse_metaable
+}
+// ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable
+type ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable
+    stackOperationAllowImports i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable
+    stackOperationApplies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable
+    stackOperationImportStates i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable
+    stackOperationPlans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable
+    stackPolicyEvaluations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable
+}
+// NewItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included instantiates a new ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included and sets the default values.
+func NewItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included()(*ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) {
+    m := &ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included{
+    }
+    return m
+}
+// CreateItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-allow-imports") {
+                    result.SetStackOperationAllowImports(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackOperationAllowImports())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-applies") {
+                    result.SetStackOperationApplies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackOperationApplies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-import-states") {
+                    result.SetStackOperationImportStates(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackOperationImportStates())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-plans") {
+                    result.SetStackOperationPlans(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackOperationPlans())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-policy-evaluations") {
+                    result.SetStackPolicyEvaluations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackPolicyEvaluations())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetStackOperationAllowImports() != nil {
+        return m.GetStackOperationAllowImports().GetFieldDeserializers()
+    } else if m.GetStackOperationApplies() != nil {
+        return m.GetStackOperationApplies().GetFieldDeserializers()
+    } else if m.GetStackOperationImportStates() != nil {
+        return m.GetStackOperationImportStates().GetFieldDeserializers()
+    } else if m.GetStackOperationPlans() != nil {
+        return m.GetStackOperationPlans().GetFieldDeserializers()
+    } else if m.GetStackPolicyEvaluations() != nil {
+        return m.GetStackPolicyEvaluations().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetStackOperationAllowImports gets the stackOperationAllowImports property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable
+// returns a StackOperationAllowImportsable when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetStackOperationAllowImports()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable) {
+    return m.stackOperationAllowImports
+}
+// GetStackOperationApplies gets the stackOperationApplies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable
+// returns a StackOperationAppliesable when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetStackOperationApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable) {
+    return m.stackOperationApplies
+}
+// GetStackOperationImportStates gets the stackOperationImportStates property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable
+// returns a StackOperationImportStatesable when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetStackOperationImportStates()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable) {
+    return m.stackOperationImportStates
+}
+// GetStackOperationPlans gets the stackOperationPlans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable
+// returns a StackOperationPlansable when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetStackOperationPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable) {
+    return m.stackOperationPlans
+}
+// GetStackPolicyEvaluations gets the stackPolicyEvaluations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable
+// returns a StackPolicyEvaluationsable when successful
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) GetStackPolicyEvaluations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable) {
+    return m.stackPolicyEvaluations
+}
+// Serialize serializes information the current object
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetStackOperationAllowImports() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationAllowImports())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationApplies() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationApplies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationImportStates() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationImportStates())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationPlans() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationPlans())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackPolicyEvaluations() != nil {
+        err := writer.WriteObjectValue("", m.GetStackPolicyEvaluations())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetStackOperationAllowImports sets the stackOperationAllowImports property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) SetStackOperationAllowImports(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable)() {
+    m.stackOperationAllowImports = value
+}
+// SetStackOperationApplies sets the stackOperationApplies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) SetStackOperationApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable)() {
+    m.stackOperationApplies = value
+}
+// SetStackOperationImportStates sets the stackOperationImportStates property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) SetStackOperationImportStates(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable)() {
+    m.stackOperationImportStates = value
+}
+// SetStackOperationPlans sets the stackOperationPlans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) SetStackOperationPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable)() {
+    m.stackOperationPlans = value
+}
+// SetStackPolicyEvaluations sets the stackPolicyEvaluations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable
+func (m *ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_included) SetStackPolicyEvaluations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable)() {
+    m.stackPolicyEvaluations = value
+}
+type ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetStackOperationAllowImports()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable)
+    GetStackOperationApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable)
+    GetStackOperationImportStates()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable)
+    GetStackOperationPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable)
+    GetStackPolicyEvaluations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable)
+    SetStackOperationAllowImports(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAllowImportsable)()
+    SetStackOperationApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationAppliesable)()
+    SetStackOperationImportStates(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationImportStatesable)()
+    SetStackOperationPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackOperationPlansable)()
+    SetStackPolicyEvaluations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackPolicyEvaluationsable)()
 }
 // NewItemStackDeploymentStepsGetResponse instantiates a new ItemStackDeploymentStepsGetResponse and sets the default values.
 func NewItemStackDeploymentStepsGetResponse()(*ItemStackDeploymentStepsGetResponse) {
@@ -60,6 +222,22 @@ func (m *ItemStackDeploymentStepsGetResponse) GetFieldDeserializers()(map[string
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +260,11 @@ func (m *ItemStackDeploymentStepsGetResponse) GetFieldDeserializers()(map[string
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable when successful
+func (m *ItemStackDeploymentStepsGetResponse) GetIncluded()([]ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemStackDeploymentStepsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +285,18 @@ func (m *ItemStackDeploymentStepsGetResponse) Serialize(writer i878a80d2330e89d2
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +329,10 @@ func (m *ItemStackDeploymentStepsGetResponse) SetAdditionalData(value map[string
 func (m *ItemStackDeploymentStepsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentStepsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemStackDeploymentStepsGetResponse) SetIncluded(value []ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemStackDeploymentStepsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +345,11 @@ type ItemStackDeploymentStepsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentStepsable)
+    GetIncluded()([]ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemStackDeploymentStepsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentStepsable)()
+    SetIncluded(value []ItemStackDeploymentStepsGetResponse_StackDeploymentStepsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemStackDeploymentStepsGetResponse_metaable)()
 }
