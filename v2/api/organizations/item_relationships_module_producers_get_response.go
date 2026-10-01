@@ -12,7 +12,7 @@ type ItemRelationshipsModuleProducersGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
@@ -36,8 +36,8 @@ func (m *ItemRelationshipsModuleProducersGetResponse) GetAdditionalData()(map[st
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []Organizationsable when successful
-func (m *ItemRelationshipsModuleProducersGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable) {
+// returns a []OrganizationsGetResponse_Organizationsable when successful
+func (m *ItemRelationshipsModuleProducersGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -45,15 +45,15 @@ func (m *ItemRelationshipsModuleProducersGetResponse) GetData()([]i05d5aa6b14db2
 func (m *ItemRelationshipsModuleProducersGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateOrganizationsFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateOrganizationsGetResponse_OrganizationsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)
                 }
             }
             m.SetData(res)
@@ -131,7 +131,7 @@ func (m *ItemRelationshipsModuleProducersGetResponse) SetAdditionalData(value ma
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemRelationshipsModuleProducersGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)() {
+func (m *ItemRelationshipsModuleProducersGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)() {
     m.data = value
 }
 // SetLinks sets the links property value. The links property
@@ -145,10 +145,10 @@ func (m *ItemRelationshipsModuleProducersGetResponse) SetMeta(value ItemRelation
 type ItemRelationshipsModuleProducersGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
+    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemRelationshipsModuleProducersGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)()
+    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OrganizationsGetResponse_Organizationsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemRelationshipsModuleProducersGetResponse_metaable)()
 }

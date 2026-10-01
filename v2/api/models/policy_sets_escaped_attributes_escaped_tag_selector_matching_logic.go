@@ -2,7 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
-// Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 type PolicySets_attributes_tagSelectorMatchingLogic int
 
 const (

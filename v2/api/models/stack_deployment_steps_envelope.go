@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,167 @@ type StackDeploymentStepsEnvelope struct {
     additionalData map[string]any
     // The data property
     data StackDeploymentStepsable
+    // The included property
+    included []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable
+}
+// StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included composed type wrapper for classes StackOperationAllowImportsable, StackOperationAppliesable, StackOperationImportStatesable, StackOperationPlansable, StackPolicyEvaluationsable
+type StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included struct {
+    // Composed type representation for type StackOperationAllowImportsable
+    stackOperationAllowImports StackOperationAllowImportsable
+    // Composed type representation for type StackOperationAppliesable
+    stackOperationApplies StackOperationAppliesable
+    // Composed type representation for type StackOperationImportStatesable
+    stackOperationImportStates StackOperationImportStatesable
+    // Composed type representation for type StackOperationPlansable
+    stackOperationPlans StackOperationPlansable
+    // Composed type representation for type StackPolicyEvaluationsable
+    stackPolicyEvaluations StackPolicyEvaluationsable
+}
+// NewStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included instantiates a new StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included and sets the default values.
+func NewStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included()(*StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) {
+    m := &StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included{
+    }
+    return m
+}
+// CreateStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-allow-imports") {
+                    result.SetStackOperationAllowImports(NewStackOperationAllowImports())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-applies") {
+                    result.SetStackOperationApplies(NewStackOperationApplies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-import-states") {
+                    result.SetStackOperationImportStates(NewStackOperationImportStates())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-operation-plans") {
+                    result.SetStackOperationPlans(NewStackOperationPlans())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-policy-evaluations") {
+                    result.SetStackPolicyEvaluations(NewStackPolicyEvaluations())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetStackOperationAllowImports() != nil {
+        return m.GetStackOperationAllowImports().GetFieldDeserializers()
+    } else if m.GetStackOperationApplies() != nil {
+        return m.GetStackOperationApplies().GetFieldDeserializers()
+    } else if m.GetStackOperationImportStates() != nil {
+        return m.GetStackOperationImportStates().GetFieldDeserializers()
+    } else if m.GetStackOperationPlans() != nil {
+        return m.GetStackOperationPlans().GetFieldDeserializers()
+    } else if m.GetStackPolicyEvaluations() != nil {
+        return m.GetStackPolicyEvaluations().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetStackOperationAllowImports gets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImportsable
+// returns a StackOperationAllowImportsable when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationAllowImports()(StackOperationAllowImportsable) {
+    return m.stackOperationAllowImports
+}
+// GetStackOperationApplies gets the stackOperationApplies property value. Composed type representation for type StackOperationAppliesable
+// returns a StackOperationAppliesable when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationApplies()(StackOperationAppliesable) {
+    return m.stackOperationApplies
+}
+// GetStackOperationImportStates gets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStatesable
+// returns a StackOperationImportStatesable when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationImportStates()(StackOperationImportStatesable) {
+    return m.stackOperationImportStates
+}
+// GetStackOperationPlans gets the stackOperationPlans property value. Composed type representation for type StackOperationPlansable
+// returns a StackOperationPlansable when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationPlans()(StackOperationPlansable) {
+    return m.stackOperationPlans
+}
+// GetStackPolicyEvaluations gets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluationsable
+// returns a StackPolicyEvaluationsable when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackPolicyEvaluations()(StackPolicyEvaluationsable) {
+    return m.stackPolicyEvaluations
+}
+// Serialize serializes information the current object
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetStackOperationAllowImports() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationAllowImports())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationApplies() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationApplies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationImportStates() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationImportStates())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackOperationPlans() != nil {
+        err := writer.WriteObjectValue("", m.GetStackOperationPlans())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackPolicyEvaluations() != nil {
+        err := writer.WriteObjectValue("", m.GetStackPolicyEvaluations())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetStackOperationAllowImports sets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImportsable
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationAllowImports(value StackOperationAllowImportsable)() {
+    m.stackOperationAllowImports = value
+}
+// SetStackOperationApplies sets the stackOperationApplies property value. Composed type representation for type StackOperationAppliesable
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationApplies(value StackOperationAppliesable)() {
+    m.stackOperationApplies = value
+}
+// SetStackOperationImportStates sets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStatesable
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationImportStates(value StackOperationImportStatesable)() {
+    m.stackOperationImportStates = value
+}
+// SetStackOperationPlans sets the stackOperationPlans property value. Composed type representation for type StackOperationPlansable
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationPlans(value StackOperationPlansable)() {
+    m.stackOperationPlans = value
+}
+// SetStackPolicyEvaluations sets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluationsable
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackPolicyEvaluations(value StackPolicyEvaluationsable)() {
+    m.stackPolicyEvaluations = value
+}
+type StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetStackOperationAllowImports()(StackOperationAllowImportsable)
+    GetStackOperationApplies()(StackOperationAppliesable)
+    GetStackOperationImportStates()(StackOperationImportStatesable)
+    GetStackOperationPlans()(StackOperationPlansable)
+    GetStackPolicyEvaluations()(StackPolicyEvaluationsable)
+    SetStackOperationAllowImports(value StackOperationAllowImportsable)()
+    SetStackOperationApplies(value StackOperationAppliesable)()
+    SetStackOperationImportStates(value StackOperationImportStatesable)()
+    SetStackOperationPlans(value StackOperationPlansable)()
+    SetStackPolicyEvaluations(value StackPolicyEvaluationsable)()
 }
 // NewStackDeploymentStepsEnvelope instantiates a new StackDeploymentStepsEnvelope and sets the default values.
 func NewStackDeploymentStepsEnvelope()(*StackDeploymentStepsEnvelope) {
@@ -49,12 +211,45 @@ func (m *StackDeploymentStepsEnvelope) GetFieldDeserializers()(map[string]func(i
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable when successful
+func (m *StackDeploymentStepsEnvelope) GetIncluded()([]StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *StackDeploymentStepsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +270,15 @@ func (m *StackDeploymentStepsEnvelope) SetAdditionalData(value map[string]any)()
 func (m *StackDeploymentStepsEnvelope) SetData(value StackDeploymentStepsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *StackDeploymentStepsEnvelope) SetIncluded(value []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)() {
+    m.included = value
+}
 type StackDeploymentStepsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(StackDeploymentStepsable)
+    GetIncluded()([]StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)
     SetData(value StackDeploymentStepsable)()
+    SetIncluded(value []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)()
 }

@@ -10,10 +10,14 @@ import (
 type TfPolicySetOutcome_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The error property
+    // Deprecated: 
+    error *string
     // Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
     // Deprecated: 
     outcomes []TfPolicySetOutcome_attributes_outcomesable
-    // Indicates if the policy set outcome can be overridden when policies fail
+    // This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
+    // Deprecated: 
     overridable *bool
     // Optional description of the policy set
     policySetDescription *string
@@ -21,7 +25,7 @@ type TfPolicySetOutcome_attributes struct {
     policySetName *string
     // URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
     policySetResultUrl *string
-    // The resultCount property
+    // Counts of policy results for this policy set
     resultCount TfPolicySetOutcome_attributes_resultCountable
 }
 // NewTfPolicySetOutcome_attributes instantiates a new TfPolicySetOutcome_attributes and sets the default values.
@@ -41,10 +45,26 @@ func CreateTfPolicySetOutcome_attributesFromDiscriminatorValue(parseNode i878a80
 func (m *TfPolicySetOutcome_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetError gets the error property value. The error property
+// Deprecated: 
+// returns a *string when successful
+func (m *TfPolicySetOutcome_attributes) GetError()(*string) {
+    return m.error
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *TfPolicySetOutcome_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetError(val)
+        }
+        return nil
+    }
     res["outcomes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcome_attributes_outcomesFromDiscriminatorValue)
         if err != nil {
@@ -119,7 +139,8 @@ func (m *TfPolicySetOutcome_attributes) GetFieldDeserializers()(map[string]func(
 func (m *TfPolicySetOutcome_attributes) GetOutcomes()([]TfPolicySetOutcome_attributes_outcomesable) {
     return m.outcomes
 }
-// GetOverridable gets the overridable property value. Indicates if the policy set outcome can be overridden when policies fail
+// GetOverridable gets the overridable property value. This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
+// Deprecated: 
 // returns a *bool when successful
 func (m *TfPolicySetOutcome_attributes) GetOverridable()(*bool) {
     return m.overridable
@@ -139,13 +160,19 @@ func (m *TfPolicySetOutcome_attributes) GetPolicySetName()(*string) {
 func (m *TfPolicySetOutcome_attributes) GetPolicySetResultUrl()(*string) {
     return m.policySetResultUrl
 }
-// GetResultCount gets the result-count property value. The resultCount property
+// GetResultCount gets the result-count property value. Counts of policy results for this policy set
 // returns a TfPolicySetOutcome_attributes_resultCountable when successful
 func (m *TfPolicySetOutcome_attributes) GetResultCount()(TfPolicySetOutcome_attributes_resultCountable) {
     return m.resultCount
 }
 // Serialize serializes information the current object
 func (m *TfPolicySetOutcome_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteStringValue("error", m.GetError())
+        if err != nil {
+            return err
+        }
+    }
     if m.GetOutcomes() != nil {
         cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetOutcomes()))
         for i, v := range m.GetOutcomes() {
@@ -194,12 +221,18 @@ func (m *TfPolicySetOutcome_attributes) Serialize(writer i878a80d2330e89d2689638
 func (m *TfPolicySetOutcome_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetError sets the error property value. The error property
+// Deprecated: 
+func (m *TfPolicySetOutcome_attributes) SetError(value *string)() {
+    m.error = value
+}
 // SetOutcomes sets the outcomes property value. Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
 // Deprecated: 
 func (m *TfPolicySetOutcome_attributes) SetOutcomes(value []TfPolicySetOutcome_attributes_outcomesable)() {
     m.outcomes = value
 }
-// SetOverridable sets the overridable property value. Indicates if the policy set outcome can be overridden when policies fail
+// SetOverridable sets the overridable property value. This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
+// Deprecated: 
 func (m *TfPolicySetOutcome_attributes) SetOverridable(value *bool)() {
     m.overridable = value
 }
@@ -215,19 +248,21 @@ func (m *TfPolicySetOutcome_attributes) SetPolicySetName(value *string)() {
 func (m *TfPolicySetOutcome_attributes) SetPolicySetResultUrl(value *string)() {
     m.policySetResultUrl = value
 }
-// SetResultCount sets the result-count property value. The resultCount property
+// SetResultCount sets the result-count property value. Counts of policy results for this policy set
 func (m *TfPolicySetOutcome_attributes) SetResultCount(value TfPolicySetOutcome_attributes_resultCountable)() {
     m.resultCount = value
 }
 type TfPolicySetOutcome_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetError()(*string)
     GetOutcomes()([]TfPolicySetOutcome_attributes_outcomesable)
     GetOverridable()(*bool)
     GetPolicySetDescription()(*string)
     GetPolicySetName()(*string)
     GetPolicySetResultUrl()(*string)
     GetResultCount()(TfPolicySetOutcome_attributes_resultCountable)
+    SetError(value *string)()
     SetOutcomes(value []TfPolicySetOutcome_attributes_outcomesable)()
     SetOverridable(value *bool)()
     SetPolicySetDescription(value *string)()
