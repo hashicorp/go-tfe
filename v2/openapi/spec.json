@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "development",
+    "version": "02a271d9",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://app.terraform.io"
+      "url": "https://app.terraform.io/api/v2"
     }
   ],
   "security": [
@@ -2300,6 +2300,23 @@
               "type": "array",
               "items": {
                 "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "default_account"
+                ]
               }
             }
           }
@@ -35350,6 +35367,77 @@
           }
         }
       },
+      "hcp-billing-account": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hcp-billing-account"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "project-id": {
+                "type": "string"
+              },
+              "balance": {
+                "type": "integer"
+              },
+              "hcp-organization-id": {
+                "type": "string"
+              },
+              "hcp-organization-name": {
+                "type": "string"
+              },
+              "card-brand": {
+                "type": "string",
+                "nullable": true
+              },
+              "card-last4": {
+                "type": "string",
+                "nullable": true
+              },
+              "card-exp-month": {
+                "type": "integer",
+                "nullable": true
+              },
+              "card-exp-year": {
+                "type": "integer",
+                "nullable": true
+              },
+              "account-type": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "flex-version": {
+                "type": "string",
+                "nullable": true
+              },
+              "payment-provider": {
+                "type": "string",
+                "nullable": true
+              },
+              "is-payment-method-configured": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
       "entitlement-sets": {
         "type": "object",
         "required": [
@@ -37633,6 +37721,22 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/hcp-organization"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/hcp-billing-account"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "hcp-billing-account": "#/components/schemas/hcp-billing-account"
+                }
+              }
+            }
           }
         }
       },
@@ -49116,13 +49220,15 @@
                 "type": "string"
               },
               "namespace": {
-                "type": "string"
+                "type": "string",
+                "nullable": true
               },
               "auth-path": {
                 "type": "string"
               },
               "encoded-cacert": {
-                "type": "string"
+                "type": "string",
+                "nullable": true
               }
             }
           },
