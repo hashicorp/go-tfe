@@ -13,6 +13,8 @@ type ItemAllVarsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+    // The included property
+    included []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
 }
 // NewItemAllVarsGetResponse instantiates a new ItemAllVarsGetResponse and sets the default values.
 func NewItemAllVarsGetResponse()(*ItemAllVarsGetResponse) {
@@ -56,7 +58,28 @@ func (m *ItemAllVarsGetResponse) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateVarsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []Varsable when successful
+func (m *ItemAllVarsGetResponse) GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *ItemAllVarsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -68,6 +91,18 @@ func (m *ItemAllVarsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -88,9 +123,15 @@ func (m *ItemAllVarsGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *ItemAllVarsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemAllVarsGetResponse) SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)() {
+    m.included = value
+}
 type ItemAllVarsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
+    GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)()
+    SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)()
 }

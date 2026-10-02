@@ -4,6 +4,7 @@
 package workspaces
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,127 @@ type ItemQueriesGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Queriesable
+    // The included property
+    included []ItemQueriesGetResponse_QueriesGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemQueriesGetResponse_metaable
+}
+// ItemQueriesGetResponse_QueriesGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+type ItemQueriesGetResponse_QueriesGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+    configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+    ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+    users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+}
+// NewItemQueriesGetResponse_QueriesGetResponse_included instantiates a new ItemQueriesGetResponse_QueriesGetResponse_included and sets the default values.
+func NewItemQueriesGetResponse_QueriesGetResponse_included()(*ItemQueriesGetResponse_QueriesGetResponse_included) {
+    m := &ItemQueriesGetResponse_QueriesGetResponse_included{
+    }
+    return m
+}
+// CreateItemQueriesGetResponse_QueriesGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemQueriesGetResponse_QueriesGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemQueriesGetResponse_QueriesGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+                    result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+                    result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+// returns a ConfigurationVersionsable when successful
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
+    return m.configurationVersions
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetConfigurationVersions() != nil {
+        return m.GetConfigurationVersions().GetFieldDeserializers()
+    } else if m.GetIngressAttributes() != nil {
+        return m.GetIngressAttributes().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+// returns a IngressAttributesable when successful
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
+    return m.ingressAttributes
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// returns a Usersable when successful
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
+    return m.users
+}
+// Serialize serializes information the current object
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetConfigurationVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetIngressAttributes() != nil {
+        err := writer.WriteObjectValue("", m.GetIngressAttributes())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)() {
+    m.configurationVersions = value
+}
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)() {
+    m.ingressAttributes = value
+}
+// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+func (m *ItemQueriesGetResponse_QueriesGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
+    m.users = value
+}
+type ItemQueriesGetResponse_QueriesGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+    GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
+    GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
+    SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)()
+    SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
+    SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
 }
 // NewItemQueriesGetResponse instantiates a new ItemQueriesGetResponse and sets the default values.
 func NewItemQueriesGetResponse()(*ItemQueriesGetResponse) {
@@ -60,6 +178,22 @@ func (m *ItemQueriesGetResponse) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemQueriesGetResponse_QueriesGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemQueriesGetResponse_QueriesGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemQueriesGetResponse_QueriesGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +216,11 @@ func (m *ItemQueriesGetResponse) GetFieldDeserializers()(map[string]func(i878a80
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemQueriesGetResponse_QueriesGetResponse_includedable when successful
+func (m *ItemQueriesGetResponse) GetIncluded()([]ItemQueriesGetResponse_QueriesGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemQueriesGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +241,18 @@ func (m *ItemQueriesGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +285,10 @@ func (m *ItemQueriesGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *ItemQueriesGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Queriesable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemQueriesGetResponse) SetIncluded(value []ItemQueriesGetResponse_QueriesGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemQueriesGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +301,11 @@ type ItemQueriesGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Queriesable)
+    GetIncluded()([]ItemQueriesGetResponse_QueriesGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemQueriesGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Queriesable)()
+    SetIncluded(value []ItemQueriesGetResponse_QueriesGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemQueriesGetResponse_metaable)()
 }

@@ -1,21 +1,44 @@
-Examples using go-tfe 2.0
-==============================
+# go-tfe v2 examples
 
-A collection of runnable examples that illustrate the use of the SDK client.
+Each directory contains a standalone example that can be run from this directory.
+Set `TFE_TOKEN` to an API token. `TFE_ADDRESS` is optional and defaults to
+`https://app.terraform.io`.
 
-### Basic Usage
-
-Build the example client:
-```
-$ go build -o tfe cmd/tfe/main.go
-```
-
-All subcommands can be explored using `--help` or by browsing each package directory
-```
-$ ./tfe account --help
+```sh
+export TFE_TOKEN=example
+export TFE_ADDRESS=https://app.eu.terraform.io
 ```
 
-All examples require setting the `TFE_TOKEN` and `TFE_ADDRESS` variables:
+## Account details
+
+Get details for the authenticated user:
+
+```sh
+go run ./account-details
 ```
-$ TFE_TOKEN=example TFE_ADDRESS=https://app.eu.terraform.io ./tfe account details
+
+## Account password
+
+Change the authenticated user's password:
+
+```sh
+go run ./account-password \
+  -old-password='current password' \
+  -new-password='new password'
+```
+
+## Organizations
+
+List organizations, including subscription data:
+
+```sh
+go run ./organizations-list
+```
+
+## Response headers
+
+Get account details and print the response headers:
+
+```sh
+go run ./inspect-response-headers
 ```

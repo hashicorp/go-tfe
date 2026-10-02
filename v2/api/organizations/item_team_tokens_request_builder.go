@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i1b2a1309d38709d709210d78197345fb7c6b974298025cfa1c0087c96c753fe2 "github.com/hashicorp/go-tfe/v2/api/organizations/item/teamtokens"
 )
 
 // ItemTeamTokensRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\team-tokens
@@ -19,6 +20,8 @@ type ItemTeamTokensRequestBuilderGetQueryParameters struct {
     FieldsauthenticationTokens []string "uriparametername:\"fields%5Bauthentication%2Dtokens%5D\""
     // Filter by token expiry status. Accepts a comma-separated list of any of: `active`, `expiring_in_7_days`, `expiring_in_30_days`, `expired`, `no_expiration`. Multiple values are combined with OR.
     Filterexpiry_status *string "uriparametername:\"filter%5Bexpiry_status%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i1b2a1309d38709d709210d78197345fb7c6b974298025cfa1c0087c96c753fe2.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -29,7 +32,7 @@ type ItemTeamTokensRequestBuilderGetQueryParameters struct {
 // NewItemTeamTokensRequestBuilderInternal instantiates a new ItemTeamTokensRequestBuilder and sets the default values.
 func NewItemTeamTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTeamTokensRequestBuilder) {
     m := &ItemTeamTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/team-tokens{?fields%5Bauthentication%2Dtokens%5D,filter%5Bexpiry_status%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/team-tokens{?fields%5Bauthentication%2Dtokens%5D,filter%5Bexpiry_status%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*}", pathParameters),
     }
     return m
 }

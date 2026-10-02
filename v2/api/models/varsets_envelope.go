@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,145 @@ type VarsetsEnvelope struct {
     additionalData map[string]any
     // The data property
     data Varsetsable
+    // The included property
+    included []VarsetsEnvelope_VarsetsEnvelope_includedable
+}
+// VarsetsEnvelope_VarsetsEnvelope_included composed type wrapper for classes Projectsable, Stacksable, Varsable, Workspacesable
+type VarsetsEnvelope_VarsetsEnvelope_included struct {
+    // Composed type representation for type Projectsable
+    projects Projectsable
+    // Composed type representation for type Stacksable
+    stacks Stacksable
+    // Composed type representation for type Varsable
+    vars Varsable
+    // Composed type representation for type Workspacesable
+    workspaces Workspacesable
+}
+// NewVarsetsEnvelope_VarsetsEnvelope_included instantiates a new VarsetsEnvelope_VarsetsEnvelope_included and sets the default values.
+func NewVarsetsEnvelope_VarsetsEnvelope_included()(*VarsetsEnvelope_VarsetsEnvelope_included) {
+    m := &VarsetsEnvelope_VarsetsEnvelope_included{
+    }
+    return m
+}
+// CreateVarsetsEnvelope_VarsetsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateVarsetsEnvelope_VarsetsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewVarsetsEnvelope_VarsetsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+                    result.SetStacks(NewStacks())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
+                    result.SetVars(NewVars())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(NewWorkspaces())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetStacks() != nil {
+        return m.GetStacks().GetFieldDeserializers()
+    } else if m.GetVars() != nil {
+        return m.GetVars().GetFieldDeserializers()
+    } else if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// returns a Projectsable when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetProjects()(Projectsable) {
+    return m.projects
+}
+// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+// returns a Stacksable when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetStacks()(Stacksable) {
+    return m.stacks
+}
+// GetVars gets the vars property value. Composed type representation for type Varsable
+// returns a Varsable when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetVars()(Varsable) {
+    return m.vars
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// returns a Workspacesable when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetWorkspaces()(Workspacesable) {
+    return m.workspaces
+}
+// Serialize serializes information the current object
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStacks() != nil {
+        err := writer.WriteObjectValue("", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    } else if m.GetVars() != nil {
+        err := writer.WriteObjectValue("", m.GetVars())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetProjects sets the projects property value. Composed type representation for type Projectsable
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetProjects(value Projectsable)() {
+    m.projects = value
+}
+// SetStacks sets the stacks property value. Composed type representation for type Stacksable
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetStacks(value Stacksable)() {
+    m.stacks = value
+}
+// SetVars sets the vars property value. Composed type representation for type Varsable
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetVars(value Varsable)() {
+    m.vars = value
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetWorkspaces(value Workspacesable)() {
+    m.workspaces = value
+}
+type VarsetsEnvelope_VarsetsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetProjects()(Projectsable)
+    GetStacks()(Stacksable)
+    GetVars()(Varsable)
+    GetWorkspaces()(Workspacesable)
+    SetProjects(value Projectsable)()
+    SetStacks(value Stacksable)()
+    SetVars(value Varsable)()
+    SetWorkspaces(value Workspacesable)()
 }
 // NewVarsetsEnvelope instantiates a new VarsetsEnvelope and sets the default values.
 func NewVarsetsEnvelope()(*VarsetsEnvelope) {
@@ -49,12 +189,45 @@ func (m *VarsetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e8
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateVarsetsEnvelope_VarsetsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]VarsetsEnvelope_VarsetsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(VarsetsEnvelope_VarsetsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []VarsetsEnvelope_VarsetsEnvelope_includedable when successful
+func (m *VarsetsEnvelope) GetIncluded()([]VarsetsEnvelope_VarsetsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *VarsetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +248,15 @@ func (m *VarsetsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *VarsetsEnvelope) SetData(value Varsetsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *VarsetsEnvelope) SetIncluded(value []VarsetsEnvelope_VarsetsEnvelope_includedable)() {
+    m.included = value
+}
 type VarsetsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Varsetsable)
+    GetIncluded()([]VarsetsEnvelope_VarsetsEnvelope_includedable)
     SetData(value Varsetsable)()
+    SetIncluded(value []VarsetsEnvelope_VarsetsEnvelope_includedable)()
 }

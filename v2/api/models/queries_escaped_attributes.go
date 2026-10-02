@@ -25,13 +25,13 @@ type Queries_attributes struct {
     logReadUrl *string
     // The permissions property
     permissions Queries_attributes_permissionsable
-    // Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+    // Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI, API, or MCP source and generated configuration. Explicit false opts out for those sources. Terraform CLI queries (source terraform) retain workspace policy evaluation regardless of this preference or generate-config-out, subject to the existing query-policy gates. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted; workspace policy evaluation retains its existing query-policy behavior.
     policyEvaluationOptIn *bool
     // The policyPaths property
     policyPaths []string
     // The number of resources discovered by the query run.
     resourcesDiscovered *int32
-    // The source property
+    // The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
     source *Queries_attributes_source
     // The status property
     status *Queries_attributes_status
@@ -244,7 +244,7 @@ func (m *Queries_attributes) GetLogReadUrl()(*string) {
 func (m *Queries_attributes) GetPermissions()(Queries_attributes_permissionsable) {
     return m.permissions
 }
-// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+// GetPolicyEvaluationOptIn gets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI, API, or MCP source and generated configuration. Explicit false opts out for those sources. Terraform CLI queries (source terraform) retain workspace policy evaluation regardless of this preference or generate-config-out, subject to the existing query-policy gates. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted; workspace policy evaluation retains its existing query-policy behavior.
 // returns a *bool when successful
 func (m *Queries_attributes) GetPolicyEvaluationOptIn()(*bool) {
     return m.policyEvaluationOptIn
@@ -259,7 +259,7 @@ func (m *Queries_attributes) GetPolicyPaths()([]string) {
 func (m *Queries_attributes) GetResourcesDiscovered()(*int32) {
     return m.resourcesDiscovered
 }
-// GetSource gets the source property value. The source property
+// GetSource gets the source property value. The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 // returns a *Queries_attributes_source when successful
 func (m *Queries_attributes) GetSource()(*Queries_attributes_source) {
     return m.source
@@ -371,7 +371,7 @@ func (m *Queries_attributes) SetLogReadUrl(value *string)() {
 func (m *Queries_attributes) SetPermissions(value Queries_attributes_permissionsable)() {
     m.permissions = value
 }
-// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI source and generated configuration. Explicit false opts out. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted.
+// SetPolicyEvaluationOptIn sets the policy-evaluation-opt-in property value. Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI, API, or MCP source and generated configuration. Explicit false opts out for those sources. Terraform CLI queries (source terraform) retain workspace policy evaluation regardless of this preference or generate-config-out, subject to the existing query-policy gates. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted; workspace policy evaluation retains its existing query-policy behavior.
 func (m *Queries_attributes) SetPolicyEvaluationOptIn(value *bool)() {
     m.policyEvaluationOptIn = value
 }
@@ -383,7 +383,7 @@ func (m *Queries_attributes) SetPolicyPaths(value []string)() {
 func (m *Queries_attributes) SetResourcesDiscovered(value *int32)() {
     m.resourcesDiscovered = value
 }
-// SetSource sets the source property value. The source property
+// SetSource sets the source property value. The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 func (m *Queries_attributes) SetSource(value *Queries_attributes_source)() {
     m.source = value
 }

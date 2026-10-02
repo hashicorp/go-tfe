@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,105 @@ type ItemCidrRangeListsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListsable
+    // The included property
+    included []ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemCidrRangeListsGetResponse_metaable
+}
+// ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable
+type ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable
+    cidrRanges i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable
+}
+// NewItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included instantiates a new ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included and sets the default values.
+func NewItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included()(*ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) {
+    m := &ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included{
+    }
+    return m
+}
+// CreateItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+                    result.SetAgentPools(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAgentPools())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-ranges") {
+                    result.SetCidrRanges(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewCidrRanges())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+// returns a AgentPoolsable when successful
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
+    return m.agentPools
+}
+// GetCidrRanges gets the cidrRanges property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable
+// returns a CidrRangesable when successful
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) GetCidrRanges()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable) {
+    return m.cidrRanges
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAgentPools() != nil {
+        return m.GetAgentPools().GetFieldDeserializers()
+    } else if m.GetCidrRanges() != nil {
+        return m.GetCidrRanges().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// Serialize serializes information the current object
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetAgentPools() != nil {
+        err := writer.WriteObjectValue("", m.GetAgentPools())
+        if err != nil {
+            return err
+        }
+    } else if m.GetCidrRanges() != nil {
+        err := writer.WriteObjectValue("", m.GetCidrRanges())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)() {
+    m.agentPools = value
+}
+// SetCidrRanges sets the cidrRanges property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable
+func (m *ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_included) SetCidrRanges(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable)() {
+    m.cidrRanges = value
+}
+type ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
+    GetCidrRanges()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable)
+    SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)()
+    SetCidrRanges(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangesable)()
 }
 // NewItemCidrRangeListsGetResponse instantiates a new ItemCidrRangeListsGetResponse and sets the default values.
 func NewItemCidrRangeListsGetResponse()(*ItemCidrRangeListsGetResponse) {
@@ -60,6 +156,22 @@ func (m *ItemCidrRangeListsGetResponse) GetFieldDeserializers()(map[string]func(
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +194,11 @@ func (m *ItemCidrRangeListsGetResponse) GetFieldDeserializers()(map[string]func(
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable when successful
+func (m *ItemCidrRangeListsGetResponse) GetIncluded()([]ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemCidrRangeListsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +219,18 @@ func (m *ItemCidrRangeListsGetResponse) Serialize(writer i878a80d2330e89d2689638
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +263,10 @@ func (m *ItemCidrRangeListsGetResponse) SetAdditionalData(value map[string]any)(
 func (m *ItemCidrRangeListsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemCidrRangeListsGetResponse) SetIncluded(value []ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemCidrRangeListsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +279,11 @@ type ItemCidrRangeListsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListsable)
+    GetIncluded()([]ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemCidrRangeListsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CidrRangeListsable)()
+    SetIncluded(value []ItemCidrRangeListsGetResponse_CidrRangeListsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemCidrRangeListsGetResponse_metaable)()
 }

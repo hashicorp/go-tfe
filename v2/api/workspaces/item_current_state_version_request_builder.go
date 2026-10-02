@@ -18,7 +18,7 @@ type ItemCurrentStateVersionRequestBuilder struct {
 type ItemCurrentStateVersionRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstateVersions []string "uriparametername:\"fields%5Bstate%2Dversions%5D\""
-    // Optionally side-load relationships.
+    // Optionally side-load the specified relationships.
     Include []i6f2dce141547a574e4aebc99f4b2789ac2217377facfcd9ad98ebed289c76582.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemCurrentStateVersionRequestBuilderInternal instantiates a new ItemCurrentStateVersionRequestBuilder and sets the default values.

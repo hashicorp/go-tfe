@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,171 @@ type ItemHyokConfigurationsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable
+    // The included property
+    included []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemHyokConfigurationsGetResponse_metaable
+}
+// ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+type ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+    awsOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+    azureOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+    gcpOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+    hyokCustomerKeyVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+    vaultOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+}
+// NewItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included instantiates a new ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included and sets the default values.
+func NewItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included()(*ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) {
+    m := &ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included{
+    }
+    return m
+}
+// CreateItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "aws-oidc-configurations") {
+                    result.SetAwsOidcConfigurations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAwsOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "azure-oidc-configurations") {
+                    result.SetAzureOidcConfigurations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAzureOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "gcp-oidc-configurations") {
+                    result.SetGcpOidcConfigurations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewGcpOidcConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
+                    result.SetHyokCustomerKeyVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewHyokCustomerKeyVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vault-oidc-configurations") {
+                    result.SetVaultOidcConfigurations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewVaultOidcConfigurations())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+// returns a AwsOidcConfigurationsable when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetAwsOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable) {
+    return m.awsOidcConfigurations
+}
+// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+// returns a AzureOidcConfigurationsable when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetAzureOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable) {
+    return m.azureOidcConfigurations
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAwsOidcConfigurations() != nil {
+        return m.GetAwsOidcConfigurations().GetFieldDeserializers()
+    } else if m.GetAzureOidcConfigurations() != nil {
+        return m.GetAzureOidcConfigurations().GetFieldDeserializers()
+    } else if m.GetGcpOidcConfigurations() != nil {
+        return m.GetGcpOidcConfigurations().GetFieldDeserializers()
+    } else if m.GetHyokCustomerKeyVersions() != nil {
+        return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
+    } else if m.GetVaultOidcConfigurations() != nil {
+        return m.GetVaultOidcConfigurations().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+// returns a GcpOidcConfigurationsable when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetGcpOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable) {
+    return m.gcpOidcConfigurations
+}
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+// returns a HyokCustomerKeyVersionsable when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetHyokCustomerKeyVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable) {
+    return m.hyokCustomerKeyVersions
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+// returns a VaultOidcConfigurationsable when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetVaultOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable) {
+    return m.vaultOidcConfigurations
+}
+// Serialize serializes information the current object
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetAwsOidcConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetAwsOidcConfigurations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetAzureOidcConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetAzureOidcConfigurations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetGcpOidcConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetGcpOidcConfigurations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetHyokCustomerKeyVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetVaultOidcConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetVaultOidcConfigurations())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)() {
+    m.awsOidcConfigurations = value
+}
+// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)() {
+    m.azureOidcConfigurations = value
+}
+// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)() {
+    m.gcpOidcConfigurations = value
+}
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)() {
+    m.hyokCustomerKeyVersions = value
+}
+// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)() {
+    m.vaultOidcConfigurations = value
+}
+type ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAwsOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
+    GetAzureOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
+    GetGcpOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
+    GetHyokCustomerKeyVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
+    GetVaultOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
+    SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)()
+    SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)()
+    SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)()
+    SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)()
+    SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)()
 }
 // NewItemHyokConfigurationsGetResponse instantiates a new ItemHyokConfigurationsGetResponse and sets the default values.
 func NewItemHyokConfigurationsGetResponse()(*ItemHyokConfigurationsGetResponse) {
@@ -60,6 +222,22 @@ func (m *ItemHyokConfigurationsGetResponse) GetFieldDeserializers()(map[string]f
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +260,11 @@ func (m *ItemHyokConfigurationsGetResponse) GetFieldDeserializers()(map[string]f
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable when successful
+func (m *ItemHyokConfigurationsGetResponse) GetIncluded()([]ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemHyokConfigurationsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +285,18 @@ func (m *ItemHyokConfigurationsGetResponse) Serialize(writer i878a80d2330e89d268
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +329,10 @@ func (m *ItemHyokConfigurationsGetResponse) SetAdditionalData(value map[string]a
 func (m *ItemHyokConfigurationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemHyokConfigurationsGetResponse) SetIncluded(value []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemHyokConfigurationsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +345,11 @@ type ItemHyokConfigurationsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable)
+    GetIncluded()([]ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemHyokConfigurationsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable)()
+    SetIncluded(value []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemHyokConfigurationsGetResponse_metaable)()
 }

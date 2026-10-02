@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i397d98037abac0e4fdb5cc249e80f1867a2ca80f7f6723a7988ed951da417f32 "github.com/hashicorp/go-tfe/v2/api/organizations/item/projects"
 )
 
 // ItemProjectsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\projects
@@ -23,6 +24,8 @@ type ItemProjectsRequestBuilderGetQueryParameters struct {
     FilterpermissionscreateWorkspace *bool "uriparametername:\"filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D\""
     // If present, returns a list of projects that the authenticated user can update.
     Filterpermissionsupdate *bool "uriparametername:\"filter%5Bpermissions%5D%5Bupdate%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i397d98037abac0e4fdb5cc249e80f1867a2ca80f7f6723a7988ed951da417f32.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -33,7 +36,7 @@ type ItemProjectsRequestBuilderGetQueryParameters struct {
 // NewItemProjectsRequestBuilderInternal instantiates a new ItemProjectsRequestBuilder and sets the default values.
 func NewItemProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProjectsRequestBuilder) {
     m := &ItemProjectsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/projects{?fields%5Bprojects%5D,filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/projects{?fields%5Bprojects%5D,filter%5Bnames%5D*,filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D*,filter%5Bpermissions%5D%5Bupdate%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

@@ -12,7 +12,7 @@ type ItemTfPolicyEvaluationsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable
+    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
@@ -36,8 +36,8 @@ func (m *ItemTfPolicyEvaluationsGetResponse) GetAdditionalData()(map[string]any)
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []TfPolicyEvaluationable when successful
-func (m *ItemTfPolicyEvaluationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable) {
+// returns a []TfPolicyEvaluationsable when successful
+func (m *ItemTfPolicyEvaluationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -45,15 +45,15 @@ func (m *ItemTfPolicyEvaluationsGetResponse) GetData()([]i05d5aa6b14db285c2e8df4
 func (m *ItemTfPolicyEvaluationsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTfPolicyEvaluationFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTfPolicyEvaluationsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable, len(val))
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)
                 }
             }
             m.SetData(res)
@@ -131,7 +131,7 @@ func (m *ItemTfPolicyEvaluationsGetResponse) SetAdditionalData(value map[string]
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemTfPolicyEvaluationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)() {
+func (m *ItemTfPolicyEvaluationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)() {
     m.data = value
 }
 // SetLinks sets the links property value. The links property
@@ -145,10 +145,10 @@ func (m *ItemTfPolicyEvaluationsGetResponse) SetMeta(value ItemTfPolicyEvaluatio
 type ItemTfPolicyEvaluationsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)
+    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemTfPolicyEvaluationsGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationable)()
+    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemTfPolicyEvaluationsGetResponse_metaable)()
 }

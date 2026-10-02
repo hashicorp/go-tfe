@@ -22,6 +22,8 @@ type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
     Filterlatest_only *ic5468d8c4eb8d0735677d258cf5e97b2f6ac566d1ab10d998dc8b477a5c97310.GetFilterLatest_onlyQueryParameterType "uriparametername:\"filter%5Blatest_only%5D\""
     // Filter by run status. Accepts a comma-separated list of the logical statuses: failed, pending-operator (pre-deploying and deploying awaiting operator input), running (pre-deploying and deploying), pending (pending, acquiring-lock and pending-capacity), abandoned, succeeded.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic5468d8c4eb8d0735677d258cf5e97b2f6ac566d1ab10d998dc8b477a5c97310.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -34,7 +36,7 @@ type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
 // NewItemStackDeploymentRunsRequestBuilderInternal instantiates a new ItemStackDeploymentRunsRequestBuilder and sets the default values.
 func NewItemStackDeploymentRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentRunsRequestBuilder) {
     m := &ItemStackDeploymentRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,filter%5Blatest_only%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-groups/{stack_deployment_group_id}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,filter%5Blatest_only%5D*,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }
