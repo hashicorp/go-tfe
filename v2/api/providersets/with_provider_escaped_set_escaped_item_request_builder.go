@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i5c8ba1c3eef4913cb538ecee85883454e5b337265617e2a1235fce55b26b1be5 "github.com/hashicorp/go-tfe/v2/api/providersets/item"
 )
 
 // WithProvider_set_ItemRequestBuilder builds and executes requests for operations under \provider-sets\{provider_set_id}
@@ -17,13 +18,13 @@ type WithProvider_set_ItemRequestBuilder struct {
 type WithProvider_set_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsproviderSets []string "uriparametername:\"fields%5Bprovider%2Dsets%5D\""
-    // Comma-separated list of related resources to include. Valid values: projects, workspaces.
-    Include *string "uriparametername:\"include\""
+    // Comma-separated list of related resources to include.
+    Include []i5c8ba1c3eef4913cb538ecee85883454e5b337265617e2a1235fce55b26b1be5.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithProvider_set_ItemRequestBuilderInternal instantiates a new WithProvider_set_ItemRequestBuilder and sets the default values.
 func NewWithProvider_set_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithProvider_set_ItemRequestBuilder) {
     m := &WithProvider_set_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/provider-sets/{provider_set_id}{?fields%5Bprovider%2Dsets%5D,include*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/provider-sets/{provider_set_id}{?fields%5Bprovider%2Dsets%5D,include}", pathParameters),
     }
     return m
 }
@@ -50,9 +51,9 @@ func (m *WithProvider_set_ItemRequestBuilder) Delete(ctx context.Context, reques
     return nil
 }
 // Get fetch details about the specified provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-// returns a ProviderSetsEnvelopeable when successful
+// returns a ItemWithProvider_set_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithProvider_set_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithProvider_set_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable, error) {
+func (m *WithProvider_set_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithProvider_set_ItemRequestBuilderGetQueryParameters])(ItemWithProvider_set_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -60,14 +61,14 @@ func (m *WithProvider_set_ItemRequestBuilder) Get(ctx context.Context, requestCo
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateProviderSetsEnvelopeFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithProvider_set_GetResponseFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable), nil
+    return res.(ItemWithProvider_set_GetResponseable), nil
 }
 // Patch update attributes of an existing provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ProviderSetsEnvelopeable when successful
