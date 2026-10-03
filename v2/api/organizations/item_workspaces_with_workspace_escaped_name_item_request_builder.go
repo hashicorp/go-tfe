@@ -18,7 +18,7 @@ type ItemWorkspacesWithWorkspace_nameItemRequestBuilder struct {
 type ItemWorkspacesWithWorkspace_nameItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsworkspaces []string "uriparametername:\"fields%5Bworkspaces%5D\""
-    // Optionally side-load relationships.
+    // Optionally side-load the specified relationships.
     Include []ia60cd24b348b303e1b7a2d108acb7afd0314eabcdb551a1d763d372fb22b5f05.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
@@ -58,10 +58,10 @@ func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Delete(ctx context.
     return nil
 }
 // Get get details of a workspace by organization name and workspace name.
-// returns a ItemWorkspacesItemWithWorkspace_nameGetResponseable when successful
+// returns a WorkspacesEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemWorkspacesWithWorkspace_nameItemRequestBuilderGetQueryParameters])(ItemWorkspacesItemWithWorkspace_nameGetResponseable, error) {
+func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemWorkspacesWithWorkspace_nameItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspacesEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -70,14 +70,14 @@ func (m *ItemWorkspacesWithWorkspace_nameItemRequestBuilder) Get(ctx context.Con
         "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWorkspacesItemWithWorkspace_nameGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspacesEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemWorkspacesItemWithWorkspace_nameGetResponseable), nil
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspacesEnvelopeable), nil
 }
 // Patch update settings of an existing workspace by organization name and workspace name.
 // returns a WorkspacesEnvelopeable when successful

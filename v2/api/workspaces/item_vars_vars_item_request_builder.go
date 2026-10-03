@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ida315265317703238f498ac169d729724fa7d895c5c9482f4a1edefe1a7c040d "github.com/hashicorp/go-tfe/v2/api/workspaces/item/vars/item"
 )
 
 // ItemVarsVarsItemRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\vars\{id}
@@ -17,11 +18,13 @@ type ItemVarsVarsItemRequestBuilder struct {
 type ItemVarsVarsItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ida315265317703238f498ac169d729724fa7d895c5c9482f4a1edefe1a7c040d.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemVarsVarsItemRequestBuilderInternal instantiates a new ItemVarsVarsItemRequestBuilder and sets the default values.
 func NewItemVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsVarsItemRequestBuilder) {
     m := &ItemVarsVarsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars/{id}{?fields%5Bvars%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars/{id}{?fields%5Bvars%5D,include}", pathParameters),
     }
     return m
 }

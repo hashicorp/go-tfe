@@ -24,6 +24,8 @@ type ItemTaskConfigsRequestBuilderGetQueryParameters struct {
     Filtertarget_type *ie5be88d480c1652fa10a8aabe120abc785cf042db2d36c2b2f202f3fed9f2717.GetFilterTarget_typeQueryParameterType "uriparametername:\"filter%5Btarget_type%5D\""
     // Restricts results to task configurations whose task belongs to the given category.
     Filtertask_category *ie5be88d480c1652fa10a8aabe120abc785cf042db2d36c2b2f202f3fed9f2717.GetFilterTask_categoryQueryParameterType "uriparametername:\"filter%5Btask_category%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ie5be88d480c1652fa10a8aabe120abc785cf042db2d36c2b2f202f3fed9f2717.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -32,7 +34,7 @@ type ItemTaskConfigsRequestBuilderGetQueryParameters struct {
 // NewItemTaskConfigsRequestBuilderInternal instantiates a new ItemTaskConfigsRequestBuilder and sets the default values.
 func NewItemTaskConfigsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTaskConfigsRequestBuilder) {
     m := &ItemTaskConfigsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs?filter[target_id]={filter%5Btarget_id%5D}&filter[target_type]={filter%5Btarget_type%5D}{&fields%5Btask%2Dconfigs%5D,filter%5Btask_category%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/task-configs?filter[target_id]={filter%5Btarget_id%5D}&filter[target_type]={filter%5Btarget_type%5D}{&fields%5Btask%2Dconfigs%5D,filter%5Btask_category%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i89976ab7f4bed54f9029223f7ff1ed9eabadac8b416087f0b27901d9fd58af44 "github.com/hashicorp/go-tfe/v2/api/tasks/item/relationships/workspacetasks"
 )
 
 // ItemRelationshipsWorkspaceTasksRequestBuilder builds and executes requests for operations under \tasks\{id}\relationships\workspace-tasks
@@ -17,6 +18,8 @@ type ItemRelationshipsWorkspaceTasksRequestBuilder struct {
 type ItemRelationshipsWorkspaceTasksRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for workspace-tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsworkspaceTasks []string "uriparametername:\"fields%5Bworkspace%2Dtasks%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i89976ab7f4bed54f9029223f7ff1ed9eabadac8b416087f0b27901d9fd58af44.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -25,7 +28,7 @@ type ItemRelationshipsWorkspaceTasksRequestBuilderGetQueryParameters struct {
 // NewItemRelationshipsWorkspaceTasksRequestBuilderInternal instantiates a new ItemRelationshipsWorkspaceTasksRequestBuilder and sets the default values.
 func NewItemRelationshipsWorkspaceTasksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsWorkspaceTasksRequestBuilder) {
     m := &ItemRelationshipsWorkspaceTasksRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}/relationships/workspace-tasks{?fields%5Bworkspace%2Dtasks%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tasks/{id}/relationships/workspace-tasks{?fields%5Bworkspace%2Dtasks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

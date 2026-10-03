@@ -18,7 +18,7 @@ type ItemRequestBuilder struct {
 type ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsruns []string "uriparametername:\"fields%5Bruns%5D\""
-    // Available side-load related resources. Multiple values can be comma-separated.Available includes:- `plan` - The plan for this run- `apply` - The apply for this run- `created_by` - The user who created this run- `configuration_version` - The configuration version used- `configuration_version.ingress_attributes` - VCS ingress details- `cost_estimate` - Cost estimation for this run- `workspace` - The workspace this run belongs to- `task_stages` - Run task stages- `tf_policy_evaluations` - Terraform Policy evaluations *(public-beta)*
+    // Optionally side-load the specified relationships.
     Include []icc0ca48df140a853150a5d96ec2689643da46b686f730d4d65f29d007e31ed03.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property

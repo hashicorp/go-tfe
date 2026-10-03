@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i056b8b3d6cb785b3f4ba678b3e091d4cf51b20e3ea9fcecb89cd0fa7b4805258 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/vars"
 )
 
 // ItemVarsRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\vars
@@ -17,6 +18,8 @@ type ItemVarsRequestBuilder struct {
 type ItemVarsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i056b8b3d6cb785b3f4ba678b3e091d4cf51b20e3ea9fcecb89cd0fa7b4805258.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.workspaces.item.vars.item collection
 // returns a *ItemVarsVarsItemRequestBuilder when successful
@@ -33,7 +36,7 @@ func (m *ItemVarsRequestBuilder) ById(id string)(*ItemVarsVarsItemRequestBuilder
 // NewItemVarsRequestBuilderInternal instantiates a new ItemVarsRequestBuilder and sets the default values.
 func NewItemVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsRequestBuilder) {
     m := &ItemVarsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars{?fields%5Bvars%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/vars{?fields%5Bvars%5D,include}", pathParameters),
     }
     return m
 }

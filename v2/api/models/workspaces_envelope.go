@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,431 @@ type WorkspacesEnvelope struct {
     additionalData map[string]any
     // The data property
     data Workspacesable
+    // The included property
+    included []WorkspacesEnvelope_WorkspacesEnvelope_includedable
+}
+// WorkspacesEnvelope_WorkspacesEnvelope_included composed type wrapper for classes AgentPoolsable, Appliesable, AssessmentResultsable, ConfigurationVersionsable, EffectiveTagBindingsable, IngressAttributesable, NoCodeModulesable, NoCodeModuleVersionsable, Organizationsable, Plansable, Projectsable, Runsable, StateVersionsable, Usersable, Varsable, WorkspaceOutputsable, WorkspaceReadmeable
+type WorkspacesEnvelope_WorkspacesEnvelope_included struct {
+    // Composed type representation for type AgentPoolsable
+    agentPools AgentPoolsable
+    // Composed type representation for type Appliesable
+    applies Appliesable
+    // Composed type representation for type AssessmentResultsable
+    assessmentResults AssessmentResultsable
+    // Composed type representation for type ConfigurationVersionsable
+    configurationVersions ConfigurationVersionsable
+    // Composed type representation for type EffectiveTagBindingsable
+    effectiveTagBindings EffectiveTagBindingsable
+    // Composed type representation for type IngressAttributesable
+    ingressAttributes IngressAttributesable
+    // Composed type representation for type NoCodeModulesable
+    noCodeModules NoCodeModulesable
+    // Composed type representation for type NoCodeModuleVersionsable
+    noCodeModuleVersions NoCodeModuleVersionsable
+    // Composed type representation for type Organizationsable
+    organizations Organizationsable
+    // Composed type representation for type Plansable
+    plans Plansable
+    // Composed type representation for type Projectsable
+    projects Projectsable
+    // Composed type representation for type Runsable
+    runs Runsable
+    // Composed type representation for type StateVersionsable
+    stateVersions StateVersionsable
+    // Composed type representation for type Usersable
+    users Usersable
+    // Composed type representation for type Varsable
+    vars Varsable
+    // Composed type representation for type WorkspaceOutputsable
+    workspaceOutputs WorkspaceOutputsable
+    // Composed type representation for type WorkspaceReadmeable
+    workspaceReadme WorkspaceReadmeable
+}
+// NewWorkspacesEnvelope_WorkspacesEnvelope_included instantiates a new WorkspacesEnvelope_WorkspacesEnvelope_included and sets the default values.
+func NewWorkspacesEnvelope_WorkspacesEnvelope_included()(*WorkspacesEnvelope_WorkspacesEnvelope_included) {
+    m := &WorkspacesEnvelope_WorkspacesEnvelope_included{
+    }
+    return m
+}
+// CreateWorkspacesEnvelope_WorkspacesEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateWorkspacesEnvelope_WorkspacesEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewWorkspacesEnvelope_WorkspacesEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+                    result.SetAgentPools(NewAgentPools())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "applies") {
+                    result.SetApplies(NewApplies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "assessment-results") {
+                    result.SetAssessmentResults(NewAssessmentResults())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+                    result.SetConfigurationVersions(NewConfigurationVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "effective-tag-bindings") {
+                    result.SetEffectiveTagBindings(NewEffectiveTagBindings())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+                    result.SetIngressAttributes(NewIngressAttributes())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-modules") {
+                    result.SetNoCodeModules(NewNoCodeModules())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-module-versions") {
+                    result.SetNoCodeModuleVersions(NewNoCodeModuleVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+                    result.SetOrganizations(NewOrganizations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "plans") {
+                    result.SetPlans(NewPlans())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+                    result.SetRuns(NewRuns())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-versions") {
+                    result.SetStateVersions(NewStateVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(NewUsers())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
+                    result.SetVars(NewVars())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-outputs") {
+                    result.SetWorkspaceOutputs(NewWorkspaceOutputs())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-readme") {
+                    result.SetWorkspaceReadme(NewWorkspaceReadme())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetAgentPools gets the agentPools property value. Composed type representation for type AgentPoolsable
+// returns a AgentPoolsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetAgentPools()(AgentPoolsable) {
+    return m.agentPools
+}
+// GetApplies gets the applies property value. Composed type representation for type Appliesable
+// returns a Appliesable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetApplies()(Appliesable) {
+    return m.applies
+}
+// GetAssessmentResults gets the assessmentResults property value. Composed type representation for type AssessmentResultsable
+// returns a AssessmentResultsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetAssessmentResults()(AssessmentResultsable) {
+    return m.assessmentResults
+}
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// returns a ConfigurationVersionsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetConfigurationVersions()(ConfigurationVersionsable) {
+    return m.configurationVersions
+}
+// GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type EffectiveTagBindingsable
+// returns a EffectiveTagBindingsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetEffectiveTagBindings()(EffectiveTagBindingsable) {
+    return m.effectiveTagBindings
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAgentPools() != nil {
+        return m.GetAgentPools().GetFieldDeserializers()
+    } else if m.GetApplies() != nil {
+        return m.GetApplies().GetFieldDeserializers()
+    } else if m.GetAssessmentResults() != nil {
+        return m.GetAssessmentResults().GetFieldDeserializers()
+    } else if m.GetConfigurationVersions() != nil {
+        return m.GetConfigurationVersions().GetFieldDeserializers()
+    } else if m.GetEffectiveTagBindings() != nil {
+        return m.GetEffectiveTagBindings().GetFieldDeserializers()
+    } else if m.GetIngressAttributes() != nil {
+        return m.GetIngressAttributes().GetFieldDeserializers()
+    } else if m.GetNoCodeModules() != nil {
+        return m.GetNoCodeModules().GetFieldDeserializers()
+    } else if m.GetNoCodeModuleVersions() != nil {
+        return m.GetNoCodeModuleVersions().GetFieldDeserializers()
+    } else if m.GetOrganizations() != nil {
+        return m.GetOrganizations().GetFieldDeserializers()
+    } else if m.GetPlans() != nil {
+        return m.GetPlans().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetRuns() != nil {
+        return m.GetRuns().GetFieldDeserializers()
+    } else if m.GetStateVersions() != nil {
+        return m.GetStateVersions().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    } else if m.GetVars() != nil {
+        return m.GetVars().GetFieldDeserializers()
+    } else if m.GetWorkspaceOutputs() != nil {
+        return m.GetWorkspaceOutputs().GetFieldDeserializers()
+    } else if m.GetWorkspaceReadme() != nil {
+        return m.GetWorkspaceReadme().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+// returns a IngressAttributesable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetIngressAttributes()(IngressAttributesable) {
+    return m.ingressAttributes
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetNoCodeModules gets the noCodeModules property value. Composed type representation for type NoCodeModulesable
+// returns a NoCodeModulesable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetNoCodeModules()(NoCodeModulesable) {
+    return m.noCodeModules
+}
+// GetNoCodeModuleVersions gets the noCodeModuleVersions property value. Composed type representation for type NoCodeModuleVersionsable
+// returns a NoCodeModuleVersionsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetNoCodeModuleVersions()(NoCodeModuleVersionsable) {
+    return m.noCodeModuleVersions
+}
+// GetOrganizations gets the organizations property value. Composed type representation for type Organizationsable
+// returns a Organizationsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetOrganizations()(Organizationsable) {
+    return m.organizations
+}
+// GetPlans gets the plans property value. Composed type representation for type Plansable
+// returns a Plansable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetPlans()(Plansable) {
+    return m.plans
+}
+// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// returns a Projectsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetProjects()(Projectsable) {
+    return m.projects
+}
+// GetRuns gets the runs property value. Composed type representation for type Runsable
+// returns a Runsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetRuns()(Runsable) {
+    return m.runs
+}
+// GetStateVersions gets the stateVersions property value. Composed type representation for type StateVersionsable
+// returns a StateVersionsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetStateVersions()(StateVersionsable) {
+    return m.stateVersions
+}
+// GetUsers gets the users property value. Composed type representation for type Usersable
+// returns a Usersable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetUsers()(Usersable) {
+    return m.users
+}
+// GetVars gets the vars property value. Composed type representation for type Varsable
+// returns a Varsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetVars()(Varsable) {
+    return m.vars
+}
+// GetWorkspaceOutputs gets the workspaceOutputs property value. Composed type representation for type WorkspaceOutputsable
+// returns a WorkspaceOutputsable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetWorkspaceOutputs()(WorkspaceOutputsable) {
+    return m.workspaceOutputs
+}
+// GetWorkspaceReadme gets the workspaceReadme property value. Composed type representation for type WorkspaceReadmeable
+// returns a WorkspaceReadmeable when successful
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) GetWorkspaceReadme()(WorkspaceReadmeable) {
+    return m.workspaceReadme
+}
+// Serialize serializes information the current object
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetAgentPools() != nil {
+        err := writer.WriteObjectValue("", m.GetAgentPools())
+        if err != nil {
+            return err
+        }
+    } else if m.GetApplies() != nil {
+        err := writer.WriteObjectValue("", m.GetApplies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetAssessmentResults() != nil {
+        err := writer.WriteObjectValue("", m.GetAssessmentResults())
+        if err != nil {
+            return err
+        }
+    } else if m.GetConfigurationVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetEffectiveTagBindings() != nil {
+        err := writer.WriteObjectValue("", m.GetEffectiveTagBindings())
+        if err != nil {
+            return err
+        }
+    } else if m.GetIngressAttributes() != nil {
+        err := writer.WriteObjectValue("", m.GetIngressAttributes())
+        if err != nil {
+            return err
+        }
+    } else if m.GetNoCodeModules() != nil {
+        err := writer.WriteObjectValue("", m.GetNoCodeModules())
+        if err != nil {
+            return err
+        }
+    } else if m.GetNoCodeModuleVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetNoCodeModuleVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOrganizations() != nil {
+        err := writer.WriteObjectValue("", m.GetOrganizations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPlans() != nil {
+        err := writer.WriteObjectValue("", m.GetPlans())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetRuns() != nil {
+        err := writer.WriteObjectValue("", m.GetRuns())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStateVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetStateVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    } else if m.GetVars() != nil {
+        err := writer.WriteObjectValue("", m.GetVars())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaceOutputs() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaceOutputs())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaceReadme() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaceReadme())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetAgentPools sets the agentPools property value. Composed type representation for type AgentPoolsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetAgentPools(value AgentPoolsable)() {
+    m.agentPools = value
+}
+// SetApplies sets the applies property value. Composed type representation for type Appliesable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetApplies(value Appliesable)() {
+    m.applies = value
+}
+// SetAssessmentResults sets the assessmentResults property value. Composed type representation for type AssessmentResultsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetAssessmentResults(value AssessmentResultsable)() {
+    m.assessmentResults = value
+}
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetConfigurationVersions(value ConfigurationVersionsable)() {
+    m.configurationVersions = value
+}
+// SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type EffectiveTagBindingsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetEffectiveTagBindings(value EffectiveTagBindingsable)() {
+    m.effectiveTagBindings = value
+}
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetIngressAttributes(value IngressAttributesable)() {
+    m.ingressAttributes = value
+}
+// SetNoCodeModules sets the noCodeModules property value. Composed type representation for type NoCodeModulesable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetNoCodeModules(value NoCodeModulesable)() {
+    m.noCodeModules = value
+}
+// SetNoCodeModuleVersions sets the noCodeModuleVersions property value. Composed type representation for type NoCodeModuleVersionsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetNoCodeModuleVersions(value NoCodeModuleVersionsable)() {
+    m.noCodeModuleVersions = value
+}
+// SetOrganizations sets the organizations property value. Composed type representation for type Organizationsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetOrganizations(value Organizationsable)() {
+    m.organizations = value
+}
+// SetPlans sets the plans property value. Composed type representation for type Plansable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetPlans(value Plansable)() {
+    m.plans = value
+}
+// SetProjects sets the projects property value. Composed type representation for type Projectsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetProjects(value Projectsable)() {
+    m.projects = value
+}
+// SetRuns sets the runs property value. Composed type representation for type Runsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetRuns(value Runsable)() {
+    m.runs = value
+}
+// SetStateVersions sets the stateVersions property value. Composed type representation for type StateVersionsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetStateVersions(value StateVersionsable)() {
+    m.stateVersions = value
+}
+// SetUsers sets the users property value. Composed type representation for type Usersable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetUsers(value Usersable)() {
+    m.users = value
+}
+// SetVars sets the vars property value. Composed type representation for type Varsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetVars(value Varsable)() {
+    m.vars = value
+}
+// SetWorkspaceOutputs sets the workspaceOutputs property value. Composed type representation for type WorkspaceOutputsable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetWorkspaceOutputs(value WorkspaceOutputsable)() {
+    m.workspaceOutputs = value
+}
+// SetWorkspaceReadme sets the workspaceReadme property value. Composed type representation for type WorkspaceReadmeable
+func (m *WorkspacesEnvelope_WorkspacesEnvelope_included) SetWorkspaceReadme(value WorkspaceReadmeable)() {
+    m.workspaceReadme = value
+}
+type WorkspacesEnvelope_WorkspacesEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgentPools()(AgentPoolsable)
+    GetApplies()(Appliesable)
+    GetAssessmentResults()(AssessmentResultsable)
+    GetConfigurationVersions()(ConfigurationVersionsable)
+    GetEffectiveTagBindings()(EffectiveTagBindingsable)
+    GetIngressAttributes()(IngressAttributesable)
+    GetNoCodeModules()(NoCodeModulesable)
+    GetNoCodeModuleVersions()(NoCodeModuleVersionsable)
+    GetOrganizations()(Organizationsable)
+    GetPlans()(Plansable)
+    GetProjects()(Projectsable)
+    GetRuns()(Runsable)
+    GetStateVersions()(StateVersionsable)
+    GetUsers()(Usersable)
+    GetVars()(Varsable)
+    GetWorkspaceOutputs()(WorkspaceOutputsable)
+    GetWorkspaceReadme()(WorkspaceReadmeable)
+    SetAgentPools(value AgentPoolsable)()
+    SetApplies(value Appliesable)()
+    SetAssessmentResults(value AssessmentResultsable)()
+    SetConfigurationVersions(value ConfigurationVersionsable)()
+    SetEffectiveTagBindings(value EffectiveTagBindingsable)()
+    SetIngressAttributes(value IngressAttributesable)()
+    SetNoCodeModules(value NoCodeModulesable)()
+    SetNoCodeModuleVersions(value NoCodeModuleVersionsable)()
+    SetOrganizations(value Organizationsable)()
+    SetPlans(value Plansable)()
+    SetProjects(value Projectsable)()
+    SetRuns(value Runsable)()
+    SetStateVersions(value StateVersionsable)()
+    SetUsers(value Usersable)()
+    SetVars(value Varsable)()
+    SetWorkspaceOutputs(value WorkspaceOutputsable)()
+    SetWorkspaceReadme(value WorkspaceReadmeable)()
 }
 // NewWorkspacesEnvelope instantiates a new WorkspacesEnvelope and sets the default values.
 func NewWorkspacesEnvelope()(*WorkspacesEnvelope) {
@@ -49,12 +475,45 @@ func (m *WorkspacesEnvelope) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateWorkspacesEnvelope_WorkspacesEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]WorkspacesEnvelope_WorkspacesEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(WorkspacesEnvelope_WorkspacesEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []WorkspacesEnvelope_WorkspacesEnvelope_includedable when successful
+func (m *WorkspacesEnvelope) GetIncluded()([]WorkspacesEnvelope_WorkspacesEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *WorkspacesEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +534,15 @@ func (m *WorkspacesEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *WorkspacesEnvelope) SetData(value Workspacesable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *WorkspacesEnvelope) SetIncluded(value []WorkspacesEnvelope_WorkspacesEnvelope_includedable)() {
+    m.included = value
+}
 type WorkspacesEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Workspacesable)
+    GetIncluded()([]WorkspacesEnvelope_WorkspacesEnvelope_includedable)
     SetData(value Workspacesable)()
+    SetIncluded(value []WorkspacesEnvelope_WorkspacesEnvelope_includedable)()
 }

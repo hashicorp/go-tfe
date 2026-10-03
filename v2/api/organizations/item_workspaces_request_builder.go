@@ -28,7 +28,7 @@ type ItemWorkspacesRequestBuilderGetQueryParameters struct {
     FiltertagUnion *bool "uriparametername:\"filter%5Btag%2Dunion%5D\""
     // Treat omitted filter[tagged][value] fields as NULL for effective tag bindings.
     FiltertagValueDefaultNull *bool "uriparametername:\"filter%5Btag%2Dvalue%2Ddefault%2Dnull%5D\""
-    // Comma-separated list of relationship names to side-load.
+    // Optionally side-load the specified relationships.
     Include []ib221dccd3c79fe396924505f7690d5263c9d3d6438d3a888a0e019c0a8f12f06.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

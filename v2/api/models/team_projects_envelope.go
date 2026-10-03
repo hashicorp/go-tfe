@@ -12,6 +12,8 @@ type TeamProjectsEnvelope struct {
     additionalData map[string]any
     // The data property
     data TeamProjectsable
+    // The included property
+    included []Teamsable
 }
 // NewTeamProjectsEnvelope instantiates a new TeamProjectsEnvelope and sets the default values.
 func NewTeamProjectsEnvelope()(*TeamProjectsEnvelope) {
@@ -49,12 +51,45 @@ func (m *TeamProjectsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateTeamsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]Teamsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Teamsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []Teamsable when successful
+func (m *TeamProjectsEnvelope) GetIncluded()([]Teamsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *TeamProjectsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *TeamProjectsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *TeamProjectsEnvelope) SetData(value TeamProjectsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *TeamProjectsEnvelope) SetIncluded(value []Teamsable)() {
+    m.included = value
+}
 type TeamProjectsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(TeamProjectsable)
+    GetIncluded()([]Teamsable)
     SetData(value TeamProjectsable)()
+    SetIncluded(value []Teamsable)()
 }

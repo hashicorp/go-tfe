@@ -21,6 +21,8 @@ type TeamProjectsRequestBuilderGetQueryParameters struct {
     Filterprojectid *string "uriparametername:\"filter%5Bproject%5D%5Bid%5D\""
     // Optionally filter by team ID.
     Filterteamid *string "uriparametername:\"filter%5Bteam%5D%5Bid%5D\""
+    // Optionally side-load the specified relationships.
+    Include []GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -41,7 +43,7 @@ func (m *TeamProjectsRequestBuilder) ByTeam_project_id(team_project_id string)(*
 // NewTeamProjectsRequestBuilderInternal instantiates a new TeamProjectsRequestBuilder and sets the default values.
 func NewTeamProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TeamProjectsRequestBuilder) {
     m := &TeamProjectsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects?filter[project][id]={filter%5Bproject%5D%5Bid%5D}{&fields%5Bteam%2Dprojects%5D,filter%5Bteam%5D%5Bid%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects?filter[project][id]={filter%5Bproject%5D%5Bid%5D}{&fields%5Bteam%2Dprojects%5D,filter%5Bteam%5D%5Bid%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
