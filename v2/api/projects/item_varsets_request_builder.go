@@ -18,6 +18,8 @@ type ItemVarsetsRequestBuilder struct {
 type ItemVarsetsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvarsets []string "uriparametername:\"fields%5Bvarsets%5D\""
+    // Optionally side-load the specified relationships.
+    Include []id9b1cd05c1aed4a221a26914a10d3fb317a479fef370fc0d10c23974bb8a2e86.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -30,7 +32,7 @@ type ItemVarsetsRequestBuilderGetQueryParameters struct {
 // NewItemVarsetsRequestBuilderInternal instantiates a new ItemVarsetsRequestBuilder and sets the default values.
 func NewItemVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsRequestBuilder) {
     m := &ItemVarsetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/varsets{?fields%5Bvarsets%5D,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}/varsets{?fields%5Bvarsets%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,scope*}", pathParameters),
     }
     return m
 }

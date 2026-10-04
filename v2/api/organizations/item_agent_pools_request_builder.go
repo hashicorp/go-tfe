@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic5975c5af16b7d8ce4e007ccc553bb99eef7b52d83dafe45a9a0f4407b443388 "github.com/hashicorp/go-tfe/v2/api/organizations/item/agentpools"
 )
 
 // ItemAgentPoolsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\agent-pools
@@ -19,6 +20,8 @@ type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
     FieldsagentPools []string "uriparametername:\"fields%5Bagent%2Dpools%5D\""
     // Filters agent pools to those associated with the given workspace. The workspace must have permission to use the agent pool.
     FilterallowedWorkspacesname *string "uriparametername:\"filter%5Ballowed%2Dworkspaces%5D%5Bname%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic5975c5af16b7d8ce4e007ccc553bb99eef7b52d83dafe45a9a0f4407b443388.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -31,7 +34,7 @@ type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
 // NewItemAgentPoolsRequestBuilderInternal instantiates a new ItemAgentPoolsRequestBuilder and sets the default values.
 func NewItemAgentPoolsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentPoolsRequestBuilder) {
     m := &ItemAgentPoolsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/agent-pools{?fields%5Bagent%2Dpools%5D,filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/agent-pools{?fields%5Bagent%2Dpools%5D,filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

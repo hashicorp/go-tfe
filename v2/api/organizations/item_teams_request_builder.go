@@ -20,7 +20,7 @@ type ItemTeamsRequestBuilderGetQueryParameters struct {
     Fieldsteams []string "uriparametername:\"fields%5Bteams%5D\""
     // If specified, restricts results to a team with a matching name. If multiple comma separated values are specified, teams matching any of the names are returned.
     Filternames *string "uriparametername:\"filter%5Bnames%5D\""
-    // Optionally side-load relationships. Can include "users" or "organization-memberships".
+    // Optionally side-load the specified relationships.
     Include []i68c7b1754f3d859dd95c09b410930e44dcfd5c211141c27437c039782e7cf6df.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i0af5ebbd7f197414b605ccdac2cd192ac7075f72a1cd47006c23b0bd5388b7a2 "github.com/hashicorp/go-tfe/v2/api/configurationversions/item"
 )
 
 // WithConfiguration_version_ItemRequestBuilder builds and executes requests for operations under \configuration-versions\{configuration_version_id}
@@ -17,6 +18,8 @@ type WithConfiguration_version_ItemRequestBuilder struct {
 type WithConfiguration_version_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for configuration-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsconfigurationVersions []string "uriparametername:\"fields%5Bconfiguration%2Dversions%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i0af5ebbd7f197414b605ccdac2cd192ac7075f72a1cd47006c23b0bd5388b7a2.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +29,7 @@ func (m *WithConfiguration_version_ItemRequestBuilder) Actions()(*ItemActionsReq
 // NewWithConfiguration_version_ItemRequestBuilderInternal instantiates a new WithConfiguration_version_ItemRequestBuilder and sets the default values.
 func NewWithConfiguration_version_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithConfiguration_version_ItemRequestBuilder) {
     m := &WithConfiguration_version_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/configuration-versions/{configuration_version_id}{?fields%5Bconfiguration%2Dversions%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/configuration-versions/{configuration_version_id}{?fields%5Bconfiguration%2Dversions%5D,include}", pathParameters),
     }
     return m
 }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item"
 )
 
 // WithHyok_configuration_ItemRequestBuilder builds and executes requests for operations under \hyok-configurations\{hyok_configuration_id}
@@ -17,6 +18,8 @@ type WithHyok_configuration_ItemRequestBuilder struct {
 type WithHyok_configuration_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldshyokConfigurations []string "uriparametername:\"fields%5Bhyok%2Dconfigurations%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +29,7 @@ func (m *WithHyok_configuration_ItemRequestBuilder) Actions()(*ItemActionsReques
 // NewWithHyok_configuration_ItemRequestBuilderInternal instantiates a new WithHyok_configuration_ItemRequestBuilder and sets the default values.
 func NewWithHyok_configuration_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithHyok_configuration_ItemRequestBuilder) {
     m := &WithHyok_configuration_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}{?fields%5Bhyok%2Dconfigurations%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}{?fields%5Bhyok%2Dconfigurations%5D,include}", pathParameters),
     }
     return m
 }

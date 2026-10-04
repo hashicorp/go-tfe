@@ -21,6 +21,8 @@ type RunsRequestBuilderGetQueryParameters struct {
     Filteroperation *string "uriparametername:\"filter%5Boperation%5D\""
     // Filter by run status.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
+    // Optionally side-load the specified relationships.
+    Include []GetIncludeQueryParameterType "uriparametername:\"include\""
     // Organization Name
     Organization_name *string "uriparametername:\"organization_name\""
     // The page number to retrieve.
@@ -45,7 +47,7 @@ func (m *RunsRequestBuilder) ById(id string)(*ItemRequestBuilder) {
 // NewRunsRequestBuilderInternal instantiates a new RunsRequestBuilder and sets the default values.
 func NewRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RunsRequestBuilder) {
     m := &RunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs?organization_name={organization_name}&workspace_id={workspace_id}{&fields%5Bruns%5D,filter%5Boperation%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs?organization_name={organization_name}&workspace_id={workspace_id}{&fields%5Bruns%5D,filter%5Boperation%5D*,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    id27fc5e47ea78cfd46ade8ece5933044803aa0d8f22546d43a8382590e8ba4a3 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/runs"
 )
 
 // ItemRunsRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\runs
@@ -21,6 +22,8 @@ type ItemRunsRequestBuilderGetQueryParameters struct {
     Filteroperation *string "uriparametername:\"filter%5Boperation%5D\""
     // Filter by run status.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
+    // Optionally side-load the specified relationships.
+    Include []id27fc5e47ea78cfd46ade8ece5933044803aa0d8f22546d43a8382590e8ba4a3.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -29,7 +32,7 @@ type ItemRunsRequestBuilderGetQueryParameters struct {
 // NewItemRunsRequestBuilderInternal instantiates a new ItemRunsRequestBuilder and sets the default values.
 func NewItemRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunsRequestBuilder) {
     m := &ItemRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/runs{?fields%5Bruns%5D,filter%5Boperation%5D*,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/runs{?fields%5Bruns%5D,filter%5Boperation%5D*,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

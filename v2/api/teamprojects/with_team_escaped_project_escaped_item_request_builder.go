@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i682ee9b1e776e21f760c6f4a8a8a12cf591b7906316db021fd6427c1ce45821b "github.com/hashicorp/go-tfe/v2/api/teamprojects/item"
 )
 
 // WithTeam_project_ItemRequestBuilder builds and executes requests for operations under \team-projects\{team_project_id}
@@ -17,11 +18,13 @@ type WithTeam_project_ItemRequestBuilder struct {
 type WithTeam_project_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for team-projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsteamProjects []string "uriparametername:\"fields%5Bteam%2Dprojects%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i682ee9b1e776e21f760c6f4a8a8a12cf591b7906316db021fd6427c1ce45821b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithTeam_project_ItemRequestBuilderInternal instantiates a new WithTeam_project_ItemRequestBuilder and sets the default values.
 func NewWithTeam_project_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithTeam_project_ItemRequestBuilder) {
     m := &WithTeam_project_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects/{team_project_id}{?fields%5Bteam%2Dprojects%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-projects/{team_project_id}{?fields%5Bteam%2Dprojects%5D,include}", pathParameters),
     }
     return m
 }

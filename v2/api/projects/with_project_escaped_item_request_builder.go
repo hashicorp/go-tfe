@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i24f065a4cb93e600a5b77b596edf6d2fd9e2c4f3da6fd1051d0a6fe511fdc2b2 "github.com/hashicorp/go-tfe/v2/api/projects/item"
 )
 
 // WithProject_ItemRequestBuilder builds and executes requests for operations under \projects\{project_id}
@@ -17,11 +18,13 @@ type WithProject_ItemRequestBuilder struct {
 type WithProject_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for projects resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsprojects []string "uriparametername:\"fields%5Bprojects%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i24f065a4cb93e600a5b77b596edf6d2fd9e2c4f3da6fd1051d0a6fe511fdc2b2.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithProject_ItemRequestBuilderInternal instantiates a new WithProject_ItemRequestBuilder and sets the default values.
 func NewWithProject_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithProject_ItemRequestBuilder) {
     m := &WithProject_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}{?fields%5Bprojects%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/projects/{project_id}{?fields%5Bprojects%5D,include}", pathParameters),
     }
     return m
 }

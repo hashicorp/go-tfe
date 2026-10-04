@@ -5,17 +5,20 @@ package stackdeploymentgroups
 type GetIncludeQueryParameterType int
 
 const (
-    STACKDEPLOYMENTGROUPSUMMARY_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+    STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+    RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack-deployment-group-summary"}[i]
+    return []string{"stack_deployment_group_summary", "run_status_summaries"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := STACKDEPLOYMENTGROUPSUMMARY_GETINCLUDEQUERYPARAMETERTYPE
+    result := STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
     switch v {
-        case "stack-deployment-group-summary":
-            result = STACKDEPLOYMENTGROUPSUMMARY_GETINCLUDEQUERYPARAMETERTYPE
+        case "stack_deployment_group_summary":
+            result = STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
+        case "run_status_summaries":
+            result = RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

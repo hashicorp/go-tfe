@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic161f0b7c7ef42e60f049bed1e987e36957ad4de3fd7984c33cd32a6b1f5c83b "github.com/hashicorp/go-tfe/v2/api/teamworkspaces/item"
 )
 
 // WithTeam_workspace_ItemRequestBuilder builds and executes requests for operations under \team-workspaces\{team_workspace_id}
@@ -17,11 +18,13 @@ type WithTeam_workspace_ItemRequestBuilder struct {
 type WithTeam_workspace_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for team-workspaces resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsteamWorkspaces []string "uriparametername:\"fields%5Bteam%2Dworkspaces%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic161f0b7c7ef42e60f049bed1e987e36957ad4de3fd7984c33cd32a6b1f5c83b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithTeam_workspace_ItemRequestBuilderInternal instantiates a new WithTeam_workspace_ItemRequestBuilder and sets the default values.
 func NewWithTeam_workspace_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithTeam_workspace_ItemRequestBuilder) {
     m := &WithTeam_workspace_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-workspaces/{team_workspace_id}{?fields%5Bteam%2Dworkspaces%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/team-workspaces/{team_workspace_id}{?fields%5Bteam%2Dworkspaces%5D,include}", pathParameters),
     }
     return m
 }

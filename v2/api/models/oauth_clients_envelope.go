@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,123 @@ type OauthClientsEnvelope struct {
     additionalData map[string]any
     // The data property
     data OauthClientsable
+    // The included property
+    included []OauthClientsEnvelope_OauthClientsEnvelope_includedable
+}
+// OauthClientsEnvelope_OauthClientsEnvelope_included composed type wrapper for classes AgentPoolsable, OauthTokensable, Projectsable
+type OauthClientsEnvelope_OauthClientsEnvelope_included struct {
+    // Composed type representation for type AgentPoolsable
+    agentPools AgentPoolsable
+    // Composed type representation for type OauthTokensable
+    oauthTokens OauthTokensable
+    // Composed type representation for type Projectsable
+    projects Projectsable
+}
+// NewOauthClientsEnvelope_OauthClientsEnvelope_included instantiates a new OauthClientsEnvelope_OauthClientsEnvelope_included and sets the default values.
+func NewOauthClientsEnvelope_OauthClientsEnvelope_included()(*OauthClientsEnvelope_OauthClientsEnvelope_included) {
+    m := &OauthClientsEnvelope_OauthClientsEnvelope_included{
+    }
+    return m
+}
+// CreateOauthClientsEnvelope_OauthClientsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateOauthClientsEnvelope_OauthClientsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewOauthClientsEnvelope_OauthClientsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+                    result.SetAgentPools(NewAgentPools())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "oauth-tokens") {
+                    result.SetOauthTokens(NewOauthTokens())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(NewProjects())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetAgentPools gets the agentPools property value. Composed type representation for type AgentPoolsable
+// returns a AgentPoolsable when successful
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) GetAgentPools()(AgentPoolsable) {
+    return m.agentPools
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAgentPools() != nil {
+        return m.GetAgentPools().GetFieldDeserializers()
+    } else if m.GetOauthTokens() != nil {
+        return m.GetOauthTokens().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetOauthTokens gets the oauthTokens property value. Composed type representation for type OauthTokensable
+// returns a OauthTokensable when successful
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) GetOauthTokens()(OauthTokensable) {
+    return m.oauthTokens
+}
+// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// returns a Projectsable when successful
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) GetProjects()(Projectsable) {
+    return m.projects
+}
+// Serialize serializes information the current object
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetAgentPools() != nil {
+        err := writer.WriteObjectValue("", m.GetAgentPools())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOauthTokens() != nil {
+        err := writer.WriteObjectValue("", m.GetOauthTokens())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetAgentPools sets the agentPools property value. Composed type representation for type AgentPoolsable
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) SetAgentPools(value AgentPoolsable)() {
+    m.agentPools = value
+}
+// SetOauthTokens sets the oauthTokens property value. Composed type representation for type OauthTokensable
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) SetOauthTokens(value OauthTokensable)() {
+    m.oauthTokens = value
+}
+// SetProjects sets the projects property value. Composed type representation for type Projectsable
+func (m *OauthClientsEnvelope_OauthClientsEnvelope_included) SetProjects(value Projectsable)() {
+    m.projects = value
+}
+type OauthClientsEnvelope_OauthClientsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgentPools()(AgentPoolsable)
+    GetOauthTokens()(OauthTokensable)
+    GetProjects()(Projectsable)
+    SetAgentPools(value AgentPoolsable)()
+    SetOauthTokens(value OauthTokensable)()
+    SetProjects(value Projectsable)()
 }
 // NewOauthClientsEnvelope instantiates a new OauthClientsEnvelope and sets the default values.
 func NewOauthClientsEnvelope()(*OauthClientsEnvelope) {
@@ -49,12 +167,45 @@ func (m *OauthClientsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateOauthClientsEnvelope_OauthClientsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]OauthClientsEnvelope_OauthClientsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(OauthClientsEnvelope_OauthClientsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []OauthClientsEnvelope_OauthClientsEnvelope_includedable when successful
+func (m *OauthClientsEnvelope) GetIncluded()([]OauthClientsEnvelope_OauthClientsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *OauthClientsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +226,15 @@ func (m *OauthClientsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *OauthClientsEnvelope) SetData(value OauthClientsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *OauthClientsEnvelope) SetIncluded(value []OauthClientsEnvelope_OauthClientsEnvelope_includedable)() {
+    m.included = value
+}
 type OauthClientsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(OauthClientsable)
+    GetIncluded()([]OauthClientsEnvelope_OauthClientsEnvelope_includedable)
     SetData(value OauthClientsable)()
+    SetIncluded(value []OauthClientsEnvelope_OauthClientsEnvelope_includedable)()
 }

@@ -18,7 +18,7 @@ type WithStack_deployment_group_ItemRequestBuilder struct {
 type WithStack_deployment_group_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
-    // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
+    // Optionally side-load the specified relationships.
     Include []i168e8b5818149f916e1d4279c1f66330e436d123653daacab7ce187ca22b329b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // ApproveAllPlans the approveAllPlans property

@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70 "github.com/hashicorp/go-tfe/v2/api/stackapprovals/item"
 )
 
 // WithStack_approval_ItemRequestBuilder builds and executes requests for operations under \stack-approvals\{stack_approval_id}
@@ -17,11 +18,13 @@ type WithStack_approval_ItemRequestBuilder struct {
 type WithStack_approval_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-approvals resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackApprovals []string "uriparametername:\"fields%5Bstack%2Dapprovals%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithStack_approval_ItemRequestBuilderInternal instantiates a new WithStack_approval_ItemRequestBuilder and sets the default values.
 func NewWithStack_approval_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_approval_ItemRequestBuilder) {
     m := &WithStack_approval_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-approvals/{stack_approval_id}{?fields%5Bstack%2Dapprovals%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-approvals/{stack_approval_id}{?fields%5Bstack%2Dapprovals%5D,include}", pathParameters),
     }
     return m
 }
