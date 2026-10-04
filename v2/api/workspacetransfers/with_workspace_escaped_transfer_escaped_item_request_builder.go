@@ -18,7 +18,7 @@ type WithWorkspace_transfer_ItemRequestBuilder struct {
 type WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
-    // Allows including related resource data.
+    // Optionally side-load the specified relationships.
     Include []i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property

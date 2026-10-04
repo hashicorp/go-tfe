@@ -24,6 +24,8 @@ type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     FilterootbPolicy *string "uriparametername:\"filter%5Bootb%2Dpolicy%5D\""
     // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
     Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -34,7 +36,7 @@ type ItemPolicySetsRequestBuilderGetQueryParameters struct {
 // NewItemPolicySetsRequestBuilderInternal instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
 func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
     m := &ItemPolicySetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
     }
     return m
 }

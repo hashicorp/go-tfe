@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ib87e5297f588c487e7dab82f953b3ce5d91ed26846b5aa96724ae879cf729643 "github.com/hashicorp/go-tfe/v2/api/runtriggers/item"
 )
 
 // RunTriggersItemRequestBuilder builds and executes requests for operations under \run-triggers\{id}
@@ -17,11 +18,13 @@ type RunTriggersItemRequestBuilder struct {
 type RunTriggersItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for run-triggers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsrunTriggers []string "uriparametername:\"fields%5Brun%2Dtriggers%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ib87e5297f588c487e7dab82f953b3ce5d91ed26846b5aa96724ae879cf729643.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewRunTriggersItemRequestBuilderInternal instantiates a new RunTriggersItemRequestBuilder and sets the default values.
 func NewRunTriggersItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RunTriggersItemRequestBuilder) {
     m := &RunTriggersItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/run-triggers/{id}{?fields%5Brun%2Dtriggers%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/run-triggers/{id}{?fields%5Brun%2Dtriggers%5D,include}", pathParameters),
     }
     return m
 }

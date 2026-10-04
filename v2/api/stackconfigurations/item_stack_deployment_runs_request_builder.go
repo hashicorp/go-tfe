@@ -20,6 +20,8 @@ type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
     FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
     // Filter by deployment run status. Accepts a comma-separated list of statuses. Some statuses match multiple underlying run states: pending matches pending, acquiring-lock, and pending-capacity; running matches pre-deploying and deploying; pending-operator matches pre-deploying-pending-operator and deploying-pending-operator.
     Filterstatus []i659f6db4a432f375cd96a19e91399d0a812f03cf49fdbed35accd9f99ab356b4.GetFilterStatusQueryParameterType "uriparametername:\"filter%5Bstatus%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i659f6db4a432f375cd96a19e91399d0a812f03cf49fdbed35accd9f99ab356b4.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -32,7 +34,7 @@ type ItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
 // NewItemStackDeploymentRunsRequestBuilderInternal instantiates a new ItemStackDeploymentRunsRequestBuilder and sets the default values.
 func NewItemStackDeploymentRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentRunsRequestBuilder) {
     m := &ItemStackDeploymentRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,filter%5Bstatus%5D,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,filter%5Bstatus%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

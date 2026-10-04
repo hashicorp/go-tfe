@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i125aa0865a7fd9c5eecf52b99754bee7e2e6d28b66bc0a9987a53396fb9050b1 "github.com/hashicorp/go-tfe/v2/api/account/hcporganizations/item"
 )
 
 // HcpOrganizationsWithHcp_organization_ItemRequestBuilder builds and executes requests for operations under \account\hcp-organizations\{hcp_organization_id}
@@ -17,11 +18,13 @@ type HcpOrganizationsWithHcp_organization_ItemRequestBuilder struct {
 type HcpOrganizationsWithHcp_organization_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for hcp-organization resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldshcpOrganization []string "uriparametername:\"fields%5Bhcp%2Dorganization%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i125aa0865a7fd9c5eecf52b99754bee7e2e6d28b66bc0a9987a53396fb9050b1.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewHcpOrganizationsWithHcp_organization_ItemRequestBuilderInternal instantiates a new HcpOrganizationsWithHcp_organization_ItemRequestBuilder and sets the default values.
 func NewHcpOrganizationsWithHcp_organization_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*HcpOrganizationsWithHcp_organization_ItemRequestBuilder) {
     m := &HcpOrganizationsWithHcp_organization_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/account/hcp-organizations/{hcp_organization_id}{?fields%5Bhcp%2Dorganization%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/account/hcp-organizations/{hcp_organization_id}{?fields%5Bhcp%2Dorganization%5D,include}", pathParameters),
     }
     return m
 }

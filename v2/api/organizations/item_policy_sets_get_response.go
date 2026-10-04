@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,215 @@ type ItemPolicySetsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsable
+    // The included property
+    included []ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemPolicySetsGetResponse_metaable
+}
+// ItemPolicySetsGetResponse_PolicySetsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+type ItemPolicySetsGetResponse_PolicySetsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable
+    ootbPolicies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable
+    ootbPolicyLibraries i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable
+    policies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable
+    policySetVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    stacks i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+}
+// NewItemPolicySetsGetResponse_PolicySetsGetResponse_included instantiates a new ItemPolicySetsGetResponse_PolicySetsGetResponse_included and sets the default values.
+func NewItemPolicySetsGetResponse_PolicySetsGetResponse_included()(*ItemPolicySetsGetResponse_PolicySetsGetResponse_included) {
+    m := &ItemPolicySetsGetResponse_PolicySetsGetResponse_included{
+    }
+    return m
+}
+// CreateItemPolicySetsGetResponse_PolicySetsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemPolicySetsGetResponse_PolicySetsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemPolicySetsGetResponse_PolicySetsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policies") {
+                    result.SetOotbPolicies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOotbPolicies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policy-libraries") {
+                    result.SetOotbPolicyLibraries(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOotbPolicyLibraries())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policies") {
+                    result.SetPolicies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewPolicies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policy-set-versions") {
+                    result.SetPolicySetVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewPolicySetVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+                    result.SetStacks(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStacks())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaces())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetOotbPolicies() != nil {
+        return m.GetOotbPolicies().GetFieldDeserializers()
+    } else if m.GetOotbPolicyLibraries() != nil {
+        return m.GetOotbPolicyLibraries().GetFieldDeserializers()
+    } else if m.GetPolicies() != nil {
+        return m.GetPolicies().GetFieldDeserializers()
+    } else if m.GetPolicySetVersions() != nil {
+        return m.GetPolicySetVersions().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetStacks() != nil {
+        return m.GetStacks().GetFieldDeserializers()
+    } else if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetOotbPolicies gets the ootbPolicies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable
+// returns a OotbPoliciesable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetOotbPolicies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable) {
+    return m.ootbPolicies
+}
+// GetOotbPolicyLibraries gets the ootbPolicyLibraries property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable
+// returns a OotbPolicyLibrariesable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetOotbPolicyLibraries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable) {
+    return m.ootbPolicyLibraries
+}
+// GetPolicies gets the policies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable
+// returns a Policiesable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetPolicies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable) {
+    return m.policies
+}
+// GetPolicySetVersions gets the policySetVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable
+// returns a PolicySetVersionsable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetPolicySetVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable) {
+    return m.policySetVersions
+}
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// returns a Projectsable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+    return m.projects
+}
+// GetStacks gets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+// returns a Stacksable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable) {
+    return m.stacks
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+// returns a Workspacesable when successful
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
+    return m.workspaces
+}
+// Serialize serializes information the current object
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetOotbPolicies() != nil {
+        err := writer.WriteObjectValue("", m.GetOotbPolicies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOotbPolicyLibraries() != nil {
+        err := writer.WriteObjectValue("", m.GetOotbPolicyLibraries())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPolicies() != nil {
+        err := writer.WriteObjectValue("", m.GetPolicies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPolicySetVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetPolicySetVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStacks() != nil {
+        err := writer.WriteObjectValue("", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetOotbPolicies sets the ootbPolicies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetOotbPolicies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable)() {
+    m.ootbPolicies = value
+}
+// SetOotbPolicyLibraries sets the ootbPolicyLibraries property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetOotbPolicyLibraries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable)() {
+    m.ootbPolicyLibraries = value
+}
+// SetPolicies sets the policies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetPolicies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable)() {
+    m.policies = value
+}
+// SetPolicySetVersions sets the policySetVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetPolicySetVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable)() {
+    m.policySetVersions = value
+}
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
+    m.projects = value
+}
+// SetStacks sets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)() {
+    m.stacks = value
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+func (m *ItemPolicySetsGetResponse_PolicySetsGetResponse_included) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
+    m.workspaces = value
+}
+type ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetOotbPolicies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable)
+    GetOotbPolicyLibraries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable)
+    GetPolicies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable)
+    GetPolicySetVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable)
+    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+    GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)
+    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+    SetOotbPolicies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPoliciesable)()
+    SetOotbPolicyLibraries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OotbPolicyLibrariesable)()
+    SetPolicies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Policiesable)()
+    SetPolicySetVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetVersionsable)()
+    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
+    SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)()
+    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
 }
 // NewItemPolicySetsGetResponse instantiates a new ItemPolicySetsGetResponse and sets the default values.
 func NewItemPolicySetsGetResponse()(*ItemPolicySetsGetResponse) {
@@ -60,6 +266,22 @@ func (m *ItemPolicySetsGetResponse) GetFieldDeserializers()(map[string]func(i878
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemPolicySetsGetResponse_PolicySetsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +304,11 @@ func (m *ItemPolicySetsGetResponse) GetFieldDeserializers()(map[string]func(i878
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable when successful
+func (m *ItemPolicySetsGetResponse) GetIncluded()([]ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemPolicySetsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +329,18 @@ func (m *ItemPolicySetsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +373,10 @@ func (m *ItemPolicySetsGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *ItemPolicySetsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemPolicySetsGetResponse) SetIncluded(value []ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemPolicySetsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +389,11 @@ type ItemPolicySetsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsable)
+    GetIncluded()([]ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemPolicySetsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsable)()
+    SetIncluded(value []ItemPolicySetsGetResponse_PolicySetsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemPolicySetsGetResponse_metaable)()
 }

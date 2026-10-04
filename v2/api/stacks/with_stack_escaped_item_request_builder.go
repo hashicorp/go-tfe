@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ifad88f4154e8a023e16c4f6a2e766977e9c0d0578f0f5da65f83139f1ef5e8da "github.com/hashicorp/go-tfe/v2/api/stacks/item"
 )
 
 // WithStack_ItemRequestBuilder builds and executes requests for operations under \stacks\{stack_id}
@@ -22,11 +23,13 @@ type WithStack_ItemRequestBuilderDeleteQueryParameters struct {
 type WithStack_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stacks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsstacks []string "uriparametername:\"fields%5Bstacks%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ifad88f4154e8a023e16c4f6a2e766977e9c0d0578f0f5da65f83139f1ef5e8da.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithStack_ItemRequestBuilderInternal instantiates a new WithStack_ItemRequestBuilder and sets the default values.
 func NewWithStack_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_ItemRequestBuilder) {
     m := &WithStack_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}{?fields%5Bstacks%5D,force*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}{?fields%5Bstacks%5D,force*,include}", pathParameters),
     }
     return m
 }

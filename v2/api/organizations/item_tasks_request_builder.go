@@ -18,7 +18,7 @@ type ItemTasksRequestBuilder struct {
 type ItemTasksRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tasks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldstasks []string "uriparametername:\"fields%5Btasks%5D\""
-    // Allows including related resource data.
+    // Optionally side-load the specified relationships.
     Include []id9db6e1e278b291e17b54ca19afa8f7736669f87912b14a7310a3a39d8e10e3c.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

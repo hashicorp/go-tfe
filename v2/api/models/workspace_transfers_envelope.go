@@ -12,6 +12,8 @@ type WorkspaceTransfersEnvelope struct {
     additionalData map[string]any
     // The data property
     data WorkspaceTransfersable
+    // The included property
+    included []WorkspaceTransferEventsable
 }
 // NewWorkspaceTransfersEnvelope instantiates a new WorkspaceTransfersEnvelope and sets the default values.
 func NewWorkspaceTransfersEnvelope()(*WorkspaceTransfersEnvelope) {
@@ -49,12 +51,45 @@ func (m *WorkspaceTransfersEnvelope) GetFieldDeserializers()(map[string]func(i87
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateWorkspaceTransferEventsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]WorkspaceTransferEventsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(WorkspaceTransferEventsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []WorkspaceTransferEventsable when successful
+func (m *WorkspaceTransfersEnvelope) GetIncluded()([]WorkspaceTransferEventsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *WorkspaceTransfersEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *WorkspaceTransfersEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *WorkspaceTransfersEnvelope) SetData(value WorkspaceTransfersable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *WorkspaceTransfersEnvelope) SetIncluded(value []WorkspaceTransferEventsable)() {
+    m.included = value
+}
 type WorkspaceTransfersEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(WorkspaceTransfersable)
+    GetIncluded()([]WorkspaceTransferEventsable)
     SetData(value WorkspaceTransfersable)()
+    SetIncluded(value []WorkspaceTransferEventsable)()
 }

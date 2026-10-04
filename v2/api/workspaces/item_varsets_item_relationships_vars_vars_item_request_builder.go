@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/varsets/item/relationships/vars/item"
 )
 
 // ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\varsets\{varset_id}\relationships\vars\{id}
@@ -17,11 +18,13 @@ type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder struct {
 type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal instantiates a new ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder and sets the default values.
 func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) {
     m := &ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars/{id}{?fields%5Bvars%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars/{id}{?fields%5Bvars%5D,include}", pathParameters),
     }
     return m
 }
