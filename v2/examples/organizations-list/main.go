@@ -4,11 +4,11 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/hashicorp/go-tfe/v2"
+	"github.com/hashicorp/go-tfe/v2/api/models"
 	"github.com/hashicorp/go-tfe/v2/api/organizations"
 	abstractions "github.com/microsoft/kiota-abstractions-go"
 )
@@ -38,15 +38,33 @@ func main() {
 		log.Fatalf("Error listing organizations: %s", err)
 	}
 
-	for _, record := range response.GetIncluded() {
-		if record.GetProjects() != nil {
-			project := record.GetProjects()
-			fmt.Printf("Included project: %s\n", *project.GetId())
-		} else if record.GetSubscriptions() != nil {
-			subscription := record.GetSubscriptions()
-			fmt.Printf("Included subscription: %s\n", *subscription.GetId())
+	for _, record := range response.GetData() {
+		subscriptionID := record.GetRelationships().GetSubscription().GetData().GetId()
+
+		subscription := tfe.FindSideloadedResource(subscriptionID, response.GetIncluded(), func(included organizations.OrganizationsGetResponse_OrganizationsGetResponse_includedable) models.Subscriptionsable {
+			return included.GetSubscriptions()
+		})
+
+		if subscription != nil {
+			log.Printf("Found subscription for %s: %s", *record.GetAttributes().GetName(), *subscription.GetId())
 		} else {
-			panic("This shouldn't happen")
+			log.Fatalf("Subscription not found for ID: %s", *subscriptionID)
+		}
+
+		projectIDRel := record.GetRelationships().GetDefaultProject()
+		if projectIDRel == nil {
+			log.Printf("No default project for %s", *record.GetAttributes().GetName())
+		} else {
+			projectID := projectIDRel.GetData().GetId()
+			project := tfe.FindSideloadedResource(projectID, response.GetIncluded(), func(included organizations.OrganizationsGetResponse_OrganizationsGetResponse_includedable) models.Projectsable {
+				return included.GetProjects()
+			})
+
+			if project != nil {
+				log.Printf("Found project for %s: %s", *record.GetAttributes().GetName(), *project.GetId())
+			} else {
+				log.Fatalf("Project not found for ID: %s", *projectID)
+			}
 		}
 	}
 }
