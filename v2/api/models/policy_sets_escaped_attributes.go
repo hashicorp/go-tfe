@@ -29,17 +29,19 @@ type PolicySets_attributes struct {
     policiesPath *string
     // The policyCount property
     policyCount *int32
-    // The policyToolVersion property
+    // The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
     policyToolVersion *string
     // The policyUpdatePatterns property
     policyUpdatePatterns []string
     // The projectCount property
     projectCount *int32
-    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
     scopingType *PolicySets_attributes_scopingType
-    // Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
     // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    stackCount *int32
+    // Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
+    tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
+    // The tagSelectors property
     tagSelectors []PolicySets_attributes_tagSelectorsable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -222,6 +224,16 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["stack-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackCount(val)
+        }
+        return nil
+    }
     res["tag-selector-matching-logic"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParsePolicySets_attributes_tagSelectorMatchingLogic)
         if err != nil {
@@ -320,7 +332,7 @@ func (m *PolicySets_attributes) GetPoliciesPath()(*string) {
 func (m *PolicySets_attributes) GetPolicyCount()(*int32) {
     return m.policyCount
 }
-// GetPolicyToolVersion gets the policy-tool-version property value. The policyToolVersion property
+// GetPolicyToolVersion gets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
 // returns a *string when successful
 func (m *PolicySets_attributes) GetPolicyToolVersion()(*string) {
     return m.policyToolVersion
@@ -335,17 +347,22 @@ func (m *PolicySets_attributes) GetPolicyUpdatePatterns()([]string) {
 func (m *PolicySets_attributes) GetProjectCount()(*int32) {
     return m.projectCount
 }
-// GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
 // returns a *PolicySets_attributes_scopingType when successful
 func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
     return m.scopingType
 }
-// GetTagSelectorMatchingLogic gets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// GetStackCount gets the stack-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *int32 when successful
+func (m *PolicySets_attributes) GetStackCount()(*int32) {
+    return m.stackCount
+}
+// GetTagSelectorMatchingLogic gets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 // returns a *PolicySets_attributes_tagSelectorMatchingLogic when successful
 func (m *PolicySets_attributes) GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic) {
     return m.tagSelectorMatchingLogic
 }
-// GetTagSelectors gets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// GetTagSelectors gets the tag-selectors property value. The tagSelectors property
 // returns a []PolicySets_attributes_tagSelectorsable when successful
 func (m *PolicySets_attributes) GetTagSelectors()([]PolicySets_attributes_tagSelectorsable) {
     return m.tagSelectors
@@ -507,7 +524,7 @@ func (m *PolicySets_attributes) SetPoliciesPath(value *string)() {
 func (m *PolicySets_attributes) SetPolicyCount(value *int32)() {
     m.policyCount = value
 }
-// SetPolicyToolVersion sets the policy-tool-version property value. The policyToolVersion property
+// SetPolicyToolVersion sets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
 func (m *PolicySets_attributes) SetPolicyToolVersion(value *string)() {
     m.policyToolVersion = value
 }
@@ -519,15 +536,19 @@ func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string)() {
 func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
     m.projectCount = value
 }
-// SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
     m.scopingType = value
 }
-// SetTagSelectorMatchingLogic sets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// SetStackCount sets the stack-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+func (m *PolicySets_attributes) SetStackCount(value *int32)() {
+    m.stackCount = value
+}
+// SetTagSelectorMatchingLogic sets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 func (m *PolicySets_attributes) SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)() {
     m.tagSelectorMatchingLogic = value
 }
-// SetTagSelectors sets the tag-selectors property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// SetTagSelectors sets the tag-selectors property value. The tagSelectors property
 func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
     m.tagSelectors = value
 }
@@ -563,6 +584,7 @@ type PolicySets_attributesable interface {
     GetPolicyUpdatePatterns()([]string)
     GetProjectCount()(*int32)
     GetScopingType()(*PolicySets_attributes_scopingType)
+    GetStackCount()(*int32)
     GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic)
     GetTagSelectors()([]PolicySets_attributes_tagSelectorsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -582,6 +604,7 @@ type PolicySets_attributesable interface {
     SetPolicyUpdatePatterns(value []string)()
     SetProjectCount(value *int32)()
     SetScopingType(value *PolicySets_attributes_scopingType)()
+    SetStackCount(value *int32)()
     SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)()
     SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()

@@ -12,6 +12,8 @@ type PolicySetVersionsEnvelope struct {
     additionalData map[string]any
     // The data property
     data PolicySetVersionsable
+    // The included property
+    included []PolicySetsable
 }
 // NewPolicySetVersionsEnvelope instantiates a new PolicySetVersionsEnvelope and sets the default values.
 func NewPolicySetVersionsEnvelope()(*PolicySetVersionsEnvelope) {
@@ -49,12 +51,45 @@ func (m *PolicySetVersionsEnvelope) GetFieldDeserializers()(map[string]func(i878
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreatePolicySetsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]PolicySetsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(PolicySetsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []PolicySetsable when successful
+func (m *PolicySetVersionsEnvelope) GetIncluded()([]PolicySetsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *PolicySetVersionsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *PolicySetVersionsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *PolicySetVersionsEnvelope) SetData(value PolicySetVersionsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *PolicySetVersionsEnvelope) SetIncluded(value []PolicySetsable)() {
+    m.included = value
+}
 type PolicySetVersionsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(PolicySetVersionsable)
+    GetIncluded()([]PolicySetsable)
     SetData(value PolicySetVersionsable)()
+    SetIncluded(value []PolicySetsable)()
 }

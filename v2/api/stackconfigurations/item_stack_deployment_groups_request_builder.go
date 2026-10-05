@@ -20,7 +20,7 @@ type ItemStackDeploymentGroupsRequestBuilderGetQueryParameters struct {
     FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
     // Filter by deployment group status. Accepts a comma-separated list of statuses: pending, pre-deploying, deploying, succeeded, failed, abandoned.
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
-    // Optionally side-load relationships. Accepts a comma-separated list of the enumerated values.
+    // Optionally side-load the specified relationships.
     Include []iee3c498b349041bd4f26762e50da64ff08201e91815126a54739635e15678a76.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

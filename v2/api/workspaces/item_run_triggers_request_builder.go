@@ -20,6 +20,8 @@ type ItemRunTriggersRequestBuilderGetQueryParameters struct {
     FieldsrunTriggers []string "uriparametername:\"fields%5Brun%2Dtriggers%5D\""
     // Filter by run trigger type (inbound or outbound)
     FilterrunTriggertype *ic38f326f4d812cb9ab62309ba491d5f8a4049c6eb3a658e68f9fd98877773a08.GetFilterRunTriggerTypeQueryParameterType "uriparametername:\"filter%5Brun%2Dtrigger%5D%5Btype%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic38f326f4d812cb9ab62309ba491d5f8a4049c6eb3a658e68f9fd98877773a08.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -28,7 +30,7 @@ type ItemRunTriggersRequestBuilderGetQueryParameters struct {
 // NewItemRunTriggersRequestBuilderInternal instantiates a new ItemRunTriggersRequestBuilder and sets the default values.
 func NewItemRunTriggersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunTriggersRequestBuilder) {
     m := &ItemRunTriggersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/run-triggers?filter[run-trigger][type]={filter%5Brun%2Dtrigger%5D%5Btype%5D}{&fields%5Brun%2Dtriggers%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/run-triggers?filter[run-trigger][type]={filter%5Brun%2Dtrigger%5D%5Btype%5D}{&fields%5Brun%2Dtriggers%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }

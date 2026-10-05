@@ -15,7 +15,7 @@ type HcpBillingAccount struct {
     // The id property
     id *string
     // The type property
-    typeEscaped *string
+    typeEscaped *HcpBillingAccount_type
 }
 // NewHcpBillingAccount instantiates a new HcpBillingAccount and sets the default values.
 func NewHcpBillingAccount()(*HcpBillingAccount) {
@@ -64,12 +64,12 @@ func (m *HcpBillingAccount) GetFieldDeserializers()(map[string]func(i878a80d2330
         return nil
     }
     res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+        val, err := n.GetEnumValue(ParseHcpBillingAccount_type)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTypeEscaped(val)
+            m.SetTypeEscaped(val.(*HcpBillingAccount_type))
         }
         return nil
     }
@@ -81,8 +81,8 @@ func (m *HcpBillingAccount) GetId()(*string) {
     return m.id
 }
 // GetTypeEscaped gets the type property value. The type property
-// returns a *string when successful
-func (m *HcpBillingAccount) GetTypeEscaped()(*string) {
+// returns a *HcpBillingAccount_type when successful
+func (m *HcpBillingAccount) GetTypeEscaped()(*HcpBillingAccount_type) {
     return m.typeEscaped
 }
 // Serialize serializes information the current object
@@ -99,8 +99,9 @@ func (m *HcpBillingAccount) Serialize(writer i878a80d2330e89d26896388a3f487eef27
             return err
         }
     }
-    {
-        err := writer.WriteStringValue("type", m.GetTypeEscaped())
+    if m.GetTypeEscaped() != nil {
+        cast := (*m.GetTypeEscaped()).String()
+        err := writer.WriteStringValue("type", &cast)
         if err != nil {
             return err
         }
@@ -126,7 +127,7 @@ func (m *HcpBillingAccount) SetId(value *string)() {
     m.id = value
 }
 // SetTypeEscaped sets the type property value. The type property
-func (m *HcpBillingAccount) SetTypeEscaped(value *string)() {
+func (m *HcpBillingAccount) SetTypeEscaped(value *HcpBillingAccount_type)() {
     m.typeEscaped = value
 }
 type HcpBillingAccountable interface {
@@ -134,8 +135,8 @@ type HcpBillingAccountable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAttributes()(HcpBillingAccount_attributesable)
     GetId()(*string)
-    GetTypeEscaped()(*string)
+    GetTypeEscaped()(*HcpBillingAccount_type)
     SetAttributes(value HcpBillingAccount_attributesable)()
     SetId(value *string)()
-    SetTypeEscaped(value *string)()
+    SetTypeEscaped(value *HcpBillingAccount_type)()
 }

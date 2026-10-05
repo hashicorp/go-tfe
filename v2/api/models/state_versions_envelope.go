@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,189 @@ type StateVersionsEnvelope struct {
     additionalData map[string]any
     // The data property
     data StateVersionsable
+    // The included property
+    included []StateVersionsEnvelope_StateVersionsEnvelope_includedable
+}
+// StateVersionsEnvelope_StateVersionsEnvelope_included composed type wrapper for classes ConfigurationVersionsable, HyokCustomerKeyVersionsable, HyokEncryptedDataKeysable, Runsable, StateVersionOutputsable, Usersable
+type StateVersionsEnvelope_StateVersionsEnvelope_included struct {
+    // Composed type representation for type ConfigurationVersionsable
+    configurationVersions ConfigurationVersionsable
+    // Composed type representation for type HyokCustomerKeyVersionsable
+    hyokCustomerKeyVersions HyokCustomerKeyVersionsable
+    // Composed type representation for type HyokEncryptedDataKeysable
+    hyokEncryptedDataKeys HyokEncryptedDataKeysable
+    // Composed type representation for type Runsable
+    runs Runsable
+    // Composed type representation for type StateVersionOutputsable
+    stateVersionOutputs StateVersionOutputsable
+    // Composed type representation for type Usersable
+    users Usersable
+}
+// NewStateVersionsEnvelope_StateVersionsEnvelope_included instantiates a new StateVersionsEnvelope_StateVersionsEnvelope_included and sets the default values.
+func NewStateVersionsEnvelope_StateVersionsEnvelope_included()(*StateVersionsEnvelope_StateVersionsEnvelope_included) {
+    m := &StateVersionsEnvelope_StateVersionsEnvelope_included{
+    }
+    return m
+}
+// CreateStateVersionsEnvelope_StateVersionsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateStateVersionsEnvelope_StateVersionsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewStateVersionsEnvelope_StateVersionsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+                    result.SetConfigurationVersions(NewConfigurationVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
+                    result.SetHyokCustomerKeyVersions(NewHyokCustomerKeyVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-encrypted-data-keys") {
+                    result.SetHyokEncryptedDataKeys(NewHyokEncryptedDataKeys())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+                    result.SetRuns(NewRuns())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-version-outputs") {
+                    result.SetStateVersionOutputs(NewStateVersionOutputs())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(NewUsers())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// returns a ConfigurationVersionsable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetConfigurationVersions()(ConfigurationVersionsable) {
+    return m.configurationVersions
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetConfigurationVersions() != nil {
+        return m.GetConfigurationVersions().GetFieldDeserializers()
+    } else if m.GetHyokCustomerKeyVersions() != nil {
+        return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
+    } else if m.GetHyokEncryptedDataKeys() != nil {
+        return m.GetHyokEncryptedDataKeys().GetFieldDeserializers()
+    } else if m.GetRuns() != nil {
+        return m.GetRuns().GetFieldDeserializers()
+    } else if m.GetStateVersionOutputs() != nil {
+        return m.GetStateVersionOutputs().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
+// returns a HyokCustomerKeyVersionsable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsable) {
+    return m.hyokCustomerKeyVersions
+}
+// GetHyokEncryptedDataKeys gets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeysable
+// returns a HyokEncryptedDataKeysable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetHyokEncryptedDataKeys()(HyokEncryptedDataKeysable) {
+    return m.hyokEncryptedDataKeys
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetRuns gets the runs property value. Composed type representation for type Runsable
+// returns a Runsable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetRuns()(Runsable) {
+    return m.runs
+}
+// GetStateVersionOutputs gets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputsable
+// returns a StateVersionOutputsable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetStateVersionOutputs()(StateVersionOutputsable) {
+    return m.stateVersionOutputs
+}
+// GetUsers gets the users property value. Composed type representation for type Usersable
+// returns a Usersable when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetUsers()(Usersable) {
+    return m.users
+}
+// Serialize serializes information the current object
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetConfigurationVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetHyokCustomerKeyVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetHyokEncryptedDataKeys() != nil {
+        err := writer.WriteObjectValue("", m.GetHyokEncryptedDataKeys())
+        if err != nil {
+            return err
+        }
+    } else if m.GetRuns() != nil {
+        err := writer.WriteObjectValue("", m.GetRuns())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStateVersionOutputs() != nil {
+        err := writer.WriteObjectValue("", m.GetStateVersionOutputs())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetConfigurationVersions(value ConfigurationVersionsable)() {
+    m.configurationVersions = value
+}
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)() {
+    m.hyokCustomerKeyVersions = value
+}
+// SetHyokEncryptedDataKeys sets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeysable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetHyokEncryptedDataKeys(value HyokEncryptedDataKeysable)() {
+    m.hyokEncryptedDataKeys = value
+}
+// SetRuns sets the runs property value. Composed type representation for type Runsable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetRuns(value Runsable)() {
+    m.runs = value
+}
+// SetStateVersionOutputs sets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputsable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetStateVersionOutputs(value StateVersionOutputsable)() {
+    m.stateVersionOutputs = value
+}
+// SetUsers sets the users property value. Composed type representation for type Usersable
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetUsers(value Usersable)() {
+    m.users = value
+}
+type StateVersionsEnvelope_StateVersionsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetConfigurationVersions()(ConfigurationVersionsable)
+    GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsable)
+    GetHyokEncryptedDataKeys()(HyokEncryptedDataKeysable)
+    GetRuns()(Runsable)
+    GetStateVersionOutputs()(StateVersionOutputsable)
+    GetUsers()(Usersable)
+    SetConfigurationVersions(value ConfigurationVersionsable)()
+    SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)()
+    SetHyokEncryptedDataKeys(value HyokEncryptedDataKeysable)()
+    SetRuns(value Runsable)()
+    SetStateVersionOutputs(value StateVersionOutputsable)()
+    SetUsers(value Usersable)()
 }
 // NewStateVersionsEnvelope instantiates a new StateVersionsEnvelope and sets the default values.
 func NewStateVersionsEnvelope()(*StateVersionsEnvelope) {
@@ -49,12 +233,45 @@ func (m *StateVersionsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateStateVersionsEnvelope_StateVersionsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]StateVersionsEnvelope_StateVersionsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(StateVersionsEnvelope_StateVersionsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []StateVersionsEnvelope_StateVersionsEnvelope_includedable when successful
+func (m *StateVersionsEnvelope) GetIncluded()([]StateVersionsEnvelope_StateVersionsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *StateVersionsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +292,15 @@ func (m *StateVersionsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *StateVersionsEnvelope) SetData(value StateVersionsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *StateVersionsEnvelope) SetIncluded(value []StateVersionsEnvelope_StateVersionsEnvelope_includedable)() {
+    m.included = value
+}
 type StateVersionsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(StateVersionsable)
+    GetIncluded()([]StateVersionsEnvelope_StateVersionsEnvelope_includedable)
     SetData(value StateVersionsable)()
+    SetIncluded(value []StateVersionsEnvelope_StateVersionsEnvelope_includedable)()
 }

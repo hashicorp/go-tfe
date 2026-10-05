@@ -13,6 +13,8 @@ type ItemAuthenticationTokensGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensable
+    // The included property
+    included []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
@@ -60,6 +62,22 @@ func (m *ItemAuthenticationTokensGetResponse) GetFieldDeserializers()(map[string
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTeamsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +100,11 @@ func (m *ItemAuthenticationTokensGetResponse) GetFieldDeserializers()(map[string
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []Teamsable when successful
+func (m *ItemAuthenticationTokensGetResponse) GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemAuthenticationTokensGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +125,18 @@ func (m *ItemAuthenticationTokensGetResponse) Serialize(writer i878a80d2330e89d2
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +169,10 @@ func (m *ItemAuthenticationTokensGetResponse) SetAdditionalData(value map[string
 func (m *ItemAuthenticationTokensGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemAuthenticationTokensGetResponse) SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemAuthenticationTokensGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +185,11 @@ type ItemAuthenticationTokensGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensable)
+    GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemAuthenticationTokensGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensable)()
+    SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Teamsable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemAuthenticationTokensGetResponse_metaable)()
 }

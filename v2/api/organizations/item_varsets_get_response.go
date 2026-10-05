@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,149 @@ type ItemVarsetsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsetsable
+    // The included property
+    included []ItemVarsetsGetResponse_VarsetsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemVarsetsGetResponse_metaable
+}
+// ItemVarsetsGetResponse_VarsetsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+type ItemVarsetsGetResponse_VarsetsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    stacks i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+    vars i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+    workspaces i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+}
+// NewItemVarsetsGetResponse_VarsetsGetResponse_included instantiates a new ItemVarsetsGetResponse_VarsetsGetResponse_included and sets the default values.
+func NewItemVarsetsGetResponse_VarsetsGetResponse_included()(*ItemVarsetsGetResponse_VarsetsGetResponse_included) {
+    m := &ItemVarsetsGetResponse_VarsetsGetResponse_included{
+    }
+    return m
+}
+// CreateItemVarsetsGetResponse_VarsetsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemVarsetsGetResponse_VarsetsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemVarsetsGetResponse_VarsetsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+                    result.SetStacks(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStacks())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
+                    result.SetVars(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewVars())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaces())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetStacks() != nil {
+        return m.GetStacks().GetFieldDeserializers()
+    } else if m.GetVars() != nil {
+        return m.GetVars().GetFieldDeserializers()
+    } else if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// returns a Projectsable when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+    return m.projects
+}
+// GetStacks gets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+// returns a Stacksable when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable) {
+    return m.stacks
+}
+// GetVars gets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+// returns a Varsable when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
+    return m.vars
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+// returns a Workspacesable when successful
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
+    return m.workspaces
+}
+// Serialize serializes information the current object
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStacks() != nil {
+        err := writer.WriteObjectValue("", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    } else if m.GetVars() != nil {
+        err := writer.WriteObjectValue("", m.GetVars())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
+    m.projects = value
+}
+// SetStacks sets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)() {
+    m.stacks = value
+}
+// SetVars sets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)() {
+    m.vars = value
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+func (m *ItemVarsetsGetResponse_VarsetsGetResponse_included) SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
+    m.workspaces = value
+}
+type ItemVarsetsGetResponse_VarsetsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+    GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)
+    GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
+    GetWorkspaces()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
+    SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)()
+    SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)()
+    SetWorkspaces(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
 }
 // NewItemVarsetsGetResponse instantiates a new ItemVarsetsGetResponse and sets the default values.
 func NewItemVarsetsGetResponse()(*ItemVarsetsGetResponse) {
@@ -60,6 +200,22 @@ func (m *ItemVarsetsGetResponse) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemVarsetsGetResponse_VarsetsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemVarsetsGetResponse_VarsetsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemVarsetsGetResponse_VarsetsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +238,11 @@ func (m *ItemVarsetsGetResponse) GetFieldDeserializers()(map[string]func(i878a80
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemVarsetsGetResponse_VarsetsGetResponse_includedable when successful
+func (m *ItemVarsetsGetResponse) GetIncluded()([]ItemVarsetsGetResponse_VarsetsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemVarsetsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +263,18 @@ func (m *ItemVarsetsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +307,10 @@ func (m *ItemVarsetsGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *ItemVarsetsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsetsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemVarsetsGetResponse) SetIncluded(value []ItemVarsetsGetResponse_VarsetsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemVarsetsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +323,11 @@ type ItemVarsetsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsetsable)
+    GetIncluded()([]ItemVarsetsGetResponse_VarsetsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemVarsetsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsetsable)()
+    SetIncluded(value []ItemVarsetsGetResponse_VarsetsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemVarsetsGetResponse_metaable)()
 }

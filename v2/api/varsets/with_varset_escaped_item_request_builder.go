@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    if3b729d95cad95eec0e69339cb36debb31f915f0bc5e605f6b7bdf426e317d9c "github.com/hashicorp/go-tfe/v2/api/varsets/item"
 )
 
 // WithVarset_ItemRequestBuilder builds and executes requests for operations under \varsets\{varset_id}
@@ -17,11 +18,13 @@ type WithVarset_ItemRequestBuilder struct {
 type WithVarset_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for varsets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsvarsets []string "uriparametername:\"fields%5Bvarsets%5D\""
+    // Optionally side-load the specified relationships.
+    Include []if3b729d95cad95eec0e69339cb36debb31f915f0bc5e605f6b7bdf426e317d9c.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithVarset_ItemRequestBuilderInternal instantiates a new WithVarset_ItemRequestBuilder and sets the default values.
 func NewWithVarset_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithVarset_ItemRequestBuilder) {
     m := &WithVarset_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/varsets/{varset_id}{?fields%5Bvarsets%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/varsets/{varset_id}{?fields%5Bvarsets%5D,include}", pathParameters),
     }
     return m
 }

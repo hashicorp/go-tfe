@@ -4,6 +4,7 @@
 package organizations
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 )
@@ -13,10 +14,127 @@ type ItemOauthClientsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthClientsable
+    // The included property
+    included []ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable
     // The links property
     links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
     // The meta property
     meta ItemOauthClientsGetResponse_metaable
+}
+// ItemOauthClientsGetResponse_OauthClientsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+type ItemOauthClientsGetResponse_OauthClientsGetResponse_included struct {
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable
+    oauthTokens i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+}
+// NewItemOauthClientsGetResponse_OauthClientsGetResponse_included instantiates a new ItemOauthClientsGetResponse_OauthClientsGetResponse_included and sets the default values.
+func NewItemOauthClientsGetResponse_OauthClientsGetResponse_included()(*ItemOauthClientsGetResponse_OauthClientsGetResponse_included) {
+    m := &ItemOauthClientsGetResponse_OauthClientsGetResponse_included{
+    }
+    return m
+}
+// CreateItemOauthClientsGetResponse_OauthClientsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateItemOauthClientsGetResponse_OauthClientsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewItemOauthClientsGetResponse_OauthClientsGetResponse_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+                    result.SetAgentPools(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAgentPools())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "oauth-tokens") {
+                    result.SetOauthTokens(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOauthTokens())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+// returns a AgentPoolsable when successful
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
+    return m.agentPools
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetAgentPools() != nil {
+        return m.GetAgentPools().GetFieldDeserializers()
+    } else if m.GetOauthTokens() != nil {
+        return m.GetOauthTokens().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetOauthTokens gets the oauthTokens property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable
+// returns a OauthTokensable when successful
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) GetOauthTokens()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable) {
+    return m.oauthTokens
+}
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// returns a Projectsable when successful
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+    return m.projects
+}
+// Serialize serializes information the current object
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetAgentPools() != nil {
+        err := writer.WriteObjectValue("", m.GetAgentPools())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOauthTokens() != nil {
+        err := writer.WriteObjectValue("", m.GetOauthTokens())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)() {
+    m.agentPools = value
+}
+// SetOauthTokens sets the oauthTokens property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) SetOauthTokens(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable)() {
+    m.oauthTokens = value
+}
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+func (m *ItemOauthClientsGetResponse_OauthClientsGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
+    m.projects = value
+}
+type ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
+    GetOauthTokens()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable)
+    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+    SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)()
+    SetOauthTokens(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthTokensable)()
+    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
 }
 // NewItemOauthClientsGetResponse instantiates a new ItemOauthClientsGetResponse and sets the default values.
 func NewItemOauthClientsGetResponse()(*ItemOauthClientsGetResponse) {
@@ -60,6 +178,22 @@ func (m *ItemOauthClientsGetResponse) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateItemOauthClientsGetResponse_OauthClientsGetResponse_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +216,11 @@ func (m *ItemOauthClientsGetResponse) GetFieldDeserializers()(map[string]func(i8
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable when successful
+func (m *ItemOauthClientsGetResponse) GetIncluded()([]ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemOauthClientsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
@@ -102,6 +241,18 @@ func (m *ItemOauthClientsGetResponse) Serialize(writer i878a80d2330e89d26896388a
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +285,10 @@ func (m *ItemOauthClientsGetResponse) SetAdditionalData(value map[string]any)() 
 func (m *ItemOauthClientsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthClientsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemOauthClientsGetResponse) SetIncluded(value []ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *ItemOauthClientsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +301,11 @@ type ItemOauthClientsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthClientsable)
+    GetIncluded()([]ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable)
     GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
     GetMeta()(ItemOauthClientsGetResponse_metaable)
     SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OauthClientsable)()
+    SetIncluded(value []ItemOauthClientsGetResponse_OauthClientsGetResponse_includedable)()
     SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
     SetMeta(value ItemOauthClientsGetResponse_metaable)()
 }

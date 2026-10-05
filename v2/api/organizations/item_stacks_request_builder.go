@@ -18,7 +18,7 @@ type ItemStacksRequestBuilder struct {
 type ItemStacksRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stacks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     Fieldsstacks []string "uriparametername:\"fields%5Bstacks%5D\""
-    // Optionally side-load relationships of the specified name
+    // Optionally side-load the specified relationships.
     Include []i70875ccd1b2bd0f77e8cd882fe31b81388ce6bbf5b12d7e55438120a9c0d3adc.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
