@@ -1,4 +1,4 @@
-# Unreleased
+# v2.13.0
 
 * Bug Fix: GET responses now properly assign included property schemas when used in conjunction with include request parameters.
 * Enhancement: Most available `include` query parameters are now enumerated in applicable GET requests.
