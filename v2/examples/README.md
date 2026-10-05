@@ -22,17 +22,17 @@ go run ./account-details
 Change the authenticated user's password:
 
 ```sh
-go run ./account-password \
+go run ./update-account-password \
   -old-password='current password' \
   -new-password='new password'
 ```
 
 ## Organizations
 
-List organizations, including subscription data:
+List organizations, including subscription & default project data:
 
 ```sh
-go run ./organizations-list
+go run ./list-with-sideload
 ```
 
 ## Response headers
