@@ -18,7 +18,7 @@ type WithTask_stage_ItemRequestBuilder struct {
 type WithTask_stage_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for task-stages resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstaskStages []string "uriparametername:\"fields%5Btask%2Dstages%5D\""
-    // A comma-separated list of related resources to include.
+    // Optionally side-load the specified relationships.
     Include []i283000583e96756a18675aaa45aa11e952f0b89c4a527082daf59c813896d028.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property

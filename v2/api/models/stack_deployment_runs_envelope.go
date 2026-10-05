@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,211 @@ type StackDeploymentRunsEnvelope struct {
     additionalData map[string]any
     // The data property
     data StackDeploymentRunsable
+    // The included property
+    included []StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable
+}
+// StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included composed type wrapper for classes StackApprovalsable, StackConfigurationsable, StackDeploymentGroupsable, StackDeploymentRunsable, StackDeploymentStepsable, StackStatesable, Usersable
+type StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included struct {
+    // Composed type representation for type StackApprovalsable
+    stackApprovals StackApprovalsable
+    // Composed type representation for type StackConfigurationsable
+    stackConfigurations StackConfigurationsable
+    // Composed type representation for type StackDeploymentGroupsable
+    stackDeploymentGroups StackDeploymentGroupsable
+    // Composed type representation for type StackDeploymentRunsable
+    stackDeploymentRuns StackDeploymentRunsable
+    // Composed type representation for type StackDeploymentStepsable
+    stackDeploymentSteps StackDeploymentStepsable
+    // Composed type representation for type StackStatesable
+    stackStates StackStatesable
+    // Composed type representation for type Usersable
+    users Usersable
+}
+// NewStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included instantiates a new StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included and sets the default values.
+func NewStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included()(*StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) {
+    m := &StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included{
+    }
+    return m
+}
+// CreateStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-approvals") {
+                    result.SetStackApprovals(NewStackApprovals())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configurations") {
+                    result.SetStackConfigurations(NewStackConfigurations())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-deployment-groups") {
+                    result.SetStackDeploymentGroups(NewStackDeploymentGroups())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-deployment-runs") {
+                    result.SetStackDeploymentRuns(NewStackDeploymentRuns())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-deployment-steps") {
+                    result.SetStackDeploymentSteps(NewStackDeploymentSteps())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-states") {
+                    result.SetStackStates(NewStackStates())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(NewUsers())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetStackApprovals() != nil {
+        return m.GetStackApprovals().GetFieldDeserializers()
+    } else if m.GetStackConfigurations() != nil {
+        return m.GetStackConfigurations().GetFieldDeserializers()
+    } else if m.GetStackDeploymentGroups() != nil {
+        return m.GetStackDeploymentGroups().GetFieldDeserializers()
+    } else if m.GetStackDeploymentRuns() != nil {
+        return m.GetStackDeploymentRuns().GetFieldDeserializers()
+    } else if m.GetStackDeploymentSteps() != nil {
+        return m.GetStackDeploymentSteps().GetFieldDeserializers()
+    } else if m.GetStackStates() != nil {
+        return m.GetStackStates().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetStackApprovals gets the stackApprovals property value. Composed type representation for type StackApprovalsable
+// returns a StackApprovalsable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackApprovals()(StackApprovalsable) {
+    return m.stackApprovals
+}
+// GetStackConfigurations gets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+// returns a StackConfigurationsable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackConfigurations()(StackConfigurationsable) {
+    return m.stackConfigurations
+}
+// GetStackDeploymentGroups gets the stackDeploymentGroups property value. Composed type representation for type StackDeploymentGroupsable
+// returns a StackDeploymentGroupsable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackDeploymentGroups()(StackDeploymentGroupsable) {
+    return m.stackDeploymentGroups
+}
+// GetStackDeploymentRuns gets the stackDeploymentRuns property value. Composed type representation for type StackDeploymentRunsable
+// returns a StackDeploymentRunsable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackDeploymentRuns()(StackDeploymentRunsable) {
+    return m.stackDeploymentRuns
+}
+// GetStackDeploymentSteps gets the stackDeploymentSteps property value. Composed type representation for type StackDeploymentStepsable
+// returns a StackDeploymentStepsable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackDeploymentSteps()(StackDeploymentStepsable) {
+    return m.stackDeploymentSteps
+}
+// GetStackStates gets the stackStates property value. Composed type representation for type StackStatesable
+// returns a StackStatesable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetStackStates()(StackStatesable) {
+    return m.stackStates
+}
+// GetUsers gets the users property value. Composed type representation for type Usersable
+// returns a Usersable when successful
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) GetUsers()(Usersable) {
+    return m.users
+}
+// Serialize serializes information the current object
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetStackApprovals() != nil {
+        err := writer.WriteObjectValue("", m.GetStackApprovals())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackConfigurations() != nil {
+        err := writer.WriteObjectValue("", m.GetStackConfigurations())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackDeploymentGroups() != nil {
+        err := writer.WriteObjectValue("", m.GetStackDeploymentGroups())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackDeploymentRuns() != nil {
+        err := writer.WriteObjectValue("", m.GetStackDeploymentRuns())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackDeploymentSteps() != nil {
+        err := writer.WriteObjectValue("", m.GetStackDeploymentSteps())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackStates() != nil {
+        err := writer.WriteObjectValue("", m.GetStackStates())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetStackApprovals sets the stackApprovals property value. Composed type representation for type StackApprovalsable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackApprovals(value StackApprovalsable)() {
+    m.stackApprovals = value
+}
+// SetStackConfigurations sets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackConfigurations(value StackConfigurationsable)() {
+    m.stackConfigurations = value
+}
+// SetStackDeploymentGroups sets the stackDeploymentGroups property value. Composed type representation for type StackDeploymentGroupsable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackDeploymentGroups(value StackDeploymentGroupsable)() {
+    m.stackDeploymentGroups = value
+}
+// SetStackDeploymentRuns sets the stackDeploymentRuns property value. Composed type representation for type StackDeploymentRunsable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackDeploymentRuns(value StackDeploymentRunsable)() {
+    m.stackDeploymentRuns = value
+}
+// SetStackDeploymentSteps sets the stackDeploymentSteps property value. Composed type representation for type StackDeploymentStepsable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackDeploymentSteps(value StackDeploymentStepsable)() {
+    m.stackDeploymentSteps = value
+}
+// SetStackStates sets the stackStates property value. Composed type representation for type StackStatesable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetStackStates(value StackStatesable)() {
+    m.stackStates = value
+}
+// SetUsers sets the users property value. Composed type representation for type Usersable
+func (m *StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_included) SetUsers(value Usersable)() {
+    m.users = value
+}
+type StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetStackApprovals()(StackApprovalsable)
+    GetStackConfigurations()(StackConfigurationsable)
+    GetStackDeploymentGroups()(StackDeploymentGroupsable)
+    GetStackDeploymentRuns()(StackDeploymentRunsable)
+    GetStackDeploymentSteps()(StackDeploymentStepsable)
+    GetStackStates()(StackStatesable)
+    GetUsers()(Usersable)
+    SetStackApprovals(value StackApprovalsable)()
+    SetStackConfigurations(value StackConfigurationsable)()
+    SetStackDeploymentGroups(value StackDeploymentGroupsable)()
+    SetStackDeploymentRuns(value StackDeploymentRunsable)()
+    SetStackDeploymentSteps(value StackDeploymentStepsable)()
+    SetStackStates(value StackStatesable)()
+    SetUsers(value Usersable)()
 }
 // NewStackDeploymentRunsEnvelope instantiates a new StackDeploymentRunsEnvelope and sets the default values.
 func NewStackDeploymentRunsEnvelope()(*StackDeploymentRunsEnvelope) {
@@ -49,12 +255,45 @@ func (m *StackDeploymentRunsEnvelope) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateStackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable when successful
+func (m *StackDeploymentRunsEnvelope) GetIncluded()([]StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *StackDeploymentRunsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +314,15 @@ func (m *StackDeploymentRunsEnvelope) SetAdditionalData(value map[string]any)() 
 func (m *StackDeploymentRunsEnvelope) SetData(value StackDeploymentRunsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *StackDeploymentRunsEnvelope) SetIncluded(value []StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable)() {
+    m.included = value
+}
 type StackDeploymentRunsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(StackDeploymentRunsable)
+    GetIncluded()([]StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable)
     SetData(value StackDeploymentRunsable)()
+    SetIncluded(value []StackDeploymentRunsEnvelope_StackDeploymentRunsEnvelope_includedable)()
 }

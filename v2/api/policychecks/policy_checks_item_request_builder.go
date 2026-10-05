@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    icad01a04268564501bb657fb68ea5301f04f8785f061e354d2836ba03c6f814c "github.com/hashicorp/go-tfe/v2/api/policychecks/item"
 )
 
 // PolicyChecksItemRequestBuilder builds and executes requests for operations under \policy-checks\{id}
@@ -17,6 +18,8 @@ type PolicyChecksItemRequestBuilder struct {
 type PolicyChecksItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicyChecks []string "uriparametername:\"fields%5Bpolicy%2Dchecks%5D\""
+    // Optionally side-load the specified relationships.
+    Include []icad01a04268564501bb657fb68ea5301f04f8785f061e354d2836ba03c6f814c.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +29,7 @@ func (m *PolicyChecksItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
 // NewPolicyChecksItemRequestBuilderInternal instantiates a new PolicyChecksItemRequestBuilder and sets the default values.
 func NewPolicyChecksItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*PolicyChecksItemRequestBuilder) {
     m := &PolicyChecksItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-checks/{id}{?fields%5Bpolicy%2Dchecks%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-checks/{id}{?fields%5Bpolicy%2Dchecks%5D,include}", pathParameters),
     }
     return m
 }

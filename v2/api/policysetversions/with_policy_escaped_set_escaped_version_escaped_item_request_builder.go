@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i926bfb8dd49387679740a2bcfb7f17e7306af5c7b7bea901493418ca10ade964 "github.com/hashicorp/go-tfe/v2/api/policysetversions/item"
 )
 
 // WithPolicy_set_version_ItemRequestBuilder builds and executes requests for operations under \policy-set-versions\{policy_set_version_id}
@@ -17,11 +18,13 @@ type WithPolicy_set_version_ItemRequestBuilder struct {
 type WithPolicy_set_version_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-set-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicySetVersions []string "uriparametername:\"fields%5Bpolicy%2Dset%2Dversions%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i926bfb8dd49387679740a2bcfb7f17e7306af5c7b7bea901493418ca10ade964.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithPolicy_set_version_ItemRequestBuilderInternal instantiates a new WithPolicy_set_version_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_set_version_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_set_version_ItemRequestBuilder) {
     m := &WithPolicy_set_version_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-set-versions/{policy_set_version_id}{?fields%5Bpolicy%2Dset%2Dversions%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-set-versions/{policy_set_version_id}{?fields%5Bpolicy%2Dset%2Dversions%5D,include}", pathParameters),
     }
     return m
 }

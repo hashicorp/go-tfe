@@ -18,6 +18,8 @@ type ItemStackDeploymentStepsRequestBuilder struct {
 type ItemStackDeploymentStepsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployment-steps resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeploymentSteps []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dsteps%5D\""
+    // Allows including related resource data. Comma-separated list of relationship names to side-load.
+    Include []idbe22abb89d7c5b16d148c1dbbd82224cd25acf5a676090bae1420464d5fc2ba.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -28,7 +30,7 @@ type ItemStackDeploymentStepsRequestBuilderGetQueryParameters struct {
 // NewItemStackDeploymentStepsRequestBuilderInternal instantiates a new ItemStackDeploymentStepsRequestBuilder and sets the default values.
 func NewItemStackDeploymentStepsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentStepsRequestBuilder) {
     m := &ItemStackDeploymentStepsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}/stack-deployment-steps{?fields%5Bstack%2Ddeployment%2Dsteps%5D,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-deployment-runs/{stack_deployment_run_id}/stack-deployment-steps{?fields%5Bstack%2Ddeployment%2Dsteps%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

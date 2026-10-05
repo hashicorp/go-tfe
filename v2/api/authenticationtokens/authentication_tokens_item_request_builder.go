@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7 "github.com/hashicorp/go-tfe/v2/api/authenticationtokens/item"
 )
 
 // AuthenticationTokensItemRequestBuilder builds and executes requests for operations under \authentication-tokens\{id}
@@ -17,11 +18,13 @@ type AuthenticationTokensItemRequestBuilder struct {
 type AuthenticationTokensItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsauthenticationTokens []string "uriparametername:\"fields%5Bauthentication%2Dtokens%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewAuthenticationTokensItemRequestBuilderInternal instantiates a new AuthenticationTokensItemRequestBuilder and sets the default values.
 func NewAuthenticationTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensItemRequestBuilder) {
     m := &AuthenticationTokensItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens/{id}{?fields%5Bauthentication%2Dtokens%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens/{id}{?fields%5Bauthentication%2Dtokens%5D,include}", pathParameters),
     }
     return m
 }

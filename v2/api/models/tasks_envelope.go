@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,101 @@ type TasksEnvelope struct {
     additionalData map[string]any
     // The data property
     data Tasksable
+    // The included property
+    included []TasksEnvelope_TasksEnvelope_includedable
+}
+// TasksEnvelope_TasksEnvelope_included composed type wrapper for classes Workspacesable, WorkspaceTasksable
+type TasksEnvelope_TasksEnvelope_included struct {
+    // Composed type representation for type Workspacesable
+    workspaces Workspacesable
+    // Composed type representation for type WorkspaceTasksable
+    workspaceTasks WorkspaceTasksable
+}
+// NewTasksEnvelope_TasksEnvelope_included instantiates a new TasksEnvelope_TasksEnvelope_included and sets the default values.
+func NewTasksEnvelope_TasksEnvelope_included()(*TasksEnvelope_TasksEnvelope_included) {
+    m := &TasksEnvelope_TasksEnvelope_included{
+    }
+    return m
+}
+// CreateTasksEnvelope_TasksEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateTasksEnvelope_TasksEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewTasksEnvelope_TasksEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(NewWorkspaces())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-tasks") {
+                    result.SetWorkspaceTasks(NewWorkspaceTasks())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *TasksEnvelope_TasksEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    } else if m.GetWorkspaceTasks() != nil {
+        return m.GetWorkspaceTasks().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *TasksEnvelope_TasksEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// returns a Workspacesable when successful
+func (m *TasksEnvelope_TasksEnvelope_included) GetWorkspaces()(Workspacesable) {
+    return m.workspaces
+}
+// GetWorkspaceTasks gets the workspaceTasks property value. Composed type representation for type WorkspaceTasksable
+// returns a WorkspaceTasksable when successful
+func (m *TasksEnvelope_TasksEnvelope_included) GetWorkspaceTasks()(WorkspaceTasksable) {
+    return m.workspaceTasks
+}
+// Serialize serializes information the current object
+func (m *TasksEnvelope_TasksEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaceTasks() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaceTasks())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+func (m *TasksEnvelope_TasksEnvelope_included) SetWorkspaces(value Workspacesable)() {
+    m.workspaces = value
+}
+// SetWorkspaceTasks sets the workspaceTasks property value. Composed type representation for type WorkspaceTasksable
+func (m *TasksEnvelope_TasksEnvelope_included) SetWorkspaceTasks(value WorkspaceTasksable)() {
+    m.workspaceTasks = value
+}
+type TasksEnvelope_TasksEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetWorkspaces()(Workspacesable)
+    GetWorkspaceTasks()(WorkspaceTasksable)
+    SetWorkspaces(value Workspacesable)()
+    SetWorkspaceTasks(value WorkspaceTasksable)()
 }
 // NewTasksEnvelope instantiates a new TasksEnvelope and sets the default values.
 func NewTasksEnvelope()(*TasksEnvelope) {
@@ -49,12 +145,45 @@ func (m *TasksEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateTasksEnvelope_TasksEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]TasksEnvelope_TasksEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(TasksEnvelope_TasksEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []TasksEnvelope_TasksEnvelope_includedable when successful
+func (m *TasksEnvelope) GetIncluded()([]TasksEnvelope_TasksEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *TasksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +204,15 @@ func (m *TasksEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *TasksEnvelope) SetData(value Tasksable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *TasksEnvelope) SetIncluded(value []TasksEnvelope_TasksEnvelope_includedable)() {
+    m.included = value
+}
 type TasksEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(Tasksable)
+    GetIncluded()([]TasksEnvelope_TasksEnvelope_includedable)
     SetData(value Tasksable)()
+    SetIncluded(value []TasksEnvelope_TasksEnvelope_includedable)()
 }

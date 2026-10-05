@@ -12,6 +12,8 @@ type HcpOrganizationEnvelope struct {
     additionalData map[string]any
     // The data property
     data HcpOrganizationable
+    // The included property
+    included []HcpBillingAccountable
 }
 // NewHcpOrganizationEnvelope instantiates a new HcpOrganizationEnvelope and sets the default values.
 func NewHcpOrganizationEnvelope()(*HcpOrganizationEnvelope) {
@@ -49,12 +51,45 @@ func (m *HcpOrganizationEnvelope) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateHcpBillingAccountFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]HcpBillingAccountable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(HcpBillingAccountable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []HcpBillingAccountable when successful
+func (m *HcpOrganizationEnvelope) GetIncluded()([]HcpBillingAccountable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *HcpOrganizationEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *HcpOrganizationEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *HcpOrganizationEnvelope) SetData(value HcpOrganizationable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *HcpOrganizationEnvelope) SetIncluded(value []HcpBillingAccountable)() {
+    m.included = value
+}
 type HcpOrganizationEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(HcpOrganizationable)
+    GetIncluded()([]HcpBillingAccountable)
     SetData(value HcpOrganizationable)()
+    SetIncluded(value []HcpBillingAccountable)()
 }

@@ -12,6 +12,8 @@ type RunTriggersEnvelope struct {
     additionalData map[string]any
     // The data property
     data RunTriggersable
+    // The included property
+    included []Workspacesable
 }
 // NewRunTriggersEnvelope instantiates a new RunTriggersEnvelope and sets the default values.
 func NewRunTriggersEnvelope()(*RunTriggersEnvelope) {
@@ -49,12 +51,45 @@ func (m *RunTriggersEnvelope) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateWorkspacesFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]Workspacesable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Workspacesable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []Workspacesable when successful
+func (m *RunTriggersEnvelope) GetIncluded()([]Workspacesable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *RunTriggersEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +110,15 @@ func (m *RunTriggersEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *RunTriggersEnvelope) SetData(value RunTriggersable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *RunTriggersEnvelope) SetIncluded(value []Workspacesable)() {
+    m.included = value
+}
 type RunTriggersEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(RunTriggersable)
+    GetIncluded()([]Workspacesable)
     SetData(value RunTriggersable)()
+    SetIncluded(value []Workspacesable)()
 }

@@ -13,6 +13,8 @@ type ItemWithStack_diagnostic_GetResponse struct {
     additionalData map[string]any
     // The data property
     data i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable
+    // The included property
+    included []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable
 }
 // NewItemWithStack_diagnostic_GetResponse instantiates a new ItemWithStack_diagnostic_GetResponse and sets the default values.
 func NewItemWithStack_diagnostic_GetResponse()(*ItemWithStack_diagnostic_GetResponse) {
@@ -50,12 +52,45 @@ func (m *ItemWithStack_diagnostic_GetResponse) GetFieldDeserializers()(map[strin
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStackConfigurationsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []StackConfigurationsable when successful
+func (m *ItemWithStack_diagnostic_GetResponse) GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *ItemWithStack_diagnostic_GetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -76,9 +111,15 @@ func (m *ItemWithStack_diagnostic_GetResponse) SetAdditionalData(value map[strin
 func (m *ItemWithStack_diagnostic_GetResponse) SetData(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *ItemWithStack_diagnostic_GetResponse) SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)() {
+    m.included = value
+}
 type ItemWithStack_diagnostic_GetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)
+    GetIncluded()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)
     SetData(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDiagnosticsable)()
+    SetIncluded(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)()
 }

@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,123 @@ type RegistryModulesEnvelope struct {
     additionalData map[string]any
     // The data property
     data RegistryModulesable
+    // The included property
+    included []RegistryModulesEnvelope_RegistryModulesEnvelope_includedable
+}
+// RegistryModulesEnvelope_RegistryModulesEnvelope_included composed type wrapper for classes NoCodeModulesable, TestRunCleanupsable, TestRunsable
+type RegistryModulesEnvelope_RegistryModulesEnvelope_included struct {
+    // Composed type representation for type NoCodeModulesable
+    noCodeModules NoCodeModulesable
+    // Composed type representation for type TestRunCleanupsable
+    testRunCleanups TestRunCleanupsable
+    // Composed type representation for type TestRunsable
+    testRuns TestRunsable
+}
+// NewRegistryModulesEnvelope_RegistryModulesEnvelope_included instantiates a new RegistryModulesEnvelope_RegistryModulesEnvelope_included and sets the default values.
+func NewRegistryModulesEnvelope_RegistryModulesEnvelope_included()(*RegistryModulesEnvelope_RegistryModulesEnvelope_included) {
+    m := &RegistryModulesEnvelope_RegistryModulesEnvelope_included{
+    }
+    return m
+}
+// CreateRegistryModulesEnvelope_RegistryModulesEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreateRegistryModulesEnvelope_RegistryModulesEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewRegistryModulesEnvelope_RegistryModulesEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-modules") {
+                    result.SetNoCodeModules(NewNoCodeModules())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "test-run-cleanups") {
+                    result.SetTestRunCleanups(NewTestRunCleanups())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "test-runs") {
+                    result.SetTestRuns(NewTestRuns())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetNoCodeModules() != nil {
+        return m.GetNoCodeModules().GetFieldDeserializers()
+    } else if m.GetTestRunCleanups() != nil {
+        return m.GetTestRunCleanups().GetFieldDeserializers()
+    } else if m.GetTestRuns() != nil {
+        return m.GetTestRuns().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetNoCodeModules gets the noCodeModules property value. Composed type representation for type NoCodeModulesable
+// returns a NoCodeModulesable when successful
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) GetNoCodeModules()(NoCodeModulesable) {
+    return m.noCodeModules
+}
+// GetTestRunCleanups gets the testRunCleanups property value. Composed type representation for type TestRunCleanupsable
+// returns a TestRunCleanupsable when successful
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) GetTestRunCleanups()(TestRunCleanupsable) {
+    return m.testRunCleanups
+}
+// GetTestRuns gets the testRuns property value. Composed type representation for type TestRunsable
+// returns a TestRunsable when successful
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) GetTestRuns()(TestRunsable) {
+    return m.testRuns
+}
+// Serialize serializes information the current object
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetNoCodeModules() != nil {
+        err := writer.WriteObjectValue("", m.GetNoCodeModules())
+        if err != nil {
+            return err
+        }
+    } else if m.GetTestRunCleanups() != nil {
+        err := writer.WriteObjectValue("", m.GetTestRunCleanups())
+        if err != nil {
+            return err
+        }
+    } else if m.GetTestRuns() != nil {
+        err := writer.WriteObjectValue("", m.GetTestRuns())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetNoCodeModules sets the noCodeModules property value. Composed type representation for type NoCodeModulesable
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) SetNoCodeModules(value NoCodeModulesable)() {
+    m.noCodeModules = value
+}
+// SetTestRunCleanups sets the testRunCleanups property value. Composed type representation for type TestRunCleanupsable
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) SetTestRunCleanups(value TestRunCleanupsable)() {
+    m.testRunCleanups = value
+}
+// SetTestRuns sets the testRuns property value. Composed type representation for type TestRunsable
+func (m *RegistryModulesEnvelope_RegistryModulesEnvelope_included) SetTestRuns(value TestRunsable)() {
+    m.testRuns = value
+}
+type RegistryModulesEnvelope_RegistryModulesEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetNoCodeModules()(NoCodeModulesable)
+    GetTestRunCleanups()(TestRunCleanupsable)
+    GetTestRuns()(TestRunsable)
+    SetNoCodeModules(value NoCodeModulesable)()
+    SetTestRunCleanups(value TestRunCleanupsable)()
+    SetTestRuns(value TestRunsable)()
 }
 // NewRegistryModulesEnvelope instantiates a new RegistryModulesEnvelope and sets the default values.
 func NewRegistryModulesEnvelope()(*RegistryModulesEnvelope) {
@@ -49,12 +167,45 @@ func (m *RegistryModulesEnvelope) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateRegistryModulesEnvelope_RegistryModulesEnvelope_includedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]RegistryModulesEnvelope_RegistryModulesEnvelope_includedable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(RegistryModulesEnvelope_RegistryModulesEnvelope_includedable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     return res
+}
+// GetIncluded gets the included property value. The included property
+// returns a []RegistryModulesEnvelope_RegistryModulesEnvelope_includedable when successful
+func (m *RegistryModulesEnvelope) GetIncluded()([]RegistryModulesEnvelope_RegistryModulesEnvelope_includedable) {
+    return m.included
 }
 // Serialize serializes information the current object
 func (m *RegistryModulesEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -75,9 +226,15 @@ func (m *RegistryModulesEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *RegistryModulesEnvelope) SetData(value RegistryModulesable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *RegistryModulesEnvelope) SetIncluded(value []RegistryModulesEnvelope_RegistryModulesEnvelope_includedable)() {
+    m.included = value
+}
 type RegistryModulesEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(RegistryModulesable)
+    GetIncluded()([]RegistryModulesEnvelope_RegistryModulesEnvelope_includedable)
     SetData(value RegistryModulesable)()
+    SetIncluded(value []RegistryModulesEnvelope_RegistryModulesEnvelope_includedable)()
 }

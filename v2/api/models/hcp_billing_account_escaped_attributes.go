@@ -13,7 +13,7 @@ type HcpBillingAccount_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The balance property
-    balance *float64
+    balance *int32
     // The cardBrand property
     cardBrand *string
     // The cardExpMonth property
@@ -28,6 +28,8 @@ type HcpBillingAccount_attributes struct {
     hcpOrganizationId *string
     // The hcpOrganizationName property
     hcpOrganizationName *string
+    // The id property
+    id *string
     // The isPaymentMethodConfigured property
     isPaymentMethodConfigured *bool
     // The paymentProvider property
@@ -60,8 +62,8 @@ func (m *HcpBillingAccount_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetBalance gets the balance property value. The balance property
-// returns a *float64 when successful
-func (m *HcpBillingAccount_attributes) GetBalance()(*float64) {
+// returns a *int32 when successful
+func (m *HcpBillingAccount_attributes) GetBalance()(*int32) {
     return m.balance
 }
 // GetCardBrand gets the card-brand property value. The cardBrand property
@@ -99,7 +101,7 @@ func (m *HcpBillingAccount_attributes) GetFieldDeserializers()(map[string]func(i
         return nil
     }
     res["balance"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
+        val, err := n.GetInt32Value()
         if err != nil {
             return err
         }
@@ -178,6 +180,16 @@ func (m *HcpBillingAccount_attributes) GetFieldDeserializers()(map[string]func(i
         }
         return nil
     }
+    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetId(val)
+        }
+        return nil
+    }
     res["is-payment-method-configured"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -235,6 +247,11 @@ func (m *HcpBillingAccount_attributes) GetHcpOrganizationId()(*string) {
 func (m *HcpBillingAccount_attributes) GetHcpOrganizationName()(*string) {
     return m.hcpOrganizationName
 }
+// GetId gets the id property value. The id property
+// returns a *string when successful
+func (m *HcpBillingAccount_attributes) GetId()(*string) {
+    return m.id
+}
 // GetIsPaymentMethodConfigured gets the is-payment-method-configured property value. The isPaymentMethodConfigured property
 // returns a *bool when successful
 func (m *HcpBillingAccount_attributes) GetIsPaymentMethodConfigured()(*bool) {
@@ -264,7 +281,7 @@ func (m *HcpBillingAccount_attributes) Serialize(writer i878a80d2330e89d26896388
         }
     }
     {
-        err := writer.WriteFloat64Value("balance", m.GetBalance())
+        err := writer.WriteInt32Value("balance", m.GetBalance())
         if err != nil {
             return err
         }
@@ -312,6 +329,12 @@ func (m *HcpBillingAccount_attributes) Serialize(writer i878a80d2330e89d26896388
         }
     }
     {
+        err := writer.WriteStringValue("id", m.GetId())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("is-payment-method-configured", m.GetIsPaymentMethodConfigured())
         if err != nil {
             return err
@@ -352,7 +375,7 @@ func (m *HcpBillingAccount_attributes) SetAdditionalData(value map[string]any)()
     m.additionalData = value
 }
 // SetBalance sets the balance property value. The balance property
-func (m *HcpBillingAccount_attributes) SetBalance(value *float64)() {
+func (m *HcpBillingAccount_attributes) SetBalance(value *int32)() {
     m.balance = value
 }
 // SetCardBrand sets the card-brand property value. The cardBrand property
@@ -383,6 +406,10 @@ func (m *HcpBillingAccount_attributes) SetHcpOrganizationId(value *string)() {
 func (m *HcpBillingAccount_attributes) SetHcpOrganizationName(value *string)() {
     m.hcpOrganizationName = value
 }
+// SetId sets the id property value. The id property
+func (m *HcpBillingAccount_attributes) SetId(value *string)() {
+    m.id = value
+}
 // SetIsPaymentMethodConfigured sets the is-payment-method-configured property value. The isPaymentMethodConfigured property
 func (m *HcpBillingAccount_attributes) SetIsPaymentMethodConfigured(value *bool)() {
     m.isPaymentMethodConfigured = value
@@ -403,7 +430,7 @@ type HcpBillingAccount_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAccountType()(*string)
-    GetBalance()(*float64)
+    GetBalance()(*int32)
     GetCardBrand()(*string)
     GetCardExpMonth()(*int32)
     GetCardExpYear()(*int32)
@@ -411,12 +438,13 @@ type HcpBillingAccount_attributesable interface {
     GetFlexVersion()(*string)
     GetHcpOrganizationId()(*string)
     GetHcpOrganizationName()(*string)
+    GetId()(*string)
     GetIsPaymentMethodConfigured()(*bool)
     GetPaymentProvider()(*string)
     GetProjectId()(*string)
     GetStatus()(*string)
     SetAccountType(value *string)()
-    SetBalance(value *float64)()
+    SetBalance(value *int32)()
     SetCardBrand(value *string)()
     SetCardExpMonth(value *int32)()
     SetCardExpYear(value *int32)()
@@ -424,6 +452,7 @@ type HcpBillingAccount_attributesable interface {
     SetFlexVersion(value *string)()
     SetHcpOrganizationId(value *string)()
     SetHcpOrganizationName(value *string)()
+    SetId(value *string)()
     SetIsPaymentMethodConfigured(value *bool)()
     SetPaymentProvider(value *string)()
     SetProjectId(value *string)()

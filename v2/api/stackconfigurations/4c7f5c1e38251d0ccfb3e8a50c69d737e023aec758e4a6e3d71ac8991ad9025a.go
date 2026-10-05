@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i892f91a310807574e56842afee79c5a5198d6ed2e22969790ed01128180c466b "github.com/hashicorp/go-tfe/v2/api/stackconfigurations/item/stackdeploymentgroups/item"
 )
 
 // ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder builds and executes requests for operations under \stack-configurations\{stack_configuration_id}\stack-deployment-groups\{stack_deployment_group_name}
@@ -17,11 +18,13 @@ type ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder 
 type ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployment-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeploymentGroups []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Dgroups%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i892f91a310807574e56842afee79c5a5198d6ed2e22969790ed01128180c466b.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderInternal instantiates a new ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder and sets the default values.
 func NewItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder) {
     m := &ItemStackDeploymentGroupsWithStack_deployment_group_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups/{stack_deployment_group_name}{?fields%5Bstack%2Ddeployment%2Dgroups%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-configurations/{stack_configuration_id}/stack-deployment-groups/{stack_deployment_group_name}{?fields%5Bstack%2Ddeployment%2Dgroups%5D,include}", pathParameters),
     }
     return m
 }

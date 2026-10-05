@@ -4,6 +4,7 @@
 package models
 
 import (
+    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,8 +13,211 @@ type PolicySetsEnvelope struct {
     additionalData map[string]any
     // The data property
     data PolicySetsable
-    // Sideloaded resources. `?include=policies` sideloads the full policy resources.
-    included []PolicySetsEnvelope_includedable
+    // The included property
+    included []PolicySetsEnvelope_PolicySetsEnvelope_includedable
+}
+// PolicySetsEnvelope_PolicySetsEnvelope_included composed type wrapper for classes OotbPoliciesable, OotbPolicyLibrariesable, Policiesable, PolicySetVersionsable, Projectsable, Stacksable, Workspacesable
+type PolicySetsEnvelope_PolicySetsEnvelope_included struct {
+    // Composed type representation for type OotbPoliciesable
+    ootbPolicies OotbPoliciesable
+    // Composed type representation for type OotbPolicyLibrariesable
+    ootbPolicyLibraries OotbPolicyLibrariesable
+    // Composed type representation for type Policiesable
+    policies Policiesable
+    // Composed type representation for type PolicySetVersionsable
+    policySetVersions PolicySetVersionsable
+    // Composed type representation for type Projectsable
+    projects Projectsable
+    // Composed type representation for type Stacksable
+    stacks Stacksable
+    // Composed type representation for type Workspacesable
+    workspaces Workspacesable
+}
+// NewPolicySetsEnvelope_PolicySetsEnvelope_included instantiates a new PolicySetsEnvelope_PolicySetsEnvelope_included and sets the default values.
+func NewPolicySetsEnvelope_PolicySetsEnvelope_included()(*PolicySetsEnvelope_PolicySetsEnvelope_included) {
+    m := &PolicySetsEnvelope_PolicySetsEnvelope_included{
+    }
+    return m
+}
+// CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
+// returns a Parsable when successful
+func CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+    result := NewPolicySetsEnvelope_PolicySetsEnvelope_included()
+    if parseNode != nil {
+        mappingValueNode, err := parseNode.GetChildNode("type")
+        if err != nil {
+            return nil, err
+        }
+        if mappingValueNode != nil {
+            mappingValue, err := mappingValueNode.GetStringValue()
+            if err != nil {
+                return nil, err
+            }
+            if mappingValue != nil {
+                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policies") {
+                    result.SetOotbPolicies(NewOotbPolicies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policy-libraries") {
+                    result.SetOotbPolicyLibraries(NewOotbPolicyLibraries())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policies") {
+                    result.SetPolicies(NewPolicies())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policy-set-versions") {
+                    result.SetPolicySetVersions(NewPolicySetVersions())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+                    result.SetProjects(NewProjects())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+                    result.SetStacks(NewStacks())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+                    result.SetWorkspaces(NewWorkspaces())
+                }
+            }
+        }
+    }
+    return result, nil
+}
+// GetFieldDeserializers the deserialization information for the current model
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
+    if m.GetOotbPolicies() != nil {
+        return m.GetOotbPolicies().GetFieldDeserializers()
+    } else if m.GetOotbPolicyLibraries() != nil {
+        return m.GetOotbPolicyLibraries().GetFieldDeserializers()
+    } else if m.GetPolicies() != nil {
+        return m.GetPolicies().GetFieldDeserializers()
+    } else if m.GetPolicySetVersions() != nil {
+        return m.GetPolicySetVersions().GetFieldDeserializers()
+    } else if m.GetProjects() != nil {
+        return m.GetProjects().GetFieldDeserializers()
+    } else if m.GetStacks() != nil {
+        return m.GetStacks().GetFieldDeserializers()
+    } else if m.GetWorkspaces() != nil {
+        return m.GetWorkspaces().GetFieldDeserializers()
+    }
+    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+}
+// GetIsComposedType determines if the current object is a wrapper around a composed type
+// returns a bool when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetIsComposedType()(bool) {
+    return true
+}
+// GetOotbPolicies gets the ootbPolicies property value. Composed type representation for type OotbPoliciesable
+// returns a OotbPoliciesable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicies()(OotbPoliciesable) {
+    return m.ootbPolicies
+}
+// GetOotbPolicyLibraries gets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibrariesable
+// returns a OotbPolicyLibrariesable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicyLibraries()(OotbPolicyLibrariesable) {
+    return m.ootbPolicyLibraries
+}
+// GetPolicies gets the policies property value. Composed type representation for type Policiesable
+// returns a Policiesable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicies()(Policiesable) {
+    return m.policies
+}
+// GetPolicySetVersions gets the policySetVersions property value. Composed type representation for type PolicySetVersionsable
+// returns a PolicySetVersionsable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicySetVersions()(PolicySetVersionsable) {
+    return m.policySetVersions
+}
+// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// returns a Projectsable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetProjects()(Projectsable) {
+    return m.projects
+}
+// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+// returns a Stacksable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetStacks()(Stacksable) {
+    return m.stacks
+}
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// returns a Workspacesable when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetWorkspaces()(Workspacesable) {
+    return m.workspaces
+}
+// Serialize serializes information the current object
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetOotbPolicies() != nil {
+        err := writer.WriteObjectValue("", m.GetOotbPolicies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetOotbPolicyLibraries() != nil {
+        err := writer.WriteObjectValue("", m.GetOotbPolicyLibraries())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPolicies() != nil {
+        err := writer.WriteObjectValue("", m.GetPolicies())
+        if err != nil {
+            return err
+        }
+    } else if m.GetPolicySetVersions() != nil {
+        err := writer.WriteObjectValue("", m.GetPolicySetVersions())
+        if err != nil {
+            return err
+        }
+    } else if m.GetProjects() != nil {
+        err := writer.WriteObjectValue("", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStacks() != nil {
+        err := writer.WriteObjectValue("", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    } else if m.GetWorkspaces() != nil {
+        err := writer.WriteObjectValue("", m.GetWorkspaces())
+        if err != nil {
+            return err
+        }
+    }
+    return nil
+}
+// SetOotbPolicies sets the ootbPolicies property value. Composed type representation for type OotbPoliciesable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicies(value OotbPoliciesable)() {
+    m.ootbPolicies = value
+}
+// SetOotbPolicyLibraries sets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibrariesable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicyLibraries(value OotbPolicyLibrariesable)() {
+    m.ootbPolicyLibraries = value
+}
+// SetPolicies sets the policies property value. Composed type representation for type Policiesable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicies(value Policiesable)() {
+    m.policies = value
+}
+// SetPolicySetVersions sets the policySetVersions property value. Composed type representation for type PolicySetVersionsable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicySetVersions(value PolicySetVersionsable)() {
+    m.policySetVersions = value
+}
+// SetProjects sets the projects property value. Composed type representation for type Projectsable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetProjects(value Projectsable)() {
+    m.projects = value
+}
+// SetStacks sets the stacks property value. Composed type representation for type Stacksable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetStacks(value Stacksable)() {
+    m.stacks = value
+}
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetWorkspaces(value Workspacesable)() {
+    m.workspaces = value
+}
+type PolicySetsEnvelope_PolicySetsEnvelope_includedable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetOotbPolicies()(OotbPoliciesable)
+    GetOotbPolicyLibraries()(OotbPolicyLibrariesable)
+    GetPolicies()(Policiesable)
+    GetPolicySetVersions()(PolicySetVersionsable)
+    GetProjects()(Projectsable)
+    GetStacks()(Stacksable)
+    GetWorkspaces()(Workspacesable)
+    SetOotbPolicies(value OotbPoliciesable)()
+    SetOotbPolicyLibraries(value OotbPolicyLibrariesable)()
+    SetPolicies(value Policiesable)()
+    SetPolicySetVersions(value PolicySetVersionsable)()
+    SetProjects(value Projectsable)()
+    SetStacks(value Stacksable)()
+    SetWorkspaces(value Workspacesable)()
 }
 // NewPolicySetsEnvelope instantiates a new PolicySetsEnvelope and sets the default values.
 func NewPolicySetsEnvelope()(*PolicySetsEnvelope) {
@@ -52,15 +256,15 @@ func (m *PolicySetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d233
         return nil
     }
     res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePolicySetsEnvelope_includedFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]PolicySetsEnvelope_includedable, len(val))
+            res := make([]PolicySetsEnvelope_PolicySetsEnvelope_includedable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(PolicySetsEnvelope_includedable)
+                    res[i] = v.(PolicySetsEnvelope_PolicySetsEnvelope_includedable)
                 }
             }
             m.SetIncluded(res)
@@ -69,9 +273,9 @@ func (m *PolicySetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d233
     }
     return res
 }
-// GetIncluded gets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
-// returns a []PolicySetsEnvelope_includedable when successful
-func (m *PolicySetsEnvelope) GetIncluded()([]PolicySetsEnvelope_includedable) {
+// GetIncluded gets the included property value. The included property
+// returns a []PolicySetsEnvelope_PolicySetsEnvelope_includedable when successful
+func (m *PolicySetsEnvelope) GetIncluded()([]PolicySetsEnvelope_PolicySetsEnvelope_includedable) {
     return m.included
 }
 // Serialize serializes information the current object
@@ -110,15 +314,15 @@ func (m *PolicySetsEnvelope) SetAdditionalData(value map[string]any)() {
 func (m *PolicySetsEnvelope) SetData(value PolicySetsable)() {
     m.data = value
 }
-// SetIncluded sets the included property value. Sideloaded resources. `?include=policies` sideloads the full policy resources.
-func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_includedable)() {
+// SetIncluded sets the included property value. The included property
+func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable)() {
     m.included = value
 }
 type PolicySetsEnvelopeable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(PolicySetsable)
-    GetIncluded()([]PolicySetsEnvelope_includedable)
+    GetIncluded()([]PolicySetsEnvelope_PolicySetsEnvelope_includedable)
     SetData(value PolicySetsable)()
-    SetIncluded(value []PolicySetsEnvelope_includedable)()
+    SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable)()
 }

@@ -27,7 +27,7 @@ type ItemRecoverableItemsRequestBuilderGetQueryParameters struct {
     Filterrecoverable_type *i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657.GetFilterRecoverable_typeQueryParameterType "uriparametername:\"filter%5Brecoverable_type%5D\""
     // Search term to filter recoverable items by name or project name.
     Filtersearch *string "uriparametername:\"filter%5Bsearch%5D\""
-    // Optionally side-load relationships of the specified name. Multiple values can be comma-separated.
+    // Optionally side-load the specified relationships.
     Include []i6fd48713f53268cd7f7a50d20b1d386c92eb74cfa1526ea44f74b0006c8a5657.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""

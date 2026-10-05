@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic517e29a0da61ffff18ac62402693bfe4eb68f5d4b10dbdddaa1b013638dcfa8 "github.com/hashicorp/go-tfe/v2/api/stateversions/item"
 )
 
 // WithState_version_ItemRequestBuilder builds and executes requests for operations under \state-versions\{state_version_id}
@@ -17,6 +18,8 @@ type WithState_version_ItemRequestBuilder struct {
 type WithState_version_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for state-versions resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstateVersions []string "uriparametername:\"fields%5Bstate%2Dversions%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic517e29a0da61ffff18ac62402693bfe4eb68f5d4b10dbdddaa1b013638dcfa8.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
@@ -26,7 +29,7 @@ func (m *WithState_version_ItemRequestBuilder) Actions()(*ItemActionsRequestBuil
 // NewWithState_version_ItemRequestBuilderInternal instantiates a new WithState_version_ItemRequestBuilder and sets the default values.
 func NewWithState_version_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithState_version_ItemRequestBuilder) {
     m := &WithState_version_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions/{state_version_id}{?fields%5Bstate%2Dversions%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions/{state_version_id}{?fields%5Bstate%2Dversions%5D,include}", pathParameters),
     }
     return m
 }

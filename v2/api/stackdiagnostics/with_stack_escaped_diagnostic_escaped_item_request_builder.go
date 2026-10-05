@@ -7,6 +7,7 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    ic209666d2a6b13f66f896c5983ac64b3892bd66819471323b4dcb66bb118ccc1 "github.com/hashicorp/go-tfe/v2/api/stackdiagnostics/item"
 )
 
 // WithStack_diagnostic_ItemRequestBuilder builds and executes requests for operations under \stack-diagnostics\{stack_diagnostic_id}
@@ -17,11 +18,13 @@ type WithStack_diagnostic_ItemRequestBuilder struct {
 type WithStack_diagnostic_ItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-diagnostics resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDiagnostics []string "uriparametername:\"fields%5Bstack%2Ddiagnostics%5D\""
+    // Optionally side-load the specified relationships.
+    Include []ic209666d2a6b13f66f896c5983ac64b3892bd66819471323b4dcb66bb118ccc1.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // NewWithStack_diagnostic_ItemRequestBuilderInternal instantiates a new WithStack_diagnostic_ItemRequestBuilder and sets the default values.
 func NewWithStack_diagnostic_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_diagnostic_ItemRequestBuilder) {
     m := &WithStack_diagnostic_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-diagnostics/{stack_diagnostic_id}{?fields%5Bstack%2Ddiagnostics%5D}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-diagnostics/{stack_diagnostic_id}{?fields%5Bstack%2Ddiagnostics%5D,include}", pathParameters),
     }
     return m
 }

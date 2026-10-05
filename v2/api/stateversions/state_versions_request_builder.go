@@ -23,6 +23,8 @@ type StateVersionsRequestBuilderGetQueryParameters struct {
     Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
     // The name of the workspace to list state versions for.
     Filterworkspacename *string "uriparametername:\"filter%5Bworkspace%5D%5Bname%5D\""
+    // Optionally side-load the specified relationships.
+    Include []GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -43,7 +45,7 @@ func (m *StateVersionsRequestBuilder) ByState_version_id(state_version_id string
 // NewStateVersionsRequestBuilderInternal instantiates a new StateVersionsRequestBuilder and sets the default values.
 func NewStateVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*StateVersionsRequestBuilder) {
     m := &StateVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions?filter[organization][name]={filter%5Borganization%5D%5Bname%5D}&filter[workspace][name]={filter%5Bworkspace%5D%5Bname%5D}{&fields%5Bstate%2Dversions%5D,filter%5Bstatus%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/state-versions?filter[organization][name]={filter%5Borganization%5D%5Bname%5D}&filter[workspace][name]={filter%5Bworkspace%5D%5Bname%5D}{&fields%5Bstate%2Dversions%5D,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
