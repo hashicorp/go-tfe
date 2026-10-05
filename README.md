@@ -174,7 +174,7 @@ if err != nil {
 for _, membership := range response.GetData() {
 	userID := membership.GetRelationships().GetUser().GetData().GetId()
 
-	// GetSideloadedResource is a helper that searches the 'included' resources for the ID you specified.
+	// FindSideloadedResource is a helper that searches the 'included' resources for the ID you specified.
 	user := tfe.FindSideloadedResource(userID, response.GetIncluded(), func(item organizations.ItemOrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable) models.Usersable {
 		return item.GetUsers()
 	})
