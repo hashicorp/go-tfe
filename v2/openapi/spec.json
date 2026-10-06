@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "02a271d9",
+    "version": "124a6127",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -3023,7 +3023,7 @@
       "patch": {
         "operationId": "updateAgentPool",
         "summary": "Update Agent Pool",
-        "description": "Update an agent pool",
+        "description": "Update an agent pool. Project access cannot be removed while workspaces using the pool rely on that project grant. Preserve direct workspace access or organization-wide access, or reassign the affected workspaces first.",
         "tags": [
           "agent-pools"
         ],
@@ -3055,6 +3055,16 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/agent-pools-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The request is invalid, or it would remove project access needed by workspaces currently using the agent pool.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -39204,6 +39214,19 @@
                 "default": false,
                 "description": "If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`."
               },
+              "branch": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The branch this configuration belongs to"
+              },
+              "deployment-topology": {
+                "type": "object",
+                "nullable": true,
+                "readOnly": true,
+                "additionalProperties": true,
+                "description": "The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes"
+              },
               "preparing-event-stream-url": {
                 "type": "string",
                 "readOnly": true
@@ -40273,7 +40296,7 @@
           "reason": {
             "type": "string",
             "nullable": true,
-            "description": "An optional reason for locking the workspace."
+            "description": "An optional reason for action."
           }
         }
       },
