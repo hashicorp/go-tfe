@@ -26,7 +26,7 @@ func NewUpdateRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371c
     urlParams["request-raw-url"] = rawUrl
     return NewUpdateRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Patch update your username and email address. Other attributes are ignored.
+// Patch update your username, email address, and preferred language. Other attributes are ignored.
 // returns a UsersEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *UpdateRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.UsersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.UsersEnvelopeable, error) {
@@ -46,7 +46,7 @@ func (m *UpdateRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.UsersEnvelopeable), nil
 }
-// ToPatchRequestInformation update your username and email address. Other attributes are ignored.
+// ToPatchRequestInformation update your username, email address, and preferred language. Other attributes are ignored.
 // returns a *RequestInformation when successful
 func (m *UpdateRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.UsersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
