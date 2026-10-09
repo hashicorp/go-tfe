@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "02a271d9",
+    "version": "5e42da5c",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -2153,7 +2153,7 @@
       "patch": {
         "operationId": "updateAccount",
         "summary": "Update account",
-        "description": "Update your username and email address. Other attributes are ignored.",
+        "description": "Update your username, email address, and preferred language. Other attributes are ignored.",
         "tags": [
           "accounts"
         ],
@@ -3023,7 +3023,7 @@
       "patch": {
         "operationId": "updateAgentPool",
         "summary": "Update Agent Pool",
-        "description": "Update an agent pool",
+        "description": "Update an agent pool. Project access cannot be removed while workspaces using the pool rely on that project grant. Preserve direct workspace access or organization-wide access, or reassign the affected workspaces first.",
         "tags": [
           "agent-pools"
         ],
@@ -3055,6 +3055,16 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/agent-pools-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The request is invalid, or it would remove project access needed by workspaces currently using the agent pool.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -31283,7 +31293,7 @@
       "get": {
         "operationId": "adminListGithubAppInstallations",
         "summary": "List GitHub App Installations (Admin)",
-        "description": "List the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.\n\nThis operation is only available in Terraform Enterprise.",
+        "description": "List the webhook-synchronized installations of a GitHub App across every organization, including disconnected and suspended installations. The site's global GitHub App is listed by default, and filter[app] selects an organization-owned App instead. On HCP Terraform the global App's installations can only be listed when it is a GHE.com App. Requires site-admin access.\n\nThis operation is only available in Terraform Enterprise.",
         "tags": [
           "github-app-installations"
         ],
@@ -31393,34 +31403,6 @@
         }
       }
     },
-    "/admin/github-app-installations/refresh": {
-      "x-vis": [
-        "tfe"
-      ],
-      "post": {
-        "operationId": "adminRefreshGithubAppInstallations",
-        "summary": "Refresh GitHub App Installations (Admin)",
-        "description": "Request an on-demand reconciliation of the Global GitHub App's installation inventory against GitHub, recovering installations whose webhook deliveries were missed. Only available when the app is hosted on GHE.com. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.\n\nThis operation is only available in Terraform Enterprise.",
-        "tags": [
-          "github-app-installations"
-        ],
-        "responses": {
-          "204": {
-            "description": "Reconciliation enqueued"
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/organizations/{organization_name}/github-app-installations": {
       "get": {
         "operationId": "listOrganizationGithubAppInstallations",
@@ -31444,6 +31426,14 @@
           },
           {
             "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "filter[global]",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, return only installations of the global GitHub App, as required for public registry namespace claims."
           },
           {
             "in": "query",
@@ -37495,6 +37485,11 @@
                 "type": "string",
                 "nullable": true
               },
+              "preferred-language": {
+                "type": "string",
+                "nullable": true,
+                "description": "The user's preferred language as a locale code (for example, \"en\" or \"fr\"). Must be one of the application's supported locales. Only returned for the current user."
+              },
               "password": {
                 "type": "string",
                 "nullable": true
@@ -39204,6 +39199,19 @@
                 "default": false,
                 "description": "If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`."
               },
+              "branch": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The branch this configuration belongs to"
+              },
+              "deployment-topology": {
+                "type": "object",
+                "nullable": true,
+                "readOnly": true,
+                "additionalProperties": true,
+                "description": "The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes"
+              },
               "preparing-event-stream-url": {
                 "type": "string",
                 "readOnly": true
@@ -40273,7 +40281,7 @@
           "reason": {
             "type": "string",
             "nullable": true,
-            "description": "An optional reason for locking the workspace."
+            "description": "An optional reason for action."
           }
         }
       },
@@ -43951,10 +43959,6 @@
               "generate-config-out": {
                 "type": "boolean"
               },
-              "policy-evaluation-opt-in": {
-                "type": "boolean",
-                "description": "Opts this query into policy evaluation. When query-policy-opt-in is enabled, omitted input defaults to true only for tfe-ui queries with generate-config-out enabled (which defaults to true); otherwise it defaults to false. Explicit true requires a UI, API, or MCP source and generated configuration. Explicit false opts out for those sources. Terraform CLI queries (source terraform) retain workspace policy evaluation regardless of this preference or generate-config-out, subject to the existing query-policy gates. Supplied input must be a non-null boolean when the feature is enabled. When the feature is disabled, this input is ignored and false is persisted; workspace policy evaluation retains its existing query-policy behavior."
-              },
               "resources-discovered": {
                 "type": "integer",
                 "readOnly": true,
@@ -44166,11 +44170,6 @@
                 "type": "boolean",
                 "writeOnly": true,
                 "description": "Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false."
-              },
-              "policy-evaluation-opt-in": {
-                "type": "boolean",
-                "writeOnly": true,
-                "description": "Whether to evaluate workspace policies for the query run triggered on create. This is a create-only input. When QUERY_POLICY_OPT_IN is active, omission defaults to true for No-Code UI queries with generate-config-out enabled, and false otherwise. Explicit false opts out. Explicit true requires generated configuration for both UI and Terraform MCP queries. When the feature is inactive, all values resolve to false and workspace policy evaluation retains its existing query-policy behavior."
               },
               "no-code-query-providers": {
                 "type": "array",
@@ -45759,9 +45758,6 @@
               },
               "message": {
                 "type": "string"
-              },
-              "minimal-refresh": {
-                "type": "boolean"
               },
               "plan-only": {
                 "type": "boolean"
@@ -51539,6 +51535,10 @@
               "suspended": {
                 "type": "boolean",
                 "description": "True when the installation is suspended on GitHub."
+              },
+              "app-external-id": {
+                "type": "string",
+                "description": "External ID of the GitHub App this installation belongs to."
               }
             }
           }
