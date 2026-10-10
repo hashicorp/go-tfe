@@ -10,7 +10,7 @@ import (
 type ActionReason struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // An optional reason for locking the workspace.
+    // An optional reason for action.
     reason *string
 }
 // NewActionReason instantiates a new ActionReason and sets the default values.
@@ -46,7 +46,7 @@ func (m *ActionReason) GetFieldDeserializers()(map[string]func(i878a80d2330e89d2
     }
     return res
 }
-// GetReason gets the reason property value. An optional reason for locking the workspace.
+// GetReason gets the reason property value. An optional reason for action.
 // returns a *string when successful
 func (m *ActionReason) GetReason()(*string) {
     return m.reason
@@ -71,7 +71,7 @@ func (m *ActionReason) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e
 func (m *ActionReason) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetReason sets the reason property value. An optional reason for locking the workspace.
+// SetReason sets the reason property value. An optional reason for action.
 func (m *ActionReason) SetReason(value *string)() {
     m.reason = value
 }

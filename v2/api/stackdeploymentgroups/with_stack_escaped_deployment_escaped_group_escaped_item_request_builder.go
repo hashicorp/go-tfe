@@ -26,6 +26,11 @@ type WithStack_deployment_group_ItemRequestBuilderGetQueryParameters struct {
 func (m *WithStack_deployment_group_ItemRequestBuilder) ApproveAllPlans()(*ItemApproveAllPlansRequestBuilder) {
     return NewItemApproveAllPlansRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Cancel the cancel property
+// returns a *ItemCancelRequestBuilder when successful
+func (m *WithStack_deployment_group_ItemRequestBuilder) Cancel()(*ItemCancelRequestBuilder) {
+    return NewItemCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewWithStack_deployment_group_ItemRequestBuilderInternal instantiates a new WithStack_deployment_group_ItemRequestBuilder and sets the default values.
 func NewWithStack_deployment_group_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_deployment_group_ItemRequestBuilder) {
     m := &WithStack_deployment_group_ItemRequestBuilder{
@@ -68,6 +73,11 @@ func (m *WithStack_deployment_group_ItemRequestBuilder) Rerun()(*ItemRerunReques
 // returns a *ItemStackDeploymentRunsRequestBuilder when successful
 func (m *WithStack_deployment_group_ItemRequestBuilder) StackDeploymentRuns()(*ItemStackDeploymentRunsRequestBuilder) {
     return NewItemStackDeploymentRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Start the start property
+// returns a *ItemStartRequestBuilder when successful
+func (m *WithStack_deployment_group_ItemRequestBuilder) Start()(*ItemStartRequestBuilder) {
+    return NewItemStartRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ToGetRequestInformation get details about a stack deployment group.
 // returns a *RequestInformation when successful
