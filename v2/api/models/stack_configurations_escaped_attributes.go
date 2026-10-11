@@ -11,8 +11,12 @@ import (
 type StackConfigurations_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The branch this configuration belongs to
+    branch *string
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
+    deploymentTopology StackConfigurations_attributes_deploymentTopologyable
     // If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
     destroyAll *bool
     // The preparingEventStreamUrl property
@@ -43,10 +47,20 @@ func CreateStackConfigurations_attributesFromDiscriminatorValue(parseNode i878a8
 func (m *StackConfigurations_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetBranch gets the branch property value. The branch this configuration belongs to
+// returns a *string when successful
+func (m *StackConfigurations_attributes) GetBranch()(*string) {
+    return m.branch
+}
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackConfigurations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.createdAt
+}
+// GetDeploymentTopology gets the deployment-topology property value. The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
+// returns a StackConfigurations_attributes_deploymentTopologyable when successful
+func (m *StackConfigurations_attributes) GetDeploymentTopology()(StackConfigurations_attributes_deploymentTopologyable) {
+    return m.deploymentTopology
 }
 // GetDestroyAll gets the destroy-all property value. If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
 // returns a *bool when successful
@@ -57,6 +71,16 @@ func (m *StackConfigurations_attributes) GetDestroyAll()(*bool) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *StackConfigurations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetBranch(val)
+        }
+        return nil
+    }
     res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -64,6 +88,16 @@ func (m *StackConfigurations_attributes) GetFieldDeserializers()(map[string]func
         }
         if val != nil {
             m.SetCreatedAt(val)
+        }
+        return nil
+    }
+    res["deployment-topology"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackConfigurations_attributes_deploymentTopologyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDeploymentTopology(val.(StackConfigurations_attributes_deploymentTopologyable))
         }
         return nil
     }
@@ -180,9 +214,17 @@ func (m *StackConfigurations_attributes) Serialize(writer i878a80d2330e89d268963
 func (m *StackConfigurations_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetBranch sets the branch property value. The branch this configuration belongs to
+func (m *StackConfigurations_attributes) SetBranch(value *string)() {
+    m.branch = value
+}
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackConfigurations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
+}
+// SetDeploymentTopology sets the deployment-topology property value. The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
+func (m *StackConfigurations_attributes) SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)() {
+    m.deploymentTopology = value
 }
 // SetDestroyAll sets the destroy-all property value. If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
 func (m *StackConfigurations_attributes) SetDestroyAll(value *bool)() {
@@ -211,14 +253,18 @@ func (m *StackConfigurations_attributes) SetUpdatedAt(value *i336074805fc853987a
 type StackConfigurations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetBranch()(*string)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetDeploymentTopology()(StackConfigurations_attributes_deploymentTopologyable)
     GetDestroyAll()(*bool)
     GetPreparingEventStreamUrl()(*string)
     GetSequenceNumber()(*int32)
     GetSpeculative()(*bool)
     GetStatus()(*StackConfigurations_attributes_status)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    SetBranch(value *string)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)()
     SetDestroyAll(value *bool)()
     SetPreparingEventStreamUrl(value *string)()
     SetSequenceNumber(value *int32)()

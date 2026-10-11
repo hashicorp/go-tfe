@@ -10,6 +10,8 @@ import (
 type GithubAppInstallations_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // External ID of the GitHub App this installation belongs to.
+    appExternalId *string
     // True when GitHub no longer reports this installation.
     disconnected *bool
     // The iconUrl property
@@ -42,6 +44,11 @@ func CreateGithubAppInstallations_attributesFromDiscriminatorValue(parseNode i87
 func (m *GithubAppInstallations_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetAppExternalId gets the app-external-id property value. External ID of the GitHub App this installation belongs to.
+// returns a *string when successful
+func (m *GithubAppInstallations_attributes) GetAppExternalId()(*string) {
+    return m.appExternalId
+}
 // GetDisconnected gets the disconnected property value. True when GitHub no longer reports this installation.
 // returns a *bool when successful
 func (m *GithubAppInstallations_attributes) GetDisconnected()(*bool) {
@@ -51,6 +58,16 @@ func (m *GithubAppInstallations_attributes) GetDisconnected()(*bool) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *GithubAppInstallations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["app-external-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAppExternalId(val)
+        }
+        return nil
+    }
     res["disconnected"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -156,6 +173,12 @@ func (m *GithubAppInstallations_attributes) GetSuspended()(*bool) {
 // Serialize serializes information the current object
 func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteStringValue("app-external-id", m.GetAppExternalId())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("disconnected", m.GetDisconnected())
         if err != nil {
             return err
@@ -209,6 +232,10 @@ func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d268
 func (m *GithubAppInstallations_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetAppExternalId sets the app-external-id property value. External ID of the GitHub App this installation belongs to.
+func (m *GithubAppInstallations_attributes) SetAppExternalId(value *string)() {
+    m.appExternalId = value
+}
 // SetDisconnected sets the disconnected property value. True when GitHub no longer reports this installation.
 func (m *GithubAppInstallations_attributes) SetDisconnected(value *bool)() {
     m.disconnected = value
@@ -240,6 +267,7 @@ func (m *GithubAppInstallations_attributes) SetSuspended(value *bool)() {
 type GithubAppInstallations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAppExternalId()(*string)
     GetDisconnected()(*bool)
     GetIconUrl()(*string)
     GetInstallationId()(*int32)
@@ -247,6 +275,7 @@ type GithubAppInstallations_attributesable interface {
     GetInstallationUrl()(*string)
     GetName()(*string)
     GetSuspended()(*bool)
+    SetAppExternalId(value *string)()
     SetDisconnected(value *bool)()
     SetIconUrl(value *string)()
     SetInstallationId(value *int32)()
