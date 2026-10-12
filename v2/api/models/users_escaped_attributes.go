@@ -46,6 +46,8 @@ type Users_attributes struct {
     password *string
     // The permissions property
     permissions Users_attributes_permissionsable
+    // The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
+    preferredLanguage *string
     // The twoFactor property
     twoFactor Users_attributes_twoFactorable
     // The unconfirmedEmail property
@@ -286,6 +288,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         return nil
     }
+    res["preferred-language"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPreferredLanguage(val)
+        }
+        return nil
+    }
     res["two-factor"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateUsers_attributes_twoFactorFromDiscriminatorValue)
         if err != nil {
@@ -387,6 +399,11 @@ func (m *Users_attributes) GetPassword()(*string) {
 // returns a Users_attributes_permissionsable when successful
 func (m *Users_attributes) GetPermissions()(Users_attributes_permissionsable) {
     return m.permissions
+}
+// GetPreferredLanguage gets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
+// returns a *string when successful
+func (m *Users_attributes) GetPreferredLanguage()(*string) {
+    return m.preferredLanguage
 }
 // GetTwoFactor gets the two-factor property value. The twoFactor property
 // returns a Users_attributes_twoFactorable when successful
@@ -501,6 +518,12 @@ func (m *Users_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
         }
     }
     {
+        err := writer.WriteStringValue("preferred-language", m.GetPreferredLanguage())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("two-factor", m.GetTwoFactor())
         if err != nil {
             return err
@@ -608,6 +631,10 @@ func (m *Users_attributes) SetPassword(value *string)() {
 func (m *Users_attributes) SetPermissions(value Users_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetPreferredLanguage sets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
+func (m *Users_attributes) SetPreferredLanguage(value *string)() {
+    m.preferredLanguage = value
+}
 // SetTwoFactor sets the two-factor property value. The twoFactor property
 func (m *Users_attributes) SetTwoFactor(value Users_attributes_twoFactorable)() {
     m.twoFactor = value
@@ -645,6 +672,7 @@ type Users_attributesable interface {
     GetIsUnified()(*bool)
     GetPassword()(*string)
     GetPermissions()(Users_attributes_permissionsable)
+    GetPreferredLanguage()(*string)
     GetTwoFactor()(Users_attributes_twoFactorable)
     GetUnconfirmedEmail()(*string)
     GetUsername()(*string)
@@ -667,6 +695,7 @@ type Users_attributesable interface {
     SetIsUnified(value *bool)()
     SetPassword(value *string)()
     SetPermissions(value Users_attributes_permissionsable)()
+    SetPreferredLanguage(value *string)()
     SetTwoFactor(value Users_attributes_twoFactorable)()
     SetUnconfirmedEmail(value *string)()
     SetUsername(value *string)()
