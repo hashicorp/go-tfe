@@ -1,3 +1,7 @@
+# v2.14.0
+
+* Enhancement: The latest API operations are available.
+
 # v2.13.0
 
 * Bug Fix: GET responses now properly assign included property schemas when used in conjunction with include request parameters.
