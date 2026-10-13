@@ -14,7 +14,7 @@ import (
 type GithubAppInstallationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// GithubAppInstallationsRequestBuilderGetQueryParameters list the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.This operation is only available in Terraform Enterprise.
+// GithubAppInstallationsRequestBuilderGetQueryParameters list the webhook-synchronized installations of a GitHub App across every organization, including disconnected and suspended installations. The site's global GitHub App is listed by default, and filter[app] selects an organization-owned App instead. On HCP Terraform the global App's installations can only be listed when it is a GHE.com App. Requires site-admin access.This operation is only available in Terraform Enterprise.
 type GithubAppInstallationsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
@@ -42,7 +42,7 @@ func NewGithubAppInstallationsRequestBuilder(rawUrl string, requestAdapter i2ae4
     urlParams["request-raw-url"] = rawUrl
     return NewGithubAppInstallationsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.This operation is only available in Terraform Enterprise.
+// Get list the webhook-synchronized installations of a GitHub App across every organization, including disconnected and suspended installations. The site's global GitHub App is listed by default, and filter[app] selects an organization-owned App instead. On HCP Terraform the global App's installations can only be listed when it is a GHE.com App. Requires site-admin access.This operation is only available in Terraform Enterprise.
 // returns a GithubAppInstallationsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *GithubAppInstallationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[GithubAppInstallationsRequestBuilderGetQueryParameters])(GithubAppInstallationsGetResponseable, error) {
@@ -62,12 +62,7 @@ func (m *GithubAppInstallationsRequestBuilder) Get(ctx context.Context, requestC
     }
     return res.(GithubAppInstallationsGetResponseable), nil
 }
-// Refresh the refresh property
-// returns a *GithubAppInstallationsRefreshRequestBuilder when successful
-func (m *GithubAppInstallationsRequestBuilder) Refresh()(*GithubAppInstallationsRefreshRequestBuilder) {
-    return NewGithubAppInstallationsRefreshRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
-}
-// ToGetRequestInformation list the webhook-synchronized installations of the site's Global GitHub App across every organization, including disconnected and suspended installations. This endpoint is exclusive to Terraform Enterprise and requires site-admin access.This operation is only available in Terraform Enterprise.
+// ToGetRequestInformation list the webhook-synchronized installations of a GitHub App across every organization, including disconnected and suspended installations. The site's global GitHub App is listed by default, and filter[app] selects an organization-owned App instead. On HCP Terraform the global App's installations can only be listed when it is a GHE.com App. Requires site-admin access.This operation is only available in Terraform Enterprise.
 // returns a *RequestInformation when successful
 func (m *GithubAppInstallationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[GithubAppInstallationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
