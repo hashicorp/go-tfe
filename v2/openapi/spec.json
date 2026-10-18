@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "ba8d5777",
+    "version": "9d825f05",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -37055,7 +37055,7 @@
                 "x-vis": [
                   "tfe"
                 ],
-                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
+                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
               "internal-documentation-url": {
                 "type": "string",
