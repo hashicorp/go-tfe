@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "ba8d5777",
+    "version": "49255311",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -465,6 +465,15 @@
       ],
       "x-displayName": "Admin Banners",
       "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
+    },
+    {
+      "name": "admin-in-app-notifications",
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "x-displayName": "Admin In-App Notifications",
+      "description": "Authoring and review of in-app feature announcements. Restricted to the content-management admin role.\n"
     },
     {
       "name": "admin-saml-settings",
@@ -2328,6 +2337,276 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/hcp-organization-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "createAdminInAppNotification",
+        "summary": "Create a Draft Feature Announcement",
+        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Draft feature announcement created.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is not a valid JSON:API document.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failure, such as a missing or over-length field or a non-HTTPS URL.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/approve": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "approveAdminInAppNotification",
+        "summary": "Approve a Draft Feature Announcement",
+        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to approve (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement approved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/deny": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "denyAdminInAppNotification",
+        "summary": "Deny a Draft Feature Announcement",
+        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to deny (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement denied.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -37055,7 +37334,7 @@
                 "x-vis": [
                   "tfe"
                 ],
-                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
+                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
               "internal-documentation-url": {
                 "type": "string",
@@ -37868,6 +38147,146 @@
                 }
               }
             }
+          }
+        }
+      },
+      "users-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "admin-in-app-notifications": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The in-app notification's ID (ian-xxxxxxxxxxxxxxxx)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "in-app-notifications"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "title",
+              "body",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 255,
+                "description": "The announcement title."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 2000,
+                "description": "The announcement body."
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "description": "The absolute HTTPS URL the announcement links to."
+              },
+              "is-external-link": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the URL links outside of HCP Terraform."
+              },
+              "severity": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "info",
+                  "warning",
+                  "high",
+                  "critical"
+                ],
+                "description": "The announcement severity."
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "draft",
+                  "approved",
+                  "denied"
+                ],
+                "description": "The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.\n"
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "When the announcement expires."
+              },
+              "approved-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "denied-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "readOnly": true,
+            "properties": {
+              "created-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "approved-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              }
+            }
+          }
+        }
+      },
+      "admin-in-app-notifications-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-in-app-notifications"
           }
         }
       },
@@ -41497,6 +41916,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "external-id": {
                 "type": "string",
@@ -41839,6 +42259,31 @@
                   "public-beta"
                 ],
                 "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "managed-resource-count": {
+                "type": "integer",
+                "readOnly": true,
+                "nullable": true
+              },
+              "user-tokens-enabled": {
+                "type": "boolean"
+              },
+              "sso-enabled": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "eligible-for-concurrency-add-ons": {
+                "type": "boolean"
+              },
+              "scim-configuration-present": {
+                "type": "boolean"
+              },
+              "enforce-hyok": {
+                "type": "boolean"
+              },
+              "sso-idp-cert-expiration": {
+                "type": "string",
+                "nullable": true
               }
             }
           },
@@ -41976,29 +42421,6 @@
             "items": {
               "$ref": "#/components/schemas/teams-identifier"
             }
-          }
-        }
-      },
-      "users-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "users"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -43249,6 +43671,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "allow-destroy-plan": {
                 "type": "boolean"
@@ -43551,6 +43974,14 @@
                 ],
                 "description": "A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
+              "parent-data-retention-policy-info": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "type": "string",
+                "nullable": false,
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
               "effective-run-data-retention-desc": {
                 "type": "string",
                 "nullable": true,
@@ -43565,6 +43996,18 @@
                   "hcpt"
                 ],
                 "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n\n\nThis attribute is only available in HCP Terraform."
+              },
+              "unarchived-workspace-change-requests-count": {
+                "x-vis": [
+                  "public-beta"
+                ],
+                "type": "integer",
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "oauth-client-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "The display name of the OAuth client associated with this workspace, if any.\n"
               }
             }
           },

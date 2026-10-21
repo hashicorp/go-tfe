@@ -44,6 +44,11 @@ func (m *AdminRequestBuilder) GeneralSettings()(*GeneralSettingsRequestBuilder) 
 func (m *AdminRequestBuilder) GithubAppInstallations()(*GithubAppInstallationsRequestBuilder) {
     return NewGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// InAppNotifications the inAppNotifications property
+// returns a *InAppNotificationsRequestBuilder when successful
+func (m *AdminRequestBuilder) InAppNotifications()(*InAppNotificationsRequestBuilder) {
+    return NewInAppNotificationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // SamlSettings the samlSettings property
 // returns a *SamlSettingsRequestBuilder when successful
 func (m *AdminRequestBuilder) SamlSettings()(*SamlSettingsRequestBuilder) {
