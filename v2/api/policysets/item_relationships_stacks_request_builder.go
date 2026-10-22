@@ -26,7 +26,7 @@ func NewItemRelationshipsStacksRequestBuilder(rawUrl string, requestAdapter i2ae
     urlParams["request-raw-url"] = rawUrl
     return NewItemRelationshipsStacksRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete remove stacks from a policy set. Stacks not currently in the set are ignored.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Delete remove stacks from a policy set. Stacks not currently in the set are ignored.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsStacksRequestBuilder) Delete(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemRelationshipsStacksRequestBuilder) Delete(ctx context.Context, body
     }
     return nil
 }
-// Post add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Post add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsStacksRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -58,7 +58,7 @@ func (m *ItemRelationshipsStacksRequestBuilder) Post(ctx context.Context, body i
     }
     return nil
 }
-// ToDeleteRequestInformation remove stacks from a policy set. Stacks not currently in the set are ignored.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToDeleteRequestInformation remove stacks from a policy set. Stacks not currently in the set are ignored.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsStacksRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -70,7 +70,7 @@ func (m *ItemRelationshipsStacksRequestBuilder) ToDeleteRequestInformation(ctx c
     }
     return requestInfo, nil
 }
-// ToPostRequestInformation add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPostRequestInformation add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsStacksRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
