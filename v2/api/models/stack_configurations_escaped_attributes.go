@@ -11,7 +11,7 @@ import (
 type StackConfigurations_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The branch this configuration belongs to
+    // The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
     branch *string
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -47,7 +47,7 @@ func CreateStackConfigurations_attributesFromDiscriminatorValue(parseNode i878a8
 func (m *StackConfigurations_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetBranch gets the branch property value. The branch this configuration belongs to
+// GetBranch gets the branch property value. The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
 // returns a *string when successful
 func (m *StackConfigurations_attributes) GetBranch()(*string) {
     return m.branch
@@ -191,6 +191,12 @@ func (m *StackConfigurations_attributes) GetUpdatedAt()(*i336074805fc853987abe6f
 // Serialize serializes information the current object
 func (m *StackConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteStringValue("branch", m.GetBranch())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("destroy-all", m.GetDestroyAll())
         if err != nil {
             return err
@@ -214,7 +220,7 @@ func (m *StackConfigurations_attributes) Serialize(writer i878a80d2330e89d268963
 func (m *StackConfigurations_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetBranch sets the branch property value. The branch this configuration belongs to
+// SetBranch sets the branch property value. The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
 func (m *StackConfigurations_attributes) SetBranch(value *string)() {
     m.branch = value
 }

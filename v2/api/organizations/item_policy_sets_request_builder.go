@@ -18,7 +18,7 @@ type ItemPolicySetsRequestBuilder struct {
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
-    // Filter policy sets by kind.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+    // Filter policy sets by kind.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
     Filterkind *i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
     // Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when the OOTB policy feature is enabled for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.
     FilterootbPolicy *string "uriparametername:\"filter%5Bootb%2Dpolicy%5D\""

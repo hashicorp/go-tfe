@@ -26,7 +26,7 @@ func NewItemRelationshipsStackExclusionsRequestBuilder(rawUrl string, requestAda
     urlParams["request-raw-url"] = rawUrl
     return NewItemRelationshipsStackExclusionsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Delete remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsStackExclusionsRequestBuilder) Delete(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
@@ -42,7 +42,7 @@ func (m *ItemRelationshipsStackExclusionsRequestBuilder) Delete(ctx context.Cont
     }
     return nil
 }
-// Post add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Post add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRelationshipsStackExclusionsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
@@ -58,7 +58,7 @@ func (m *ItemRelationshipsStackExclusionsRequestBuilder) Post(ctx context.Contex
     }
     return nil
 }
-// ToDeleteRequestInformation remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToDeleteRequestInformation remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsStackExclusionsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -70,7 +70,7 @@ func (m *ItemRelationshipsStackExclusionsRequestBuilder) ToDeleteRequestInformat
     }
     return requestInfo, nil
 }
-// ToPostRequestInformation add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPostRequestInformation add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.
 // returns a *RequestInformation when successful
 func (m *ItemRelationshipsStackExclusionsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StacksIdentifierArrayDocumentable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

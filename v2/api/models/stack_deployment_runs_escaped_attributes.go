@@ -15,6 +15,8 @@ type StackDeploymentRuns_attributes struct {
     acquiringLockAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
+    canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The deployingAt property
@@ -69,6 +71,11 @@ func (m *StackDeploymentRuns_attributes) GetAcquiringLockAt()(*i336074805fc85398
 func (m *StackDeploymentRuns_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetCanceledAt gets the canceled-at property value. When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
+// returns a *Time when successful
+func (m *StackDeploymentRuns_attributes) GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.canceledAt
+}
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -120,6 +127,16 @@ func (m *StackDeploymentRuns_attributes) GetFieldDeserializers()(map[string]func
         }
         if val != nil {
             m.SetAcquiringLockAt(val)
+        }
+        return nil
+    }
+    res["canceled-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanceledAt(val)
         }
         return nil
     }
@@ -312,6 +329,10 @@ func (m *StackDeploymentRuns_attributes) SetAcquiringLockAt(value *i336074805fc8
 func (m *StackDeploymentRuns_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetCanceledAt sets the canceled-at property value. When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
+func (m *StackDeploymentRuns_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.canceledAt = value
+}
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackDeploymentRuns_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
@@ -369,6 +390,7 @@ type StackDeploymentRuns_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAbandonedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetAcquiringLockAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDeployingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDeployingPendingOperatorAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -384,6 +406,7 @@ type StackDeploymentRuns_attributesable interface {
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetAcquiringLockAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDeployingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDeployingPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
