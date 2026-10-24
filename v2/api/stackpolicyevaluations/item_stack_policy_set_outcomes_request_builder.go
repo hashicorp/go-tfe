@@ -13,7 +13,7 @@ import (
 type ItemStackPolicySetOutcomesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemStackPolicySetOutcomesRequestBuilderGetQueryParameters list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ItemStackPolicySetOutcomesRequestBuilderGetQueryParameters list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.
 type ItemStackPolicySetOutcomesRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackPolicySetOutcomes []string "uriparametername:\"fields%5Bstack%2Dpolicy%2Dset%2Doutcomes%5D\""
@@ -37,7 +37,7 @@ func NewItemStackPolicySetOutcomesRequestBuilder(rawUrl string, requestAdapter i
     urlParams["request-raw-url"] = rawUrl
     return NewItemStackPolicySetOutcomesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.
 // returns a ItemStackPolicySetOutcomesGetResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -59,7 +59,7 @@ func (m *ItemStackPolicySetOutcomesRequestBuilder) Get(ctx context.Context, requ
     }
     return res.(ItemStackPolicySetOutcomesGetResponseable), nil
 }
-// ToGetRequestInformation list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation list the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.
 // returns a *RequestInformation when successful
 func (m *ItemStackPolicySetOutcomesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackPolicySetOutcomesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

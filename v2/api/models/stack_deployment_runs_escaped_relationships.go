@@ -12,6 +12,8 @@ type StackDeploymentRuns_relationships struct {
     additionalData map[string]any
     // The blockedByDeploymentGroup property
     blockedByDeploymentGroup StackDeploymentGroupsHasOneable
+    // The canceledBy property
+    canceledBy UsersHasOneable
     // The currentStep property
     currentStep StackDeploymentStepsHasOneable
     // The destroyStackConfiguration property
@@ -51,6 +53,11 @@ func (m *StackDeploymentRuns_relationships) GetAdditionalData()(map[string]any) 
 func (m *StackDeploymentRuns_relationships) GetBlockedByDeploymentGroup()(StackDeploymentGroupsHasOneable) {
     return m.blockedByDeploymentGroup
 }
+// GetCanceledBy gets the canceled-by property value. The canceledBy property
+// returns a UsersHasOneable when successful
+func (m *StackDeploymentRuns_relationships) GetCanceledBy()(UsersHasOneable) {
+    return m.canceledBy
+}
 // GetCurrentStep gets the current-step property value. The currentStep property
 // returns a StackDeploymentStepsHasOneable when successful
 func (m *StackDeploymentRuns_relationships) GetCurrentStep()(StackDeploymentStepsHasOneable) {
@@ -72,6 +79,16 @@ func (m *StackDeploymentRuns_relationships) GetFieldDeserializers()(map[string]f
         }
         if val != nil {
             m.SetBlockedByDeploymentGroup(val.(StackDeploymentGroupsHasOneable))
+        }
+        return nil
+    }
+    res["canceled-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanceledBy(val.(UsersHasOneable))
         }
         return nil
     }
@@ -196,6 +213,12 @@ func (m *StackDeploymentRuns_relationships) Serialize(writer i878a80d2330e89d268
         }
     }
     {
+        err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("current-step", m.GetCurrentStep())
         if err != nil {
             return err
@@ -259,6 +282,10 @@ func (m *StackDeploymentRuns_relationships) SetAdditionalData(value map[string]a
 func (m *StackDeploymentRuns_relationships) SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable)() {
     m.blockedByDeploymentGroup = value
 }
+// SetCanceledBy sets the canceled-by property value. The canceledBy property
+func (m *StackDeploymentRuns_relationships) SetCanceledBy(value UsersHasOneable)() {
+    m.canceledBy = value
+}
 // SetCurrentStep sets the current-step property value. The currentStep property
 func (m *StackDeploymentRuns_relationships) SetCurrentStep(value StackDeploymentStepsHasOneable)() {
     m.currentStep = value
@@ -295,6 +322,7 @@ type StackDeploymentRuns_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetBlockedByDeploymentGroup()(StackDeploymentGroupsHasOneable)
+    GetCanceledBy()(UsersHasOneable)
     GetCurrentStep()(StackDeploymentStepsHasOneable)
     GetDestroyStackConfiguration()(StackConfigurationsHasOneable)
     GetLatestDeploymentRunForDeployment()(StackDeploymentRunsHasOneable)
@@ -304,6 +332,7 @@ type StackDeploymentRuns_relationshipsable interface {
     GetStackDeploymentGroup()(StackDeploymentGroupsHasOneable)
     GetStackDeploymentSteps()(Links_relatedable)
     SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable)()
+    SetCanceledBy(value UsersHasOneable)()
     SetCurrentStep(value StackDeploymentStepsHasOneable)()
     SetDestroyStackConfiguration(value StackConfigurationsHasOneable)()
     SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)()
