@@ -19,7 +19,7 @@ type PolicySets_attributes struct {
     description *string
     // The global property
     global *bool
-    // The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+    // The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
     kind *PolicySets_attributes_kind
     // The name property
     name *string
@@ -37,7 +37,7 @@ type PolicySets_attributes struct {
     projectCount *int32
     // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
     scopingType *PolicySets_attributes_scopingType
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    // The stackCount property
     stackCount *int32
     // Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
     tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
@@ -307,7 +307,7 @@ func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d
 func (m *PolicySets_attributes) GetGlobal()(*bool) {
     return m.global
 }
-// GetKind gets the kind property value. The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+// GetKind gets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 // returns a *PolicySets_attributes_kind when successful
 func (m *PolicySets_attributes) GetKind()(*PolicySets_attributes_kind) {
     return m.kind
@@ -352,7 +352,7 @@ func (m *PolicySets_attributes) GetProjectCount()(*int32) {
 func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
     return m.scopingType
 }
-// GetStackCount gets the stack-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// GetStackCount gets the stack-count property value. The stackCount property
 // returns a *int32 when successful
 func (m *PolicySets_attributes) GetStackCount()(*int32) {
     return m.stackCount
@@ -504,7 +504,7 @@ func (m *PolicySets_attributes) SetDescription(value *string)() {
 func (m *PolicySets_attributes) SetGlobal(value *bool)() {
     m.global = value
 }
-// SetKind sets the kind property value. The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+// SetKind sets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 func (m *PolicySets_attributes) SetKind(value *PolicySets_attributes_kind)() {
     m.kind = value
 }
@@ -540,7 +540,7 @@ func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
     m.scopingType = value
 }
-// SetStackCount sets the stack-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// SetStackCount sets the stack-count property value. The stackCount property
 func (m *PolicySets_attributes) SetStackCount(value *int32)() {
     m.stackCount = value
 }

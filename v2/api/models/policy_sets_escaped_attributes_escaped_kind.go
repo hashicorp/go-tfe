@@ -2,7 +2,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
-// The kind of policies contained in this policy set.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+// The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 type PolicySets_attributes_kind int
 
 const (
