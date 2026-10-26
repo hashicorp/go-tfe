@@ -13,7 +13,7 @@ import (
 type ItemTfPolicySetOutcomesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.
 type ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tf-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstfPolicySetOutcomes []string "uriparametername:\"fields%5Btf%2Dpolicy%2Dset%2Doutcomes%5D\""
@@ -37,7 +37,7 @@ func NewItemTfPolicySetOutcomesRequestBuilder(rawUrl string, requestAdapter i2ae
     urlParams["request-raw-url"] = rawUrl
     return NewItemTfPolicySetOutcomesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.
 // returns a ItemTfPolicySetOutcomesGetResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -59,7 +59,7 @@ func (m *ItemTfPolicySetOutcomesRequestBuilder) Get(ctx context.Context, request
     }
     return res.(ItemTfPolicySetOutcomesGetResponseable), nil
 }
-// ToGetRequestInformation list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation list the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.
 // returns a *RequestInformation when successful
 func (m *ItemTfPolicySetOutcomesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemTfPolicySetOutcomesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
