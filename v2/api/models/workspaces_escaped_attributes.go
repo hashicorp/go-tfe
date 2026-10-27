@@ -11,8 +11,6 @@ import (
 type Workspaces_attributes struct {
     // The actions property
     actions Workspaces_attributes_actionsable
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
     // The allowDestroyPlan property
     allowDestroyPlan *bool
     // The applyDurationAverage property
@@ -61,8 +59,12 @@ type Workspaces_attributes struct {
     name *string
     // Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
     noCodeUpgradeAvailable *bool
+    // The display name of the OAuth client associated with this workspace, if any.
+    oauthClientName *string
     // Deprecated. Use execution-mode instead.
     operations *bool
+    // This attribute is only available in Terraform Enterprise.
+    parentDataRetentionPolicyInfo *string
     // The permissions property
     permissions Workspaces_attributes_permissionsable
     // The planDurationAverage property
@@ -99,6 +101,8 @@ type Workspaces_attributes struct {
     triggerPatterns []string
     // The triggerPrefixes property
     triggerPrefixes []string
+    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    unarchivedWorkspaceChangeRequestsCount *int32
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The vcsRepo property
@@ -114,7 +118,6 @@ type Workspaces_attributes struct {
 func NewWorkspaces_attributes()(*Workspaces_attributes) {
     m := &Workspaces_attributes{
     }
-    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateWorkspaces_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
@@ -126,11 +129,6 @@ func CreateWorkspaces_attributesFromDiscriminatorValue(parseNode i878a80d2330e89
 // returns a Workspaces_attributes_actionsable when successful
 func (m *Workspaces_attributes) GetActions()(Workspaces_attributes_actionsable) {
     return m.actions
-}
-// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-// returns a map[string]any when successful
-func (m *Workspaces_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
 }
 // GetAllowDestroyPlan gets the allow-destroy-plan property value. The allowDestroyPlan property
 // returns a *bool when successful
@@ -456,6 +454,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["oauth-client-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOauthClientName(val)
+        }
+        return nil
+    }
     res["operations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -463,6 +471,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetOperations(val)
+        }
+        return nil
+    }
+    res["parent-data-retention-policy-info"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetParentDataRetentionPolicyInfo(val)
         }
         return nil
     }
@@ -664,6 +682,16 @@ func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["unarchived-workspace-change-requests-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUnarchivedWorkspaceChangeRequestsCount(val)
+        }
+        return nil
+    }
     res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -766,10 +794,20 @@ func (m *Workspaces_attributes) GetName()(*string) {
 func (m *Workspaces_attributes) GetNoCodeUpgradeAvailable()(*bool) {
     return m.noCodeUpgradeAvailable
 }
+// GetOauthClientName gets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
+// returns a *string when successful
+func (m *Workspaces_attributes) GetOauthClientName()(*string) {
+    return m.oauthClientName
+}
 // GetOperations gets the operations property value. Deprecated. Use execution-mode instead.
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetOperations()(*bool) {
     return m.operations
+}
+// GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
+// returns a *string when successful
+func (m *Workspaces_attributes) GetParentDataRetentionPolicyInfo()(*string) {
+    return m.parentDataRetentionPolicyInfo
 }
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Workspaces_attributes_permissionsable when successful
@@ -860,6 +898,11 @@ func (m *Workspaces_attributes) GetTriggerPatterns()([]string) {
 // returns a []string when successful
 func (m *Workspaces_attributes) GetTriggerPrefixes()([]string) {
     return m.triggerPrefixes
+}
+// GetUnarchivedWorkspaceChangeRequestsCount gets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *int32 when successful
+func (m *Workspaces_attributes) GetUnarchivedWorkspaceChangeRequestsCount()(*int32) {
+    return m.unarchivedWorkspaceChangeRequestsCount
 }
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
@@ -1028,7 +1071,19 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteStringValue("oauth-client-name", m.GetOauthClientName())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("operations", m.GetOperations())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("parent-data-retention-policy-info", m.GetParentDataRetentionPolicyInfo())
         if err != nil {
             return err
         }
@@ -1136,6 +1191,12 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteInt32Value("unarchived-workspace-change-requests-count", m.GetUnarchivedWorkspaceChangeRequestsCount())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
         if err != nil {
             return err
@@ -1159,21 +1220,11 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
             return err
         }
     }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
     return nil
 }
 // SetActions sets the actions property value. The actions property
 func (m *Workspaces_attributes) SetActions(value Workspaces_attributes_actionsable)() {
     m.actions = value
-}
-// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Workspaces_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
 }
 // SetAllowDestroyPlan sets the allow-destroy-plan property value. The allowDestroyPlan property
 func (m *Workspaces_attributes) SetAllowDestroyPlan(value *bool)() {
@@ -1271,9 +1322,17 @@ func (m *Workspaces_attributes) SetName(value *string)() {
 func (m *Workspaces_attributes) SetNoCodeUpgradeAvailable(value *bool)() {
     m.noCodeUpgradeAvailable = value
 }
+// SetOauthClientName sets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
+func (m *Workspaces_attributes) SetOauthClientName(value *string)() {
+    m.oauthClientName = value
+}
 // SetOperations sets the operations property value. Deprecated. Use execution-mode instead.
 func (m *Workspaces_attributes) SetOperations(value *bool)() {
     m.operations = value
+}
+// SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
+func (m *Workspaces_attributes) SetParentDataRetentionPolicyInfo(value *string)() {
+    m.parentDataRetentionPolicyInfo = value
 }
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Workspaces_attributes) SetPermissions(value Workspaces_attributes_permissionsable)() {
@@ -1347,6 +1406,10 @@ func (m *Workspaces_attributes) SetTriggerPatterns(value []string)() {
 func (m *Workspaces_attributes) SetTriggerPrefixes(value []string)() {
     m.triggerPrefixes = value
 }
+// SetUnarchivedWorkspaceChangeRequestsCount sets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+func (m *Workspaces_attributes) SetUnarchivedWorkspaceChangeRequestsCount(value *int32)() {
+    m.unarchivedWorkspaceChangeRequestsCount = value
+}
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Workspaces_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
@@ -1368,7 +1431,6 @@ func (m *Workspaces_attributes) SetWorkspaceKpisRunsCount(value *int32)() {
     m.workspaceKpisRunsCount = value
 }
 type Workspaces_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActions()(Workspaces_attributes_actionsable)
     GetAllowDestroyPlan()(*bool)
@@ -1395,7 +1457,9 @@ type Workspaces_attributesable interface {
     GetLockedReason()(*string)
     GetName()(*string)
     GetNoCodeUpgradeAvailable()(*bool)
+    GetOauthClientName()(*string)
     GetOperations()(*bool)
+    GetParentDataRetentionPolicyInfo()(*string)
     GetPermissions()(Workspaces_attributes_permissionsable)
     GetPlanDurationAverage()(*int32)
     GetPolicyCheckFailures()(*int32)
@@ -1414,6 +1478,7 @@ type Workspaces_attributesable interface {
     GetTerraformVersion()(*string)
     GetTriggerPatterns()([]string)
     GetTriggerPrefixes()([]string)
+    GetUnarchivedWorkspaceChangeRequestsCount()(*int32)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(Workspaces_attributes_vcsRepoable)
     GetVcsRepoIdentifier()(*string)
@@ -1444,7 +1509,9 @@ type Workspaces_attributesable interface {
     SetLockedReason(value *string)()
     SetName(value *string)()
     SetNoCodeUpgradeAvailable(value *bool)()
+    SetOauthClientName(value *string)()
     SetOperations(value *bool)()
+    SetParentDataRetentionPolicyInfo(value *string)()
     SetPermissions(value Workspaces_attributes_permissionsable)()
     SetPlanDurationAverage(value *int32)()
     SetPolicyCheckFailures(value *int32)()
@@ -1463,6 +1530,7 @@ type Workspaces_attributesable interface {
     SetTerraformVersion(value *string)()
     SetTriggerPatterns(value []string)()
     SetTriggerPrefixes(value []string)()
+    SetUnarchivedWorkspaceChangeRequestsCount(value *int32)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value Workspaces_attributes_vcsRepoable)()
     SetVcsRepoIdentifier(value *string)()

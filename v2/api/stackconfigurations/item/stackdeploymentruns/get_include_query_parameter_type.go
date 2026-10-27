@@ -9,10 +9,11 @@ const (
     STACK_APPROVAL_GETINCLUDEQUERYPARAMETERTYPE
     CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
     DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+    CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack_deployment_group", "stack_approval", "current_step", "destroy_stack_configuration"}[i]
+    return []string{"stack_deployment_group", "stack_approval", "current_step", "destroy_stack_configuration", "canceled_by"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE
@@ -25,6 +26,8 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
         case "destroy_stack_configuration":
             result = DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+        case "canceled_by":
+            result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

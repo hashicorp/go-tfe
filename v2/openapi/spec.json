@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "ba8d5777",
+    "version": "297ce470",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -221,11 +221,8 @@
     },
     {
       "name": "tf-policy-evaluations",
-      "x-vis": [
-        "public-beta"
-      ],
       "x-displayName": "Terraform Policy Evaluations",
-      "description": "Terraform Policy evaluation actions and outcomes for runs.\n\n**Note:** These APIs are in public beta and are available in HCP Terraform only.\n"
+      "description": "Terraform Policy evaluation actions and outcomes for runs."
     },
     {
       "name": "policy-set-params",
@@ -465,6 +462,15 @@
       ],
       "x-displayName": "Admin Banners",
       "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
+    },
+    {
+      "name": "admin-in-app-notifications",
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "x-displayName": "Admin In-App Notifications",
+      "description": "Authoring and review of in-app feature announcements. Restricted to the content-management admin role.\n"
     },
     {
       "name": "admin-saml-settings",
@@ -2328,6 +2334,276 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/hcp-organization-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "createAdminInAppNotification",
+        "summary": "Create a Draft Feature Announcement",
+        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Draft feature announcement created.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is not a valid JSON:API document.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failure, such as a missing or over-length field or a non-HTTPS URL.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/approve": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "approveAdminInAppNotification",
+        "summary": "Approve a Draft Feature Announcement",
+        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to approve (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement approved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/deny": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "denyAdminInAppNotification",
+        "summary": "Deny a Draft Feature Announcement",
+        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to deny (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement denied.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -4944,7 +5220,8 @@
                 "type": "string",
                 "enum": [
                   "latest_deployment_run",
-                  "latest_deployment_run.stack_configuration"
+                  "latest_deployment_run.stack_configuration",
+                  "latest_deployment_run.canceled_by"
                 ]
               }
             }
@@ -4987,13 +5264,17 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
                             "stack-deployment-runs": "#/components/schemas/stack-deployment-runs",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -5075,7 +5356,8 @@
                 "type": "string",
                 "enum": [
                   "stack_configuration",
-                  "current_step"
+                  "current_step",
+                  "canceled_by"
                 ]
               }
             }
@@ -5118,13 +5400,17 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-deployment-steps"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
                             "stack-configurations": "#/components/schemas/stack-configurations",
-                            "stack-deployment-steps": "#/components/schemas/stack-deployment-steps"
+                            "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -5653,7 +5939,8 @@
                   "stack_deployment_group",
                   "stack_approval",
                   "current_step",
-                  "destroy_stack_configuration"
+                  "destroy_stack_configuration",
+                  "canceled_by"
                 ]
               }
             }
@@ -5702,6 +5989,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
@@ -5710,7 +6000,8 @@
                             "stack-deployment-groups": "#/components/schemas/stack-deployment-groups",
                             "stack-approvals": "#/components/schemas/stack-approvals",
                             "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -6764,7 +7055,8 @@
                   "stack_approval",
                   "current_step",
                   "destroy_stack_configuration",
-                  "blocked_by_deployment_group"
+                  "blocked_by_deployment_group",
+                  "canceled_by"
                 ]
               }
             }
@@ -6813,6 +7105,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
@@ -6821,7 +7116,8 @@
                             "stack-deployment-groups": "#/components/schemas/stack-deployment-groups",
                             "stack-approvals": "#/components/schemas/stack-approvals",
                             "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -6894,7 +7190,8 @@
                   "destroy_stack_configuration",
                   "blocked_by_deployment_group",
                   "latest_deployment_run_for_deployment",
-                  "rollbacked_state"
+                  "rollbacked_state",
+                  "canceled_by"
                 ]
               }
             }
@@ -7055,9 +7352,6 @@
           {
             "in": "query",
             "name": "include",
-            "x-vis": [
-              "public-beta"
-            ],
             "style": "form",
             "explode": false,
             "schema": {
@@ -7108,9 +7402,6 @@
                       }
                     },
                     "included": {
-                      "x-vis": [
-                        "public-beta"
-                      ],
                       "type": "array",
                       "items": {
                         "oneOf": [
@@ -7192,9 +7483,6 @@
           {
             "in": "query",
             "name": "include",
-            "x-vis": [
-              "public-beta"
-            ],
             "style": "form",
             "explode": false,
             "schema": {
@@ -7237,9 +7525,6 @@
                 },
                 "examples": {
                   "planStepWithStackOperation": {
-                    "x-vis": [
-                      "public-beta"
-                    ],
                     "summary": "Plan step retrieved with ?include=stack-operation",
                     "value": {
                       "data": {
@@ -7289,9 +7574,6 @@
                     }
                   },
                   "planStepWithPolicyEvaluation": {
-                    "x-vis": [
-                      "public-beta"
-                    ],
                     "summary": "Plan step retrieved with ?include=stack_operation.policy_evaluation",
                     "value": {
                       "data": {
@@ -7719,13 +8001,10 @@
       }
     },
     "/stack-policy-evaluations/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getStackPolicyEvaluation",
         "summary": "Show a Stack Policy Evaluation",
-        "description": "Get details about a specific stack policy evaluation.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific stack policy evaluation.",
         "tags": [
           "stacks"
         ],
@@ -7795,13 +8074,10 @@
       }
     },
     "/stack-policy-evaluations/{stack_policy_evaluation_id}/stack-policy-set-outcomes": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listStackPolicyEvaluationStackPolicySetOutcomes",
         "summary": "List Stack Policy Set Outcomes for a Stack Policy Evaluation",
-        "description": "List the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.\n\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.\n",
         "tags": [
           "stacks"
         ],
@@ -12123,7 +12399,7 @@
       "post": {
         "operationId": "createQuery",
         "summary": "Create a Query Run",
-        "description": "Create a new query run.",
+        "description": "Create a new query run.\n\nThe configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.",
         "tags": [
           "queries"
         ],
@@ -20157,13 +20433,10 @@
       }
     },
     "/runs/{run_id}/tf-policy-evaluations": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listRunTfPolicyEvaluations",
         "summary": "List Terraform Policy Evaluations for a Run",
-        "description": "List the Terraform Policy evaluations associated with a run.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the Terraform Policy evaluations associated with a run.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20241,13 +20514,10 @@
       }
     },
     "/tf-policy-evaluations/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getTfPolicyEvaluation",
         "summary": "Show a Terraform Policy Evaluation",
-        "description": "Get details about a specific Terraform Policy evaluation.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific Terraform Policy evaluation.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20317,13 +20587,10 @@
       }
     },
     "/tf-policy-evaluations/{id}/actions/override": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "overrideTfPolicyEvaluation",
         "summary": "Override a Terraform Policy Evaluation",
-        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20390,13 +20657,10 @@
       }
     },
     "/tf-policy-evaluations/{tf_policy_evaluation_id}/tf-policy-set-outcomes": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listTfPolicyEvaluationTfPolicySetOutcomes",
         "summary": "List Terraform Policy Set Outcomes for a Terraform Policy Evaluation",
-        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20519,13 +20783,10 @@
       }
     },
     "/tf-policy-set-outcomes/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getTfPolicySetOutcome",
         "summary": "Show a Terraform Policy Set Outcome",
-        "description": "Get details about a specific Terraform Policy set outcome.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific Terraform Policy set outcome.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20923,7 +21184,7 @@
               }
             },
             "required": false,
-            "description": "Available side-load related resources. Multiple values can be comma-separated.\nProject exclusion, stack, and stack exclusion relationship data is only\nreturned when included.\n\nAvailable includes:\n- `policies` - The policies in this policy set\n- `workspaces` - The workspaces this policy set is attached to\n- `workspace_exclusions` - The workspaces excluded from this policy set\n- `stacks` - The stacks this policy set is attached to (`tfpolicy` policy sets only) *(public-beta)*\n- `stack_exclusions` - The stacks excluded from this policy set (`tfpolicy` policy sets only) *(public-beta)*\n- `projects` - The projects this policy set is attached to\n- `project_exclusions` - The projects excluded from this policy set\n- `current_version` - The current policy set version\n- `newest_version` - The newest policy set version\n- `policies.ootb_policy` - The OOTB policy for each policy *(public-beta)*\n- `policies.ootb_policy.ootb_policy_libraries` - The OOTB policy libraries for each OOTB policy *(public-beta)*\n"
+            "description": "Available side-load related resources. Multiple values can be comma-separated.\nProject exclusion, stack, and stack exclusion relationship data is only\nreturned when included.\n\nAvailable includes:\n- `policies` - The policies in this policy set\n- `workspaces` - The workspaces this policy set is attached to\n- `workspace_exclusions` - The workspaces excluded from this policy set\n- `stacks` - The stacks this policy set is attached to (`tfpolicy` policy sets only)\n- `stack_exclusions` - The stacks excluded from this policy set (`tfpolicy` policy sets only)\n- `projects` - The projects this policy set is attached to\n- `project_exclusions` - The projects excluded from this policy set\n- `current_version` - The current policy set version\n- `newest_version` - The newest policy set version\n- `policies.ootb_policy` - The OOTB policy for each policy\n- `policies.ootb_policy.ootb_policy_libraries` - The OOTB policy libraries for each OOTB policy\n"
           },
           {
             "in": "query",
@@ -21087,7 +21348,7 @@
               ]
             },
             "required": false,
-            "description": "Filter policy sets by kind.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n"
+            "description": "Filter policy sets by kind.\n\n- `sentinel` - Sentinel policy enforcement\n- `opa` - Open Policy Agent (OPA) policy enforcement\n- `tfpolicy` - Terraform Policy enforcement\n"
           },
           {
             "in": "query",
@@ -21742,13 +22003,10 @@
       }
     },
     "/policy-sets/{policy_set_id}/relationships/stacks": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "addPolicySetStacks",
         "summary": "Add Stacks to a Policy Set",
-        "description": "Add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.",
         "tags": [
           "policy-sets"
         ],
@@ -21792,7 +22050,7 @@
       "delete": {
         "operationId": "removePolicySetStacks",
         "summary": "Remove Stacks from a Policy Set",
-        "description": "Remove stacks from a policy set. Stacks not currently in the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Remove stacks from a policy set. Stacks not currently in the set are ignored.",
         "tags": [
           "policy-sets"
         ],
@@ -21835,13 +22093,10 @@
       }
     },
     "/policy-sets/{policy_set_id}/relationships/stack-exclusions": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "addPolicySetStackExclusions",
         "summary": "Add Stack Exclusions to a Policy Set",
-        "description": "Add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.",
         "tags": [
           "policy-sets"
         ],
@@ -21885,7 +22140,7 @@
       "delete": {
         "operationId": "removePolicySetStackExclusions",
         "summary": "Remove Stack Exclusions from a Policy Set",
-        "description": "Remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.",
         "tags": [
           "policy-sets"
         ],
@@ -37055,7 +37310,7 @@
                 "x-vis": [
                   "tfe"
                 ],
-                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
+                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
               "internal-documentation-url": {
                 "type": "string",
@@ -37868,6 +38123,146 @@
                 }
               }
             }
+          }
+        }
+      },
+      "users-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "admin-in-app-notifications": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The in-app notification's ID (ian-xxxxxxxxxxxxxxxx)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "in-app-notifications"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "title",
+              "body",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 255,
+                "description": "The announcement title."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 2000,
+                "description": "The announcement body."
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "description": "The absolute HTTPS URL the announcement links to."
+              },
+              "is-external-link": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the URL links outside of HCP Terraform."
+              },
+              "severity": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "info",
+                  "warning",
+                  "high",
+                  "critical"
+                ],
+                "description": "The announcement severity."
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "draft",
+                  "approved",
+                  "denied"
+                ],
+                "description": "The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.\n"
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "When the announcement expires."
+              },
+              "approved-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "denied-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "readOnly": true,
+            "properties": {
+              "created-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "approved-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              }
+            }
+          }
+        }
+      },
+      "admin-in-app-notifications-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-in-app-notifications"
           }
         }
       },
@@ -39338,8 +39733,7 @@
               "branch": {
                 "type": "string",
                 "nullable": true,
-                "readOnly": true,
-                "description": "The branch this configuration belongs to"
+                "description": "The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise."
               },
               "deployment-topology": {
                 "type": "object",
@@ -39730,6 +40124,13 @@
                 "nullable": true,
                 "readOnly": true
               },
+              "canceled-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping."
+              },
               "eligible-for-rerun": {
                 "type": "boolean",
                 "readOnly": true
@@ -39768,6 +40169,9 @@
               },
               "rollbacked-state": {
                 "$ref": "#/components/schemas/stack-deployment-runs-has-one"
+              },
+              "canceled-by": {
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -40680,9 +41084,6 @@
                 "$ref": "#/components/schemas/stack-approvals-has-one"
               },
               "stack-operation": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stack-operation-has-one"
               }
             }
@@ -40722,9 +41123,6 @@
       },
       "stack-operation-plans": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40782,9 +41180,6 @@
           },
           "relationships": {
             "type": "object",
-            "x-vis": [
-              "public-beta"
-            ],
             "properties": {
               "policy-evaluation": {
                 "description": "Stack policy evaluation associated with this plan operation",
@@ -40807,9 +41202,6 @@
       },
       "stack-operation-applies": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40856,9 +41248,6 @@
       },
       "stack-operation-import-states": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40902,9 +41291,6 @@
       },
       "stack-operation-allow-imports": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40969,9 +41355,6 @@
       },
       "stack-policy-evaluations": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "description": "Represents a Terraform Policy evaluation for a Stacks plan operation.",
         "required": [
           "type",
@@ -41107,9 +41490,6 @@
             "$ref": "#/components/schemas/stack-deployment-steps"
           },
           "included": {
-            "x-vis": [
-              "public-beta"
-            ],
             "type": "array",
             "items": {
               "oneOf": [
@@ -41308,9 +41688,6 @@
       },
       "stack-policy-set-outcomes": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "description": "Represents the outcome of evaluating a Terraform Policy set against a Stacks plan.",
         "required": [
           "type",
@@ -41497,6 +41874,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "external-id": {
                 "type": "string",
@@ -41839,6 +42217,31 @@
                   "public-beta"
                 ],
                 "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "managed-resource-count": {
+                "type": "integer",
+                "readOnly": true,
+                "nullable": true
+              },
+              "user-tokens-enabled": {
+                "type": "boolean"
+              },
+              "sso-enabled": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "eligible-for-concurrency-add-ons": {
+                "type": "boolean"
+              },
+              "scim-configuration-present": {
+                "type": "boolean"
+              },
+              "enforce-hyok": {
+                "type": "boolean"
+              },
+              "sso-idp-cert-expiration": {
+                "type": "string",
+                "nullable": true
               }
             }
           },
@@ -41976,29 +42379,6 @@
             "items": {
               "$ref": "#/components/schemas/teams-identifier"
             }
-          }
-        }
-      },
-      "users-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "users"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -43249,6 +43629,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "allow-destroy-plan": {
                 "type": "boolean"
@@ -43551,6 +43932,14 @@
                 ],
                 "description": "A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
+              "parent-data-retention-policy-info": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "type": "string",
+                "nullable": false,
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
               "effective-run-data-retention-desc": {
                 "type": "string",
                 "nullable": true,
@@ -43565,6 +43954,18 @@
                   "hcpt"
                 ],
                 "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n\n\nThis attribute is only available in HCP Terraform."
+              },
+              "unarchived-workspace-change-requests-count": {
+                "x-vis": [
+                  "public-beta"
+                ],
+                "type": "integer",
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "oauth-client-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "The display name of the OAuth client associated with this workspace, if any.\n"
               }
             }
           },
@@ -44183,7 +44584,8 @@
                 "$ref": "#/components/schemas/users-has-one"
               },
               "configuration-version": {
-                "$ref": "#/components/schemas/configuration-versions-has-one"
+                "$ref": "#/components/schemas/configuration-versions-has-one",
+                "description": "The configuration version used for the query run. It must belong to the workspace's organization and already be associated with the workspace; otherwise the request returns `404 Not Found`. If omitted, the workspace's current configuration version is used, subject to the same requirement."
               },
               "created-by": {
                 "$ref": "#/components/schemas/users-has-one"
@@ -45950,19 +46352,11 @@
                   },
                   "tf-policy-checked-at": {
                     "type": "string",
-                    "format": "date-time",
-                    "x-vis": [
-                      "public-beta"
-                    ],
-                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                    "format": "date-time"
                   },
                   "tf-policy-override-at": {
                     "type": "string",
-                    "format": "date-time",
-                    "x-vis": [
-                      "public-beta"
-                    ],
-                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                    "format": "date-time"
                   },
                   "post-plan-running-at": {
                     "type": "string",
@@ -46233,9 +46627,6 @@
                 "$ref": "#/components/schemas/workspace-comments-has-many"
               },
               "tf-policy-evaluations": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/tf-policy-evaluations-has-many"
               }
             }
@@ -47687,11 +48078,7 @@
               },
               "stack-count": {
                 "type": "integer",
-                "x-vis": [
-                  "public-beta"
-                ],
-                "readOnly": true,
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                "readOnly": true
               },
               "versioned": {
                 "type": "boolean",
@@ -47699,7 +48086,7 @@
               },
               "kind": {
                 "type": "string",
-                "description": "The kind of policies contained in this policy set.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n",
+                "description": "The kind of policies contained in this policy set.\n\n- `sentinel` - Sentinel policy enforcement\n- `opa` - Open Policy Agent (OPA) policy enforcement\n- `tfpolicy` - Terraform Policy enforcement\n",
                 "enum": [
                   "sentinel",
                   "opa",
@@ -47852,15 +48239,9 @@
                 "$ref": "#/components/schemas/projects-has-many"
               },
               "stacks": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stacks-has-many"
               },
               "stack-exclusions": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stacks-has-many"
               }
             }
@@ -52014,11 +52395,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/organizations-identifier"
-              }
-            ]
+            "$ref": "#/components/schemas/organizations-identifier"
           }
         }
       },

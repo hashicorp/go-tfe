@@ -13,7 +13,7 @@ import (
 type TfPolicySetOutcomesItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// TfPolicySetOutcomesItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy set outcome.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// TfPolicySetOutcomesItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy set outcome.
 type TfPolicySetOutcomesItemRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for tf-policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldstfPolicySetOutcomes []string "uriparametername:\"fields%5Btf%2Dpolicy%2Dset%2Doutcomes%5D\""
@@ -31,7 +31,7 @@ func NewTfPolicySetOutcomesItemRequestBuilder(rawUrl string, requestAdapter i2ae
     urlParams["request-raw-url"] = rawUrl
     return NewTfPolicySetOutcomesItemRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get get details about a specific Terraform Policy set outcome.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get get details about a specific Terraform Policy set outcome.
 // returns a TfPolicySetOutcomesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *TfPolicySetOutcomesItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TfPolicySetOutcomesItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicySetOutcomesEnvelopeable, error) {
@@ -51,7 +51,7 @@ func (m *TfPolicySetOutcomesItemRequestBuilder) Get(ctx context.Context, request
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicySetOutcomesEnvelopeable), nil
 }
-// ToGetRequestInformation get details about a specific Terraform Policy set outcome.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation get details about a specific Terraform Policy set outcome.
 // returns a *RequestInformation when successful
 func (m *TfPolicySetOutcomesItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TfPolicySetOutcomesItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

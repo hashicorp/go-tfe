@@ -18,7 +18,7 @@ type AdminCustomizationSettings_attributes struct {
     footer *string
     // Overrides documentation links in the TFE UI (Help menu). Accepts https:// or http:// only. Leave blank to use the default HashiCorp documentation URL.This attribute is only available in Terraform Enterprise.
     internalDocumentationUrl *string
-    // Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.This attribute is only available in Terraform Enterprise.
+    // Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
     internalSupportUrl *string
     // Overrides tutorial links in the TFE UI (Help > Tutorials). Accepts https:// or http:// only. Leave blank to use the default HashiCorp tutorials URL.This attribute is only available in Terraform Enterprise.
     internalTutorialsUrl *string
@@ -180,7 +180,7 @@ func (m *AdminCustomizationSettings_attributes) GetFooter()(*string) {
 func (m *AdminCustomizationSettings_attributes) GetInternalDocumentationUrl()(*string) {
     return m.internalDocumentationUrl
 }
-// GetInternalSupportUrl gets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.This attribute is only available in Terraform Enterprise.
+// GetInternalSupportUrl gets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetInternalSupportUrl()(*string) {
     return m.internalSupportUrl
@@ -306,7 +306,7 @@ func (m *AdminCustomizationSettings_attributes) SetFooter(value *string)() {
 func (m *AdminCustomizationSettings_attributes) SetInternalDocumentationUrl(value *string)() {
     m.internalDocumentationUrl = value
 }
-// SetInternalSupportUrl sets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.This attribute is only available in Terraform Enterprise.
+// SetInternalSupportUrl sets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetInternalSupportUrl(value *string)() {
     m.internalSupportUrl = value
 }
