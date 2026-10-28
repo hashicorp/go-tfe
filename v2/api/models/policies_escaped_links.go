@@ -12,6 +12,8 @@ type Policies_links struct {
     additionalData map[string]any
     // URL to download the current policy source content. Absent when no version has been uploaded yet.
     download *string
+    // OOTB catalog download URL pinned to this policy's current OOTB version via `?version=<ootbpolver-*>`. Present only for OOTB-origin policies with a current version.
+    ootbDownload *string
     // The canonical URL of this policy.
     self *string
     // URL to upload new policy source content.
@@ -53,6 +55,16 @@ func (m *Policies_links) GetFieldDeserializers()(map[string]func(i878a80d2330e89
         }
         return nil
     }
+    res["ootb-download"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOotbDownload(val)
+        }
+        return nil
+    }
     res["self"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -74,6 +86,11 @@ func (m *Policies_links) GetFieldDeserializers()(map[string]func(i878a80d2330e89
         return nil
     }
     return res
+}
+// GetOotbDownload gets the ootb-download property value. OOTB catalog download URL pinned to this policy's current OOTB version via `?version=<ootbpolver-*>`. Present only for OOTB-origin policies with a current version.
+// returns a *string when successful
+func (m *Policies_links) GetOotbDownload()(*string) {
+    return m.ootbDownload
 }
 // GetSelf gets the self property value. The canonical URL of this policy.
 // returns a *string when successful
@@ -103,6 +120,10 @@ func (m *Policies_links) SetAdditionalData(value map[string]any)() {
 func (m *Policies_links) SetDownload(value *string)() {
     m.download = value
 }
+// SetOotbDownload sets the ootb-download property value. OOTB catalog download URL pinned to this policy's current OOTB version via `?version=<ootbpolver-*>`. Present only for OOTB-origin policies with a current version.
+func (m *Policies_links) SetOotbDownload(value *string)() {
+    m.ootbDownload = value
+}
 // SetSelf sets the self property value. The canonical URL of this policy.
 func (m *Policies_links) SetSelf(value *string)() {
     m.self = value
@@ -115,9 +136,11 @@ type Policies_linksable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetDownload()(*string)
+    GetOotbDownload()(*string)
     GetSelf()(*string)
     GetUpload()(*string)
     SetDownload(value *string)()
+    SetOotbDownload(value *string)()
     SetSelf(value *string)()
     SetUpload(value *string)()
 }

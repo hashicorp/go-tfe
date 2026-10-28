@@ -9,8 +9,6 @@ import (
 )
 
 type Organizations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
     // The aggregatedCommitStatusEnabled property
     aggregatedCommitStatusEnabled *bool
     // The allowForceDeleteWorkspaces property
@@ -25,8 +23,12 @@ type Organizations_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The defaultExecutionMode property
     defaultExecutionMode *Organizations_attributes_defaultExecutionMode
+    // The eligibleForConcurrencyAddOns property
+    eligibleForConcurrencyAddOns *bool
     // The email property
     email *string
+    // The enforceHyok property
+    enforceHyok *bool
     // The externalId property
     externalId *string
     // The fairRunQueuingEnabled property
@@ -41,6 +43,8 @@ type Organizations_attributes struct {
     isInDegradedMode *bool
     // This attribute is only available in HCP Terraform.
     isUnified *bool
+    // The managedResourceCount property
+    managedResourceCount *int32
     // This attribute is only available in Terraform Enterprise.
     moduleConsumingOrganizationsCount *int32
     // The name property
@@ -71,6 +75,8 @@ type Organizations_attributes struct {
     remainingTestableCount *int32
     // The samlEnabled property
     samlEnabled *bool
+    // The scimConfigurationPresent property
+    scimConfigurationPresent *bool
     // The sendPassingStatusesForUntriggeredSpeculativePlans property
     sendPassingStatusesForUntriggeredSpeculativePlans *bool
     // The sessionRemember property
@@ -79,6 +85,10 @@ type Organizations_attributes struct {
     sessionTimeout *int32
     // The speculativePlanManagementEnabled property
     speculativePlanManagementEnabled *bool
+    // The ssoEnabled property
+    ssoEnabled *bool
+    // The ssoIdpCertExpiration property
+    ssoIdpCertExpiration *string
     // The stacksDefaultExecutionMode property
     stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
     // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
@@ -87,23 +97,19 @@ type Organizations_attributes struct {
     testGenerationEnabled *bool
     // The twoFactorConformant property
     twoFactorConformant *bool
+    // The userTokensEnabled property
+    userTokensEnabled *bool
 }
 // NewOrganizations_attributes instantiates a new Organizations_attributes and sets the default values.
 func NewOrganizations_attributes()(*Organizations_attributes) {
     m := &Organizations_attributes{
     }
-    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateOrganizations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
 func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewOrganizations_attributes(), nil
-}
-// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-// returns a map[string]any when successful
-func (m *Organizations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
 }
 // GetAggregatedCommitStatusEnabled gets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 // returns a *bool when successful
@@ -140,10 +146,20 @@ func (m *Organizations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad
 func (m *Organizations_attributes) GetDefaultExecutionMode()(*Organizations_attributes_defaultExecutionMode) {
     return m.defaultExecutionMode
 }
+// GetEligibleForConcurrencyAddOns gets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
+// returns a *bool when successful
+func (m *Organizations_attributes) GetEligibleForConcurrencyAddOns()(*bool) {
+    return m.eligibleForConcurrencyAddOns
+}
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
 func (m *Organizations_attributes) GetEmail()(*string) {
     return m.email
+}
+// GetEnforceHyok gets the enforce-hyok property value. The enforceHyok property
+// returns a *bool when successful
+func (m *Organizations_attributes) GetEnforceHyok()(*bool) {
+    return m.enforceHyok
 }
 // GetExternalId gets the external-id property value. The externalId property
 // returns a *string when successful
@@ -229,6 +245,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["eligible-for-concurrency-add-ons"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEligibleForConcurrencyAddOns(val)
+        }
+        return nil
+    }
     res["email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -236,6 +262,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetEmail(val)
+        }
+        return nil
+    }
+    res["enforce-hyok"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEnforceHyok(val)
         }
         return nil
     }
@@ -306,6 +342,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetIsUnified(val)
+        }
+        return nil
+    }
+    res["managed-resource-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetManagedResourceCount(val)
         }
         return nil
     }
@@ -459,6 +505,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["scim-configuration-present"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScimConfigurationPresent(val)
+        }
+        return nil
+    }
     res["send-passing-statuses-for-untriggered-speculative-plans"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -496,6 +552,26 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetSpeculativePlanManagementEnabled(val)
+        }
+        return nil
+    }
+    res["sso-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSsoEnabled(val)
+        }
+        return nil
+    }
+    res["sso-idp-cert-expiration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSsoIdpCertExpiration(val)
         }
         return nil
     }
@@ -539,6 +615,16 @@ func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["user-tokens-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUserTokensEnabled(val)
+        }
+        return nil
+    }
     return res
 }
 // GetGlobalModuleSharing gets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
@@ -565,6 +651,11 @@ func (m *Organizations_attributes) GetIsInDegradedMode()(*bool) {
 // returns a *bool when successful
 func (m *Organizations_attributes) GetIsUnified()(*bool) {
     return m.isUnified
+}
+// GetManagedResourceCount gets the managed-resource-count property value. The managedResourceCount property
+// returns a *int32 when successful
+func (m *Organizations_attributes) GetManagedResourceCount()(*int32) {
+    return m.managedResourceCount
 }
 // GetModuleConsumingOrganizationsCount gets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 // returns a *int32 when successful
@@ -641,6 +732,11 @@ func (m *Organizations_attributes) GetRemainingTestableCount()(*int32) {
 func (m *Organizations_attributes) GetSamlEnabled()(*bool) {
     return m.samlEnabled
 }
+// GetScimConfigurationPresent gets the scim-configuration-present property value. The scimConfigurationPresent property
+// returns a *bool when successful
+func (m *Organizations_attributes) GetScimConfigurationPresent()(*bool) {
+    return m.scimConfigurationPresent
+}
 // GetSendPassingStatusesForUntriggeredSpeculativePlans gets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetSendPassingStatusesForUntriggeredSpeculativePlans()(*bool) {
@@ -661,6 +757,16 @@ func (m *Organizations_attributes) GetSessionTimeout()(*int32) {
 func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled()(*bool) {
     return m.speculativePlanManagementEnabled
 }
+// GetSsoEnabled gets the sso-enabled property value. The ssoEnabled property
+// returns a *bool when successful
+func (m *Organizations_attributes) GetSsoEnabled()(*bool) {
+    return m.ssoEnabled
+}
+// GetSsoIdpCertExpiration gets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
+// returns a *string when successful
+func (m *Organizations_attributes) GetSsoIdpCertExpiration()(*string) {
+    return m.ssoIdpCertExpiration
+}
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Organizations_attributes_stacksDefaultExecutionMode when successful
 func (m *Organizations_attributes) GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode) {
@@ -680,6 +786,11 @@ func (m *Organizations_attributes) GetTestGenerationEnabled()(*bool) {
 // returns a *bool when successful
 func (m *Organizations_attributes) GetTwoFactorConformant()(*bool) {
     return m.twoFactorConformant
+}
+// GetUserTokensEnabled gets the user-tokens-enabled property value. The userTokensEnabled property
+// returns a *bool when successful
+func (m *Organizations_attributes) GetUserTokensEnabled()(*bool) {
+    return m.userTokensEnabled
 }
 // Serialize serializes information the current object
 func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -722,7 +833,19 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteBoolValue("eligible-for-concurrency-add-ons", m.GetEligibleForConcurrencyAddOns())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("email", m.GetEmail())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("enforce-hyok", m.GetEnforceHyok())
         if err != nil {
             return err
         }
@@ -770,6 +893,12 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteBoolValue("scim-configuration-present", m.GetScimConfigurationPresent())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("send-passing-statuses-for-untriggered-speculative-plans", m.GetSendPassingStatusesForUntriggeredSpeculativePlans())
         if err != nil {
             return err
@@ -789,6 +918,12 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteBoolValue("speculative-plan-management-enabled", m.GetSpeculativePlanManagementEnabled())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("sso-idp-cert-expiration", m.GetSsoIdpCertExpiration())
         if err != nil {
             return err
         }
@@ -813,16 +948,12 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
+        err := writer.WriteBoolValue("user-tokens-enabled", m.GetUserTokensEnabled())
         if err != nil {
             return err
         }
     }
     return nil
-}
-// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Organizations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
 }
 // SetAggregatedCommitStatusEnabled sets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 func (m *Organizations_attributes) SetAggregatedCommitStatusEnabled(value *bool)() {
@@ -852,9 +983,17 @@ func (m *Organizations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7f
 func (m *Organizations_attributes) SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode)() {
     m.defaultExecutionMode = value
 }
+// SetEligibleForConcurrencyAddOns sets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
+func (m *Organizations_attributes) SetEligibleForConcurrencyAddOns(value *bool)() {
+    m.eligibleForConcurrencyAddOns = value
+}
 // SetEmail sets the email property value. The email property
 func (m *Organizations_attributes) SetEmail(value *string)() {
     m.email = value
+}
+// SetEnforceHyok sets the enforce-hyok property value. The enforceHyok property
+func (m *Organizations_attributes) SetEnforceHyok(value *bool)() {
+    m.enforceHyok = value
 }
 // SetExternalId sets the external-id property value. The externalId property
 func (m *Organizations_attributes) SetExternalId(value *string)() {
@@ -883,6 +1022,10 @@ func (m *Organizations_attributes) SetIsInDegradedMode(value *bool)() {
 // SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetIsUnified(value *bool)() {
     m.isUnified = value
+}
+// SetManagedResourceCount sets the managed-resource-count property value. The managedResourceCount property
+func (m *Organizations_attributes) SetManagedResourceCount(value *int32)() {
+    m.managedResourceCount = value
 }
 // SetModuleConsumingOrganizationsCount sets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetModuleConsumingOrganizationsCount(value *int32)() {
@@ -944,6 +1087,10 @@ func (m *Organizations_attributes) SetRemainingTestableCount(value *int32)() {
 func (m *Organizations_attributes) SetSamlEnabled(value *bool)() {
     m.samlEnabled = value
 }
+// SetScimConfigurationPresent sets the scim-configuration-present property value. The scimConfigurationPresent property
+func (m *Organizations_attributes) SetScimConfigurationPresent(value *bool)() {
+    m.scimConfigurationPresent = value
+}
 // SetSendPassingStatusesForUntriggeredSpeculativePlans sets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
 func (m *Organizations_attributes) SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool)() {
     m.sendPassingStatusesForUntriggeredSpeculativePlans = value
@@ -959,6 +1106,14 @@ func (m *Organizations_attributes) SetSessionTimeout(value *int32)() {
 // SetSpeculativePlanManagementEnabled sets the speculative-plan-management-enabled property value. The speculativePlanManagementEnabled property
 func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bool)() {
     m.speculativePlanManagementEnabled = value
+}
+// SetSsoEnabled sets the sso-enabled property value. The ssoEnabled property
+func (m *Organizations_attributes) SetSsoEnabled(value *bool)() {
+    m.ssoEnabled = value
+}
+// SetSsoIdpCertExpiration sets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
+func (m *Organizations_attributes) SetSsoIdpCertExpiration(value *string)() {
+    m.ssoIdpCertExpiration = value
 }
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)() {
@@ -976,8 +1131,11 @@ func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool)() {
 func (m *Organizations_attributes) SetTwoFactorConformant(value *bool)() {
     m.twoFactorConformant = value
 }
+// SetUserTokensEnabled sets the user-tokens-enabled property value. The userTokensEnabled property
+func (m *Organizations_attributes) SetUserTokensEnabled(value *bool)() {
+    m.userTokensEnabled = value
+}
 type Organizations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAggregatedCommitStatusEnabled()(*bool)
     GetAllowForceDeleteWorkspaces()(*bool)
@@ -986,7 +1144,9 @@ type Organizations_attributesable interface {
     GetCostEstimationEnabled()(*bool)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDefaultExecutionMode()(*Organizations_attributes_defaultExecutionMode)
+    GetEligibleForConcurrencyAddOns()(*bool)
     GetEmail()(*string)
+    GetEnforceHyok()(*bool)
     GetExternalId()(*string)
     GetFairRunQueuingEnabled()(*bool)
     GetGlobalModuleSharing()(*bool)
@@ -994,6 +1154,7 @@ type Organizations_attributesable interface {
     GetHcpId()(*string)
     GetIsInDegradedMode()(*bool)
     GetIsUnified()(*bool)
+    GetManagedResourceCount()(*int32)
     GetModuleConsumingOrganizationsCount()(*int32)
     GetName()(*string)
     GetOverStacksResourceLimit()(*bool)
@@ -1009,14 +1170,18 @@ type Organizations_attributesable interface {
     GetRecoverableItemsEnabled()(*bool)
     GetRemainingTestableCount()(*int32)
     GetSamlEnabled()(*bool)
+    GetScimConfigurationPresent()(*bool)
     GetSendPassingStatusesForUntriggeredSpeculativePlans()(*bool)
     GetSessionRemember()(*int32)
     GetSessionTimeout()(*int32)
     GetSpeculativePlanManagementEnabled()(*bool)
+    GetSsoEnabled()(*bool)
+    GetSsoIdpCertExpiration()(*string)
     GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode)
     GetStacksEnabled()(*bool)
     GetTestGenerationEnabled()(*bool)
     GetTwoFactorConformant()(*bool)
+    GetUserTokensEnabled()(*bool)
     SetAggregatedCommitStatusEnabled(value *bool)()
     SetAllowForceDeleteWorkspaces(value *bool)()
     SetAssessmentsEnforced(value *bool)()
@@ -1024,7 +1189,9 @@ type Organizations_attributesable interface {
     SetCostEstimationEnabled(value *bool)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode)()
+    SetEligibleForConcurrencyAddOns(value *bool)()
     SetEmail(value *string)()
+    SetEnforceHyok(value *bool)()
     SetExternalId(value *string)()
     SetFairRunQueuingEnabled(value *bool)()
     SetGlobalModuleSharing(value *bool)()
@@ -1032,6 +1199,7 @@ type Organizations_attributesable interface {
     SetHcpId(value *string)()
     SetIsInDegradedMode(value *bool)()
     SetIsUnified(value *bool)()
+    SetManagedResourceCount(value *int32)()
     SetModuleConsumingOrganizationsCount(value *int32)()
     SetName(value *string)()
     SetOverStacksResourceLimit(value *bool)()
@@ -1047,12 +1215,16 @@ type Organizations_attributesable interface {
     SetRecoverableItemsEnabled(value *bool)()
     SetRemainingTestableCount(value *int32)()
     SetSamlEnabled(value *bool)()
+    SetScimConfigurationPresent(value *bool)()
     SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool)()
     SetSessionRemember(value *int32)()
     SetSessionTimeout(value *int32)()
     SetSpeculativePlanManagementEnabled(value *bool)()
+    SetSsoEnabled(value *bool)()
+    SetSsoIdpCertExpiration(value *string)()
     SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)()
     SetStacksEnabled(value *bool)()
     SetTestGenerationEnabled(value *bool)()
     SetTwoFactorConformant(value *bool)()
+    SetUserTokensEnabled(value *bool)()
 }

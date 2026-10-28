@@ -38,7 +38,7 @@ func NewQueriesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371
     urlParams["request-raw-url"] = rawUrl
     return NewQueriesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post create a new query run.
+// Post create a new query run.The configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.
 // returns a QueriesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *QueriesRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueriesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueriesEnvelopeable, error) {
@@ -58,7 +58,7 @@ func (m *QueriesRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueriesEnvelopeable), nil
 }
-// ToPostRequestInformation create a new query run.
+// ToPostRequestInformation create a new query run.The configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.
 // returns a *RequestInformation when successful
 func (m *QueriesRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueriesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

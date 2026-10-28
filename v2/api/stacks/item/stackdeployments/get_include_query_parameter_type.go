@@ -7,10 +7,11 @@ type GetIncludeQueryParameterType int
 const (
     LATEST_DEPLOYMENT_RUN_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
     LATEST_DEPLOYMENT_RUNSTACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+    LATEST_DEPLOYMENT_RUNCANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"latest_deployment_run", "latest_deployment_run.stack_configuration"}[i]
+    return []string{"latest_deployment_run", "latest_deployment_run.stack_configuration", "latest_deployment_run.canceled_by"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := LATEST_DEPLOYMENT_RUN_GETINCLUDEQUERYPARAMETERTYPE
@@ -19,6 +20,8 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = LATEST_DEPLOYMENT_RUN_GETINCLUDEQUERYPARAMETERTYPE
         case "latest_deployment_run.stack_configuration":
             result = LATEST_DEPLOYMENT_RUNSTACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+        case "latest_deployment_run.canceled_by":
+            result = LATEST_DEPLOYMENT_RUNCANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

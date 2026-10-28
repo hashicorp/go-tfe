@@ -21,12 +21,14 @@ type ItemStackDeploymentsGetResponse struct {
     // The meta property
     meta ItemStackDeploymentsGetResponse_metaable
 }
-// ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable
+// ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
 type ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included struct {
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable
     stackConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable
     stackDeploymentRuns i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+    users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
 }
 // NewItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included instantiates a new ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included and sets the default values.
 func NewItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included()(*ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) {
@@ -53,6 +55,8 @@ func CreateItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_includedF
                     result.SetStackConfigurations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackConfigurations())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-deployment-runs") {
                     result.SetStackDeploymentRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackDeploymentRuns())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
                 }
             }
         }
@@ -66,6 +70,8 @@ func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) G
         return m.GetStackConfigurations().GetFieldDeserializers()
     } else if m.GetStackDeploymentRuns() != nil {
         return m.GetStackDeploymentRuns().GetFieldDeserializers()
+    } else if m.GetUsers() != nil {
+        return m.GetUsers().GetFieldDeserializers()
     }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
 }
@@ -84,6 +90,11 @@ func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) G
 func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) GetStackDeploymentRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable) {
     return m.stackDeploymentRuns
 }
+// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// returns a Usersable when successful
+func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
+    return m.users
+}
 // Serialize serializes information the current object
 func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetStackConfigurations() != nil {
@@ -93,6 +104,11 @@ func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) S
         }
     } else if m.GetStackDeploymentRuns() != nil {
         err := writer.WriteObjectValue("", m.GetStackDeploymentRuns())
+        if err != nil {
+            return err
+        }
+    } else if m.GetUsers() != nil {
+        err := writer.WriteObjectValue("", m.GetUsers())
         if err != nil {
             return err
         }
@@ -107,12 +123,18 @@ func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) S
 func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) SetStackDeploymentRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable)() {
     m.stackDeploymentRuns = value
 }
+// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+func (m *ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
+    m.users = value
+}
 type ItemStackDeploymentsGetResponse_StackDeploymentsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetStackConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)
     GetStackDeploymentRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable)
+    GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
     SetStackConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationsable)()
     SetStackDeploymentRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackDeploymentRunsable)()
+    SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
 }
 // NewItemStackDeploymentsGetResponse instantiates a new ItemStackDeploymentsGetResponse and sets the default values.
 func NewItemStackDeploymentsGetResponse()(*ItemStackDeploymentsGetResponse) {

@@ -63,7 +63,7 @@ func (m *SamlSettingsIdpCertificatesRequestBuilder) Get(ctx context.Context, req
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SamlIdpCertificatesCollectionEnvelopeable), nil
 }
-// Post creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates.This operation is only available in Terraform Enterprise version 2.1.0 or later.
+// Post creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates. A maximum of 1000 IdP certificates may be stored across all roles (`managed`, `legacy_primary`, and `legacy_old`); once this limit is reached, further creation requests are rejected.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a SamlIdpCertificatesEnvelopeable when successful
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -93,7 +93,7 @@ func (m *SamlSettingsIdpCertificatesRequestBuilder) ToGetRequestInformation(ctx 
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPostRequestInformation creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates.This operation is only available in Terraform Enterprise version 2.1.0 or later.
+// ToPostRequestInformation creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates. A maximum of 1000 IdP certificates may be stored across all roles (`managed`, `legacy_primary`, and `legacy_old`); once this limit is reached, further creation requests are rejected.This operation is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *RequestInformation when successful
 func (m *SamlSettingsIdpCertificatesRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SamlIdpCertificatesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
