@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type roundTripperFunc func(*http.Request) (*http.Response, error)
@@ -124,7 +125,30 @@ func TestClient_API(t *testing.T) {
 		}
 	]
 }`))
-		}})
+		},
+		"/api/v2/organizations/hashicorp/workspaces": func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != http.MethodPost {
+				t.Fatal("This route expects a POST request")
+			}
+
+			setDefaultServerHeaders(w)
+			w.WriteHeader(422)
+			w.Write([]byte(`{
+	"errors": [
+		{
+			"status": "422",
+			"title": "unprocessable content",
+			"detail": "'name' is invalid"
+		},
+		{
+			"status": "422",
+			"title": "unprocessable content",
+			"detail": "'another error' probably won't be present"
+		}
+	]
+}`))
+		},
+	})
 
 	cfg := &Config{
 		Address: ts.URL,
@@ -161,13 +185,8 @@ func TestClient_API(t *testing.T) {
 
 		response, err := client.API.Organizations().ByOrganization_name("hashicorp").Get(context.Background(), nil)
 		var merr *APIError
-		if !assert.ErrorAs(t, err, &merr) {
-			t.Fatalf("expected *APIError, got %T", err)
-		}
-
-		if !assert.ErrorIs(t, err, ErrNotFound) {
-			t.Error("expected err Is ErrNotFound")
-		}
+		require.ErrorAs(t, err, &merr)
+		assert.ErrorIs(t, err, ErrNotFound)
 
 		if merr.StatusCode != 404 {
 			t.Errorf("expected status code %d, got %d", 404, merr.StatusCode)
@@ -187,6 +206,20 @@ func TestClient_API(t *testing.T) {
 		if response != nil {
 			t.Fatalf("expected nil organization response, got %v", response)
 		}
+	})
+
+	// Ensures that middleware properly unwraps error details, elevating them to the message text.
+	t.Run("all error title and details are joined", func(t *testing.T) {
+		client, err := NewClient(cfg)
+
+		_, err = client.API.Organizations().ByOrganization_name("hashicorp").Workspaces().Post(context.Background(), nil, nil)
+		if err == nil {
+			t.Fatal("expected error, got nil")
+		}
+
+		assert.ErrorIs(t, err, ErrUnprocessableEntity)
+
+		assert.Contains(t, err.Error(), "unprocessable content: 'name' is invalid; unprocessable content: 'another error' probably won't be present")
 	})
 }
 
