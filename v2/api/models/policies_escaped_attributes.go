@@ -21,6 +21,10 @@ type Policies_attributes struct {
     kind *Policies_attributes_kind
     // The name of the policy.
     name *string
+    // Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
+    ootbUpdate Policies_attributes_ootbUpdateable
+    // The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
+    origin *Policies_attributes_origin
     // The number of policy sets that include this policy.
     policySetCount *int32
     // The OPA query to run. Only present for OPA policies.
@@ -120,6 +124,26 @@ func (m *Policies_attributes) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["ootb-update"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreatePolicies_attributes_ootbUpdateFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOotbUpdate(val.(Policies_attributes_ootbUpdateable))
+        }
+        return nil
+    }
+    res["origin"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParsePolicies_attributes_origin)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOrigin(val.(*Policies_attributes_origin))
+        }
+        return nil
+    }
     res["policy-set-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -161,6 +185,16 @@ func (m *Policies_attributes) GetKind()(*Policies_attributes_kind) {
 // returns a *string when successful
 func (m *Policies_attributes) GetName()(*string) {
     return m.name
+}
+// GetOotbUpdate gets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
+// returns a Policies_attributes_ootbUpdateable when successful
+func (m *Policies_attributes) GetOotbUpdate()(Policies_attributes_ootbUpdateable) {
+    return m.ootbUpdate
+}
+// GetOrigin gets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
+// returns a *Policies_attributes_origin when successful
+func (m *Policies_attributes) GetOrigin()(*Policies_attributes_origin) {
+    return m.origin
 }
 // GetPolicySetCount gets the policy-set-count property value. The number of policy sets that include this policy.
 // returns a *int32 when successful
@@ -255,6 +289,14 @@ func (m *Policies_attributes) SetKind(value *Policies_attributes_kind)() {
 func (m *Policies_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetOotbUpdate sets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
+func (m *Policies_attributes) SetOotbUpdate(value Policies_attributes_ootbUpdateable)() {
+    m.ootbUpdate = value
+}
+// SetOrigin sets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
+func (m *Policies_attributes) SetOrigin(value *Policies_attributes_origin)() {
+    m.origin = value
+}
 // SetPolicySetCount sets the policy-set-count property value. The number of policy sets that include this policy.
 func (m *Policies_attributes) SetPolicySetCount(value *int32)() {
     m.policySetCount = value
@@ -275,6 +317,8 @@ type Policies_attributesable interface {
     GetEnforcementLevel()(*Policies_attributes_enforcementLevel)
     GetKind()(*Policies_attributes_kind)
     GetName()(*string)
+    GetOotbUpdate()(Policies_attributes_ootbUpdateable)
+    GetOrigin()(*Policies_attributes_origin)
     GetPolicySetCount()(*int32)
     GetQuery()(*string)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
@@ -283,6 +327,8 @@ type Policies_attributesable interface {
     SetEnforcementLevel(value *Policies_attributes_enforcementLevel)()
     SetKind(value *Policies_attributes_kind)()
     SetName(value *string)()
+    SetOotbUpdate(value Policies_attributes_ootbUpdateable)()
+    SetOrigin(value *Policies_attributes_origin)()
     SetPolicySetCount(value *int32)()
     SetQuery(value *string)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()

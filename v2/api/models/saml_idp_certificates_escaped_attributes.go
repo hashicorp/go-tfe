@@ -17,7 +17,7 @@ type SamlIdpCertificates_attributes struct {
     certRole *SamlIdpCertificates_attributes_certRole
     // ISO 8601 datetime (UTC) when this record was created.
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // A human-readable label for this certificate.
+    // A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
     displayName *string
     // ISO 8601 datetime (UTC) when the certificate expires.
     expiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -58,7 +58,7 @@ func (m *SamlIdpCertificates_attributes) GetCertRole()(*SamlIdpCertificates_attr
 func (m *SamlIdpCertificates_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.createdAt
 }
-// GetDisplayName gets the display-name property value. A human-readable label for this certificate.
+// GetDisplayName gets the display-name property value. A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
 // returns a *string when successful
 func (m *SamlIdpCertificates_attributes) GetDisplayName()(*string) {
     return m.displayName
@@ -192,7 +192,7 @@ func (m *SamlIdpCertificates_attributes) SetCertRole(value *SamlIdpCertificates_
 func (m *SamlIdpCertificates_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
-// SetDisplayName sets the display-name property value. A human-readable label for this certificate.
+// SetDisplayName sets the display-name property value. A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
 func (m *SamlIdpCertificates_attributes) SetDisplayName(value *string)() {
     m.displayName = value
 }
