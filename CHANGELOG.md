@@ -1,6 +1,7 @@
-# Unreleased
+# v2.15.0
 
 * Enhancement: `tfe.APIError` `Error()` has been modified to return joined error details instead of a description of the HTTP status when the response has an HTTP status of 400 or higher. For example, APIError messages are now in the form `Unprocessable Content: 'name' is required` instead of `422 Unprocessable Content`
+* Enhancement: The latest API operations are available.
 
 # v2.14.0
 
