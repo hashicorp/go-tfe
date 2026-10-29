@@ -211,6 +211,9 @@ func TestClient_API(t *testing.T) {
 	// Ensures that middleware properly unwraps error details, elevating them to the message text.
 	t.Run("all error title and details are joined", func(t *testing.T) {
 		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		_, err = client.API.Organizations().ByOrganization_name("hashicorp").Workspaces().Post(context.Background(), nil, nil)
 		if err == nil {
