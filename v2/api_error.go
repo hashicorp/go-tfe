@@ -6,14 +6,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
+// APIError represents an error returned by the API, including the HTTP status code,
+// a human-readable message, and any additional details.
 type APIError struct {
 	StatusCode int
 	Message    string
 	Details    []string
 }
 
+// JSONAPIError represents the structure of error responses returned by the API in JSON:API format.
 type JSONAPIError struct {
 	Errors []struct {
 		Status string `json:"status"`
@@ -37,7 +41,10 @@ var (
 
 // Error implements the error interface for APIError.
 func (e *APIError) Error() string {
-	return fmt.Sprintf("%d %s", e.StatusCode, e.Message)
+	if len(e.Details) == 0 {
+		return e.Message
+	}
+	return strings.Join(e.Details, "; ")
 }
 
 // Is allows errors.Is to work with APIError, comparing based on StatusCode.
@@ -58,6 +65,7 @@ func newSimpleAPIError(statusCode int) *APIError {
 
 func newErrorFromErrors(statusCode int, details JSONAPIError) *APIError {
 	result := newSimpleAPIError(statusCode)
+
 	for _, err := range details.Errors {
 		detail := err.Detail
 		if detail != "" {

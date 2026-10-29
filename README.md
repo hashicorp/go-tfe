@@ -162,11 +162,7 @@ c := abstractions.RequestConfiguration[organizations.ItemOrganizationMemberships
 // Get the organization memberships for "hashicorp", but include the user record for each member.
 response, err := client.API.Organizations().ByOrganization_name("hashicorp").OrganizationMemberships().Get(ctx, &c)
 if err != nil {
-	if apiErr, ok := err.(*tfe.APIError); ok {
-		log.Fatalf("API returned an error status: %d - %s", apiErr.StatusCode, apiErr.Message)
-	} else {
-		log.Fatalf("Error making API request: %s", err)
-	}
+	log.Fatalf("Error getting memberships: %s", err)
 	return 1
 }
 
@@ -214,6 +210,33 @@ headers := inspectionOptions.GetResponseHeaders()
 for _, key := range headers.ListKeys() {
 	log.Printf("%s: %v", key, headers.Get(key))
 }
+```
+
+## HTTP Response Errors
+
+Unlike Go’s standard HTTP client, this SDK returns errors when an HTTP status codes of 400 or higher is returned. These errors are of type `*tfe.APIError` wrapped in a `*url.Error`. Use `errors.Is` to compare against common failures. It checks the HTTP status code and works through the wrapper:
+
+```go
+// Import "errors" in addition to the packages used in Basic Usage.
+_, err := client.API.Organizations().Get(ctx, nil)
+switch {
+case err == nil:
+	// Continue with the response.
+case errors.Is(err, tfe.ErrUnauthorized):
+	fmt.Println("Check your API token.")
+case errors.Is(err, tfe.ErrForbidden):
+	fmt.Println("Your token does not have permission for this operation.")
+case errors.Is(err, tfe.ErrTooManyRequests):
+	fmt.Println("The API rate limit was reached.")
+default:
+	fmt.Printf("Request failed: %s\n", err)
+}
+```
+
+For most server error responses, the Error() string of the `*url.Error` includes the method, URL, and detailed errors joined together. For example, a 422 response might produce an error with the Error() string:
+
+```
+Post "https://app.terraform.io/api/v2/organizations/hashicorp/workspaces": Unprocessable Entity: 'name' is required
 ```
 
 ## Configuration Options Reference
