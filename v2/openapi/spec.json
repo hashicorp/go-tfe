@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "ba8d5777",
+    "version": "f0820568",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -221,11 +221,8 @@
     },
     {
       "name": "tf-policy-evaluations",
-      "x-vis": [
-        "public-beta"
-      ],
       "x-displayName": "Terraform Policy Evaluations",
-      "description": "Terraform Policy evaluation actions and outcomes for runs.\n\n**Note:** These APIs are in public beta and are available in HCP Terraform only.\n"
+      "description": "Terraform Policy evaluation actions and outcomes for runs."
     },
     {
       "name": "policy-set-params",
@@ -465,6 +462,15 @@
       ],
       "x-displayName": "Admin Banners",
       "description": "Site-wide announcement banner management for Terraform Enterprise administrators."
+    },
+    {
+      "name": "admin-in-app-notifications",
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "x-displayName": "Admin In-App Notifications",
+      "description": "Authoring and review of in-app feature announcements. Restricted to the content-management admin role.\n"
     },
     {
       "name": "admin-saml-settings",
@@ -1222,7 +1228,7 @@
       "post": {
         "operationId": "createSamlIdpCertificate",
         "summary": "Create an IdP Certificate",
-        "description": "Creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
+        "description": "Creates a new IdP certificate with `cert-role` of `managed`. The certificate must be a valid, non-expired PEM-encoded X.509 certificate and its SHA-256 fingerprint must be unique across all trusted certificates. A maximum of 1000 IdP certificates may be stored across all roles (`managed`, `legacy_primary`, and `legacy_old`); once this limit is reached, further creation requests are rejected.\n\n\nThis operation is only available in Terraform Enterprise version 2.1.0 or later.",
         "tags": [
           "saml-idp-certificates"
         ],
@@ -1248,7 +1254,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, or display-name is missing.\n",
+            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, display-name is missing or longer than 90 characters, or the maximum of 1000 IdP certificates has been reached (\"Cert limit of 1000 reached; delete expired or unused certificates before adding more\").\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -1389,7 +1395,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, or invalid cert content.\n",
+            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, invalid cert content, or a new display-name that is blank or longer than 90 characters.\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -2328,6 +2334,276 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/hcp-organization-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "createAdminInAppNotification",
+        "summary": "Create a Draft Feature Announcement",
+        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Draft feature announcement created.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is not a valid JSON:API document.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failure, such as a missing or over-length field or a non-HTTPS URL.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/approve": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "approveAdminInAppNotification",
+        "summary": "Approve a Draft Feature Announcement",
+        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to approve (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement approved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/in-app-notifications/{id}/actions/deny": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "post": {
+        "operationId": "denyAdminInAppNotification",
+        "summary": "Deny a Draft Feature Announcement",
+        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to deny (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcement denied.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to make this request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement is not a draft.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -4944,7 +5220,8 @@
                 "type": "string",
                 "enum": [
                   "latest_deployment_run",
-                  "latest_deployment_run.stack_configuration"
+                  "latest_deployment_run.stack_configuration",
+                  "latest_deployment_run.canceled_by"
                 ]
               }
             }
@@ -4987,13 +5264,17 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
                             "stack-deployment-runs": "#/components/schemas/stack-deployment-runs",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -5075,7 +5356,8 @@
                 "type": "string",
                 "enum": [
                   "stack_configuration",
-                  "current_step"
+                  "current_step",
+                  "canceled_by"
                 ]
               }
             }
@@ -5118,13 +5400,17 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-deployment-steps"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
                           "propertyName": "type",
                           "mapping": {
                             "stack-configurations": "#/components/schemas/stack-configurations",
-                            "stack-deployment-steps": "#/components/schemas/stack-deployment-steps"
+                            "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -5653,7 +5939,8 @@
                   "stack_deployment_group",
                   "stack_approval",
                   "current_step",
-                  "destroy_stack_configuration"
+                  "destroy_stack_configuration",
+                  "canceled_by"
                 ]
               }
             }
@@ -5702,6 +5989,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
@@ -5710,7 +6000,8 @@
                             "stack-deployment-groups": "#/components/schemas/stack-deployment-groups",
                             "stack-approvals": "#/components/schemas/stack-approvals",
                             "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -6764,7 +7055,8 @@
                   "stack_approval",
                   "current_step",
                   "destroy_stack_configuration",
-                  "blocked_by_deployment_group"
+                  "blocked_by_deployment_group",
+                  "canceled_by"
                 ]
               }
             }
@@ -6813,6 +7105,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/stack-configurations"
+                          },
+                          {
+                            "$ref": "#/components/schemas/users"
                           }
                         ],
                         "discriminator": {
@@ -6821,7 +7116,8 @@
                             "stack-deployment-groups": "#/components/schemas/stack-deployment-groups",
                             "stack-approvals": "#/components/schemas/stack-approvals",
                             "stack-deployment-steps": "#/components/schemas/stack-deployment-steps",
-                            "stack-configurations": "#/components/schemas/stack-configurations"
+                            "stack-configurations": "#/components/schemas/stack-configurations",
+                            "users": "#/components/schemas/users"
                           }
                         }
                       }
@@ -6894,7 +7190,8 @@
                   "destroy_stack_configuration",
                   "blocked_by_deployment_group",
                   "latest_deployment_run_for_deployment",
-                  "rollbacked_state"
+                  "rollbacked_state",
+                  "canceled_by"
                 ]
               }
             }
@@ -7055,9 +7352,6 @@
           {
             "in": "query",
             "name": "include",
-            "x-vis": [
-              "public-beta"
-            ],
             "style": "form",
             "explode": false,
             "schema": {
@@ -7108,9 +7402,6 @@
                       }
                     },
                     "included": {
-                      "x-vis": [
-                        "public-beta"
-                      ],
                       "type": "array",
                       "items": {
                         "oneOf": [
@@ -7192,9 +7483,6 @@
           {
             "in": "query",
             "name": "include",
-            "x-vis": [
-              "public-beta"
-            ],
             "style": "form",
             "explode": false,
             "schema": {
@@ -7237,9 +7525,6 @@
                 },
                 "examples": {
                   "planStepWithStackOperation": {
-                    "x-vis": [
-                      "public-beta"
-                    ],
                     "summary": "Plan step retrieved with ?include=stack-operation",
                     "value": {
                       "data": {
@@ -7289,9 +7574,6 @@
                     }
                   },
                   "planStepWithPolicyEvaluation": {
-                    "x-vis": [
-                      "public-beta"
-                    ],
                     "summary": "Plan step retrieved with ?include=stack_operation.policy_evaluation",
                     "value": {
                       "data": {
@@ -7719,13 +8001,10 @@
       }
     },
     "/stack-policy-evaluations/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getStackPolicyEvaluation",
         "summary": "Show a Stack Policy Evaluation",
-        "description": "Get details about a specific stack policy evaluation.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific stack policy evaluation.",
         "tags": [
           "stacks"
         ],
@@ -7795,13 +8074,10 @@
       }
     },
     "/stack-policy-evaluations/{stack_policy_evaluation_id}/stack-policy-set-outcomes": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listStackPolicyEvaluationStackPolicySetOutcomes",
         "summary": "List Stack Policy Set Outcomes for a Stack Policy Evaluation",
-        "description": "List the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.\n\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the stack policy set outcomes associated with a stack policy evaluation. Supports filtering via the `filter` parameter.\n",
         "tags": [
           "stacks"
         ],
@@ -12123,7 +12399,7 @@
       "post": {
         "operationId": "createQuery",
         "summary": "Create a Query Run",
-        "description": "Create a new query run.",
+        "description": "Create a new query run.\n\nThe configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.",
         "tags": [
           "queries"
         ],
@@ -19856,6 +20132,467 @@
         }
       }
     },
+    "/ootb-policies": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "listOotbPolicies",
+        "summary": "List OOTB Policies",
+        "description": "List all available out-of-the-box (OOTB) policies from the catalog. Returns active policies from ingested releases of active libraries.\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "ootb-policies"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "query",
+            "required": true,
+            "description": "The name of the organization",
+            "schema": {
+              "type": "string",
+              "example": "my-organization"
+            }
+          },
+          {
+            "name": "filter[kind]",
+            "in": "query",
+            "required": false,
+            "description": "Filter policies by policy engine type. Valid values are `sentinel` and `tfpolicy`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sentinel",
+                "tfpolicy"
+              ],
+              "example": "sentinel"
+            }
+          },
+          {
+            "name": "filter[governed-resources]",
+            "in": "query",
+            "required": false,
+            "description": "Filter policies to those governing the given Terraform resource type. Accepts a single value or a comma-separated list of values (e.g. `aws_s3_bucket,aws_ec2_instance`). Returns policies that govern any of the specified resource types. Valid values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.governed-resources[]`.",
+            "schema": {
+              "type": "string",
+              "example": "aws_s3_bucket,aws_ec2_instance"
+            }
+          },
+          {
+            "name": "filter[provider]",
+            "in": "query",
+            "required": false,
+            "description": "Filter policies by cloud provider. Accepts a single value or a comma-separated list of values (e.g. `aws,azure`). Case-insensitive — `AWS` and `aws` both match (values are stored lower-cased). The `providers` facet from the `getOotbPolicyFilterOptions` endpoint returns the display casing.",
+            "schema": {
+              "type": "string",
+              "example": "aws,azure"
+            }
+          },
+          {
+            "name": "filter[service]",
+            "in": "query",
+            "required": false,
+            "description": "Filter policies by cloud service. Accepts a single value or a comma-separated list of values (e.g. `s3,ec2`). Valid values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.services[]`.",
+            "schema": {
+              "type": "string",
+              "example": "s3,ec2"
+            }
+          },
+          {
+            "name": "filter[library]",
+            "in": "query",
+            "required": false,
+            "description": "Filter policies by compliance framework library. Accepts a single slug or a comma-separated list of slugs (e.g. `nist-800-53-aws,cis-aws`). Valid slugs are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.libraries[].slug`.",
+            "schema": {
+              "type": "string",
+              "example": "nist-800-53-aws,cis-aws"
+            }
+          },
+          {
+            "name": "filter[exclude_policy_set]",
+            "in": "query",
+            "required": false,
+            "description": "Exclude OOTB policies already materialized into the given policy set. The value is the policy set's external ID. Returns 400 if the policy set does not exist or does not belong to `organization_name`.",
+            "schema": {
+              "type": "string",
+              "example": "polset-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "name": "search[name]",
+            "in": "query",
+            "required": false,
+            "description": "Search policies by name (case-insensitive partial match).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Sort policies by the specified field. Valid values are name and -name. Prefix with - for descending order.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "-name"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[ootb-policies]",
+            "description": "Return only the specified fields for ootb-policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ootb-policy-libraries"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ootb-policies"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ootb-policy-libraries"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "ootb-policy-libraries": "#/components/schemas/ootb-policy-libraries"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ootb-policies/filter-options": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getOotbPolicyFilterOptions",
+        "summary": "Get OOTB Policy filter options",
+        "description": "Returns the set of values available for filtering the out-of-the-box (OOTB) policy catalog: providers, governed resource types, libraries (compliance frameworks), and services. Each library slug is a valid value for the collection endpoint's `filter[library]` parameter. Optionally scoped to a single policy kind via `filter[kind]`. When omitted, options include all served policy kinds.\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "ootb-policies"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "query",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string",
+              "example": "my-organization"
+            }
+          },
+          {
+            "name": "filter[kind]",
+            "in": "query",
+            "required": false,
+            "description": "Restrict providers, governed resource types, libraries, and services to those available for served policies of a single policy engine type. Valid values are `sentinel` and `tfpolicy`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sentinel",
+                "tfpolicy"
+              ],
+              "example": "sentinel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[ootb-policy-filter-options]",
+            "description": "Return only the specified fields for ootb-policy-filter-options resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ootb-policy-filter-options"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ootb-policies/{external_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "showOotbPolicy",
+        "summary": "Show an OOTB Policy",
+        "description": "Get details about a specific out-of-the-box policy by its external ID.\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "ootb-policies"
+        ],
+        "parameters": [
+          {
+            "name": "external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the OOTB policy.",
+            "schema": {
+              "type": "string",
+              "pattern": "^ootbpol-",
+              "example": "ootbpol-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "name": "organization_name",
+            "in": "query",
+            "required": true,
+            "description": "The name of the organization.",
+            "schema": {
+              "type": "string",
+              "example": "my-organization"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields[ootb-policies]",
+            "description": "Return only the specified fields for ootb-policies resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ootb_policy_libraries"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ootb-policies"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ootb-policy-libraries"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "ootb-policy-libraries": "#/components/schemas/ootb-policy-libraries"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ootb-policies/{external_id}/download": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "downloadOotbPolicy",
+        "summary": "Download OOTB Policy Content",
+        "description": "Generate a temporary URL to the policy source content and redirect to that location. By default returns the latest version. Use the `version` query parameter to download a specific version. Returns 404 if no version has been uploaded.\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "ootb-policies"
+        ],
+        "parameters": [
+          {
+            "name": "external_id",
+            "in": "path",
+            "required": true,
+            "description": "The external ID of the OOTB policy.",
+            "schema": {
+              "type": "string",
+              "pattern": "^ootbpol-",
+              "example": "ootbpol-xxxxxxxxxxxxxxxx"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "description": "The external ID of a specific OOTB policy version to download. If omitted, the latest version is returned.",
+            "schema": {
+              "type": "string",
+              "example": "ootbpolver-xxxxxxxxxxxxxxxx"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to the policy source download URL.",
+            "headers": {
+              "Location": {
+                "description": "The temporary signed URL to download the policy source.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Policy not found or no version available.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/policy-checks/{id}": {
       "get": {
         "operationId": "getPolicyCheck",
@@ -20157,13 +20894,10 @@
       }
     },
     "/runs/{run_id}/tf-policy-evaluations": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listRunTfPolicyEvaluations",
         "summary": "List Terraform Policy Evaluations for a Run",
-        "description": "List the Terraform Policy evaluations associated with a run.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the Terraform Policy evaluations associated with a run.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20241,13 +20975,10 @@
       }
     },
     "/tf-policy-evaluations/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getTfPolicyEvaluation",
         "summary": "Show a Terraform Policy Evaluation",
-        "description": "Get details about a specific Terraform Policy evaluation.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific Terraform Policy evaluation.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20317,13 +21048,10 @@
       }
     },
     "/tf-policy-evaluations/{id}/actions/override": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "overrideTfPolicyEvaluation",
         "summary": "Override a Terraform Policy Evaluation",
-        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Override a mandatory-overridable Terraform Policy evaluation to allow the run to continue.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20390,13 +21118,10 @@
       }
     },
     "/tf-policy-evaluations/{tf_policy_evaluation_id}/tf-policy-set-outcomes": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "listTfPolicyEvaluationTfPolicySetOutcomes",
         "summary": "List Terraform Policy Set Outcomes for a Terraform Policy Evaluation",
-        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "List the Terraform Policy set outcomes associated with a Terraform Policy evaluation. Supports filtering via the `filter` parameter.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20519,13 +21244,10 @@
       }
     },
     "/tf-policy-set-outcomes/{id}": {
-      "x-vis": [
-        "public-beta"
-      ],
       "get": {
         "operationId": "getTfPolicySetOutcome",
         "summary": "Show a Terraform Policy Set Outcome",
-        "description": "Get details about a specific Terraform Policy set outcome.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Get details about a specific Terraform Policy set outcome.",
         "tags": [
           "tf-policy-evaluations"
         ],
@@ -20900,6 +21622,18 @@
           },
           {
             "in": "query",
+            "name": "include-ootb-update",
+            "x-vis": [
+              "hcpt"
+            ],
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true and the actor is authorized for update metadata, every\nsideloaded policy on this set (regardless of any other filter) gains\na nullable `ootb-update` attribute; `policy-count` is unaffected.\nDefault response shape is unchanged and no availability query runs\nwhen omitted. Unlike index, show never adds an aggregate meta object.\nWhen OOTB policy updates are unavailable for the organization, this\nparameter is ignored: the default response shape is unchanged, no\n`ootb-update` attributes are added, and no availability query runs.\n"
+          },
+          {
+            "in": "query",
             "name": "include",
             "style": "form",
             "explode": false,
@@ -20923,7 +21657,7 @@
               }
             },
             "required": false,
-            "description": "Available side-load related resources. Multiple values can be comma-separated.\nProject exclusion, stack, and stack exclusion relationship data is only\nreturned when included.\n\nAvailable includes:\n- `policies` - The policies in this policy set\n- `workspaces` - The workspaces this policy set is attached to\n- `workspace_exclusions` - The workspaces excluded from this policy set\n- `stacks` - The stacks this policy set is attached to (`tfpolicy` policy sets only) *(public-beta)*\n- `stack_exclusions` - The stacks excluded from this policy set (`tfpolicy` policy sets only) *(public-beta)*\n- `projects` - The projects this policy set is attached to\n- `project_exclusions` - The projects excluded from this policy set\n- `current_version` - The current policy set version\n- `newest_version` - The newest policy set version\n- `policies.ootb_policy` - The OOTB policy for each policy *(public-beta)*\n- `policies.ootb_policy.ootb_policy_libraries` - The OOTB policy libraries for each OOTB policy *(public-beta)*\n"
+            "description": "Available side-load related resources. Multiple values can be comma-separated.\nProject exclusion, stack, and stack exclusion relationship data is only\nreturned when included.\n\nAvailable includes:\n- `policies` - The policies in this policy set\n- `workspaces` - The workspaces this policy set is attached to\n- `workspace_exclusions` - The workspaces excluded from this policy set\n- `stacks` - The stacks this policy set is attached to (`tfpolicy` policy sets only)\n- `stack_exclusions` - The stacks excluded from this policy set (`tfpolicy` policy sets only)\n- `projects` - The projects this policy set is attached to\n- `project_exclusions` - The projects excluded from this policy set\n- `current_version` - The current policy set version\n- `newest_version` - The newest policy set version\n- `policies.ootb_policy` - The OOTB policy for each policy\n- `policies.ootb_policy.ootb_policy_libraries` - The OOTB policy libraries for each OOTB policy\n"
           },
           {
             "in": "query",
@@ -21087,7 +21821,7 @@
               ]
             },
             "required": false,
-            "description": "Filter policy sets by kind.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n"
+            "description": "Filter policy sets by kind.\n\n- `sentinel` - Sentinel policy enforcement\n- `opa` - Open Policy Agent (OPA) policy enforcement\n- `tfpolicy` - Terraform Policy enforcement\n"
           },
           {
             "in": "query",
@@ -21096,10 +21830,22 @@
               "type": "string"
             },
             "required": false,
-            "description": "Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when the OOTB policy feature is enabled for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.",
+            "description": "Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when OOTB policies are available for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.",
             "x-vis": [
               "hcpt"
             ]
+          },
+          {
+            "in": "query",
+            "name": "filter[needs-update]",
+            "x-vis": [
+              "hcpt"
+            ],
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Only the literal value `true` opts in and narrows results to policy\nsets with at least one available forward OOTB update, using the same\navailability predicate as `include-ootb-update`'s markers and\naggregate count; `false` or any other value is a no-op, same as\nomitting the parameter. Index only; the show operation ignores this\nfilter if supplied. Independent of `include-ootb-update`: using this\nfilter alone adds no `ootb-update` attributes or\n`ootb-policy-updates` meta; using `include-ootb-update` alone does not\nnarrow results; using both returns the filtered rows alongside the\nunchanged organization-wide `affected-policy-set-count`. Composes with\n`filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`,\n`search[name]`, sort and pagination. When OOTB policy updates are\nunavailable for the organization, this filter is ignored and no\navailability query runs. An authorized-to-read but otherwise\nunauthorized actor (e.g. a site-auditor without update-metadata permission) receives the\nordinary, unfiltered index — no narrowing and no update metadata,\nnot an error.\n"
           },
           {
             "in": "query",
@@ -21109,6 +21855,18 @@
             },
             "required": false,
             "description": "Filter policy sets by name."
+          },
+          {
+            "in": "query",
+            "name": "include-ootb-update",
+            "x-vis": [
+              "hcpt"
+            ],
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If true and the actor is authorized for update metadata, sideloaded\n`policies` each gain a nullable `ootb-update` attribute and the\nresponse gains top-level `meta.ootb-policy-updates.affected-policy-set-count`.\nDefault response shape is unchanged and no availability query runs\nwhen omitted or when OOTB policy updates are unavailable for the\norganization. When updates are unavailable, this parameter is ignored\nand no OOTB update attributes or metadata are added.\n"
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -21176,6 +21934,19 @@
                       "properties": {
                         "pagination": {
                           "$ref": "#/components/schemas/pagination"
+                        },
+                        "ootb-policy-updates": {
+                          "type": "object",
+                          "x-vis": [
+                            "hcpt"
+                          ],
+                          "description": "Present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.",
+                          "properties": {
+                            "affected-policy-set-count": {
+                              "type": "integer",
+                              "description": "The organization-wide count of policy sets with at least one available OOTB update, in the caller's authorized scope. Captured before `filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`, `filter[needs-update]`, search, or pagination, so it does not change with those filters."
+                            }
+                          }
                         }
                       }
                     },
@@ -21742,13 +22513,10 @@
       }
     },
     "/policy-sets/{policy_set_id}/relationships/stacks": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "addPolicySetStacks",
         "summary": "Add Stacks to a Policy Set",
-        "description": "Add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Add stacks to a policy set. Relationships are additive; existing stack memberships are preserved. Only supported for policy sets of kind tfpolicy.",
         "tags": [
           "policy-sets"
         ],
@@ -21792,7 +22560,7 @@
       "delete": {
         "operationId": "removePolicySetStacks",
         "summary": "Remove Stacks from a Policy Set",
-        "description": "Remove stacks from a policy set. Stacks not currently in the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Remove stacks from a policy set. Stacks not currently in the set are ignored.",
         "tags": [
           "policy-sets"
         ],
@@ -21835,13 +22603,10 @@
       }
     },
     "/policy-sets/{policy_set_id}/relationships/stack-exclusions": {
-      "x-vis": [
-        "public-beta"
-      ],
       "post": {
         "operationId": "addPolicySetStackExclusions",
         "summary": "Add Stack Exclusions to a Policy Set",
-        "description": "Add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Add stack exclusions to a policy set. Excluded stacks will not have the policy set applied to them even if the set is global.",
         "tags": [
           "policy-sets"
         ],
@@ -21885,7 +22650,7 @@
       "delete": {
         "operationId": "removePolicySetStackExclusions",
         "summary": "Remove Stack Exclusions from a Policy Set",
-        "description": "Remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Remove stack exclusions from a policy set. Stack exclusions not currently in the set are ignored.",
         "tags": [
           "policy-sets"
         ],
@@ -22082,6 +22847,108 @@
           },
           "404": {
             "description": "Policy set not found or feature not enabled.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policy-sets/{policy_set_id}/actions/update-ootb-policies": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "post": {
+        "operationId": "updatePolicySetOotbPolicies",
+        "summary": "Update OOTB Policies in a Policy Set",
+        "description": "Move the listed out-of-the-box (OOTB) policies in a policy set forward to the version currently served for them. No version identifier is sent. A policy moves only when the served version is newer than its current version; otherwise it is left unchanged, so policies are never downgraded. All listed policies must be OOTB policies attached to this policy set and have a servable version. Source content is required for versions written. A policy that is also attached to other policy sets is updated for all of them. If any target is invalid, the whole request fails and nothing changes.\n\n\nThis operation is only available in HCP Terraform.",
+        "tags": [
+          "policy-sets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "policy_set_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the policy set."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "policies"
+                          ]
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "pattern": "\\S",
+                          "description": "The external ID of a materialized OOTB policy in this policy set."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Each listed policy is at the served version, or was left unchanged because its current version was already the same or newer.\n"
+          },
+          "404": {
+            "description": "Policy set not found or user unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "OOTB policy updates are not available for the organization, the payload is malformed, or a listed policy is not an OOTB policy attached to this policy set with a servable version.\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -36914,7 +37781,7 @@
             "properties": {
               "display-name": {
                 "type": "string",
-                "description": "A human-readable label for this certificate.",
+                "description": "A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.\n",
                 "example": "Primary IdP Cert"
               },
               "cert": {
@@ -37055,7 +37922,7 @@
                 "x-vis": [
                   "tfe"
                 ],
-                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default HashiCorp support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
+                "description": "Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
               "internal-documentation-url": {
                 "type": "string",
@@ -37868,6 +38735,146 @@
                 }
               }
             }
+          }
+        }
+      },
+      "users-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "admin-in-app-notifications": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The in-app notification's ID (ian-xxxxxxxxxxxxxxxx)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "in-app-notifications"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "title",
+              "body",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 255,
+                "description": "The announcement title."
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 2000,
+                "description": "The announcement body."
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "description": "The absolute HTTPS URL the announcement links to."
+              },
+              "is-external-link": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the URL links outside of HCP Terraform."
+              },
+              "severity": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "info",
+                  "warning",
+                  "high",
+                  "critical"
+                ],
+                "description": "The announcement severity."
+              },
+              "status": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "draft",
+                  "approved",
+                  "denied"
+                ],
+                "description": "The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.\n"
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "When the announcement expires."
+              },
+              "approved-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "denied-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "readOnly": true,
+            "properties": {
+              "created-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "approved-by": {
+                "$ref": "#/components/schemas/users-has-one"
+              }
+            }
+          }
+        }
+      },
+      "admin-in-app-notifications-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/admin-in-app-notifications"
           }
         }
       },
@@ -39338,8 +40345,7 @@
               "branch": {
                 "type": "string",
                 "nullable": true,
-                "readOnly": true,
-                "description": "The branch this configuration belongs to"
+                "description": "The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise."
               },
               "deployment-topology": {
                 "type": "object",
@@ -39730,6 +40736,13 @@
                 "nullable": true,
                 "readOnly": true
               },
+              "canceled-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping."
+              },
               "eligible-for-rerun": {
                 "type": "boolean",
                 "readOnly": true
@@ -39768,6 +40781,9 @@
               },
               "rollbacked-state": {
                 "$ref": "#/components/schemas/stack-deployment-runs-has-one"
+              },
+              "canceled-by": {
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -40680,9 +41696,6 @@
                 "$ref": "#/components/schemas/stack-approvals-has-one"
               },
               "stack-operation": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stack-operation-has-one"
               }
             }
@@ -40722,9 +41735,6 @@
       },
       "stack-operation-plans": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40782,9 +41792,6 @@
           },
           "relationships": {
             "type": "object",
-            "x-vis": [
-              "public-beta"
-            ],
             "properties": {
               "policy-evaluation": {
                 "description": "Stack policy evaluation associated with this plan operation",
@@ -40807,9 +41814,6 @@
       },
       "stack-operation-applies": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40856,9 +41860,6 @@
       },
       "stack-operation-import-states": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40902,9 +41903,6 @@
       },
       "stack-operation-allow-imports": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "required": [
           "type",
           "attributes"
@@ -40969,9 +41967,6 @@
       },
       "stack-policy-evaluations": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "description": "Represents a Terraform Policy evaluation for a Stacks plan operation.",
         "required": [
           "type",
@@ -41107,9 +42102,6 @@
             "$ref": "#/components/schemas/stack-deployment-steps"
           },
           "included": {
-            "x-vis": [
-              "public-beta"
-            ],
             "type": "array",
             "items": {
               "oneOf": [
@@ -41308,9 +42300,6 @@
       },
       "stack-policy-set-outcomes": {
         "type": "object",
-        "x-vis": [
-          "public-beta"
-        ],
         "description": "Represents the outcome of evaluating a Terraform Policy set against a Stacks plan.",
         "required": [
           "type",
@@ -41497,6 +42486,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "external-id": {
                 "type": "string",
@@ -41839,6 +42829,31 @@
                   "public-beta"
                 ],
                 "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "managed-resource-count": {
+                "type": "integer",
+                "readOnly": true,
+                "nullable": true
+              },
+              "user-tokens-enabled": {
+                "type": "boolean"
+              },
+              "sso-enabled": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "eligible-for-concurrency-add-ons": {
+                "type": "boolean"
+              },
+              "scim-configuration-present": {
+                "type": "boolean"
+              },
+              "enforce-hyok": {
+                "type": "boolean"
+              },
+              "sso-idp-cert-expiration": {
+                "type": "string",
+                "nullable": true
               }
             }
           },
@@ -41976,29 +42991,6 @@
             "items": {
               "$ref": "#/components/schemas/teams-identifier"
             }
-          }
-        }
-      },
-      "users-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "users"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -43249,6 +44241,7 @@
           },
           "attributes": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "allow-destroy-plan": {
                 "type": "boolean"
@@ -43551,6 +44544,14 @@
                 ],
                 "description": "A human-readable description of the effective state-version\nretention window for this workspace. Returns null when no state-version retention policy is in effect for the\nworkspace, or when the policy does not delete state versions.\n\n\nThis attribute is only available in Terraform Enterprise."
               },
+              "parent-data-retention-policy-info": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "type": "string",
+                "nullable": false,
+                "description": "This attribute is only available in Terraform Enterprise."
+              },
               "effective-run-data-retention-desc": {
                 "type": "string",
                 "nullable": true,
@@ -43565,6 +44566,18 @@
                   "hcpt"
                 ],
                 "description": "HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,\nit can no longer be disabled.\n\n\nThis attribute is only available in HCP Terraform."
+              },
+              "unarchived-workspace-change-requests-count": {
+                "x-vis": [
+                  "public-beta"
+                ],
+                "type": "integer",
+                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+              },
+              "oauth-client-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "The display name of the OAuth client associated with this workspace, if any.\n"
               }
             }
           },
@@ -44183,7 +45196,8 @@
                 "$ref": "#/components/schemas/users-has-one"
               },
               "configuration-version": {
-                "$ref": "#/components/schemas/configuration-versions-has-one"
+                "$ref": "#/components/schemas/configuration-versions-has-one",
+                "description": "The configuration version used for the query run. It must belong to the workspace's organization and already be associated with the workspace; otherwise the request returns `404 Not Found`. If omitted, the workspace's current configuration version is used, subject to the same requirement."
               },
               "created-by": {
                 "$ref": "#/components/schemas/users-has-one"
@@ -45950,19 +46964,11 @@
                   },
                   "tf-policy-checked-at": {
                     "type": "string",
-                    "format": "date-time",
-                    "x-vis": [
-                      "public-beta"
-                    ],
-                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                    "format": "date-time"
                   },
                   "tf-policy-override-at": {
                     "type": "string",
-                    "format": "date-time",
-                    "x-vis": [
-                      "public-beta"
-                    ],
-                    "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                    "format": "date-time"
                   },
                   "post-plan-running-at": {
                     "type": "string",
@@ -46233,9 +47239,6 @@
                 "$ref": "#/components/schemas/workspace-comments-has-many"
               },
               "tf-policy-evaluations": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/tf-policy-evaluations-has-many"
               }
             }
@@ -46925,6 +47928,38 @@
           }
         }
       },
+      "ootb-policies-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ootb-policies"
+            ]
+          }
+        }
+      },
+      "ootb-policies-has-one": {
+        "type": "object",
+        "description": "The policy's OOTB catalog reference. Request `?include=policies.ootb-policy` to sideload the full `ootb-policies` catalog resource (control source, catalog metadata, download identity) alongside a policy-sets response.",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ootb-policies-identifier"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "policies": {
         "type": "object",
         "required": [
@@ -47004,6 +48039,34 @@
                 "nullable": true,
                 "readOnly": true,
                 "description": "The time of the most recent policy code upload."
+              },
+              "origin": {
+                "type": "string",
+                "enum": [
+                  "custom",
+                  "ootb"
+                ],
+                "readOnly": true,
+                "description": "The source of the policy. \"ootb\" for policies materialized from the out-of-the-box policy catalog; \"custom\" for user-defined policies."
+              },
+              "ootb-update": {
+                "type": "object",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "nullable": true,
+                "readOnly": true,
+                "description": "Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.\n\nThis attribute is only available in HCP Terraform.",
+                "properties": {
+                  "from-version-id": {
+                    "type": "string",
+                    "description": "External ID of this policy's currently pinned OOTB catalog version."
+                  },
+                  "to-version-id": {
+                    "type": "string",
+                    "description": "External ID of the newer eligible OOTB catalog version."
+                  }
+                }
               }
             }
           },
@@ -47015,6 +48078,12 @@
               },
               "policy-sets": {
                 "$ref": "#/components/schemas/policy-sets-has-many"
+              },
+              "ootb-policy": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "$ref": "#/components/schemas/ootb-policies-has-one"
               }
             }
           },
@@ -47036,6 +48105,15 @@
                 "nullable": true,
                 "readOnly": true,
                 "description": "URL to download the current policy source content. Absent when no version has been uploaded yet."
+              },
+              "ootb-download": {
+                "type": "string",
+                "x-vis": [
+                  "hcpt"
+                ],
+                "nullable": true,
+                "readOnly": true,
+                "description": "OOTB catalog download URL pinned to this policy's current OOTB version via `?version=<ootbpolver-*>`. Present only for OOTB-origin policies with a current version."
               }
             }
           }
@@ -47062,6 +48140,85 @@
                 "propertyName": "type",
                 "mapping": {
                   "policy-sets": "#/components/schemas/policy-sets"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ootb-policy-libraries-identifier": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "ootb-policy-libraries"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The slug of the library."
+          }
+        }
+      },
+      "ootb-policy-libraries-has-many": {
+        "type": "object",
+        "description": "Libraries this policy belongs to. Only present when ?include=ootb-policy-libraries is passed on the list endpoint.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ootb-policy-libraries-identifier"
+            }
+          }
+        }
+      },
+      "ootb-policy-filter-options": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "ootb-policy-filter-options"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "providers": {
+                "type": "array",
+                "description": "Distinct cloud provider names available in the catalog.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "governed-resources": {
+                "type": "array",
+                "description": "Distinct Terraform resource types governed by catalog policies.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "libraries": {
+                "type": "array",
+                "description": "Policy libraries (compliance frameworks) that currently serve at least one catalog policy, as name/slug pairs. Each slug is a valid value for the index endpoint's filter[library] parameter.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "services": {
+                "type": "array",
+                "description": "Distinct cloud service names available in the catalog.",
+                "items": {
+                  "type": "string"
                 }
               }
             }
@@ -47642,6 +48799,61 @@
                       }
                     }
                   ]
+                },
+                {
+                  "description": "Create-time OOTB selection: materializes an OOTB catalog policy into the set. Create-time-only input; not present in responses.",
+                  "x-vis": [
+                    "hcpt"
+                  ],
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "attributes",
+                    "relationships"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "policies"
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "required": [
+                        "source"
+                      ],
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "ootb"
+                          ]
+                        },
+                        "enforcement-level": {
+                          "type": "string",
+                          "enum": [
+                            "hard-mandatory",
+                            "soft-mandatory",
+                            "advisory",
+                            "mandatory",
+                            "mandatory_overridable"
+                          ]
+                        }
+                      }
+                    },
+                    "relationships": {
+                      "type": "object",
+                      "required": [
+                        "ootb-policy"
+                      ],
+                      "properties": {
+                        "ootb-policy": {
+                          "$ref": "#/components/schemas/ootb-policies-has-one"
+                        }
+                      }
+                    }
+                  }
                 }
               ]
             }
@@ -47687,11 +48899,7 @@
               },
               "stack-count": {
                 "type": "integer",
-                "x-vis": [
-                  "public-beta"
-                ],
-                "readOnly": true,
-                "description": "This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                "readOnly": true
               },
               "versioned": {
                 "type": "boolean",
@@ -47699,7 +48907,7 @@
               },
               "kind": {
                 "type": "string",
-                "description": "The kind of policies contained in this policy set.\n\n**Note:** The following kind values are in public-beta:\n- `tfpolicy` - Terraform Policy enforcement\n",
+                "description": "The kind of policies contained in this policy set.\n\n- `sentinel` - Sentinel policy enforcement\n- `opa` - Open Policy Agent (OPA) policy enforcement\n- `tfpolicy` - Terraform Policy enforcement\n",
                 "enum": [
                   "sentinel",
                   "opa",
@@ -47852,15 +49060,9 @@
                 "$ref": "#/components/schemas/projects-has-many"
               },
               "stacks": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stacks-has-many"
               },
               "stack-exclusions": {
-                "x-vis": [
-                  "public-beta"
-                ],
                 "$ref": "#/components/schemas/stacks-has-many"
               }
             }
@@ -47952,6 +49154,61 @@
                     },
                     "id": {
                       "type": "string"
+                    }
+                  }
+                },
+                {
+                  "description": "Create-time OOTB selection (add only): materializes an OOTB catalog policy into a local policy within the policy set via this relationship. Not valid for the remove (DELETE) direction. A policy set cannot mix custom and OOTB policies.",
+                  "x-vis": [
+                    "hcpt"
+                  ],
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "attributes",
+                    "relationships"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "policies"
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "required": [
+                        "source"
+                      ],
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "ootb"
+                          ]
+                        },
+                        "enforcement-level": {
+                          "type": "string",
+                          "enum": [
+                            "hard-mandatory",
+                            "soft-mandatory",
+                            "advisory",
+                            "mandatory",
+                            "mandatory_overridable"
+                          ]
+                        }
+                      }
+                    },
+                    "relationships": {
+                      "type": "object",
+                      "required": [
+                        "ootb-policy"
+                      ],
+                      "properties": {
+                        "ootb-policy": {
+                          "$ref": "#/components/schemas/ootb-policies-has-one"
+                        }
+                      }
                     }
                   }
                 }
@@ -52014,11 +53271,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/organizations-identifier"
-              }
-            ]
+            "$ref": "#/components/schemas/organizations-identifier"
           }
         }
       },
@@ -53625,33 +54878,6 @@
           },
           "links": {
             "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "ootb-policy-libraries-identifier": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "ootb-policy-libraries"
-            ]
-          },
-          "id": {
-            "type": "string",
-            "description": "The slug of the library."
-          }
-        }
-      },
-      "ootb-policy-libraries-has-many": {
-        "type": "object",
-        "description": "Libraries this policy belongs to. Only present when ?include=ootb-policy-libraries is passed on the list endpoint.",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ootb-policy-libraries-identifier"
-            }
           }
         }
       }

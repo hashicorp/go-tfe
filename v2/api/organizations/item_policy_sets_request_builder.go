@@ -18,14 +18,18 @@ type ItemPolicySetsRequestBuilder struct {
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
-    // Filter policy sets by kind.**Note:** The following kind values are in public-beta:- `tfpolicy` - Terraform Policy enforcement
+    // Filter policy sets by kind.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
     Filterkind *i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
-    // Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when the OOTB policy feature is enabled for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.
+    // Only the literal value `true` opts in and narrows results to policysets with at least one available forward OOTB update, using the sameavailability predicate as `include-ootb-update`'s markers andaggregate count; `false` or any other value is a no-op, same asomitting the parameter. Index only; the show operation ignores thisfilter if supplied. Independent of `include-ootb-update`: using thisfilter alone adds no `ootb-update` attributes or`ootb-policy-updates` meta; using `include-ootb-update` alone does notnarrow results; using both returns the filtered rows alongside theunchanged organization-wide `affected-policy-set-count`. Composes with`filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`,`search[name]`, sort and pagination. When OOTB policy updates areunavailable for the organization, this filter is ignored and noavailability query runs. An authorized-to-read but otherwiseunauthorized actor (e.g. a site-auditor without update-metadata permission) receives theordinary, unfiltered index — no narrowing and no update metadata,not an error.
+    FilterneedsUpdate *bool "uriparametername:\"filter%5Bneeds%2Dupdate%5D\""
+    // Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when OOTB policies are available for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.
     FilterootbPolicy *string "uriparametername:\"filter%5Bootb%2Dpolicy%5D\""
     // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
     Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""
     // Optionally side-load the specified relationships.
     Include []i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetIncludeQueryParameterType "uriparametername:\"include\""
+    // If true and the actor is authorized for update metadata, sideloaded`policies` each gain a nullable `ootb-update` attribute and theresponse gains top-level `meta.ootb-policy-updates.affected-policy-set-count`.Default response shape is unchanged and no availability query runswhen omitted or when OOTB policy updates are unavailable for theorganization. When updates are unavailable, this parameter is ignoredand no OOTB update attributes or metadata are added.
+    IncludeOotbUpdate *bool "uriparametername:\"include%2Dootb%2Dupdate\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
@@ -36,7 +40,7 @@ type ItemPolicySetsRequestBuilderGetQueryParameters struct {
 // NewItemPolicySetsRequestBuilderInternal instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
 func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
     m := &ItemPolicySetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bneeds%2Dupdate%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,include,include%2Dootb%2Dupdate*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
     }
     return m
 }

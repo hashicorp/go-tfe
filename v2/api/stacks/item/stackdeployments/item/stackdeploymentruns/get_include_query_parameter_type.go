@@ -7,10 +7,11 @@ type GetIncludeQueryParameterType int
 const (
     STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
     CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+    CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack_configuration", "current_step"}[i]
+    return []string{"stack_configuration", "current_step", "canceled_by"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
@@ -19,6 +20,8 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
         case "current_step":
             result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+        case "canceled_by":
+            result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

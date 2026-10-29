@@ -10,6 +10,8 @@ import (
 type Policies_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The policy's OOTB catalog reference. Request `?include=policies.ootb-policy` to sideload the full `ootb-policies` catalog resource (control source, catalog metadata, download identity) alongside a policy-sets response.
+    ootbPolicy OotbPoliciesHasOneable
     // The organization property
     organization OrganizationsHasOneable
     // The policySets property
@@ -36,6 +38,16 @@ func (m *Policies_relationships) GetAdditionalData()(map[string]any) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Policies_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["ootb-policy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateOotbPoliciesHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOotbPolicy(val.(OotbPoliciesHasOneable))
+        }
+        return nil
+    }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -58,6 +70,11 @@ func (m *Policies_relationships) GetFieldDeserializers()(map[string]func(i878a80
     }
     return res
 }
+// GetOotbPolicy gets the ootb-policy property value. The policy's OOTB catalog reference. Request `?include=policies.ootb-policy` to sideload the full `ootb-policies` catalog resource (control source, catalog metadata, download identity) alongside a policy-sets response.
+// returns a OotbPoliciesHasOneable when successful
+func (m *Policies_relationships) GetOotbPolicy()(OotbPoliciesHasOneable) {
+    return m.ootbPolicy
+}
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *Policies_relationships) GetOrganization()(OrganizationsHasOneable) {
@@ -70,6 +87,12 @@ func (m *Policies_relationships) GetPolicySets()(PolicySetsHasManyable) {
 }
 // Serialize serializes information the current object
 func (m *Policies_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("ootb-policy", m.GetOotbPolicy())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
         if err != nil {
@@ -94,6 +117,10 @@ func (m *Policies_relationships) Serialize(writer i878a80d2330e89d26896388a3f487
 func (m *Policies_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetOotbPolicy sets the ootb-policy property value. The policy's OOTB catalog reference. Request `?include=policies.ootb-policy` to sideload the full `ootb-policies` catalog resource (control source, catalog metadata, download identity) alongside a policy-sets response.
+func (m *Policies_relationships) SetOotbPolicy(value OotbPoliciesHasOneable)() {
+    m.ootbPolicy = value
+}
 // SetOrganization sets the organization property value. The organization property
 func (m *Policies_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
@@ -105,8 +132,10 @@ func (m *Policies_relationships) SetPolicySets(value PolicySetsHasManyable)() {
 type Policies_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetOotbPolicy()(OotbPoliciesHasOneable)
     GetOrganization()(OrganizationsHasOneable)
     GetPolicySets()(PolicySetsHasManyable)
+    SetOotbPolicy(value OotbPoliciesHasOneable)()
     SetOrganization(value OrganizationsHasOneable)()
     SetPolicySets(value PolicySetsHasManyable)()
 }

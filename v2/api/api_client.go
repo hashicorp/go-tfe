@@ -65,6 +65,7 @@ import (
     ice175c2bc5dca7fd242eaf5d94389218212237a00a32175e232d6873e8576627 "github.com/hashicorp/go-tfe/v2/api/oauthtokens"
     id37f321ec9d929c628c7d6b68b52c0895a210904bdfe553054b3b8144f73ba73 "github.com/hashicorp/go-tfe/v2/api/assessmentresults"
     id5ec4c82a134dcd79c70d0d55525fbbe00a46f7a637bb7d1f1f818bdbb15d0f9 "github.com/hashicorp/go-tfe/v2/api/stackstates"
+    id6c41237ebd1ccc5b2103ff0dd17295a762e86d0c7439b5c6bf421ff407025ed "github.com/hashicorp/go-tfe/v2/api/ootbpolicies"
     id6f566863c53cc08116f3b49bdb31efb7ba723bea06fdf6c76b4f1e4af545a6d "github.com/hashicorp/go-tfe/v2/api/policychecks"
     ida37032331931bdbac35f8b15434de19f19da392d7e7a114a8246766075382a9 "github.com/hashicorp/go-tfe/v2/api/providersets"
     ie130cfa8b5f3763f675a0be8d887bc5a809e7f419969393d0dc9004d3aea5218 "github.com/hashicorp/go-tfe/v2/api/users"
@@ -240,6 +241,11 @@ func (m *ApiClient) OauthTokens()(*ice175c2bc5dca7fd242eaf5d94389218212237a00a32
 // returns a *OidcConfigurationsRequestBuilder when successful
 func (m *ApiClient) OidcConfigurations()(*if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94.OidcConfigurationsRequestBuilder) {
     return if3894ce9f379496defbab576723e90858f31cec6e3332422399d7f37035d9d94.NewOidcConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OotbPolicies the ootbPolicies property
+// returns a *OotbPoliciesRequestBuilder when successful
+func (m *ApiClient) OotbPolicies()(*id6c41237ebd1ccc5b2103ff0dd17295a762e86d0c7439b5c6bf421ff407025ed.OotbPoliciesRequestBuilder) {
+    return id6c41237ebd1ccc5b2103ff0dd17295a762e86d0c7439b5c6bf421ff407025ed.NewOotbPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Organization the organization property
 // returns a *OrganizationRequestBuilder when successful
