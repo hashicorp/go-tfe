@@ -7,11 +7,25 @@ import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
     i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i1bad44c5e6148dc2d075ee46aff68e079858789432f129d22d3feb3438034066 "github.com/hashicorp/go-tfe/v2/api/admin/inappnotifications"
 )
 
 // InAppNotificationsRequestBuilder builds and executes requests for operations under \admin\in-app-notifications
 type InAppNotificationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// InAppNotificationsRequestBuilderGetQueryParameters lists feature announcements in every review status, newest first. Token expiry digests are never included.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+type InAppNotificationsRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsinAppNotifications []string "uriparametername:\"fields%5Bin%2Dapp%2Dnotifications%5D\""
+    // Comma-separated list of review statuses to return: one or more of `draft`, `approved` and `denied`. Any other value returns 400. Omit or leave empty to return every status.
+    Filterstatus *string "uriparametername:\"filter%5Bstatus%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i1bad44c5e6148dc2d075ee46aff68e079858789432f129d22d3feb3438034066.GetIncludeQueryParameterType "uriparametername:\"include\""
+    // The page number to retrieve.
+    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.admin.inAppNotifications.item collection
 // returns a *InAppNotificationsInAppNotificationsItemRequestBuilder when successful
@@ -28,7 +42,7 @@ func (m *InAppNotificationsRequestBuilder) ById(id string)(*InAppNotificationsIn
 // NewInAppNotificationsRequestBuilderInternal instantiates a new InAppNotificationsRequestBuilder and sets the default values.
 func NewInAppNotificationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InAppNotificationsRequestBuilder) {
     m := &InAppNotificationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/in-app-notifications", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/in-app-notifications{?fields%5Bin%2Dapp%2Dnotifications%5D,filter%5Bstatus%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -38,11 +52,36 @@ func NewInAppNotificationsRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     urlParams["request-raw-url"] = rawUrl
     return NewInAppNotificationsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post creates a draft feature announcement, shown to all HCP Terraform users once approved.Requires an API token for a user with the `content-management` admin role. Other callers receive 404.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Get lists feature announcements in every review status, newest first. Token expiry digests are never included.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a InAppNotificationsGetResponseable when successful
+// returns a Errors error when the service returns a 400 status code
+// returns a Errors error when the service returns a 401 status code
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *InAppNotificationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InAppNotificationsRequestBuilderGetQueryParameters])(InAppNotificationsGetResponseable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateInAppNotificationsGetResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(InAppNotificationsGetResponseable), nil
+}
+// Post creates a draft feature announcement, shown to all HCP Terraform users once approved.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a AdminInAppNotificationsEnvelopeable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 401 status code
-// returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -54,7 +93,6 @@ func (m *InAppNotificationsRequestBuilder) Post(ctx context.Context, body i05d5a
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-        "403": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "422": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
@@ -68,7 +106,15 @@ func (m *InAppNotificationsRequestBuilder) Post(ctx context.Context, body i05d5a
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable), nil
 }
-// ToPostRequestInformation creates a draft feature announcement, shown to all HCP Terraform users once approved.Requires an API token for a user with the `content-management` admin role. Other callers receive 404.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToGetRequestInformation lists feature announcements in every review status, newest first. Token expiry digests are never included.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *RequestInformation when successful
+func (m *InAppNotificationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InAppNotificationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
+}
+// ToPostRequestInformation creates a draft feature announcement, shown to all HCP Terraform users once approved.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *InAppNotificationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

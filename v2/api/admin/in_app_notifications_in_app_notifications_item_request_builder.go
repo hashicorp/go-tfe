@@ -4,12 +4,22 @@
 package admin
 
 import (
+    "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+    i5bb18a53e26c6ef36bc4f2cbce09dcb6511fb266df1e32ee97b8188c70f30628 "github.com/hashicorp/go-tfe/v2/api/admin/inappnotifications/item"
 )
 
 // InAppNotificationsInAppNotificationsItemRequestBuilder builds and executes requests for operations under \admin\in-app-notifications\{id}
 type InAppNotificationsInAppNotificationsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// InAppNotificationsInAppNotificationsItemRequestBuilderGetQueryParameters gets a feature announcement in any review status. Use `include=created_by,approved_by` to include the users who created and approved it.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+type InAppNotificationsInAppNotificationsItemRequestBuilderGetQueryParameters struct {
+    // Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+    FieldsinAppNotifications []string "uriparametername:\"fields%5Bin%2Dapp%2Dnotifications%5D\""
+    // Optionally side-load the specified relationships.
+    Include []i5bb18a53e26c6ef36bc4f2cbce09dcb6511fb266df1e32ee97b8188c70f30628.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
 // Actions the actions property
 // returns a *InAppNotificationsItemActionsRequestBuilder when successful
@@ -19,7 +29,7 @@ func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) Actions()(*InAp
 // NewInAppNotificationsInAppNotificationsItemRequestBuilderInternal instantiates a new InAppNotificationsInAppNotificationsItemRequestBuilder and sets the default values.
 func NewInAppNotificationsInAppNotificationsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InAppNotificationsInAppNotificationsItemRequestBuilder) {
     m := &InAppNotificationsInAppNotificationsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/in-app-notifications/{id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/in-app-notifications/{id}{?fields%5Bin%2Dapp%2Dnotifications%5D,include}", pathParameters),
     }
     return m
 }
@@ -28,4 +38,83 @@ func NewInAppNotificationsInAppNotificationsItemRequestBuilder(rawUrl string, re
     urlParams := make(map[string]string)
     urlParams["request-raw-url"] = rawUrl
     return NewInAppNotificationsInAppNotificationsItemRequestBuilderInternal(urlParams, requestAdapter)
+}
+// Get gets a feature announcement in any review status. Use `include=created_by,approved_by` to include the users who created and approved it.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a AdminInAppNotificationsEnvelopeable when successful
+// returns a Errors error when the service returns a 401 status code
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InAppNotificationsInAppNotificationsItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAdminInAppNotificationsEnvelopeFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable), nil
+}
+// Patch edits the title, body and URL of a draft or approved feature announcement.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a AdminInAppNotificationsEnvelopeable when successful
+// returns a Errors error when the service returns a 400 status code
+// returns a Errors error when the service returns a 401 status code
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 409 status code
+// returns a Errors error when the service returns a 422 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable, error) {
+    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "409": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "422": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAdminInAppNotificationsEnvelopeFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable), nil
+}
+// ToGetRequestInformation gets a feature announcement in any review status. Use `include=created_by,approved_by` to include the users who created and approved it.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *RequestInformation when successful
+func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InAppNotificationsInAppNotificationsItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
+}
+// ToPatchRequestInformation edits the title, body and URL of a draft or approved feature announcement.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *RequestInformation when successful
+func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+    if err != nil {
+        return nil, err
+    }
+    return requestInfo, nil
+}
+// WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
+// returns a *InAppNotificationsInAppNotificationsItemRequestBuilder when successful
+func (m *InAppNotificationsInAppNotificationsItemRequestBuilder) WithUrl(rawUrl string)(*InAppNotificationsInAppNotificationsItemRequestBuilder) {
+    return NewInAppNotificationsInAppNotificationsItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
 }

@@ -18,15 +18,17 @@ type ItemStackDeploymentsRequestBuilder struct {
 type ItemStackDeploymentsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeployments []string "uriparametername:\"fields%5Bstack%2Ddeployments%5D\""
+    // Only return deployments whose latest run was created from a stack configuration on this exact branch name (case-sensitive). Only applies when the `stacks-multi-branch` feature is enabled; otherwise it is ignored.
+    Filterbranch *string "uriparametername:\"filter%5Bbranch%5D\""
     // Optionally side-load the specified relationships.
     Include []i0e1ebaf4b591e989c712afb4c3ccef15e3a61b3d849df70fe209a17e6dc03441.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
-    // A search query string. Stack deployments are searchable by deployment name.
+    // A search query string. Stack deployments are searchable by deployment name. When the `stacks-multi-branch` feature is enabled, they are also searchable by deployment group name and by the branch their stack configuration was created against.
     Q *string "uriparametername:\"q\""
-    // Allows sorting by deployment name, 'deployment' or '-deployment' for descending.
+    // Allows sorting by deployment name, 'deployment' or '-deployment' for descending. When the `stacks-multi-branch` feature is enabled, 'group' and 'branch' (or '-group' and '-branch' for descending) sort by the latest run's deployment group name and the branch its stack configuration was created against. Deployments without a branch always sort last.
     Sort *i0e1ebaf4b591e989c712afb4c3ccef15e3a61b3d849df70fe209a17e6dc03441.GetSortQueryParameterType "uriparametername:\"sort\""
 }
 // ByDeployment gets an item from the github.com/hashicorp/go-tfe/v2/api.stacks.item.stackDeployments.item collection
@@ -44,7 +46,7 @@ func (m *ItemStackDeploymentsRequestBuilder) ByDeployment(deployment string)(*It
 // NewItemStackDeploymentsRequestBuilderInternal instantiates a new ItemStackDeploymentsRequestBuilder and sets the default values.
 func NewItemStackDeploymentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsRequestBuilder) {
     m := &ItemStackDeploymentsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments{?fields%5Bstack%2Ddeployments%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments{?fields%5Bstack%2Ddeployments%5D,filter%5Bbranch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

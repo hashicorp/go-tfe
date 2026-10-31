@@ -26,10 +26,9 @@ func NewInAppNotificationsItemActionsApproveRequestBuilder(rawUrl string, reques
     urlParams["request-raw-url"] = rawUrl
     return NewInAppNotificationsItemActionsApproveRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Post approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.Requires an API token for a user with the `content-management` admin role. Other callers receive 404.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// Post approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a AdminInAppNotificationsEnvelopeable when successful
 // returns a Errors error when the service returns a 401 status code
-// returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -40,7 +39,6 @@ func (m *InAppNotificationsItemActionsApproveRequestBuilder) Post(ctx context.Co
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "401": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-        "403": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "409": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
         "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
@@ -54,7 +52,7 @@ func (m *InAppNotificationsItemActionsApproveRequestBuilder) Post(ctx context.Co
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminInAppNotificationsEnvelopeable), nil
 }
-// ToPostRequestInformation approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.Requires an API token for a user with the `content-management` admin role. Other callers receive 404.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// ToPostRequestInformation approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.This operation is only available in HCP Terraform.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
 func (m *InAppNotificationsItemActionsApproveRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
