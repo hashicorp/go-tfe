@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "f0820568",
+    "version": "faf1ba4c",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -470,7 +470,7 @@
         "public-beta"
       ],
       "x-displayName": "Admin In-App Notifications",
-      "description": "Authoring and review of in-app feature announcements. Restricted to the content-management admin role.\n"
+      "description": "Authoring and review of in-app feature announcements. Restricted to the site-admin and content-management admin roles in the browser, and to the content-management admin role with an API token.\n"
     },
     {
       "name": "admin-saml-settings",
@@ -2356,10 +2356,182 @@
         "hcpt",
         "public-beta"
       ],
+      "get": {
+        "operationId": "listAdminInAppNotifications",
+        "summary": "List Feature Announcements",
+        "description": "Lists feature announcements in every review status, newest first. Token expiry digests are never included.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string",
+              "example": "draft,approved"
+            },
+            "required": false,
+            "description": "Comma-separated list of review statuses to return: one or more of `draft`, `approved` and `denied`. Any other value returns 400. Omit or leave empty to return every status.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[in-app-notifications]",
+            "description": "Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_by",
+                  "approved_by"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcements.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/admin-in-app-notifications"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        },
+                        "status-counts": {
+                          "type": "object",
+                          "description": "The number of feature announcements in each status, counted before `filter[status]` is applied. Every status is present, with zero when there are none, and `total` is their sum.\n",
+                          "required": [
+                            "draft",
+                            "approved",
+                            "denied",
+                            "total"
+                          ],
+                          "properties": {
+                            "draft": {
+                              "type": "integer"
+                            },
+                            "approved": {
+                              "type": "integer"
+                            },
+                            "denied": {
+                              "type": "integer"
+                            },
+                            "total": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/users"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`filter[status]` contains a value other than `draft`, `approved` or `denied`.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createAdminInAppNotification",
         "summary": "Create a Draft Feature Announcement",
-        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2404,16 +2576,6 @@
               }
             }
           },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
           "404": {
             "description": "The caller is not authorized.\n",
             "content": {
@@ -2447,6 +2609,205 @@
         }
       }
     },
+    "/admin/in-app-notifications/{id}": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getAdminInAppNotification",
+        "summary": "Get a Feature Announcement",
+        "description": "Gets a feature announcement in any review status. Use `include=created_by,approved_by` to include the users who created and approved it.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement (ian-xxxxxxxxxxxxxxxx)."
+          },
+          {
+            "in": "query",
+            "name": "fields[in-app-notifications]",
+            "description": "Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_by",
+                  "approved_by"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The feature announcement.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAdminInAppNotification",
+        "summary": "Edit a Feature Announcement",
+        "description": "Edits the title, body and URL of a draft or approved feature announcement.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to edit (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feature announcement updated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is not a valid JSON:API document.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement has been denied and cannot be edited.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failure, such as a blank or over-length field or a non-HTTPS URL.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/in-app-notifications/{id}/actions/approve": {
       "x-vis": [
         "hcpt",
@@ -2455,7 +2816,7 @@
       "post": {
         "operationId": "approveAdminInAppNotification",
         "summary": "Approve a Draft Feature Announcement",
-        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2483,16 +2844,6 @@
           },
           "401": {
             "description": "The request is not authenticated.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -2542,7 +2893,7 @@
       "post": {
         "operationId": "denyAdminInAppNotification",
         "summary": "Deny a Draft Feature Announcement",
-        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2570,16 +2921,6 @@
           },
           "401": {
             "description": "The request is not authenticated.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -5170,12 +5511,16 @@
             "in": "query",
             "name": "sort",
             "required": false,
-            "description": "Allows sorting by deployment name, 'deployment' or '-deployment' for descending.",
+            "description": "Allows sorting by deployment name, 'deployment' or '-deployment' for descending. When the `stacks-multi-branch` feature is enabled, 'group' and 'branch' (or '-group' and '-branch' for descending) sort by the latest run's deployment group name and the branch its stack configuration was created against. Deployments without a branch always sort last.",
             "schema": {
               "type": "string",
               "enum": [
-                "deployment,",
-                "-deployment"
+                "deployment",
+                "-deployment",
+                "group",
+                "-group",
+                "branch",
+                "-branch"
               ]
             }
           },
@@ -5186,7 +5531,16 @@
               "type": "string"
             },
             "required": false,
-            "description": "A search query string. Stack deployments are searchable by deployment name."
+            "description": "A search query string. Stack deployments are searchable by deployment name. When the `stacks-multi-branch` feature is enabled, they are also searchable by deployment group name and by the branch their stack configuration was created against."
+          },
+          {
+            "in": "query",
+            "name": "filter[branch]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Only return deployments whose latest run was created from a stack configuration on this exact branch name (case-sensitive). Only applies when the `stacks-multi-branch` feature is enabled; otherwise it is ignored."
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -38544,6 +38898,14 @@
                   "can-view-admin-runs": {
                     "type": "boolean"
                   },
+                  "can-view-admin-in-app-notifications": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt",
+                      "public-beta"
+                    ],
+                    "description": "Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.\n\nThis attribute is only available in HCP Terraform.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                  },
                   "can-view-customization-settings": {
                     "type": "boolean"
                   },
@@ -38875,6 +39237,22 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-in-app-notifications"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/users"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "users": "#/components/schemas/users"
+                }
+              }
+            }
           }
         }
       },
@@ -40473,6 +40851,16 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "group-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled."
+              },
+              "branch": {
+                "type": "string",
+                "nullable": true,
+                "description": "Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled."
               }
             }
           },
