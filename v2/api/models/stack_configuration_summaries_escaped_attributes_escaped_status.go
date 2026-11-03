@@ -8,12 +8,13 @@ const (
     PENDING_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS StackConfigurationSummaries_attributes_status = iota
     QUEUED_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
     PREPARING_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
+    PENDINGSTRUCTURALAPPROVAL_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
     COMPLETED_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
     FAILED_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
 )
 
 func (i StackConfigurationSummaries_attributes_status) String() string {
-    return []string{"pending", "queued", "preparing", "completed", "failed"}[i]
+    return []string{"pending", "queued", "preparing", "pending-structural-approval", "completed", "failed"}[i]
 }
 func ParseStackConfigurationSummaries_attributes_status(v string) (any, error) {
     result := PENDING_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
@@ -24,6 +25,8 @@ func ParseStackConfigurationSummaries_attributes_status(v string) (any, error) {
             result = QUEUED_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
         case "preparing":
             result = PREPARING_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
+        case "pending-structural-approval":
+            result = PENDINGSTRUCTURALAPPROVAL_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
         case "completed":
             result = COMPLETED_STACKCONFIGURATIONSUMMARIES_ATTRIBUTES_STATUS
         case "failed":
