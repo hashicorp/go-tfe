@@ -7,18 +7,30 @@ type GetSortQueryParameterType int
 const (
     DEPLOYMENT_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
     MINUS_DEPLOYMENT_GETSORTQUERYPARAMETERTYPE
+    GROUP_GETSORTQUERYPARAMETERTYPE
+    MINUS_GROUP_GETSORTQUERYPARAMETERTYPE
+    BRANCH_GETSORTQUERYPARAMETERTYPE
+    MINUS_BRANCH_GETSORTQUERYPARAMETERTYPE
 )
 
 func (i GetSortQueryParameterType) String() string {
-    return []string{"deployment,", "-deployment"}[i]
+    return []string{"deployment", "-deployment", "group", "-group", "branch", "-branch"}[i]
 }
 func ParseGetSortQueryParameterType(v string) (any, error) {
     result := DEPLOYMENT_GETSORTQUERYPARAMETERTYPE
     switch v {
-        case "deployment,":
+        case "deployment":
             result = DEPLOYMENT_GETSORTQUERYPARAMETERTYPE
         case "-deployment":
             result = MINUS_DEPLOYMENT_GETSORTQUERYPARAMETERTYPE
+        case "group":
+            result = GROUP_GETSORTQUERYPARAMETERTYPE
+        case "-group":
+            result = MINUS_GROUP_GETSORTQUERYPARAMETERTYPE
+        case "branch":
+            result = BRANCH_GETSORTQUERYPARAMETERTYPE
+        case "-branch":
+            result = MINUS_BRANCH_GETSORTQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

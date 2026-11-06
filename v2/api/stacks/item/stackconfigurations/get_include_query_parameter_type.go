@@ -6,17 +6,20 @@ type GetIncludeQueryParameterType int
 
 const (
     INGRESSATTRIBUTES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+    STACKSTACK_VERSION_CONTROL_SETTING_GETINCLUDEQUERYPARAMETERTYPE
     STACKCONFIGURATIONSUMMARY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"ingress-attributes", "stack-configuration-summary"}[i]
+    return []string{"ingress-attributes", "stack.stack_version_control_setting", "stack-configuration-summary"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := INGRESSATTRIBUTES_GETINCLUDEQUERYPARAMETERTYPE
     switch v {
         case "ingress-attributes":
             result = INGRESSATTRIBUTES_GETINCLUDEQUERYPARAMETERTYPE
+        case "stack.stack_version_control_setting":
+            result = STACKSTACK_VERSION_CONTROL_SETTING_GETINCLUDEQUERYPARAMETERTYPE
         case "stack-configuration-summary":
             result = STACKCONFIGURATIONSUMMARY_GETINCLUDEQUERYPARAMETERTYPE
         default:
