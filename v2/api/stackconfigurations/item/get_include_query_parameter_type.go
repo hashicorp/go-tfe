@@ -9,10 +9,11 @@ const (
     STACKCONFIGURATIONSUMMARY_GETINCLUDEQUERYPARAMETERTYPE
     STACKDIAGNOSTICS_GETINCLUDEQUERYPARAMETERTYPE
     STACKAGGREGATEOUTPUTS_GETINCLUDEQUERYPARAMETERTYPE
+    STACKSTRUCTURALCHANGE_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"ingress-attributes", "stack-configuration-summary", "stack-diagnostics", "stack-aggregate-outputs"}[i]
+    return []string{"ingress-attributes", "stack-configuration-summary", "stack-diagnostics", "stack-aggregate-outputs", "stack-structural-change"}[i]
 }
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
     result := INGRESSATTRIBUTES_GETINCLUDEQUERYPARAMETERTYPE
@@ -25,6 +26,8 @@ func ParseGetIncludeQueryParameterType(v string) (any, error) {
             result = STACKDIAGNOSTICS_GETINCLUDEQUERYPARAMETERTYPE
         case "stack-aggregate-outputs":
             result = STACKAGGREGATEOUTPUTS_GETINCLUDEQUERYPARAMETERTYPE
+        case "stack-structural-change":
+            result = STACKSTRUCTURALCHANGE_GETINCLUDEQUERYPARAMETERTYPE
         default:
             return nil, nil
     }

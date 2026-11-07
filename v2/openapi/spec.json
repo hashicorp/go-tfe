@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "f0820568",
+    "version": "310d4db5",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -470,7 +470,7 @@
         "public-beta"
       ],
       "x-displayName": "Admin In-App Notifications",
-      "description": "Authoring and review of in-app feature announcements. Restricted to the content-management admin role.\n"
+      "description": "Authoring and review of in-app feature announcements. Restricted to the site-admin and content-management admin roles in the browser, and to the content-management admin role with an API token.\n"
     },
     {
       "name": "admin-saml-settings",
@@ -496,6 +496,30 @@
       ],
       "x-displayName": "Admin SCIM Settings",
       "description": "Site-wide SCIM provisioning configuration for Terraform Enterprise administrators."
+    },
+    {
+      "name": "admin-scim-tokens",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Admin SCIM Tokens",
+      "description": "Site-wide SCIM provisioning tokens used by the identity provider to authenticate with Terraform Enterprise."
+    },
+    {
+      "name": "admin-scim-groups",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Admin SCIM Groups",
+      "description": "Groups provisioned by the identity provider through SCIM in Terraform Enterprise."
+    },
+    {
+      "name": "admin-scim-group-mappings",
+      "x-vis": [
+        "tfe"
+      ],
+      "x-displayName": "Admin SCIM Group Mappings",
+      "description": "Links between SCIM groups and Terraform Enterprise teams."
     },
     {
       "name": "admin-customization-settings",
@@ -1045,136 +1069,6 @@
         }
       }
     },
-    "/admin/scim-settings": {
-      "x-vis": [
-        "tfe"
-      ],
-      "get": {
-        "operationId": "getAdminScimSettings",
-        "summary": "Show SCIM Settings",
-        "description": "Returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.\n\n\nThis operation is only available in Terraform Enterprise.",
-        "tags": [
-          "admin-scim-settings"
-        ],
-        "responses": {
-          "200": {
-            "description": "SCIM settings retrieved successfully.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "fields[scim-settings]",
-            "description": "Return only the specified fields for scim-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      },
-      "patch": {
-        "operationId": "updateAdminScimSettings",
-        "summary": "Update SCIM Settings",
-        "description": "Updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.\n\n\nThis operation is only available in Terraform Enterprise.",
-        "tags": [
-          "admin-scim-settings"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/admin-scim-settings-envelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "SCIM settings updated successfully.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation error.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "resetAdminScimSettings",
-        "summary": "Reset SCIM Settings",
-        "description": "Resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.\n\n\nThis operation is only available in Terraform Enterprise.",
-        "tags": [
-          "admin-scim-settings"
-        ],
-        "responses": {
-          "200": {
-            "description": "SCIM settings reset successfully.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error details",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/saml-settings/idp-certificates": {
       "x-vis": [
         "tfe"
@@ -1517,6 +1411,720 @@
           },
           "503": {
             "description": "Vault is unavailable; the encrypted certificate could not be retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/scim-settings": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.0.0",
+      "get": {
+        "operationId": "getAdminScimSettings",
+        "summary": "Show SCIM Settings",
+        "description": "Returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM settings retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[scim-settings]",
+            "description": "Return only the specified fields for scim-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateAdminScimSettings",
+        "summary": "Update SCIM Settings",
+        "description": "Updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-scim-settings-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SCIM settings updated successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "resetAdminScimSettings",
+        "summary": "Reset SCIM Settings",
+        "description": "Resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM settings reset successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-scim-settings-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/scim-tokens": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.0.0",
+      "get": {
+        "operationId": "listAdminScimTokens",
+        "summary": "List SCIM Tokens",
+        "description": "Lists all site-wide SCIM provisioning tokens. Token values are not returned. Requires permission to manage SCIM settings.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-tokens"
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM tokens retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authentication-tokens-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createAdminScimToken",
+        "summary": "Create SCIM Token",
+        "description": "Creates a site-wide SCIM provisioning token. SCIM must be enabled. The token value is only returned in this response. Token creation is not allowed while impersonating a user.\n\nUnlike other authentication tokens, SCIM tokens always expire. If `expired-at` is omitted or null, the token expires 365 days after creation. An explicit `expired-at` must be between 29 and 365 days from creation; otherwise the request is rejected with a 400.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-tokens"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "SCIM token created successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid expiration date (must be between 29 and 365 days from creation).",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SCIM is not enabled, or the request was made while impersonating.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/scim-tokens/{id}": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.0.0",
+      "get": {
+        "operationId": "getAdminScimToken",
+        "summary": "Show SCIM Token",
+        "description": "Returns a single site-wide SCIM provisioning token. The token value is not returned.\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the SCIM token (e.g. at-xxxxxxxxxxxxxxxx)."
+          },
+          {
+            "in": "query",
+            "name": "fields[authentication-tokens]",
+            "description": "Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM token retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SCIM token not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAdminScimToken",
+        "summary": "Delete SCIM Token",
+        "description": "Revokes and deletes a site-wide SCIM provisioning token.\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the SCIM token (e.g. at-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SCIM token deleted successfully."
+          },
+          "404": {
+            "description": "SCIM token not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/scim-groups": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.0.0",
+      "get": {
+        "operationId": "listAdminScimGroups",
+        "summary": "List SCIM Groups",
+        "description": "Lists the groups provisioned by the identity provider through SCIM, ordered by display name. Use the `q` parameter to filter groups by display name.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-groups"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query to filter SCIM groups by display name."
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[scim-groups]",
+            "description": "Return only the specified fields for scim-groups resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM groups retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scim-groups-collection-envelope"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/teams/{team_external_id}/scim-group-mapping": {
+      "x-vis": [
+        "tfe"
+      ],
+      "x-tfe-min-version": "2.0.0",
+      "get": {
+        "operationId": "getAdminScimGroupMapping",
+        "summary": "Show SCIM Group Mapping",
+        "description": "Returns the SCIM group linked to a team.\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-group-mappings"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the team (e.g. team-xxxxxxxxxxxxxxxx)."
+          },
+          {
+            "in": "query",
+            "name": "fields[scim-group-mappings]",
+            "description": "Return only the specified fields for scim-group-mappings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SCIM group mapping retrieved successfully.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scim-group-mappings-envelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found, or the team is not linked to a SCIM group.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAdminScimGroupMapping",
+        "summary": "Create SCIM Group Mapping",
+        "description": "Links a SCIM group to a team. Team membership is then managed by SCIM provisioning. The owners team and teams with the site admin group cannot be linked.\n\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-group-mappings"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the team (e.g. team-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/scim-group-mappings-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "SCIM group linked to the team successfully."
+          },
+          "400": {
+            "description": "The scim-group-id attribute is missing.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team or SCIM group not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The team is already linked to a SCIM group.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The SCIM group exceeds the maximum number of members.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The team cannot be linked to the SCIM group.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAdminScimGroupMapping",
+        "summary": "Update SCIM Group Mapping",
+        "description": "Pauses or resumes SCIM membership synchronization for a linked team.\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-group-mappings"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the team (e.g. team-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/scim-group-mappings-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "SCIM group mapping updated successfully."
+          },
+          "404": {
+            "description": "Team not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The team is not linked to a SCIM group.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The scim-sync-paused attribute must be a boolean.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAdminScimGroupMapping",
+        "summary": "Delete SCIM Group Mapping",
+        "description": "Unlinks the SCIM group from a team.\n\nThis operation is only available in Terraform Enterprise version 2.0.0 or later.",
+        "tags": [
+          "admin-scim-group-mappings"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_external_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the team (e.g. team-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SCIM group unlinked from the team successfully."
+          },
+          "404": {
+            "description": "Team not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The team is not linked to a SCIM group.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -2356,10 +2964,182 @@
         "hcpt",
         "public-beta"
       ],
+      "get": {
+        "operationId": "listAdminInAppNotifications",
+        "summary": "List Feature Announcements",
+        "description": "Lists feature announcements in every review status, newest first. Token expiry digests are never included.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string",
+              "example": "draft,approved"
+            },
+            "required": false,
+            "description": "Comma-separated list of review statuses to return: one or more of `draft`, `approved` and `denied`. Any other value returns 400. Omit or leave empty to return every status.\n"
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          },
+          {
+            "in": "query",
+            "name": "fields[in-app-notifications]",
+            "description": "Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_by",
+                  "approved_by"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature announcements.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/admin-in-app-notifications"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        },
+                        "status-counts": {
+                          "type": "object",
+                          "description": "The number of feature announcements in each status, counted before `filter[status]` is applied. Every status is present, with zero when there are none, and `total` is their sum.\n",
+                          "required": [
+                            "draft",
+                            "approved",
+                            "denied",
+                            "total"
+                          ],
+                          "properties": {
+                            "draft": {
+                              "type": "integer"
+                            },
+                            "approved": {
+                              "type": "integer"
+                            },
+                            "denied": {
+                              "type": "integer"
+                            },
+                            "total": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/users"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "users": "#/components/schemas/users"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`filter[status]` contains a value other than `draft`, `approved` or `denied`.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createAdminInAppNotification",
         "summary": "Create a Draft Feature Announcement",
-        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Creates a draft feature announcement, shown to all HCP Terraform users once approved.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2404,16 +3184,6 @@
               }
             }
           },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
           "404": {
             "description": "The caller is not authorized.\n",
             "content": {
@@ -2447,6 +3217,205 @@
         }
       }
     },
+    "/admin/in-app-notifications/{id}": {
+      "x-vis": [
+        "hcpt",
+        "public-beta"
+      ],
+      "get": {
+        "operationId": "getAdminInAppNotification",
+        "summary": "Get a Feature Announcement",
+        "description": "Gets a feature announcement in any review status. Use `include=created_by,approved_by` to include the users who created and approved it.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement (ian-xxxxxxxxxxxxxxxx)."
+          },
+          {
+            "in": "query",
+            "name": "fields[in-app-notifications]",
+            "description": "Return only the specified fields for in-app-notifications resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "description": "Optionally side-load the specified relationships.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_by",
+                  "approved_by"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The feature announcement.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAdminInAppNotification",
+        "summary": "Edit a Feature Announcement",
+        "description": "Edits the title, body and URL of a draft or approved feature announcement.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "tags": [
+          "admin-in-app-notifications"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the feature announcement to edit (ian-xxxxxxxxxxxxxxxx)."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feature announcement updated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin-in-app-notifications-envelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is not a valid JSON:API document.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request is not authenticated.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The feature announcement does not exist, or the caller is not authorized.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The feature announcement has been denied and cannot be edited.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation failure, such as a blank or over-length field or a non-HTTPS URL.\n",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/in-app-notifications/{id}/actions/approve": {
       "x-vis": [
         "hcpt",
@@ -2455,7 +3424,7 @@
       "post": {
         "operationId": "approveAdminInAppNotification",
         "summary": "Approve a Draft Feature Announcement",
-        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Approves a draft feature announcement, making it visible to all HCP Terraform users. Only a draft can be approved.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2483,16 +3452,6 @@
           },
           "401": {
             "description": "The request is not authenticated.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -2542,7 +3501,7 @@
       "post": {
         "operationId": "denyAdminInAppNotification",
         "summary": "Deny a Draft Feature Announcement",
-        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\nRequires an API token for a user with the `content-management` admin role. Other callers receive 404.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
+        "description": "Denies a draft feature announcement so it never becomes visible to users. Only a draft can be denied.\n\n\nThis operation is only available in HCP Terraform.\n\nThis operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
         "tags": [
           "admin-in-app-notifications"
         ],
@@ -2570,16 +3529,6 @@
           },
           "401": {
             "description": "The request is not authenticated.",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to make this request.",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -4969,6 +5918,16 @@
             "description": "ID of the stack"
           },
           {
+            "in": "query",
+            "name": "filter[branch]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "example": "main,feature-x",
+            "description": "Filter configurations by branch. Accepts a comma-separated list of branch names and returns configurations whose ingress attributes branch matches any of them, including pull request configurations. Configurations without ingress attributes, such as manual uploads, are excluded when this filter is applied. Only available when the `stacks-multi-branch` feature is enabled; otherwise, using this filter responds with 404."
+          },
+          {
             "$ref": "#/components/parameters/page_number"
           },
           {
@@ -5000,6 +5959,7 @@
                 "type": "string",
                 "enum": [
                   "ingress-attributes",
+                  "stack.stack_version_control_setting",
                   "stack-configuration-summary"
                 ]
               }
@@ -5042,6 +6002,12 @@
                             "$ref": "#/components/schemas/ingress-attributes"
                           },
                           {
+                            "$ref": "#/components/schemas/stacks"
+                          },
+                          {
+                            "$ref": "#/components/schemas/stack-version-control-settings"
+                          },
+                          {
                             "$ref": "#/components/schemas/stack-configuration-summaries"
                           }
                         ],
@@ -5049,6 +6015,8 @@
                           "propertyName": "type",
                           "mapping": {
                             "ingress-attributes": "#/components/schemas/ingress-attributes",
+                            "stacks": "#/components/schemas/stacks",
+                            "stack-version-control-settings": "#/components/schemas/stack-version-control-settings",
                             "stack-configuration-summaries": "#/components/schemas/stack-configuration-summaries"
                           }
                         }
@@ -5118,7 +6086,8 @@
                   "ingress-attributes",
                   "stack-configuration-summary",
                   "stack-diagnostics",
-                  "stack-aggregate-outputs"
+                  "stack-aggregate-outputs",
+                  "stack-structural-change"
                 ]
               }
             }
@@ -5170,12 +6139,16 @@
             "in": "query",
             "name": "sort",
             "required": false,
-            "description": "Allows sorting by deployment name, 'deployment' or '-deployment' for descending.",
+            "description": "Allows sorting by deployment name ('deployment') or the latest run's deployment group name ('group'). Prefix with '-' for descending order. When the `stacks-multi-branch` feature is enabled, 'branch' and '-branch' sort by the branch the latest run's stack configuration was created against. Deployments without a branch always sort last.",
             "schema": {
               "type": "string",
               "enum": [
-                "deployment,",
-                "-deployment"
+                "deployment",
+                "-deployment",
+                "group",
+                "-group",
+                "branch",
+                "-branch"
               ]
             }
           },
@@ -5186,7 +6159,16 @@
               "type": "string"
             },
             "required": false,
-            "description": "A search query string. Stack deployments are searchable by deployment name."
+            "description": "A search query string. Stack deployments are searchable by deployment name and the latest run's deployment group name. When the `stacks-multi-branch` feature is enabled, they are also searchable by the branch their stack configuration was created against."
+          },
+          {
+            "in": "query",
+            "name": "filter[branch]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Only return deployments whose latest run was created from a stack configuration on this exact branch name (case-sensitive). Only applies when the `stacks-multi-branch` feature is enabled; otherwise it is ignored."
           },
           {
             "$ref": "#/components/parameters/page_number"
@@ -8215,7 +9197,7 @@
               "type": "string"
             },
             "required": false,
-            "description": "A search query string. Organizations are searchable by name and notification email."
+            "description": "A search query string. Organizations are searchable by name and notification email. Queries starting with `org-` also match an exact organization ID."
           },
           {
             "in": "query",
@@ -12399,7 +13381,7 @@
       "post": {
         "operationId": "createQuery",
         "summary": "Create a Query Run",
-        "description": "Create a new query run.\n\nThe configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.",
+        "description": "Create a new query run.\n\nThe configuration version must belong to the target workspace's organization and already be associated with that workspace. This requirement applies both to an explicitly supplied configuration version and to the workspace's current configuration version when used as a fallback. An existing but unaffiliated configuration version is rejected with `404 Not Found`. Associated historical, speculative, and configurations shared across multiple workspaces remain supported.\n\nThe configuration version must have a status of\n`uploaded`; clients must wait for the upload to complete before creating the\nquery. Requests for a pending or errored configuration version return an\nerror and create no query.",
         "tags": [
           "queries"
         ],
@@ -18505,6 +19487,270 @@
           },
           "409": {
             "description": "Run was not paused for confirmation; apply not allowed.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/actions/discard": {
+      "post": {
+        "operationId": "discardRun",
+        "summary": "Discard a Run",
+        "description": "Discard a run that is paused waiting for confirmation or priority, skipping any remaining work so later runs can proceed.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successfully queued a discard request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Run was not found or user not authorized.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Run was not paused for confirmation or priority; discard not allowed.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/actions/cancel": {
+      "post": {
+        "operationId": "cancelRun",
+        "summary": "Cancel a Run",
+        "description": "Cancel a run that is currently planning or applying. This is roughly equivalent to hitting ctrl+c during a Terraform plan or apply on the CLI.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successfully queued a cancel request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Run was not found or user not authorized.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Run was not planning or applying; cancel not allowed.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/actions/force-cancel": {
+      "post": {
+        "operationId": "forceCancelRun",
+        "summary": "Forcefully Cancel a Run",
+        "description": "Forcefully cancel a run, ending it immediately and unlocking its workspace. A non-forceful cancel must be performed first and a cool-off period must elapse.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/action-comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successfully queued a cancel request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Run was not found or user not authorized.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Run was not planning or applying, has not been canceled non-forcefully, or the cool-off period has not yet passed.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/actions/force-execute": {
+      "post": {
+        "operationId": "forceExecuteRun",
+        "summary": "Forcefully Execute a Run",
+        "description": "Forcefully execute a pending run by canceling all prior runs that are not already complete and unlocking the run's workspace.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successfully initiated the force-execution process.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Run is not pending, its workspace association was not found, its workspace was not locked by a run, or the run locking the workspace was not in a discardable state.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Run was not found or user not authorized.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A prior run changed state concurrently and could not be transitioned (state transition not allowed).",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -26631,6 +27877,59 @@
               "application/vnd.api+json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{team_id}/authentication-tokens": {
+      "post": {
+        "operationId": "createTeamToken",
+        "summary": "Create Team Token",
+        "description": "Creates a new team authentication token with an optional description. Unlike the legacy /teams/{id}/authentication-token endpoint, this does not revoke existing tokens, so multiple tokens can coexist for the same team. The description, if provided, must be unique within the team.",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication-tokens-envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Team token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authentication-tokens-envelope"
                 }
               }
             }
@@ -36840,6 +38139,254 @@
           }
         }
       },
+      "stack-structural-changes": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-structural-changes"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "status",
+              "branch",
+              "created-at",
+              "topology-changes"
+            ],
+            "properties": {
+              "branch": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The source branch of the stack configuration whose topology change this record decides."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected"
+                ],
+                "readOnly": true
+              },
+              "reason": {
+                "type": "string",
+                "nullable": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "approved-at": {
+                "description": "When the change was approved. Only present when the status is approved.",
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "rejected-at": {
+                "description": "When the change was rejected. Only present when the status is rejected.",
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "topology-changes": {
+                "type": "object",
+                "readOnly": true,
+                "description": "The deployment topology changes this record decides, compared with the branch's last approved topology. A deployment that moves between groups appears in both lists.",
+                "properties": {
+                  "deployments-added": {
+                    "description": "Deployments assigned to a group they weren't in before.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "deployment": {
+                          "type": "string"
+                        },
+                        "to": {
+                          "type": "string",
+                          "description": "The deployment group gaining the deployment."
+                        }
+                      }
+                    }
+                  },
+                  "deployments-removed": {
+                    "description": "Deployments no longer assigned to a group they were in before.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "deployment": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string",
+                          "description": "The deployment group losing the deployment."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              },
+              "stack-configuration": {
+                "$ref": "#/components/schemas/stack-configurations-has-one"
+              },
+              "approved-by": {
+                "description": "The user who approved the change. Only present when the status is approved.",
+                "$ref": "#/components/schemas/users-has-one"
+              },
+              "rejected-by": {
+                "description": "The user who rejected the change. Only present when the status is rejected. Data is null when the system rejected it because its configuration was canceled or errored.",
+                "$ref": "#/components/schemas/users-has-one"
+              }
+            }
+          }
+        }
+      },
+      "stack-version-control-settings": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Version control settings external ID"
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "stack-version-control-settings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "branch-group-mappings": {
+                "description": "Ordered list of branch to deployment group mappings. Each entry maps a branch name to the deployment group names for that branch. Each group can be assigned to only one branch.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "branch",
+                    "groups"
+                  ],
+                  "properties": {
+                    "branch": {
+                      "description": "Branch name.",
+                      "type": "string"
+                    },
+                    "groups": {
+                      "description": "Deployment group names mapped to this branch.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "branch": "dev",
+                    "groups": [
+                      "dev_group1",
+                      "dev_group2",
+                      "dev_group3"
+                    ]
+                  },
+                  {
+                    "branch": "prod",
+                    "groups": [
+                      "prod_group1"
+                    ]
+                  }
+                ]
+              },
+              "speculative-enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "trigger-patterns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "branch": {
+                "description": "The branch that triggers new configurations. An empty string uses the repository's default branch. Stored on the stack's VCS connection; null when the stack is not connected to a VCS repository. Updating it requires a VCS connection.",
+                "type": "string",
+                "nullable": true
+              },
+              "tags-regex": {
+                "description": "Regular expression for tags that trigger new configurations. Stored on the stack's VCS connection; null when not set or when the stack is not connected to a VCS repository. Updating it requires a VCS connection.",
+                "type": "string",
+                "nullable": true
+              },
+              "trigger-disabled": {
+                "description": "Whether VCS changes are prevented from automatically creating configurations. Stored on the stack's VCS connection and omitted when the stack is not connected to a VCS repository. Updating it requires a VCS connection.",
+                "type": "boolean"
+              },
+              "created-at": {
+                "description": "Null when the stack has no saved version control settings yet.",
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "updated-at": {
+                "description": "Null when the stack has no saved version control settings yet.",
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "readOnly": true,
+            "properties": {
+              "stack": {
+                "$ref": "#/components/schemas/stacks-has-one"
+              }
+            }
+          }
+        }
+      },
       "tf-policy-evaluations": {
         "type": "object",
         "description": "Represents a Terraform Policy evaluation for a run. Coordinates the evaluation of multiple policy sets and aggregates their results. Each evaluation is associated with a specific stage (Init or Plan or Apply) in the run lifecycle.",
@@ -37545,6 +39092,15 @@
                 "x-tfe-min-version": "2.1.0",
                 "description": "Role value that grants site auditor permissions.\n\nThis attribute is only available in Terraform Enterprise version 2.1.0 or later."
               },
+              "attr-avatar": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "x-tfe-min-version": "2.2.0",
+                "description": "SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.\n\n\nThis attribute is only available in Terraform Enterprise version 2.2.0 or later."
+              },
               "sso-api-token-session-timeout": {
                 "type": "integer",
                 "nullable": true,
@@ -37642,6 +39198,100 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-saml-settings"
+          }
+        }
+      },
+      "saml-idp-certificates": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx).",
+            "example": "idpc-xxxxxxxxxxxxxxxx"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "saml-idp-certificates"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "display-name": {
+                "type": "string",
+                "description": "A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.\n",
+                "example": "Primary IdP Cert"
+              },
+              "cert": {
+                "type": "string",
+                "description": "PEM-encoded X.509 certificate body."
+              },
+              "fingerprint": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Colon-separated uppercase SHA-256 fingerprint of the certificate.",
+                "example": "AB:CD:EF:..."
+              },
+              "expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when the certificate expires."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "ISO 8601 datetime (UTC) when this record was created."
+              },
+              "cert-role": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.\n",
+                "enum": [
+                  "managed",
+                  "legacy_primary",
+                  "legacy_old"
+                ]
+              },
+              "issuer": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Human-readable issuer string derived from the O and CN fields of the certificate."
+              }
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/saml-idp-certificates"
+            }
+          }
+        }
+      },
+      "saml-idp-certificates-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/saml-idp-certificates"
           }
         }
       },
@@ -37758,7 +39408,69 @@
           }
         }
       },
-      "saml-idp-certificates": {
+      "teams-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "teams"
+            ]
+          }
+        }
+      },
+      "teams-nullable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/teams-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "auth-token-created-by-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users",
+              "organizations",
+              "teams"
+            ]
+          }
+        }
+      },
+      "auth-token-created-by-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/auth-token-created-by-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "authentication-tokens": {
         "type": "object",
         "required": [
           "type"
@@ -37766,68 +39478,59 @@
         "properties": {
           "id": {
             "type": "string",
-            "readOnly": true,
-            "description": "The external ID of the IdP certificate (e.g. idpc-xxxxxxxxxxxxxxxx).",
-            "example": "idpc-xxxxxxxxxxxxxxxx"
+            "readOnly": true
           },
           "type": {
             "type": "string",
             "enum": [
-              "saml-idp-certificates"
+              "authentication-tokens"
             ]
           },
           "attributes": {
             "type": "object",
             "properties": {
-              "display-name": {
+              "description": {
                 "type": "string",
-                "description": "A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.\n",
-                "example": "Primary IdP Cert"
+                "nullable": true
               },
-              "cert": {
-                "type": "string",
-                "description": "PEM-encoded X.509 certificate body."
-              },
-              "fingerprint": {
-                "type": "string",
-                "readOnly": true,
-                "description": "Colon-separated uppercase SHA-256 fingerprint of the certificate.",
-                "example": "AB:CD:EF:..."
-              },
-              "expires-at": {
+              "expired-at": {
                 "type": "string",
                 "format": "date-time",
                 "nullable": true,
+                "description": "The UTC date and time that the token will expire, in ISO 8601 format. If omitted or set to null the token will never expire."
+              },
+              "last-used-at": {
+                "type": "string",
+                "format": "date-time",
                 "readOnly": true,
-                "description": "ISO 8601 datetime (UTC) when the certificate expires."
+                "nullable": true
               },
               "created-at": {
                 "type": "string",
                 "format": "date-time",
-                "readOnly": true,
-                "description": "ISO 8601 datetime (UTC) when this record was created."
+                "readOnly": true
               },
-              "cert-role": {
+              "token": {
                 "type": "string",
                 "readOnly": true,
-                "description": "Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.\n",
-                "enum": [
-                  "managed",
-                  "legacy_primary",
-                  "legacy_old"
-                ]
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "team": {
+                "$ref": "#/components/schemas/teams-nullable-has-one"
               },
-              "issuer": {
-                "type": "string",
-                "nullable": true,
-                "readOnly": true,
-                "description": "Human-readable issuer string derived from the O and CN fields of the certificate."
+              "created-by": {
+                "$ref": "#/components/schemas/auth-token-created-by-has-one"
               }
             }
           }
         }
       },
-      "saml-idp-certificates-collection-envelope": {
+      "authentication-tokens-collection-envelope": {
         "type": "object",
         "required": [
           "data"
@@ -37836,19 +39539,193 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/saml-idp-certificates"
+              "$ref": "#/components/schemas/authentication-tokens"
             }
           }
         }
       },
-      "saml-idp-certificates-envelope": {
+      "authentication-tokens-envelope": {
         "type": "object",
         "required": [
           "data"
         ],
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/saml-idp-certificates"
+            "$ref": "#/components/schemas/authentication-tokens"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/teams"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "teams": "#/components/schemas/teams"
+                }
+              }
+            }
+          }
+        }
+      },
+      "scim-groups": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The SCIM resource ID of the group, assigned by Terraform Enterprise. This is not the identity provider's externalId. Use this value as `scim-group-id` when creating a SCIM group mapping.\n"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scim-groups"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The display name of the SCIM group."
+              }
+            }
+          }
+        }
+      },
+      "self-with-pagination": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "first": {
+            "type": "string"
+          },
+          "prev": {
+            "type": "string",
+            "nullable": true
+          },
+          "next": {
+            "type": "string",
+            "nullable": true
+          },
+          "last": {
+            "type": "string"
+          }
+        }
+      },
+      "pagination": {
+        "type": "object",
+        "properties": {
+          "current-page": {
+            "type": "integer"
+          },
+          "page-size": {
+            "type": "integer"
+          },
+          "prev-page": {
+            "type": "integer",
+            "nullable": true
+          },
+          "next-page": {
+            "type": "integer",
+            "nullable": true
+          },
+          "total-pages": {
+            "type": "integer"
+          },
+          "total-count": {
+            "type": "integer"
+          }
+        }
+      },
+      "scim-groups-collection-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/scim-groups"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          }
+        }
+      },
+      "scim-group-mappings": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the team the SCIM group is linked to."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scim-group-mappings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "scim-group-id": {
+                "type": "string",
+                "nullable": true,
+                "description": "The SCIM id of the group linked to the team. Required when creating a mapping.\n"
+              },
+              "scim-group-name": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The display name of the linked SCIM group."
+              },
+              "scim-sync-paused": {
+                "type": "boolean",
+                "description": "Whether SCIM membership synchronization is paused for the team. Only writable when updating an existing mapping.\n"
+              },
+              "scim-updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The last time the team was updated by SCIM provisioning."
+              }
+            }
+          }
+        }
+      },
+      "scim-group-mappings-envelope": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/scim-group-mappings"
           }
         }
       },
@@ -37959,6 +39836,7 @@
                     "source": {
                       "type": "string",
                       "enum": [
+                        "saml",
                         "gravatar"
                       ],
                       "description": "The name of the avatar source."
@@ -38109,53 +39987,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "pagination": {
-        "type": "object",
-        "properties": {
-          "current-page": {
-            "type": "integer"
-          },
-          "page-size": {
-            "type": "integer"
-          },
-          "prev-page": {
-            "type": "integer",
-            "nullable": true
-          },
-          "next-page": {
-            "type": "integer",
-            "nullable": true
-          },
-          "total-pages": {
-            "type": "integer"
-          },
-          "total-count": {
-            "type": "integer"
-          }
-        }
-      },
-      "self-with-pagination": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string"
-          },
-          "first": {
-            "type": "string"
-          },
-          "prev": {
-            "type": "string",
-            "nullable": true
-          },
-          "next": {
-            "type": "string",
-            "nullable": true
-          },
-          "last": {
-            "type": "string"
           }
         }
       },
@@ -38544,6 +40375,14 @@
                   "can-view-admin-runs": {
                     "type": "boolean"
                   },
+                  "can-view-admin-in-app-notifications": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt",
+                      "public-beta"
+                    ],
+                    "description": "Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.\n\nThis attribute is only available in HCP Terraform.\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users."
+                  },
                   "can-view-customization-settings": {
                     "type": "boolean"
                   },
@@ -38875,6 +40714,22 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/admin-in-app-notifications"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/users"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "users": "#/components/schemas/users"
+                }
+              }
+            }
           }
         }
       },
@@ -39796,6 +41651,39 @@
           }
         }
       },
+      "stack-version-control-settings-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-version-control-settings"
+            ]
+          }
+        }
+      },
+      "stack-version-control-settings-has-one": {
+        "type": "object",
+        "description": "Returned in stack show responses only.",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-version-control-settings-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "projects-has-one": {
         "type": "object",
         "properties": {
@@ -40007,6 +41895,9 @@
               "stack-configurations": {
                 "$ref": "#/components/schemas/links_related"
               },
+              "stack-version-control-setting": {
+                "$ref": "#/components/schemas/stack-version-control-settings-has-one"
+              },
               "project": {
                 "$ref": "#/components/schemas/projects-has-one"
               },
@@ -40086,6 +41977,7 @@
                   "pending",
                   "queued",
                   "preparing",
+                  "pending-structural-approval",
                   "completed",
                   "failed"
                 ],
@@ -40293,6 +42185,38 @@
           }
         }
       },
+      "stack-structural-changes-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-structural-changes"
+            ]
+          }
+        }
+      },
+      "stack-structural-changes-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-structural-changes-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "stack-configurations": {
         "type": "object",
         "required": [
@@ -40320,6 +42244,7 @@
                   "pending",
                   "queued",
                   "preparing",
+                  "pending_structural_approval",
                   "completed",
                   "failed"
                 ],
@@ -40406,6 +42331,10 @@
               },
               "stack-aggregate-outputs": {
                 "$ref": "#/components/schemas/stack-aggregate-outputs-has-one"
+              },
+              "stack-structural-change": {
+                "description": "Structural-change data, available only when retrieving a single stack configuration with the stacks-multi-branch feature enabled.",
+                "$ref": "#/components/schemas/stack-structural-changes-has-one"
               }
             }
           }
@@ -40435,6 +42364,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/stack-aggregate-outputs"
+                },
+                {
+                  "$ref": "#/components/schemas/stack-structural-changes"
                 }
               ],
               "discriminator": {
@@ -40443,7 +42375,8 @@
                   "ingress-attributes": "#/components/schemas/ingress-attributes",
                   "stack-configuration-summaries": "#/components/schemas/stack-configuration-summaries",
                   "stack-diagnostics": "#/components/schemas/stack-diagnostics",
-                  "stack-aggregate-outputs": "#/components/schemas/stack-aggregate-outputs"
+                  "stack-aggregate-outputs": "#/components/schemas/stack-aggregate-outputs",
+                  "stack-structural-changes": "#/components/schemas/stack-structural-changes"
                 }
               }
             }
@@ -40473,6 +42406,16 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "group-name": {
+                "type": "string",
+                "nullable": true,
+                "description": "Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled."
+              },
+              "branch": {
+                "type": "string",
+                "nullable": true,
+                "description": "Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled."
               }
             }
           },
@@ -42968,20 +44911,6 @@
           }
         }
       },
-      "teams-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "teams"
-            ]
-          }
-        }
-      },
       "teams-has-many": {
         "type": "object",
         "nullable": true,
@@ -43555,6 +45484,12 @@
               },
               "stacks-default-agent-pool": {
                 "$ref": "#/components/schemas/agent-pools-has-one"
+              },
+              "default-hyok-configuration": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "$ref": "#/components/schemas/hyok-configurations-has-one"
               }
             }
           },
@@ -50190,7 +52125,7 @@
       },
       "state-version-outputs": {
         "type": "object",
-        "description": "State version outputs are the output values from a Terraform state file for a workspace. They include the name and value of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. There is an additional attribute, \"value\" that can be any type, including null if the value is sensitive and part of a list response.",
+        "description": "State version outputs are the output values from a Terraform state file for a workspace. They include the name and type of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. The value attribute can be any type, including null if sensitive is set to true and part of a list response.\n",
         "required": [
           "type"
         ],
@@ -50220,6 +52155,18 @@
               },
               "detailed-type": {
                 "description": "A detailed representation of the output type. May be a string for simple types or an array for complex types such as tuples and objects."
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "description": "Any non-null JSON value."
+                  },
+                  {
+                    "type": "object",
+                    "nullable": true
+                  }
+                ],
+                "description": "The value of the output. May be a string, number, boolean, array, or object. This can include null if `sensitive` is set to true and the endpoint does not reveal sensitive values; use `GET /state-version-outputs/{state_version_output_id}` to retrieve a sensitive value.\n"
               }
             }
           },
@@ -50796,141 +52743,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/hyok-encrypted-data-keys"
-          }
-        }
-      },
-      "teams-nullable-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/teams-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "auth-token-created-by-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "users",
-              "organizations",
-              "teams"
-            ]
-          }
-        }
-      },
-      "auth-token-created-by-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/auth-token-created-by-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "authentication-tokens": {
-        "type": "object",
-        "required": [
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "authentication-tokens"
-            ]
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "expired-at": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true,
-                "description": "The UTC date and time that the token will expire, in ISO 8601 format. If omitted or set to null the token will never expire."
-              },
-              "last-used-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true,
-                "nullable": true
-              },
-              "created-at": {
-                "type": "string",
-                "format": "date-time",
-                "readOnly": true
-              },
-              "token": {
-                "type": "string",
-                "readOnly": true,
-                "nullable": true
-              }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "team": {
-                "$ref": "#/components/schemas/teams-nullable-has-one"
-              },
-              "created-by": {
-                "$ref": "#/components/schemas/auth-token-created-by-has-one"
-              }
-            }
-          }
-        }
-      },
-      "authentication-tokens-envelope": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/authentication-tokens"
-          },
-          "included": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/teams"
-                }
-              ],
-              "discriminator": {
-                "propertyName": "type",
-                "mapping": {
-                  "teams": "#/components/schemas/teams"
-                }
-              }
-            }
           }
         }
       },
@@ -54466,7 +56278,7 @@
               "name": {
                 "type": "string",
                 "minLength": 1,
-                "maxLength": 50
+                "maxLength": 64
               },
               "summary": {
                 "type": "string",

@@ -18,6 +18,8 @@ type ItemStackConfigurationsRequestBuilder struct {
 type ItemStackConfigurationsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackConfigurations []string "uriparametername:\"fields%5Bstack%2Dconfigurations%5D\""
+    // Filter configurations by branch. Accepts a comma-separated list of branch names and returns configurations whose ingress attributes branch matches any of them, including pull request configurations. Configurations without ingress attributes, such as manual uploads, are excluded when this filter is applied. Only available when the `stacks-multi-branch` feature is enabled; otherwise, using this filter responds with 404.
+    Filterbranch *string "uriparametername:\"filter%5Bbranch%5D\""
     // Optionally side-load the specified relationships.
     Include []i7d313464c19387042159ed878778983443002789ff55ded1d0066f956b25c5bf.GetIncludeQueryParameterType "uriparametername:\"include\""
     // The page number to retrieve.
@@ -33,7 +35,7 @@ type ItemStackConfigurationsRequestBuilderPostQueryParameters struct {
 // NewItemStackConfigurationsRequestBuilderInternal instantiates a new ItemStackConfigurationsRequestBuilder and sets the default values.
 func NewItemStackConfigurationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackConfigurationsRequestBuilder) {
     m := &ItemStackConfigurationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-configurations{?fields%5Bstack%2Dconfigurations%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*,source*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-configurations{?fields%5Bstack%2Dconfigurations%5D,filter%5Bbranch%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*,source*}", pathParameters),
     }
     return m
 }
