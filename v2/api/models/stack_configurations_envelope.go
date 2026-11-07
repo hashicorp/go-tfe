@@ -16,7 +16,7 @@ type StackConfigurationsEnvelope struct {
     // The included property
     included []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable
 }
-// StackConfigurationsEnvelope_StackConfigurationsEnvelope_included composed type wrapper for classes IngressAttributesable, StackAggregateOutputsable, StackConfigurationSummariesable, StackDiagnosticsable
+// StackConfigurationsEnvelope_StackConfigurationsEnvelope_included composed type wrapper for classes IngressAttributesable, StackAggregateOutputsable, StackConfigurationSummariesable, StackDiagnosticsable, StackStructuralChangesable
 type StackConfigurationsEnvelope_StackConfigurationsEnvelope_included struct {
     // Composed type representation for type IngressAttributesable
     ingressAttributes IngressAttributesable
@@ -26,6 +26,8 @@ type StackConfigurationsEnvelope_StackConfigurationsEnvelope_included struct {
     stackConfigurationSummaries StackConfigurationSummariesable
     // Composed type representation for type StackDiagnosticsable
     stackDiagnostics StackDiagnosticsable
+    // Composed type representation for type StackStructuralChangesable
+    stackStructuralChanges StackStructuralChangesable
 }
 // NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included instantiates a new StackConfigurationsEnvelope_StackConfigurationsEnvelope_included and sets the default values.
 func NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included()(*StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) {
@@ -56,6 +58,8 @@ func CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromD
                     result.SetStackConfigurationSummaries(NewStackConfigurationSummaries())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-diagnostics") {
                     result.SetStackDiagnostics(NewStackDiagnostics())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-structural-changes") {
+                    result.SetStackStructuralChanges(NewStackStructuralChanges())
                 }
             }
         }
@@ -73,6 +77,8 @@ func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetFi
         return m.GetStackConfigurationSummaries().GetFieldDeserializers()
     } else if m.GetStackDiagnostics() != nil {
         return m.GetStackDiagnostics().GetFieldDeserializers()
+    } else if m.GetStackStructuralChanges() != nil {
+        return m.GetStackStructuralChanges().GetFieldDeserializers()
     }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
 }
@@ -101,6 +107,11 @@ func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetSt
 func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackDiagnostics()(StackDiagnosticsable) {
     return m.stackDiagnostics
 }
+// GetStackStructuralChanges gets the stackStructuralChanges property value. Composed type representation for type StackStructuralChangesable
+// returns a StackStructuralChangesable when successful
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackStructuralChanges()(StackStructuralChangesable) {
+    return m.stackStructuralChanges
+}
 // Serialize serializes information the current object
 func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetIngressAttributes() != nil {
@@ -123,6 +134,11 @@ func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) Seria
         if err != nil {
             return err
         }
+    } else if m.GetStackStructuralChanges() != nil {
+        err := writer.WriteObjectValue("", m.GetStackStructuralChanges())
+        if err != nil {
+            return err
+        }
     }
     return nil
 }
@@ -142,16 +158,22 @@ func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetSt
 func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackDiagnostics(value StackDiagnosticsable)() {
     m.stackDiagnostics = value
 }
+// SetStackStructuralChanges sets the stackStructuralChanges property value. Composed type representation for type StackStructuralChangesable
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackStructuralChanges(value StackStructuralChangesable)() {
+    m.stackStructuralChanges = value
+}
 type StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetIngressAttributes()(IngressAttributesable)
     GetStackAggregateOutputs()(StackAggregateOutputsable)
     GetStackConfigurationSummaries()(StackConfigurationSummariesable)
     GetStackDiagnostics()(StackDiagnosticsable)
+    GetStackStructuralChanges()(StackStructuralChangesable)
     SetIngressAttributes(value IngressAttributesable)()
     SetStackAggregateOutputs(value StackAggregateOutputsable)()
     SetStackConfigurationSummaries(value StackConfigurationSummariesable)()
     SetStackDiagnostics(value StackDiagnosticsable)()
+    SetStackStructuralChanges(value StackStructuralChangesable)()
 }
 // NewStackConfigurationsEnvelope instantiates a new StackConfigurationsEnvelope and sets the default values.
 func NewStackConfigurationsEnvelope()(*StackConfigurationsEnvelope) {

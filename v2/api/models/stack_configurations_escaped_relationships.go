@@ -26,6 +26,8 @@ type StackConfigurations_relationships struct {
     stackDiagnostics Links_relatedable
     // The stackPublishedOutputs property
     stackPublishedOutputs Links_relatedable
+    // The stackStructuralChange property
+    stackStructuralChange StackStructuralChangesHasOneable
 }
 // NewStackConfigurations_relationships instantiates a new StackConfigurations_relationships and sets the default values.
 func NewStackConfigurations_relationships()(*StackConfigurations_relationships) {
@@ -128,6 +130,16 @@ func (m *StackConfigurations_relationships) GetFieldDeserializers()(map[string]f
         }
         return nil
     }
+    res["stack-structural-change"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackStructuralChangesHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackStructuralChange(val.(StackStructuralChangesHasOneable))
+        }
+        return nil
+    }
     return res
 }
 // GetGroupStatusSummaries gets the group-status-summaries property value. The groupStatusSummaries property
@@ -169,6 +181,11 @@ func (m *StackConfigurations_relationships) GetStackDiagnostics()(Links_relateda
 // returns a Links_relatedable when successful
 func (m *StackConfigurations_relationships) GetStackPublishedOutputs()(Links_relatedable) {
     return m.stackPublishedOutputs
+}
+// GetStackStructuralChange gets the stack-structural-change property value. The stackStructuralChange property
+// returns a StackStructuralChangesHasOneable when successful
+func (m *StackConfigurations_relationships) GetStackStructuralChange()(StackStructuralChangesHasOneable) {
+    return m.stackStructuralChange
 }
 // Serialize serializes information the current object
 func (m *StackConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -221,6 +238,12 @@ func (m *StackConfigurations_relationships) Serialize(writer i878a80d2330e89d268
         }
     }
     {
+        err := writer.WriteObjectValue("stack-structural-change", m.GetStackStructuralChange())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -264,6 +287,10 @@ func (m *StackConfigurations_relationships) SetStackDiagnostics(value Links_rela
 func (m *StackConfigurations_relationships) SetStackPublishedOutputs(value Links_relatedable)() {
     m.stackPublishedOutputs = value
 }
+// SetStackStructuralChange sets the stack-structural-change property value. The stackStructuralChange property
+func (m *StackConfigurations_relationships) SetStackStructuralChange(value StackStructuralChangesHasOneable)() {
+    m.stackStructuralChange = value
+}
 type StackConfigurations_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -275,6 +302,7 @@ type StackConfigurations_relationshipsable interface {
     GetStackDeploymentGroups()(Links_relatedable)
     GetStackDiagnostics()(Links_relatedable)
     GetStackPublishedOutputs()(Links_relatedable)
+    GetStackStructuralChange()(StackStructuralChangesHasOneable)
     SetGroupStatusSummaries(value StackConfigurationSummariesHasOneable)()
     SetIngressAttributes(value IngressAttributesHasOneable)()
     SetStack(value StacksHasOneable)()
@@ -283,4 +311,5 @@ type StackConfigurations_relationshipsable interface {
     SetStackDeploymentGroups(value Links_relatedable)()
     SetStackDiagnostics(value Links_relatedable)()
     SetStackPublishedOutputs(value Links_relatedable)()
+    SetStackStructuralChange(value StackStructuralChangesHasOneable)()
 }

@@ -13,7 +13,7 @@ import (
 type ScimSettingsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ScimSettingsRequestBuilderGetQueryParameters returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
+// ScimSettingsRequestBuilderGetQueryParameters returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 type ScimSettingsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for scim-settings resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsscimSettings []string "uriparametername:\"fields%5Bscim%2Dsettings%5D\""
@@ -31,7 +31,7 @@ func NewScimSettingsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     urlParams["request-raw-url"] = rawUrl
     return NewScimSettingsRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Delete resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.This operation is only available in Terraform Enterprise.
+// Delete resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a AdminScimSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ScimSettingsRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable, error) {
@@ -51,7 +51,7 @@ func (m *ScimSettingsRequestBuilder) Delete(ctx context.Context, requestConfigur
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable), nil
 }
-// Get returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
+// Get returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a AdminScimSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ScimSettingsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ScimSettingsRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable, error) {
@@ -71,7 +71,7 @@ func (m *ScimSettingsRequestBuilder) Get(ctx context.Context, requestConfigurati
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable), nil
 }
-// Patch updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.This operation is only available in Terraform Enterprise.
+// Patch updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a AdminScimSettingsEnvelopeable when successful
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -93,7 +93,7 @@ func (m *ScimSettingsRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable), nil
 }
-// ToDeleteRequestInformation resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.This operation is only available in Terraform Enterprise.
+// ToDeleteRequestInformation resets the SCIM configuration: disables provisioning, clears the paused state, and unlinks the site admin and site auditor groups. Returns the reset settings resource rather than 204.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a *RequestInformation when successful
 func (m *ScimSettingsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -101,7 +101,7 @@ func (m *ScimSettingsRequestBuilder) ToDeleteRequestInformation(ctx context.Cont
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToGetRequestInformation returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise.
+// ToGetRequestInformation returns the site-wide SCIM provisioning configuration. SCIM settings are a singleton resource; the returned resource always has the id `scim`.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a *RequestInformation when successful
 func (m *ScimSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ScimSettingsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
@@ -109,7 +109,7 @@ func (m *ScimSettingsRequestBuilder) ToGetRequestInformation(ctx context.Context
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPatchRequestInformation updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.This operation is only available in Terraform Enterprise.
+// ToPatchRequestInformation updates the site-wide SCIM provisioning configuration. Enabling SCIM requires SAML to be enabled with a SCIM-compatible provider type. Disabling SCIM also clears the paused state.This operation is only available in Terraform Enterprise version 2.0.0 or later.
 // returns a *RequestInformation when successful
 func (m *ScimSettingsRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AdminScimSettingsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

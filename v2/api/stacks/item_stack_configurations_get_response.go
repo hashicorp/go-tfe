@@ -21,12 +21,16 @@ type ItemStackConfigurationsGetResponse struct {
     // The meta property
     meta ItemStackConfigurationsGetResponse_metaable
 }
-// ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
+// ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable
 type ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included struct {
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
     ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
     // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
     stackConfigurationSummaries i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    stacks i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable
+    stackVersionControlSettings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable
 }
 // NewItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included instantiates a new ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included and sets the default values.
 func NewItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included()(*ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) {
@@ -53,6 +57,10 @@ func CreateItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_inc
                     result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
                 } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configuration-summaries") {
                     result.SetStackConfigurationSummaries(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackConfigurationSummaries())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+                    result.SetStacks(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStacks())
+                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-version-control-settings") {
+                    result.SetStackVersionControlSettings(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStackVersionControlSettings())
                 }
             }
         }
@@ -66,6 +74,10 @@ func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_inclu
         return m.GetIngressAttributes().GetFieldDeserializers()
     } else if m.GetStackConfigurationSummaries() != nil {
         return m.GetStackConfigurationSummaries().GetFieldDeserializers()
+    } else if m.GetStacks() != nil {
+        return m.GetStacks().GetFieldDeserializers()
+    } else if m.GetStackVersionControlSettings() != nil {
+        return m.GetStackVersionControlSettings().GetFieldDeserializers()
     }
     return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
 }
@@ -84,6 +96,16 @@ func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_inclu
 func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetStackConfigurationSummaries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable) {
     return m.stackConfigurationSummaries
 }
+// GetStacks gets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+// returns a Stacksable when successful
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable) {
+    return m.stacks
+}
+// GetStackVersionControlSettings gets the stackVersionControlSettings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable
+// returns a StackVersionControlSettingsable when successful
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) GetStackVersionControlSettings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable) {
+    return m.stackVersionControlSettings
+}
 // Serialize serializes information the current object
 func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     if m.GetIngressAttributes() != nil {
@@ -93,6 +115,16 @@ func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_inclu
         }
     } else if m.GetStackConfigurationSummaries() != nil {
         err := writer.WriteObjectValue("", m.GetStackConfigurationSummaries())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStacks() != nil {
+        err := writer.WriteObjectValue("", m.GetStacks())
+        if err != nil {
+            return err
+        }
+    } else if m.GetStackVersionControlSettings() != nil {
+        err := writer.WriteObjectValue("", m.GetStackVersionControlSettings())
         if err != nil {
             return err
         }
@@ -107,12 +139,24 @@ func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_inclu
 func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) SetStackConfigurationSummaries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)() {
     m.stackConfigurationSummaries = value
 }
+// SetStacks sets the stacks property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)() {
+    m.stacks = value
+}
+// SetStackVersionControlSettings sets the stackVersionControlSettings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable
+func (m *ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_included) SetStackVersionControlSettings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable)() {
+    m.stackVersionControlSettings = value
+}
 type ItemStackConfigurationsGetResponse_StackConfigurationsGetResponse_includedable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
     GetStackConfigurationSummaries()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)
+    GetStacks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)
+    GetStackVersionControlSettings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable)
     SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
     SetStackConfigurationSummaries(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackConfigurationSummariesable)()
+    SetStacks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Stacksable)()
+    SetStackVersionControlSettings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackVersionControlSettingsable)()
 }
 // NewItemStackConfigurationsGetResponse instantiates a new ItemStackConfigurationsGetResponse and sets the default values.
 func NewItemStackConfigurationsGetResponse()(*ItemStackConfigurationsGetResponse) {
