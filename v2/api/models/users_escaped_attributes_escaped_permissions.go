@@ -32,6 +32,8 @@ type Users_attributes_permissions struct {
     canUpdateUser *bool
     // The canUseSqlRunner property
     canUseSqlRunner *bool
+    // Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+    canViewAdminInAppNotifications *bool
     // The canViewAdminRuns property
     canViewAdminRuns *bool
     // The canViewAdminWorkspaces property
@@ -128,6 +130,11 @@ func (m *Users_attributes_permissions) GetCanUpdateUser()(*bool) {
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanUseSqlRunner()(*bool) {
     return m.canUseSqlRunner
+}
+// GetCanViewAdminInAppNotifications gets the can-view-admin-in-app-notifications property value. Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+// returns a *bool when successful
+func (m *Users_attributes_permissions) GetCanViewAdminInAppNotifications()(*bool) {
+    return m.canViewAdminInAppNotifications
 }
 // GetCanViewAdminRuns gets the can-view-admin-runs property value. The canViewAdminRuns property
 // returns a *bool when successful
@@ -300,6 +307,16 @@ func (m *Users_attributes_permissions) GetFieldDeserializers()(map[string]func(i
         }
         if val != nil {
             m.SetCanUseSqlRunner(val)
+        }
+        return nil
+    }
+    res["can-view-admin-in-app-notifications"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanViewAdminInAppNotifications(val)
         }
         return nil
     }
@@ -494,6 +511,12 @@ func (m *Users_attributes_permissions) Serialize(writer i878a80d2330e89d26896388
         }
     }
     {
+        err := writer.WriteBoolValue("can-view-admin-in-app-notifications", m.GetCanViewAdminInAppNotifications())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("can-view-admin-runs", m.GetCanViewAdminRuns())
         if err != nil {
             return err
@@ -621,6 +644,10 @@ func (m *Users_attributes_permissions) SetCanUpdateUser(value *bool)() {
 func (m *Users_attributes_permissions) SetCanUseSqlRunner(value *bool)() {
     m.canUseSqlRunner = value
 }
+// SetCanViewAdminInAppNotifications sets the can-view-admin-in-app-notifications property value. Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+func (m *Users_attributes_permissions) SetCanViewAdminInAppNotifications(value *bool)() {
+    m.canViewAdminInAppNotifications = value
+}
 // SetCanViewAdminRuns sets the can-view-admin-runs property value. The canViewAdminRuns property
 func (m *Users_attributes_permissions) SetCanViewAdminRuns(value *bool)() {
     m.canViewAdminRuns = value
@@ -683,6 +710,7 @@ type Users_attributes_permissionsable interface {
     GetCanReenable2faByUnlinking()(*bool)
     GetCanUpdateUser()(*bool)
     GetCanUseSqlRunner()(*bool)
+    GetCanViewAdminInAppNotifications()(*bool)
     GetCanViewAdminRuns()(*bool)
     GetCanViewAdminWorkspaces()(*bool)
     GetCanViewCostEstimationSettings()(*bool)
@@ -706,6 +734,7 @@ type Users_attributes_permissionsable interface {
     SetCanReenable2faByUnlinking(value *bool)()
     SetCanUpdateUser(value *bool)()
     SetCanUseSqlRunner(value *bool)()
+    SetCanViewAdminInAppNotifications(value *bool)()
     SetCanViewAdminRuns(value *bool)()
     SetCanViewAdminWorkspaces(value *bool)()
     SetCanViewCostEstimationSettings(value *bool)()

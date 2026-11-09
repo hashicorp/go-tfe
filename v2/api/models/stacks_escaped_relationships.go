@@ -18,6 +18,8 @@ type Stacks_relationships struct {
     project ProjectsHasOneable
     // The stackConfigurations property
     stackConfigurations Links_relatedable
+    // Returned in stack show responses only.
+    stackVersionControlSetting StackVersionControlSettingsHasOneable
 }
 // NewStacks_relationships instantiates a new Stacks_relationships and sets the default values.
 func NewStacks_relationships()(*Stacks_relationships) {
@@ -85,6 +87,16 @@ func (m *Stacks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2
         }
         return nil
     }
+    res["stack-version-control-setting"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackVersionControlSettingsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackVersionControlSetting(val.(StackVersionControlSettingsHasOneable))
+        }
+        return nil
+    }
     return res
 }
 // GetLatestStackConfiguration gets the latest-stack-configuration property value. The latestStackConfiguration property
@@ -101,6 +113,11 @@ func (m *Stacks_relationships) GetProject()(ProjectsHasOneable) {
 // returns a Links_relatedable when successful
 func (m *Stacks_relationships) GetStackConfigurations()(Links_relatedable) {
     return m.stackConfigurations
+}
+// GetStackVersionControlSetting gets the stack-version-control-setting property value. Returned in stack show responses only.
+// returns a StackVersionControlSettingsHasOneable when successful
+func (m *Stacks_relationships) GetStackVersionControlSetting()(StackVersionControlSettingsHasOneable) {
+    return m.stackVersionControlSetting
 }
 // Serialize serializes information the current object
 func (m *Stacks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -124,6 +141,12 @@ func (m *Stacks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487ee
     }
     {
         err := writer.WriteObjectValue("stack-configurations", m.GetStackConfigurations())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stack-version-control-setting", m.GetStackVersionControlSetting())
         if err != nil {
             return err
         }
@@ -156,6 +179,10 @@ func (m *Stacks_relationships) SetProject(value ProjectsHasOneable)() {
 func (m *Stacks_relationships) SetStackConfigurations(value Links_relatedable)() {
     m.stackConfigurations = value
 }
+// SetStackVersionControlSetting sets the stack-version-control-setting property value. Returned in stack show responses only.
+func (m *Stacks_relationships) SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable)() {
+    m.stackVersionControlSetting = value
+}
 type Stacks_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -163,8 +190,10 @@ type Stacks_relationshipsable interface {
     GetLatestStackConfiguration()(StackConfigurationsHasOneable)
     GetProject()(ProjectsHasOneable)
     GetStackConfigurations()(Links_relatedable)
+    GetStackVersionControlSetting()(StackVersionControlSettingsHasOneable)
     SetAgentPool(value AgentPoolsHasOneable)()
     SetLatestStackConfiguration(value StackConfigurationsHasOneable)()
     SetProject(value ProjectsHasOneable)()
     SetStackConfigurations(value Links_relatedable)()
+    SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable)()
 }
