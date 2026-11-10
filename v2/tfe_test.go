@@ -6,12 +6,14 @@ package tfe
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"sync/atomic"
 	"testing"
 
+	"github.com/hashicorp/go-tfe/v2/api/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -418,6 +420,39 @@ func TestGetStream_OnlySendsAuthorizationHeaderToAllowedHosts(t *testing.T) {
 
 	assert.Equal(t, "Bearer test-token", allowedAuthHeader)
 	assert.Empty(t, disallowedAuthHeader)
+}
+
+func TestClient_NullableAttribute(t *testing.T) {
+	bodies := make(chan map[string]any, 1)
+	_, client := testServerWithClient(t, DefaultBasePath, map[string]http.HandlerFunc{
+		"/api/v2/oauth-clients/oc-123": func(w http.ResponseWriter, r *http.Request) {
+			assert.Equal(t, http.MethodPatch, r.Method)
+			var body map[string]any
+			assert.NoError(t, json.NewDecoder(r.Body).Decode(&body))
+			bodies <- body
+			setDefaultServerHeaders(w)
+			w.WriteHeader(http.StatusNoContent)
+		},
+	})
+
+	attrs := models.NewOauthClients_attributes()
+	attrs.SetAdoOrgName(nil)
+	data := models.NewOauthClients()
+	data.SetAttributes(attrs)
+	body := models.NewOauthClientsEnvelope()
+	body.SetData(data)
+
+	_, err := client.API.OauthClients().ByOauth_client_id("oc-123").Patch(context.Background(), body, nil)
+	require.NoError(t, err)
+
+	requestBody := <-bodies
+	dataValue, ok := requestBody["data"].(map[string]any)
+	require.True(t, ok, "request body must contain data")
+	attributes, ok := dataValue["attributes"].(map[string]any)
+	require.True(t, ok, "request data must contain attributes")
+	value, present := attributes["ado-org-name"]
+	assert.True(t, present, "ado-org-name must not be omitted")
+	assert.Nil(t, value)
 }
 
 func TestHTTPTransport(t *testing.T) {
