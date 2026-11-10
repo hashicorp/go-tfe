@@ -1,4 +1,4 @@
-# v2.15.0
+# v2.16.0
 
 * Enhancement: The latest API operations are available.
 
