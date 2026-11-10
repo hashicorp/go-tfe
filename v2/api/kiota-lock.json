@@ -7,7 +7,7 @@
   "typeAccessModifier": "Public",
   "clientNamespaceName": "github.com/hashicorp/go-tfe/v2/api",
   "language": "Go",
-  "usesBackingStore": false,
+  "usesBackingStore": true,
   "excludeBackwardCompatible": true,
   "includeAdditionalData": true,
   "disableSSLValidation": false,

@@ -5,29 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type EmailRecipientStatuses_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The number of delivery failures for this email
-	deliveryFailuresCount *int32
-	// The email address of the recipient
-	email *string
-	// The timestamp when the email was unsubscribed
-	unsubscribedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The timestamp when the email was verified
-	verifiedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewEmailRecipientStatuses_attributes instantiates a new EmailRecipientStatuses_attributes and sets the default values.
 func NewEmailRecipientStatuses_attributes() *EmailRecipientStatuses_attributes {
 	m := &EmailRecipientStatuses_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -41,25 +31,60 @@ func CreateEmailRecipientStatuses_attributesFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *EmailRecipientStatuses_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *EmailRecipientStatuses_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *EmailRecipientStatuses_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeliveryFailuresCount gets the delivery-failures-count property value. The number of delivery failures for this email
 // returns a *int32 when successful
 func (m *EmailRecipientStatuses_attributes) GetDeliveryFailuresCount() *int32 {
-	return m.deliveryFailuresCount
+	val, err := m.GetBackingStore().Get("deliveryFailuresCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetEmail gets the email property value. The email address of the recipient
 // returns a *string when successful
 func (m *EmailRecipientStatuses_attributes) GetEmail() *string {
-	return m.email
+	val, err := m.GetBackingStore().Get("email")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -132,19 +157,40 @@ func (m *EmailRecipientStatuses_attributes) GetFieldDeserializers() map[string]f
 // GetUnsubscribedAt gets the unsubscribed-at property value. The timestamp when the email was unsubscribed
 // returns a *Time when successful
 func (m *EmailRecipientStatuses_attributes) GetUnsubscribedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.unsubscribedAt
+	val, err := m.GetBackingStore().Get("unsubscribedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *EmailRecipientStatuses_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVerifiedAt gets the verified-at property value. The timestamp when the email was verified
 // returns a *Time when successful
 func (m *EmailRecipientStatuses_attributes) GetVerifiedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.verifiedAt
+	val, err := m.GetBackingStore().Get("verifiedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -178,48 +224,77 @@ func (m *EmailRecipientStatuses_attributes) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *EmailRecipientStatuses_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *EmailRecipientStatuses_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *EmailRecipientStatuses_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeliveryFailuresCount sets the delivery-failures-count property value. The number of delivery failures for this email
 func (m *EmailRecipientStatuses_attributes) SetDeliveryFailuresCount(value *int32) {
-	m.deliveryFailuresCount = value
+	err := m.GetBackingStore().Set("deliveryFailuresCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEmail sets the email property value. The email address of the recipient
 func (m *EmailRecipientStatuses_attributes) SetEmail(value *string) {
-	m.email = value
+	err := m.GetBackingStore().Set("email", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUnsubscribedAt sets the unsubscribed-at property value. The timestamp when the email was unsubscribed
 func (m *EmailRecipientStatuses_attributes) SetUnsubscribedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.unsubscribedAt = value
+	err := m.GetBackingStore().Set("unsubscribedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *EmailRecipientStatuses_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVerifiedAt sets the verified-at property value. The timestamp when the email was verified
 func (m *EmailRecipientStatuses_attributes) SetVerifiedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.verifiedAt = value
+	err := m.GetBackingStore().Set("verifiedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type EmailRecipientStatuses_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDeliveryFailuresCount() *int32
 	GetEmail() *string
 	GetUnsubscribedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetVerifiedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDeliveryFailuresCount(value *int32)
 	SetEmail(value *string)

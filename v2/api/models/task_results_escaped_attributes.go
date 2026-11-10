@@ -5,47 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TaskResults_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The external ID of the agent pool, when private run tasks are enabled.
-	agentPoolId *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Whether the associated run is speculative (plan-only).
-	isSpeculative *bool
-	// A message describing the result of the run task execution.
-	message *string
-	// The run stage during which this task result was created.
-	stage *string
-	// The status property
-	status *TaskResults_attributes_status
-	// A map of status names to timestamps indicating when the task result entered each status. Keys are formatted as "{status}-at".
-	statusTimestamps TaskResults_attributes_statusTimestampsable
-	// The external ID of the run task.
-	taskId *string
-	// The name of the run task.
-	taskName *string
-	// The number of task result outcomes associated with this task result.
-	taskResultOutcomesCount *int32
-	// The URL of the run task definition.
-	taskUrl *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// A URL the run task integration provided with details about the task execution.
-	url *string
-	// The enforcement level of the workspace task (e.g., advisory, mandatory).
-	workspaceTaskEnforcementLevel *string
-	// The external ID of the workspace task configuration.
-	workspaceTaskId *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskResults_attributes instantiates a new TaskResults_attributes and sets the default values.
 func NewTaskResults_attributes() *TaskResults_attributes {
 	m := &TaskResults_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -59,19 +31,47 @@ func CreateTaskResults_attributesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskResults_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentPoolId gets the agent-pool-id property value. The external ID of the agent pool, when private run tasks are enabled.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetAgentPoolId() *string {
-	return m.agentPoolId
+	val, err := m.GetBackingStore().Get("agentPoolId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskResults_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *TaskResults_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -234,79 +234,170 @@ func (m *TaskResults_attributes) GetFieldDeserializers() map[string]func(i878a80
 // GetIsSpeculative gets the is-speculative property value. Whether the associated run is speculative (plan-only).
 // returns a *bool when successful
 func (m *TaskResults_attributes) GetIsSpeculative() *bool {
-	return m.isSpeculative
+	val, err := m.GetBackingStore().Get("isSpeculative")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetMessage gets the message property value. A message describing the result of the run task execution.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetMessage() *string {
-	return m.message
+	val, err := m.GetBackingStore().Get("message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStage gets the stage property value. The run stage during which this task result was created.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetStage() *string {
-	return m.stage
+	val, err := m.GetBackingStore().Get("stage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *TaskResults_attributes_status when successful
 func (m *TaskResults_attributes) GetStatus() *TaskResults_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TaskResults_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. A map of status names to timestamps indicating when the task result entered each status. Keys are formatted as "{status}-at".
 // returns a TaskResults_attributes_statusTimestampsable when successful
 func (m *TaskResults_attributes) GetStatusTimestamps() TaskResults_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskResults_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetTaskId gets the task-id property value. The external ID of the run task.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetTaskId() *string {
-	return m.taskId
+	val, err := m.GetBackingStore().Get("taskId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTaskName gets the task-name property value. The name of the run task.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetTaskName() *string {
-	return m.taskName
+	val, err := m.GetBackingStore().Get("taskName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTaskResultOutcomesCount gets the task-result-outcomes-count property value. The number of task result outcomes associated with this task result.
 // returns a *int32 when successful
 func (m *TaskResults_attributes) GetTaskResultOutcomesCount() *int32 {
-	return m.taskResultOutcomesCount
+	val, err := m.GetBackingStore().Get("taskResultOutcomesCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTaskUrl gets the task-url property value. The URL of the run task definition.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetTaskUrl() *string {
-	return m.taskUrl
+	val, err := m.GetBackingStore().Get("taskUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *TaskResults_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUrl gets the url property value. A URL the run task integration provided with details about the task execution.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetUrl() *string {
-	return m.url
+	val, err := m.GetBackingStore().Get("url")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetWorkspaceTaskEnforcementLevel gets the workspace-task-enforcement-level property value. The enforcement level of the workspace task (e.g., advisory, mandatory).
 // returns a *string when successful
 func (m *TaskResults_attributes) GetWorkspaceTaskEnforcementLevel() *string {
-	return m.workspaceTaskEnforcementLevel
+	val, err := m.GetBackingStore().Get("workspaceTaskEnforcementLevel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetWorkspaceTaskId gets the workspace-task-id property value. The external ID of the workspace task configuration.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetWorkspaceTaskId() *string {
-	return m.workspaceTaskId
+	val, err := m.GetBackingStore().Get("workspaceTaskId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -341,88 +432,143 @@ func (m *TaskResults_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskResults_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPoolId sets the agent-pool-id property value. The external ID of the agent pool, when private run tasks are enabled.
 func (m *TaskResults_attributes) SetAgentPoolId(value *string) {
-	m.agentPoolId = value
+	err := m.GetBackingStore().Set("agentPoolId", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskResults_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *TaskResults_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsSpeculative sets the is-speculative property value. Whether the associated run is speculative (plan-only).
 func (m *TaskResults_attributes) SetIsSpeculative(value *bool) {
-	m.isSpeculative = value
+	err := m.GetBackingStore().Set("isSpeculative", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMessage sets the message property value. A message describing the result of the run task execution.
 func (m *TaskResults_attributes) SetMessage(value *string) {
-	m.message = value
+	err := m.GetBackingStore().Set("message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStage sets the stage property value. The run stage during which this task result was created.
 func (m *TaskResults_attributes) SetStage(value *string) {
-	m.stage = value
+	err := m.GetBackingStore().Set("stage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *TaskResults_attributes) SetStatus(value *TaskResults_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. A map of status names to timestamps indicating when the task result entered each status. Keys are formatted as "{status}-at".
 func (m *TaskResults_attributes) SetStatusTimestamps(value TaskResults_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskId sets the task-id property value. The external ID of the run task.
 func (m *TaskResults_attributes) SetTaskId(value *string) {
-	m.taskId = value
+	err := m.GetBackingStore().Set("taskId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskName sets the task-name property value. The name of the run task.
 func (m *TaskResults_attributes) SetTaskName(value *string) {
-	m.taskName = value
+	err := m.GetBackingStore().Set("taskName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskResultOutcomesCount sets the task-result-outcomes-count property value. The number of task result outcomes associated with this task result.
 func (m *TaskResults_attributes) SetTaskResultOutcomesCount(value *int32) {
-	m.taskResultOutcomesCount = value
+	err := m.GetBackingStore().Set("taskResultOutcomesCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskUrl sets the task-url property value. The URL of the run task definition.
 func (m *TaskResults_attributes) SetTaskUrl(value *string) {
-	m.taskUrl = value
+	err := m.GetBackingStore().Set("taskUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *TaskResults_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUrl sets the url property value. A URL the run task integration provided with details about the task execution.
 func (m *TaskResults_attributes) SetUrl(value *string) {
-	m.url = value
+	err := m.GetBackingStore().Set("url", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceTaskEnforcementLevel sets the workspace-task-enforcement-level property value. The enforcement level of the workspace task (e.g., advisory, mandatory).
 func (m *TaskResults_attributes) SetWorkspaceTaskEnforcementLevel(value *string) {
-	m.workspaceTaskEnforcementLevel = value
+	err := m.GetBackingStore().Set("workspaceTaskEnforcementLevel", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceTaskId sets the workspace-task-id property value. The external ID of the workspace task configuration.
 func (m *TaskResults_attributes) SetWorkspaceTaskId(value *string) {
-	m.workspaceTaskId = value
+	err := m.GetBackingStore().Set("workspaceTaskId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskResults_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentPoolId() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetIsSpeculative() *bool
 	GetMessage() *string
@@ -438,6 +584,7 @@ type TaskResults_attributesable interface {
 	GetWorkspaceTaskEnforcementLevel() *string
 	GetWorkspaceTaskId() *string
 	SetAgentPoolId(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetIsSpeculative(value *bool)
 	SetMessage(value *string)

@@ -5,31 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackDiagnostics_attributes struct {
-	// The acknowledged property
-	acknowledged *bool
-	// The acknowledgedAt property
-	acknowledgedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The detail property
-	detail *string
-	// The diags property
-	diags i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
-	// The severity property
-	severity *StackDiagnostics_attributes_severity
-	// The summary property
-	summary *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDiagnostics_attributes instantiates a new StackDiagnostics_attributes and sets the default values.
 func NewStackDiagnostics_attributes() *StackDiagnostics_attributes {
 	m := &StackDiagnostics_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -43,37 +31,86 @@ func CreateStackDiagnostics_attributesFromDiscriminatorValue(parseNode i878a80d2
 // GetAcknowledged gets the acknowledged property value. The acknowledged property
 // returns a *bool when successful
 func (m *StackDiagnostics_attributes) GetAcknowledged() *bool {
-	return m.acknowledged
+	val, err := m.GetBackingStore().Get("acknowledged")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAcknowledgedAt gets the acknowledged-at property value. The acknowledgedAt property
 // returns a *Time when successful
 func (m *StackDiagnostics_attributes) GetAcknowledgedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.acknowledgedAt
+	val, err := m.GetBackingStore().Get("acknowledgedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDiagnostics_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDiagnostics_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackDiagnostics_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDetail gets the detail property value. The detail property
 // returns a *string when successful
 func (m *StackDiagnostics_attributes) GetDetail() *string {
-	return m.detail
+	val, err := m.GetBackingStore().Get("detail")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDiags gets the diags property value. The diags property
 // returns a UntypedNodeable when successful
 func (m *StackDiagnostics_attributes) GetDiags() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable {
-	return m.diags
+	val, err := m.GetBackingStore().Get("diags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -156,13 +193,27 @@ func (m *StackDiagnostics_attributes) GetFieldDeserializers() map[string]func(i8
 // GetSeverity gets the severity property value. The severity property
 // returns a *StackDiagnostics_attributes_severity when successful
 func (m *StackDiagnostics_attributes) GetSeverity() *StackDiagnostics_attributes_severity {
-	return m.severity
+	val, err := m.GetBackingStore().Get("severity")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackDiagnostics_attributes_severity)
+	}
+	return nil
 }
 
 // GetSummary gets the summary property value. The summary property
 // returns a *string when successful
 func (m *StackDiagnostics_attributes) GetSummary() *string {
-	return m.summary
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -178,49 +229,80 @@ func (m *StackDiagnostics_attributes) Serialize(writer i878a80d2330e89d26896388a
 
 // SetAcknowledged sets the acknowledged property value. The acknowledged property
 func (m *StackDiagnostics_attributes) SetAcknowledged(value *bool) {
-	m.acknowledged = value
+	err := m.GetBackingStore().Set("acknowledged", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAcknowledgedAt sets the acknowledged-at property value. The acknowledgedAt property
 func (m *StackDiagnostics_attributes) SetAcknowledgedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.acknowledgedAt = value
+	err := m.GetBackingStore().Set("acknowledgedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDiagnostics_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDiagnostics_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackDiagnostics_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDetail sets the detail property value. The detail property
 func (m *StackDiagnostics_attributes) SetDetail(value *string) {
-	m.detail = value
+	err := m.GetBackingStore().Set("detail", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDiags sets the diags property value. The diags property
 func (m *StackDiagnostics_attributes) SetDiags(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
-	m.diags = value
+	err := m.GetBackingStore().Set("diags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSeverity sets the severity property value. The severity property
 func (m *StackDiagnostics_attributes) SetSeverity(value *StackDiagnostics_attributes_severity) {
-	m.severity = value
+	err := m.GetBackingStore().Set("severity", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSummary sets the summary property value. The summary property
 func (m *StackDiagnostics_attributes) SetSummary(value *string) {
-	m.summary = value
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDiagnostics_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAcknowledged() *bool
 	GetAcknowledgedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDetail() *string
 	GetDiags() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
@@ -228,6 +310,7 @@ type StackDiagnostics_attributesable interface {
 	GetSummary() *string
 	SetAcknowledged(value *bool)
 	SetAcknowledgedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDetail(value *string)
 	SetDiags(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)

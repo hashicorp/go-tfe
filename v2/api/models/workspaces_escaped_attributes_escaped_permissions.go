@@ -5,58 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Workspaces_attributes_permissions struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The canCreateStateVersions property
-	canCreateStateVersions *bool
-	// The canDestroy property
-	canDestroy *bool
-	// The canForceDelete property
-	canForceDelete *bool
-	// The canForceUnlock property
-	canForceUnlock *bool
-	// The canLock property
-	canLock *bool
-	// The canManageAssessments property
-	canManageAssessments *bool
-	// The canManageEphemeralWorkspaces property
-	canManageEphemeralWorkspaces *bool
-	// The canManageRunTasks property
-	canManageRunTasks *bool
-	// The canManageTags property
-	canManageTags *bool
-	// The canQueueApply property
-	canQueueApply *bool
-	// The canQueueDestroy property
-	canQueueDestroy *bool
-	// The canQueueRun property
-	canQueueRun *bool
-	// The canReadAssessmentResults property
-	canReadAssessmentResults *bool
-	// The canReadRun property
-	canReadRun *bool
-	// The canReadSettings property
-	canReadSettings *bool
-	// The canReadStateOutputs property
-	canReadStateOutputs *bool
-	// The canReadStateVersions property
-	canReadStateVersions *bool
-	// The canReadVariable property
-	canReadVariable *bool
-	// The canUnlock property
-	canUnlock *bool
-	// The canUpdate property
-	canUpdate *bool
-	// The canUpdateVariable property
-	canUpdateVariable *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewWorkspaces_attributes_permissions instantiates a new Workspaces_attributes_permissions and sets the default values.
 func NewWorkspaces_attributes_permissions() *Workspaces_attributes_permissions {
 	m := &Workspaces_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -70,133 +30,294 @@ func CreateWorkspaces_attributes_permissionsFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Workspaces_attributes_permissions) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Workspaces_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanCreateStateVersions gets the can-create-state-versions property value. The canCreateStateVersions property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanCreateStateVersions() *bool {
-	return m.canCreateStateVersions
+	val, err := m.GetBackingStore().Get("canCreateStateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanDestroy gets the can-destroy property value. The canDestroy property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanDestroy() *bool {
-	return m.canDestroy
+	val, err := m.GetBackingStore().Get("canDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanForceDelete gets the can-force-delete property value. The canForceDelete property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanForceDelete() *bool {
-	return m.canForceDelete
+	val, err := m.GetBackingStore().Get("canForceDelete")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanForceUnlock gets the can-force-unlock property value. The canForceUnlock property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanForceUnlock() *bool {
-	return m.canForceUnlock
+	val, err := m.GetBackingStore().Get("canForceUnlock")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanLock gets the can-lock property value. The canLock property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanLock() *bool {
-	return m.canLock
+	val, err := m.GetBackingStore().Get("canLock")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageAssessments gets the can-manage-assessments property value. The canManageAssessments property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanManageAssessments() *bool {
-	return m.canManageAssessments
+	val, err := m.GetBackingStore().Get("canManageAssessments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageEphemeralWorkspaces gets the can-manage-ephemeral-workspaces property value. The canManageEphemeralWorkspaces property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanManageEphemeralWorkspaces() *bool {
-	return m.canManageEphemeralWorkspaces
+	val, err := m.GetBackingStore().Get("canManageEphemeralWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageRunTasks gets the can-manage-run-tasks property value. The canManageRunTasks property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanManageRunTasks() *bool {
-	return m.canManageRunTasks
+	val, err := m.GetBackingStore().Get("canManageRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageTags gets the can-manage-tags property value. The canManageTags property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanManageTags() *bool {
-	return m.canManageTags
+	val, err := m.GetBackingStore().Get("canManageTags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanQueueApply gets the can-queue-apply property value. The canQueueApply property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanQueueApply() *bool {
-	return m.canQueueApply
+	val, err := m.GetBackingStore().Get("canQueueApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanQueueDestroy gets the can-queue-destroy property value. The canQueueDestroy property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanQueueDestroy() *bool {
-	return m.canQueueDestroy
+	val, err := m.GetBackingStore().Get("canQueueDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanQueueRun gets the can-queue-run property value. The canQueueRun property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanQueueRun() *bool {
-	return m.canQueueRun
+	val, err := m.GetBackingStore().Get("canQueueRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadAssessmentResults gets the can-read-assessment-results property value. The canReadAssessmentResults property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadAssessmentResults() *bool {
-	return m.canReadAssessmentResults
+	val, err := m.GetBackingStore().Get("canReadAssessmentResults")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadRun gets the can-read-run property value. The canReadRun property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadRun() *bool {
-	return m.canReadRun
+	val, err := m.GetBackingStore().Get("canReadRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadSettings gets the can-read-settings property value. The canReadSettings property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadSettings() *bool {
-	return m.canReadSettings
+	val, err := m.GetBackingStore().Get("canReadSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadStateOutputs gets the can-read-state-outputs property value. The canReadStateOutputs property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadStateOutputs() *bool {
-	return m.canReadStateOutputs
+	val, err := m.GetBackingStore().Get("canReadStateOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadStateVersions gets the can-read-state-versions property value. The canReadStateVersions property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadStateVersions() *bool {
-	return m.canReadStateVersions
+	val, err := m.GetBackingStore().Get("canReadStateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadVariable gets the can-read-variable property value. The canReadVariable property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanReadVariable() *bool {
-	return m.canReadVariable
+	val, err := m.GetBackingStore().Get("canReadVariable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUnlock gets the can-unlock property value. The canUnlock property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanUnlock() *bool {
-	return m.canUnlock
+	val, err := m.GetBackingStore().Get("canUnlock")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdate gets the can-update property value. The canUpdate property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanUpdate() *bool {
-	return m.canUpdate
+	val, err := m.GetBackingStore().Get("canUpdate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateVariable gets the can-update-variable property value. The canUpdateVariable property
 // returns a *bool when successful
 func (m *Workspaces_attributes_permissions) GetCanUpdateVariable() *bool {
-	return m.canUpdateVariable
+	val, err := m.GetBackingStore().Get("canUpdateVariable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -555,117 +676,190 @@ func (m *Workspaces_attributes_permissions) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Workspaces_attributes_permissions) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Workspaces_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanCreateStateVersions sets the can-create-state-versions property value. The canCreateStateVersions property
 func (m *Workspaces_attributes_permissions) SetCanCreateStateVersions(value *bool) {
-	m.canCreateStateVersions = value
+	err := m.GetBackingStore().Set("canCreateStateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanDestroy sets the can-destroy property value. The canDestroy property
 func (m *Workspaces_attributes_permissions) SetCanDestroy(value *bool) {
-	m.canDestroy = value
+	err := m.GetBackingStore().Set("canDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanForceDelete sets the can-force-delete property value. The canForceDelete property
 func (m *Workspaces_attributes_permissions) SetCanForceDelete(value *bool) {
-	m.canForceDelete = value
+	err := m.GetBackingStore().Set("canForceDelete", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanForceUnlock sets the can-force-unlock property value. The canForceUnlock property
 func (m *Workspaces_attributes_permissions) SetCanForceUnlock(value *bool) {
-	m.canForceUnlock = value
+	err := m.GetBackingStore().Set("canForceUnlock", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanLock sets the can-lock property value. The canLock property
 func (m *Workspaces_attributes_permissions) SetCanLock(value *bool) {
-	m.canLock = value
+	err := m.GetBackingStore().Set("canLock", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageAssessments sets the can-manage-assessments property value. The canManageAssessments property
 func (m *Workspaces_attributes_permissions) SetCanManageAssessments(value *bool) {
-	m.canManageAssessments = value
+	err := m.GetBackingStore().Set("canManageAssessments", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageEphemeralWorkspaces sets the can-manage-ephemeral-workspaces property value. The canManageEphemeralWorkspaces property
 func (m *Workspaces_attributes_permissions) SetCanManageEphemeralWorkspaces(value *bool) {
-	m.canManageEphemeralWorkspaces = value
+	err := m.GetBackingStore().Set("canManageEphemeralWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageRunTasks sets the can-manage-run-tasks property value. The canManageRunTasks property
 func (m *Workspaces_attributes_permissions) SetCanManageRunTasks(value *bool) {
-	m.canManageRunTasks = value
+	err := m.GetBackingStore().Set("canManageRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageTags sets the can-manage-tags property value. The canManageTags property
 func (m *Workspaces_attributes_permissions) SetCanManageTags(value *bool) {
-	m.canManageTags = value
+	err := m.GetBackingStore().Set("canManageTags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanQueueApply sets the can-queue-apply property value. The canQueueApply property
 func (m *Workspaces_attributes_permissions) SetCanQueueApply(value *bool) {
-	m.canQueueApply = value
+	err := m.GetBackingStore().Set("canQueueApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanQueueDestroy sets the can-queue-destroy property value. The canQueueDestroy property
 func (m *Workspaces_attributes_permissions) SetCanQueueDestroy(value *bool) {
-	m.canQueueDestroy = value
+	err := m.GetBackingStore().Set("canQueueDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanQueueRun sets the can-queue-run property value. The canQueueRun property
 func (m *Workspaces_attributes_permissions) SetCanQueueRun(value *bool) {
-	m.canQueueRun = value
+	err := m.GetBackingStore().Set("canQueueRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadAssessmentResults sets the can-read-assessment-results property value. The canReadAssessmentResults property
 func (m *Workspaces_attributes_permissions) SetCanReadAssessmentResults(value *bool) {
-	m.canReadAssessmentResults = value
+	err := m.GetBackingStore().Set("canReadAssessmentResults", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadRun sets the can-read-run property value. The canReadRun property
 func (m *Workspaces_attributes_permissions) SetCanReadRun(value *bool) {
-	m.canReadRun = value
+	err := m.GetBackingStore().Set("canReadRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadSettings sets the can-read-settings property value. The canReadSettings property
 func (m *Workspaces_attributes_permissions) SetCanReadSettings(value *bool) {
-	m.canReadSettings = value
+	err := m.GetBackingStore().Set("canReadSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadStateOutputs sets the can-read-state-outputs property value. The canReadStateOutputs property
 func (m *Workspaces_attributes_permissions) SetCanReadStateOutputs(value *bool) {
-	m.canReadStateOutputs = value
+	err := m.GetBackingStore().Set("canReadStateOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadStateVersions sets the can-read-state-versions property value. The canReadStateVersions property
 func (m *Workspaces_attributes_permissions) SetCanReadStateVersions(value *bool) {
-	m.canReadStateVersions = value
+	err := m.GetBackingStore().Set("canReadStateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadVariable sets the can-read-variable property value. The canReadVariable property
 func (m *Workspaces_attributes_permissions) SetCanReadVariable(value *bool) {
-	m.canReadVariable = value
+	err := m.GetBackingStore().Set("canReadVariable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUnlock sets the can-unlock property value. The canUnlock property
 func (m *Workspaces_attributes_permissions) SetCanUnlock(value *bool) {
-	m.canUnlock = value
+	err := m.GetBackingStore().Set("canUnlock", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdate sets the can-update property value. The canUpdate property
 func (m *Workspaces_attributes_permissions) SetCanUpdate(value *bool) {
-	m.canUpdate = value
+	err := m.GetBackingStore().Set("canUpdate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateVariable sets the can-update-variable property value. The canUpdateVariable property
 func (m *Workspaces_attributes_permissions) SetCanUpdateVariable(value *bool) {
-	m.canUpdateVariable = value
+	err := m.GetBackingStore().Set("canUpdateVariable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Workspaces_attributes_permissionsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanCreateStateVersions() *bool
 	GetCanDestroy() *bool
 	GetCanForceDelete() *bool
@@ -687,6 +881,7 @@ type Workspaces_attributes_permissionsable interface {
 	GetCanUnlock() *bool
 	GetCanUpdate() *bool
 	GetCanUpdateVariable() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanCreateStateVersions(value *bool)
 	SetCanDestroy(value *bool)
 	SetCanForceDelete(value *bool)

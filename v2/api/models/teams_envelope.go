@@ -5,29 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type TeamsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data Teamsable
-	// The included property
-	included []TeamsEnvelope_TeamsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// TeamsEnvelope_TeamsEnvelope_included composed type wrapper for classes OrganizationMembershipsable, Usersable
+// TeamsEnvelope_TeamsEnvelope_included composed type wrapper for classes OrganizationMemberships, Users
 type TeamsEnvelope_TeamsEnvelope_included struct {
-	// Composed type representation for type OrganizationMembershipsable
-	organizationMemberships OrganizationMembershipsable
-	// Composed type representation for type Usersable
-	users Usersable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTeamsEnvelope_TeamsEnvelope_included instantiates a new TeamsEnvelope_TeamsEnvelope_included and sets the default values.
 func NewTeamsEnvelope_TeamsEnvelope_included() *TeamsEnvelope_TeamsEnvelope_included {
 	m := &TeamsEnvelope_TeamsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -57,6 +53,12 @@ func CreateTeamsEnvelope_TeamsEnvelope_includedFromDiscriminatorValue(parseNode 
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamsEnvelope_TeamsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *TeamsEnvelope_TeamsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -74,16 +76,30 @@ func (m *TeamsEnvelope_TeamsEnvelope_included) GetIsComposedType() bool {
 	return true
 }
 
-// GetOrganizationMemberships gets the organizationMemberships property value. Composed type representation for type OrganizationMembershipsable
+// GetOrganizationMemberships gets the organizationMemberships property value. Composed type representation for type OrganizationMemberships
 // returns a OrganizationMembershipsable when successful
 func (m *TeamsEnvelope_TeamsEnvelope_included) GetOrganizationMemberships() OrganizationMembershipsable {
-	return m.organizationMemberships
+	val, err := m.GetBackingStore().Get("organizationMemberships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationMembershipsable)
+	}
+	return nil
 }
 
-// GetUsers gets the users property value. Composed type representation for type Usersable
+// GetUsers gets the users property value. Composed type representation for type Users
 // returns a Usersable when successful
 func (m *TeamsEnvelope_TeamsEnvelope_included) GetUsers() Usersable {
-	return m.users
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Usersable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -102,20 +118,34 @@ func (m *TeamsEnvelope_TeamsEnvelope_included) Serialize(writer i878a80d2330e89d
 	return nil
 }
 
-// SetOrganizationMemberships sets the organizationMemberships property value. Composed type representation for type OrganizationMembershipsable
-func (m *TeamsEnvelope_TeamsEnvelope_included) SetOrganizationMemberships(value OrganizationMembershipsable) {
-	m.organizationMemberships = value
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamsEnvelope_TeamsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
-// SetUsers sets the users property value. Composed type representation for type Usersable
+// SetOrganizationMemberships sets the organizationMemberships property value. Composed type representation for type OrganizationMemberships
+func (m *TeamsEnvelope_TeamsEnvelope_included) SetOrganizationMemberships(value OrganizationMembershipsable) {
+	err := m.GetBackingStore().Set("organizationMemberships", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetUsers sets the users property value. Composed type representation for type Users
 func (m *TeamsEnvelope_TeamsEnvelope_included) SetUsers(value Usersable) {
-	m.users = value
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TeamsEnvelope_TeamsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetOrganizationMemberships() OrganizationMembershipsable
 	GetUsers() Usersable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetOrganizationMemberships(value OrganizationMembershipsable)
 	SetUsers(value Usersable)
 }
@@ -123,6 +153,7 @@ type TeamsEnvelope_TeamsEnvelope_includedable interface {
 // NewTeamsEnvelope instantiates a new TeamsEnvelope and sets the default values.
 func NewTeamsEnvelope() *TeamsEnvelope {
 	m := &TeamsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -136,13 +167,34 @@ func CreateTeamsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d2689638
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TeamsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a Teamsable when successful
 func (m *TeamsEnvelope) GetData() Teamsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Teamsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -181,7 +233,14 @@ func (m *TeamsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d
 // GetIncluded gets the included property value. The included property
 // returns a []TeamsEnvelope_TeamsEnvelope_includedable when successful
 func (m *TeamsEnvelope) GetIncluded() []TeamsEnvelope_TeamsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TeamsEnvelope_TeamsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -215,24 +274,41 @@ func (m *TeamsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TeamsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *TeamsEnvelope) SetData(value Teamsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *TeamsEnvelope) SetIncluded(value []TeamsEnvelope_TeamsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TeamsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() Teamsable
 	GetIncluded() []TeamsEnvelope_TeamsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value Teamsable)
 	SetIncluded(value []TeamsEnvelope_TeamsEnvelope_includedable)
 }

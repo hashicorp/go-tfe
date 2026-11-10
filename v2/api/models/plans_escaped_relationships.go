@@ -5,22 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Plans_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The exports property
-	exports PlanExportsHasManyable
-	// The hyokEncryptedDataKey property
-	hyokEncryptedDataKey HyokEncryptedDataKeysHasOneable
-	// The stateVersions property
-	stateVersions StateVersionsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPlans_relationships instantiates a new Plans_relationships and sets the default values.
 func NewPlans_relationships() *Plans_relationships {
 	m := &Plans_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -34,13 +30,34 @@ func CreatePlans_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Plans_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Plans_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExports gets the exports property value. The exports property
 // returns a PlanExportsHasManyable when successful
 func (m *Plans_relationships) GetExports() PlanExportsHasManyable {
-	return m.exports
+	val, err := m.GetBackingStore().Get("exports")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PlanExportsHasManyable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -83,13 +100,27 @@ func (m *Plans_relationships) GetFieldDeserializers() map[string]func(i878a80d23
 // GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
 // returns a HyokEncryptedDataKeysHasOneable when successful
 func (m *Plans_relationships) GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable {
-	return m.hyokEncryptedDataKey
+	val, err := m.GetBackingStore().Get("hyokEncryptedDataKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokEncryptedDataKeysHasOneable)
+	}
+	return nil
 }
 
 // GetStateVersions gets the state-versions property value. The stateVersions property
 // returns a StateVersionsHasManyable when successful
 func (m *Plans_relationships) GetStateVersions() StateVersionsHasManyable {
-	return m.stateVersions
+	val, err := m.GetBackingStore().Get("stateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -123,30 +154,50 @@ func (m *Plans_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Plans_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Plans_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExports sets the exports property value. The exports property
 func (m *Plans_relationships) SetExports(value PlanExportsHasManyable) {
-	m.exports = value
+	err := m.GetBackingStore().Set("exports", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
 func (m *Plans_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable) {
-	m.hyokEncryptedDataKey = value
+	err := m.GetBackingStore().Set("hyokEncryptedDataKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStateVersions sets the state-versions property value. The stateVersions property
 func (m *Plans_relationships) SetStateVersions(value StateVersionsHasManyable) {
-	m.stateVersions = value
+	err := m.GetBackingStore().Set("stateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Plans_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExports() PlanExportsHasManyable
 	GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable
 	GetStateVersions() StateVersionsHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExports(value PlanExportsHasManyable)
 	SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)
 	SetStateVersions(value StateVersionsHasManyable)

@@ -5,35 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type WorkspaceResource_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The full address of the resource in Terraform configuration
-	address *string
-	// The timestamp when the resource was first created
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The ID of the state version that last modified this resource
-	modifiedByStateVersionId *string
-	// The module name where the resource is defined (e.g., "root" for root module)
-	module *string
-	// The name of the resource
-	name *string
-	// The index of the resource when there are multiple instances with the same name
-	nameIndex *string
-	// The provider name (e.g., "hashicorp/random")
-	provider *string
-	// The resource type from the provider (e.g., "random_pet")
-	providerType *string
-	// The timestamp when the resource was last updated
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewWorkspaceResource_attributes instantiates a new WorkspaceResource_attributes and sets the default values.
 func NewWorkspaceResource_attributes() *WorkspaceResource_attributes {
 	m := &WorkspaceResource_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -47,19 +31,47 @@ func CreateWorkspaceResource_attributesFromDiscriminatorValue(parseNode i878a80d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *WorkspaceResource_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAddress gets the address property value. The full address of the resource in Terraform configuration
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetAddress() *string {
-	return m.address
+	val, err := m.GetBackingStore().Get("address")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceResource_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The timestamp when the resource was first created
 // returns a *Time when successful
 func (m *WorkspaceResource_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -162,43 +174,92 @@ func (m *WorkspaceResource_attributes) GetFieldDeserializers() map[string]func(i
 // GetModifiedByStateVersionId gets the modified-by-state-version-id property value. The ID of the state version that last modified this resource
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetModifiedByStateVersionId() *string {
-	return m.modifiedByStateVersionId
+	val, err := m.GetBackingStore().Get("modifiedByStateVersionId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetModule gets the module property value. The module name where the resource is defined (e.g., "root" for root module)
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetModule() *string {
-	return m.module
+	val, err := m.GetBackingStore().Get("module")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name of the resource
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNameIndex gets the name-index property value. The index of the resource when there are multiple instances with the same name
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetNameIndex() *string {
-	return m.nameIndex
+	val, err := m.GetBackingStore().Get("nameIndex")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetProvider gets the provider property value. The provider name (e.g., "hashicorp/random")
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetProvider() *string {
-	return m.provider
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetProviderType gets the provider-type property value. The resource type from the provider (e.g., "random_pet")
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetProviderType() *string {
-	return m.providerType
+	val, err := m.GetBackingStore().Get("providerType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The timestamp when the resource was last updated
 // returns a *Time when successful
 func (m *WorkspaceResource_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -250,58 +311,95 @@ func (m *WorkspaceResource_attributes) Serialize(writer i878a80d2330e89d26896388
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *WorkspaceResource_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAddress sets the address property value. The full address of the resource in Terraform configuration
 func (m *WorkspaceResource_attributes) SetAddress(value *string) {
-	m.address = value
+	err := m.GetBackingStore().Set("address", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceResource_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The timestamp when the resource was first created
 func (m *WorkspaceResource_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModifiedByStateVersionId sets the modified-by-state-version-id property value. The ID of the state version that last modified this resource
 func (m *WorkspaceResource_attributes) SetModifiedByStateVersionId(value *string) {
-	m.modifiedByStateVersionId = value
+	err := m.GetBackingStore().Set("modifiedByStateVersionId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModule sets the module property value. The module name where the resource is defined (e.g., "root" for root module)
 func (m *WorkspaceResource_attributes) SetModule(value *string) {
-	m.module = value
+	err := m.GetBackingStore().Set("module", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the resource
 func (m *WorkspaceResource_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNameIndex sets the name-index property value. The index of the resource when there are multiple instances with the same name
 func (m *WorkspaceResource_attributes) SetNameIndex(value *string) {
-	m.nameIndex = value
+	err := m.GetBackingStore().Set("nameIndex", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProvider sets the provider property value. The provider name (e.g., "hashicorp/random")
 func (m *WorkspaceResource_attributes) SetProvider(value *string) {
-	m.provider = value
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProviderType sets the provider-type property value. The resource type from the provider (e.g., "random_pet")
 func (m *WorkspaceResource_attributes) SetProviderType(value *string) {
-	m.providerType = value
+	err := m.GetBackingStore().Set("providerType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The timestamp when the resource was last updated
 func (m *WorkspaceResource_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type WorkspaceResource_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAddress() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetModifiedByStateVersionId() *string
 	GetModule() *string
@@ -311,6 +409,7 @@ type WorkspaceResource_attributesable interface {
 	GetProviderType() *string
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetAddress(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetModifiedByStateVersionId(value *string)
 	SetModule(value *string)

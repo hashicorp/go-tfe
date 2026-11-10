@@ -5,105 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Organizations_attributes struct {
-	// The aggregatedCommitStatusEnabled property
-	aggregatedCommitStatusEnabled *bool
-	// The allowForceDeleteWorkspaces property
-	allowForceDeleteWorkspaces *bool
-	// The assessmentsEnforced property
-	assessmentsEnforced *bool
-	// The collaboratorAuthPolicy property
-	collaboratorAuthPolicy *Organizations_attributes_collaboratorAuthPolicy
-	// The costEstimationEnabled property
-	costEstimationEnabled *bool
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The defaultExecutionMode property
-	defaultExecutionMode *Organizations_attributes_defaultExecutionMode
-	// The eligibleForConcurrencyAddOns property
-	eligibleForConcurrencyAddOns *bool
-	// The email property
-	email *string
-	// The enforceHyok property
-	enforceHyok *bool
-	// The externalId property
-	externalId *string
-	// The fairRunQueuingEnabled property
-	fairRunQueuingEnabled *bool
-	// This attribute is only available in Terraform Enterprise.
-	globalModuleSharing *bool
-	// This attribute is only available in Terraform Enterprise.
-	globalProviderSharing *bool
-	// This attribute is only available in HCP Terraform.
-	hcpId *string
-	// The isInDegradedMode property
-	isInDegradedMode *bool
-	// This attribute is only available in HCP Terraform.
-	isUnified *bool
-	// The managedResourceCount property
-	managedResourceCount *int32
-	// This attribute is only available in Terraform Enterprise.
-	moduleConsumingOrganizationsCount *int32
-	// The name property
-	name *string
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	overStacksResourceLimit *bool
-	// The ownersTeamSamlRoleId property
-	ownersTeamSamlRoleId *string
-	// This attribute is only available in Terraform Enterprise.
-	parentDataRetentionPolicyInfo *string
-	// The permissions property
-	permissions Organizations_attributes_permissionsable
-	// The planExpired property
-	planExpired *bool
-	// The planExpiresAt property
-	planExpiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The planIdentifier property
-	planIdentifier *string
-	// The planIsEnterprise property
-	planIsEnterprise *bool
-	// The planIsTrial property
-	planIsTrial *bool
-	// This attribute is only available in Terraform Enterprise.
-	providerConsumingOrganizationsCount *int32
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	recoverableItemsEnabled *bool
-	// The remainingTestableCount property
-	remainingTestableCount *int32
-	// The samlEnabled property
-	samlEnabled *bool
-	// The scimConfigurationPresent property
-	scimConfigurationPresent *bool
-	// The sendPassingStatusesForUntriggeredSpeculativePlans property
-	sendPassingStatusesForUntriggeredSpeculativePlans *bool
-	// The sessionRemember property
-	sessionRemember *int32
-	// The sessionTimeout property
-	sessionTimeout *int32
-	// The speculativePlanManagementEnabled property
-	speculativePlanManagementEnabled *bool
-	// The ssoEnabled property
-	ssoEnabled *bool
-	// The ssoIdpCertExpiration property
-	ssoIdpCertExpiration *string
-	// The stacksDefaultExecutionMode property
-	stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	stacksEnabled *bool
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	testGenerationEnabled *bool
-	// The twoFactorConformant property
-	twoFactorConformant *bool
-	// The userTokensEnabled property
-	userTokensEnabled *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOrganizations_attributes instantiates a new Organizations_attributes and sets the default values.
 func NewOrganizations_attributes() *Organizations_attributes {
 	m := &Organizations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -116,73 +30,163 @@ func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330
 // GetAggregatedCommitStatusEnabled gets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetAggregatedCommitStatusEnabled() *bool {
-	return m.aggregatedCommitStatusEnabled
+	val, err := m.GetBackingStore().Get("aggregatedCommitStatusEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAllowForceDeleteWorkspaces gets the allow-force-delete-workspaces property value. The allowForceDeleteWorkspaces property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetAllowForceDeleteWorkspaces() *bool {
-	return m.allowForceDeleteWorkspaces
+	val, err := m.GetBackingStore().Get("allowForceDeleteWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAssessmentsEnforced gets the assessments-enforced property value. The assessmentsEnforced property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetAssessmentsEnforced() *bool {
-	return m.assessmentsEnforced
+	val, err := m.GetBackingStore().Get("assessmentsEnforced")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Organizations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCollaboratorAuthPolicy gets the collaborator-auth-policy property value. The collaboratorAuthPolicy property
 // returns a *Organizations_attributes_collaboratorAuthPolicy when successful
 func (m *Organizations_attributes) GetCollaboratorAuthPolicy() *Organizations_attributes_collaboratorAuthPolicy {
-	return m.collaboratorAuthPolicy
+	val, err := m.GetBackingStore().Get("collaboratorAuthPolicy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Organizations_attributes_collaboratorAuthPolicy)
+	}
+	return nil
 }
 
 // GetCostEstimationEnabled gets the cost-estimation-enabled property value. The costEstimationEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetCostEstimationEnabled() *bool {
-	return m.costEstimationEnabled
+	val, err := m.GetBackingStore().Get("costEstimationEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *Organizations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDefaultExecutionMode gets the default-execution-mode property value. The defaultExecutionMode property
 // returns a *Organizations_attributes_defaultExecutionMode when successful
 func (m *Organizations_attributes) GetDefaultExecutionMode() *Organizations_attributes_defaultExecutionMode {
-	return m.defaultExecutionMode
+	val, err := m.GetBackingStore().Get("defaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Organizations_attributes_defaultExecutionMode)
+	}
+	return nil
 }
 
 // GetEligibleForConcurrencyAddOns gets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetEligibleForConcurrencyAddOns() *bool {
-	return m.eligibleForConcurrencyAddOns
+	val, err := m.GetBackingStore().Get("eligibleForConcurrencyAddOns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
 func (m *Organizations_attributes) GetEmail() *string {
-	return m.email
+	val, err := m.GetBackingStore().Get("email")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEnforceHyok gets the enforce-hyok property value. The enforceHyok property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetEnforceHyok() *bool {
-	return m.enforceHyok
+	val, err := m.GetBackingStore().Get("enforceHyok")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetExternalId gets the external-id property value. The externalId property
 // returns a *string when successful
 func (m *Organizations_attributes) GetExternalId() *string {
-	return m.externalId
+	val, err := m.GetBackingStore().Get("externalId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFairRunQueuingEnabled gets the fair-run-queuing-enabled property value. The fairRunQueuingEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetFairRunQueuingEnabled() *bool {
-	return m.fairRunQueuingEnabled
+	val, err := m.GetBackingStore().Get("fairRunQueuingEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -645,199 +649,430 @@ func (m *Organizations_attributes) GetFieldDeserializers() map[string]func(i878a
 // GetGlobalModuleSharing gets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetGlobalModuleSharing() *bool {
-	return m.globalModuleSharing
+	val, err := m.GetBackingStore().Get("globalModuleSharing")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetGlobalProviderSharing gets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetGlobalProviderSharing() *bool {
-	return m.globalProviderSharing
+	val, err := m.GetBackingStore().Get("globalProviderSharing")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Organizations_attributes) GetHcpId() *string {
-	return m.hcpId
+	val, err := m.GetBackingStore().Get("hcpId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsInDegradedMode gets the is-in-degraded-mode property value. The isInDegradedMode property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetIsInDegradedMode() *bool {
-	return m.isInDegradedMode
+	val, err := m.GetBackingStore().Get("isInDegradedMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetIsUnified() *bool {
-	return m.isUnified
+	val, err := m.GetBackingStore().Get("isUnified")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetManagedResourceCount gets the managed-resource-count property value. The managedResourceCount property
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetManagedResourceCount() *int32 {
-	return m.managedResourceCount
+	val, err := m.GetBackingStore().Get("managedResourceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetModuleConsumingOrganizationsCount gets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetModuleConsumingOrganizationsCount() *int32 {
-	return m.moduleConsumingOrganizationsCount
+	val, err := m.GetBackingStore().Get("moduleConsumingOrganizationsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Organizations_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetOverStacksResourceLimit() *bool {
-	return m.overStacksResourceLimit
+	val, err := m.GetBackingStore().Get("overStacksResourceLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetOwnersTeamSamlRoleId gets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 // returns a *string when successful
 func (m *Organizations_attributes) GetOwnersTeamSamlRoleId() *string {
-	return m.ownersTeamSamlRoleId
+	val, err := m.GetBackingStore().Get("ownersTeamSamlRoleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Organizations_attributes) GetParentDataRetentionPolicyInfo() *string {
-	return m.parentDataRetentionPolicyInfo
+	val, err := m.GetBackingStore().Get("parentDataRetentionPolicyInfo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Organizations_attributes_permissionsable when successful
 func (m *Organizations_attributes) GetPermissions() Organizations_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Organizations_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPlanExpired gets the plan-expired property value. The planExpired property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetPlanExpired() *bool {
-	return m.planExpired
+	val, err := m.GetBackingStore().Get("planExpired")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPlanExpiresAt gets the plan-expires-at property value. The planExpiresAt property
 // returns a *Time when successful
 func (m *Organizations_attributes) GetPlanExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.planExpiresAt
+	val, err := m.GetBackingStore().Get("planExpiresAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlanIdentifier gets the plan-identifier property value. The planIdentifier property
 // returns a *string when successful
 func (m *Organizations_attributes) GetPlanIdentifier() *string {
-	return m.planIdentifier
+	val, err := m.GetBackingStore().Get("planIdentifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPlanIsEnterprise gets the plan-is-enterprise property value. The planIsEnterprise property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetPlanIsEnterprise() *bool {
-	return m.planIsEnterprise
+	val, err := m.GetBackingStore().Get("planIsEnterprise")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPlanIsTrial gets the plan-is-trial property value. The planIsTrial property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetPlanIsTrial() *bool {
-	return m.planIsTrial
+	val, err := m.GetBackingStore().Get("planIsTrial")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetProviderConsumingOrganizationsCount gets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetProviderConsumingOrganizationsCount() *int32 {
-	return m.providerConsumingOrganizationsCount
+	val, err := m.GetBackingStore().Get("providerConsumingOrganizationsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetRecoverableItemsEnabled() *bool {
-	return m.recoverableItemsEnabled
+	val, err := m.GetBackingStore().Get("recoverableItemsEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetRemainingTestableCount gets the remaining-testable-count property value. The remainingTestableCount property
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetRemainingTestableCount() *int32 {
-	return m.remainingTestableCount
+	val, err := m.GetBackingStore().Get("remainingTestableCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSamlEnabled gets the saml-enabled property value. The samlEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetSamlEnabled() *bool {
-	return m.samlEnabled
+	val, err := m.GetBackingStore().Get("samlEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetScimConfigurationPresent gets the scim-configuration-present property value. The scimConfigurationPresent property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetScimConfigurationPresent() *bool {
-	return m.scimConfigurationPresent
+	val, err := m.GetBackingStore().Get("scimConfigurationPresent")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSendPassingStatusesForUntriggeredSpeculativePlans gets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetSendPassingStatusesForUntriggeredSpeculativePlans() *bool {
-	return m.sendPassingStatusesForUntriggeredSpeculativePlans
+	val, err := m.GetBackingStore().Get("sendPassingStatusesForUntriggeredSpeculativePlans")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSessionRemember gets the session-remember property value. The sessionRemember property
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetSessionRemember() *int32 {
-	return m.sessionRemember
+	val, err := m.GetBackingStore().Get("sessionRemember")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSessionTimeout gets the session-timeout property value. The sessionTimeout property
 // returns a *int32 when successful
 func (m *Organizations_attributes) GetSessionTimeout() *int32 {
-	return m.sessionTimeout
+	val, err := m.GetBackingStore().Get("sessionTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSpeculativePlanManagementEnabled gets the speculative-plan-management-enabled property value. The speculativePlanManagementEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled() *bool {
-	return m.speculativePlanManagementEnabled
+	val, err := m.GetBackingStore().Get("speculativePlanManagementEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSsoEnabled gets the sso-enabled property value. The ssoEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetSsoEnabled() *bool {
-	return m.ssoEnabled
+	val, err := m.GetBackingStore().Get("ssoEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSsoIdpCertExpiration gets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
 // returns a *string when successful
 func (m *Organizations_attributes) GetSsoIdpCertExpiration() *string {
-	return m.ssoIdpCertExpiration
+	val, err := m.GetBackingStore().Get("ssoIdpCertExpiration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Organizations_attributes_stacksDefaultExecutionMode when successful
 func (m *Organizations_attributes) GetStacksDefaultExecutionMode() *Organizations_attributes_stacksDefaultExecutionMode {
-	return m.stacksDefaultExecutionMode
+	val, err := m.GetBackingStore().Get("stacksDefaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Organizations_attributes_stacksDefaultExecutionMode)
+	}
+	return nil
 }
 
 // GetStacksEnabled gets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetStacksEnabled() *bool {
-	return m.stacksEnabled
+	val, err := m.GetBackingStore().Get("stacksEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTestGenerationEnabled gets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes) GetTestGenerationEnabled() *bool {
-	return m.testGenerationEnabled
+	val, err := m.GetBackingStore().Get("testGenerationEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTwoFactorConformant gets the two-factor-conformant property value. The twoFactorConformant property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetTwoFactorConformant() *bool {
-	return m.twoFactorConformant
+	val, err := m.GetBackingStore().Get("twoFactorConformant")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetUserTokensEnabled gets the user-tokens-enabled property value. The userTokensEnabled property
 // returns a *bool when successful
 func (m *Organizations_attributes) GetUserTokensEnabled() *bool {
-	return m.userTokensEnabled
+	val, err := m.GetBackingStore().Get("userTokensEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -1006,234 +1241,376 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAggregatedCommitStatusEnabled sets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 func (m *Organizations_attributes) SetAggregatedCommitStatusEnabled(value *bool) {
-	m.aggregatedCommitStatusEnabled = value
+	err := m.GetBackingStore().Set("aggregatedCommitStatusEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowForceDeleteWorkspaces sets the allow-force-delete-workspaces property value. The allowForceDeleteWorkspaces property
 func (m *Organizations_attributes) SetAllowForceDeleteWorkspaces(value *bool) {
-	m.allowForceDeleteWorkspaces = value
+	err := m.GetBackingStore().Set("allowForceDeleteWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAssessmentsEnforced sets the assessments-enforced property value. The assessmentsEnforced property
 func (m *Organizations_attributes) SetAssessmentsEnforced(value *bool) {
-	m.assessmentsEnforced = value
+	err := m.GetBackingStore().Set("assessmentsEnforced", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Organizations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCollaboratorAuthPolicy sets the collaborator-auth-policy property value. The collaboratorAuthPolicy property
 func (m *Organizations_attributes) SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy) {
-	m.collaboratorAuthPolicy = value
+	err := m.GetBackingStore().Set("collaboratorAuthPolicy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCostEstimationEnabled sets the cost-estimation-enabled property value. The costEstimationEnabled property
 func (m *Organizations_attributes) SetCostEstimationEnabled(value *bool) {
-	m.costEstimationEnabled = value
+	err := m.GetBackingStore().Set("costEstimationEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *Organizations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDefaultExecutionMode sets the default-execution-mode property value. The defaultExecutionMode property
 func (m *Organizations_attributes) SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode) {
-	m.defaultExecutionMode = value
+	err := m.GetBackingStore().Set("defaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEligibleForConcurrencyAddOns sets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
 func (m *Organizations_attributes) SetEligibleForConcurrencyAddOns(value *bool) {
-	m.eligibleForConcurrencyAddOns = value
+	err := m.GetBackingStore().Set("eligibleForConcurrencyAddOns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEmail sets the email property value. The email property
 func (m *Organizations_attributes) SetEmail(value *string) {
-	m.email = value
+	err := m.GetBackingStore().Set("email", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnforceHyok sets the enforce-hyok property value. The enforceHyok property
 func (m *Organizations_attributes) SetEnforceHyok(value *bool) {
-	m.enforceHyok = value
+	err := m.GetBackingStore().Set("enforceHyok", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetExternalId sets the external-id property value. The externalId property
 func (m *Organizations_attributes) SetExternalId(value *string) {
-	m.externalId = value
+	err := m.GetBackingStore().Set("externalId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFairRunQueuingEnabled sets the fair-run-queuing-enabled property value. The fairRunQueuingEnabled property
 func (m *Organizations_attributes) SetFairRunQueuingEnabled(value *bool) {
-	m.fairRunQueuingEnabled = value
+	err := m.GetBackingStore().Set("fairRunQueuingEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGlobalModuleSharing sets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetGlobalModuleSharing(value *bool) {
-	m.globalModuleSharing = value
+	err := m.GetBackingStore().Set("globalModuleSharing", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGlobalProviderSharing sets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetGlobalProviderSharing(value *bool) {
-	m.globalProviderSharing = value
+	err := m.GetBackingStore().Set("globalProviderSharing", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetHcpId(value *string) {
-	m.hcpId = value
+	err := m.GetBackingStore().Set("hcpId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsInDegradedMode sets the is-in-degraded-mode property value. The isInDegradedMode property
 func (m *Organizations_attributes) SetIsInDegradedMode(value *bool) {
-	m.isInDegradedMode = value
+	err := m.GetBackingStore().Set("isInDegradedMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes) SetIsUnified(value *bool) {
-	m.isUnified = value
+	err := m.GetBackingStore().Set("isUnified", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetManagedResourceCount sets the managed-resource-count property value. The managedResourceCount property
 func (m *Organizations_attributes) SetManagedResourceCount(value *int32) {
-	m.managedResourceCount = value
+	err := m.GetBackingStore().Set("managedResourceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModuleConsumingOrganizationsCount sets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetModuleConsumingOrganizationsCount(value *int32) {
-	m.moduleConsumingOrganizationsCount = value
+	err := m.GetBackingStore().Set("moduleConsumingOrganizationsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *Organizations_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetOverStacksResourceLimit(value *bool) {
-	m.overStacksResourceLimit = value
+	err := m.GetBackingStore().Set("overStacksResourceLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOwnersTeamSamlRoleId sets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 func (m *Organizations_attributes) SetOwnersTeamSamlRoleId(value *string) {
-	m.ownersTeamSamlRoleId = value
+	err := m.GetBackingStore().Set("ownersTeamSamlRoleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetParentDataRetentionPolicyInfo(value *string) {
-	m.parentDataRetentionPolicyInfo = value
+	err := m.GetBackingStore().Set("parentDataRetentionPolicyInfo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Organizations_attributes) SetPermissions(value Organizations_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanExpired sets the plan-expired property value. The planExpired property
 func (m *Organizations_attributes) SetPlanExpired(value *bool) {
-	m.planExpired = value
+	err := m.GetBackingStore().Set("planExpired", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanExpiresAt sets the plan-expires-at property value. The planExpiresAt property
 func (m *Organizations_attributes) SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.planExpiresAt = value
+	err := m.GetBackingStore().Set("planExpiresAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanIdentifier sets the plan-identifier property value. The planIdentifier property
 func (m *Organizations_attributes) SetPlanIdentifier(value *string) {
-	m.planIdentifier = value
+	err := m.GetBackingStore().Set("planIdentifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanIsEnterprise sets the plan-is-enterprise property value. The planIsEnterprise property
 func (m *Organizations_attributes) SetPlanIsEnterprise(value *bool) {
-	m.planIsEnterprise = value
+	err := m.GetBackingStore().Set("planIsEnterprise", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanIsTrial sets the plan-is-trial property value. The planIsTrial property
 func (m *Organizations_attributes) SetPlanIsTrial(value *bool) {
-	m.planIsTrial = value
+	err := m.GetBackingStore().Set("planIsTrial", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProviderConsumingOrganizationsCount sets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes) SetProviderConsumingOrganizationsCount(value *int32) {
-	m.providerConsumingOrganizationsCount = value
+	err := m.GetBackingStore().Set("providerConsumingOrganizationsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetRecoverableItemsEnabled(value *bool) {
-	m.recoverableItemsEnabled = value
+	err := m.GetBackingStore().Set("recoverableItemsEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRemainingTestableCount sets the remaining-testable-count property value. The remainingTestableCount property
 func (m *Organizations_attributes) SetRemainingTestableCount(value *int32) {
-	m.remainingTestableCount = value
+	err := m.GetBackingStore().Set("remainingTestableCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSamlEnabled sets the saml-enabled property value. The samlEnabled property
 func (m *Organizations_attributes) SetSamlEnabled(value *bool) {
-	m.samlEnabled = value
+	err := m.GetBackingStore().Set("samlEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimConfigurationPresent sets the scim-configuration-present property value. The scimConfigurationPresent property
 func (m *Organizations_attributes) SetScimConfigurationPresent(value *bool) {
-	m.scimConfigurationPresent = value
+	err := m.GetBackingStore().Set("scimConfigurationPresent", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSendPassingStatusesForUntriggeredSpeculativePlans sets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
 func (m *Organizations_attributes) SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool) {
-	m.sendPassingStatusesForUntriggeredSpeculativePlans = value
+	err := m.GetBackingStore().Set("sendPassingStatusesForUntriggeredSpeculativePlans", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSessionRemember sets the session-remember property value. The sessionRemember property
 func (m *Organizations_attributes) SetSessionRemember(value *int32) {
-	m.sessionRemember = value
+	err := m.GetBackingStore().Set("sessionRemember", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSessionTimeout sets the session-timeout property value. The sessionTimeout property
 func (m *Organizations_attributes) SetSessionTimeout(value *int32) {
-	m.sessionTimeout = value
+	err := m.GetBackingStore().Set("sessionTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSpeculativePlanManagementEnabled sets the speculative-plan-management-enabled property value. The speculativePlanManagementEnabled property
 func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bool) {
-	m.speculativePlanManagementEnabled = value
+	err := m.GetBackingStore().Set("speculativePlanManagementEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSsoEnabled sets the sso-enabled property value. The ssoEnabled property
 func (m *Organizations_attributes) SetSsoEnabled(value *bool) {
-	m.ssoEnabled = value
+	err := m.GetBackingStore().Set("ssoEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSsoIdpCertExpiration sets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
 func (m *Organizations_attributes) SetSsoIdpCertExpiration(value *string) {
-	m.ssoIdpCertExpiration = value
+	err := m.GetBackingStore().Set("ssoIdpCertExpiration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode) {
-	m.stacksDefaultExecutionMode = value
+	err := m.GetBackingStore().Set("stacksDefaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStacksEnabled sets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetStacksEnabled(value *bool) {
-	m.stacksEnabled = value
+	err := m.GetBackingStore().Set("stacksEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestGenerationEnabled sets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool) {
-	m.testGenerationEnabled = value
+	err := m.GetBackingStore().Set("testGenerationEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTwoFactorConformant sets the two-factor-conformant property value. The twoFactorConformant property
 func (m *Organizations_attributes) SetTwoFactorConformant(value *bool) {
-	m.twoFactorConformant = value
+	err := m.GetBackingStore().Set("twoFactorConformant", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUserTokensEnabled sets the user-tokens-enabled property value. The userTokensEnabled property
 func (m *Organizations_attributes) SetUserTokensEnabled(value *bool) {
-	m.userTokensEnabled = value
+	err := m.GetBackingStore().Set("userTokensEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Organizations_attributesable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAggregatedCommitStatusEnabled() *bool
 	GetAllowForceDeleteWorkspaces() *bool
 	GetAssessmentsEnforced() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCollaboratorAuthPolicy() *Organizations_attributes_collaboratorAuthPolicy
 	GetCostEstimationEnabled() *bool
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -1279,6 +1656,7 @@ type Organizations_attributesable interface {
 	SetAggregatedCommitStatusEnabled(value *bool)
 	SetAllowForceDeleteWorkspaces(value *bool)
 	SetAssessmentsEnforced(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy)
 	SetCostEstimationEnabled(value *bool)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

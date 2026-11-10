@@ -5,25 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type ScimGroupMappings_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The SCIM id of the group linked to the team. Required when creating a mapping.
-	scimGroupId *string
-	// The display name of the linked SCIM group.
-	scimGroupName *string
-	// Whether SCIM membership synchronization is paused for the team. Only writable when updating an existing mapping.
-	scimSyncPaused *bool
-	// The last time the team was updated by SCIM provisioning.
-	scimUpdatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewScimGroupMappings_attributes instantiates a new ScimGroupMappings_attributes and sets the default values.
 func NewScimGroupMappings_attributes() *ScimGroupMappings_attributes {
 	m := &ScimGroupMappings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -37,7 +31,21 @@ func CreateScimGroupMappings_attributesFromDiscriminatorValue(parseNode i878a80d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ScimGroupMappings_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ScimGroupMappings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -90,25 +98,53 @@ func (m *ScimGroupMappings_attributes) GetFieldDeserializers() map[string]func(i
 // GetScimGroupId gets the scim-group-id property value. The SCIM id of the group linked to the team. Required when creating a mapping.
 // returns a *string when successful
 func (m *ScimGroupMappings_attributes) GetScimGroupId() *string {
-	return m.scimGroupId
+	val, err := m.GetBackingStore().Get("scimGroupId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetScimGroupName gets the scim-group-name property value. The display name of the linked SCIM group.
 // returns a *string when successful
 func (m *ScimGroupMappings_attributes) GetScimGroupName() *string {
-	return m.scimGroupName
+	val, err := m.GetBackingStore().Get("scimGroupName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetScimSyncPaused gets the scim-sync-paused property value. Whether SCIM membership synchronization is paused for the team. Only writable when updating an existing mapping.
 // returns a *bool when successful
 func (m *ScimGroupMappings_attributes) GetScimSyncPaused() *bool {
-	return m.scimSyncPaused
+	val, err := m.GetBackingStore().Get("scimSyncPaused")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetScimUpdatedAt gets the scim-updated-at property value. The last time the team was updated by SCIM provisioning.
 // returns a *Time when successful
 func (m *ScimGroupMappings_attributes) GetScimUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.scimUpdatedAt
+	val, err := m.GetBackingStore().Get("scimUpdatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,36 +172,59 @@ func (m *ScimGroupMappings_attributes) Serialize(writer i878a80d2330e89d26896388
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ScimGroupMappings_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ScimGroupMappings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetScimGroupId sets the scim-group-id property value. The SCIM id of the group linked to the team. Required when creating a mapping.
 func (m *ScimGroupMappings_attributes) SetScimGroupId(value *string) {
-	m.scimGroupId = value
+	err := m.GetBackingStore().Set("scimGroupId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimGroupName sets the scim-group-name property value. The display name of the linked SCIM group.
 func (m *ScimGroupMappings_attributes) SetScimGroupName(value *string) {
-	m.scimGroupName = value
+	err := m.GetBackingStore().Set("scimGroupName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimSyncPaused sets the scim-sync-paused property value. Whether SCIM membership synchronization is paused for the team. Only writable when updating an existing mapping.
 func (m *ScimGroupMappings_attributes) SetScimSyncPaused(value *bool) {
-	m.scimSyncPaused = value
+	err := m.GetBackingStore().Set("scimSyncPaused", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimUpdatedAt sets the scim-updated-at property value. The last time the team was updated by SCIM provisioning.
 func (m *ScimGroupMappings_attributes) SetScimUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.scimUpdatedAt = value
+	err := m.GetBackingStore().Set("scimUpdatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ScimGroupMappings_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetScimGroupId() *string
 	GetScimGroupName() *string
 	GetScimSyncPaused() *bool
 	GetScimUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetScimGroupId(value *string)
 	SetScimGroupName(value *string)
 	SetScimSyncPaused(value *bool)

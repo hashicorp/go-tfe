@@ -5,48 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Runs_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The apply property
-	apply AppliesHasOneable
-	// The canceledBy property
-	canceledBy UsersHasOneable
-	// The comments property
-	comments WorkspaceCommentsHasManyable
-	// The configurationVersion property
-	configurationVersion ConfigurationVersionsHasOneable
-	// The confirmedBy property
-	confirmedBy UsersHasOneable
-	// The costEstimate property
-	costEstimate CostEstimatesHasOneable
-	// The createdBy property
-	createdBy UsersHasOneable
-	// The plan property
-	plan PlansHasOneable
-	// The policyChecks property
-	policyChecks PolicyChecksHasManyable
-	// The runEvents property
-	runEvents RunEventsHasManyable
-	// The runTriggerSnapshots property
-	runTriggerSnapshots Links_relatedable
-	// The taskStages property
-	taskStages TaskStagesHasManyable
-	// The tfPolicyEvaluations property
-	tfPolicyEvaluations TfPolicyEvaluationsHasManyable
-	// The triggeringRun property
-	triggeringRun RunsHasOneable
-	// The triggeringSource property
-	triggeringSource WorkspacesHasOneable
-	// The workspace property
-	workspace WorkspacesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRuns_relationships instantiates a new Runs_relationships and sets the default values.
 func NewRuns_relationships() *Runs_relationships {
 	m := &Runs_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -60,49 +30,112 @@ func CreateRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Runs_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApply gets the apply property value. The apply property
 // returns a AppliesHasOneable when successful
 func (m *Runs_relationships) GetApply() AppliesHasOneable {
-	return m.apply
+	val, err := m.GetBackingStore().Get("apply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AppliesHasOneable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Runs_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanceledBy gets the canceled-by property value. The canceledBy property
 // returns a UsersHasOneable when successful
 func (m *Runs_relationships) GetCanceledBy() UsersHasOneable {
-	return m.canceledBy
+	val, err := m.GetBackingStore().Get("canceledBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
 
 // GetComments gets the comments property value. The comments property
 // returns a WorkspaceCommentsHasManyable when successful
 func (m *Runs_relationships) GetComments() WorkspaceCommentsHasManyable {
-	return m.comments
+	val, err := m.GetBackingStore().Get("comments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceCommentsHasManyable)
+	}
+	return nil
 }
 
 // GetConfigurationVersion gets the configuration-version property value. The configurationVersion property
 // returns a ConfigurationVersionsHasOneable when successful
 func (m *Runs_relationships) GetConfigurationVersion() ConfigurationVersionsHasOneable {
-	return m.configurationVersion
+	val, err := m.GetBackingStore().Get("configurationVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersionsHasOneable)
+	}
+	return nil
 }
 
 // GetConfirmedBy gets the confirmed-by property value. The confirmedBy property
 // returns a UsersHasOneable when successful
 func (m *Runs_relationships) GetConfirmedBy() UsersHasOneable {
-	return m.confirmedBy
+	val, err := m.GetBackingStore().Get("confirmedBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
 
 // GetCostEstimate gets the cost-estimate property value. The costEstimate property
 // returns a CostEstimatesHasOneable when successful
 func (m *Runs_relationships) GetCostEstimate() CostEstimatesHasOneable {
-	return m.costEstimate
+	val, err := m.GetBackingStore().Get("costEstimate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CostEstimatesHasOneable)
+	}
+	return nil
 }
 
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a UsersHasOneable when successful
 func (m *Runs_relationships) GetCreatedBy() UsersHasOneable {
-	return m.createdBy
+	val, err := m.GetBackingStore().Get("createdBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -275,55 +308,118 @@ func (m *Runs_relationships) GetFieldDeserializers() map[string]func(i878a80d233
 // GetPlan gets the plan property value. The plan property
 // returns a PlansHasOneable when successful
 func (m *Runs_relationships) GetPlan() PlansHasOneable {
-	return m.plan
+	val, err := m.GetBackingStore().Get("plan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PlansHasOneable)
+	}
+	return nil
 }
 
 // GetPolicyChecks gets the policy-checks property value. The policyChecks property
 // returns a PolicyChecksHasManyable when successful
 func (m *Runs_relationships) GetPolicyChecks() PolicyChecksHasManyable {
-	return m.policyChecks
+	val, err := m.GetBackingStore().Get("policyChecks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecksHasManyable)
+	}
+	return nil
 }
 
 // GetRunEvents gets the run-events property value. The runEvents property
 // returns a RunEventsHasManyable when successful
 func (m *Runs_relationships) GetRunEvents() RunEventsHasManyable {
-	return m.runEvents
+	val, err := m.GetBackingStore().Get("runEvents")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunEventsHasManyable)
+	}
+	return nil
 }
 
 // GetRunTriggerSnapshots gets the run-trigger-snapshots property value. The runTriggerSnapshots property
 // returns a Links_relatedable when successful
 func (m *Runs_relationships) GetRunTriggerSnapshots() Links_relatedable {
-	return m.runTriggerSnapshots
+	val, err := m.GetBackingStore().Get("runTriggerSnapshots")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
 
 // GetTaskStages gets the task-stages property value. The taskStages property
 // returns a TaskStagesHasManyable when successful
 func (m *Runs_relationships) GetTaskStages() TaskStagesHasManyable {
-	return m.taskStages
+	val, err := m.GetBackingStore().Get("taskStages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStagesHasManyable)
+	}
+	return nil
 }
 
 // GetTfPolicyEvaluations gets the tf-policy-evaluations property value. The tfPolicyEvaluations property
 // returns a TfPolicyEvaluationsHasManyable when successful
 func (m *Runs_relationships) GetTfPolicyEvaluations() TfPolicyEvaluationsHasManyable {
-	return m.tfPolicyEvaluations
+	val, err := m.GetBackingStore().Get("tfPolicyEvaluations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluationsHasManyable)
+	}
+	return nil
 }
 
 // GetTriggeringRun gets the triggering-run property value. The triggeringRun property
 // returns a RunsHasOneable when successful
 func (m *Runs_relationships) GetTriggeringRun() RunsHasOneable {
-	return m.triggeringRun
+	val, err := m.GetBackingStore().Get("triggeringRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
 
 // GetTriggeringSource gets the triggering-source property value. The triggeringSource property
 // returns a WorkspacesHasOneable when successful
 func (m *Runs_relationships) GetTriggeringSource() WorkspacesHasOneable {
-	return m.triggeringSource
+	val, err := m.GetBackingStore().Get("triggeringSource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasOneable)
+	}
+	return nil
 }
 
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
 func (m *Runs_relationships) GetWorkspace() WorkspacesHasOneable {
-	return m.workspace
+	val, err := m.GetBackingStore().Get("workspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -435,93 +531,151 @@ func (m *Runs_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Runs_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApply sets the apply property value. The apply property
 func (m *Runs_relationships) SetApply(value AppliesHasOneable) {
-	m.apply = value
+	err := m.GetBackingStore().Set("apply", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Runs_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanceledBy sets the canceled-by property value. The canceledBy property
 func (m *Runs_relationships) SetCanceledBy(value UsersHasOneable) {
-	m.canceledBy = value
+	err := m.GetBackingStore().Set("canceledBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetComments sets the comments property value. The comments property
 func (m *Runs_relationships) SetComments(value WorkspaceCommentsHasManyable) {
-	m.comments = value
+	err := m.GetBackingStore().Set("comments", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetConfigurationVersion sets the configuration-version property value. The configurationVersion property
 func (m *Runs_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable) {
-	m.configurationVersion = value
+	err := m.GetBackingStore().Set("configurationVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetConfirmedBy sets the confirmed-by property value. The confirmedBy property
 func (m *Runs_relationships) SetConfirmedBy(value UsersHasOneable) {
-	m.confirmedBy = value
+	err := m.GetBackingStore().Set("confirmedBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCostEstimate sets the cost-estimate property value. The costEstimate property
 func (m *Runs_relationships) SetCostEstimate(value CostEstimatesHasOneable) {
-	m.costEstimate = value
+	err := m.GetBackingStore().Set("costEstimate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedBy sets the created-by property value. The createdBy property
 func (m *Runs_relationships) SetCreatedBy(value UsersHasOneable) {
-	m.createdBy = value
+	err := m.GetBackingStore().Set("createdBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlan sets the plan property value. The plan property
 func (m *Runs_relationships) SetPlan(value PlansHasOneable) {
-	m.plan = value
+	err := m.GetBackingStore().Set("plan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyChecks sets the policy-checks property value. The policyChecks property
 func (m *Runs_relationships) SetPolicyChecks(value PolicyChecksHasManyable) {
-	m.policyChecks = value
+	err := m.GetBackingStore().Set("policyChecks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunEvents sets the run-events property value. The runEvents property
 func (m *Runs_relationships) SetRunEvents(value RunEventsHasManyable) {
-	m.runEvents = value
+	err := m.GetBackingStore().Set("runEvents", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunTriggerSnapshots sets the run-trigger-snapshots property value. The runTriggerSnapshots property
 func (m *Runs_relationships) SetRunTriggerSnapshots(value Links_relatedable) {
-	m.runTriggerSnapshots = value
+	err := m.GetBackingStore().Set("runTriggerSnapshots", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskStages sets the task-stages property value. The taskStages property
 func (m *Runs_relationships) SetTaskStages(value TaskStagesHasManyable) {
-	m.taskStages = value
+	err := m.GetBackingStore().Set("taskStages", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTfPolicyEvaluations sets the tf-policy-evaluations property value. The tfPolicyEvaluations property
 func (m *Runs_relationships) SetTfPolicyEvaluations(value TfPolicyEvaluationsHasManyable) {
-	m.tfPolicyEvaluations = value
+	err := m.GetBackingStore().Set("tfPolicyEvaluations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggeringRun sets the triggering-run property value. The triggeringRun property
 func (m *Runs_relationships) SetTriggeringRun(value RunsHasOneable) {
-	m.triggeringRun = value
+	err := m.GetBackingStore().Set("triggeringRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggeringSource sets the triggering-source property value. The triggeringSource property
 func (m *Runs_relationships) SetTriggeringSource(value WorkspacesHasOneable) {
-	m.triggeringSource = value
+	err := m.GetBackingStore().Set("triggeringSource", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspace sets the workspace property value. The workspace property
 func (m *Runs_relationships) SetWorkspace(value WorkspacesHasOneable) {
-	m.workspace = value
+	err := m.GetBackingStore().Set("workspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Runs_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApply() AppliesHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanceledBy() UsersHasOneable
 	GetComments() WorkspaceCommentsHasManyable
 	GetConfigurationVersion() ConfigurationVersionsHasOneable
@@ -538,6 +692,7 @@ type Runs_relationshipsable interface {
 	GetTriggeringSource() WorkspacesHasOneable
 	GetWorkspace() WorkspacesHasOneable
 	SetApply(value AppliesHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanceledBy(value UsersHasOneable)
 	SetComments(value WorkspaceCommentsHasManyable)
 	SetConfigurationVersion(value ConfigurationVersionsHasOneable)

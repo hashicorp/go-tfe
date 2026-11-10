@@ -5,41 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TdpApplications_attributes struct {
-	// References to action configurations associated with this application.
-	actionCfgRefs []TdpApplications_attributes_actionCfgRefsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The template this application was created from, including its configuration.
-	applicationTemplate TdpApplications_attributes_applicationTemplateable
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Input variables to pass when creating an application from a template.
-	inputVariables []TdpApplications_attributes_inputVariablesable
-	// The name property
-	name *string
-	// Output values produced by this application's backing Terraform workspace.
-	outputValues []TdpApplications_attributes_outputValuesable
-	// User-authored raw readme content for this application instance.
-	readme *string
-	// The rendered Markdown output of the readme. Computed by the server from the raw readme content. Read-only.
-	readmeMarkdown *string
-	// Tags attached to this application for categorization.
-	tags []string
-	// The name of the template this application was created from.
-	templateName *string
-	// The ID of the HCP Terraform workspace provisioned for this application.
-	tfcWorkspaceId *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTdpApplications_attributes instantiates a new TdpApplications_attributes and sets the default values.
 func NewTdpApplications_attributes() *TdpApplications_attributes {
 	m := &TdpApplications_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -53,25 +31,60 @@ func CreateTdpApplications_attributesFromDiscriminatorValue(parseNode i878a80d23
 // GetActionCfgRefs gets the action-cfg-refs property value. References to action configurations associated with this application.
 // returns a []TdpApplications_attributes_actionCfgRefsable when successful
 func (m *TdpApplications_attributes) GetActionCfgRefs() []TdpApplications_attributes_actionCfgRefsable {
-	return m.actionCfgRefs
+	val, err := m.GetBackingStore().Get("actionCfgRefs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_actionCfgRefsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TdpApplications_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApplicationTemplate gets the application-template property value. The template this application was created from, including its configuration.
 // returns a TdpApplications_attributes_applicationTemplateable when successful
 func (m *TdpApplications_attributes) GetApplicationTemplate() TdpApplications_attributes_applicationTemplateable {
-	return m.applicationTemplate
+	val, err := m.GetBackingStore().Get("applicationTemplate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TdpApplications_attributes_applicationTemplateable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpApplications_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *TdpApplications_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -228,55 +241,118 @@ func (m *TdpApplications_attributes) GetFieldDeserializers() map[string]func(i87
 // GetInputVariables gets the input-variables property value. Input variables to pass when creating an application from a template.
 // returns a []TdpApplications_attributes_inputVariablesable when successful
 func (m *TdpApplications_attributes) GetInputVariables() []TdpApplications_attributes_inputVariablesable {
-	return m.inputVariables
+	val, err := m.GetBackingStore().Get("inputVariables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_inputVariablesable)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *TdpApplications_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOutputValues gets the output-values property value. Output values produced by this application's backing Terraform workspace.
 // returns a []TdpApplications_attributes_outputValuesable when successful
 func (m *TdpApplications_attributes) GetOutputValues() []TdpApplications_attributes_outputValuesable {
-	return m.outputValues
+	val, err := m.GetBackingStore().Get("outputValues")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_outputValuesable)
+	}
+	return nil
 }
 
 // GetReadme gets the readme property value. User-authored raw readme content for this application instance.
 // returns a *string when successful
 func (m *TdpApplications_attributes) GetReadme() *string {
-	return m.readme
+	val, err := m.GetBackingStore().Get("readme")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetReadmeMarkdown gets the readme-markdown property value. The rendered Markdown output of the readme. Computed by the server from the raw readme content. Read-only.
 // returns a *string when successful
 func (m *TdpApplications_attributes) GetReadmeMarkdown() *string {
-	return m.readmeMarkdown
+	val, err := m.GetBackingStore().Get("readmeMarkdown")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTags gets the tags property value. Tags attached to this application for categorization.
 // returns a []string when successful
 func (m *TdpApplications_attributes) GetTags() []string {
-	return m.tags
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetTemplateName gets the template-name property value. The name of the template this application was created from.
 // returns a *string when successful
 func (m *TdpApplications_attributes) GetTemplateName() *string {
-	return m.templateName
+	val, err := m.GetBackingStore().Get("templateName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTfcWorkspaceId gets the tfc-workspace-id property value. The ID of the HCP Terraform workspace provisioned for this application.
 // returns a *string when successful
 func (m *TdpApplications_attributes) GetTfcWorkspaceId() *string {
-	return m.tfcWorkspaceId
+	val, err := m.GetBackingStore().Get("tfcWorkspaceId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *TdpApplications_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -328,74 +404,120 @@ func (m *TdpApplications_attributes) Serialize(writer i878a80d2330e89d26896388a3
 
 // SetActionCfgRefs sets the action-cfg-refs property value. References to action configurations associated with this application.
 func (m *TdpApplications_attributes) SetActionCfgRefs(value []TdpApplications_attributes_actionCfgRefsable) {
-	m.actionCfgRefs = value
+	err := m.GetBackingStore().Set("actionCfgRefs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TdpApplications_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplicationTemplate sets the application-template property value. The template this application was created from, including its configuration.
 func (m *TdpApplications_attributes) SetApplicationTemplate(value TdpApplications_attributes_applicationTemplateable) {
-	m.applicationTemplate = value
+	err := m.GetBackingStore().Set("applicationTemplate", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpApplications_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *TdpApplications_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInputVariables sets the input-variables property value. Input variables to pass when creating an application from a template.
 func (m *TdpApplications_attributes) SetInputVariables(value []TdpApplications_attributes_inputVariablesable) {
-	m.inputVariables = value
+	err := m.GetBackingStore().Set("inputVariables", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *TdpApplications_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOutputValues sets the output-values property value. Output values produced by this application's backing Terraform workspace.
 func (m *TdpApplications_attributes) SetOutputValues(value []TdpApplications_attributes_outputValuesable) {
-	m.outputValues = value
+	err := m.GetBackingStore().Set("outputValues", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReadme sets the readme property value. User-authored raw readme content for this application instance.
 func (m *TdpApplications_attributes) SetReadme(value *string) {
-	m.readme = value
+	err := m.GetBackingStore().Set("readme", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReadmeMarkdown sets the readme-markdown property value. The rendered Markdown output of the readme. Computed by the server from the raw readme content. Read-only.
 func (m *TdpApplications_attributes) SetReadmeMarkdown(value *string) {
-	m.readmeMarkdown = value
+	err := m.GetBackingStore().Set("readmeMarkdown", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTags sets the tags property value. Tags attached to this application for categorization.
 func (m *TdpApplications_attributes) SetTags(value []string) {
-	m.tags = value
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTemplateName sets the template-name property value. The name of the template this application was created from.
 func (m *TdpApplications_attributes) SetTemplateName(value *string) {
-	m.templateName = value
+	err := m.GetBackingStore().Set("templateName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTfcWorkspaceId sets the tfc-workspace-id property value. The ID of the HCP Terraform workspace provisioned for this application.
 func (m *TdpApplications_attributes) SetTfcWorkspaceId(value *string) {
-	m.tfcWorkspaceId = value
+	err := m.GetBackingStore().Set("tfcWorkspaceId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *TdpApplications_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TdpApplications_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActionCfgRefs() []TdpApplications_attributes_actionCfgRefsable
 	GetApplicationTemplate() TdpApplications_attributes_applicationTemplateable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetInputVariables() []TdpApplications_attributes_inputVariablesable
 	GetName() *string
@@ -408,6 +530,7 @@ type TdpApplications_attributesable interface {
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetActionCfgRefs(value []TdpApplications_attributes_actionCfgRefsable)
 	SetApplicationTemplate(value TdpApplications_attributes_applicationTemplateable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetInputVariables(value []TdpApplications_attributes_inputVariablesable)
 	SetName(value *string)

@@ -5,43 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Queries_attributes struct {
-	// The actions property
-	actions Queries_attributes_actionsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The canceledAt property
-	canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The forceCancelAvailableAt property
-	forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The generateConfigOut property
-	generateConfigOut *bool
-	// The logReadUrl property
-	logReadUrl *string
-	// The permissions property
-	permissions Queries_attributes_permissionsable
-	// The policyPaths property
-	policyPaths []string
-	// The number of resources discovered by the query run.
-	resourcesDiscovered *int32
-	// The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
-	source *Queries_attributes_source
-	// The status property
-	status *Queries_attributes_status
-	// The statusTimestamps property
-	statusTimestamps Queries_attributes_statusTimestampsable
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewQueries_attributes instantiates a new Queries_attributes and sets the default values.
 func NewQueries_attributes() *Queries_attributes {
 	m := &Queries_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -55,25 +31,60 @@ func CreateQueries_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26
 // GetActions gets the actions property value. The actions property
 // returns a Queries_attributes_actionsable when successful
 func (m *Queries_attributes) GetActions() Queries_attributes_actionsable {
-	return m.actions
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Queries_attributes_actionsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Queries_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Queries_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanceledAt gets the canceled-at property value. The canceledAt property
 // returns a *Time when successful
 func (m *Queries_attributes) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.canceledAt
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *Queries_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -222,61 +233,131 @@ func (m *Queries_attributes) GetFieldDeserializers() map[string]func(i878a80d233
 // GetForceCancelAvailableAt gets the force-cancel-available-at property value. The forceCancelAvailableAt property
 // returns a *Time when successful
 func (m *Queries_attributes) GetForceCancelAvailableAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.forceCancelAvailableAt
+	val, err := m.GetBackingStore().Get("forceCancelAvailableAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetGenerateConfigOut gets the generate-config-out property value. The generateConfigOut property
 // returns a *bool when successful
 func (m *Queries_attributes) GetGenerateConfigOut() *bool {
-	return m.generateConfigOut
+	val, err := m.GetBackingStore().Get("generateConfigOut")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLogReadUrl gets the log-read-url property value. The logReadUrl property
 // returns a *string when successful
 func (m *Queries_attributes) GetLogReadUrl() *string {
-	return m.logReadUrl
+	val, err := m.GetBackingStore().Get("logReadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Queries_attributes_permissionsable when successful
 func (m *Queries_attributes) GetPermissions() Queries_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Queries_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPolicyPaths gets the policy-paths property value. The policyPaths property
 // returns a []string when successful
 func (m *Queries_attributes) GetPolicyPaths() []string {
-	return m.policyPaths
+	val, err := m.GetBackingStore().Get("policyPaths")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetResourcesDiscovered gets the resources-discovered property value. The number of resources discovered by the query run.
 // returns a *int32 when successful
 func (m *Queries_attributes) GetResourcesDiscovered() *int32 {
-	return m.resourcesDiscovered
+	val, err := m.GetBackingStore().Get("resourcesDiscovered")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSource gets the source property value. The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 // returns a *Queries_attributes_source when successful
 func (m *Queries_attributes) GetSource() *Queries_attributes_source {
-	return m.source
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Queries_attributes_source)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *Queries_attributes_status when successful
 func (m *Queries_attributes) GetStatus() *Queries_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Queries_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a Queries_attributes_statusTimestampsable when successful
 func (m *Queries_attributes) GetStatusTimestamps() Queries_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Queries_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *Queries_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -336,78 +417,127 @@ func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
 
 // SetActions sets the actions property value. The actions property
 func (m *Queries_attributes) SetActions(value Queries_attributes_actionsable) {
-	m.actions = value
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Queries_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Queries_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanceledAt sets the canceled-at property value. The canceledAt property
 func (m *Queries_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.canceledAt = value
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *Queries_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetForceCancelAvailableAt sets the force-cancel-available-at property value. The forceCancelAvailableAt property
 func (m *Queries_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.forceCancelAvailableAt = value
+	err := m.GetBackingStore().Set("forceCancelAvailableAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGenerateConfigOut sets the generate-config-out property value. The generateConfigOut property
 func (m *Queries_attributes) SetGenerateConfigOut(value *bool) {
-	m.generateConfigOut = value
+	err := m.GetBackingStore().Set("generateConfigOut", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLogReadUrl sets the log-read-url property value. The logReadUrl property
 func (m *Queries_attributes) SetLogReadUrl(value *string) {
-	m.logReadUrl = value
+	err := m.GetBackingStore().Set("logReadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Queries_attributes) SetPermissions(value Queries_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyPaths sets the policy-paths property value. The policyPaths property
 func (m *Queries_attributes) SetPolicyPaths(value []string) {
-	m.policyPaths = value
+	err := m.GetBackingStore().Set("policyPaths", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourcesDiscovered sets the resources-discovered property value. The number of resources discovered by the query run.
 func (m *Queries_attributes) SetResourcesDiscovered(value *int32) {
-	m.resourcesDiscovered = value
+	err := m.GetBackingStore().Set("resourcesDiscovered", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSource sets the source property value. The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 func (m *Queries_attributes) SetSource(value *Queries_attributes_source) {
-	m.source = value
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *Queries_attributes) SetStatus(value *Queries_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *Queries_attributes) SetStatusTimestamps(value Queries_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Queries_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Queries_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActions() Queries_attributes_actionsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetForceCancelAvailableAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -421,6 +551,7 @@ type Queries_attributesable interface {
 	GetStatusTimestamps() Queries_attributes_statusTimestampsable
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetActions(value Queries_attributes_actionsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

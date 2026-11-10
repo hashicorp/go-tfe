@@ -6,63 +6,25 @@ package organizations
 import (
 	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type ItemWorkspacesGetResponse struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
-	// The included property
-	included []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable
-	// The links property
-	links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
-	// The meta property
-	meta ItemWorkspacesGetResponse_metaable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// ItemWorkspacesGetResponse_WorkspacesGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+// ItemWorkspacesGetResponse_WorkspacesGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPools, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Applies, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResults, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindings, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributes, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModules, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plans, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Vars, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputs, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadme
 type ItemWorkspacesGetResponse_WorkspacesGetResponse_included struct {
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
-	agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
-	applies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
-	assessmentResults i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-	configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
-	effectiveTagBindings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-	ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
-	noCodeModules i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
-	noCodeModuleVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-	organizations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
-	plans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-	projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-	runs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-	stateVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-	users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
-	vars i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
-	workspaceOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
-	workspaceReadme i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewItemWorkspacesGetResponse_WorkspacesGetResponse_included instantiates a new ItemWorkspacesGetResponse_WorkspacesGetResponse_included and sets the default values.
 func NewItemWorkspacesGetResponse_WorkspacesGetResponse_included() *ItemWorkspacesGetResponse_WorkspacesGetResponse_included {
 	m := &ItemWorkspacesGetResponse_WorkspacesGetResponse_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -122,34 +84,75 @@ func CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscrimin
 	return result, nil
 }
 
-// GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+// GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPools
 // returns a AgentPoolsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAgentPools() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable {
-	return m.agentPools
+	val, err := m.GetBackingStore().Get("agentPools")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
+	}
+	return nil
 }
 
-// GetApplies gets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+// GetApplies gets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Applies
 // returns a Appliesable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetApplies() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable {
-	return m.applies
+	val, err := m.GetBackingStore().Get("applies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)
+	}
+	return nil
 }
 
-// GetAssessmentResults gets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+// GetAssessmentResults gets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResults
 // returns a AssessmentResultsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAssessmentResults() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable {
-	return m.assessmentResults
+	val, err := m.GetBackingStore().Get("assessmentResults")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)
+	}
+	return nil
 }
 
-// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions
 // returns a ConfigurationVersionsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable {
-	return m.configurationVersions
+	val, err := m.GetBackingStore().Get("configurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+	}
+	return nil
 }
 
-// GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+// GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindings
 // returns a EffectiveTagBindingsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetEffectiveTagBindings() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable {
-	return m.effectiveTagBindings
+	val, err := m.GetBackingStore().Get("effectiveTagBindings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -193,10 +196,17 @@ func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetFieldDeser
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributes
 // returns a IngressAttributesable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIngressAttributes() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable {
-	return m.ingressAttributes
+	val, err := m.GetBackingStore().Get("ingressAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -205,70 +215,147 @@ func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIsComposed
 	return true
 }
 
-// GetNoCodeModules gets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
+// GetNoCodeModules gets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModules
 // returns a NoCodeModulesable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModules() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable {
-	return m.noCodeModules
+	val, err := m.GetBackingStore().Get("noCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)
+	}
+	return nil
 }
 
-// GetNoCodeModuleVersions gets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+// GetNoCodeModuleVersions gets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersions
 // returns a NoCodeModuleVersionsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModuleVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable {
-	return m.noCodeModuleVersions
+	val, err := m.GetBackingStore().Get("noCodeModuleVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)
+	}
+	return nil
 }
 
-// GetOrganizations gets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+// GetOrganizations gets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizations
 // returns a Organizationsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetOrganizations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable {
-	return m.organizations
+	val, err := m.GetBackingStore().Get("organizations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
+	}
+	return nil
 }
 
-// GetPlans gets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+// GetPlans gets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plans
 // returns a Plansable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetPlans() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable {
-	return m.plans
+	val, err := m.GetBackingStore().Get("plans")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)
+	}
+	return nil
 }
 
-// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects
 // returns a Projectsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetProjects() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+	}
+	return nil
 }
 
-// GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+// GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs
 // returns a Runsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetRuns() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable {
-	return m.runs
+	val, err := m.GetBackingStore().Get("runs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
+	}
+	return nil
 }
 
-// GetStateVersions gets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+// GetStateVersions gets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersions
 // returns a StateVersionsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetStateVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable {
-	return m.stateVersions
+	val, err := m.GetBackingStore().Get("stateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+	}
+	return nil
 }
 
-// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users
 // returns a Usersable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetUsers() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable {
-	return m.users
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
+	}
+	return nil
 }
 
-// GetVars gets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+// GetVars gets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Vars
 // returns a Varsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetVars() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable {
-	return m.vars
+	val, err := m.GetBackingStore().Get("vars")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
+	}
+	return nil
 }
 
-// GetWorkspaceOutputs gets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
+// GetWorkspaceOutputs gets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputs
 // returns a WorkspaceOutputsable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceOutputs() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable {
-	return m.workspaceOutputs
+	val, err := m.GetBackingStore().Get("workspaceOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)
+	}
+	return nil
 }
 
-// GetWorkspaceReadme gets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+// GetWorkspaceReadme gets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadme
 // returns a WorkspaceReadmeable when successful
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceReadme() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable {
-	return m.workspaceReadme
+	val, err := m.GetBackingStore().Get("workspaceReadme")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -362,96 +449,154 @@ func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) Serialize(wri
 	return nil
 }
 
-// SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+// SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPools
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
-	m.agentPools = value
+	err := m.GetBackingStore().Set("agentPools", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetApplies sets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+// SetApplies sets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Applies
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable) {
-	m.applies = value
+	err := m.GetBackingStore().Set("applies", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetAssessmentResults sets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+// SetAssessmentResults sets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResults
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable) {
-	m.assessmentResults = value
+	err := m.GetBackingStore().Set("assessmentResults", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
-	m.configurationVersions = value
+	err := m.GetBackingStore().Set("configurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+// SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindings
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable) {
-	m.effectiveTagBindings = value
+	err := m.GetBackingStore().Set("effectiveTagBindings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributes
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
-	m.ingressAttributes = value
+	err := m.GetBackingStore().Set("ingressAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetNoCodeModules sets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
+// SetNoCodeModules sets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModules
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable) {
-	m.noCodeModules = value
+	err := m.GetBackingStore().Set("noCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetNoCodeModuleVersions sets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+// SetNoCodeModuleVersions sets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersions
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable) {
-	m.noCodeModuleVersions = value
+	err := m.GetBackingStore().Set("noCodeModuleVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetOrganizations sets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+// SetOrganizations sets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizations
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable) {
-	m.organizations = value
+	err := m.GetBackingStore().Set("organizations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetPlans sets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+// SetPlans sets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plans
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable) {
-	m.plans = value
+	err := m.GetBackingStore().Set("plans", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+// SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
-	m.runs = value
+	err := m.GetBackingStore().Set("runs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStateVersions sets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+// SetStateVersions sets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersions
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
-	m.stateVersions = value
+	err := m.GetBackingStore().Set("stateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
-	m.users = value
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetVars sets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+// SetVars sets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Vars
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
-	m.vars = value
+	err := m.GetBackingStore().Set("vars", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaceOutputs sets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
+// SetWorkspaceOutputs sets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputs
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable) {
-	m.workspaceOutputs = value
+	err := m.GetBackingStore().Set("workspaceOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaceReadme sets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+// SetWorkspaceReadme sets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadme
 func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable) {
-	m.workspaceReadme = value
+	err := m.GetBackingStore().Set("workspaceReadme", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentPools() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
 	GetApplies() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
 	GetAssessmentResults() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
 	GetEffectiveTagBindings() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
 	GetIngressAttributes() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
@@ -469,6 +614,7 @@ type ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable interface {
 	SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
 	SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)
 	SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
 	SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
 	SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
@@ -488,6 +634,7 @@ type ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable interface {
 // NewItemWorkspacesGetResponse instantiates a new ItemWorkspacesGetResponse and sets the default values.
 func NewItemWorkspacesGetResponse() *ItemWorkspacesGetResponse {
 	m := &ItemWorkspacesGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -501,13 +648,34 @@ func CreateItemWorkspacesGetResponseFromDiscriminatorValue(parseNode i878a80d233
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ItemWorkspacesGetResponse) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemWorkspacesGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a []Workspacesable when successful
 func (m *ItemWorkspacesGetResponse) GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -572,19 +740,40 @@ func (m *ItemWorkspacesGetResponse) GetFieldDeserializers() map[string]func(i878
 // GetIncluded gets the included property value. The included property
 // returns a []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable when successful
 func (m *ItemWorkspacesGetResponse) GetIncluded() []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
+	}
+	return nil
 }
 
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemWorkspacesGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable {
-	return m.links
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	}
+	return nil
 }
 
 // GetMeta gets the meta property value. The meta property
 // returns a ItemWorkspacesGetResponse_metaable when successful
 func (m *ItemWorkspacesGetResponse) GetMeta() ItemWorkspacesGetResponse_metaable {
-	return m.meta
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemWorkspacesGetResponse_metaable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -636,36 +825,59 @@ func (m *ItemWorkspacesGetResponse) Serialize(writer i878a80d2330e89d26896388a3f
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ItemWorkspacesGetResponse) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemWorkspacesGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *ItemWorkspacesGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *ItemWorkspacesGetResponse) SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLinks sets the links property value. The links property
 func (m *ItemWorkspacesGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
-	m.links = value
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMeta sets the meta property value. The meta property
 func (m *ItemWorkspacesGetResponse) SetMeta(value ItemWorkspacesGetResponse_metaable) {
-	m.meta = value
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemWorkspacesGetResponseable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
 	GetIncluded() []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable
 	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
 	GetMeta() ItemWorkspacesGetResponse_metaable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
 	SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
 	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)

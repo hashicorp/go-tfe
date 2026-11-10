@@ -5,20 +5,18 @@ package organizations
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemHyokConfigurationsTestPostRequestBody struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The hyokConfiguration property
-	hyokConfiguration ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable
-	// The oidcConfiguration property
-	oidcConfiguration ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewItemHyokConfigurationsTestPostRequestBody instantiates a new ItemHyokConfigurationsTestPostRequestBody and sets the default values.
 func NewItemHyokConfigurationsTestPostRequestBody() *ItemHyokConfigurationsTestPostRequestBody {
 	m := &ItemHyokConfigurationsTestPostRequestBody{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateItemHyokConfigurationsTestPostRequestBodyFromDiscriminatorValue(parse
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ItemHyokConfigurationsTestPostRequestBody) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemHyokConfigurationsTestPostRequestBody) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *ItemHyokConfigurationsTestPostRequestBody) GetFieldDeserializers() map[
 // GetHyokConfiguration gets the hyok-configuration property value. The hyokConfiguration property
 // returns a ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable when successful
 func (m *ItemHyokConfigurationsTestPostRequestBody) GetHyokConfiguration() ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable {
-	return m.hyokConfiguration
+	val, err := m.GetBackingStore().Get("hyokConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable)
+	}
+	return nil
 }
 
 // GetOidcConfiguration gets the oidc-configuration property value. The oidcConfiguration property
 // returns a ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable when successful
 func (m *ItemHyokConfigurationsTestPostRequestBody) GetOidcConfiguration() ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable {
-	return m.oidcConfiguration
+	val, err := m.GetBackingStore().Get("oidcConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -99,24 +125,41 @@ func (m *ItemHyokConfigurationsTestPostRequestBody) Serialize(writer i878a80d233
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ItemHyokConfigurationsTestPostRequestBody) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemHyokConfigurationsTestPostRequestBody) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetHyokConfiguration sets the hyok-configuration property value. The hyokConfiguration property
 func (m *ItemHyokConfigurationsTestPostRequestBody) SetHyokConfiguration(value ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable) {
-	m.hyokConfiguration = value
+	err := m.GetBackingStore().Set("hyokConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOidcConfiguration sets the oidc-configuration property value. The oidcConfiguration property
 func (m *ItemHyokConfigurationsTestPostRequestBody) SetOidcConfiguration(value ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable) {
-	m.oidcConfiguration = value
+	err := m.GetBackingStore().Set("oidcConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemHyokConfigurationsTestPostRequestBodyable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetHyokConfiguration() ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable
 	GetOidcConfiguration() ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetHyokConfiguration(value ItemHyokConfigurationsTestPostRequestBody_hyokConfigurationable)
 	SetOidcConfiguration(value ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable)
 }

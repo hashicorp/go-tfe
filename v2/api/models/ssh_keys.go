@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type SshKeys struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The attributes property
-	attributes SshKeys_attributesable
-	// The ID of the SSH key.
-	id *string
-	// The links property
-	links SshKeys_linksable
-	// The type property
-	typeEscaped *SshKeys_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewSshKeys instantiates a new SshKeys and sets the default values.
 func NewSshKeys() *SshKeys {
 	m := &SshKeys{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateSshKeysFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f48
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *SshKeys) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttributes gets the attributes property value. The attributes property
 // returns a SshKeys_attributesable when successful
 func (m *SshKeys) GetAttributes() SshKeys_attributesable {
-	return m.attributes
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(SshKeys_attributesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *SshKeys) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *SshKeys) GetFieldDeserializers() map[string]func(i878a80d2330e89d268963
 // GetId gets the id property value. The ID of the SSH key.
 // returns a *string when successful
 func (m *SshKeys) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetLinks gets the links property value. The links property
 // returns a SshKeys_linksable when successful
 func (m *SshKeys) GetLinks() SshKeys_linksable {
-	return m.links
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(SshKeys_linksable)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The type property
 // returns a *SshKeys_type when successful
 func (m *SshKeys) GetTypeEscaped() *SshKeys_type {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*SshKeys_type)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,37 +172,60 @@ func (m *SshKeys) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *SshKeys) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttributes sets the attributes property value. The attributes property
 func (m *SshKeys) SetAttributes(value SshKeys_attributesable) {
-	m.attributes = value
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *SshKeys) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The ID of the SSH key.
 func (m *SshKeys) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLinks sets the links property value. The links property
 func (m *SshKeys) SetLinks(value SshKeys_linksable) {
-	m.links = value
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The type property
 func (m *SshKeys) SetTypeEscaped(value *SshKeys_type) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type SshKeysable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAttributes() SshKeys_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetLinks() SshKeys_linksable
 	GetTypeEscaped() *SshKeys_type
 	SetAttributes(value SshKeys_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetLinks(value SshKeys_linksable)
 	SetTypeEscaped(value *SshKeys_type)

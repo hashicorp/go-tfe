@@ -5,57 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type PolicySets_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The agentEnabled property
-	agentEnabled *bool
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The description property
-	description *string
-	// The global property
-	global *bool
-	// The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
-	kind *PolicySets_attributes_kind
-	// The name property
-	name *string
-	// The overridable property
-	overridable *bool
-	// The policiesPath property
-	policiesPath *string
-	// The policyCount property
-	policyCount *int32
-	// The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
-	policyToolVersion *string
-	// The policyUpdatePatterns property
-	policyUpdatePatterns []string
-	// The projectCount property
-	projectCount *int32
-	// Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
-	scopingType *PolicySets_attributes_scopingType
-	// The stackCount property
-	stackCount *int32
-	// Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
-	tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
-	// The tagSelectors property
-	tagSelectors []PolicySets_attributes_tagSelectorsable
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The vcsRepo property
-	vcsRepo PolicySets_attributes_vcsRepoable
-	// The versioned property
-	versioned *bool
-	// The workspaceCount property
-	workspaceCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicySets_attributes instantiates a new PolicySets_attributes and sets the default values.
 func NewPolicySets_attributes() *PolicySets_attributes {
 	m := &PolicySets_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -69,25 +31,60 @@ func CreatePolicySets_attributesFromDiscriminatorValue(parseNode i878a80d2330e89
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicySets_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentEnabled gets the agent-enabled property value. The agentEnabled property
 // returns a *bool when successful
 func (m *PolicySets_attributes) GetAgentEnabled() *bool {
-	return m.agentEnabled
+	val, err := m.GetBackingStore().Get("agentEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySets_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *PolicySets_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
 func (m *PolicySets_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -312,103 +309,222 @@ func (m *PolicySets_attributes) GetFieldDeserializers() map[string]func(i878a80d
 // GetGlobal gets the global property value. The global property
 // returns a *bool when successful
 func (m *PolicySets_attributes) GetGlobal() *bool {
-	return m.global
+	val, err := m.GetBackingStore().Get("global")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetKind gets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 // returns a *PolicySets_attributes_kind when successful
 func (m *PolicySets_attributes) GetKind() *PolicySets_attributes_kind {
-	return m.kind
+	val, err := m.GetBackingStore().Get("kind")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicySets_attributes_kind)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *PolicySets_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOverridable gets the overridable property value. The overridable property
 // returns a *bool when successful
 func (m *PolicySets_attributes) GetOverridable() *bool {
-	return m.overridable
+	val, err := m.GetBackingStore().Get("overridable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPoliciesPath gets the policies-path property value. The policiesPath property
 // returns a *string when successful
 func (m *PolicySets_attributes) GetPoliciesPath() *string {
-	return m.policiesPath
+	val, err := m.GetBackingStore().Get("policiesPath")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPolicyCount gets the policy-count property value. The policyCount property
 // returns a *int32 when successful
 func (m *PolicySets_attributes) GetPolicyCount() *int32 {
-	return m.policyCount
+	val, err := m.GetBackingStore().Get("policyCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPolicyToolVersion gets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
 // returns a *string when successful
 func (m *PolicySets_attributes) GetPolicyToolVersion() *string {
-	return m.policyToolVersion
+	val, err := m.GetBackingStore().Get("policyToolVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPolicyUpdatePatterns gets the policy-update-patterns property value. The policyUpdatePatterns property
 // returns a []string when successful
 func (m *PolicySets_attributes) GetPolicyUpdatePatterns() []string {
-	return m.policyUpdatePatterns
+	val, err := m.GetBackingStore().Get("policyUpdatePatterns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetProjectCount gets the project-count property value. The projectCount property
 // returns a *int32 when successful
 func (m *PolicySets_attributes) GetProjectCount() *int32 {
-	return m.projectCount
+	val, err := m.GetBackingStore().Get("projectCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
 // returns a *PolicySets_attributes_scopingType when successful
 func (m *PolicySets_attributes) GetScopingType() *PolicySets_attributes_scopingType {
-	return m.scopingType
+	val, err := m.GetBackingStore().Get("scopingType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicySets_attributes_scopingType)
+	}
+	return nil
 }
 
 // GetStackCount gets the stack-count property value. The stackCount property
 // returns a *int32 when successful
 func (m *PolicySets_attributes) GetStackCount() *int32 {
-	return m.stackCount
+	val, err := m.GetBackingStore().Get("stackCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTagSelectorMatchingLogic gets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 // returns a *PolicySets_attributes_tagSelectorMatchingLogic when successful
 func (m *PolicySets_attributes) GetTagSelectorMatchingLogic() *PolicySets_attributes_tagSelectorMatchingLogic {
-	return m.tagSelectorMatchingLogic
+	val, err := m.GetBackingStore().Get("tagSelectorMatchingLogic")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicySets_attributes_tagSelectorMatchingLogic)
+	}
+	return nil
 }
 
 // GetTagSelectors gets the tag-selectors property value. The tagSelectors property
 // returns a []PolicySets_attributes_tagSelectorsable when successful
 func (m *PolicySets_attributes) GetTagSelectors() []PolicySets_attributes_tagSelectorsable {
-	return m.tagSelectors
+	val, err := m.GetBackingStore().Get("tagSelectors")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]PolicySets_attributes_tagSelectorsable)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *PolicySets_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a PolicySets_attributes_vcsRepoable when successful
 func (m *PolicySets_attributes) GetVcsRepo() PolicySets_attributes_vcsRepoable {
-	return m.vcsRepo
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySets_attributes_vcsRepoable)
+	}
+	return nil
 }
 
 // GetVersioned gets the versioned property value. The versioned property
 // returns a *bool when successful
 func (m *PolicySets_attributes) GetVersioned() *bool {
-	return m.versioned
+	val, err := m.GetBackingStore().Get("versioned")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetWorkspaceCount gets the workspace-count property value. The workspaceCount property
 // returns a *int32 when successful
 func (m *PolicySets_attributes) GetWorkspaceCount() *int32 {
-	return m.workspaceCount
+	val, err := m.GetBackingStore().Get("workspaceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -511,113 +627,183 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicySets_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentEnabled sets the agent-enabled property value. The agentEnabled property
 func (m *PolicySets_attributes) SetAgentEnabled(value *bool) {
-	m.agentEnabled = value
+	err := m.GetBackingStore().Set("agentEnabled", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySets_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *PolicySets_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDescription sets the description property value. The description property
 func (m *PolicySets_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGlobal sets the global property value. The global property
 func (m *PolicySets_attributes) SetGlobal(value *bool) {
-	m.global = value
+	err := m.GetBackingStore().Set("global", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetKind sets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 func (m *PolicySets_attributes) SetKind(value *PolicySets_attributes_kind) {
-	m.kind = value
+	err := m.GetBackingStore().Set("kind", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *PolicySets_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOverridable sets the overridable property value. The overridable property
 func (m *PolicySets_attributes) SetOverridable(value *bool) {
-	m.overridable = value
+	err := m.GetBackingStore().Set("overridable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPoliciesPath sets the policies-path property value. The policiesPath property
 func (m *PolicySets_attributes) SetPoliciesPath(value *string) {
-	m.policiesPath = value
+	err := m.GetBackingStore().Set("policiesPath", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyCount sets the policy-count property value. The policyCount property
 func (m *PolicySets_attributes) SetPolicyCount(value *int32) {
-	m.policyCount = value
+	err := m.GetBackingStore().Set("policyCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyToolVersion sets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
 func (m *PolicySets_attributes) SetPolicyToolVersion(value *string) {
-	m.policyToolVersion = value
+	err := m.GetBackingStore().Set("policyToolVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyUpdatePatterns sets the policy-update-patterns property value. The policyUpdatePatterns property
 func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string) {
-	m.policyUpdatePatterns = value
+	err := m.GetBackingStore().Set("policyUpdatePatterns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProjectCount sets the project-count property value. The projectCount property
 func (m *PolicySets_attributes) SetProjectCount(value *int32) {
-	m.projectCount = value
+	err := m.GetBackingStore().Set("projectCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
 func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType) {
-	m.scopingType = value
+	err := m.GetBackingStore().Set("scopingType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackCount sets the stack-count property value. The stackCount property
 func (m *PolicySets_attributes) SetStackCount(value *int32) {
-	m.stackCount = value
+	err := m.GetBackingStore().Set("stackCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTagSelectorMatchingLogic sets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 func (m *PolicySets_attributes) SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic) {
-	m.tagSelectorMatchingLogic = value
+	err := m.GetBackingStore().Set("tagSelectorMatchingLogic", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTagSelectors sets the tag-selectors property value. The tagSelectors property
 func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable) {
-	m.tagSelectors = value
+	err := m.GetBackingStore().Set("tagSelectors", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *PolicySets_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
 func (m *PolicySets_attributes) SetVcsRepo(value PolicySets_attributes_vcsRepoable) {
-	m.vcsRepo = value
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVersioned sets the versioned property value. The versioned property
 func (m *PolicySets_attributes) SetVersioned(value *bool) {
-	m.versioned = value
+	err := m.GetBackingStore().Set("versioned", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceCount sets the workspace-count property value. The workspaceCount property
 func (m *PolicySets_attributes) SetWorkspaceCount(value *int32) {
-	m.workspaceCount = value
+	err := m.GetBackingStore().Set("workspaceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicySets_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentEnabled() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDescription() *string
 	GetGlobal() *bool
@@ -638,6 +824,7 @@ type PolicySets_attributesable interface {
 	GetVersioned() *bool
 	GetWorkspaceCount() *int32
 	SetAgentEnabled(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDescription(value *string)
 	SetGlobal(value *bool)

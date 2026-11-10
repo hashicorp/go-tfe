@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicyEvaluations_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The run property
-	run RunsHasOneable
-	// The tfPolicySetOutcomes property
-	tfPolicySetOutcomes TfPolicySetOutcomesHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicyEvaluations_relationships instantiates a new TfPolicyEvaluations_relationships and sets the default values.
 func NewTfPolicyEvaluations_relationships() *TfPolicyEvaluations_relationships {
 	m := &TfPolicyEvaluations_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateTfPolicyEvaluations_relationshipsFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicyEvaluations_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *TfPolicyEvaluations_relationships) GetFieldDeserializers() map[string]f
 // GetRun gets the run property value. The run property
 // returns a RunsHasOneable when successful
 func (m *TfPolicyEvaluations_relationships) GetRun() RunsHasOneable {
-	return m.run
+	val, err := m.GetBackingStore().Get("run")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
 
 // GetTfPolicySetOutcomes gets the tf-policy-set-outcomes property value. The tfPolicySetOutcomes property
 // returns a TfPolicySetOutcomesHasManyable when successful
 func (m *TfPolicyEvaluations_relationships) GetTfPolicySetOutcomes() TfPolicySetOutcomesHasManyable {
-	return m.tfPolicySetOutcomes
+	val, err := m.GetBackingStore().Get("tfPolicySetOutcomes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicySetOutcomesHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -99,24 +125,41 @@ func (m *TfPolicyEvaluations_relationships) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicyEvaluations_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetRun sets the run property value. The run property
 func (m *TfPolicyEvaluations_relationships) SetRun(value RunsHasOneable) {
-	m.run = value
+	err := m.GetBackingStore().Set("run", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTfPolicySetOutcomes sets the tf-policy-set-outcomes property value. The tfPolicySetOutcomes property
 func (m *TfPolicyEvaluations_relationships) SetTfPolicySetOutcomes(value TfPolicySetOutcomesHasManyable) {
-	m.tfPolicySetOutcomes = value
+	err := m.GetBackingStore().Set("tfPolicySetOutcomes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicyEvaluations_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetRun() RunsHasOneable
 	GetTfPolicySetOutcomes() TfPolicySetOutcomesHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetRun(value RunsHasOneable)
 	SetTfPolicySetOutcomes(value TfPolicySetOutcomesHasManyable)
 }

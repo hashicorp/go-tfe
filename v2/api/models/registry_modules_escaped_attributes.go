@@ -5,43 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type RegistryModules_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The name property
-	name *string
-	// The namespace property
-	namespace *string
-	// Whether the module is a no-code module.
-	noCode *bool
-	// The permissions property
-	permissions RegistryModules_attributes_permissionsable
-	// The provider property
-	provider *string
-	// The publishingMechanism property
-	publishingMechanism *RegistryModules_attributes_publishingMechanism
-	// The registryName property
-	registryName *string
-	// The status property
-	status *string
-	// Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
-	testConfig RegistryModules_attributes_testConfigable
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
-	vcsRepo RegistryModules_attributes_vcsRepoable
-	// The versionStatuses property
-	versionStatuses []RegistryModules_attributes_versionStatusesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRegistryModules_attributes instantiates a new RegistryModules_attributes and sets the default values.
 func NewRegistryModules_attributes() *RegistryModules_attributes {
 	m := &RegistryModules_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -55,13 +31,34 @@ func CreateRegistryModules_attributesFromDiscriminatorValue(parseNode i878a80d23
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *RegistryModules_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RegistryModules_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *RegistryModules_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -210,73 +207,157 @@ func (m *RegistryModules_attributes) GetFieldDeserializers() map[string]func(i87
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNamespace gets the namespace property value. The namespace property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetNamespace() *string {
-	return m.namespace
+	val, err := m.GetBackingStore().Get("namespace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNoCode gets the no-code property value. Whether the module is a no-code module.
 // returns a *bool when successful
 func (m *RegistryModules_attributes) GetNoCode() *bool {
-	return m.noCode
+	val, err := m.GetBackingStore().Get("noCode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a RegistryModules_attributes_permissionsable when successful
 func (m *RegistryModules_attributes) GetPermissions() RegistryModules_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModules_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetProvider gets the provider property value. The provider property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetProvider() *string {
-	return m.provider
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPublishingMechanism gets the publishing-mechanism property value. The publishingMechanism property
 // returns a *RegistryModules_attributes_publishingMechanism when successful
 func (m *RegistryModules_attributes) GetPublishingMechanism() *RegistryModules_attributes_publishingMechanism {
-	return m.publishingMechanism
+	val, err := m.GetBackingStore().Get("publishingMechanism")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*RegistryModules_attributes_publishingMechanism)
+	}
+	return nil
 }
 
 // GetRegistryName gets the registry-name property value. The registryName property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetRegistryName() *string {
-	return m.registryName
+	val, err := m.GetBackingStore().Get("registryName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetStatus() *string {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTestConfig gets the test-config property value. Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
 // returns a RegistryModules_attributes_testConfigable when successful
 func (m *RegistryModules_attributes) GetTestConfig() RegistryModules_attributes_testConfigable {
-	return m.testConfig
+	val, err := m.GetBackingStore().Get("testConfig")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModules_attributes_testConfigable)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *RegistryModules_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVcsRepo gets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
 // returns a RegistryModules_attributes_vcsRepoable when successful
 func (m *RegistryModules_attributes) GetVcsRepo() RegistryModules_attributes_vcsRepoable {
-	return m.vcsRepo
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModules_attributes_vcsRepoable)
+	}
+	return nil
 }
 
 // GetVersionStatuses gets the version-statuses property value. The versionStatuses property
 // returns a []RegistryModules_attributes_versionStatusesable when successful
 func (m *RegistryModules_attributes) GetVersionStatuses() []RegistryModules_attributes_versionStatusesable {
-	return m.versionStatuses
+	val, err := m.GetBackingStore().Get("versionStatuses")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]RegistryModules_attributes_versionStatusesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -310,77 +391,126 @@ func (m *RegistryModules_attributes) Serialize(writer i878a80d2330e89d26896388a3
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *RegistryModules_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RegistryModules_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *RegistryModules_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *RegistryModules_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNamespace sets the namespace property value. The namespace property
 func (m *RegistryModules_attributes) SetNamespace(value *string) {
-	m.namespace = value
+	err := m.GetBackingStore().Set("namespace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNoCode sets the no-code property value. Whether the module is a no-code module.
 func (m *RegistryModules_attributes) SetNoCode(value *bool) {
-	m.noCode = value
+	err := m.GetBackingStore().Set("noCode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *RegistryModules_attributes) SetPermissions(value RegistryModules_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProvider sets the provider property value. The provider property
 func (m *RegistryModules_attributes) SetProvider(value *string) {
-	m.provider = value
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPublishingMechanism sets the publishing-mechanism property value. The publishingMechanism property
 func (m *RegistryModules_attributes) SetPublishingMechanism(value *RegistryModules_attributes_publishingMechanism) {
-	m.publishingMechanism = value
+	err := m.GetBackingStore().Set("publishingMechanism", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRegistryName sets the registry-name property value. The registryName property
 func (m *RegistryModules_attributes) SetRegistryName(value *string) {
-	m.registryName = value
+	err := m.GetBackingStore().Set("registryName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *RegistryModules_attributes) SetStatus(value *string) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestConfig sets the test-config property value. Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
 func (m *RegistryModules_attributes) SetTestConfig(value RegistryModules_attributes_testConfigable) {
-	m.testConfig = value
+	err := m.GetBackingStore().Set("testConfig", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *RegistryModules_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsRepo sets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
 func (m *RegistryModules_attributes) SetVcsRepo(value RegistryModules_attributes_vcsRepoable) {
-	m.vcsRepo = value
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVersionStatuses sets the version-statuses property value. The versionStatuses property
 func (m *RegistryModules_attributes) SetVersionStatuses(value []RegistryModules_attributes_versionStatusesable) {
-	m.versionStatuses = value
+	err := m.GetBackingStore().Set("versionStatuses", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type RegistryModules_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetName() *string
 	GetNamespace() *string
@@ -394,6 +524,7 @@ type RegistryModules_attributesable interface {
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetVcsRepo() RegistryModules_attributes_vcsRepoable
 	GetVersionStatuses() []RegistryModules_attributes_versionStatusesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetName(value *string)
 	SetNamespace(value *string)

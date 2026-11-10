@@ -5,37 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TeamProjects_attributes_workspaceAccess fine-grained workspace access permissions. Only meaningful when access is "custom".
 type TeamProjects_attributes_workspaceAccess struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Whether the team can create workspaces in the project.
-	create *bool
-	// Whether the team can delete the project's workspaces.
-	delete *bool
-	// Whether the team can manually lock or unlock the project's workspaces.
-	locking *bool
-	// Whether the team can move workspaces into and out of the project.
-	move *bool
-	// Whether the team can override policy checks within the project's workspaces.
-	policyOverrides *bool
-	// Permission level for workspace runs.
-	runs *TeamProjects_attributes_workspaceAccess_runs
-	// Whether the team can manage run tasks within the project's workspaces.
-	runTasks *bool
-	// Permission level for workspace Sentinel mocks.
-	sentinelMocks *TeamProjects_attributes_workspaceAccess_sentinelMocks
-	// Permission level for workspace state versions.
-	stateVersions *TeamProjects_attributes_workspaceAccess_stateVersions
-	// Permission level for workspace variables.
-	variables *TeamProjects_attributes_workspaceAccess_variables
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTeamProjects_attributes_workspaceAccess instantiates a new TeamProjects_attributes_workspaceAccess and sets the default values.
 func NewTeamProjects_attributes_workspaceAccess() *TeamProjects_attributes_workspaceAccess {
 	m := &TeamProjects_attributes_workspaceAccess{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -49,19 +31,47 @@ func CreateTeamProjects_attributes_workspaceAccessFromDiscriminatorValue(parseNo
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamProjects_attributes_workspaceAccess) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreate gets the create property value. Whether the team can create workspaces in the project.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetCreate() *bool {
-	return m.create
+	val, err := m.GetBackingStore().Get("create")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetDelete gets the delete property value. Whether the team can delete the project's workspaces.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetDelete() *bool {
-	return m.delete
+	val, err := m.GetBackingStore().Get("delete")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -174,49 +184,105 @@ func (m *TeamProjects_attributes_workspaceAccess) GetFieldDeserializers() map[st
 // GetLocking gets the locking property value. Whether the team can manually lock or unlock the project's workspaces.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetLocking() *bool {
-	return m.locking
+	val, err := m.GetBackingStore().Get("locking")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetMove gets the move property value. Whether the team can move workspaces into and out of the project.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetMove() *bool {
-	return m.move
+	val, err := m.GetBackingStore().Get("move")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPolicyOverrides gets the policy-overrides property value. Whether the team can override policy checks within the project's workspaces.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetPolicyOverrides() *bool {
-	return m.policyOverrides
+	val, err := m.GetBackingStore().Get("policyOverrides")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetRuns gets the runs property value. Permission level for workspace runs.
 // returns a *TeamProjects_attributes_workspaceAccess_runs when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetRuns() *TeamProjects_attributes_workspaceAccess_runs {
-	return m.runs
+	val, err := m.GetBackingStore().Get("runs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_workspaceAccess_runs)
+	}
+	return nil
 }
 
 // GetRunTasks gets the run-tasks property value. Whether the team can manage run tasks within the project's workspaces.
 // returns a *bool when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetRunTasks() *bool {
-	return m.runTasks
+	val, err := m.GetBackingStore().Get("runTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSentinelMocks gets the sentinel-mocks property value. Permission level for workspace Sentinel mocks.
 // returns a *TeamProjects_attributes_workspaceAccess_sentinelMocks when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetSentinelMocks() *TeamProjects_attributes_workspaceAccess_sentinelMocks {
-	return m.sentinelMocks
+	val, err := m.GetBackingStore().Get("sentinelMocks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_workspaceAccess_sentinelMocks)
+	}
+	return nil
 }
 
 // GetStateVersions gets the state-versions property value. Permission level for workspace state versions.
 // returns a *TeamProjects_attributes_workspaceAccess_stateVersions when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetStateVersions() *TeamProjects_attributes_workspaceAccess_stateVersions {
-	return m.stateVersions
+	val, err := m.GetBackingStore().Get("stateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_workspaceAccess_stateVersions)
+	}
+	return nil
 }
 
 // GetVariables gets the variables property value. Permission level for workspace variables.
 // returns a *TeamProjects_attributes_workspaceAccess_variables when successful
 func (m *TeamProjects_attributes_workspaceAccess) GetVariables() *TeamProjects_attributes_workspaceAccess_variables {
-	return m.variables
+	val, err := m.GetBackingStore().Get("variables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_workspaceAccess_variables)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -296,62 +362,102 @@ func (m *TeamProjects_attributes_workspaceAccess) Serialize(writer i878a80d2330e
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TeamProjects_attributes_workspaceAccess) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamProjects_attributes_workspaceAccess) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreate sets the create property value. Whether the team can create workspaces in the project.
 func (m *TeamProjects_attributes_workspaceAccess) SetCreate(value *bool) {
-	m.create = value
+	err := m.GetBackingStore().Set("create", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDelete sets the delete property value. Whether the team can delete the project's workspaces.
 func (m *TeamProjects_attributes_workspaceAccess) SetDelete(value *bool) {
-	m.delete = value
+	err := m.GetBackingStore().Set("delete", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLocking sets the locking property value. Whether the team can manually lock or unlock the project's workspaces.
 func (m *TeamProjects_attributes_workspaceAccess) SetLocking(value *bool) {
-	m.locking = value
+	err := m.GetBackingStore().Set("locking", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMove sets the move property value. Whether the team can move workspaces into and out of the project.
 func (m *TeamProjects_attributes_workspaceAccess) SetMove(value *bool) {
-	m.move = value
+	err := m.GetBackingStore().Set("move", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyOverrides sets the policy-overrides property value. Whether the team can override policy checks within the project's workspaces.
 func (m *TeamProjects_attributes_workspaceAccess) SetPolicyOverrides(value *bool) {
-	m.policyOverrides = value
+	err := m.GetBackingStore().Set("policyOverrides", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRuns sets the runs property value. Permission level for workspace runs.
 func (m *TeamProjects_attributes_workspaceAccess) SetRuns(value *TeamProjects_attributes_workspaceAccess_runs) {
-	m.runs = value
+	err := m.GetBackingStore().Set("runs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunTasks sets the run-tasks property value. Whether the team can manage run tasks within the project's workspaces.
 func (m *TeamProjects_attributes_workspaceAccess) SetRunTasks(value *bool) {
-	m.runTasks = value
+	err := m.GetBackingStore().Set("runTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSentinelMocks sets the sentinel-mocks property value. Permission level for workspace Sentinel mocks.
 func (m *TeamProjects_attributes_workspaceAccess) SetSentinelMocks(value *TeamProjects_attributes_workspaceAccess_sentinelMocks) {
-	m.sentinelMocks = value
+	err := m.GetBackingStore().Set("sentinelMocks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStateVersions sets the state-versions property value. Permission level for workspace state versions.
 func (m *TeamProjects_attributes_workspaceAccess) SetStateVersions(value *TeamProjects_attributes_workspaceAccess_stateVersions) {
-	m.stateVersions = value
+	err := m.GetBackingStore().Set("stateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariables sets the variables property value. Permission level for workspace variables.
 func (m *TeamProjects_attributes_workspaceAccess) SetVariables(value *TeamProjects_attributes_workspaceAccess_variables) {
-	m.variables = value
+	err := m.GetBackingStore().Set("variables", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TeamProjects_attributes_workspaceAccessable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreate() *bool
 	GetDelete() *bool
 	GetLocking() *bool
@@ -362,6 +468,7 @@ type TeamProjects_attributes_workspaceAccessable interface {
 	GetSentinelMocks() *TeamProjects_attributes_workspaceAccess_sentinelMocks
 	GetStateVersions() *TeamProjects_attributes_workspaceAccess_stateVersions
 	GetVariables() *TeamProjects_attributes_workspaceAccess_variables
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreate(value *bool)
 	SetDelete(value *bool)
 	SetLocking(value *bool)

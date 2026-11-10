@@ -5,36 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PolicySets_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The currentVersion property
-	currentVersion PolicySetVersionsHasOneable
-	// The newestVersion property
-	newestVersion PolicySetVersionsHasOneable
-	// The organization property
-	organization OrganizationsHasOneable
-	// The policies property
-	policies PoliciesHasManyable
-	// The projectExclusions property
-	projectExclusions ProjectsHasManyable
-	// The projects property
-	projects ProjectsHasManyable
-	// The stackExclusions property
-	stackExclusions StacksHasManyable
-	// The stacks property
-	stacks StacksHasManyable
-	// The workspaceExclusions property
-	workspaceExclusions WorkspacesHasManyable
-	// The workspaces property
-	workspaces WorkspacesHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicySets_relationships instantiates a new PolicySets_relationships and sets the default values.
 func NewPolicySets_relationships() *PolicySets_relationships {
 	m := &PolicySets_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -48,13 +30,34 @@ func CreatePolicySets_relationshipsFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicySets_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySets_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCurrentVersion gets the current-version property value. The currentVersion property
 // returns a PolicySetVersionsHasOneable when successful
 func (m *PolicySets_relationships) GetCurrentVersion() PolicySetVersionsHasOneable {
-	return m.currentVersion
+	val, err := m.GetBackingStore().Get("currentVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetVersionsHasOneable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -167,55 +170,118 @@ func (m *PolicySets_relationships) GetFieldDeserializers() map[string]func(i878a
 // GetNewestVersion gets the newest-version property value. The newestVersion property
 // returns a PolicySetVersionsHasOneable when successful
 func (m *PolicySets_relationships) GetNewestVersion() PolicySetVersionsHasOneable {
-	return m.newestVersion
+	val, err := m.GetBackingStore().Get("newestVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetVersionsHasOneable)
+	}
+	return nil
 }
 
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *PolicySets_relationships) GetOrganization() OrganizationsHasOneable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
 
 // GetPolicies gets the policies property value. The policies property
 // returns a PoliciesHasManyable when successful
 func (m *PolicySets_relationships) GetPolicies() PoliciesHasManyable {
-	return m.policies
+	val, err := m.GetBackingStore().Get("policies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PoliciesHasManyable)
+	}
+	return nil
 }
 
 // GetProjectExclusions gets the project-exclusions property value. The projectExclusions property
 // returns a ProjectsHasManyable when successful
 func (m *PolicySets_relationships) GetProjectExclusions() ProjectsHasManyable {
-	return m.projectExclusions
+	val, err := m.GetBackingStore().Get("projectExclusions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasManyable)
+	}
+	return nil
 }
 
 // GetProjects gets the projects property value. The projects property
 // returns a ProjectsHasManyable when successful
 func (m *PolicySets_relationships) GetProjects() ProjectsHasManyable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasManyable)
+	}
+	return nil
 }
 
 // GetStackExclusions gets the stack-exclusions property value. The stackExclusions property
 // returns a StacksHasManyable when successful
 func (m *PolicySets_relationships) GetStackExclusions() StacksHasManyable {
-	return m.stackExclusions
+	val, err := m.GetBackingStore().Get("stackExclusions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StacksHasManyable)
+	}
+	return nil
 }
 
 // GetStacks gets the stacks property value. The stacks property
 // returns a StacksHasManyable when successful
 func (m *PolicySets_relationships) GetStacks() StacksHasManyable {
-	return m.stacks
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StacksHasManyable)
+	}
+	return nil
 }
 
 // GetWorkspaceExclusions gets the workspace-exclusions property value. The workspaceExclusions property
 // returns a WorkspacesHasManyable when successful
 func (m *PolicySets_relationships) GetWorkspaceExclusions() WorkspacesHasManyable {
-	return m.workspaceExclusions
+	val, err := m.GetBackingStore().Get("workspaceExclusions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasManyable)
+	}
+	return nil
 }
 
 // GetWorkspaces gets the workspaces property value. The workspaces property
 // returns a WorkspacesHasManyable when successful
 func (m *PolicySets_relationships) GetWorkspaces() WorkspacesHasManyable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -291,62 +357,102 @@ func (m *PolicySets_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicySets_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySets_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCurrentVersion sets the current-version property value. The currentVersion property
 func (m *PolicySets_relationships) SetCurrentVersion(value PolicySetVersionsHasOneable) {
-	m.currentVersion = value
+	err := m.GetBackingStore().Set("currentVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNewestVersion sets the newest-version property value. The newestVersion property
 func (m *PolicySets_relationships) SetNewestVersion(value PolicySetVersionsHasOneable) {
-	m.newestVersion = value
+	err := m.GetBackingStore().Set("newestVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *PolicySets_relationships) SetOrganization(value OrganizationsHasOneable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicies sets the policies property value. The policies property
 func (m *PolicySets_relationships) SetPolicies(value PoliciesHasManyable) {
-	m.policies = value
+	err := m.GetBackingStore().Set("policies", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProjectExclusions sets the project-exclusions property value. The projectExclusions property
 func (m *PolicySets_relationships) SetProjectExclusions(value ProjectsHasManyable) {
-	m.projectExclusions = value
+	err := m.GetBackingStore().Set("projectExclusions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProjects sets the projects property value. The projects property
 func (m *PolicySets_relationships) SetProjects(value ProjectsHasManyable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackExclusions sets the stack-exclusions property value. The stackExclusions property
 func (m *PolicySets_relationships) SetStackExclusions(value StacksHasManyable) {
-	m.stackExclusions = value
+	err := m.GetBackingStore().Set("stackExclusions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStacks sets the stacks property value. The stacks property
 func (m *PolicySets_relationships) SetStacks(value StacksHasManyable) {
-	m.stacks = value
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceExclusions sets the workspace-exclusions property value. The workspaceExclusions property
 func (m *PolicySets_relationships) SetWorkspaceExclusions(value WorkspacesHasManyable) {
-	m.workspaceExclusions = value
+	err := m.GetBackingStore().Set("workspaceExclusions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaces sets the workspaces property value. The workspaces property
 func (m *PolicySets_relationships) SetWorkspaces(value WorkspacesHasManyable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicySets_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCurrentVersion() PolicySetVersionsHasOneable
 	GetNewestVersion() PolicySetVersionsHasOneable
 	GetOrganization() OrganizationsHasOneable
@@ -357,6 +463,7 @@ type PolicySets_relationshipsable interface {
 	GetStacks() StacksHasManyable
 	GetWorkspaceExclusions() WorkspacesHasManyable
 	GetWorkspaces() WorkspacesHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCurrentVersion(value PolicySetVersionsHasOneable)
 	SetNewestVersion(value PolicySetVersionsHasOneable)
 	SetOrganization(value OrganizationsHasOneable)

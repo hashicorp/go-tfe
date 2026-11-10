@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Vars_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The configurable property
-	configurable ConfigurableHasOneable
-	// The overwriter property
-	overwriter VarsHasOneable
-	// The overwritten property
-	overwritten VarsHasManyable
-	// The varset property
-	varset VarsetsHasOneable
-	// The workspace property
-	workspace WorkspacesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewVars_relationships instantiates a new Vars_relationships and sets the default values.
 func NewVars_relationships() *Vars_relationships {
 	m := &Vars_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,13 +30,34 @@ func CreateVars_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Vars_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Vars_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetConfigurable gets the configurable property value. The configurable property
 // returns a ConfigurableHasOneable when successful
 func (m *Vars_relationships) GetConfigurable() ConfigurableHasOneable {
-	return m.configurable
+	val, err := m.GetBackingStore().Get("configurable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurableHasOneable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -107,25 +120,53 @@ func (m *Vars_relationships) GetFieldDeserializers() map[string]func(i878a80d233
 // GetOverwriter gets the overwriter property value. The overwriter property
 // returns a VarsHasOneable when successful
 func (m *Vars_relationships) GetOverwriter() VarsHasOneable {
-	return m.overwriter
+	val, err := m.GetBackingStore().Get("overwriter")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VarsHasOneable)
+	}
+	return nil
 }
 
 // GetOverwritten gets the overwritten property value. The overwritten property
 // returns a VarsHasManyable when successful
 func (m *Vars_relationships) GetOverwritten() VarsHasManyable {
-	return m.overwritten
+	val, err := m.GetBackingStore().Get("overwritten")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VarsHasManyable)
+	}
+	return nil
 }
 
 // GetVarset gets the varset property value. The varset property
 // returns a VarsetsHasOneable when successful
 func (m *Vars_relationships) GetVarset() VarsetsHasOneable {
-	return m.varset
+	val, err := m.GetBackingStore().Get("varset")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VarsetsHasOneable)
+	}
+	return nil
 }
 
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
 func (m *Vars_relationships) GetWorkspace() WorkspacesHasOneable {
-	return m.workspace
+	val, err := m.GetBackingStore().Get("workspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *Vars_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Vars_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Vars_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetConfigurable sets the configurable property value. The configurable property
 func (m *Vars_relationships) SetConfigurable(value ConfigurableHasOneable) {
-	m.configurable = value
+	err := m.GetBackingStore().Set("configurable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOverwriter sets the overwriter property value. The overwriter property
 func (m *Vars_relationships) SetOverwriter(value VarsHasOneable) {
-	m.overwriter = value
+	err := m.GetBackingStore().Set("overwriter", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOverwritten sets the overwritten property value. The overwritten property
 func (m *Vars_relationships) SetOverwritten(value VarsHasManyable) {
-	m.overwritten = value
+	err := m.GetBackingStore().Set("overwritten", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVarset sets the varset property value. The varset property
 func (m *Vars_relationships) SetVarset(value VarsetsHasOneable) {
-	m.varset = value
+	err := m.GetBackingStore().Set("varset", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspace sets the workspace property value. The workspace property
 func (m *Vars_relationships) SetWorkspace(value WorkspacesHasOneable) {
-	m.workspace = value
+	err := m.GetBackingStore().Set("workspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Vars_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurable() ConfigurableHasOneable
 	GetOverwriter() VarsHasOneable
 	GetOverwritten() VarsHasManyable
 	GetVarset() VarsetsHasOneable
 	GetWorkspace() WorkspacesHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurable(value ConfigurableHasOneable)
 	SetOverwriter(value VarsHasOneable)
 	SetOverwritten(value VarsHasManyable)

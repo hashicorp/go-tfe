@@ -5,37 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Policies_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Text describing the policy's purpose. Supports Markdown.
-	description *string
-	// DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
-	enforce []Policies_attributes_enforceable
-	// The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
-	enforcementLevel *Policies_attributes_enforcementLevel
-	// The policy-as-code framework for the policy.
-	kind *Policies_attributes_kind
-	// The name of the policy.
-	name *string
-	// Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
-	ootbUpdate Policies_attributes_ootbUpdateable
-	// The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
-	origin *Policies_attributes_origin
-	// The number of policy sets that include this policy.
-	policySetCount *int32
-	// The OPA query to run. Only present for OPA policies.
-	query *string
-	// The time of the most recent policy code upload.
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicies_attributes instantiates a new Policies_attributes and sets the default values.
 func NewPolicies_attributes() *Policies_attributes {
 	m := &Policies_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -49,25 +31,60 @@ func CreatePolicies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Policies_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Policies_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDescription gets the description property value. Text describing the policy's purpose. Supports Markdown.
 // returns a *string when successful
 func (m *Policies_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEnforce gets the enforce property value. DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
 // returns a []Policies_attributes_enforceable when successful
 func (m *Policies_attributes) GetEnforce() []Policies_attributes_enforceable {
-	return m.enforce
+	val, err := m.GetBackingStore().Get("enforce")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Policies_attributes_enforceable)
+	}
+	return nil
 }
 
 // GetEnforcementLevel gets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 // returns a *Policies_attributes_enforcementLevel when successful
 func (m *Policies_attributes) GetEnforcementLevel() *Policies_attributes_enforcementLevel {
-	return m.enforcementLevel
+	val, err := m.GetBackingStore().Get("enforcementLevel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Policies_attributes_enforcementLevel)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -186,43 +203,92 @@ func (m *Policies_attributes) GetFieldDeserializers() map[string]func(i878a80d23
 // GetKind gets the kind property value. The policy-as-code framework for the policy.
 // returns a *Policies_attributes_kind when successful
 func (m *Policies_attributes) GetKind() *Policies_attributes_kind {
-	return m.kind
+	val, err := m.GetBackingStore().Get("kind")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Policies_attributes_kind)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name of the policy.
 // returns a *string when successful
 func (m *Policies_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOotbUpdate gets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
 // returns a Policies_attributes_ootbUpdateable when successful
 func (m *Policies_attributes) GetOotbUpdate() Policies_attributes_ootbUpdateable {
-	return m.ootbUpdate
+	val, err := m.GetBackingStore().Get("ootbUpdate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Policies_attributes_ootbUpdateable)
+	}
+	return nil
 }
 
 // GetOrigin gets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
 // returns a *Policies_attributes_origin when successful
 func (m *Policies_attributes) GetOrigin() *Policies_attributes_origin {
-	return m.origin
+	val, err := m.GetBackingStore().Get("origin")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Policies_attributes_origin)
+	}
+	return nil
 }
 
 // GetPolicySetCount gets the policy-set-count property value. The number of policy sets that include this policy.
 // returns a *int32 when successful
 func (m *Policies_attributes) GetPolicySetCount() *int32 {
-	return m.policySetCount
+	val, err := m.GetBackingStore().Get("policySetCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetQuery gets the query property value. The OPA query to run. Only present for OPA policies.
 // returns a *string when successful
 func (m *Policies_attributes) GetQuery() *string {
-	return m.query
+	val, err := m.GetBackingStore().Get("query")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The time of the most recent policy code upload.
 // returns a *Time when successful
 func (m *Policies_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -282,62 +348,102 @@ func (m *Policies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Policies_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Policies_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDescription sets the description property value. Text describing the policy's purpose. Supports Markdown.
 func (m *Policies_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnforce sets the enforce property value. DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
 func (m *Policies_attributes) SetEnforce(value []Policies_attributes_enforceable) {
-	m.enforce = value
+	err := m.GetBackingStore().Set("enforce", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnforcementLevel sets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 func (m *Policies_attributes) SetEnforcementLevel(value *Policies_attributes_enforcementLevel) {
-	m.enforcementLevel = value
+	err := m.GetBackingStore().Set("enforcementLevel", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetKind sets the kind property value. The policy-as-code framework for the policy.
 func (m *Policies_attributes) SetKind(value *Policies_attributes_kind) {
-	m.kind = value
+	err := m.GetBackingStore().Set("kind", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the policy.
 func (m *Policies_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOotbUpdate sets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
 func (m *Policies_attributes) SetOotbUpdate(value Policies_attributes_ootbUpdateable) {
-	m.ootbUpdate = value
+	err := m.GetBackingStore().Set("ootbUpdate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrigin sets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
 func (m *Policies_attributes) SetOrigin(value *Policies_attributes_origin) {
-	m.origin = value
+	err := m.GetBackingStore().Set("origin", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetCount sets the policy-set-count property value. The number of policy sets that include this policy.
 func (m *Policies_attributes) SetPolicySetCount(value *int32) {
-	m.policySetCount = value
+	err := m.GetBackingStore().Set("policySetCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetQuery sets the query property value. The OPA query to run. Only present for OPA policies.
 func (m *Policies_attributes) SetQuery(value *string) {
-	m.query = value
+	err := m.GetBackingStore().Set("query", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The time of the most recent policy code upload.
 func (m *Policies_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Policies_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDescription() *string
 	GetEnforce() []Policies_attributes_enforceable
 	GetEnforcementLevel() *Policies_attributes_enforcementLevel
@@ -348,6 +454,7 @@ type Policies_attributesable interface {
 	GetPolicySetCount() *int32
 	GetQuery() *string
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDescription(value *string)
 	SetEnforce(value []Policies_attributes_enforceable)
 	SetEnforcementLevel(value *Policies_attributes_enforcementLevel)

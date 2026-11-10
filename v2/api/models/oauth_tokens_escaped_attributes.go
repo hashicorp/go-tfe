@@ -5,25 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type OauthTokens_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The hasSshKey property
-	hasSshKey *bool
-	// The serviceProviderUser property
-	serviceProviderUser *string
-	// The SSH private key. Write-only; use has-ssh-key to check if a key has been set.
-	sshKey *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOauthTokens_attributes instantiates a new OauthTokens_attributes and sets the default values.
 func NewOauthTokens_attributes() *OauthTokens_attributes {
 	m := &OauthTokens_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -37,13 +31,34 @@ func CreateOauthTokens_attributesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *OauthTokens_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OauthTokens_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *OauthTokens_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -96,19 +111,40 @@ func (m *OauthTokens_attributes) GetFieldDeserializers() map[string]func(i878a80
 // GetHasSshKey gets the has-ssh-key property value. The hasSshKey property
 // returns a *bool when successful
 func (m *OauthTokens_attributes) GetHasSshKey() *bool {
-	return m.hasSshKey
+	val, err := m.GetBackingStore().Get("hasSshKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetServiceProviderUser gets the service-provider-user property value. The serviceProviderUser property
 // returns a *string when successful
 func (m *OauthTokens_attributes) GetServiceProviderUser() *string {
-	return m.serviceProviderUser
+	val, err := m.GetBackingStore().Get("serviceProviderUser")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSshKey gets the ssh-key property value. The SSH private key. Write-only; use has-ssh-key to check if a key has been set.
 // returns a *string when successful
 func (m *OauthTokens_attributes) GetSshKey() *string {
-	return m.sshKey
+	val, err := m.GetBackingStore().Get("sshKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -130,36 +166,59 @@ func (m *OauthTokens_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *OauthTokens_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OauthTokens_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *OauthTokens_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHasSshKey sets the has-ssh-key property value. The hasSshKey property
 func (m *OauthTokens_attributes) SetHasSshKey(value *bool) {
-	m.hasSshKey = value
+	err := m.GetBackingStore().Set("hasSshKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetServiceProviderUser sets the service-provider-user property value. The serviceProviderUser property
 func (m *OauthTokens_attributes) SetServiceProviderUser(value *string) {
-	m.serviceProviderUser = value
+	err := m.GetBackingStore().Set("serviceProviderUser", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSshKey sets the ssh-key property value. The SSH private key. Write-only; use has-ssh-key to check if a key has been set.
 func (m *OauthTokens_attributes) SetSshKey(value *string) {
-	m.sshKey = value
+	err := m.GetBackingStore().Set("sshKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OauthTokens_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetHasSshKey() *bool
 	GetServiceProviderUser() *string
 	GetSshKey() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetHasSshKey(value *bool)
 	SetServiceProviderUser(value *string)

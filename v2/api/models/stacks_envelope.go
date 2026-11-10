@@ -5,33 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type StacksEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data Stacksable
-	// The included property
-	included []StacksEnvelope_StacksEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// StacksEnvelope_StacksEnvelope_included composed type wrapper for classes Organizationsable, Projectsable, StackConfigurationsable, StackDiagnosticsable
+// StacksEnvelope_StacksEnvelope_included composed type wrapper for classes Organizations, Projects, StackConfigurations, StackDiagnostics
 type StacksEnvelope_StacksEnvelope_included struct {
-	// Composed type representation for type Organizationsable
-	organizations Organizationsable
-	// Composed type representation for type Projectsable
-	projects Projectsable
-	// Composed type representation for type StackConfigurationsable
-	stackConfigurations StackConfigurationsable
-	// Composed type representation for type StackDiagnosticsable
-	stackDiagnostics StackDiagnosticsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStacksEnvelope_StacksEnvelope_included instantiates a new StacksEnvelope_StacksEnvelope_included and sets the default values.
 func NewStacksEnvelope_StacksEnvelope_included() *StacksEnvelope_StacksEnvelope_included {
 	m := &StacksEnvelope_StacksEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -65,6 +57,12 @@ func CreateStacksEnvelope_StacksEnvelope_includedFromDiscriminatorValue(parseNod
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StacksEnvelope_StacksEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *StacksEnvelope_StacksEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -86,28 +84,56 @@ func (m *StacksEnvelope_StacksEnvelope_included) GetIsComposedType() bool {
 	return true
 }
 
-// GetOrganizations gets the organizations property value. Composed type representation for type Organizationsable
+// GetOrganizations gets the organizations property value. Composed type representation for type Organizations
 // returns a Organizationsable when successful
 func (m *StacksEnvelope_StacksEnvelope_included) GetOrganizations() Organizationsable {
-	return m.organizations
+	val, err := m.GetBackingStore().Get("organizations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Organizationsable)
+	}
+	return nil
 }
 
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
 func (m *StacksEnvelope_StacksEnvelope_included) GetProjects() Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
 
-// GetStackConfigurations gets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+// GetStackConfigurations gets the stackConfigurations property value. Composed type representation for type StackConfigurations
 // returns a StackConfigurationsable when successful
 func (m *StacksEnvelope_StacksEnvelope_included) GetStackConfigurations() StackConfigurationsable {
-	return m.stackConfigurations
+	val, err := m.GetBackingStore().Get("stackConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsable)
+	}
+	return nil
 }
 
-// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
+// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type StackDiagnostics
 // returns a StackDiagnosticsable when successful
 func (m *StacksEnvelope_StacksEnvelope_included) GetStackDiagnostics() StackDiagnosticsable {
-	return m.stackDiagnostics
+	val, err := m.GetBackingStore().Get("stackDiagnostics")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDiagnosticsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,32 +162,52 @@ func (m *StacksEnvelope_StacksEnvelope_included) Serialize(writer i878a80d2330e8
 	return nil
 }
 
-// SetOrganizations sets the organizations property value. Composed type representation for type Organizationsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StacksEnvelope_StacksEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetOrganizations sets the organizations property value. Composed type representation for type Organizations
 func (m *StacksEnvelope_StacksEnvelope_included) SetOrganizations(value Organizationsable) {
-	m.organizations = value
+	err := m.GetBackingStore().Set("organizations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
+// SetProjects sets the projects property value. Composed type representation for type Projects
 func (m *StacksEnvelope_StacksEnvelope_included) SetProjects(value Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackConfigurations sets the stackConfigurations property value. Composed type representation for type StackConfigurationsable
+// SetStackConfigurations sets the stackConfigurations property value. Composed type representation for type StackConfigurations
 func (m *StacksEnvelope_StacksEnvelope_included) SetStackConfigurations(value StackConfigurationsable) {
-	m.stackConfigurations = value
+	err := m.GetBackingStore().Set("stackConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
+// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type StackDiagnostics
 func (m *StacksEnvelope_StacksEnvelope_included) SetStackDiagnostics(value StackDiagnosticsable) {
-	m.stackDiagnostics = value
+	err := m.GetBackingStore().Set("stackDiagnostics", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StacksEnvelope_StacksEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetOrganizations() Organizationsable
 	GetProjects() Projectsable
 	GetStackConfigurations() StackConfigurationsable
 	GetStackDiagnostics() StackDiagnosticsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetOrganizations(value Organizationsable)
 	SetProjects(value Projectsable)
 	SetStackConfigurations(value StackConfigurationsable)
@@ -171,6 +217,7 @@ type StacksEnvelope_StacksEnvelope_includedable interface {
 // NewStacksEnvelope instantiates a new StacksEnvelope and sets the default values.
 func NewStacksEnvelope() *StacksEnvelope {
 	m := &StacksEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -184,13 +231,34 @@ func CreateStacksEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d268963
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StacksEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StacksEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a Stacksable when successful
 func (m *StacksEnvelope) GetData() Stacksable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacksable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -229,7 +297,14 @@ func (m *StacksEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89
 // GetIncluded gets the included property value. The included property
 // returns a []StacksEnvelope_StacksEnvelope_includedable when successful
 func (m *StacksEnvelope) GetIncluded() []StacksEnvelope_StacksEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StacksEnvelope_StacksEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -263,24 +338,41 @@ func (m *StacksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StacksEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StacksEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *StacksEnvelope) SetData(value Stacksable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *StacksEnvelope) SetIncluded(value []StacksEnvelope_StacksEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StacksEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() Stacksable
 	GetIncluded() []StacksEnvelope_StacksEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value Stacksable)
 	SetIncluded(value []StacksEnvelope_StacksEnvelope_includedable)
 }

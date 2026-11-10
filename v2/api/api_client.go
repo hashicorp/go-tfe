@@ -79,6 +79,7 @@ import (
 	i8634c5f786b47af458e28ca56f5ed915571114201f1cfaa7d512d8d2947f4a68 "github.com/hashicorp/go-tfe/v2/api/workspacetransfers"
 	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i4bcdc892e61ac17e2afc10b5e2b536b29f4fd6c1ad30f4a5a68df47495db3347 "github.com/microsoft/kiota-serialization-form-go"
 	i25911dc319edd61cbac496af7eab5ef20b6069a42515e22ec6a9bc97bf598488 "github.com/microsoft/kiota-serialization-json-go"
 	i56887720f41ac882814261620b1c8459c4a992a0207af547c4453dd39fabc426 "github.com/microsoft/kiota-serialization-multipart-go"
@@ -175,7 +176,7 @@ func (m *ApiClient) ConfigurationVersions() *i390d7d3aa2f956072121cd387d359478b4
 }
 
 // NewApiClient instantiates a new ApiClient and sets the default values.
-func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ApiClient {
+func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter, backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactory) *ApiClient {
 	m := &ApiClient{
 		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}", map[string]string{}),
 	}
@@ -204,6 +205,7 @@ func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa52901
 		m.BaseRequestBuilder.RequestAdapter.SetBaseUrl("https://app.terraform.io/api/v2")
 	}
 	m.BaseRequestBuilder.PathParameters["baseurl"] = m.BaseRequestBuilder.RequestAdapter.GetBaseUrl()
+	m.BaseRequestBuilder.RequestAdapter.EnableBackingStore(backingStore)
 	return m
 }
 

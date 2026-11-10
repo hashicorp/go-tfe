@@ -5,62 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Users_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The authMethod property
-	authMethod *string
-	// TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
-	avatarColorIndex *int32
-	// Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
-	avatarUrl *string
-	// Human-readable display name for the user.
-	displayName *string
-	// The email property
-	email *string
-	// The enterpriseSupport property
-	enterpriseSupport *bool
-	// The hasGitHubAppToken property
-	hasGitHubAppToken *bool
-	// The hasLinkedHcp property
-	hasLinkedHcp *bool
-	// TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
-	initials *string
-	// The isAdmin property
-	isAdmin *bool
-	// The isConfirmed property
-	isConfirmed *bool
-	// Indicates whether this user is a synthetic user representing a team or organization.
-	isServiceAccount *bool
-	// Deprecated. Use is-admin.
-	isSiteAdmin *bool
-	// The isSsoLogin property
-	isSsoLogin *bool
-	// The isSudo property
-	isSudo *bool
-	// The isUnified property
-	isUnified *bool
-	// The password property
-	password *string
-	// The permissions property
-	permissions Users_attributes_permissionsable
-	// The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
-	preferredLanguage *string
-	// The twoFactor property
-	twoFactor Users_attributes_twoFactorable
-	// The unconfirmedEmail property
-	unconfirmedEmail *string
-	// The username property
-	username *string
-	// The v2Only property
-	v2Only *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewUsers_attributes instantiates a new Users_attributes and sets the default values.
 func NewUsers_attributes() *Users_attributes {
 	m := &Users_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -74,43 +30,99 @@ func CreateUsers_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2689
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Users_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAuthMethod gets the auth-method property value. The authMethod property
 // returns a *string when successful
 func (m *Users_attributes) GetAuthMethod() *string {
-	return m.authMethod
+	val, err := m.GetBackingStore().Get("authMethod")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAvatarColorIndex gets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
 // returns a *int32 when successful
 func (m *Users_attributes) GetAvatarColorIndex() *int32 {
-	return m.avatarColorIndex
+	val, err := m.GetBackingStore().Get("avatarColorIndex")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAvatarUrl gets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
 // returns a *string when successful
 func (m *Users_attributes) GetAvatarUrl() *string {
-	return m.avatarUrl
+	val, err := m.GetBackingStore().Get("avatarUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Users_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDisplayName gets the display-name property value. Human-readable display name for the user.
 // returns a *string when successful
 func (m *Users_attributes) GetDisplayName() *string {
-	return m.displayName
+	val, err := m.GetBackingStore().Get("displayName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
 func (m *Users_attributes) GetEmail() *string {
-	return m.email
+	val, err := m.GetBackingStore().Get("email")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEnterpriseSupport gets the enterprise-support property value. The enterpriseSupport property
 // returns a *bool when successful
 func (m *Users_attributes) GetEnterpriseSupport() *bool {
-	return m.enterpriseSupport
+	val, err := m.GetBackingStore().Get("enterpriseSupport")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -353,103 +365,222 @@ func (m *Users_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e
 // GetHasGitHubAppToken gets the has-git-hub-app-token property value. The hasGitHubAppToken property
 // returns a *bool when successful
 func (m *Users_attributes) GetHasGitHubAppToken() *bool {
-	return m.hasGitHubAppToken
+	val, err := m.GetBackingStore().Get("hasGitHubAppToken")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetHasLinkedHcp gets the has-linked-hcp property value. The hasLinkedHcp property
 // returns a *bool when successful
 func (m *Users_attributes) GetHasLinkedHcp() *bool {
-	return m.hasLinkedHcp
+	val, err := m.GetBackingStore().Get("hasLinkedHcp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetInitials gets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
 // returns a *string when successful
 func (m *Users_attributes) GetInitials() *string {
-	return m.initials
+	val, err := m.GetBackingStore().Get("initials")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsAdmin gets the is-admin property value. The isAdmin property
 // returns a *bool when successful
 func (m *Users_attributes) GetIsAdmin() *bool {
-	return m.isAdmin
+	val, err := m.GetBackingStore().Get("isAdmin")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsConfirmed gets the is-confirmed property value. The isConfirmed property
 // returns a *bool when successful
 func (m *Users_attributes) GetIsConfirmed() *bool {
-	return m.isConfirmed
+	val, err := m.GetBackingStore().Get("isConfirmed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsServiceAccount gets the is-service-account property value. Indicates whether this user is a synthetic user representing a team or organization.
 // returns a *bool when successful
 func (m *Users_attributes) GetIsServiceAccount() *bool {
-	return m.isServiceAccount
+	val, err := m.GetBackingStore().Get("isServiceAccount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsSiteAdmin gets the is-site-admin property value. Deprecated. Use is-admin.
 // returns a *bool when successful
 func (m *Users_attributes) GetIsSiteAdmin() *bool {
-	return m.isSiteAdmin
+	val, err := m.GetBackingStore().Get("isSiteAdmin")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsSsoLogin gets the is-sso-login property value. The isSsoLogin property
 // returns a *bool when successful
 func (m *Users_attributes) GetIsSsoLogin() *bool {
-	return m.isSsoLogin
+	val, err := m.GetBackingStore().Get("isSsoLogin")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsSudo gets the is-sudo property value. The isSudo property
 // returns a *bool when successful
 func (m *Users_attributes) GetIsSudo() *bool {
-	return m.isSudo
+	val, err := m.GetBackingStore().Get("isSudo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsUnified gets the is-unified property value. The isUnified property
 // returns a *bool when successful
 func (m *Users_attributes) GetIsUnified() *bool {
-	return m.isUnified
+	val, err := m.GetBackingStore().Get("isUnified")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPassword gets the password property value. The password property
 // returns a *string when successful
 func (m *Users_attributes) GetPassword() *string {
-	return m.password
+	val, err := m.GetBackingStore().Get("password")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Users_attributes_permissionsable when successful
 func (m *Users_attributes) GetPermissions() Users_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Users_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPreferredLanguage gets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
 // returns a *string when successful
 func (m *Users_attributes) GetPreferredLanguage() *string {
-	return m.preferredLanguage
+	val, err := m.GetBackingStore().Get("preferredLanguage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTwoFactor gets the two-factor property value. The twoFactor property
 // returns a Users_attributes_twoFactorable when successful
 func (m *Users_attributes) GetTwoFactor() Users_attributes_twoFactorable {
-	return m.twoFactor
+	val, err := m.GetBackingStore().Get("twoFactor")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Users_attributes_twoFactorable)
+	}
+	return nil
 }
 
 // GetUnconfirmedEmail gets the unconfirmed-email property value. The unconfirmedEmail property
 // returns a *string when successful
 func (m *Users_attributes) GetUnconfirmedEmail() *string {
-	return m.unconfirmedEmail
+	val, err := m.GetBackingStore().Get("unconfirmedEmail")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUsername gets the username property value. The username property
 // returns a *string when successful
 func (m *Users_attributes) GetUsername() *string {
-	return m.username
+	val, err := m.GetBackingStore().Get("username")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetV2Only gets the v2-only property value. The v2Only property
 // returns a *bool when successful
 func (m *Users_attributes) GetV2Only() *bool {
-	return m.v2Only
+	val, err := m.GetBackingStore().Get("v2Only")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -585,130 +716,209 @@ func (m *Users_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Users_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAuthMethod sets the auth-method property value. The authMethod property
 func (m *Users_attributes) SetAuthMethod(value *string) {
-	m.authMethod = value
+	err := m.GetBackingStore().Set("authMethod", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAvatarColorIndex sets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
 func (m *Users_attributes) SetAvatarColorIndex(value *int32) {
-	m.avatarColorIndex = value
+	err := m.GetBackingStore().Set("avatarColorIndex", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAvatarUrl sets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
 func (m *Users_attributes) SetAvatarUrl(value *string) {
-	m.avatarUrl = value
+	err := m.GetBackingStore().Set("avatarUrl", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Users_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDisplayName sets the display-name property value. Human-readable display name for the user.
 func (m *Users_attributes) SetDisplayName(value *string) {
-	m.displayName = value
+	err := m.GetBackingStore().Set("displayName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEmail sets the email property value. The email property
 func (m *Users_attributes) SetEmail(value *string) {
-	m.email = value
+	err := m.GetBackingStore().Set("email", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnterpriseSupport sets the enterprise-support property value. The enterpriseSupport property
 func (m *Users_attributes) SetEnterpriseSupport(value *bool) {
-	m.enterpriseSupport = value
+	err := m.GetBackingStore().Set("enterpriseSupport", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHasGitHubAppToken sets the has-git-hub-app-token property value. The hasGitHubAppToken property
 func (m *Users_attributes) SetHasGitHubAppToken(value *bool) {
-	m.hasGitHubAppToken = value
+	err := m.GetBackingStore().Set("hasGitHubAppToken", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHasLinkedHcp sets the has-linked-hcp property value. The hasLinkedHcp property
 func (m *Users_attributes) SetHasLinkedHcp(value *bool) {
-	m.hasLinkedHcp = value
+	err := m.GetBackingStore().Set("hasLinkedHcp", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInitials sets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
 func (m *Users_attributes) SetInitials(value *string) {
-	m.initials = value
+	err := m.GetBackingStore().Set("initials", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsAdmin sets the is-admin property value. The isAdmin property
 func (m *Users_attributes) SetIsAdmin(value *bool) {
-	m.isAdmin = value
+	err := m.GetBackingStore().Set("isAdmin", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsConfirmed sets the is-confirmed property value. The isConfirmed property
 func (m *Users_attributes) SetIsConfirmed(value *bool) {
-	m.isConfirmed = value
+	err := m.GetBackingStore().Set("isConfirmed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsServiceAccount sets the is-service-account property value. Indicates whether this user is a synthetic user representing a team or organization.
 func (m *Users_attributes) SetIsServiceAccount(value *bool) {
-	m.isServiceAccount = value
+	err := m.GetBackingStore().Set("isServiceAccount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsSiteAdmin sets the is-site-admin property value. Deprecated. Use is-admin.
 func (m *Users_attributes) SetIsSiteAdmin(value *bool) {
-	m.isSiteAdmin = value
+	err := m.GetBackingStore().Set("isSiteAdmin", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsSsoLogin sets the is-sso-login property value. The isSsoLogin property
 func (m *Users_attributes) SetIsSsoLogin(value *bool) {
-	m.isSsoLogin = value
+	err := m.GetBackingStore().Set("isSsoLogin", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsSudo sets the is-sudo property value. The isSudo property
 func (m *Users_attributes) SetIsSudo(value *bool) {
-	m.isSudo = value
+	err := m.GetBackingStore().Set("isSudo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsUnified sets the is-unified property value. The isUnified property
 func (m *Users_attributes) SetIsUnified(value *bool) {
-	m.isUnified = value
+	err := m.GetBackingStore().Set("isUnified", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPassword sets the password property value. The password property
 func (m *Users_attributes) SetPassword(value *string) {
-	m.password = value
+	err := m.GetBackingStore().Set("password", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Users_attributes) SetPermissions(value Users_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreferredLanguage sets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
 func (m *Users_attributes) SetPreferredLanguage(value *string) {
-	m.preferredLanguage = value
+	err := m.GetBackingStore().Set("preferredLanguage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTwoFactor sets the two-factor property value. The twoFactor property
 func (m *Users_attributes) SetTwoFactor(value Users_attributes_twoFactorable) {
-	m.twoFactor = value
+	err := m.GetBackingStore().Set("twoFactor", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUnconfirmedEmail sets the unconfirmed-email property value. The unconfirmedEmail property
 func (m *Users_attributes) SetUnconfirmedEmail(value *string) {
-	m.unconfirmedEmail = value
+	err := m.GetBackingStore().Set("unconfirmedEmail", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUsername sets the username property value. The username property
 func (m *Users_attributes) SetUsername(value *string) {
-	m.username = value
+	err := m.GetBackingStore().Set("username", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetV2Only sets the v2-only property value. The v2Only property
 func (m *Users_attributes) SetV2Only(value *bool) {
-	m.v2Only = value
+	err := m.GetBackingStore().Set("v2Only", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Users_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAuthMethod() *string
 	GetAvatarColorIndex() *int32
 	GetAvatarUrl() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDisplayName() *string
 	GetEmail() *string
 	GetEnterpriseSupport() *bool
@@ -732,6 +942,7 @@ type Users_attributesable interface {
 	SetAuthMethod(value *string)
 	SetAvatarColorIndex(value *int32)
 	SetAvatarUrl(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDisplayName(value *string)
 	SetEmail(value *string)
 	SetEnterpriseSupport(value *bool)

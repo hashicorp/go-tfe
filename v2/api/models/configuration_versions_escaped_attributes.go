@@ -5,34 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ConfigurationVersions_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The autoQueueRuns property
-	autoQueueRuns *bool
-	// The error property
-	error *string
-	// The errorMessage property
-	errorMessage *string
-	// The provisional property
-	provisional *bool
-	// The source property
-	source *string
-	// The speculative property
-	speculative *bool
-	// The status property
-	status *ConfigurationVersions_attributes_status
-	// The statusTimestamps property
-	statusTimestamps ConfigurationVersions_attributes_statusTimestampsable
-	// The uploadUrl property
-	uploadUrl *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewConfigurationVersions_attributes instantiates a new ConfigurationVersions_attributes and sets the default values.
 func NewConfigurationVersions_attributes() *ConfigurationVersions_attributes {
 	m := &ConfigurationVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -46,25 +30,60 @@ func CreateConfigurationVersions_attributesFromDiscriminatorValue(parseNode i878
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ConfigurationVersions_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAutoQueueRuns gets the auto-queue-runs property value. The autoQueueRuns property
 // returns a *bool when successful
 func (m *ConfigurationVersions_attributes) GetAutoQueueRuns() *bool {
-	return m.autoQueueRuns
+	val, err := m.GetBackingStore().Get("autoQueueRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ConfigurationVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetError gets the error property value. The error property
 // returns a *string when successful
 func (m *ConfigurationVersions_attributes) GetError() *string {
-	return m.error
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetErrorMessage gets the error-message property value. The errorMessage property
 // returns a *string when successful
 func (m *ConfigurationVersions_attributes) GetErrorMessage() *string {
-	return m.errorMessage
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -167,37 +186,79 @@ func (m *ConfigurationVersions_attributes) GetFieldDeserializers() map[string]fu
 // GetProvisional gets the provisional property value. The provisional property
 // returns a *bool when successful
 func (m *ConfigurationVersions_attributes) GetProvisional() *bool {
-	return m.provisional
+	val, err := m.GetBackingStore().Get("provisional")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSource gets the source property value. The source property
 // returns a *string when successful
 func (m *ConfigurationVersions_attributes) GetSource() *string {
-	return m.source
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSpeculative gets the speculative property value. The speculative property
 // returns a *bool when successful
 func (m *ConfigurationVersions_attributes) GetSpeculative() *bool {
-	return m.speculative
+	val, err := m.GetBackingStore().Get("speculative")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *ConfigurationVersions_attributes_status when successful
 func (m *ConfigurationVersions_attributes) GetStatus() *ConfigurationVersions_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*ConfigurationVersions_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a ConfigurationVersions_attributes_statusTimestampsable when successful
 func (m *ConfigurationVersions_attributes) GetStatusTimestamps() ConfigurationVersions_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersions_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetUploadUrl gets the upload-url property value. The uploadUrl property
 // returns a *string when successful
 func (m *ConfigurationVersions_attributes) GetUploadUrl() *string {
-	return m.uploadUrl
+	val, err := m.GetBackingStore().Get("uploadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -262,58 +323,95 @@ func (m *ConfigurationVersions_attributes) Serialize(writer i878a80d2330e89d2689
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ConfigurationVersions_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoQueueRuns sets the auto-queue-runs property value. The autoQueueRuns property
 func (m *ConfigurationVersions_attributes) SetAutoQueueRuns(value *bool) {
-	m.autoQueueRuns = value
+	err := m.GetBackingStore().Set("autoQueueRuns", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ConfigurationVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetError sets the error property value. The error property
 func (m *ConfigurationVersions_attributes) SetError(value *string) {
-	m.error = value
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetErrorMessage sets the error-message property value. The errorMessage property
 func (m *ConfigurationVersions_attributes) SetErrorMessage(value *string) {
-	m.errorMessage = value
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProvisional sets the provisional property value. The provisional property
 func (m *ConfigurationVersions_attributes) SetProvisional(value *bool) {
-	m.provisional = value
+	err := m.GetBackingStore().Set("provisional", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSource sets the source property value. The source property
 func (m *ConfigurationVersions_attributes) SetSource(value *string) {
-	m.source = value
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSpeculative sets the speculative property value. The speculative property
 func (m *ConfigurationVersions_attributes) SetSpeculative(value *bool) {
-	m.speculative = value
+	err := m.GetBackingStore().Set("speculative", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *ConfigurationVersions_attributes) SetStatus(value *ConfigurationVersions_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *ConfigurationVersions_attributes) SetStatusTimestamps(value ConfigurationVersions_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUploadUrl sets the upload-url property value. The uploadUrl property
 func (m *ConfigurationVersions_attributes) SetUploadUrl(value *string) {
-	m.uploadUrl = value
+	err := m.GetBackingStore().Set("uploadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ConfigurationVersions_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAutoQueueRuns() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetError() *string
 	GetErrorMessage() *string
 	GetProvisional() *bool
@@ -323,6 +421,7 @@ type ConfigurationVersions_attributesable interface {
 	GetStatusTimestamps() ConfigurationVersions_attributes_statusTimestampsable
 	GetUploadUrl() *string
 	SetAutoQueueRuns(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetError(value *string)
 	SetErrorMessage(value *string)
 	SetProvisional(value *bool)

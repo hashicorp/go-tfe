@@ -5,27 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type WorkspaceTransferEvents_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The eventType property
-	eventType *WorkspaceTransferEvents_attributes_eventType
-	// The message property
-	message *string
-	// The operationName property
-	operationName *string
-	// The userId property
-	userId *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewWorkspaceTransferEvents_attributes instantiates a new WorkspaceTransferEvents_attributes and sets the default values.
 func NewWorkspaceTransferEvents_attributes() *WorkspaceTransferEvents_attributes {
 	m := &WorkspaceTransferEvents_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -39,19 +31,47 @@ func CreateWorkspaceTransferEvents_attributesFromDiscriminatorValue(parseNode i8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *WorkspaceTransferEvents_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceTransferEvents_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *WorkspaceTransferEvents_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetEventType gets the event-type property value. The eventType property
 // returns a *WorkspaceTransferEvents_attributes_eventType when successful
 func (m *WorkspaceTransferEvents_attributes) GetEventType() *WorkspaceTransferEvents_attributes_eventType {
-	return m.eventType
+	val, err := m.GetBackingStore().Get("eventType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransferEvents_attributes_eventType)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -114,19 +134,40 @@ func (m *WorkspaceTransferEvents_attributes) GetFieldDeserializers() map[string]
 // GetMessage gets the message property value. The message property
 // returns a *string when successful
 func (m *WorkspaceTransferEvents_attributes) GetMessage() *string {
-	return m.message
+	val, err := m.GetBackingStore().Get("message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOperationName gets the operation-name property value. The operationName property
 // returns a *string when successful
 func (m *WorkspaceTransferEvents_attributes) GetOperationName() *string {
-	return m.operationName
+	val, err := m.GetBackingStore().Get("operationName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUserId gets the user-id property value. The userId property
 // returns a *string when successful
 func (m *WorkspaceTransferEvents_attributes) GetUserId() *string {
-	return m.userId
+	val, err := m.GetBackingStore().Get("userId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -142,42 +183,68 @@ func (m *WorkspaceTransferEvents_attributes) Serialize(writer i878a80d2330e89d26
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *WorkspaceTransferEvents_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceTransferEvents_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *WorkspaceTransferEvents_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEventType sets the event-type property value. The eventType property
 func (m *WorkspaceTransferEvents_attributes) SetEventType(value *WorkspaceTransferEvents_attributes_eventType) {
-	m.eventType = value
+	err := m.GetBackingStore().Set("eventType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMessage sets the message property value. The message property
 func (m *WorkspaceTransferEvents_attributes) SetMessage(value *string) {
-	m.message = value
+	err := m.GetBackingStore().Set("message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOperationName sets the operation-name property value. The operationName property
 func (m *WorkspaceTransferEvents_attributes) SetOperationName(value *string) {
-	m.operationName = value
+	err := m.GetBackingStore().Set("operationName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUserId sets the user-id property value. The userId property
 func (m *WorkspaceTransferEvents_attributes) SetUserId(value *string) {
-	m.userId = value
+	err := m.GetBackingStore().Set("userId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type WorkspaceTransferEvents_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetEventType() *WorkspaceTransferEvents_attributes_eventType
 	GetMessage() *string
 	GetOperationName() *string
 	GetUserId() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetEventType(value *WorkspaceTransferEvents_attributes_eventType)
 	SetMessage(value *string)

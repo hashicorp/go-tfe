@@ -5,31 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type ConfigurationVersions_attributes_statusTimestamps struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The archivedAt property
-	archivedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The erroredAt property
-	erroredAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The fetchingAt property
-	fetchingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The permanentlyDeleteBackingDataAt property
-	permanentlyDeleteBackingDataAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The restoreBackingDataAt property
-	restoreBackingDataAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The softDeleteBackingDataAt property
-	softDeleteBackingDataAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The uploadedAt property
-	uploadedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewConfigurationVersions_attributes_statusTimestamps instantiates a new ConfigurationVersions_attributes_statusTimestamps and sets the default values.
 func NewConfigurationVersions_attributes_statusTimestamps() *ConfigurationVersions_attributes_statusTimestamps {
 	m := &ConfigurationVersions_attributes_statusTimestamps{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -43,25 +31,60 @@ func CreateConfigurationVersions_attributes_statusTimestampsFromDiscriminatorVal
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetArchivedAt gets the archived-at property value. The archivedAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetArchivedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.archivedAt
+	val, err := m.GetBackingStore().Get("archivedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ConfigurationVersions_attributes_statusTimestamps) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetErroredAt gets the errored-at property value. The erroredAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.erroredAt
+	val, err := m.GetBackingStore().Get("erroredAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFetchingAt gets the fetching-at property value. The fetchingAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetFetchingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.fetchingAt
+	val, err := m.GetBackingStore().Get("fetchingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -144,25 +167,53 @@ func (m *ConfigurationVersions_attributes_statusTimestamps) GetFieldDeserializer
 // GetPermanentlyDeleteBackingDataAt gets the permanently-delete-backing-data-at property value. The permanentlyDeleteBackingDataAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetPermanentlyDeleteBackingDataAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.permanentlyDeleteBackingDataAt
+	val, err := m.GetBackingStore().Get("permanentlyDeleteBackingDataAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetRestoreBackingDataAt gets the restore-backing-data-at property value. The restoreBackingDataAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetRestoreBackingDataAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.restoreBackingDataAt
+	val, err := m.GetBackingStore().Get("restoreBackingDataAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetSoftDeleteBackingDataAt gets the soft-delete-backing-data-at property value. The softDeleteBackingDataAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetSoftDeleteBackingDataAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.softDeleteBackingDataAt
+	val, err := m.GetBackingStore().Get("softDeleteBackingDataAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUploadedAt gets the uploaded-at property value. The uploadedAt property
 // returns a *Time when successful
 func (m *ConfigurationVersions_attributes_statusTimestamps) GetUploadedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.uploadedAt
+	val, err := m.GetBackingStore().Get("uploadedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -220,48 +271,79 @@ func (m *ConfigurationVersions_attributes_statusTimestamps) Serialize(writer i87
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetArchivedAt sets the archived-at property value. The archivedAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetArchivedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.archivedAt = value
+	err := m.GetBackingStore().Set("archivedAt", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ConfigurationVersions_attributes_statusTimestamps) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetErroredAt sets the errored-at property value. The erroredAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.erroredAt = value
+	err := m.GetBackingStore().Set("erroredAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFetchingAt sets the fetching-at property value. The fetchingAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetFetchingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.fetchingAt = value
+	err := m.GetBackingStore().Set("fetchingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermanentlyDeleteBackingDataAt sets the permanently-delete-backing-data-at property value. The permanentlyDeleteBackingDataAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetPermanentlyDeleteBackingDataAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.permanentlyDeleteBackingDataAt = value
+	err := m.GetBackingStore().Set("permanentlyDeleteBackingDataAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRestoreBackingDataAt sets the restore-backing-data-at property value. The restoreBackingDataAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetRestoreBackingDataAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.restoreBackingDataAt = value
+	err := m.GetBackingStore().Set("restoreBackingDataAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSoftDeleteBackingDataAt sets the soft-delete-backing-data-at property value. The softDeleteBackingDataAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetSoftDeleteBackingDataAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.softDeleteBackingDataAt = value
+	err := m.GetBackingStore().Set("softDeleteBackingDataAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUploadedAt sets the uploaded-at property value. The uploadedAt property
 func (m *ConfigurationVersions_attributes_statusTimestamps) SetUploadedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.uploadedAt = value
+	err := m.GetBackingStore().Set("uploadedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ConfigurationVersions_attributes_statusTimestampsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetArchivedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetFetchingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetPermanentlyDeleteBackingDataAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -269,6 +351,7 @@ type ConfigurationVersions_attributes_statusTimestampsable interface {
 	GetSoftDeleteBackingDataAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetUploadedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetArchivedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetFetchingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetPermanentlyDeleteBackingDataAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

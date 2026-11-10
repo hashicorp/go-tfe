@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type RegistryModules_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The noCodeModules property
-	noCodeModules Links_relatedable
-	// The organization property
-	organization Links_relatedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRegistryModules_relationships instantiates a new RegistryModules_relationships and sets the default values.
 func NewRegistryModules_relationships() *RegistryModules_relationships {
 	m := &RegistryModules_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateRegistryModules_relationshipsFromDiscriminatorValue(parseNode i878a80
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *RegistryModules_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RegistryModules_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *RegistryModules_relationships) GetFieldDeserializers() map[string]func(
 // GetNoCodeModules gets the no-code-modules property value. The noCodeModules property
 // returns a Links_relatedable when successful
 func (m *RegistryModules_relationships) GetNoCodeModules() Links_relatedable {
-	return m.noCodeModules
+	val, err := m.GetBackingStore().Get("noCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
 
 // GetOrganization gets the organization property value. The organization property
 // returns a Links_relatedable when successful
 func (m *RegistryModules_relationships) GetOrganization() Links_relatedable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -99,24 +125,41 @@ func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d2689638
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *RegistryModules_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RegistryModules_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetNoCodeModules sets the no-code-modules property value. The noCodeModules property
 func (m *RegistryModules_relationships) SetNoCodeModules(value Links_relatedable) {
-	m.noCodeModules = value
+	err := m.GetBackingStore().Set("noCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *RegistryModules_relationships) SetOrganization(value Links_relatedable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type RegistryModules_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetNoCodeModules() Links_relatedable
 	GetOrganization() Links_relatedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetNoCodeModules(value Links_relatedable)
 	SetOrganization(value Links_relatedable)
 }

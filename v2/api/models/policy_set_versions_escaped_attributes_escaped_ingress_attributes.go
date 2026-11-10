@@ -5,22 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PolicySetVersions_attributes_ingressAttributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The commitSha property
-	commitSha *string
-	// The commitUrl property
-	commitUrl *string
-	// The identifier property
-	identifier *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicySetVersions_attributes_ingressAttributes instantiates a new PolicySetVersions_attributes_ingressAttributes and sets the default values.
 func NewPolicySetVersions_attributes_ingressAttributes() *PolicySetVersions_attributes_ingressAttributes {
 	m := &PolicySetVersions_attributes_ingressAttributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -34,19 +30,47 @@ func CreatePolicySetVersions_attributes_ingressAttributesFromDiscriminatorValue(
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicySetVersions_attributes_ingressAttributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySetVersions_attributes_ingressAttributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCommitSha gets the commit-sha property value. The commitSha property
 // returns a *string when successful
 func (m *PolicySetVersions_attributes_ingressAttributes) GetCommitSha() *string {
-	return m.commitSha
+	val, err := m.GetBackingStore().Get("commitSha")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCommitUrl gets the commit-url property value. The commitUrl property
 // returns a *string when successful
 func (m *PolicySetVersions_attributes_ingressAttributes) GetCommitUrl() *string {
-	return m.commitUrl
+	val, err := m.GetBackingStore().Get("commitUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -89,7 +113,14 @@ func (m *PolicySetVersions_attributes_ingressAttributes) GetFieldDeserializers()
 // GetIdentifier gets the identifier property value. The identifier property
 // returns a *string when successful
 func (m *PolicySetVersions_attributes_ingressAttributes) GetIdentifier() *string {
-	return m.identifier
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -123,30 +154,50 @@ func (m *PolicySetVersions_attributes_ingressAttributes) Serialize(writer i878a8
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicySetVersions_attributes_ingressAttributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySetVersions_attributes_ingressAttributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCommitSha sets the commit-sha property value. The commitSha property
 func (m *PolicySetVersions_attributes_ingressAttributes) SetCommitSha(value *string) {
-	m.commitSha = value
+	err := m.GetBackingStore().Set("commitSha", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCommitUrl sets the commit-url property value. The commitUrl property
 func (m *PolicySetVersions_attributes_ingressAttributes) SetCommitUrl(value *string) {
-	m.commitUrl = value
+	err := m.GetBackingStore().Set("commitUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIdentifier sets the identifier property value. The identifier property
 func (m *PolicySetVersions_attributes_ingressAttributes) SetIdentifier(value *string) {
-	m.identifier = value
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicySetVersions_attributes_ingressAttributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCommitSha() *string
 	GetCommitUrl() *string
 	GetIdentifier() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCommitSha(value *string)
 	SetCommitUrl(value *string)
 	SetIdentifier(value *string)

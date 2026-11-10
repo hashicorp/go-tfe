@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type HyokEncryptedDataKeys struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The attributes property
-	attributes HyokEncryptedDataKeys_attributesable
-	// The id property
-	id *string
-	// The relationships property
-	relationships HyokEncryptedDataKeys_relationshipsable
-	// The type property
-	typeEscaped *HyokEncryptedDataKeys_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewHyokEncryptedDataKeys instantiates a new HyokEncryptedDataKeys and sets the default values.
 func NewHyokEncryptedDataKeys() *HyokEncryptedDataKeys {
 	m := &HyokEncryptedDataKeys{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateHyokEncryptedDataKeysFromDiscriminatorValue(parseNode i878a80d2330e89
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *HyokEncryptedDataKeys) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttributes gets the attributes property value. The attributes property
 // returns a HyokEncryptedDataKeys_attributesable when successful
 func (m *HyokEncryptedDataKeys) GetAttributes() HyokEncryptedDataKeys_attributesable {
-	return m.attributes
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokEncryptedDataKeys_attributesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokEncryptedDataKeys) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *HyokEncryptedDataKeys) GetFieldDeserializers() map[string]func(i878a80d
 // GetId gets the id property value. The id property
 // returns a *string when successful
 func (m *HyokEncryptedDataKeys) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRelationships gets the relationships property value. The relationships property
 // returns a HyokEncryptedDataKeys_relationshipsable when successful
 func (m *HyokEncryptedDataKeys) GetRelationships() HyokEncryptedDataKeys_relationshipsable {
-	return m.relationships
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokEncryptedDataKeys_relationshipsable)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The type property
 // returns a *HyokEncryptedDataKeys_type when successful
 func (m *HyokEncryptedDataKeys) GetTypeEscaped() *HyokEncryptedDataKeys_type {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*HyokEncryptedDataKeys_type)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -142,37 +178,60 @@ func (m *HyokEncryptedDataKeys) Serialize(writer i878a80d2330e89d26896388a3f487e
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *HyokEncryptedDataKeys) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttributes sets the attributes property value. The attributes property
 func (m *HyokEncryptedDataKeys) SetAttributes(value HyokEncryptedDataKeys_attributesable) {
-	m.attributes = value
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokEncryptedDataKeys) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The id property
 func (m *HyokEncryptedDataKeys) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRelationships sets the relationships property value. The relationships property
 func (m *HyokEncryptedDataKeys) SetRelationships(value HyokEncryptedDataKeys_relationshipsable) {
-	m.relationships = value
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The type property
 func (m *HyokEncryptedDataKeys) SetTypeEscaped(value *HyokEncryptedDataKeys_type) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type HyokEncryptedDataKeysable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAttributes() HyokEncryptedDataKeys_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetRelationships() HyokEncryptedDataKeys_relationshipsable
 	GetTypeEscaped() *HyokEncryptedDataKeys_type
 	SetAttributes(value HyokEncryptedDataKeys_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetRelationships(value HyokEncryptedDataKeys_relationshipsable)
 	SetTypeEscaped(value *HyokEncryptedDataKeys_type)

@@ -5,33 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackVersionControlSettings_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The branch that triggers new configurations. An empty string uses the repository's default branch. Stored on the stack's VCS connection; null when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
-	branch *string
-	// Ordered list of branch to deployment group mappings. Each entry maps a branch name to the deployment group names for that branch. Each group can be assigned to only one branch.
-	branchGroupMappings []StackVersionControlSettings_attributes_branchGroupMappingsable
-	// Null when the stack has no saved version control settings yet.
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The speculativeEnabled property
-	speculativeEnabled *bool
-	// Regular expression for tags that trigger new configurations. Stored on the stack's VCS connection; null when not set or when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
-	tagsRegex *string
-	// Whether VCS changes are prevented from automatically creating configurations. Stored on the stack's VCS connection and omitted when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
-	triggerDisabled *bool
-	// The triggerPatterns property
-	triggerPatterns []string
-	// Null when the stack has no saved version control settings yet.
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackVersionControlSettings_attributes instantiates a new StackVersionControlSettings_attributes and sets the default values.
 func NewStackVersionControlSettings_attributes() *StackVersionControlSettings_attributes {
 	m := &StackVersionControlSettings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	speculativeEnabledValue := false
 	m.SetSpeculativeEnabled(&speculativeEnabledValue)
@@ -47,25 +33,60 @@ func CreateStackVersionControlSettings_attributesFromDiscriminatorValue(parseNod
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackVersionControlSettings_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackVersionControlSettings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBranch gets the branch property value. The branch that triggers new configurations. An empty string uses the repository's default branch. Stored on the stack's VCS connection; null when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 // returns a *string when successful
 func (m *StackVersionControlSettings_attributes) GetBranch() *string {
-	return m.branch
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetBranchGroupMappings gets the branch-group-mappings property value. Ordered list of branch to deployment group mappings. Each entry maps a branch name to the deployment group names for that branch. Each group can be assigned to only one branch.
 // returns a []StackVersionControlSettings_attributes_branchGroupMappingsable when successful
 func (m *StackVersionControlSettings_attributes) GetBranchGroupMappings() []StackVersionControlSettings_attributes_branchGroupMappingsable {
-	return m.branchGroupMappings
+	val, err := m.GetBackingStore().Get("branchGroupMappings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackVersionControlSettings_attributes_branchGroupMappingsable)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. Null when the stack has no saved version control settings yet.
 // returns a *Time when successful
 func (m *StackVersionControlSettings_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -170,31 +191,66 @@ func (m *StackVersionControlSettings_attributes) GetFieldDeserializers() map[str
 // GetSpeculativeEnabled gets the speculative-enabled property value. The speculativeEnabled property
 // returns a *bool when successful
 func (m *StackVersionControlSettings_attributes) GetSpeculativeEnabled() *bool {
-	return m.speculativeEnabled
+	val, err := m.GetBackingStore().Get("speculativeEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTagsRegex gets the tags-regex property value. Regular expression for tags that trigger new configurations. Stored on the stack's VCS connection; null when not set or when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 // returns a *string when successful
 func (m *StackVersionControlSettings_attributes) GetTagsRegex() *string {
-	return m.tagsRegex
+	val, err := m.GetBackingStore().Get("tagsRegex")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggerDisabled gets the trigger-disabled property value. Whether VCS changes are prevented from automatically creating configurations. Stored on the stack's VCS connection and omitted when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 // returns a *bool when successful
 func (m *StackVersionControlSettings_attributes) GetTriggerDisabled() *bool {
-	return m.triggerDisabled
+	val, err := m.GetBackingStore().Get("triggerDisabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTriggerPatterns gets the trigger-patterns property value. The triggerPatterns property
 // returns a []string when successful
 func (m *StackVersionControlSettings_attributes) GetTriggerPatterns() []string {
-	return m.triggerPatterns
+	val, err := m.GetBackingStore().Get("triggerPatterns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. Null when the stack has no saved version control settings yet.
 // returns a *Time when successful
 func (m *StackVersionControlSettings_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -252,52 +308,86 @@ func (m *StackVersionControlSettings_attributes) Serialize(writer i878a80d2330e8
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackVersionControlSettings_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackVersionControlSettings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBranch sets the branch property value. The branch that triggers new configurations. An empty string uses the repository's default branch. Stored on the stack's VCS connection; null when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 func (m *StackVersionControlSettings_attributes) SetBranch(value *string) {
-	m.branch = value
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetBranchGroupMappings sets the branch-group-mappings property value. Ordered list of branch to deployment group mappings. Each entry maps a branch name to the deployment group names for that branch. Each group can be assigned to only one branch.
 func (m *StackVersionControlSettings_attributes) SetBranchGroupMappings(value []StackVersionControlSettings_attributes_branchGroupMappingsable) {
-	m.branchGroupMappings = value
+	err := m.GetBackingStore().Set("branchGroupMappings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. Null when the stack has no saved version control settings yet.
 func (m *StackVersionControlSettings_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSpeculativeEnabled sets the speculative-enabled property value. The speculativeEnabled property
 func (m *StackVersionControlSettings_attributes) SetSpeculativeEnabled(value *bool) {
-	m.speculativeEnabled = value
+	err := m.GetBackingStore().Set("speculativeEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTagsRegex sets the tags-regex property value. Regular expression for tags that trigger new configurations. Stored on the stack's VCS connection; null when not set or when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 func (m *StackVersionControlSettings_attributes) SetTagsRegex(value *string) {
-	m.tagsRegex = value
+	err := m.GetBackingStore().Set("tagsRegex", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerDisabled sets the trigger-disabled property value. Whether VCS changes are prevented from automatically creating configurations. Stored on the stack's VCS connection and omitted when the stack is not connected to a VCS repository. Updating it requires a VCS connection.
 func (m *StackVersionControlSettings_attributes) SetTriggerDisabled(value *bool) {
-	m.triggerDisabled = value
+	err := m.GetBackingStore().Set("triggerDisabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerPatterns sets the trigger-patterns property value. The triggerPatterns property
 func (m *StackVersionControlSettings_attributes) SetTriggerPatterns(value []string) {
-	m.triggerPatterns = value
+	err := m.GetBackingStore().Set("triggerPatterns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. Null when the stack has no saved version control settings yet.
 func (m *StackVersionControlSettings_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackVersionControlSettings_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBranch() *string
 	GetBranchGroupMappings() []StackVersionControlSettings_attributes_branchGroupMappingsable
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -306,6 +396,7 @@ type StackVersionControlSettings_attributesable interface {
 	GetTriggerDisabled() *bool
 	GetTriggerPatterns() []string
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBranch(value *string)
 	SetBranchGroupMappings(value []StackVersionControlSettings_attributes_branchGroupMappingsable)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

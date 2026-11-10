@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type NoCodeModules_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The latestVersion property
-	latestVersion NoCodeModuleVersionsHasOneable
-	// The organization property
-	organization OrganizationsHasOneable
-	// The registryModule property
-	registryModule RegistryModulesHasOneable
-	// The variableOptions property
-	variableOptions VariableOptionsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewNoCodeModules_relationships instantiates a new NoCodeModules_relationships and sets the default values.
 func NewNoCodeModules_relationships() *NoCodeModules_relationships {
 	m := &NoCodeModules_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,7 +30,21 @@ func CreateNoCodeModules_relationshipsFromDiscriminatorValue(parseNode i878a80d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *NoCodeModules_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *NoCodeModules_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -89,25 +97,53 @@ func (m *NoCodeModules_relationships) GetFieldDeserializers() map[string]func(i8
 // GetLatestVersion gets the latest-version property value. The latestVersion property
 // returns a NoCodeModuleVersionsHasOneable when successful
 func (m *NoCodeModules_relationships) GetLatestVersion() NoCodeModuleVersionsHasOneable {
-	return m.latestVersion
+	val, err := m.GetBackingStore().Get("latestVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(NoCodeModuleVersionsHasOneable)
+	}
+	return nil
 }
 
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *NoCodeModules_relationships) GetOrganization() OrganizationsHasOneable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
 
 // GetRegistryModule gets the registry-module property value. The registryModule property
 // returns a RegistryModulesHasOneable when successful
 func (m *NoCodeModules_relationships) GetRegistryModule() RegistryModulesHasOneable {
-	return m.registryModule
+	val, err := m.GetBackingStore().Get("registryModule")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModulesHasOneable)
+	}
+	return nil
 }
 
 // GetVariableOptions gets the variable-options property value. The variableOptions property
 // returns a VariableOptionsHasManyable when successful
 func (m *NoCodeModules_relationships) GetVariableOptions() VariableOptionsHasManyable {
-	return m.variableOptions
+	val, err := m.GetBackingStore().Get("variableOptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VariableOptionsHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -147,36 +183,59 @@ func (m *NoCodeModules_relationships) Serialize(writer i878a80d2330e89d26896388a
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *NoCodeModules_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *NoCodeModules_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetLatestVersion sets the latest-version property value. The latestVersion property
 func (m *NoCodeModules_relationships) SetLatestVersion(value NoCodeModuleVersionsHasOneable) {
-	m.latestVersion = value
+	err := m.GetBackingStore().Set("latestVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *NoCodeModules_relationships) SetOrganization(value OrganizationsHasOneable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRegistryModule sets the registry-module property value. The registryModule property
 func (m *NoCodeModules_relationships) SetRegistryModule(value RegistryModulesHasOneable) {
-	m.registryModule = value
+	err := m.GetBackingStore().Set("registryModule", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariableOptions sets the variable-options property value. The variableOptions property
 func (m *NoCodeModules_relationships) SetVariableOptions(value VariableOptionsHasManyable) {
-	m.variableOptions = value
+	err := m.GetBackingStore().Set("variableOptions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type NoCodeModules_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetLatestVersion() NoCodeModuleVersionsHasOneable
 	GetOrganization() OrganizationsHasOneable
 	GetRegistryModule() RegistryModulesHasOneable
 	GetVariableOptions() VariableOptionsHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetLatestVersion(value NoCodeModuleVersionsHasOneable)
 	SetOrganization(value OrganizationsHasOneable)
 	SetRegistryModule(value RegistryModulesHasOneable)

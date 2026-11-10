@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TaskStages_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The costEstimate property
-	costEstimate CostEstimatesHasOneable
-	// The policyEvaluations property
-	policyEvaluations PolicyEvaluationsHasManyable
-	// The run property
-	run RunsHasOneable
-	// The taskResults property
-	taskResults TaskResultsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskStages_relationships instantiates a new TaskStages_relationships and sets the default values.
 func NewTaskStages_relationships() *TaskStages_relationships {
 	m := &TaskStages_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateTaskStages_relationshipsFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskStages_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskStages_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCostEstimate gets the cost-estimate property value. The costEstimate property
 // returns a CostEstimatesHasOneable when successful
 func (m *TaskStages_relationships) GetCostEstimate() CostEstimatesHasOneable {
-	return m.costEstimate
+	val, err := m.GetBackingStore().Get("costEstimate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CostEstimatesHasOneable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *TaskStages_relationships) GetFieldDeserializers() map[string]func(i878a
 // GetPolicyEvaluations gets the policy-evaluations property value. The policyEvaluations property
 // returns a PolicyEvaluationsHasManyable when successful
 func (m *TaskStages_relationships) GetPolicyEvaluations() PolicyEvaluationsHasManyable {
-	return m.policyEvaluations
+	val, err := m.GetBackingStore().Get("policyEvaluations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyEvaluationsHasManyable)
+	}
+	return nil
 }
 
 // GetRun gets the run property value. The run property
 // returns a RunsHasOneable when successful
 func (m *TaskStages_relationships) GetRun() RunsHasOneable {
-	return m.run
+	val, err := m.GetBackingStore().Get("run")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
 
 // GetTaskResults gets the task-results property value. The taskResults property
 // returns a TaskResultsHasManyable when successful
 func (m *TaskStages_relationships) GetTaskResults() TaskResultsHasManyable {
-	return m.taskResults
+	val, err := m.GetBackingStore().Get("taskResults")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskResultsHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -147,36 +183,59 @@ func (m *TaskStages_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskStages_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskStages_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCostEstimate sets the cost-estimate property value. The costEstimate property
 func (m *TaskStages_relationships) SetCostEstimate(value CostEstimatesHasOneable) {
-	m.costEstimate = value
+	err := m.GetBackingStore().Set("costEstimate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyEvaluations sets the policy-evaluations property value. The policyEvaluations property
 func (m *TaskStages_relationships) SetPolicyEvaluations(value PolicyEvaluationsHasManyable) {
-	m.policyEvaluations = value
+	err := m.GetBackingStore().Set("policyEvaluations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRun sets the run property value. The run property
 func (m *TaskStages_relationships) SetRun(value RunsHasOneable) {
-	m.run = value
+	err := m.GetBackingStore().Set("run", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTaskResults sets the task-results property value. The taskResults property
 func (m *TaskStages_relationships) SetTaskResults(value TaskResultsHasManyable) {
-	m.taskResults = value
+	err := m.GetBackingStore().Set("taskResults", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskStages_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCostEstimate() CostEstimatesHasOneable
 	GetPolicyEvaluations() PolicyEvaluationsHasManyable
 	GetRun() RunsHasOneable
 	GetTaskResults() TaskResultsHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCostEstimate(value CostEstimatesHasOneable)
 	SetPolicyEvaluations(value PolicyEvaluationsHasManyable)
 	SetRun(value RunsHasOneable)

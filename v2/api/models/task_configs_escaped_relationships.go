@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TaskConfigs_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The organization property
-	organization OrganizationsHasOneable
-	// The owner property
-	owner TaskConfigOwnerHasOneable
-	// The projects property
-	projects ProjectsHasManyable
-	// The task property
-	task TasksHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskConfigs_relationships instantiates a new TaskConfigs_relationships and sets the default values.
 func NewTaskConfigs_relationships() *TaskConfigs_relationships {
 	m := &TaskConfigs_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,7 +30,21 @@ func CreateTaskConfigs_relationshipsFromDiscriminatorValue(parseNode i878a80d233
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskConfigs_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskConfigs_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -89,25 +97,53 @@ func (m *TaskConfigs_relationships) GetFieldDeserializers() map[string]func(i878
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *TaskConfigs_relationships) GetOrganization() OrganizationsHasOneable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
 
 // GetOwner gets the owner property value. The owner property
 // returns a TaskConfigOwnerHasOneable when successful
 func (m *TaskConfigs_relationships) GetOwner() TaskConfigOwnerHasOneable {
-	return m.owner
+	val, err := m.GetBackingStore().Get("owner")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskConfigOwnerHasOneable)
+	}
+	return nil
 }
 
 // GetProjects gets the projects property value. The projects property
 // returns a ProjectsHasManyable when successful
 func (m *TaskConfigs_relationships) GetProjects() ProjectsHasManyable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasManyable)
+	}
+	return nil
 }
 
 // GetTask gets the task property value. The task property
 // returns a TasksHasOneable when successful
 func (m *TaskConfigs_relationships) GetTask() TasksHasOneable {
-	return m.task
+	val, err := m.GetBackingStore().Get("task")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TasksHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -147,36 +183,59 @@ func (m *TaskConfigs_relationships) Serialize(writer i878a80d2330e89d26896388a3f
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskConfigs_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskConfigs_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *TaskConfigs_relationships) SetOrganization(value OrganizationsHasOneable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOwner sets the owner property value. The owner property
 func (m *TaskConfigs_relationships) SetOwner(value TaskConfigOwnerHasOneable) {
-	m.owner = value
+	err := m.GetBackingStore().Set("owner", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProjects sets the projects property value. The projects property
 func (m *TaskConfigs_relationships) SetProjects(value ProjectsHasManyable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTask sets the task property value. The task property
 func (m *TaskConfigs_relationships) SetTask(value TasksHasOneable) {
-	m.task = value
+	err := m.GetBackingStore().Set("task", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskConfigs_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetOrganization() OrganizationsHasOneable
 	GetOwner() TaskConfigOwnerHasOneable
 	GetProjects() ProjectsHasManyable
 	GetTask() TasksHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetOrganization(value OrganizationsHasOneable)
 	SetOwner(value TaskConfigOwnerHasOneable)
 	SetProjects(value ProjectsHasManyable)

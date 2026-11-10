@@ -5,81 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Runs_attributes_statusTimestamps struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The appliedAt property
-	appliedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The applyingAt property
-	applyingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The applyQueuedAt property
-	applyQueuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The assessedAt property
-	assessedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The canceledAt property
-	canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The confirmedAt property
-	confirmedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The costEstimatedAt property
-	costEstimatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The costEstimatingAt property
-	costEstimatingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The discardedAt property
-	discardedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The erroredAt property
-	erroredAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The fetchedAt property
-	fetchedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The fetchingAt property
-	fetchingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The forceCanceledAt property
-	forceCanceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The plannedAndFinishedAt property
-	plannedAndFinishedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The plannedAndSavedAt property
-	plannedAndSavedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The plannedAt property
-	plannedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The planningAt property
-	planningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The planQueuedAt property
-	planQueuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The policyCheckedAt property
-	policyCheckedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The policySoftFailedAt property
-	policySoftFailedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The postApplyCompletedAt property
-	postApplyCompletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The postApplyRunningAt property
-	postApplyRunningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The postPlanCompletedAt property
-	postPlanCompletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The postPlanRunningAt property
-	postPlanRunningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The preApplyCompletedAt property
-	preApplyCompletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The preApplyRunningAt property
-	preApplyRunningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The prePlanCompletedAt property
-	prePlanCompletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The prePlanRunningAt property
-	prePlanRunningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The queuingApplyAt property
-	queuingApplyAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The queuingAt property
-	queuingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The tfPolicyCheckedAt property
-	tfPolicyCheckedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The tfPolicyOverrideAt property
-	tfPolicyOverrideAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRuns_attributes_statusTimestamps instantiates a new Runs_attributes_statusTimestamps and sets the default values.
 func NewRuns_attributes_statusTimestamps() *Runs_attributes_statusTimestamps {
 	m := &Runs_attributes_statusTimestamps{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -93,79 +31,177 @@ func CreateRuns_attributes_statusTimestampsFromDiscriminatorValue(parseNode i878
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Runs_attributes_statusTimestamps) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAppliedAt gets the applied-at property value. The appliedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetAppliedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.appliedAt
+	val, err := m.GetBackingStore().Get("appliedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetApplyingAt gets the applying-at property value. The applyingAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetApplyingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.applyingAt
+	val, err := m.GetBackingStore().Get("applyingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetApplyQueuedAt gets the apply-queued-at property value. The applyQueuedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetApplyQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.applyQueuedAt
+	val, err := m.GetBackingStore().Get("applyQueuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetAssessedAt gets the assessed-at property value. The assessedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetAssessedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.assessedAt
+	val, err := m.GetBackingStore().Get("assessedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Runs_attributes_statusTimestamps) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanceledAt gets the canceled-at property value. The canceledAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.canceledAt
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetConfirmedAt gets the confirmed-at property value. The confirmedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetConfirmedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.confirmedAt
+	val, err := m.GetBackingStore().Get("confirmedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetCostEstimatedAt gets the cost-estimated-at property value. The costEstimatedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetCostEstimatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.costEstimatedAt
+	val, err := m.GetBackingStore().Get("costEstimatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetCostEstimatingAt gets the cost-estimating-at property value. The costEstimatingAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetCostEstimatingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.costEstimatingAt
+	val, err := m.GetBackingStore().Get("costEstimatingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDiscardedAt gets the discarded-at property value. The discardedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetDiscardedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.discardedAt
+	val, err := m.GetBackingStore().Get("discardedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetErroredAt gets the errored-at property value. The erroredAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.erroredAt
+	val, err := m.GetBackingStore().Get("erroredAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFetchedAt gets the fetched-at property value. The fetchedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetFetchedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.fetchedAt
+	val, err := m.GetBackingStore().Get("fetchedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFetchingAt gets the fetching-at property value. The fetchingAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetFetchingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.fetchingAt
+	val, err := m.GetBackingStore().Get("fetchingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -498,121 +534,261 @@ func (m *Runs_attributes_statusTimestamps) GetFieldDeserializers() map[string]fu
 // GetForceCanceledAt gets the force-canceled-at property value. The forceCanceledAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetForceCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.forceCanceledAt
+	val, err := m.GetBackingStore().Get("forceCanceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlannedAndFinishedAt gets the planned-and-finished-at property value. The plannedAndFinishedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPlannedAndFinishedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.plannedAndFinishedAt
+	val, err := m.GetBackingStore().Get("plannedAndFinishedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlannedAndSavedAt gets the planned-and-saved-at property value. The plannedAndSavedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPlannedAndSavedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.plannedAndSavedAt
+	val, err := m.GetBackingStore().Get("plannedAndSavedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlannedAt gets the planned-at property value. The plannedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPlannedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.plannedAt
+	val, err := m.GetBackingStore().Get("plannedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlanningAt gets the planning-at property value. The planningAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPlanningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.planningAt
+	val, err := m.GetBackingStore().Get("planningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlanQueuedAt gets the plan-queued-at property value. The planQueuedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPlanQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.planQueuedAt
+	val, err := m.GetBackingStore().Get("planQueuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPolicyCheckedAt gets the policy-checked-at property value. The policyCheckedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPolicyCheckedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.policyCheckedAt
+	val, err := m.GetBackingStore().Get("policyCheckedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPolicySoftFailedAt gets the policy-soft-failed-at property value. The policySoftFailedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPolicySoftFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.policySoftFailedAt
+	val, err := m.GetBackingStore().Get("policySoftFailedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPostApplyCompletedAt gets the post-apply-completed-at property value. The postApplyCompletedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPostApplyCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.postApplyCompletedAt
+	val, err := m.GetBackingStore().Get("postApplyCompletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPostApplyRunningAt gets the post-apply-running-at property value. The postApplyRunningAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPostApplyRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.postApplyRunningAt
+	val, err := m.GetBackingStore().Get("postApplyRunningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPostPlanCompletedAt gets the post-plan-completed-at property value. The postPlanCompletedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPostPlanCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.postPlanCompletedAt
+	val, err := m.GetBackingStore().Get("postPlanCompletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPostPlanRunningAt gets the post-plan-running-at property value. The postPlanRunningAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPostPlanRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.postPlanRunningAt
+	val, err := m.GetBackingStore().Get("postPlanRunningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPreApplyCompletedAt gets the pre-apply-completed-at property value. The preApplyCompletedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPreApplyCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.preApplyCompletedAt
+	val, err := m.GetBackingStore().Get("preApplyCompletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPreApplyRunningAt gets the pre-apply-running-at property value. The preApplyRunningAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPreApplyRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.preApplyRunningAt
+	val, err := m.GetBackingStore().Get("preApplyRunningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPrePlanCompletedAt gets the pre-plan-completed-at property value. The prePlanCompletedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPrePlanCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.prePlanCompletedAt
+	val, err := m.GetBackingStore().Get("prePlanCompletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPrePlanRunningAt gets the pre-plan-running-at property value. The prePlanRunningAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetPrePlanRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.prePlanRunningAt
+	val, err := m.GetBackingStore().Get("prePlanRunningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetQueuingApplyAt gets the queuing-apply-at property value. The queuingApplyAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetQueuingApplyAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.queuingApplyAt
+	val, err := m.GetBackingStore().Get("queuingApplyAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetQueuingAt gets the queuing-at property value. The queuingAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetQueuingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.queuingAt
+	val, err := m.GetBackingStore().Get("queuingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetTfPolicyCheckedAt gets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetTfPolicyCheckedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.tfPolicyCheckedAt
+	val, err := m.GetBackingStore().Get("tfPolicyCheckedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetTfPolicyOverrideAt gets the tf-policy-override-at property value. The tfPolicyOverrideAt property
 // returns a *Time when successful
 func (m *Runs_attributes_statusTimestamps) GetTfPolicyOverrideAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.tfPolicyOverrideAt
+	val, err := m.GetBackingStore().Get("tfPolicyOverrideAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -820,176 +996,282 @@ func (m *Runs_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d2689
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Runs_attributes_statusTimestamps) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAppliedAt sets the applied-at property value. The appliedAt property
 func (m *Runs_attributes_statusTimestamps) SetAppliedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.appliedAt = value
+	err := m.GetBackingStore().Set("appliedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplyingAt sets the applying-at property value. The applyingAt property
 func (m *Runs_attributes_statusTimestamps) SetApplyingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.applyingAt = value
+	err := m.GetBackingStore().Set("applyingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplyQueuedAt sets the apply-queued-at property value. The applyQueuedAt property
 func (m *Runs_attributes_statusTimestamps) SetApplyQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.applyQueuedAt = value
+	err := m.GetBackingStore().Set("applyQueuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAssessedAt sets the assessed-at property value. The assessedAt property
 func (m *Runs_attributes_statusTimestamps) SetAssessedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.assessedAt = value
+	err := m.GetBackingStore().Set("assessedAt", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Runs_attributes_statusTimestamps) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanceledAt sets the canceled-at property value. The canceledAt property
 func (m *Runs_attributes_statusTimestamps) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.canceledAt = value
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetConfirmedAt sets the confirmed-at property value. The confirmedAt property
 func (m *Runs_attributes_statusTimestamps) SetConfirmedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.confirmedAt = value
+	err := m.GetBackingStore().Set("confirmedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCostEstimatedAt sets the cost-estimated-at property value. The costEstimatedAt property
 func (m *Runs_attributes_statusTimestamps) SetCostEstimatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.costEstimatedAt = value
+	err := m.GetBackingStore().Set("costEstimatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCostEstimatingAt sets the cost-estimating-at property value. The costEstimatingAt property
 func (m *Runs_attributes_statusTimestamps) SetCostEstimatingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.costEstimatingAt = value
+	err := m.GetBackingStore().Set("costEstimatingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDiscardedAt sets the discarded-at property value. The discardedAt property
 func (m *Runs_attributes_statusTimestamps) SetDiscardedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.discardedAt = value
+	err := m.GetBackingStore().Set("discardedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetErroredAt sets the errored-at property value. The erroredAt property
 func (m *Runs_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.erroredAt = value
+	err := m.GetBackingStore().Set("erroredAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFetchedAt sets the fetched-at property value. The fetchedAt property
 func (m *Runs_attributes_statusTimestamps) SetFetchedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.fetchedAt = value
+	err := m.GetBackingStore().Set("fetchedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFetchingAt sets the fetching-at property value. The fetchingAt property
 func (m *Runs_attributes_statusTimestamps) SetFetchingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.fetchingAt = value
+	err := m.GetBackingStore().Set("fetchingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetForceCanceledAt sets the force-canceled-at property value. The forceCanceledAt property
 func (m *Runs_attributes_statusTimestamps) SetForceCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.forceCanceledAt = value
+	err := m.GetBackingStore().Set("forceCanceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlannedAndFinishedAt sets the planned-and-finished-at property value. The plannedAndFinishedAt property
 func (m *Runs_attributes_statusTimestamps) SetPlannedAndFinishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.plannedAndFinishedAt = value
+	err := m.GetBackingStore().Set("plannedAndFinishedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlannedAndSavedAt sets the planned-and-saved-at property value. The plannedAndSavedAt property
 func (m *Runs_attributes_statusTimestamps) SetPlannedAndSavedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.plannedAndSavedAt = value
+	err := m.GetBackingStore().Set("plannedAndSavedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlannedAt sets the planned-at property value. The plannedAt property
 func (m *Runs_attributes_statusTimestamps) SetPlannedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.plannedAt = value
+	err := m.GetBackingStore().Set("plannedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanningAt sets the planning-at property value. The planningAt property
 func (m *Runs_attributes_statusTimestamps) SetPlanningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.planningAt = value
+	err := m.GetBackingStore().Set("planningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanQueuedAt sets the plan-queued-at property value. The planQueuedAt property
 func (m *Runs_attributes_statusTimestamps) SetPlanQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.planQueuedAt = value
+	err := m.GetBackingStore().Set("planQueuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyCheckedAt sets the policy-checked-at property value. The policyCheckedAt property
 func (m *Runs_attributes_statusTimestamps) SetPolicyCheckedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.policyCheckedAt = value
+	err := m.GetBackingStore().Set("policyCheckedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySoftFailedAt sets the policy-soft-failed-at property value. The policySoftFailedAt property
 func (m *Runs_attributes_statusTimestamps) SetPolicySoftFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.policySoftFailedAt = value
+	err := m.GetBackingStore().Set("policySoftFailedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPostApplyCompletedAt sets the post-apply-completed-at property value. The postApplyCompletedAt property
 func (m *Runs_attributes_statusTimestamps) SetPostApplyCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.postApplyCompletedAt = value
+	err := m.GetBackingStore().Set("postApplyCompletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPostApplyRunningAt sets the post-apply-running-at property value. The postApplyRunningAt property
 func (m *Runs_attributes_statusTimestamps) SetPostApplyRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.postApplyRunningAt = value
+	err := m.GetBackingStore().Set("postApplyRunningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPostPlanCompletedAt sets the post-plan-completed-at property value. The postPlanCompletedAt property
 func (m *Runs_attributes_statusTimestamps) SetPostPlanCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.postPlanCompletedAt = value
+	err := m.GetBackingStore().Set("postPlanCompletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPostPlanRunningAt sets the post-plan-running-at property value. The postPlanRunningAt property
 func (m *Runs_attributes_statusTimestamps) SetPostPlanRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.postPlanRunningAt = value
+	err := m.GetBackingStore().Set("postPlanRunningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreApplyCompletedAt sets the pre-apply-completed-at property value. The preApplyCompletedAt property
 func (m *Runs_attributes_statusTimestamps) SetPreApplyCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.preApplyCompletedAt = value
+	err := m.GetBackingStore().Set("preApplyCompletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreApplyRunningAt sets the pre-apply-running-at property value. The preApplyRunningAt property
 func (m *Runs_attributes_statusTimestamps) SetPreApplyRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.preApplyRunningAt = value
+	err := m.GetBackingStore().Set("preApplyRunningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPrePlanCompletedAt sets the pre-plan-completed-at property value. The prePlanCompletedAt property
 func (m *Runs_attributes_statusTimestamps) SetPrePlanCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.prePlanCompletedAt = value
+	err := m.GetBackingStore().Set("prePlanCompletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPrePlanRunningAt sets the pre-plan-running-at property value. The prePlanRunningAt property
 func (m *Runs_attributes_statusTimestamps) SetPrePlanRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.prePlanRunningAt = value
+	err := m.GetBackingStore().Set("prePlanRunningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetQueuingApplyAt sets the queuing-apply-at property value. The queuingApplyAt property
 func (m *Runs_attributes_statusTimestamps) SetQueuingApplyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.queuingApplyAt = value
+	err := m.GetBackingStore().Set("queuingApplyAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetQueuingAt sets the queuing-at property value. The queuingAt property
 func (m *Runs_attributes_statusTimestamps) SetQueuingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.queuingAt = value
+	err := m.GetBackingStore().Set("queuingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTfPolicyCheckedAt sets the tf-policy-checked-at property value. The tfPolicyCheckedAt property
 func (m *Runs_attributes_statusTimestamps) SetTfPolicyCheckedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.tfPolicyCheckedAt = value
+	err := m.GetBackingStore().Set("tfPolicyCheckedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTfPolicyOverrideAt sets the tf-policy-override-at property value. The tfPolicyOverrideAt property
 func (m *Runs_attributes_statusTimestamps) SetTfPolicyOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.tfPolicyOverrideAt = value
+	err := m.GetBackingStore().Set("tfPolicyOverrideAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Runs_attributes_statusTimestampsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAppliedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetApplyingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetApplyQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetAssessedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetConfirmedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetCostEstimatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -1022,6 +1304,7 @@ type Runs_attributes_statusTimestampsable interface {
 	SetApplyingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetApplyQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetAssessedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetConfirmedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetCostEstimatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

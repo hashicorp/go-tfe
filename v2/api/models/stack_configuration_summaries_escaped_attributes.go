@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackConfigurationSummaries_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The sequenceNumber property
-	sequenceNumber *int32
-	// Contains a count of the number of deployment groups in each state.
-	stackDeploymentGroupStatusSummary StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable
-	// Contains a count of the number of deployment runs in each state.
-	stackDeploymentRunStatusSummary StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable
-	// The status property
-	status *StackConfigurationSummaries_attributes_status
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackConfigurationSummaries_attributes instantiates a new StackConfigurationSummaries_attributes and sets the default values.
 func NewStackConfigurationSummaries_attributes() *StackConfigurationSummaries_attributes {
 	m := &StackConfigurationSummaries_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,7 +30,21 @@ func CreateStackConfigurationSummaries_attributesFromDiscriminatorValue(parseNod
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackConfigurationSummaries_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurationSummaries_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -89,25 +97,53 @@ func (m *StackConfigurationSummaries_attributes) GetFieldDeserializers() map[str
 // GetSequenceNumber gets the sequence-number property value. The sequenceNumber property
 // returns a *int32 when successful
 func (m *StackConfigurationSummaries_attributes) GetSequenceNumber() *int32 {
-	return m.sequenceNumber
+	val, err := m.GetBackingStore().Get("sequenceNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStackDeploymentGroupStatusSummary gets the stack-deployment-group-status-summary property value. Contains a count of the number of deployment groups in each state.
 // returns a StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable when successful
 func (m *StackConfigurationSummaries_attributes) GetStackDeploymentGroupStatusSummary() StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable {
-	return m.stackDeploymentGroupStatusSummary
+	val, err := m.GetBackingStore().Get("stackDeploymentGroupStatusSummary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable)
+	}
+	return nil
 }
 
 // GetStackDeploymentRunStatusSummary gets the stack-deployment-run-status-summary property value. Contains a count of the number of deployment runs in each state.
 // returns a StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable when successful
 func (m *StackConfigurationSummaries_attributes) GetStackDeploymentRunStatusSummary() StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable {
-	return m.stackDeploymentRunStatusSummary
+	val, err := m.GetBackingStore().Get("stackDeploymentRunStatusSummary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *StackConfigurationSummaries_attributes_status when successful
 func (m *StackConfigurationSummaries_attributes) GetStatus() *StackConfigurationSummaries_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackConfigurationSummaries_attributes_status)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -135,36 +171,59 @@ func (m *StackConfigurationSummaries_attributes) Serialize(writer i878a80d2330e8
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackConfigurationSummaries_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurationSummaries_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetSequenceNumber sets the sequence-number property value. The sequenceNumber property
 func (m *StackConfigurationSummaries_attributes) SetSequenceNumber(value *int32) {
-	m.sequenceNumber = value
+	err := m.GetBackingStore().Set("sequenceNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDeploymentGroupStatusSummary sets the stack-deployment-group-status-summary property value. Contains a count of the number of deployment groups in each state.
 func (m *StackConfigurationSummaries_attributes) SetStackDeploymentGroupStatusSummary(value StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable) {
-	m.stackDeploymentGroupStatusSummary = value
+	err := m.GetBackingStore().Set("stackDeploymentGroupStatusSummary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDeploymentRunStatusSummary sets the stack-deployment-run-status-summary property value. Contains a count of the number of deployment runs in each state.
 func (m *StackConfigurationSummaries_attributes) SetStackDeploymentRunStatusSummary(value StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable) {
-	m.stackDeploymentRunStatusSummary = value
+	err := m.GetBackingStore().Set("stackDeploymentRunStatusSummary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *StackConfigurationSummaries_attributes) SetStatus(value *StackConfigurationSummaries_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackConfigurationSummaries_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetSequenceNumber() *int32
 	GetStackDeploymentGroupStatusSummary() StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable
 	GetStackDeploymentRunStatusSummary() StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable
 	GetStatus() *StackConfigurationSummaries_attributes_status
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetSequenceNumber(value *int32)
 	SetStackDeploymentGroupStatusSummary(value StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable)
 	SetStackDeploymentRunStatusSummary(value StackConfigurationSummaries_attributes_stackDeploymentRunStatusSummaryable)

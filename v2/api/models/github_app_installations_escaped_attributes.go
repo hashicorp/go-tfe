@@ -5,32 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type GithubAppInstallations_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// External ID of the GitHub App this installation belongs to.
-	appExternalId *string
-	// True when GitHub no longer reports this installation.
-	disconnected *bool
-	// The iconUrl property
-	iconUrl *string
-	// The installationId property
-	installationId *int32
-	// The installationType property
-	installationType *string
-	// The installationUrl property
-	installationUrl *string
-	// The name property
-	name *string
-	// True when the installation is suspended on GitHub.
-	suspended *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewGithubAppInstallations_attributes instantiates a new GithubAppInstallations_attributes and sets the default values.
 func NewGithubAppInstallations_attributes() *GithubAppInstallations_attributes {
 	m := &GithubAppInstallations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -44,19 +30,47 @@ func CreateGithubAppInstallations_attributesFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *GithubAppInstallations_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAppExternalId gets the app-external-id property value. External ID of the GitHub App this installation belongs to.
 // returns a *string when successful
 func (m *GithubAppInstallations_attributes) GetAppExternalId() *string {
-	return m.appExternalId
+	val, err := m.GetBackingStore().Get("appExternalId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *GithubAppInstallations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDisconnected gets the disconnected property value. True when GitHub no longer reports this installation.
 // returns a *bool when successful
 func (m *GithubAppInstallations_attributes) GetDisconnected() *bool {
-	return m.disconnected
+	val, err := m.GetBackingStore().Get("disconnected")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -149,37 +163,79 @@ func (m *GithubAppInstallations_attributes) GetFieldDeserializers() map[string]f
 // GetIconUrl gets the icon-url property value. The iconUrl property
 // returns a *string when successful
 func (m *GithubAppInstallations_attributes) GetIconUrl() *string {
-	return m.iconUrl
+	val, err := m.GetBackingStore().Get("iconUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInstallationId gets the installation-id property value. The installationId property
 // returns a *int32 when successful
 func (m *GithubAppInstallations_attributes) GetInstallationId() *int32 {
-	return m.installationId
+	val, err := m.GetBackingStore().Get("installationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetInstallationType gets the installation-type property value. The installationType property
 // returns a *string when successful
 func (m *GithubAppInstallations_attributes) GetInstallationType() *string {
-	return m.installationType
+	val, err := m.GetBackingStore().Get("installationType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInstallationUrl gets the installation-url property value. The installationUrl property
 // returns a *string when successful
 func (m *GithubAppInstallations_attributes) GetInstallationUrl() *string {
-	return m.installationUrl
+	val, err := m.GetBackingStore().Get("installationUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *GithubAppInstallations_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSuspended gets the suspended property value. True when the installation is suspended on GitHub.
 // returns a *bool when successful
 func (m *GithubAppInstallations_attributes) GetSuspended() *bool {
-	return m.suspended
+	val, err := m.GetBackingStore().Get("suspended")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -243,53 +299,87 @@ func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *GithubAppInstallations_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAppExternalId sets the app-external-id property value. External ID of the GitHub App this installation belongs to.
 func (m *GithubAppInstallations_attributes) SetAppExternalId(value *string) {
-	m.appExternalId = value
+	err := m.GetBackingStore().Set("appExternalId", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *GithubAppInstallations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDisconnected sets the disconnected property value. True when GitHub no longer reports this installation.
 func (m *GithubAppInstallations_attributes) SetDisconnected(value *bool) {
-	m.disconnected = value
+	err := m.GetBackingStore().Set("disconnected", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIconUrl sets the icon-url property value. The iconUrl property
 func (m *GithubAppInstallations_attributes) SetIconUrl(value *string) {
-	m.iconUrl = value
+	err := m.GetBackingStore().Set("iconUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInstallationId sets the installation-id property value. The installationId property
 func (m *GithubAppInstallations_attributes) SetInstallationId(value *int32) {
-	m.installationId = value
+	err := m.GetBackingStore().Set("installationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInstallationType sets the installation-type property value. The installationType property
 func (m *GithubAppInstallations_attributes) SetInstallationType(value *string) {
-	m.installationType = value
+	err := m.GetBackingStore().Set("installationType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInstallationUrl sets the installation-url property value. The installationUrl property
 func (m *GithubAppInstallations_attributes) SetInstallationUrl(value *string) {
-	m.installationUrl = value
+	err := m.GetBackingStore().Set("installationUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *GithubAppInstallations_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSuspended sets the suspended property value. True when the installation is suspended on GitHub.
 func (m *GithubAppInstallations_attributes) SetSuspended(value *bool) {
-	m.suspended = value
+	err := m.GetBackingStore().Set("suspended", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type GithubAppInstallations_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAppExternalId() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDisconnected() *bool
 	GetIconUrl() *string
 	GetInstallationId() *int32
@@ -298,6 +388,7 @@ type GithubAppInstallations_attributesable interface {
 	GetName() *string
 	GetSuspended() *bool
 	SetAppExternalId(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDisconnected(value *bool)
 	SetIconUrl(value *string)
 	SetInstallationId(value *int32)

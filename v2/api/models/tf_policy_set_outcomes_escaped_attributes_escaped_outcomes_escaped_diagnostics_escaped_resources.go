@@ -5,30 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Code snippet from the Terraform configuration showing the resource declaration
-	code *string
-	// Specific error message explaining why this resource failed the policy check
-	error_message *string
-	// Terraform configuration file containing this resource (e.g., 'main.tf')
-	file_name *string
-	// Policy-provided informational log message for debugging about this resource's evaluation
-	info_message *string
-	// The Terraform resource address (e.g., 'aws_s3_bucket.example')
-	resource_name *string
-	// Line number where the resource is defined in the Terraform configuration file
-	start_line *int32
-	// List of attribute evaluations showing the actual values that caused the policy failure
-	values []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicySetOutcomes_attributes_outcomes_diagnostics_resources instantiates a new TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources and sets the default values.
 func NewTfPolicySetOutcomes_attributes_outcomes_diagnostics_resources() *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources {
 	m := &TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -42,19 +30,47 @@ func CreateTfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesFromDisc
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCode gets the code property value. Code snippet from the Terraform configuration showing the resource declaration
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetCode() *string {
-	return m.code
+	val, err := m.GetBackingStore().Get("code")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetErrorMessage gets the error_message property value. Specific error message explaining why this resource failed the policy check
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetErrorMessage() *string {
-	return m.error_message
+	val, err := m.GetBackingStore().Get("error_message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -143,31 +159,66 @@ func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetField
 // GetFileName gets the file_name property value. Terraform configuration file containing this resource (e.g., 'main.tf')
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetFileName() *string {
-	return m.file_name
+	val, err := m.GetBackingStore().Get("file_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInfoMessage gets the info_message property value. Policy-provided informational log message for debugging about this resource's evaluation
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetInfoMessage() *string {
-	return m.info_message
+	val, err := m.GetBackingStore().Get("info_message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetResourceName gets the resource_name property value. The Terraform resource address (e.g., 'aws_s3_bucket.example')
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetResourceName() *string {
-	return m.resource_name
+	val, err := m.GetBackingStore().Get("resource_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStartLine gets the start_line property value. Line number where the resource is defined in the Terraform configuration file
 // returns a *int32 when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetStartLine() *int32 {
-	return m.start_line
+	val, err := m.GetBackingStore().Get("start_line")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetValues gets the values property value. List of attribute evaluations showing the actual values that caused the policy failure
 // returns a []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) GetValues() []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable {
-	return m.values
+	val, err := m.GetBackingStore().Get("values")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -231,47 +282,78 @@ func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) Serializ
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCode sets the code property value. Code snippet from the Terraform configuration showing the resource declaration
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetCode(value *string) {
-	m.code = value
+	err := m.GetBackingStore().Set("code", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetErrorMessage sets the error_message property value. Specific error message explaining why this resource failed the policy check
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetErrorMessage(value *string) {
-	m.error_message = value
+	err := m.GetBackingStore().Set("error_message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFileName sets the file_name property value. Terraform configuration file containing this resource (e.g., 'main.tf')
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetFileName(value *string) {
-	m.file_name = value
+	err := m.GetBackingStore().Set("file_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInfoMessage sets the info_message property value. Policy-provided informational log message for debugging about this resource's evaluation
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetInfoMessage(value *string) {
-	m.info_message = value
+	err := m.GetBackingStore().Set("info_message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceName sets the resource_name property value. The Terraform resource address (e.g., 'aws_s3_bucket.example')
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetResourceName(value *string) {
-	m.resource_name = value
+	err := m.GetBackingStore().Set("resource_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStartLine sets the start_line property value. Line number where the resource is defined in the Terraform configuration file
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetStartLine(value *int32) {
-	m.start_line = value
+	err := m.GetBackingStore().Set("start_line", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetValues sets the values property value. List of attribute evaluations showing the actual values that caused the policy failure
 func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources) SetValues(value []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable) {
-	m.values = value
+	err := m.GetBackingStore().Set("values", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCode() *string
 	GetErrorMessage() *string
 	GetFileName() *string
@@ -279,6 +361,7 @@ type TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable interface
 	GetResourceName() *string
 	GetStartLine() *int32
 	GetValues() []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resources_valuesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCode(value *string)
 	SetErrorMessage(value *string)
 	SetFileName(value *string)

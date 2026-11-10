@@ -6,39 +6,25 @@ package organizations
 import (
 	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type ItemHyokConfigurationsGetResponse struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable
-	// The included property
-	included []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable
-	// The links property
-	links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
-	// The meta property
-	meta ItemHyokConfigurationsGetResponse_metaable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+// ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
 type ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included struct {
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
-	awsOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
-	azureOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
-	gcpOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
-	hyokCustomerKeyVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
-	vaultOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included instantiates a new ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included and sets the default values.
 func NewItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included() *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included {
 	m := &ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -74,16 +60,36 @@ func CreateItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_inclu
 	return result, nil
 }
 
-// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations
 // returns a AwsOidcConfigurationsable when successful
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetAwsOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable {
-	return m.awsOidcConfigurations
+	val, err := m.GetBackingStore().Get("awsOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
+	}
+	return nil
 }
 
-// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations
 // returns a AzureOidcConfigurationsable when successful
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetAzureOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable {
-	return m.azureOidcConfigurations
+	val, err := m.GetBackingStore().Get("azureOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -103,16 +109,30 @@ func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_include
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations
 // returns a GcpOidcConfigurationsable when successful
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetGcpOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable {
-	return m.gcpOidcConfigurations
+	val, err := m.GetBackingStore().Get("gcpOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
+	}
+	return nil
 }
 
-// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions
 // returns a HyokCustomerKeyVersionsable when successful
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetHyokCustomerKeyVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable {
-	return m.hyokCustomerKeyVersions
+	val, err := m.GetBackingStore().Get("hyokCustomerKeyVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -121,10 +141,17 @@ func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_include
 	return true
 }
 
-// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
 // returns a VaultOidcConfigurationsable when successful
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) GetVaultOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable {
-	return m.vaultOidcConfigurations
+	val, err := m.GetBackingStore().Get("vaultOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -158,40 +185,63 @@ func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_include
 	return nil
 }
 
-// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable) {
-	m.awsOidcConfigurations = value
+	err := m.GetBackingStore().Set("awsOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable) {
-	m.azureOidcConfigurations = value
+	err := m.GetBackingStore().Set("azureOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable) {
-	m.gcpOidcConfigurations = value
+	err := m.GetBackingStore().Set("gcpOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable) {
-	m.hyokCustomerKeyVersions = value
+	err := m.GetBackingStore().Set("hyokCustomerKeyVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
 func (m *ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_included) SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable) {
-	m.vaultOidcConfigurations = value
+	err := m.GetBackingStore().Set("vaultOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAwsOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
 	GetAzureOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetGcpOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
 	GetHyokCustomerKeyVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
 	GetVaultOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
 	SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
 	SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
 	SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
 	SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
@@ -200,6 +250,7 @@ type ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedabl
 // NewItemHyokConfigurationsGetResponse instantiates a new ItemHyokConfigurationsGetResponse and sets the default values.
 func NewItemHyokConfigurationsGetResponse() *ItemHyokConfigurationsGetResponse {
 	m := &ItemHyokConfigurationsGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -213,13 +264,34 @@ func CreateItemHyokConfigurationsGetResponseFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ItemHyokConfigurationsGetResponse) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemHyokConfigurationsGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a []HyokConfigurationsable when successful
 func (m *ItemHyokConfigurationsGetResponse) GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -284,19 +356,40 @@ func (m *ItemHyokConfigurationsGetResponse) GetFieldDeserializers() map[string]f
 // GetIncluded gets the included property value. The included property
 // returns a []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable when successful
 func (m *ItemHyokConfigurationsGetResponse) GetIncluded() []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)
+	}
+	return nil
 }
 
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *ItemHyokConfigurationsGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable {
-	return m.links
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	}
+	return nil
 }
 
 // GetMeta gets the meta property value. The meta property
 // returns a ItemHyokConfigurationsGetResponse_metaable when successful
 func (m *ItemHyokConfigurationsGetResponse) GetMeta() ItemHyokConfigurationsGetResponse_metaable {
-	return m.meta
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemHyokConfigurationsGetResponse_metaable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -348,36 +441,59 @@ func (m *ItemHyokConfigurationsGetResponse) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ItemHyokConfigurationsGetResponse) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemHyokConfigurationsGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *ItemHyokConfigurationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *ItemHyokConfigurationsGetResponse) SetIncluded(value []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLinks sets the links property value. The links property
 func (m *ItemHyokConfigurationsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
-	m.links = value
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMeta sets the meta property value. The meta property
 func (m *ItemHyokConfigurationsGetResponse) SetMeta(value ItemHyokConfigurationsGetResponse_metaable) {
-	m.meta = value
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemHyokConfigurationsGetResponseable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable
 	GetIncluded() []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable
 	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
 	GetMeta() ItemHyokConfigurationsGetResponse_metaable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsable)
 	SetIncluded(value []ItemHyokConfigurationsGetResponse_HyokConfigurationsGetResponse_includedable)
 	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)

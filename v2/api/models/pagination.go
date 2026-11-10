@@ -5,28 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Pagination struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The currentPage property
-	currentPage *int32
-	// The nextPage property
-	nextPage *int32
-	// The pageSize property
-	pageSize *int32
-	// The prevPage property
-	prevPage *int32
-	// The totalCount property
-	totalCount *int32
-	// The totalPages property
-	totalPages *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPagination instantiates a new Pagination and sets the default values.
 func NewPagination() *Pagination {
 	m := &Pagination{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -40,13 +30,34 @@ func CreatePaginationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Pagination) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Pagination) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCurrentPage gets the current-page property value. The currentPage property
 // returns a *int32 when successful
 func (m *Pagination) GetCurrentPage() *int32 {
-	return m.currentPage
+	val, err := m.GetBackingStore().Get("currentPage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -119,31 +130,66 @@ func (m *Pagination) GetFieldDeserializers() map[string]func(i878a80d2330e89d268
 // GetNextPage gets the next-page property value. The nextPage property
 // returns a *int32 when successful
 func (m *Pagination) GetNextPage() *int32 {
-	return m.nextPage
+	val, err := m.GetBackingStore().Get("nextPage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPageSize gets the page-size property value. The pageSize property
 // returns a *int32 when successful
 func (m *Pagination) GetPageSize() *int32 {
-	return m.pageSize
+	val, err := m.GetBackingStore().Get("pageSize")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPrevPage gets the prev-page property value. The prevPage property
 // returns a *int32 when successful
 func (m *Pagination) GetPrevPage() *int32 {
-	return m.prevPage
+	val, err := m.GetBackingStore().Get("prevPage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTotalCount gets the total-count property value. The totalCount property
 // returns a *int32 when successful
 func (m *Pagination) GetTotalCount() *int32 {
-	return m.totalCount
+	val, err := m.GetBackingStore().Get("totalCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTotalPages gets the total-pages property value. The totalPages property
 // returns a *int32 when successful
 func (m *Pagination) GetTotalPages() *int32 {
-	return m.totalPages
+	val, err := m.GetBackingStore().Get("totalPages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -195,48 +241,77 @@ func (m *Pagination) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Pagination) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Pagination) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCurrentPage sets the current-page property value. The currentPage property
 func (m *Pagination) SetCurrentPage(value *int32) {
-	m.currentPage = value
+	err := m.GetBackingStore().Set("currentPage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNextPage sets the next-page property value. The nextPage property
 func (m *Pagination) SetNextPage(value *int32) {
-	m.nextPage = value
+	err := m.GetBackingStore().Set("nextPage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPageSize sets the page-size property value. The pageSize property
 func (m *Pagination) SetPageSize(value *int32) {
-	m.pageSize = value
+	err := m.GetBackingStore().Set("pageSize", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPrevPage sets the prev-page property value. The prevPage property
 func (m *Pagination) SetPrevPage(value *int32) {
-	m.prevPage = value
+	err := m.GetBackingStore().Set("prevPage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTotalCount sets the total-count property value. The totalCount property
 func (m *Pagination) SetTotalCount(value *int32) {
-	m.totalCount = value
+	err := m.GetBackingStore().Set("totalCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTotalPages sets the total-pages property value. The totalPages property
 func (m *Pagination) SetTotalPages(value *int32) {
-	m.totalPages = value
+	err := m.GetBackingStore().Set("totalPages", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Paginationable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCurrentPage() *int32
 	GetNextPage() *int32
 	GetPageSize() *int32
 	GetPrevPage() *int32
 	GetTotalCount() *int32
 	GetTotalPages() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCurrentPage(value *int32)
 	SetNextPage(value *int32)
 	SetPageSize(value *int32)

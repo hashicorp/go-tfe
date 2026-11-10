@@ -5,47 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Stacks_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The deleteable property
-	deleteable *bool
-	// The description property
-	description *string
-	// The downstreamCount property
-	downstreamCount *int32
-	// The executionMode property
-	executionMode *Stacks_attributes_executionMode
-	// The inputsCount property
-	inputsCount *int32
-	// The name property
-	name *string
-	// The outputsCount property
-	outputsCount *int32
-	// The resourceCount property
-	resourceCount *int32
-	// The settingOverwrites property
-	settingOverwrites Stacks_attributes_settingOverwritesable
-	// The speculativeEnabled property
-	speculativeEnabled *bool
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The upstreamCount property
-	upstreamCount *int32
-	// The vcsRepo property
-	vcsRepo Stacks_attributes_vcsRepoable
-	// The workingDirectory property
-	workingDirectory *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStacks_attributes instantiates a new Stacks_attributes and sets the default values.
 func NewStacks_attributes() *Stacks_attributes {
 	m := &Stacks_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	speculativeEnabledValue := false
 	m.SetSpeculativeEnabled(&speculativeEnabledValue)
@@ -61,37 +33,86 @@ func CreateStacks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d268
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Stacks_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Stacks_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *Stacks_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeleteable gets the deleteable property value. The deleteable property
 // returns a *bool when successful
 func (m *Stacks_attributes) GetDeleteable() *bool {
-	return m.deleteable
+	val, err := m.GetBackingStore().Get("deleteable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
 func (m *Stacks_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDownstreamCount gets the downstream-count property value. The downstreamCount property
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetDownstreamCount() *int32 {
-	return m.downstreamCount
+	val, err := m.GetBackingStore().Get("downstreamCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetExecutionMode gets the execution-mode property value. The executionMode property
 // returns a *Stacks_attributes_executionMode when successful
 func (m *Stacks_attributes) GetExecutionMode() *Stacks_attributes_executionMode {
-	return m.executionMode
+	val, err := m.GetBackingStore().Get("executionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Stacks_attributes_executionMode)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -254,61 +275,131 @@ func (m *Stacks_attributes) GetFieldDeserializers() map[string]func(i878a80d2330
 // GetInputsCount gets the inputs-count property value. The inputsCount property
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetInputsCount() *int32 {
-	return m.inputsCount
+	val, err := m.GetBackingStore().Get("inputsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Stacks_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOutputsCount gets the outputs-count property value. The outputsCount property
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetOutputsCount() *int32 {
-	return m.outputsCount
+	val, err := m.GetBackingStore().Get("outputsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceCount gets the resource-count property value. The resourceCount property
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetResourceCount() *int32 {
-	return m.resourceCount
+	val, err := m.GetBackingStore().Get("resourceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Stacks_attributes_settingOverwritesable when successful
 func (m *Stacks_attributes) GetSettingOverwrites() Stacks_attributes_settingOverwritesable {
-	return m.settingOverwrites
+	val, err := m.GetBackingStore().Get("settingOverwrites")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacks_attributes_settingOverwritesable)
+	}
+	return nil
 }
 
 // GetSpeculativeEnabled gets the speculative-enabled property value. The speculativeEnabled property
 // returns a *bool when successful
 func (m *Stacks_attributes) GetSpeculativeEnabled() *bool {
-	return m.speculativeEnabled
+	val, err := m.GetBackingStore().Get("speculativeEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *Stacks_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUpstreamCount gets the upstream-count property value. The upstreamCount property
 // returns a *int32 when successful
 func (m *Stacks_attributes) GetUpstreamCount() *int32 {
-	return m.upstreamCount
+	val, err := m.GetBackingStore().Get("upstreamCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a Stacks_attributes_vcsRepoable when successful
 func (m *Stacks_attributes) GetVcsRepo() Stacks_attributes_vcsRepoable {
-	return m.vcsRepo
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacks_attributes_vcsRepoable)
+	}
+	return nil
 }
 
 // GetWorkingDirectory gets the working-directory property value. The workingDirectory property
 // returns a *string when successful
 func (m *Stacks_attributes) GetWorkingDirectory() *string {
-	return m.workingDirectory
+	val, err := m.GetBackingStore().Get("workingDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -367,87 +458,142 @@ func (m *Stacks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Stacks_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Stacks_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *Stacks_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeleteable sets the deleteable property value. The deleteable property
 func (m *Stacks_attributes) SetDeleteable(value *bool) {
-	m.deleteable = value
+	err := m.GetBackingStore().Set("deleteable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDescription sets the description property value. The description property
 func (m *Stacks_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDownstreamCount sets the downstream-count property value. The downstreamCount property
 func (m *Stacks_attributes) SetDownstreamCount(value *int32) {
-	m.downstreamCount = value
+	err := m.GetBackingStore().Set("downstreamCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetExecutionMode sets the execution-mode property value. The executionMode property
 func (m *Stacks_attributes) SetExecutionMode(value *Stacks_attributes_executionMode) {
-	m.executionMode = value
+	err := m.GetBackingStore().Set("executionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInputsCount sets the inputs-count property value. The inputsCount property
 func (m *Stacks_attributes) SetInputsCount(value *int32) {
-	m.inputsCount = value
+	err := m.GetBackingStore().Set("inputsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *Stacks_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOutputsCount sets the outputs-count property value. The outputsCount property
 func (m *Stacks_attributes) SetOutputsCount(value *int32) {
-	m.outputsCount = value
+	err := m.GetBackingStore().Set("outputsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceCount sets the resource-count property value. The resourceCount property
 func (m *Stacks_attributes) SetResourceCount(value *int32) {
-	m.resourceCount = value
+	err := m.GetBackingStore().Set("resourceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
 func (m *Stacks_attributes) SetSettingOverwrites(value Stacks_attributes_settingOverwritesable) {
-	m.settingOverwrites = value
+	err := m.GetBackingStore().Set("settingOverwrites", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSpeculativeEnabled sets the speculative-enabled property value. The speculativeEnabled property
 func (m *Stacks_attributes) SetSpeculativeEnabled(value *bool) {
-	m.speculativeEnabled = value
+	err := m.GetBackingStore().Set("speculativeEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Stacks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpstreamCount sets the upstream-count property value. The upstreamCount property
 func (m *Stacks_attributes) SetUpstreamCount(value *int32) {
-	m.upstreamCount = value
+	err := m.GetBackingStore().Set("upstreamCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
 func (m *Stacks_attributes) SetVcsRepo(value Stacks_attributes_vcsRepoable) {
-	m.vcsRepo = value
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkingDirectory sets the working-directory property value. The workingDirectory property
 func (m *Stacks_attributes) SetWorkingDirectory(value *string) {
-	m.workingDirectory = value
+	err := m.GetBackingStore().Set("workingDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Stacks_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDeleteable() *bool
 	GetDescription() *string
@@ -463,6 +609,7 @@ type Stacks_attributesable interface {
 	GetUpstreamCount() *int32
 	GetVcsRepo() Stacks_attributes_vcsRepoable
 	GetWorkingDirectory() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDeleteable(value *bool)
 	SetDescription(value *string)

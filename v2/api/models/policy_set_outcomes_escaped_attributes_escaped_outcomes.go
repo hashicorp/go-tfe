@@ -5,28 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PolicySetOutcomes_attributes_outcomes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The description property
-	description *string
-	// The enforcement_level property
-	enforcement_level *string
-	// The output property
-	output i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
-	// The policy_name property
-	policy_name *string
-	// The query property
-	query *string
-	// The status property
-	status *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicySetOutcomes_attributes_outcomes instantiates a new PolicySetOutcomes_attributes_outcomes and sets the default values.
 func NewPolicySetOutcomes_attributes_outcomes() *PolicySetOutcomes_attributes_outcomes {
 	m := &PolicySetOutcomes_attributes_outcomes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -40,19 +30,47 @@ func CreatePolicySetOutcomes_attributes_outcomesFromDiscriminatorValue(parseNode
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySetOutcomes_attributes_outcomes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEnforcementLevel gets the enforcement_level property value. The enforcement_level property
 // returns a *string when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetEnforcementLevel() *string {
-	return m.enforcement_level
+	val, err := m.GetBackingStore().Get("enforcement_level")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -125,25 +143,53 @@ func (m *PolicySetOutcomes_attributes_outcomes) GetFieldDeserializers() map[stri
 // GetOutput gets the output property value. The output property
 // returns a UntypedNodeable when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetOutput() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable {
-	return m.output
+	val, err := m.GetBackingStore().Get("output")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	}
+	return nil
 }
 
 // GetPolicyName gets the policy_name property value. The policy_name property
 // returns a *string when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetPolicyName() *string {
-	return m.policy_name
+	val, err := m.GetBackingStore().Get("policy_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetQuery gets the query property value. The query property
 // returns a *string when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetQuery() *string {
-	return m.query
+	val, err := m.GetBackingStore().Get("query")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *string when successful
 func (m *PolicySetOutcomes_attributes_outcomes) GetStatus() *string {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -195,48 +241,77 @@ func (m *PolicySetOutcomes_attributes_outcomes) Serialize(writer i878a80d2330e89
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicySetOutcomes_attributes_outcomes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySetOutcomes_attributes_outcomes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDescription sets the description property value. The description property
 func (m *PolicySetOutcomes_attributes_outcomes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnforcementLevel sets the enforcement_level property value. The enforcement_level property
 func (m *PolicySetOutcomes_attributes_outcomes) SetEnforcementLevel(value *string) {
-	m.enforcement_level = value
+	err := m.GetBackingStore().Set("enforcement_level", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOutput sets the output property value. The output property
 func (m *PolicySetOutcomes_attributes_outcomes) SetOutput(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
-	m.output = value
+	err := m.GetBackingStore().Set("output", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyName sets the policy_name property value. The policy_name property
 func (m *PolicySetOutcomes_attributes_outcomes) SetPolicyName(value *string) {
-	m.policy_name = value
+	err := m.GetBackingStore().Set("policy_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetQuery sets the query property value. The query property
 func (m *PolicySetOutcomes_attributes_outcomes) SetQuery(value *string) {
-	m.query = value
+	err := m.GetBackingStore().Set("query", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *PolicySetOutcomes_attributes_outcomes) SetStatus(value *string) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicySetOutcomes_attributes_outcomesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDescription() *string
 	GetEnforcementLevel() *string
 	GetOutput() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
 	GetPolicyName() *string
 	GetQuery() *string
 	GetStatus() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDescription(value *string)
 	SetEnforcementLevel(value *string)
 	SetOutput(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)

@@ -5,36 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type CostEstimates_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Delta monthly cost as a decimal string. Only present when status is "finished".
-	deltaMonthlyCost *string
-	// The errorMessage property
-	errorMessage *string
-	// Number of matched resources. Only present when status is "finished".
-	matchedResourcesCount *int32
-	// Prior monthly cost as a decimal string. Only present when status is "finished".
-	priorMonthlyCost *string
-	// Proposed monthly cost as a decimal string. Only present when status is "finished".
-	proposedMonthlyCost *string
-	// Low-level cost estimation details, only present when status is "finished". The keys or structure of this hash may change over time.
-	resources CostEstimates_attributes_resourcesable
-	// Total number of resources. Only present when status is "finished".
-	resourcesCount *int32
-	// The status property
-	status *CostEstimates_attributes_status
-	// The statusTimestamps property
-	statusTimestamps CostEstimates_attributes_statusTimestampsable
-	// Number of unmatched resources. Only present when status is "finished".
-	unmatchedResourcesCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewCostEstimates_attributes instantiates a new CostEstimates_attributes and sets the default values.
 func NewCostEstimates_attributes() *CostEstimates_attributes {
 	m := &CostEstimates_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -48,19 +30,47 @@ func CreateCostEstimates_attributesFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *CostEstimates_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *CostEstimates_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDeltaMonthlyCost gets the delta-monthly-cost property value. Delta monthly cost as a decimal string. Only present when status is "finished".
 // returns a *string when successful
 func (m *CostEstimates_attributes) GetDeltaMonthlyCost() *string {
-	return m.deltaMonthlyCost
+	val, err := m.GetBackingStore().Get("deltaMonthlyCost")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetErrorMessage gets the error-message property value. The errorMessage property
 // returns a *string when successful
 func (m *CostEstimates_attributes) GetErrorMessage() *string {
-	return m.errorMessage
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -173,49 +183,105 @@ func (m *CostEstimates_attributes) GetFieldDeserializers() map[string]func(i878a
 // GetMatchedResourcesCount gets the matched-resources-count property value. Number of matched resources. Only present when status is "finished".
 // returns a *int32 when successful
 func (m *CostEstimates_attributes) GetMatchedResourcesCount() *int32 {
-	return m.matchedResourcesCount
+	val, err := m.GetBackingStore().Get("matchedResourcesCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPriorMonthlyCost gets the prior-monthly-cost property value. Prior monthly cost as a decimal string. Only present when status is "finished".
 // returns a *string when successful
 func (m *CostEstimates_attributes) GetPriorMonthlyCost() *string {
-	return m.priorMonthlyCost
+	val, err := m.GetBackingStore().Get("priorMonthlyCost")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetProposedMonthlyCost gets the proposed-monthly-cost property value. Proposed monthly cost as a decimal string. Only present when status is "finished".
 // returns a *string when successful
 func (m *CostEstimates_attributes) GetProposedMonthlyCost() *string {
-	return m.proposedMonthlyCost
+	val, err := m.GetBackingStore().Get("proposedMonthlyCost")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetResources gets the resources property value. Low-level cost estimation details, only present when status is "finished". The keys or structure of this hash may change over time.
 // returns a CostEstimates_attributes_resourcesable when successful
 func (m *CostEstimates_attributes) GetResources() CostEstimates_attributes_resourcesable {
-	return m.resources
+	val, err := m.GetBackingStore().Get("resources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CostEstimates_attributes_resourcesable)
+	}
+	return nil
 }
 
 // GetResourcesCount gets the resources-count property value. Total number of resources. Only present when status is "finished".
 // returns a *int32 when successful
 func (m *CostEstimates_attributes) GetResourcesCount() *int32 {
-	return m.resourcesCount
+	val, err := m.GetBackingStore().Get("resourcesCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *CostEstimates_attributes_status when successful
 func (m *CostEstimates_attributes) GetStatus() *CostEstimates_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*CostEstimates_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a CostEstimates_attributes_statusTimestampsable when successful
 func (m *CostEstimates_attributes) GetStatusTimestamps() CostEstimates_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CostEstimates_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetUnmatchedResourcesCount gets the unmatched-resources-count property value. Number of unmatched resources. Only present when status is "finished".
 // returns a *int32 when successful
 func (m *CostEstimates_attributes) GetUnmatchedResourcesCount() *int32 {
-	return m.unmatchedResourcesCount
+	val, err := m.GetBackingStore().Get("unmatchedResourcesCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -292,62 +358,102 @@ func (m *CostEstimates_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *CostEstimates_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *CostEstimates_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDeltaMonthlyCost sets the delta-monthly-cost property value. Delta monthly cost as a decimal string. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetDeltaMonthlyCost(value *string) {
-	m.deltaMonthlyCost = value
+	err := m.GetBackingStore().Set("deltaMonthlyCost", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetErrorMessage sets the error-message property value. The errorMessage property
 func (m *CostEstimates_attributes) SetErrorMessage(value *string) {
-	m.errorMessage = value
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMatchedResourcesCount sets the matched-resources-count property value. Number of matched resources. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetMatchedResourcesCount(value *int32) {
-	m.matchedResourcesCount = value
+	err := m.GetBackingStore().Set("matchedResourcesCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPriorMonthlyCost sets the prior-monthly-cost property value. Prior monthly cost as a decimal string. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetPriorMonthlyCost(value *string) {
-	m.priorMonthlyCost = value
+	err := m.GetBackingStore().Set("priorMonthlyCost", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProposedMonthlyCost sets the proposed-monthly-cost property value. Proposed monthly cost as a decimal string. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetProposedMonthlyCost(value *string) {
-	m.proposedMonthlyCost = value
+	err := m.GetBackingStore().Set("proposedMonthlyCost", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResources sets the resources property value. Low-level cost estimation details, only present when status is "finished". The keys or structure of this hash may change over time.
 func (m *CostEstimates_attributes) SetResources(value CostEstimates_attributes_resourcesable) {
-	m.resources = value
+	err := m.GetBackingStore().Set("resources", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourcesCount sets the resources-count property value. Total number of resources. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetResourcesCount(value *int32) {
-	m.resourcesCount = value
+	err := m.GetBackingStore().Set("resourcesCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *CostEstimates_attributes) SetStatus(value *CostEstimates_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *CostEstimates_attributes) SetStatusTimestamps(value CostEstimates_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUnmatchedResourcesCount sets the unmatched-resources-count property value. Number of unmatched resources. Only present when status is "finished".
 func (m *CostEstimates_attributes) SetUnmatchedResourcesCount(value *int32) {
-	m.unmatchedResourcesCount = value
+	err := m.GetBackingStore().Set("unmatchedResourcesCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type CostEstimates_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDeltaMonthlyCost() *string
 	GetErrorMessage() *string
 	GetMatchedResourcesCount() *int32
@@ -358,6 +464,7 @@ type CostEstimates_attributesable interface {
 	GetStatus() *CostEstimates_attributes_status
 	GetStatusTimestamps() CostEstimates_attributes_statusTimestampsable
 	GetUnmatchedResourcesCount() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDeltaMonthlyCost(value *string)
 	SetErrorMessage(value *string)
 	SetMatchedResourcesCount(value *int32)

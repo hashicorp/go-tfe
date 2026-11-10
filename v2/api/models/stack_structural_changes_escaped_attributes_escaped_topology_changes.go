@@ -5,21 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackStructuralChanges_attributes_topologyChanges the deployment topology changes this record decides, compared with the branch's last approved topology. A deployment that moves between groups appears in both lists.
 type StackStructuralChanges_attributes_topologyChanges struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Deployments assigned to a group they weren't in before.
-	deploymentsAdded []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable
-	// Deployments no longer assigned to a group they were in before.
-	deploymentsRemoved []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackStructuralChanges_attributes_topologyChanges instantiates a new StackStructuralChanges_attributes_topologyChanges and sets the default values.
 func NewStackStructuralChanges_attributes_topologyChanges() *StackStructuralChanges_attributes_topologyChanges {
 	m := &StackStructuralChanges_attributes_topologyChanges{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -33,19 +31,47 @@ func CreateStackStructuralChanges_attributes_topologyChangesFromDiscriminatorVal
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackStructuralChanges_attributes_topologyChanges) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStructuralChanges_attributes_topologyChanges) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDeploymentsAdded gets the deployments-added property value. Deployments assigned to a group they weren't in before.
 // returns a []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable when successful
 func (m *StackStructuralChanges_attributes_topologyChanges) GetDeploymentsAdded() []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable {
-	return m.deploymentsAdded
+	val, err := m.GetBackingStore().Get("deploymentsAdded")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable)
+	}
+	return nil
 }
 
 // GetDeploymentsRemoved gets the deployments-removed property value. Deployments no longer assigned to a group they were in before.
 // returns a []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable when successful
 func (m *StackStructuralChanges_attributes_topologyChanges) GetDeploymentsRemoved() []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable {
-	return m.deploymentsRemoved
+	val, err := m.GetBackingStore().Get("deploymentsRemoved")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -124,24 +150,41 @@ func (m *StackStructuralChanges_attributes_topologyChanges) Serialize(writer i87
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackStructuralChanges_attributes_topologyChanges) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStructuralChanges_attributes_topologyChanges) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDeploymentsAdded sets the deployments-added property value. Deployments assigned to a group they weren't in before.
 func (m *StackStructuralChanges_attributes_topologyChanges) SetDeploymentsAdded(value []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable) {
-	m.deploymentsAdded = value
+	err := m.GetBackingStore().Set("deploymentsAdded", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeploymentsRemoved sets the deployments-removed property value. Deployments no longer assigned to a group they were in before.
 func (m *StackStructuralChanges_attributes_topologyChanges) SetDeploymentsRemoved(value []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable) {
-	m.deploymentsRemoved = value
+	err := m.GetBackingStore().Set("deploymentsRemoved", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackStructuralChanges_attributes_topologyChangesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDeploymentsAdded() []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable
 	GetDeploymentsRemoved() []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDeploymentsAdded(value []StackStructuralChanges_attributes_topologyChanges_deploymentsAddedable)
 	SetDeploymentsRemoved(value []StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable)
 }

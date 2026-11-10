@@ -5,37 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary contains a count of the number of deployment runs in each state.
 type StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary struct {
-	// The abandoned property
-	abandoned *int32
-	// The acquiringLock property
-	acquiringLock *int32
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The deploying property
-	deploying *int32
-	// The deployingPendingOperator property
-	deployingPendingOperator *int32
-	// The failed property
-	failed *int32
-	// The pending property
-	pending *int32
-	// The pendingCapacity property
-	pendingCapacity *int32
-	// The preDeploying property
-	preDeploying *int32
-	// The preDeployingPendingOperator property
-	preDeployingPendingOperator *int32
-	// The succeeded property
-	succeeded *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary instantiates a new StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary and sets the default values.
 func NewStackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary() *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary {
 	m := &StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -49,37 +31,86 @@ func CreateStackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSumm
 // GetAbandoned gets the abandoned property value. The abandoned property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetAbandoned() *int32 {
-	return m.abandoned
+	val, err := m.GetBackingStore().Get("abandoned")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAcquiringLock gets the acquiring-lock property value. The acquiringLock property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetAcquiringLock() *int32 {
-	return m.acquiringLock
+	val, err := m.GetBackingStore().Get("acquiringLock")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDeploying gets the deploying property value. The deploying property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetDeploying() *int32 {
-	return m.deploying
+	val, err := m.GetBackingStore().Get("deploying")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetDeployingPendingOperator gets the deploying-pending-operator property value. The deployingPendingOperator property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetDeployingPendingOperator() *int32 {
-	return m.deployingPendingOperator
+	val, err := m.GetBackingStore().Get("deployingPendingOperator")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFailed gets the failed property value. The failed property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetFailed() *int32 {
-	return m.failed
+	val, err := m.GetBackingStore().Get("failed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -192,31 +223,66 @@ func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummar
 // GetPending gets the pending property value. The pending property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetPending() *int32 {
-	return m.pending
+	val, err := m.GetBackingStore().Get("pending")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPendingCapacity gets the pending-capacity property value. The pendingCapacity property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetPendingCapacity() *int32 {
-	return m.pendingCapacity
+	val, err := m.GetBackingStore().Get("pendingCapacity")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPreDeploying gets the pre-deploying property value. The preDeploying property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetPreDeploying() *int32 {
-	return m.preDeploying
+	val, err := m.GetBackingStore().Get("preDeploying")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPreDeployingPendingOperator gets the pre-deploying-pending-operator property value. The preDeployingPendingOperator property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetPreDeployingPendingOperator() *int32 {
-	return m.preDeployingPendingOperator
+	val, err := m.GetBackingStore().Get("preDeployingPendingOperator")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSucceeded gets the succeeded property value. The succeeded property
 // returns a *int32 when successful
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) GetSucceeded() *int32 {
-	return m.succeeded
+	val, err := m.GetBackingStore().Get("succeeded")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -292,64 +358,104 @@ func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummar
 
 // SetAbandoned sets the abandoned property value. The abandoned property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetAbandoned(value *int32) {
-	m.abandoned = value
+	err := m.GetBackingStore().Set("abandoned", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAcquiringLock sets the acquiring-lock property value. The acquiringLock property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetAcquiringLock(value *int32) {
-	m.acquiringLock = value
+	err := m.GetBackingStore().Set("acquiringLock", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDeploying sets the deploying property value. The deploying property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetDeploying(value *int32) {
-	m.deploying = value
+	err := m.GetBackingStore().Set("deploying", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeployingPendingOperator sets the deploying-pending-operator property value. The deployingPendingOperator property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetDeployingPendingOperator(value *int32) {
-	m.deployingPendingOperator = value
+	err := m.GetBackingStore().Set("deployingPendingOperator", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFailed sets the failed property value. The failed property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetFailed(value *int32) {
-	m.failed = value
+	err := m.GetBackingStore().Set("failed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPending sets the pending property value. The pending property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetPending(value *int32) {
-	m.pending = value
+	err := m.GetBackingStore().Set("pending", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPendingCapacity sets the pending-capacity property value. The pendingCapacity property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetPendingCapacity(value *int32) {
-	m.pendingCapacity = value
+	err := m.GetBackingStore().Set("pendingCapacity", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreDeploying sets the pre-deploying property value. The preDeploying property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetPreDeploying(value *int32) {
-	m.preDeploying = value
+	err := m.GetBackingStore().Set("preDeploying", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreDeployingPendingOperator sets the pre-deploying-pending-operator property value. The preDeployingPendingOperator property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetPreDeployingPendingOperator(value *int32) {
-	m.preDeployingPendingOperator = value
+	err := m.GetBackingStore().Set("preDeployingPendingOperator", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSucceeded sets the succeeded property value. The succeeded property
 func (m *StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummary) SetSucceeded(value *int32) {
-	m.succeeded = value
+	err := m.GetBackingStore().Set("succeeded", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummaryable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAbandoned() *int32
 	GetAcquiringLock() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDeploying() *int32
 	GetDeployingPendingOperator() *int32
 	GetFailed() *int32
@@ -360,6 +466,7 @@ type StackDeploymentGroupSummaries_attributes_stackDeploymentRunStatusSummaryabl
 	GetSucceeded() *int32
 	SetAbandoned(value *int32)
 	SetAcquiringLock(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDeploying(value *int32)
 	SetDeployingPendingOperator(value *int32)
 	SetFailed(value *int32)

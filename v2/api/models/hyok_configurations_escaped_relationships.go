@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type HyokConfigurations_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The agentPool property
-	agentPool AgentPoolsHasOneable
-	// The hyokCustomerKeyVersions property
-	hyokCustomerKeyVersions HyokCustomerKeyVersionsHasManyable
-	// The oidcConfiguration property
-	oidcConfiguration OidcConfigurationsHasOneable
-	// The organization property
-	organization OrganizationsHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewHyokConfigurations_relationships instantiates a new HyokConfigurations_relationships and sets the default values.
 func NewHyokConfigurations_relationships() *HyokConfigurations_relationships {
 	m := &HyokConfigurations_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateHyokConfigurations_relationshipsFromDiscriminatorValue(parseNode i878
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *HyokConfigurations_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a AgentPoolsHasOneable when successful
 func (m *HyokConfigurations_relationships) GetAgentPool() AgentPoolsHasOneable {
-	return m.agentPool
+	val, err := m.GetBackingStore().Get("agentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AgentPoolsHasOneable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokConfigurations_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *HyokConfigurations_relationships) GetFieldDeserializers() map[string]fu
 // GetHyokCustomerKeyVersions gets the hyok-customer-key-versions property value. The hyokCustomerKeyVersions property
 // returns a HyokCustomerKeyVersionsHasManyable when successful
 func (m *HyokConfigurations_relationships) GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsHasManyable {
-	return m.hyokCustomerKeyVersions
+	val, err := m.GetBackingStore().Get("hyokCustomerKeyVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokCustomerKeyVersionsHasManyable)
+	}
+	return nil
 }
 
 // GetOidcConfiguration gets the oidc-configuration property value. The oidcConfiguration property
 // returns a OidcConfigurationsHasOneable when successful
 func (m *HyokConfigurations_relationships) GetOidcConfiguration() OidcConfigurationsHasOneable {
-	return m.oidcConfiguration
+	val, err := m.GetBackingStore().Get("oidcConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OidcConfigurationsHasOneable)
+	}
+	return nil
 }
 
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *HyokConfigurations_relationships) GetOrganization() OrganizationsHasOneable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -147,37 +183,60 @@ func (m *HyokConfigurations_relationships) Serialize(writer i878a80d2330e89d2689
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *HyokConfigurations_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPool sets the agent-pool property value. The agentPool property
 func (m *HyokConfigurations_relationships) SetAgentPool(value AgentPoolsHasOneable) {
-	m.agentPool = value
+	err := m.GetBackingStore().Set("agentPool", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokConfigurations_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetHyokCustomerKeyVersions sets the hyok-customer-key-versions property value. The hyokCustomerKeyVersions property
 func (m *HyokConfigurations_relationships) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsHasManyable) {
-	m.hyokCustomerKeyVersions = value
+	err := m.GetBackingStore().Set("hyokCustomerKeyVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOidcConfiguration sets the oidc-configuration property value. The oidcConfiguration property
 func (m *HyokConfigurations_relationships) SetOidcConfiguration(value OidcConfigurationsHasOneable) {
-	m.oidcConfiguration = value
+	err := m.GetBackingStore().Set("oidcConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *HyokConfigurations_relationships) SetOrganization(value OrganizationsHasOneable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type HyokConfigurations_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentPool() AgentPoolsHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsHasManyable
 	GetOidcConfiguration() OidcConfigurationsHasOneable
 	GetOrganization() OrganizationsHasOneable
 	SetAgentPool(value AgentPoolsHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsHasManyable)
 	SetOidcConfiguration(value OidcConfigurationsHasOneable)
 	SetOrganization(value OrganizationsHasOneable)

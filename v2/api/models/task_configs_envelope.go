@@ -5,33 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type TaskConfigsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data TaskConfigsable
-	// The included property
-	included []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// TaskConfigsEnvelope_TaskConfigsEnvelope_included composed type wrapper for classes Organizationsable, Projectsable, Tasksable, Workspacesable
+// TaskConfigsEnvelope_TaskConfigsEnvelope_included composed type wrapper for classes Organizations, Projects, Tasks, Workspaces
 type TaskConfigsEnvelope_TaskConfigsEnvelope_included struct {
-	// Composed type representation for type Organizationsable
-	organizations Organizationsable
-	// Composed type representation for type Projectsable
-	projects Projectsable
-	// Composed type representation for type Tasksable
-	tasks Tasksable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskConfigsEnvelope_TaskConfigsEnvelope_included instantiates a new TaskConfigsEnvelope_TaskConfigsEnvelope_included and sets the default values.
 func NewTaskConfigsEnvelope_TaskConfigsEnvelope_included() *TaskConfigsEnvelope_TaskConfigsEnvelope_included {
 	m := &TaskConfigsEnvelope_TaskConfigsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -65,6 +57,12 @@ func CreateTaskConfigsEnvelope_TaskConfigsEnvelope_includedFromDiscriminatorValu
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -86,28 +84,56 @@ func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetIsComposedType() b
 	return true
 }
 
-// GetOrganizations gets the organizations property value. Composed type representation for type Organizationsable
+// GetOrganizations gets the organizations property value. Composed type representation for type Organizations
 // returns a Organizationsable when successful
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetOrganizations() Organizationsable {
-	return m.organizations
+	val, err := m.GetBackingStore().Get("organizations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Organizationsable)
+	}
+	return nil
 }
 
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetProjects() Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
 
-// GetTasks gets the tasks property value. Composed type representation for type Tasksable
+// GetTasks gets the tasks property value. Composed type representation for type Tasks
 // returns a Tasksable when successful
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetTasks() Tasksable {
-	return m.tasks
+	val, err := m.GetBackingStore().Get("tasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Tasksable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,32 +162,52 @@ func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) Serialize(writer i878
 	return nil
 }
 
-// SetOrganizations sets the organizations property value. Composed type representation for type Organizationsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetOrganizations sets the organizations property value. Composed type representation for type Organizations
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) SetOrganizations(value Organizationsable) {
-	m.organizations = value
+	err := m.GetBackingStore().Set("organizations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
+// SetProjects sets the projects property value. Composed type representation for type Projects
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) SetProjects(value Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetTasks sets the tasks property value. Composed type representation for type Tasksable
+// SetTasks sets the tasks property value. Composed type representation for type Tasks
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) SetTasks(value Tasksable) {
-	m.tasks = value
+	err := m.GetBackingStore().Set("tasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *TaskConfigsEnvelope_TaskConfigsEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskConfigsEnvelope_TaskConfigsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetOrganizations() Organizationsable
 	GetProjects() Projectsable
 	GetTasks() Tasksable
 	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetOrganizations(value Organizationsable)
 	SetProjects(value Projectsable)
 	SetTasks(value Tasksable)
@@ -171,6 +217,7 @@ type TaskConfigsEnvelope_TaskConfigsEnvelope_includedable interface {
 // NewTaskConfigsEnvelope instantiates a new TaskConfigsEnvelope and sets the default values.
 func NewTaskConfigsEnvelope() *TaskConfigsEnvelope {
 	m := &TaskConfigsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -184,13 +231,34 @@ func CreateTaskConfigsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskConfigsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskConfigsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a TaskConfigsable when successful
 func (m *TaskConfigsEnvelope) GetData() TaskConfigsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskConfigsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -229,7 +297,14 @@ func (m *TaskConfigsEnvelope) GetFieldDeserializers() map[string]func(i878a80d23
 // GetIncluded gets the included property value. The included property
 // returns a []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable when successful
 func (m *TaskConfigsEnvelope) GetIncluded() []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TaskConfigsEnvelope_TaskConfigsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -263,24 +338,41 @@ func (m *TaskConfigsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskConfigsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskConfigsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *TaskConfigsEnvelope) SetData(value TaskConfigsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *TaskConfigsEnvelope) SetIncluded(value []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskConfigsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() TaskConfigsable
 	GetIncluded() []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value TaskConfigsable)
 	SetIncluded(value []TaskConfigsEnvelope_TaskConfigsEnvelope_includedable)
 }

@@ -5,33 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type VarsetsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data Varsetsable
-	// The included property
-	included []VarsetsEnvelope_VarsetsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// VarsetsEnvelope_VarsetsEnvelope_included composed type wrapper for classes Projectsable, Stacksable, Varsable, Workspacesable
+// VarsetsEnvelope_VarsetsEnvelope_included composed type wrapper for classes Projects, Stacks, Vars, Workspaces
 type VarsetsEnvelope_VarsetsEnvelope_included struct {
-	// Composed type representation for type Projectsable
-	projects Projectsable
-	// Composed type representation for type Stacksable
-	stacks Stacksable
-	// Composed type representation for type Varsable
-	vars Varsable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewVarsetsEnvelope_VarsetsEnvelope_included instantiates a new VarsetsEnvelope_VarsetsEnvelope_included and sets the default values.
 func NewVarsetsEnvelope_VarsetsEnvelope_included() *VarsetsEnvelope_VarsetsEnvelope_included {
 	m := &VarsetsEnvelope_VarsetsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -65,6 +57,12 @@ func CreateVarsetsEnvelope_VarsetsEnvelope_includedFromDiscriminatorValue(parseN
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -86,28 +84,56 @@ func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetIsComposedType() bool {
 	return true
 }
 
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetProjects() Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
 
-// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+// GetStacks gets the stacks property value. Composed type representation for type Stacks
 // returns a Stacksable when successful
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetStacks() Stacksable {
-	return m.stacks
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacksable)
+	}
+	return nil
 }
 
-// GetVars gets the vars property value. Composed type representation for type Varsable
+// GetVars gets the vars property value. Composed type representation for type Vars
 // returns a Varsable when successful
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetVars() Varsable {
-	return m.vars
+	val, err := m.GetBackingStore().Get("vars")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Varsable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,32 +162,52 @@ func (m *VarsetsEnvelope_VarsetsEnvelope_included) Serialize(writer i878a80d2330
 	return nil
 }
 
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetProjects sets the projects property value. Composed type representation for type Projects
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetProjects(value Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStacks sets the stacks property value. Composed type representation for type Stacksable
+// SetStacks sets the stacks property value. Composed type representation for type Stacks
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetStacks(value Stacksable) {
-	m.stacks = value
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetVars sets the vars property value. Composed type representation for type Varsable
+// SetVars sets the vars property value. Composed type representation for type Vars
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetVars(value Varsable) {
-	m.vars = value
+	err := m.GetBackingStore().Set("vars", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *VarsetsEnvelope_VarsetsEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type VarsetsEnvelope_VarsetsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetProjects() Projectsable
 	GetStacks() Stacksable
 	GetVars() Varsable
 	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetProjects(value Projectsable)
 	SetStacks(value Stacksable)
 	SetVars(value Varsable)
@@ -171,6 +217,7 @@ type VarsetsEnvelope_VarsetsEnvelope_includedable interface {
 // NewVarsetsEnvelope instantiates a new VarsetsEnvelope and sets the default values.
 func NewVarsetsEnvelope() *VarsetsEnvelope {
 	m := &VarsetsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -184,13 +231,34 @@ func CreateVarsetsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *VarsetsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *VarsetsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a Varsetsable when successful
 func (m *VarsetsEnvelope) GetData() Varsetsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Varsetsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -229,7 +297,14 @@ func (m *VarsetsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e8
 // GetIncluded gets the included property value. The included property
 // returns a []VarsetsEnvelope_VarsetsEnvelope_includedable when successful
 func (m *VarsetsEnvelope) GetIncluded() []VarsetsEnvelope_VarsetsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]VarsetsEnvelope_VarsetsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -263,24 +338,41 @@ func (m *VarsetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *VarsetsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *VarsetsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *VarsetsEnvelope) SetData(value Varsetsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *VarsetsEnvelope) SetIncluded(value []VarsetsEnvelope_VarsetsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type VarsetsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() Varsetsable
 	GetIncluded() []VarsetsEnvelope_VarsetsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value Varsetsable)
 	SetIncluded(value []VarsetsEnvelope_VarsetsEnvelope_includedable)
 }

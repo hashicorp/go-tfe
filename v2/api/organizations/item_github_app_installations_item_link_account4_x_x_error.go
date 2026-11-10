@@ -6,14 +6,13 @@ package organizations
 import (
 	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemGithubAppInstallationsItemLinkAccount4XXError struct {
 	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ApiError
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The error property
-	errorEscaped *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewItemGithubAppInstallationsItemLinkAccount4XXError instantiates a new ItemGithubAppInstallationsItemLinkAccount4XXError and sets the default values.
@@ -21,6 +20,7 @@ func NewItemGithubAppInstallationsItemLinkAccount4XXError() *ItemGithubAppInstal
 	m := &ItemGithubAppInstallationsItemLinkAccount4XXError{
 		ApiError: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewApiError(),
 	}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -40,13 +40,34 @@ func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) Error() string {
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetErrorEscaped gets the error property value. The error property
 // returns a *string when successful
 func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) GetErrorEscaped() *string {
-	return m.errorEscaped
+	val, err := m.GetBackingStore().Get("errorEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -85,17 +106,31 @@ func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) Serialize(writer i87
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetErrorEscaped sets the error property value. The error property
 func (m *ItemGithubAppInstallationsItemLinkAccount4XXError) SetErrorEscaped(value *string) {
-	m.errorEscaped = value
+	err := m.GetBackingStore().Set("errorEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemGithubAppInstallationsItemLinkAccount4XXErrorable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetErrorEscaped() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetErrorEscaped(value *string)
 }

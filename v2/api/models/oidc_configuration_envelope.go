@@ -5,31 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type OidcConfigurationEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// OidcConfigurationEnvelope_OidcConfigurationEnvelope_data composed type wrapper for classes AwsOidcConfigurationsable, AzureOidcConfigurationsable, GcpOidcConfigurationsable, VaultOidcConfigurationsable
+// OidcConfigurationEnvelope_OidcConfigurationEnvelope_data composed type wrapper for classes AwsOidcConfigurations, AzureOidcConfigurations, GcpOidcConfigurations, VaultOidcConfigurations
 type OidcConfigurationEnvelope_OidcConfigurationEnvelope_data struct {
-	// Composed type representation for type AwsOidcConfigurationsable
-	awsOidcConfigurations AwsOidcConfigurationsable
-	// Composed type representation for type AzureOidcConfigurationsable
-	azureOidcConfigurations AzureOidcConfigurationsable
-	// Composed type representation for type GcpOidcConfigurationsable
-	gcpOidcConfigurations GcpOidcConfigurationsable
-	// Composed type representation for type VaultOidcConfigurationsable
-	vaultOidcConfigurations VaultOidcConfigurationsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOidcConfigurationEnvelope_OidcConfigurationEnvelope_data instantiates a new OidcConfigurationEnvelope_OidcConfigurationEnvelope_data and sets the default values.
 func NewOidcConfigurationEnvelope_OidcConfigurationEnvelope_data() *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data {
 	m := &OidcConfigurationEnvelope_OidcConfigurationEnvelope_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -63,16 +57,36 @@ func CreateOidcConfigurationEnvelope_OidcConfigurationEnvelope_dataFromDiscrimin
 	return result, nil
 }
 
-// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurationsable
+// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurations
 // returns a AwsOidcConfigurationsable when successful
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetAwsOidcConfigurations() AwsOidcConfigurationsable {
-	return m.awsOidcConfigurations
+	val, err := m.GetBackingStore().Get("awsOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AwsOidcConfigurationsable)
+	}
+	return nil
 }
 
-// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurationsable
+// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurations
 // returns a AzureOidcConfigurationsable when successful
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetAzureOidcConfigurations() AzureOidcConfigurationsable {
-	return m.azureOidcConfigurations
+	val, err := m.GetBackingStore().Get("azureOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AzureOidcConfigurationsable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -90,10 +104,17 @@ func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetFieldDeser
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurationsable
+// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurations
 // returns a GcpOidcConfigurationsable when successful
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetGcpOidcConfigurations() GcpOidcConfigurationsable {
-	return m.gcpOidcConfigurations
+	val, err := m.GetBackingStore().Get("gcpOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(GcpOidcConfigurationsable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -102,10 +123,17 @@ func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetIsComposed
 	return true
 }
 
-// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurationsable
+// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurations
 // returns a VaultOidcConfigurationsable when successful
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) GetVaultOidcConfigurations() VaultOidcConfigurationsable {
-	return m.vaultOidcConfigurations
+	val, err := m.GetBackingStore().Get("vaultOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VaultOidcConfigurationsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -134,34 +162,54 @@ func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) Serialize(wri
 	return nil
 }
 
-// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurationsable
+// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurations
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) SetAwsOidcConfigurations(value AwsOidcConfigurationsable) {
-	m.awsOidcConfigurations = value
+	err := m.GetBackingStore().Set("awsOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurationsable
+// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurations
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) SetAzureOidcConfigurations(value AzureOidcConfigurationsable) {
-	m.azureOidcConfigurations = value
+	err := m.GetBackingStore().Set("azureOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurationsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurations
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) SetGcpOidcConfigurations(value GcpOidcConfigurationsable) {
-	m.gcpOidcConfigurations = value
+	err := m.GetBackingStore().Set("gcpOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurationsable
+// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurations
 func (m *OidcConfigurationEnvelope_OidcConfigurationEnvelope_data) SetVaultOidcConfigurations(value VaultOidcConfigurationsable) {
-	m.vaultOidcConfigurations = value
+	err := m.GetBackingStore().Set("vaultOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAwsOidcConfigurations() AwsOidcConfigurationsable
 	GetAzureOidcConfigurations() AzureOidcConfigurationsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetGcpOidcConfigurations() GcpOidcConfigurationsable
 	GetVaultOidcConfigurations() VaultOidcConfigurationsable
 	SetAwsOidcConfigurations(value AwsOidcConfigurationsable)
 	SetAzureOidcConfigurations(value AzureOidcConfigurationsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetGcpOidcConfigurations(value GcpOidcConfigurationsable)
 	SetVaultOidcConfigurations(value VaultOidcConfigurationsable)
 }
@@ -169,6 +217,7 @@ type OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable interface {
 // NewOidcConfigurationEnvelope instantiates a new OidcConfigurationEnvelope and sets the default values.
 func NewOidcConfigurationEnvelope() *OidcConfigurationEnvelope {
 	m := &OidcConfigurationEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -182,13 +231,34 @@ func CreateOidcConfigurationEnvelopeFromDiscriminatorValue(parseNode i878a80d233
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *OidcConfigurationEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OidcConfigurationEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable when successful
 func (m *OidcConfigurationEnvelope) GetData() OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -201,7 +271,7 @@ func (m *OidcConfigurationEnvelope) GetFieldDeserializers() map[string]func(i878
 			return err
 		}
 		if val != nil {
-			m.SetData(val.(OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable))
+			m.SetData(val.(*OidcConfigurationEnvelope_OidcConfigurationEnvelope_data))
 		}
 		return nil
 	}
@@ -227,17 +297,31 @@ func (m *OidcConfigurationEnvelope) Serialize(writer i878a80d2330e89d26896388a3f
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *OidcConfigurationEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OidcConfigurationEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *OidcConfigurationEnvelope) SetData(value OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OidcConfigurationEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value OidcConfigurationEnvelope_OidcConfigurationEnvelope_dataable)
 }

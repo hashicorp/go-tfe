@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PolicyEvaluations_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The policyAttachable property
-	policyAttachable TaskStagesHasOneable
-	// The policySetOutcomes property
-	policySetOutcomes PolicySetOutcomesHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicyEvaluations_relationships instantiates a new PolicyEvaluations_relationships and sets the default values.
 func NewPolicyEvaluations_relationships() *PolicyEvaluations_relationships {
 	m := &PolicyEvaluations_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreatePolicyEvaluations_relationshipsFromDiscriminatorValue(parseNode i878a
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicyEvaluations_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyEvaluations_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *PolicyEvaluations_relationships) GetFieldDeserializers() map[string]fun
 // GetPolicyAttachable gets the policy-attachable property value. The policyAttachable property
 // returns a TaskStagesHasOneable when successful
 func (m *PolicyEvaluations_relationships) GetPolicyAttachable() TaskStagesHasOneable {
-	return m.policyAttachable
+	val, err := m.GetBackingStore().Get("policyAttachable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStagesHasOneable)
+	}
+	return nil
 }
 
 // GetPolicySetOutcomes gets the policy-set-outcomes property value. The policySetOutcomes property
 // returns a PolicySetOutcomesHasManyable when successful
 func (m *PolicyEvaluations_relationships) GetPolicySetOutcomes() PolicySetOutcomesHasManyable {
-	return m.policySetOutcomes
+	val, err := m.GetBackingStore().Get("policySetOutcomes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetOutcomesHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -99,24 +125,41 @@ func (m *PolicyEvaluations_relationships) Serialize(writer i878a80d2330e89d26896
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicyEvaluations_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyEvaluations_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetPolicyAttachable sets the policy-attachable property value. The policyAttachable property
 func (m *PolicyEvaluations_relationships) SetPolicyAttachable(value TaskStagesHasOneable) {
-	m.policyAttachable = value
+	err := m.GetBackingStore().Set("policyAttachable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetOutcomes sets the policy-set-outcomes property value. The policySetOutcomes property
 func (m *PolicyEvaluations_relationships) SetPolicySetOutcomes(value PolicySetOutcomesHasManyable) {
-	m.policySetOutcomes = value
+	err := m.GetBackingStore().Set("policySetOutcomes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicyEvaluations_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetPolicyAttachable() TaskStagesHasOneable
 	GetPolicySetOutcomes() PolicySetOutcomesHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetPolicyAttachable(value TaskStagesHasOneable)
 	SetPolicySetOutcomes(value PolicySetOutcomesHasManyable)
 }

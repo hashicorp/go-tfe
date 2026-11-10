@@ -5,73 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StateVersions_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The billableRumCount property
-	billableRumCount *int32
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The encryptedStateDownloadUrl property
-	encryptedStateDownloadUrl *string
-	// The force property
-	force *bool
-	// The hostedJsonStateDownloadUrl property
-	hostedJsonStateDownloadUrl *string
-	// The hostedJsonStateUploadUrl property
-	hostedJsonStateUploadUrl *string
-	// The hostedStateDownloadUrl property
-	hostedStateDownloadUrl *string
-	// The hostedStateUploadUrl property
-	hostedStateUploadUrl *string
-	// The intermediate property
-	intermediate *bool
-	// The jsonState property
-	jsonState *string
-	// The jsonStateOutputs property
-	jsonStateOutputs *string
-	// The lineage property
-	lineage *string
-	// The md5 property
-	md5 *string
-	// The modules property
-	modules StateVersions_attributes_modulesable
-	// The permissions property
-	permissions StateVersions_attributes_permissionsable
-	// The providers property
-	providers StateVersions_attributes_providersable
-	// The resources property
-	resources []StateVersions_attributes_resourcesable
-	// The resourcesProcessed property
-	resourcesProcessed *bool
-	// The sanitizedStateDownloadUrl property
-	sanitizedStateDownloadUrl *string
-	// The sanitizedStateUploadUrl property
-	sanitizedStateUploadUrl *string
-	// The serial property
-	serial *int32
-	// The size property
-	size *int32
-	// The state property
-	state *string
-	// The stateVersion property
-	stateVersion *int32
-	// The status property
-	status *StateVersions_attributes_status
-	// The terraformVersion property
-	terraformVersion *string
-	// The vcsCommitSha property
-	vcsCommitSha *string
-	// The vcsCommitUrl property
-	vcsCommitUrl *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStateVersions_attributes instantiates a new StateVersions_attributes and sets the default values.
 func NewStateVersions_attributes() *StateVersions_attributes {
 	m := &StateVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -85,25 +31,60 @@ func CreateStateVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StateVersions_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBillableRumCount gets the billable-rum-count property value. The billableRumCount property
 // returns a *int32 when successful
 func (m *StateVersions_attributes) GetBillableRumCount() *int32 {
-	return m.billableRumCount
+	val, err := m.GetBackingStore().Get("billableRumCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StateVersions_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetEncryptedStateDownloadUrl gets the encrypted-state-download-url property value. The encryptedStateDownloadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetEncryptedStateDownloadUrl() *string {
-	return m.encryptedStateDownloadUrl
+	val, err := m.GetBackingStore().Get("encryptedStateDownloadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -402,151 +383,326 @@ func (m *StateVersions_attributes) GetFieldDeserializers() map[string]func(i878a
 // GetForce gets the force property value. The force property
 // returns a *bool when successful
 func (m *StateVersions_attributes) GetForce() *bool {
-	return m.force
+	val, err := m.GetBackingStore().Get("force")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetHostedJsonStateDownloadUrl gets the hosted-json-state-download-url property value. The hostedJsonStateDownloadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetHostedJsonStateDownloadUrl() *string {
-	return m.hostedJsonStateDownloadUrl
+	val, err := m.GetBackingStore().Get("hostedJsonStateDownloadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetHostedJsonStateUploadUrl gets the hosted-json-state-upload-url property value. The hostedJsonStateUploadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetHostedJsonStateUploadUrl() *string {
-	return m.hostedJsonStateUploadUrl
+	val, err := m.GetBackingStore().Get("hostedJsonStateUploadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetHostedStateDownloadUrl gets the hosted-state-download-url property value. The hostedStateDownloadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetHostedStateDownloadUrl() *string {
-	return m.hostedStateDownloadUrl
+	val, err := m.GetBackingStore().Get("hostedStateDownloadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetHostedStateUploadUrl gets the hosted-state-upload-url property value. The hostedStateUploadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetHostedStateUploadUrl() *string {
-	return m.hostedStateUploadUrl
+	val, err := m.GetBackingStore().Get("hostedStateUploadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIntermediate gets the intermediate property value. The intermediate property
 // returns a *bool when successful
 func (m *StateVersions_attributes) GetIntermediate() *bool {
-	return m.intermediate
+	val, err := m.GetBackingStore().Get("intermediate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetJsonState gets the json-state property value. The jsonState property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetJsonState() *string {
-	return m.jsonState
+	val, err := m.GetBackingStore().Get("jsonState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetJsonStateOutputs gets the json-state-outputs property value. The jsonStateOutputs property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetJsonStateOutputs() *string {
-	return m.jsonStateOutputs
+	val, err := m.GetBackingStore().Get("jsonStateOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetLineage gets the lineage property value. The lineage property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetLineage() *string {
-	return m.lineage
+	val, err := m.GetBackingStore().Get("lineage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetMd5 gets the md5 property value. The md5 property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetMd5() *string {
-	return m.md5
+	val, err := m.GetBackingStore().Get("md5")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetModules gets the modules property value. The modules property
 // returns a StateVersions_attributes_modulesable when successful
 func (m *StateVersions_attributes) GetModules() StateVersions_attributes_modulesable {
-	return m.modules
+	val, err := m.GetBackingStore().Get("modules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersions_attributes_modulesable)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a StateVersions_attributes_permissionsable when successful
 func (m *StateVersions_attributes) GetPermissions() StateVersions_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersions_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetProviders gets the providers property value. The providers property
 // returns a StateVersions_attributes_providersable when successful
 func (m *StateVersions_attributes) GetProviders() StateVersions_attributes_providersable {
-	return m.providers
+	val, err := m.GetBackingStore().Get("providers")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersions_attributes_providersable)
+	}
+	return nil
 }
 
 // GetResources gets the resources property value. The resources property
 // returns a []StateVersions_attributes_resourcesable when successful
 func (m *StateVersions_attributes) GetResources() []StateVersions_attributes_resourcesable {
-	return m.resources
+	val, err := m.GetBackingStore().Get("resources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StateVersions_attributes_resourcesable)
+	}
+	return nil
 }
 
 // GetResourcesProcessed gets the resources-processed property value. The resourcesProcessed property
 // returns a *bool when successful
 func (m *StateVersions_attributes) GetResourcesProcessed() *bool {
-	return m.resourcesProcessed
+	val, err := m.GetBackingStore().Get("resourcesProcessed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSanitizedStateDownloadUrl gets the sanitized-state-download-url property value. The sanitizedStateDownloadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetSanitizedStateDownloadUrl() *string {
-	return m.sanitizedStateDownloadUrl
+	val, err := m.GetBackingStore().Get("sanitizedStateDownloadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSanitizedStateUploadUrl gets the sanitized-state-upload-url property value. The sanitizedStateUploadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetSanitizedStateUploadUrl() *string {
-	return m.sanitizedStateUploadUrl
+	val, err := m.GetBackingStore().Get("sanitizedStateUploadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSerial gets the serial property value. The serial property
 // returns a *int32 when successful
 func (m *StateVersions_attributes) GetSerial() *int32 {
-	return m.serial
+	val, err := m.GetBackingStore().Get("serial")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSize gets the size property value. The size property
 // returns a *int32 when successful
 func (m *StateVersions_attributes) GetSize() *int32 {
-	return m.size
+	val, err := m.GetBackingStore().Get("size")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetState gets the state property value. The state property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetState() *string {
-	return m.state
+	val, err := m.GetBackingStore().Get("state")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStateVersion gets the state-version property value. The stateVersion property
 // returns a *int32 when successful
 func (m *StateVersions_attributes) GetStateVersion() *int32 {
-	return m.stateVersion
+	val, err := m.GetBackingStore().Get("stateVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *StateVersions_attributes_status when successful
 func (m *StateVersions_attributes) GetStatus() *StateVersions_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StateVersions_attributes_status)
+	}
+	return nil
 }
 
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetTerraformVersion() *string {
-	return m.terraformVersion
+	val, err := m.GetBackingStore().Get("terraformVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetVcsCommitSha gets the vcs-commit-sha property value. The vcsCommitSha property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetVcsCommitSha() *string {
-	return m.vcsCommitSha
+	val, err := m.GetBackingStore().Get("vcsCommitSha")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetVcsCommitUrl gets the vcs-commit-url property value. The vcsCommitUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetVcsCommitUrl() *string {
-	return m.vcsCommitUrl
+	val, err := m.GetBackingStore().Get("vcsCommitUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -604,152 +760,246 @@ func (m *StateVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StateVersions_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBillableRumCount sets the billable-rum-count property value. The billableRumCount property
 func (m *StateVersions_attributes) SetBillableRumCount(value *int32) {
-	m.billableRumCount = value
+	err := m.GetBackingStore().Set("billableRumCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StateVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEncryptedStateDownloadUrl sets the encrypted-state-download-url property value. The encryptedStateDownloadUrl property
 func (m *StateVersions_attributes) SetEncryptedStateDownloadUrl(value *string) {
-	m.encryptedStateDownloadUrl = value
+	err := m.GetBackingStore().Set("encryptedStateDownloadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetForce sets the force property value. The force property
 func (m *StateVersions_attributes) SetForce(value *bool) {
-	m.force = value
+	err := m.GetBackingStore().Set("force", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHostedJsonStateDownloadUrl sets the hosted-json-state-download-url property value. The hostedJsonStateDownloadUrl property
 func (m *StateVersions_attributes) SetHostedJsonStateDownloadUrl(value *string) {
-	m.hostedJsonStateDownloadUrl = value
+	err := m.GetBackingStore().Set("hostedJsonStateDownloadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHostedJsonStateUploadUrl sets the hosted-json-state-upload-url property value. The hostedJsonStateUploadUrl property
 func (m *StateVersions_attributes) SetHostedJsonStateUploadUrl(value *string) {
-	m.hostedJsonStateUploadUrl = value
+	err := m.GetBackingStore().Set("hostedJsonStateUploadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHostedStateDownloadUrl sets the hosted-state-download-url property value. The hostedStateDownloadUrl property
 func (m *StateVersions_attributes) SetHostedStateDownloadUrl(value *string) {
-	m.hostedStateDownloadUrl = value
+	err := m.GetBackingStore().Set("hostedStateDownloadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHostedStateUploadUrl sets the hosted-state-upload-url property value. The hostedStateUploadUrl property
 func (m *StateVersions_attributes) SetHostedStateUploadUrl(value *string) {
-	m.hostedStateUploadUrl = value
+	err := m.GetBackingStore().Set("hostedStateUploadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIntermediate sets the intermediate property value. The intermediate property
 func (m *StateVersions_attributes) SetIntermediate(value *bool) {
-	m.intermediate = value
+	err := m.GetBackingStore().Set("intermediate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetJsonState sets the json-state property value. The jsonState property
 func (m *StateVersions_attributes) SetJsonState(value *string) {
-	m.jsonState = value
+	err := m.GetBackingStore().Set("jsonState", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetJsonStateOutputs sets the json-state-outputs property value. The jsonStateOutputs property
 func (m *StateVersions_attributes) SetJsonStateOutputs(value *string) {
-	m.jsonStateOutputs = value
+	err := m.GetBackingStore().Set("jsonStateOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLineage sets the lineage property value. The lineage property
 func (m *StateVersions_attributes) SetLineage(value *string) {
-	m.lineage = value
+	err := m.GetBackingStore().Set("lineage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMd5 sets the md5 property value. The md5 property
 func (m *StateVersions_attributes) SetMd5(value *string) {
-	m.md5 = value
+	err := m.GetBackingStore().Set("md5", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModules sets the modules property value. The modules property
 func (m *StateVersions_attributes) SetModules(value StateVersions_attributes_modulesable) {
-	m.modules = value
+	err := m.GetBackingStore().Set("modules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *StateVersions_attributes) SetPermissions(value StateVersions_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProviders sets the providers property value. The providers property
 func (m *StateVersions_attributes) SetProviders(value StateVersions_attributes_providersable) {
-	m.providers = value
+	err := m.GetBackingStore().Set("providers", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResources sets the resources property value. The resources property
 func (m *StateVersions_attributes) SetResources(value []StateVersions_attributes_resourcesable) {
-	m.resources = value
+	err := m.GetBackingStore().Set("resources", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourcesProcessed sets the resources-processed property value. The resourcesProcessed property
 func (m *StateVersions_attributes) SetResourcesProcessed(value *bool) {
-	m.resourcesProcessed = value
+	err := m.GetBackingStore().Set("resourcesProcessed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSanitizedStateDownloadUrl sets the sanitized-state-download-url property value. The sanitizedStateDownloadUrl property
 func (m *StateVersions_attributes) SetSanitizedStateDownloadUrl(value *string) {
-	m.sanitizedStateDownloadUrl = value
+	err := m.GetBackingStore().Set("sanitizedStateDownloadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSanitizedStateUploadUrl sets the sanitized-state-upload-url property value. The sanitizedStateUploadUrl property
 func (m *StateVersions_attributes) SetSanitizedStateUploadUrl(value *string) {
-	m.sanitizedStateUploadUrl = value
+	err := m.GetBackingStore().Set("sanitizedStateUploadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSerial sets the serial property value. The serial property
 func (m *StateVersions_attributes) SetSerial(value *int32) {
-	m.serial = value
+	err := m.GetBackingStore().Set("serial", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSize sets the size property value. The size property
 func (m *StateVersions_attributes) SetSize(value *int32) {
-	m.size = value
+	err := m.GetBackingStore().Set("size", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetState sets the state property value. The state property
 func (m *StateVersions_attributes) SetState(value *string) {
-	m.state = value
+	err := m.GetBackingStore().Set("state", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStateVersion sets the state-version property value. The stateVersion property
 func (m *StateVersions_attributes) SetStateVersion(value *int32) {
-	m.stateVersion = value
+	err := m.GetBackingStore().Set("stateVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *StateVersions_attributes) SetStatus(value *StateVersions_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
 func (m *StateVersions_attributes) SetTerraformVersion(value *string) {
-	m.terraformVersion = value
+	err := m.GetBackingStore().Set("terraformVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsCommitSha sets the vcs-commit-sha property value. The vcsCommitSha property
 func (m *StateVersions_attributes) SetVcsCommitSha(value *string) {
-	m.vcsCommitSha = value
+	err := m.GetBackingStore().Set("vcsCommitSha", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsCommitUrl sets the vcs-commit-url property value. The vcsCommitUrl property
 func (m *StateVersions_attributes) SetVcsCommitUrl(value *string) {
-	m.vcsCommitUrl = value
+	err := m.GetBackingStore().Set("vcsCommitUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StateVersions_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBillableRumCount() *int32
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetEncryptedStateDownloadUrl() *string
@@ -778,6 +1028,7 @@ type StateVersions_attributesable interface {
 	GetTerraformVersion() *string
 	GetVcsCommitSha() *string
 	GetVcsCommitUrl() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBillableRumCount(value *int32)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetEncryptedStateDownloadUrl(value *string)

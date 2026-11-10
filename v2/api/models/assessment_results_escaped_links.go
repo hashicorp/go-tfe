@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AssessmentResults_links struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// API URL for the JSON formatted assessment output (available when assessment succeeded)
-	jsonOutput *string
-	// API URL for the JSON schema of this assessment (available when assessment succeeded)
-	jsonSchema *string
-	// API URL to read the logs for this assessment
-	logOutput *string
-	// API URL for the sanitized plan (available when HYOK is enabled and assessment succeeded)
-	sanitizedPlan *string
-	// API URL for this assessment result
-	self *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAssessmentResults_links instantiates a new AssessmentResults_links and sets the default values.
 func NewAssessmentResults_links() *AssessmentResults_links {
 	m := &AssessmentResults_links{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,7 +30,21 @@ func CreateAssessmentResults_linksFromDiscriminatorValue(parseNode i878a80d2330e
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AssessmentResults_links) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AssessmentResults_links) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -101,31 +107,66 @@ func (m *AssessmentResults_links) GetFieldDeserializers() map[string]func(i878a8
 // GetJsonOutput gets the json-output property value. API URL for the JSON formatted assessment output (available when assessment succeeded)
 // returns a *string when successful
 func (m *AssessmentResults_links) GetJsonOutput() *string {
-	return m.jsonOutput
+	val, err := m.GetBackingStore().Get("jsonOutput")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetJsonSchema gets the json-schema property value. API URL for the JSON schema of this assessment (available when assessment succeeded)
 // returns a *string when successful
 func (m *AssessmentResults_links) GetJsonSchema() *string {
-	return m.jsonSchema
+	val, err := m.GetBackingStore().Get("jsonSchema")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetLogOutput gets the log-output property value. API URL to read the logs for this assessment
 // returns a *string when successful
 func (m *AssessmentResults_links) GetLogOutput() *string {
-	return m.logOutput
+	val, err := m.GetBackingStore().Get("logOutput")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSanitizedPlan gets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and assessment succeeded)
 // returns a *string when successful
 func (m *AssessmentResults_links) GetSanitizedPlan() *string {
-	return m.sanitizedPlan
+	val, err := m.GetBackingStore().Get("sanitizedPlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSelf gets the self property value. API URL for this assessment result
 // returns a *string when successful
 func (m *AssessmentResults_links) GetSelf() *string {
-	return m.self
+	val, err := m.GetBackingStore().Get("self")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *AssessmentResults_links) Serialize(writer i878a80d2330e89d26896388a3f48
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AssessmentResults_links) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AssessmentResults_links) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetJsonOutput sets the json-output property value. API URL for the JSON formatted assessment output (available when assessment succeeded)
 func (m *AssessmentResults_links) SetJsonOutput(value *string) {
-	m.jsonOutput = value
+	err := m.GetBackingStore().Set("jsonOutput", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetJsonSchema sets the json-schema property value. API URL for the JSON schema of this assessment (available when assessment succeeded)
 func (m *AssessmentResults_links) SetJsonSchema(value *string) {
-	m.jsonSchema = value
+	err := m.GetBackingStore().Set("jsonSchema", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLogOutput sets the log-output property value. API URL to read the logs for this assessment
 func (m *AssessmentResults_links) SetLogOutput(value *string) {
-	m.logOutput = value
+	err := m.GetBackingStore().Set("logOutput", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSanitizedPlan sets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and assessment succeeded)
 func (m *AssessmentResults_links) SetSanitizedPlan(value *string) {
-	m.sanitizedPlan = value
+	err := m.GetBackingStore().Set("sanitizedPlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSelf sets the self property value. API URL for this assessment result
 func (m *AssessmentResults_links) SetSelf(value *string) {
-	m.self = value
+	err := m.GetBackingStore().Set("self", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AssessmentResults_linksable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetJsonOutput() *string
 	GetJsonSchema() *string
 	GetLogOutput() *string
 	GetSanitizedPlan() *string
 	GetSelf() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetJsonOutput(value *string)
 	SetJsonSchema(value *string)
 	SetLogOutput(value *string)

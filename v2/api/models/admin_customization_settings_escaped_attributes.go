@@ -5,36 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminCustomizationSettings_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Ordered catalog of configurable avatar sources with enabled/disabled flags. Initials is the implicit terminal fallback and is not included. PATCH accepts the same array format and performs a full replacement.This attribute is only available in Terraform Enterprise.
-	avatarSources []AdminCustomizationSettings_attributes_avatarSourcesable
-	// HTML that overrides the default error instructions.This attribute is only available in Terraform Enterprise.
-	error *string
-	// HTML rendered just above the copyright/release in the application footer.This attribute is only available in Terraform Enterprise.
-	footer *string
-	// Overrides documentation links in the TFE UI (Help menu). Accepts https:// or http:// only. Leave blank to use the default HashiCorp documentation URL.This attribute is only available in Terraform Enterprise.
-	internalDocumentationUrl *string
-	// Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
-	internalSupportUrl *string
-	// Overrides tutorial links in the TFE UI (Help > Tutorials). Accepts https:// or http:// only. Leave blank to use the default HashiCorp tutorials URL.This attribute is only available in Terraform Enterprise.
-	internalTutorialsUrl *string
-	// HTML that overrides the default help text below the login form.This attribute is only available in Terraform Enterprise.
-	loginHelp *string
-	// HTML shown to users when they first create an account.This attribute is only available in Terraform Enterprise.
-	newUser *string
-	// The support email address shown in help text on the site. When set, it is rendered as a mailto: link in the support link chain.
-	supportEmailAddress *string
-	// The support URL shown in help text on the site. Used as the fallback when support-email-address is not set.
-	supportUrlAddress *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAdminCustomizationSettings_attributes instantiates a new AdminCustomizationSettings_attributes and sets the default values.
 func NewAdminCustomizationSettings_attributes() *AdminCustomizationSettings_attributes {
 	m := &AdminCustomizationSettings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -48,19 +30,47 @@ func CreateAdminCustomizationSettings_attributesFromDiscriminatorValue(parseNode
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AdminCustomizationSettings_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAvatarSources gets the avatar-sources property value. Ordered catalog of configurable avatar sources with enabled/disabled flags. Initials is the implicit terminal fallback and is not included. PATCH accepts the same array format and performs a full replacement.This attribute is only available in Terraform Enterprise.
 // returns a []AdminCustomizationSettings_attributes_avatarSourcesable when successful
 func (m *AdminCustomizationSettings_attributes) GetAvatarSources() []AdminCustomizationSettings_attributes_avatarSourcesable {
-	return m.avatarSources
+	val, err := m.GetBackingStore().Get("avatarSources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]AdminCustomizationSettings_attributes_avatarSourcesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminCustomizationSettings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetError gets the error property value. HTML that overrides the default error instructions.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetError() *string {
-	return m.error
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -179,49 +189,105 @@ func (m *AdminCustomizationSettings_attributes) GetFieldDeserializers() map[stri
 // GetFooter gets the footer property value. HTML rendered just above the copyright/release in the application footer.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetFooter() *string {
-	return m.footer
+	val, err := m.GetBackingStore().Get("footer")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInternalDocumentationUrl gets the internal-documentation-url property value. Overrides documentation links in the TFE UI (Help menu). Accepts https:// or http:// only. Leave blank to use the default HashiCorp documentation URL.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetInternalDocumentationUrl() *string {
-	return m.internalDocumentationUrl
+	val, err := m.GetBackingStore().Get("internalDocumentationUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInternalSupportUrl gets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetInternalSupportUrl() *string {
-	return m.internalSupportUrl
+	val, err := m.GetBackingStore().Get("internalSupportUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetInternalTutorialsUrl gets the internal-tutorials-url property value. Overrides tutorial links in the TFE UI (Help > Tutorials). Accepts https:// or http:// only. Leave blank to use the default HashiCorp tutorials URL.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetInternalTutorialsUrl() *string {
-	return m.internalTutorialsUrl
+	val, err := m.GetBackingStore().Get("internalTutorialsUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetLoginHelp gets the login-help property value. HTML that overrides the default help text below the login form.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetLoginHelp() *string {
-	return m.loginHelp
+	val, err := m.GetBackingStore().Get("loginHelp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNewUser gets the new-user property value. HTML shown to users when they first create an account.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetNewUser() *string {
-	return m.newUser
+	val, err := m.GetBackingStore().Get("newUser")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSupportEmailAddress gets the support-email-address property value. The support email address shown in help text on the site. When set, it is rendered as a mailto: link in the support link chain.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetSupportEmailAddress() *string {
-	return m.supportEmailAddress
+	val, err := m.GetBackingStore().Get("supportEmailAddress")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSupportUrlAddress gets the support-url-address property value. The support URL shown in help text on the site. Used as the fallback when support-email-address is not set.
 // returns a *string when successful
 func (m *AdminCustomizationSettings_attributes) GetSupportUrlAddress() *string {
-	return m.supportUrlAddress
+	val, err := m.GetBackingStore().Get("supportUrlAddress")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -303,63 +369,103 @@ func (m *AdminCustomizationSettings_attributes) Serialize(writer i878a80d2330e89
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AdminCustomizationSettings_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAvatarSources sets the avatar-sources property value. Ordered catalog of configurable avatar sources with enabled/disabled flags. Initials is the implicit terminal fallback and is not included. PATCH accepts the same array format and performs a full replacement.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetAvatarSources(value []AdminCustomizationSettings_attributes_avatarSourcesable) {
-	m.avatarSources = value
+	err := m.GetBackingStore().Set("avatarSources", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminCustomizationSettings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetError sets the error property value. HTML that overrides the default error instructions.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetError(value *string) {
-	m.error = value
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFooter sets the footer property value. HTML rendered just above the copyright/release in the application footer.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetFooter(value *string) {
-	m.footer = value
+	err := m.GetBackingStore().Set("footer", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInternalDocumentationUrl sets the internal-documentation-url property value. Overrides documentation links in the TFE UI (Help menu). Accepts https:// or http:// only. Leave blank to use the default HashiCorp documentation URL.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetInternalDocumentationUrl(value *string) {
-	m.internalDocumentationUrl = value
+	err := m.GetBackingStore().Set("internalDocumentationUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInternalSupportUrl sets the internal-support-url property value. Overrides the default support links in the TFE UI (Help menu, error pages, welcome page). Accepts https://, http://, or mailto: schemes. Leave blank to restore the default IBM support link resolution chain.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetInternalSupportUrl(value *string) {
-	m.internalSupportUrl = value
+	err := m.GetBackingStore().Set("internalSupportUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInternalTutorialsUrl sets the internal-tutorials-url property value. Overrides tutorial links in the TFE UI (Help > Tutorials). Accepts https:// or http:// only. Leave blank to use the default HashiCorp tutorials URL.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetInternalTutorialsUrl(value *string) {
-	m.internalTutorialsUrl = value
+	err := m.GetBackingStore().Set("internalTutorialsUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLoginHelp sets the login-help property value. HTML that overrides the default help text below the login form.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetLoginHelp(value *string) {
-	m.loginHelp = value
+	err := m.GetBackingStore().Set("loginHelp", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNewUser sets the new-user property value. HTML shown to users when they first create an account.This attribute is only available in Terraform Enterprise.
 func (m *AdminCustomizationSettings_attributes) SetNewUser(value *string) {
-	m.newUser = value
+	err := m.GetBackingStore().Set("newUser", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSupportEmailAddress sets the support-email-address property value. The support email address shown in help text on the site. When set, it is rendered as a mailto: link in the support link chain.
 func (m *AdminCustomizationSettings_attributes) SetSupportEmailAddress(value *string) {
-	m.supportEmailAddress = value
+	err := m.GetBackingStore().Set("supportEmailAddress", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSupportUrlAddress sets the support-url-address property value. The support URL shown in help text on the site. Used as the fallback when support-email-address is not set.
 func (m *AdminCustomizationSettings_attributes) SetSupportUrlAddress(value *string) {
-	m.supportUrlAddress = value
+	err := m.GetBackingStore().Set("supportUrlAddress", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AdminCustomizationSettings_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAvatarSources() []AdminCustomizationSettings_attributes_avatarSourcesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetError() *string
 	GetFooter() *string
 	GetInternalDocumentationUrl() *string
@@ -370,6 +476,7 @@ type AdminCustomizationSettings_attributesable interface {
 	GetSupportEmailAddress() *string
 	GetSupportUrlAddress() *string
 	SetAvatarSources(value []AdminCustomizationSettings_attributes_avatarSourcesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetError(value *string)
 	SetFooter(value *string)
 	SetInternalDocumentationUrl(value *string)

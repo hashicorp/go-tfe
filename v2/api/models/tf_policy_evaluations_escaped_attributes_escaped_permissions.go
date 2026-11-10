@@ -5,19 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TfPolicyEvaluations_attributes_permissions user permissions for this evaluation
 type TfPolicyEvaluations_attributes_permissions struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Whether the current user has permission to override failed policies
-	canOverride *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicyEvaluations_attributes_permissions instantiates a new TfPolicyEvaluations_attributes_permissions and sets the default values.
 func NewTfPolicyEvaluations_attributes_permissions() *TfPolicyEvaluations_attributes_permissions {
 	m := &TfPolicyEvaluations_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -31,13 +31,34 @@ func CreateTfPolicyEvaluations_attributes_permissionsFromDiscriminatorValue(pars
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicyEvaluations_attributes_permissions) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanOverride gets the can-override property value. Whether the current user has permission to override failed policies
 // returns a *bool when successful
 func (m *TfPolicyEvaluations_attributes_permissions) GetCanOverride() *bool {
-	return m.canOverride
+	val, err := m.GetBackingStore().Get("canOverride")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -76,17 +97,31 @@ func (m *TfPolicyEvaluations_attributes_permissions) Serialize(writer i878a80d23
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicyEvaluations_attributes_permissions) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanOverride sets the can-override property value. Whether the current user has permission to override failed policies
 func (m *TfPolicyEvaluations_attributes_permissions) SetCanOverride(value *bool) {
-	m.canOverride = value
+	err := m.GetBackingStore().Set("canOverride", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicyEvaluations_attributes_permissionsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanOverride() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanOverride(value *bool)
 }

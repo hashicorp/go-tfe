@@ -5,25 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackPolicySetOutcomes represents the outcome of evaluating a Terraform Policy set against a Stacks plan.
 type StackPolicySetOutcomes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The attributes property
-	attributes StackPolicySetOutcomes_attributesable
-	// The id property
-	id *string
-	// The relationships property
-	relationships StackPolicySetOutcomes_relationshipsable
-	// The type property
-	typeEscaped *StackPolicySetOutcomes_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackPolicySetOutcomes instantiates a new StackPolicySetOutcomes and sets the default values.
 func NewStackPolicySetOutcomes() *StackPolicySetOutcomes {
 	m := &StackPolicySetOutcomes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -37,13 +31,34 @@ func CreateStackPolicySetOutcomesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackPolicySetOutcomes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttributes gets the attributes property value. The attributes property
 // returns a StackPolicySetOutcomes_attributesable when successful
 func (m *StackPolicySetOutcomes) GetAttributes() StackPolicySetOutcomes_attributesable {
-	return m.attributes
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicySetOutcomes_attributesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackPolicySetOutcomes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -96,19 +111,40 @@ func (m *StackPolicySetOutcomes) GetFieldDeserializers() map[string]func(i878a80
 // GetId gets the id property value. The id property
 // returns a *string when successful
 func (m *StackPolicySetOutcomes) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRelationships gets the relationships property value. The relationships property
 // returns a StackPolicySetOutcomes_relationshipsable when successful
 func (m *StackPolicySetOutcomes) GetRelationships() StackPolicySetOutcomes_relationshipsable {
-	return m.relationships
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicySetOutcomes_relationshipsable)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The type property
 // returns a *StackPolicySetOutcomes_type when successful
 func (m *StackPolicySetOutcomes) GetTypeEscaped() *StackPolicySetOutcomes_type {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackPolicySetOutcomes_type)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -143,37 +179,60 @@ func (m *StackPolicySetOutcomes) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackPolicySetOutcomes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttributes sets the attributes property value. The attributes property
 func (m *StackPolicySetOutcomes) SetAttributes(value StackPolicySetOutcomes_attributesable) {
-	m.attributes = value
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackPolicySetOutcomes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The id property
 func (m *StackPolicySetOutcomes) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRelationships sets the relationships property value. The relationships property
 func (m *StackPolicySetOutcomes) SetRelationships(value StackPolicySetOutcomes_relationshipsable) {
-	m.relationships = value
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The type property
 func (m *StackPolicySetOutcomes) SetTypeEscaped(value *StackPolicySetOutcomes_type) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackPolicySetOutcomesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAttributes() StackPolicySetOutcomes_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetRelationships() StackPolicySetOutcomes_relationshipsable
 	GetTypeEscaped() *StackPolicySetOutcomes_type
 	SetAttributes(value StackPolicySetOutcomes_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetRelationships(value StackPolicySetOutcomes_relationshipsable)
 	SetTypeEscaped(value *StackPolicySetOutcomes_type)

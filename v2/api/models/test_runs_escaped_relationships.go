@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TestRuns_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The configurationVersion property
-	configurationVersion ConfigurationVersionsHasOneable
-	// The createdBy property
-	createdBy UsersHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTestRuns_relationships instantiates a new TestRuns_relationships and sets the default values.
 func NewTestRuns_relationships() *TestRuns_relationships {
 	m := &TestRuns_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,19 +30,47 @@ func CreateTestRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TestRuns_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TestRuns_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetConfigurationVersion gets the configuration-version property value. The configurationVersion property
 // returns a ConfigurationVersionsHasOneable when successful
 func (m *TestRuns_relationships) GetConfigurationVersion() ConfigurationVersionsHasOneable {
-	return m.configurationVersion
+	val, err := m.GetBackingStore().Get("configurationVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersionsHasOneable)
+	}
+	return nil
 }
 
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a UsersHasOneable when successful
 func (m *TestRuns_relationships) GetCreatedBy() UsersHasOneable {
-	return m.createdBy
+	val, err := m.GetBackingStore().Get("createdBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -99,24 +125,41 @@ func (m *TestRuns_relationships) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TestRuns_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TestRuns_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetConfigurationVersion sets the configuration-version property value. The configurationVersion property
 func (m *TestRuns_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable) {
-	m.configurationVersion = value
+	err := m.GetBackingStore().Set("configurationVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedBy sets the created-by property value. The createdBy property
 func (m *TestRuns_relationships) SetCreatedBy(value UsersHasOneable) {
-	m.createdBy = value
+	err := m.GetBackingStore().Set("createdBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TestRuns_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurationVersion() ConfigurationVersionsHasOneable
 	GetCreatedBy() UsersHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurationVersion(value ConfigurationVersionsHasOneable)
 	SetCreatedBy(value UsersHasOneable)
 }

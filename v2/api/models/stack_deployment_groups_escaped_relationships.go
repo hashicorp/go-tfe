@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeploymentGroups_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The runStatusSummaries property
-	runStatusSummaries StackDeploymentGroupSummariesHasOneable
-	// The stackApprovals property
-	stackApprovals StackApprovalsHasManyable
-	// The stackConfiguration property
-	stackConfiguration StackConfigurationsHasOneable
-	// The stackDeploymentGroupSummary property
-	stackDeploymentGroupSummary StackDeploymentGroupSummariesHasOneable
-	// The stackDeploymentRuns property
-	stackDeploymentRuns Links_relatedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentGroups_relationships instantiates a new StackDeploymentGroups_relationships and sets the default values.
 func NewStackDeploymentGroups_relationships() *StackDeploymentGroups_relationships {
 	m := &StackDeploymentGroups_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,7 +30,21 @@ func CreateStackDeploymentGroups_relationshipsFromDiscriminatorValue(parseNode i
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentGroups_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentGroups_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -101,31 +107,66 @@ func (m *StackDeploymentGroups_relationships) GetFieldDeserializers() map[string
 // GetRunStatusSummaries gets the run-status-summaries property value. The runStatusSummaries property
 // returns a StackDeploymentGroupSummariesHasOneable when successful
 func (m *StackDeploymentGroups_relationships) GetRunStatusSummaries() StackDeploymentGroupSummariesHasOneable {
-	return m.runStatusSummaries
+	val, err := m.GetBackingStore().Get("runStatusSummaries")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentGroupSummariesHasOneable)
+	}
+	return nil
 }
 
 // GetStackApprovals gets the stack-approvals property value. The stackApprovals property
 // returns a StackApprovalsHasManyable when successful
 func (m *StackDeploymentGroups_relationships) GetStackApprovals() StackApprovalsHasManyable {
-	return m.stackApprovals
+	val, err := m.GetBackingStore().Get("stackApprovals")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackApprovalsHasManyable)
+	}
+	return nil
 }
 
 // GetStackConfiguration gets the stack-configuration property value. The stackConfiguration property
 // returns a StackConfigurationsHasOneable when successful
 func (m *StackDeploymentGroups_relationships) GetStackConfiguration() StackConfigurationsHasOneable {
-	return m.stackConfiguration
+	val, err := m.GetBackingStore().Get("stackConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsHasOneable)
+	}
+	return nil
 }
 
 // GetStackDeploymentGroupSummary gets the stack-deployment-group-summary property value. The stackDeploymentGroupSummary property
 // returns a StackDeploymentGroupSummariesHasOneable when successful
 func (m *StackDeploymentGroups_relationships) GetStackDeploymentGroupSummary() StackDeploymentGroupSummariesHasOneable {
-	return m.stackDeploymentGroupSummary
+	val, err := m.GetBackingStore().Get("stackDeploymentGroupSummary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentGroupSummariesHasOneable)
+	}
+	return nil
 }
 
 // GetStackDeploymentRuns gets the stack-deployment-runs property value. The stackDeploymentRuns property
 // returns a Links_relatedable when successful
 func (m *StackDeploymentGroups_relationships) GetStackDeploymentRuns() Links_relatedable {
-	return m.stackDeploymentRuns
+	val, err := m.GetBackingStore().Get("stackDeploymentRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *StackDeploymentGroups_relationships) Serialize(writer i878a80d2330e89d2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentGroups_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentGroups_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetRunStatusSummaries sets the run-status-summaries property value. The runStatusSummaries property
 func (m *StackDeploymentGroups_relationships) SetRunStatusSummaries(value StackDeploymentGroupSummariesHasOneable) {
-	m.runStatusSummaries = value
+	err := m.GetBackingStore().Set("runStatusSummaries", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackApprovals sets the stack-approvals property value. The stackApprovals property
 func (m *StackDeploymentGroups_relationships) SetStackApprovals(value StackApprovalsHasManyable) {
-	m.stackApprovals = value
+	err := m.GetBackingStore().Set("stackApprovals", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackConfiguration sets the stack-configuration property value. The stackConfiguration property
 func (m *StackDeploymentGroups_relationships) SetStackConfiguration(value StackConfigurationsHasOneable) {
-	m.stackConfiguration = value
+	err := m.GetBackingStore().Set("stackConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDeploymentGroupSummary sets the stack-deployment-group-summary property value. The stackDeploymentGroupSummary property
 func (m *StackDeploymentGroups_relationships) SetStackDeploymentGroupSummary(value StackDeploymentGroupSummariesHasOneable) {
-	m.stackDeploymentGroupSummary = value
+	err := m.GetBackingStore().Set("stackDeploymentGroupSummary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDeploymentRuns sets the stack-deployment-runs property value. The stackDeploymentRuns property
 func (m *StackDeploymentGroups_relationships) SetStackDeploymentRuns(value Links_relatedable) {
-	m.stackDeploymentRuns = value
+	err := m.GetBackingStore().Set("stackDeploymentRuns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentGroups_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetRunStatusSummaries() StackDeploymentGroupSummariesHasOneable
 	GetStackApprovals() StackApprovalsHasManyable
 	GetStackConfiguration() StackConfigurationsHasOneable
 	GetStackDeploymentGroupSummary() StackDeploymentGroupSummariesHasOneable
 	GetStackDeploymentRuns() Links_relatedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetRunStatusSummaries(value StackDeploymentGroupSummariesHasOneable)
 	SetStackApprovals(value StackApprovalsHasManyable)
 	SetStackConfiguration(value StackConfigurationsHasOneable)

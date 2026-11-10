@@ -5,29 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TfPolicyEvaluations_attributes_resultCount aggregated counts of policy results across all policy sets in this evaluation
 type TfPolicyEvaluations_attributes_resultCount struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Policies with advisory enforcement level that failed
-	advisoryFailed *int32
-	// Policies that errored during evaluation
-	errored *int32
-	// Policies with mandatory enforcement level that failed
-	mandatoryFailed *int32
-	// Policies with `mandatory_overridable` enforcement level that failed.
-	mandatoryOverridableFailed *int32
-	// Policies that passed
-	passed *int32
-	// Policies with an unknown evaluation result
-	unknown *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicyEvaluations_attributes_resultCount instantiates a new TfPolicyEvaluations_attributes_resultCount and sets the default values.
 func NewTfPolicyEvaluations_attributes_resultCount() *TfPolicyEvaluations_attributes_resultCount {
 	m := &TfPolicyEvaluations_attributes_resultCount{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -41,19 +31,47 @@ func CreateTfPolicyEvaluations_attributes_resultCountFromDiscriminatorValue(pars
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAdvisoryFailed gets the advisory-failed property value. Policies with advisory enforcement level that failed
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetAdvisoryFailed() *int32 {
-	return m.advisoryFailed
+	val, err := m.GetBackingStore().Get("advisoryFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_attributes_resultCount) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetErrored gets the errored property value. Policies that errored during evaluation
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetErrored() *int32 {
-	return m.errored
+	val, err := m.GetBackingStore().Get("errored")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -126,25 +144,53 @@ func (m *TfPolicyEvaluations_attributes_resultCount) GetFieldDeserializers() map
 // GetMandatoryFailed gets the mandatory-failed property value. Policies with mandatory enforcement level that failed
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetMandatoryFailed() *int32 {
-	return m.mandatoryFailed
+	val, err := m.GetBackingStore().Get("mandatoryFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetMandatoryOverridableFailed() *int32 {
-	return m.mandatoryOverridableFailed
+	val, err := m.GetBackingStore().Get("mandatoryOverridableFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPassed gets the passed property value. Policies that passed
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetPassed() *int32 {
-	return m.passed
+	val, err := m.GetBackingStore().Get("passed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetUnknown gets the unknown property value. Policies with an unknown evaluation result
 // returns a *int32 when successful
 func (m *TfPolicyEvaluations_attributes_resultCount) GetUnknown() *int32 {
-	return m.unknown
+	val, err := m.GetBackingStore().Get("unknown")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -196,49 +242,78 @@ func (m *TfPolicyEvaluations_attributes_resultCount) Serialize(writer i878a80d23
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicyEvaluations_attributes_resultCount) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdvisoryFailed sets the advisory-failed property value. Policies with advisory enforcement level that failed
 func (m *TfPolicyEvaluations_attributes_resultCount) SetAdvisoryFailed(value *int32) {
-	m.advisoryFailed = value
+	err := m.GetBackingStore().Set("advisoryFailed", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_attributes_resultCount) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetErrored sets the errored property value. Policies that errored during evaluation
 func (m *TfPolicyEvaluations_attributes_resultCount) SetErrored(value *int32) {
-	m.errored = value
+	err := m.GetBackingStore().Set("errored", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMandatoryFailed sets the mandatory-failed property value. Policies with mandatory enforcement level that failed
 func (m *TfPolicyEvaluations_attributes_resultCount) SetMandatoryFailed(value *int32) {
-	m.mandatoryFailed = value
+	err := m.GetBackingStore().Set("mandatoryFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. Policies with `mandatory_overridable` enforcement level that failed.
 func (m *TfPolicyEvaluations_attributes_resultCount) SetMandatoryOverridableFailed(value *int32) {
-	m.mandatoryOverridableFailed = value
+	err := m.GetBackingStore().Set("mandatoryOverridableFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPassed sets the passed property value. Policies that passed
 func (m *TfPolicyEvaluations_attributes_resultCount) SetPassed(value *int32) {
-	m.passed = value
+	err := m.GetBackingStore().Set("passed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUnknown sets the unknown property value. Policies with an unknown evaluation result
 func (m *TfPolicyEvaluations_attributes_resultCount) SetUnknown(value *int32) {
-	m.unknown = value
+	err := m.GetBackingStore().Set("unknown", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicyEvaluations_attributes_resultCountable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAdvisoryFailed() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetErrored() *int32
 	GetMandatoryFailed() *int32
 	GetMandatoryOverridableFailed() *int32
 	GetPassed() *int32
 	GetUnknown() *int32
 	SetAdvisoryFailed(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetErrored(value *int32)
 	SetMandatoryFailed(value *int32)
 	SetMandatoryOverridableFailed(value *int32)

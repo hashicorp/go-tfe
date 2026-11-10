@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Stacks_attributes_settingOverwrites struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The agentPool property
-	agentPool *bool
-	// The executionMode property
-	executionMode *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStacks_attributes_settingOverwrites instantiates a new Stacks_attributes_settingOverwrites and sets the default values.
 func NewStacks_attributes_settingOverwrites() *Stacks_attributes_settingOverwrites {
 	m := &Stacks_attributes_settingOverwrites{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,19 +30,47 @@ func CreateStacks_attributes_settingOverwritesFromDiscriminatorValue(parseNode i
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Stacks_attributes_settingOverwrites) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a *bool when successful
 func (m *Stacks_attributes_settingOverwrites) GetAgentPool() *bool {
-	return m.agentPool
+	val, err := m.GetBackingStore().Get("agentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Stacks_attributes_settingOverwrites) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExecutionMode gets the execution-mode property value. The executionMode property
 // returns a *bool when successful
 func (m *Stacks_attributes_settingOverwrites) GetExecutionMode() *bool {
-	return m.executionMode
+	val, err := m.GetBackingStore().Get("executionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -99,24 +125,41 @@ func (m *Stacks_attributes_settingOverwrites) Serialize(writer i878a80d2330e89d2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Stacks_attributes_settingOverwrites) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPool sets the agent-pool property value. The agentPool property
 func (m *Stacks_attributes_settingOverwrites) SetAgentPool(value *bool) {
-	m.agentPool = value
+	err := m.GetBackingStore().Set("agentPool", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Stacks_attributes_settingOverwrites) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExecutionMode sets the execution-mode property value. The executionMode property
 func (m *Stacks_attributes_settingOverwrites) SetExecutionMode(value *bool) {
-	m.executionMode = value
+	err := m.GetBackingStore().Set("executionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Stacks_attributes_settingOverwritesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentPool() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExecutionMode() *bool
 	SetAgentPool(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExecutionMode(value *bool)
 }

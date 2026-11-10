@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TeamProjects_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The project property
-	project ProjectsHasOneable
-	// The team property
-	team TeamsHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTeamProjects_relationships instantiates a new TeamProjects_relationships and sets the default values.
 func NewTeamProjects_relationships() *TeamProjects_relationships {
 	m := &TeamProjects_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateTeamProjects_relationshipsFromDiscriminatorValue(parseNode i878a80d23
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TeamProjects_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamProjects_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *TeamProjects_relationships) GetFieldDeserializers() map[string]func(i87
 // GetProject gets the project property value. The project property
 // returns a ProjectsHasOneable when successful
 func (m *TeamProjects_relationships) GetProject() ProjectsHasOneable {
-	return m.project
+	val, err := m.GetBackingStore().Get("project")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasOneable)
+	}
+	return nil
 }
 
 // GetTeam gets the team property value. The team property
 // returns a TeamsHasOneable when successful
 func (m *TeamProjects_relationships) GetTeam() TeamsHasOneable {
-	return m.team
+	val, err := m.GetBackingStore().Get("team")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TeamsHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -99,24 +125,41 @@ func (m *TeamProjects_relationships) Serialize(writer i878a80d2330e89d26896388a3
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TeamProjects_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamProjects_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetProject sets the project property value. The project property
 func (m *TeamProjects_relationships) SetProject(value ProjectsHasOneable) {
-	m.project = value
+	err := m.GetBackingStore().Set("project", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTeam sets the team property value. The team property
 func (m *TeamProjects_relationships) SetTeam(value TeamsHasOneable) {
-	m.team = value
+	err := m.GetBackingStore().Set("team", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TeamProjects_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetProject() ProjectsHasOneable
 	GetTeam() TeamsHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetProject(value ProjectsHasOneable)
 	SetTeam(value TeamsHasOneable)
 }

@@ -5,64 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Users_attributes_permissions struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The canChangeEmail property
-	canChangeEmail *bool
-	// The canChangePassword property
-	canChangePassword *bool
-	// The canChangeUsername property
-	canChangeUsername *bool
-	// The canCreateOrganization property
-	canCreateOrganization *bool
-	// The canCreateToolVersions property
-	canCreateToolVersions *bool
-	// This attribute is only available in HCP Terraform.
-	canManageHcpAccounts *bool
-	// The canManageSessions property
-	canManageSessions *bool
-	// The canManageUserTokens property
-	canManageUserTokens *bool
-	// This attribute is only available in HCP Terraform.
-	canReenable2faByUnlinking *bool
-	// The canUpdateUser property
-	canUpdateUser *bool
-	// The canUseSqlRunner property
-	canUseSqlRunner *bool
-	// Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	canViewAdminInAppNotifications *bool
-	// The canViewAdminRuns property
-	canViewAdminRuns *bool
-	// The canViewAdminWorkspaces property
-	canViewAdminWorkspaces *bool
-	// The canViewCostEstimationSettings property
-	canViewCostEstimationSettings *bool
-	// The canViewCustomizationSettings property
-	canViewCustomizationSettings *bool
-	// The canViewGeneralSettings property
-	canViewGeneralSettings *bool
-	// The canViewOrganizations property
-	canViewOrganizations *bool
-	// The canViewProfile property
-	canViewProfile *bool
-	// The canViewSamlSettings property
-	canViewSamlSettings *bool
-	// The canViewSettings property
-	canViewSettings *bool
-	// The canViewSmtpSettings property
-	canViewSmtpSettings *bool
-	// The canViewToolVersions property
-	canViewToolVersions *bool
-	// The canViewTwilioSettings property
-	canViewTwilioSettings *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewUsers_attributes_permissions instantiates a new Users_attributes_permissions and sets the default values.
 func NewUsers_attributes_permissions() *Users_attributes_permissions {
 	m := &Users_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -76,151 +30,333 @@ func CreateUsers_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Users_attributes_permissions) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Users_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanChangeEmail gets the can-change-email property value. The canChangeEmail property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanChangeEmail() *bool {
-	return m.canChangeEmail
+	val, err := m.GetBackingStore().Get("canChangeEmail")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanChangePassword gets the can-change-password property value. The canChangePassword property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanChangePassword() *bool {
-	return m.canChangePassword
+	val, err := m.GetBackingStore().Get("canChangePassword")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanChangeUsername gets the can-change-username property value. The canChangeUsername property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanChangeUsername() *bool {
-	return m.canChangeUsername
+	val, err := m.GetBackingStore().Get("canChangeUsername")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateOrganization gets the can-create-organization property value. The canCreateOrganization property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanCreateOrganization() *bool {
-	return m.canCreateOrganization
+	val, err := m.GetBackingStore().Get("canCreateOrganization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateToolVersions gets the can-create-tool-versions property value. The canCreateToolVersions property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanCreateToolVersions() *bool {
-	return m.canCreateToolVersions
+	val, err := m.GetBackingStore().Get("canCreateToolVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageHcpAccounts gets the can-manage-hcp-accounts property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanManageHcpAccounts() *bool {
-	return m.canManageHcpAccounts
+	val, err := m.GetBackingStore().Get("canManageHcpAccounts")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageSessions gets the can-manage-sessions property value. The canManageSessions property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanManageSessions() *bool {
-	return m.canManageSessions
+	val, err := m.GetBackingStore().Get("canManageSessions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageUserTokens gets the can-manage-user-tokens property value. The canManageUserTokens property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanManageUserTokens() *bool {
-	return m.canManageUserTokens
+	val, err := m.GetBackingStore().Get("canManageUserTokens")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReenable2faByUnlinking gets the can-reenable-2fa-by-unlinking property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanReenable2faByUnlinking() *bool {
-	return m.canReenable2faByUnlinking
+	val, err := m.GetBackingStore().Get("canReenable2faByUnlinking")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateUser gets the can-update-user property value. The canUpdateUser property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanUpdateUser() *bool {
-	return m.canUpdateUser
+	val, err := m.GetBackingStore().Get("canUpdateUser")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUseSqlRunner gets the can-use-sql-runner property value. The canUseSqlRunner property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanUseSqlRunner() *bool {
-	return m.canUseSqlRunner
+	val, err := m.GetBackingStore().Get("canUseSqlRunner")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewAdminInAppNotifications gets the can-view-admin-in-app-notifications property value. Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewAdminInAppNotifications() *bool {
-	return m.canViewAdminInAppNotifications
+	val, err := m.GetBackingStore().Get("canViewAdminInAppNotifications")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewAdminRuns gets the can-view-admin-runs property value. The canViewAdminRuns property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewAdminRuns() *bool {
-	return m.canViewAdminRuns
+	val, err := m.GetBackingStore().Get("canViewAdminRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewAdminWorkspaces gets the can-view-admin-workspaces property value. The canViewAdminWorkspaces property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewAdminWorkspaces() *bool {
-	return m.canViewAdminWorkspaces
+	val, err := m.GetBackingStore().Get("canViewAdminWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewCostEstimationSettings gets the can-view-cost-estimation-settings property value. The canViewCostEstimationSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewCostEstimationSettings() *bool {
-	return m.canViewCostEstimationSettings
+	val, err := m.GetBackingStore().Get("canViewCostEstimationSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewCustomizationSettings gets the can-view-customization-settings property value. The canViewCustomizationSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewCustomizationSettings() *bool {
-	return m.canViewCustomizationSettings
+	val, err := m.GetBackingStore().Get("canViewCustomizationSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewGeneralSettings gets the can-view-general-settings property value. The canViewGeneralSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewGeneralSettings() *bool {
-	return m.canViewGeneralSettings
+	val, err := m.GetBackingStore().Get("canViewGeneralSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewOrganizations gets the can-view-organizations property value. The canViewOrganizations property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewOrganizations() *bool {
-	return m.canViewOrganizations
+	val, err := m.GetBackingStore().Get("canViewOrganizations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewProfile gets the can-view-profile property value. The canViewProfile property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewProfile() *bool {
-	return m.canViewProfile
+	val, err := m.GetBackingStore().Get("canViewProfile")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewSamlSettings gets the can-view-saml-settings property value. The canViewSamlSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewSamlSettings() *bool {
-	return m.canViewSamlSettings
+	val, err := m.GetBackingStore().Get("canViewSamlSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewSettings gets the can-view-settings property value. The canViewSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewSettings() *bool {
-	return m.canViewSettings
+	val, err := m.GetBackingStore().Get("canViewSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewSmtpSettings gets the can-view-smtp-settings property value. The canViewSmtpSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewSmtpSettings() *bool {
-	return m.canViewSmtpSettings
+	val, err := m.GetBackingStore().Get("canViewSmtpSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewToolVersions gets the can-view-tool-versions property value. The canViewToolVersions property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewToolVersions() *bool {
-	return m.canViewToolVersions
+	val, err := m.GetBackingStore().Get("canViewToolVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewTwilioSettings gets the can-view-twilio-settings property value. The canViewTwilioSettings property
 // returns a *bool when successful
 func (m *Users_attributes_permissions) GetCanViewTwilioSettings() *bool {
-	return m.canViewTwilioSettings
+	val, err := m.GetBackingStore().Get("canViewTwilioSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -627,132 +763,214 @@ func (m *Users_attributes_permissions) Serialize(writer i878a80d2330e89d26896388
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Users_attributes_permissions) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Users_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanChangeEmail sets the can-change-email property value. The canChangeEmail property
 func (m *Users_attributes_permissions) SetCanChangeEmail(value *bool) {
-	m.canChangeEmail = value
+	err := m.GetBackingStore().Set("canChangeEmail", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanChangePassword sets the can-change-password property value. The canChangePassword property
 func (m *Users_attributes_permissions) SetCanChangePassword(value *bool) {
-	m.canChangePassword = value
+	err := m.GetBackingStore().Set("canChangePassword", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanChangeUsername sets the can-change-username property value. The canChangeUsername property
 func (m *Users_attributes_permissions) SetCanChangeUsername(value *bool) {
-	m.canChangeUsername = value
+	err := m.GetBackingStore().Set("canChangeUsername", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateOrganization sets the can-create-organization property value. The canCreateOrganization property
 func (m *Users_attributes_permissions) SetCanCreateOrganization(value *bool) {
-	m.canCreateOrganization = value
+	err := m.GetBackingStore().Set("canCreateOrganization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateToolVersions sets the can-create-tool-versions property value. The canCreateToolVersions property
 func (m *Users_attributes_permissions) SetCanCreateToolVersions(value *bool) {
-	m.canCreateToolVersions = value
+	err := m.GetBackingStore().Set("canCreateToolVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageHcpAccounts sets the can-manage-hcp-accounts property value. This attribute is only available in HCP Terraform.
 func (m *Users_attributes_permissions) SetCanManageHcpAccounts(value *bool) {
-	m.canManageHcpAccounts = value
+	err := m.GetBackingStore().Set("canManageHcpAccounts", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageSessions sets the can-manage-sessions property value. The canManageSessions property
 func (m *Users_attributes_permissions) SetCanManageSessions(value *bool) {
-	m.canManageSessions = value
+	err := m.GetBackingStore().Set("canManageSessions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageUserTokens sets the can-manage-user-tokens property value. The canManageUserTokens property
 func (m *Users_attributes_permissions) SetCanManageUserTokens(value *bool) {
-	m.canManageUserTokens = value
+	err := m.GetBackingStore().Set("canManageUserTokens", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReenable2faByUnlinking sets the can-reenable-2fa-by-unlinking property value. This attribute is only available in HCP Terraform.
 func (m *Users_attributes_permissions) SetCanReenable2faByUnlinking(value *bool) {
-	m.canReenable2faByUnlinking = value
+	err := m.GetBackingStore().Set("canReenable2faByUnlinking", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateUser sets the can-update-user property value. The canUpdateUser property
 func (m *Users_attributes_permissions) SetCanUpdateUser(value *bool) {
-	m.canUpdateUser = value
+	err := m.GetBackingStore().Set("canUpdateUser", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUseSqlRunner sets the can-use-sql-runner property value. The canUseSqlRunner property
 func (m *Users_attributes_permissions) SetCanUseSqlRunner(value *bool) {
-	m.canUseSqlRunner = value
+	err := m.GetBackingStore().Set("canUseSqlRunner", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewAdminInAppNotifications sets the can-view-admin-in-app-notifications property value. Whether the user can view and author feature announcements in the admin UI. Present only for admins when site-admin RBAC is enabled.This attribute is only available in HCP Terraform.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Users_attributes_permissions) SetCanViewAdminInAppNotifications(value *bool) {
-	m.canViewAdminInAppNotifications = value
+	err := m.GetBackingStore().Set("canViewAdminInAppNotifications", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewAdminRuns sets the can-view-admin-runs property value. The canViewAdminRuns property
 func (m *Users_attributes_permissions) SetCanViewAdminRuns(value *bool) {
-	m.canViewAdminRuns = value
+	err := m.GetBackingStore().Set("canViewAdminRuns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewAdminWorkspaces sets the can-view-admin-workspaces property value. The canViewAdminWorkspaces property
 func (m *Users_attributes_permissions) SetCanViewAdminWorkspaces(value *bool) {
-	m.canViewAdminWorkspaces = value
+	err := m.GetBackingStore().Set("canViewAdminWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewCostEstimationSettings sets the can-view-cost-estimation-settings property value. The canViewCostEstimationSettings property
 func (m *Users_attributes_permissions) SetCanViewCostEstimationSettings(value *bool) {
-	m.canViewCostEstimationSettings = value
+	err := m.GetBackingStore().Set("canViewCostEstimationSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewCustomizationSettings sets the can-view-customization-settings property value. The canViewCustomizationSettings property
 func (m *Users_attributes_permissions) SetCanViewCustomizationSettings(value *bool) {
-	m.canViewCustomizationSettings = value
+	err := m.GetBackingStore().Set("canViewCustomizationSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewGeneralSettings sets the can-view-general-settings property value. The canViewGeneralSettings property
 func (m *Users_attributes_permissions) SetCanViewGeneralSettings(value *bool) {
-	m.canViewGeneralSettings = value
+	err := m.GetBackingStore().Set("canViewGeneralSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewOrganizations sets the can-view-organizations property value. The canViewOrganizations property
 func (m *Users_attributes_permissions) SetCanViewOrganizations(value *bool) {
-	m.canViewOrganizations = value
+	err := m.GetBackingStore().Set("canViewOrganizations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewProfile sets the can-view-profile property value. The canViewProfile property
 func (m *Users_attributes_permissions) SetCanViewProfile(value *bool) {
-	m.canViewProfile = value
+	err := m.GetBackingStore().Set("canViewProfile", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewSamlSettings sets the can-view-saml-settings property value. The canViewSamlSettings property
 func (m *Users_attributes_permissions) SetCanViewSamlSettings(value *bool) {
-	m.canViewSamlSettings = value
+	err := m.GetBackingStore().Set("canViewSamlSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewSettings sets the can-view-settings property value. The canViewSettings property
 func (m *Users_attributes_permissions) SetCanViewSettings(value *bool) {
-	m.canViewSettings = value
+	err := m.GetBackingStore().Set("canViewSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewSmtpSettings sets the can-view-smtp-settings property value. The canViewSmtpSettings property
 func (m *Users_attributes_permissions) SetCanViewSmtpSettings(value *bool) {
-	m.canViewSmtpSettings = value
+	err := m.GetBackingStore().Set("canViewSmtpSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewToolVersions sets the can-view-tool-versions property value. The canViewToolVersions property
 func (m *Users_attributes_permissions) SetCanViewToolVersions(value *bool) {
-	m.canViewToolVersions = value
+	err := m.GetBackingStore().Set("canViewToolVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewTwilioSettings sets the can-view-twilio-settings property value. The canViewTwilioSettings property
 func (m *Users_attributes_permissions) SetCanViewTwilioSettings(value *bool) {
-	m.canViewTwilioSettings = value
+	err := m.GetBackingStore().Set("canViewTwilioSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Users_attributes_permissionsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanChangeEmail() *bool
 	GetCanChangePassword() *bool
 	GetCanChangeUsername() *bool
@@ -777,6 +995,7 @@ type Users_attributes_permissionsable interface {
 	GetCanViewSmtpSettings() *bool
 	GetCanViewToolVersions() *bool
 	GetCanViewTwilioSettings() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanChangeEmail(value *bool)
 	SetCanChangePassword(value *bool)
 	SetCanChangeUsername(value *bool)

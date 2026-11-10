@@ -5,31 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TaskStages_attributes struct {
-	// The actions property
-	actions TaskStages_attributes_actionsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The permissions property
-	permissions TaskStages_attributes_permissionsable
-	// The run stage during which this task stage executes (e.g., post_plan, pre_plan, pre_apply, post_apply).
-	stage *string
-	// The status property
-	status *TaskStages_attributes_status
-	// A map of status names to timestamps indicating when the task stage entered each status. Keys are formatted as "{status}-at".
-	statusTimestamps TaskStages_attributes_statusTimestampsable
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskStages_attributes instantiates a new TaskStages_attributes and sets the default values.
 func NewTaskStages_attributes() *TaskStages_attributes {
 	m := &TaskStages_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -43,19 +31,47 @@ func CreateTaskStages_attributesFromDiscriminatorValue(parseNode i878a80d2330e89
 // GetActions gets the actions property value. The actions property
 // returns a TaskStages_attributes_actionsable when successful
 func (m *TaskStages_attributes) GetActions() TaskStages_attributes_actionsable {
-	return m.actions
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStages_attributes_actionsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskStages_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskStages_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *TaskStages_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -138,31 +154,66 @@ func (m *TaskStages_attributes) GetFieldDeserializers() map[string]func(i878a80d
 // GetPermissions gets the permissions property value. The permissions property
 // returns a TaskStages_attributes_permissionsable when successful
 func (m *TaskStages_attributes) GetPermissions() TaskStages_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStages_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetStage gets the stage property value. The run stage during which this task stage executes (e.g., post_plan, pre_plan, pre_apply, post_apply).
 // returns a *string when successful
 func (m *TaskStages_attributes) GetStage() *string {
-	return m.stage
+	val, err := m.GetBackingStore().Get("stage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *TaskStages_attributes_status when successful
 func (m *TaskStages_attributes) GetStatus() *TaskStages_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TaskStages_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. A map of status names to timestamps indicating when the task stage entered each status. Keys are formatted as "{status}-at".
 // returns a TaskStages_attributes_statusTimestampsable when successful
 func (m *TaskStages_attributes) GetStatusTimestamps() TaskStages_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStages_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *TaskStages_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -178,48 +229,79 @@ func (m *TaskStages_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
 
 // SetActions sets the actions property value. The actions property
 func (m *TaskStages_attributes) SetActions(value TaskStages_attributes_actionsable) {
-	m.actions = value
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskStages_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskStages_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *TaskStages_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *TaskStages_attributes) SetPermissions(value TaskStages_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStage sets the stage property value. The run stage during which this task stage executes (e.g., post_plan, pre_plan, pre_apply, post_apply).
 func (m *TaskStages_attributes) SetStage(value *string) {
-	m.stage = value
+	err := m.GetBackingStore().Set("stage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *TaskStages_attributes) SetStatus(value *TaskStages_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. A map of status names to timestamps indicating when the task stage entered each status. Keys are formatted as "{status}-at".
 func (m *TaskStages_attributes) SetStatusTimestamps(value TaskStages_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *TaskStages_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskStages_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActions() TaskStages_attributes_actionsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetPermissions() TaskStages_attributes_permissionsable
 	GetStage() *string
@@ -227,6 +309,7 @@ type TaskStages_attributesable interface {
 	GetStatusTimestamps() TaskStages_attributes_statusTimestampsable
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetActions(value TaskStages_attributes_actionsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetPermissions(value TaskStages_attributes_permissionsable)
 	SetStage(value *string)

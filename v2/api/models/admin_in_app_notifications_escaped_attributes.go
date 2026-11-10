@@ -5,37 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type AdminInAppNotifications_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The approvedAt property
-	approvedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The announcement body.
-	body *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The deniedAt property
-	deniedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// When the announcement expires.
-	expiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Whether the URL links outside of HCP Terraform.
-	isExternalLink *bool
-	// The announcement severity.
-	severity *AdminInAppNotifications_attributes_severity
-	// The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.
-	status *AdminInAppNotifications_attributes_status
-	// The announcement title.
-	title *string
-	// The absolute HTTPS URL the announcement links to.
-	url *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAdminInAppNotifications_attributes instantiates a new AdminInAppNotifications_attributes and sets the default values.
 func NewAdminInAppNotifications_attributes() *AdminInAppNotifications_attributes {
 	m := &AdminInAppNotifications_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -49,37 +31,86 @@ func CreateAdminInAppNotifications_attributesFromDiscriminatorValue(parseNode i8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AdminInAppNotifications_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApprovedAt gets the approved-at property value. The approvedAt property
 // returns a *Time when successful
 func (m *AdminInAppNotifications_attributes) GetApprovedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.approvedAt
+	val, err := m.GetBackingStore().Get("approvedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminInAppNotifications_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBody gets the body property value. The announcement body.
 // returns a *string when successful
 func (m *AdminInAppNotifications_attributes) GetBody() *string {
-	return m.body
+	val, err := m.GetBackingStore().Get("body")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *AdminInAppNotifications_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeniedAt gets the denied-at property value. The deniedAt property
 // returns a *Time when successful
 func (m *AdminInAppNotifications_attributes) GetDeniedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.deniedAt
+	val, err := m.GetBackingStore().Get("deniedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetExpiresAt gets the expires-at property value. When the announcement expires.
 // returns a *Time when successful
 func (m *AdminInAppNotifications_attributes) GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.expiresAt
+	val, err := m.GetBackingStore().Get("expiresAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -192,31 +223,66 @@ func (m *AdminInAppNotifications_attributes) GetFieldDeserializers() map[string]
 // GetIsExternalLink gets the is-external-link property value. Whether the URL links outside of HCP Terraform.
 // returns a *bool when successful
 func (m *AdminInAppNotifications_attributes) GetIsExternalLink() *bool {
-	return m.isExternalLink
+	val, err := m.GetBackingStore().Get("isExternalLink")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSeverity gets the severity property value. The announcement severity.
 // returns a *AdminInAppNotifications_attributes_severity when successful
 func (m *AdminInAppNotifications_attributes) GetSeverity() *AdminInAppNotifications_attributes_severity {
-	return m.severity
+	val, err := m.GetBackingStore().Get("severity")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminInAppNotifications_attributes_severity)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.
 // returns a *AdminInAppNotifications_attributes_status when successful
 func (m *AdminInAppNotifications_attributes) GetStatus() *AdminInAppNotifications_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminInAppNotifications_attributes_status)
+	}
+	return nil
 }
 
 // GetTitle gets the title property value. The announcement title.
 // returns a *string when successful
 func (m *AdminInAppNotifications_attributes) GetTitle() *string {
-	return m.title
+	val, err := m.GetBackingStore().Get("title")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUrl gets the url property value. The absolute HTTPS URL the announcement links to.
 // returns a *string when successful
 func (m *AdminInAppNotifications_attributes) GetUrl() *string {
-	return m.url
+	val, err := m.GetBackingStore().Get("url")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -250,63 +316,103 @@ func (m *AdminInAppNotifications_attributes) Serialize(writer i878a80d2330e89d26
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AdminInAppNotifications_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApprovedAt sets the approved-at property value. The approvedAt property
 func (m *AdminInAppNotifications_attributes) SetApprovedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.approvedAt = value
+	err := m.GetBackingStore().Set("approvedAt", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminInAppNotifications_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBody sets the body property value. The announcement body.
 func (m *AdminInAppNotifications_attributes) SetBody(value *string) {
-	m.body = value
+	err := m.GetBackingStore().Set("body", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *AdminInAppNotifications_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeniedAt sets the denied-at property value. The deniedAt property
 func (m *AdminInAppNotifications_attributes) SetDeniedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.deniedAt = value
+	err := m.GetBackingStore().Set("deniedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetExpiresAt sets the expires-at property value. When the announcement expires.
 func (m *AdminInAppNotifications_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.expiresAt = value
+	err := m.GetBackingStore().Set("expiresAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsExternalLink sets the is-external-link property value. Whether the URL links outside of HCP Terraform.
 func (m *AdminInAppNotifications_attributes) SetIsExternalLink(value *bool) {
-	m.isExternalLink = value
+	err := m.GetBackingStore().Set("isExternalLink", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSeverity sets the severity property value. The announcement severity.
 func (m *AdminInAppNotifications_attributes) SetSeverity(value *AdminInAppNotifications_attributes_severity) {
-	m.severity = value
+	err := m.GetBackingStore().Set("severity", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The review status. Only a `draft` announcement can be approved or denied, and only `approved` announcements are shown to users.
 func (m *AdminInAppNotifications_attributes) SetStatus(value *AdminInAppNotifications_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTitle sets the title property value. The announcement title.
 func (m *AdminInAppNotifications_attributes) SetTitle(value *string) {
-	m.title = value
+	err := m.GetBackingStore().Set("title", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUrl sets the url property value. The absolute HTTPS URL the announcement links to.
 func (m *AdminInAppNotifications_attributes) SetUrl(value *string) {
-	m.url = value
+	err := m.GetBackingStore().Set("url", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AdminInAppNotifications_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApprovedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBody() *string
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDeniedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -317,6 +423,7 @@ type AdminInAppNotifications_attributesable interface {
 	GetTitle() *string
 	GetUrl() *string
 	SetApprovedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBody(value *string)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDeniedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

@@ -6,18 +6,18 @@ package queries
 import (
 	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemWithQuery_GetResponse_data_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// A summary of each list completion returned by the query run.
-	listCompletions []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewItemWithQuery_GetResponse_data_attributes instantiates a new ItemWithQuery_GetResponse_data_attributes and sets the default values.
 func NewItemWithQuery_GetResponse_data_attributes() *ItemWithQuery_GetResponse_data_attributes {
 	m := &ItemWithQuery_GetResponse_data_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -31,7 +31,21 @@ func CreateItemWithQuery_GetResponse_data_attributesFromDiscriminatorValue(parse
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ItemWithQuery_GetResponse_data_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemWithQuery_GetResponse_data_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -60,7 +74,14 @@ func (m *ItemWithQuery_GetResponse_data_attributes) GetFieldDeserializers() map[
 // GetListCompletions gets the list-completions property value. A summary of each list completion returned by the query run.
 // returns a []QueryCompletionSummaryable when successful
 func (m *ItemWithQuery_GetResponse_data_attributes) GetListCompletions() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable {
-	return m.listCompletions
+	val, err := m.GetBackingStore().Get("listCompletions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -76,17 +97,31 @@ func (m *ItemWithQuery_GetResponse_data_attributes) Serialize(writer i878a80d233
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ItemWithQuery_GetResponse_data_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemWithQuery_GetResponse_data_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetListCompletions sets the list-completions property value. A summary of each list completion returned by the query run.
 func (m *ItemWithQuery_GetResponse_data_attributes) SetListCompletions(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable) {
-	m.listCompletions = value
+	err := m.GetBackingStore().Set("listCompletions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ItemWithQuery_GetResponse_data_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetListCompletions() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetListCompletions(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.QueryCompletionSummaryable)
 }

@@ -5,38 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Applies_attributes struct {
-	// The actionFailures property
-	actionFailures *int32
-	// The actionInvocations property
-	actionInvocations *int32
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
-	backingDataState *Applies_attributes_backingDataState
-	// The executionDetails property
-	executionDetails Applies_attributes_executionDetailsable
-	// The logReadUrl property
-	logReadUrl *string
-	// The resourceAdditions property
-	resourceAdditions *int32
-	// The resourceChanges property
-	resourceChanges *int32
-	// The resourceDestructions property
-	resourceDestructions *int32
-	// The resourceImports property
-	resourceImports *int32
-	// The status property
-	status *Applies_attributes_status
-	// The statusTimestamps property
-	statusTimestamps Applies_attributes_statusTimestampsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewApplies_attributes instantiates a new Applies_attributes and sets the default values.
 func NewApplies_attributes() *Applies_attributes {
 	m := &Applies_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -50,31 +30,73 @@ func CreateApplies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26
 // GetActionFailures gets the action-failures property value. The actionFailures property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetActionFailures() *int32 {
-	return m.actionFailures
+	val, err := m.GetBackingStore().Get("actionFailures")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetActionInvocations gets the action-invocations property value. The actionInvocations property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetActionInvocations() *int32 {
-	return m.actionInvocations
+	val, err := m.GetBackingStore().Get("actionInvocations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Applies_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetBackingDataState gets the backing-data-state property value. Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
 // returns a *Applies_attributes_backingDataState when successful
 func (m *Applies_attributes) GetBackingDataState() *Applies_attributes_backingDataState {
-	return m.backingDataState
+	val, err := m.GetBackingStore().Get("backingDataState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Applies_attributes_backingDataState)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Applies_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExecutionDetails gets the execution-details property value. The executionDetails property
 // returns a Applies_attributes_executionDetailsable when successful
 func (m *Applies_attributes) GetExecutionDetails() Applies_attributes_executionDetailsable {
-	return m.executionDetails
+	val, err := m.GetBackingStore().Get("executionDetails")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Applies_attributes_executionDetailsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -197,43 +219,92 @@ func (m *Applies_attributes) GetFieldDeserializers() map[string]func(i878a80d233
 // GetLogReadUrl gets the log-read-url property value. The logReadUrl property
 // returns a *string when successful
 func (m *Applies_attributes) GetLogReadUrl() *string {
-	return m.logReadUrl
+	val, err := m.GetBackingStore().Get("logReadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetResourceAdditions gets the resource-additions property value. The resourceAdditions property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetResourceAdditions() *int32 {
-	return m.resourceAdditions
+	val, err := m.GetBackingStore().Get("resourceAdditions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceChanges gets the resource-changes property value. The resourceChanges property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetResourceChanges() *int32 {
-	return m.resourceChanges
+	val, err := m.GetBackingStore().Get("resourceChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceDestructions gets the resource-destructions property value. The resourceDestructions property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetResourceDestructions() *int32 {
-	return m.resourceDestructions
+	val, err := m.GetBackingStore().Get("resourceDestructions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceImports gets the resource-imports property value. The resourceImports property
 // returns a *int32 when successful
 func (m *Applies_attributes) GetResourceImports() *int32 {
-	return m.resourceImports
+	val, err := m.GetBackingStore().Get("resourceImports")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *Applies_attributes_status when successful
 func (m *Applies_attributes) GetStatus() *Applies_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Applies_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a Applies_attributes_statusTimestampsable when successful
 func (m *Applies_attributes) GetStatusTimestamps() Applies_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Applies_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -249,70 +320,113 @@ func (m *Applies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
 
 // SetActionFailures sets the action-failures property value. The actionFailures property
 func (m *Applies_attributes) SetActionFailures(value *int32) {
-	m.actionFailures = value
+	err := m.GetBackingStore().Set("actionFailures", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetActionInvocations sets the action-invocations property value. The actionInvocations property
 func (m *Applies_attributes) SetActionInvocations(value *int32) {
-	m.actionInvocations = value
+	err := m.GetBackingStore().Set("actionInvocations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Applies_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetBackingDataState sets the backing-data-state property value. Data retention lifecycle state of the apply's backing data.This attribute is only available in Terraform Enterprise.
 func (m *Applies_attributes) SetBackingDataState(value *Applies_attributes_backingDataState) {
-	m.backingDataState = value
+	err := m.GetBackingStore().Set("backingDataState", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Applies_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExecutionDetails sets the execution-details property value. The executionDetails property
 func (m *Applies_attributes) SetExecutionDetails(value Applies_attributes_executionDetailsable) {
-	m.executionDetails = value
+	err := m.GetBackingStore().Set("executionDetails", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLogReadUrl sets the log-read-url property value. The logReadUrl property
 func (m *Applies_attributes) SetLogReadUrl(value *string) {
-	m.logReadUrl = value
+	err := m.GetBackingStore().Set("logReadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceAdditions sets the resource-additions property value. The resourceAdditions property
 func (m *Applies_attributes) SetResourceAdditions(value *int32) {
-	m.resourceAdditions = value
+	err := m.GetBackingStore().Set("resourceAdditions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceChanges sets the resource-changes property value. The resourceChanges property
 func (m *Applies_attributes) SetResourceChanges(value *int32) {
-	m.resourceChanges = value
+	err := m.GetBackingStore().Set("resourceChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceDestructions sets the resource-destructions property value. The resourceDestructions property
 func (m *Applies_attributes) SetResourceDestructions(value *int32) {
-	m.resourceDestructions = value
+	err := m.GetBackingStore().Set("resourceDestructions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceImports sets the resource-imports property value. The resourceImports property
 func (m *Applies_attributes) SetResourceImports(value *int32) {
-	m.resourceImports = value
+	err := m.GetBackingStore().Set("resourceImports", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *Applies_attributes) SetStatus(value *Applies_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *Applies_attributes) SetStatusTimestamps(value Applies_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Applies_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActionFailures() *int32
 	GetActionInvocations() *int32
 	GetBackingDataState() *Applies_attributes_backingDataState
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExecutionDetails() Applies_attributes_executionDetailsable
 	GetLogReadUrl() *string
 	GetResourceAdditions() *int32
@@ -324,6 +438,7 @@ type Applies_attributesable interface {
 	SetActionFailures(value *int32)
 	SetActionInvocations(value *int32)
 	SetBackingDataState(value *Applies_attributes_backingDataState)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExecutionDetails(value Applies_attributes_executionDetailsable)
 	SetLogReadUrl(value *string)
 	SetResourceAdditions(value *int32)

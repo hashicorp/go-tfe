@@ -5,28 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Integrations_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// A description of what the integration does.
-	description *string
-	// The homepage URL for the integration.
-	homepage *string
-	// The name of the integration.
-	name *string
-	// Ordered list of configuration parameters required by the integration.
-	params []Integrations_attributes_paramsable
-	// The provider identifier for the integration.
-	provider *string
-	// The run stages where this integration can be used.
-	stages []string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewIntegrations_attributes instantiates a new Integrations_attributes and sets the default values.
 func NewIntegrations_attributes() *Integrations_attributes {
 	m := &Integrations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -40,13 +30,34 @@ func CreateIntegrations_attributesFromDiscriminatorValue(parseNode i878a80d2330e
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Integrations_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Integrations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDescription gets the description property value. A description of what the integration does.
 // returns a *string when successful
 func (m *Integrations_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -131,31 +142,66 @@ func (m *Integrations_attributes) GetFieldDeserializers() map[string]func(i878a8
 // GetHomepage gets the homepage property value. The homepage URL for the integration.
 // returns a *string when successful
 func (m *Integrations_attributes) GetHomepage() *string {
-	return m.homepage
+	val, err := m.GetBackingStore().Get("homepage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name of the integration.
 // returns a *string when successful
 func (m *Integrations_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetParams gets the params property value. Ordered list of configuration parameters required by the integration.
 // returns a []Integrations_attributes_paramsable when successful
 func (m *Integrations_attributes) GetParams() []Integrations_attributes_paramsable {
-	return m.params
+	val, err := m.GetBackingStore().Get("params")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Integrations_attributes_paramsable)
+	}
+	return nil
 }
 
 // GetProvider gets the provider property value. The provider identifier for the integration.
 // returns a *string when successful
 func (m *Integrations_attributes) GetProvider() *string {
-	return m.provider
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStages gets the stages property value. The run stages where this integration can be used.
 // returns a []string when successful
 func (m *Integrations_attributes) GetStages() []string {
-	return m.stages
+	val, err := m.GetBackingStore().Get("stages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -213,48 +259,77 @@ func (m *Integrations_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Integrations_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Integrations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDescription sets the description property value. A description of what the integration does.
 func (m *Integrations_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHomepage sets the homepage property value. The homepage URL for the integration.
 func (m *Integrations_attributes) SetHomepage(value *string) {
-	m.homepage = value
+	err := m.GetBackingStore().Set("homepage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the integration.
 func (m *Integrations_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetParams sets the params property value. Ordered list of configuration parameters required by the integration.
 func (m *Integrations_attributes) SetParams(value []Integrations_attributes_paramsable) {
-	m.params = value
+	err := m.GetBackingStore().Set("params", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProvider sets the provider property value. The provider identifier for the integration.
 func (m *Integrations_attributes) SetProvider(value *string) {
-	m.provider = value
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStages sets the stages property value. The run stages where this integration can be used.
 func (m *Integrations_attributes) SetStages(value []string) {
-	m.stages = value
+	err := m.GetBackingStore().Set("stages", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Integrations_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDescription() *string
 	GetHomepage() *string
 	GetName() *string
 	GetParams() []Integrations_attributes_paramsable
 	GetProvider() *string
 	GetStages() []string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDescription(value *string)
 	SetHomepage(value *string)
 	SetName(value *string)

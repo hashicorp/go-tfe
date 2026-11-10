@@ -5,26 +5,24 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PoliciesIdentifierArrayDocument struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data composed type wrapper for classes PoliciesIdentifierArrayDocument_dataMember1able, PoliciesIdentifierArrayDocument_dataMember2able
+// PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data composed type wrapper for classes PoliciesIdentifierArrayDocument_dataMember1, PoliciesIdentifierArrayDocument_dataMember2
 type PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data struct {
-	// Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
-	policiesIdentifierArrayDocument_dataMember1 PoliciesIdentifierArrayDocument_dataMember1able
-	// Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
-	policiesIdentifierArrayDocument_dataMember2 PoliciesIdentifierArrayDocument_dataMember2able
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data instantiates a new PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data and sets the default values.
 func NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data() *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data {
 	m := &PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -35,6 +33,12 @@ func CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataF
 	if parseNode != nil {
 	}
 	return result, nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -54,16 +58,30 @@ func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) G
 	return true
 }
 
-// GetPoliciesIdentifierArrayDocumentDataMember1 gets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
+// GetPoliciesIdentifierArrayDocumentDataMember1 gets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1
 // returns a PoliciesIdentifierArrayDocument_dataMember1able when successful
 func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember1() PoliciesIdentifierArrayDocument_dataMember1able {
-	return m.policiesIdentifierArrayDocument_dataMember1
+	val, err := m.GetBackingStore().Get("policiesIdentifierArrayDocument_dataMember1")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PoliciesIdentifierArrayDocument_dataMember1able)
+	}
+	return nil
 }
 
-// GetPoliciesIdentifierArrayDocumentDataMember2 gets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
+// GetPoliciesIdentifierArrayDocumentDataMember2 gets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2
 // returns a PoliciesIdentifierArrayDocument_dataMember2able when successful
 func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember2() PoliciesIdentifierArrayDocument_dataMember2able {
-	return m.policiesIdentifierArrayDocument_dataMember2
+	val, err := m.GetBackingStore().Get("policiesIdentifierArrayDocument_dataMember2")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PoliciesIdentifierArrayDocument_dataMember2able)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -82,20 +100,34 @@ func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) S
 	return nil
 }
 
-// SetPoliciesIdentifierArrayDocumentDataMember1 sets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able) {
-	m.policiesIdentifierArrayDocument_dataMember1 = value
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
-// SetPoliciesIdentifierArrayDocumentDataMember2 sets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
+// SetPoliciesIdentifierArrayDocumentDataMember1 sets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able) {
+	err := m.GetBackingStore().Set("policiesIdentifierArrayDocument_dataMember1", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetPoliciesIdentifierArrayDocumentDataMember2 sets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2
 func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able) {
-	m.policiesIdentifierArrayDocument_dataMember2 = value
+	err := m.GetBackingStore().Set("policiesIdentifierArrayDocument_dataMember2", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetPoliciesIdentifierArrayDocumentDataMember1() PoliciesIdentifierArrayDocument_dataMember1able
 	GetPoliciesIdentifierArrayDocumentDataMember2() PoliciesIdentifierArrayDocument_dataMember2able
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able)
 	SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able)
 }
@@ -103,6 +135,7 @@ type PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable in
 // NewPoliciesIdentifierArrayDocument instantiates a new PoliciesIdentifierArrayDocument and sets the default values.
 func NewPoliciesIdentifierArrayDocument() *PoliciesIdentifierArrayDocument {
 	m := &PoliciesIdentifierArrayDocument{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -116,13 +149,34 @@ func CreatePoliciesIdentifierArrayDocumentFromDiscriminatorValue(parseNode i878a
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PoliciesIdentifierArrayDocument) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PoliciesIdentifierArrayDocument) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable when successful
 func (m *PoliciesIdentifierArrayDocument) GetData() []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -173,17 +227,31 @@ func (m *PoliciesIdentifierArrayDocument) Serialize(writer i878a80d2330e89d26896
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PoliciesIdentifierArrayDocument) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PoliciesIdentifierArrayDocument) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *PoliciesIdentifierArrayDocument) SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PoliciesIdentifierArrayDocumentable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
 }

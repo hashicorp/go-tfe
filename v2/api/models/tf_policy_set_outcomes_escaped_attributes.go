@@ -5,33 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicySetOutcomes_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The error property
-	// Deprecated:
-	error *string
-	// Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
-	// Deprecated:
-	outcomes []TfPolicySetOutcomes_attributes_outcomesable
-	// This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
-	// Deprecated:
-	overridable *bool
-	// Optional description of the policy set
-	policySetDescription *string
-	// Name of the policy set that was evaluated
-	policySetName *string
-	// URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
-	policySetResultUrl *string
-	// Counts of policy results for this policy set
-	resultCount TfPolicySetOutcomes_attributes_resultCountable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicySetOutcomes_attributes instantiates a new TfPolicySetOutcomes_attributes and sets the default values.
 func NewTfPolicySetOutcomes_attributes() *TfPolicySetOutcomes_attributes {
 	m := &TfPolicySetOutcomes_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -45,14 +30,35 @@ func CreateTfPolicySetOutcomes_attributesFromDiscriminatorValue(parseNode i878a8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicySetOutcomes_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicySetOutcomes_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetError gets the error property value. The error property
 // Deprecated:
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes) GetError() *string {
-	return m.error
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -142,38 +148,80 @@ func (m *TfPolicySetOutcomes_attributes) GetFieldDeserializers() map[string]func
 // Deprecated:
 // returns a []TfPolicySetOutcomes_attributes_outcomesable when successful
 func (m *TfPolicySetOutcomes_attributes) GetOutcomes() []TfPolicySetOutcomes_attributes_outcomesable {
-	return m.outcomes
+	val, err := m.GetBackingStore().Get("outcomes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TfPolicySetOutcomes_attributes_outcomesable)
+	}
+	return nil
 }
 
 // GetOverridable gets the overridable property value. This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
 // Deprecated:
 // returns a *bool when successful
 func (m *TfPolicySetOutcomes_attributes) GetOverridable() *bool {
-	return m.overridable
+	val, err := m.GetBackingStore().Get("overridable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPolicySetDescription gets the policy-set-description property value. Optional description of the policy set
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes) GetPolicySetDescription() *string {
-	return m.policySetDescription
+	val, err := m.GetBackingStore().Get("policySetDescription")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPolicySetName gets the policy-set-name property value. Name of the policy set that was evaluated
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes) GetPolicySetName() *string {
-	return m.policySetName
+	val, err := m.GetBackingStore().Get("policySetName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPolicySetResultUrl gets the policy-set-result-url property value. URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes) GetPolicySetResultUrl() *string {
-	return m.policySetResultUrl
+	val, err := m.GetBackingStore().Get("policySetResultUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetResultCount gets the result-count property value. Counts of policy results for this policy set
 // returns a TfPolicySetOutcomes_attributes_resultCountable when successful
 func (m *TfPolicySetOutcomes_attributes) GetResultCount() TfPolicySetOutcomes_attributes_resultCountable {
-	return m.resultCount
+	val, err := m.GetBackingStore().Get("resultCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicySetOutcomes_attributes_resultCountable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -231,50 +279,81 @@ func (m *TfPolicySetOutcomes_attributes) Serialize(writer i878a80d2330e89d268963
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicySetOutcomes_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicySetOutcomes_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetError sets the error property value. The error property
 // Deprecated:
 func (m *TfPolicySetOutcomes_attributes) SetError(value *string) {
-	m.error = value
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOutcomes sets the outcomes property value. Deprecated. Populated for runs that did not support archivist-backed storage.Use `policy-set-result-url` to retrieve full policy results for new runs.
 // Deprecated:
 func (m *TfPolicySetOutcomes_attributes) SetOutcomes(value []TfPolicySetOutcomes_attributes_outcomesable) {
-	m.outcomes = value
+	err := m.GetBackingStore().Set("outcomes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOverridable sets the overridable property value. This field is deprecated and has no effect. Whether a run can be overridden is decided by the plan-stage Terraform Policy evaluation, based on the enforcement level of failed policies.
 // Deprecated:
 func (m *TfPolicySetOutcomes_attributes) SetOverridable(value *bool) {
-	m.overridable = value
+	err := m.GetBackingStore().Set("overridable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetDescription sets the policy-set-description property value. Optional description of the policy set
 func (m *TfPolicySetOutcomes_attributes) SetPolicySetDescription(value *string) {
-	m.policySetDescription = value
+	err := m.GetBackingStore().Set("policySetDescription", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetName sets the policy-set-name property value. Name of the policy set that was evaluated
 func (m *TfPolicySetOutcomes_attributes) SetPolicySetName(value *string) {
-	m.policySetName = value
+	err := m.GetBackingStore().Set("policySetName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetResultUrl sets the policy-set-result-url property value. URL to download the full policy result blob from Archivist.Present only when `archivist-supported` is `true` on the parent `tf-policy-evaluation`.When `null`, fall back to the `outcomes` array.
 func (m *TfPolicySetOutcomes_attributes) SetPolicySetResultUrl(value *string) {
-	m.policySetResultUrl = value
+	err := m.GetBackingStore().Set("policySetResultUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResultCount sets the result-count property value. Counts of policy results for this policy set
 func (m *TfPolicySetOutcomes_attributes) SetResultCount(value TfPolicySetOutcomes_attributes_resultCountable) {
-	m.resultCount = value
+	err := m.GetBackingStore().Set("resultCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicySetOutcomes_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetError() *string
 	GetOutcomes() []TfPolicySetOutcomes_attributes_outcomesable
 	GetOverridable() *bool
@@ -282,6 +361,7 @@ type TfPolicySetOutcomes_attributesable interface {
 	GetPolicySetName() *string
 	GetPolicySetResultUrl() *string
 	GetResultCount() TfPolicySetOutcomes_attributes_resultCountable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetError(value *string)
 	SetOutcomes(value []TfPolicySetOutcomes_attributes_outcomesable)
 	SetOverridable(value *bool)

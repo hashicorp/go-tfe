@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PlanExports_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The dataType property
-	dataType *PlanExports_attributes_dataType
-	// The errorMessage property
-	errorMessage *string
-	// The status property
-	status *PlanExports_attributes_status
-	// The statusTimestamps property
-	statusTimestamps PlanExports_attributes_statusTimestampsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPlanExports_attributes instantiates a new PlanExports_attributes and sets the default values.
 func NewPlanExports_attributes() *PlanExports_attributes {
 	m := &PlanExports_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,19 +30,47 @@ func CreatePlanExports_attributesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PlanExports_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PlanExports_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDataType gets the data-type property value. The dataType property
 // returns a *PlanExports_attributes_dataType when successful
 func (m *PlanExports_attributes) GetDataType() *PlanExports_attributes_dataType {
-	return m.dataType
+	val, err := m.GetBackingStore().Get("dataType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PlanExports_attributes_dataType)
+	}
+	return nil
 }
 
 // GetErrorMessage gets the error-message property value. The errorMessage property
 // returns a *string when successful
 func (m *PlanExports_attributes) GetErrorMessage() *string {
-	return m.errorMessage
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -101,13 +123,27 @@ func (m *PlanExports_attributes) GetFieldDeserializers() map[string]func(i878a80
 // GetStatus gets the status property value. The status property
 // returns a *PlanExports_attributes_status when successful
 func (m *PlanExports_attributes) GetStatus() *PlanExports_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PlanExports_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a PlanExports_attributes_statusTimestampsable when successful
 func (m *PlanExports_attributes) GetStatusTimestamps() PlanExports_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PlanExports_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -149,36 +185,59 @@ func (m *PlanExports_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PlanExports_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PlanExports_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDataType sets the data-type property value. The dataType property
 func (m *PlanExports_attributes) SetDataType(value *PlanExports_attributes_dataType) {
-	m.dataType = value
+	err := m.GetBackingStore().Set("dataType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetErrorMessage sets the error-message property value. The errorMessage property
 func (m *PlanExports_attributes) SetErrorMessage(value *string) {
-	m.errorMessage = value
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *PlanExports_attributes) SetStatus(value *PlanExports_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *PlanExports_attributes) SetStatusTimestamps(value PlanExports_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PlanExports_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDataType() *PlanExports_attributes_dataType
 	GetErrorMessage() *string
 	GetStatus() *PlanExports_attributes_status
 	GetStatusTimestamps() PlanExports_attributes_statusTimestampsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDataType(value *PlanExports_attributes_dataType)
 	SetErrorMessage(value *string)
 	SetStatus(value *PlanExports_attributes_status)

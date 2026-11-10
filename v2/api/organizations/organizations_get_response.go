@@ -6,37 +6,25 @@ package organizations
 import (
 	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type OrganizationsGetResponse struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-	// The included property
-	included []OrganizationsGetResponse_OrganizationsGetResponse_includedable
-	// The links property
-	links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
-	// The meta property
-	meta OrganizationsGetResponse_metaable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// OrganizationsGetResponse_OrganizationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+// OrganizationsGetResponse_OrganizationsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSets, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskLists, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptions
 type OrganizationsGetResponse_OrganizationsGetResponse_included struct {
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
-	entitlementSets i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
-	onboardingTaskLists i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-	projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
-	subscriptions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOrganizationsGetResponse_OrganizationsGetResponse_included instantiates a new OrganizationsGetResponse_OrganizationsGetResponse_included and sets the default values.
 func NewOrganizationsGetResponse_OrganizationsGetResponse_included() *OrganizationsGetResponse_OrganizationsGetResponse_included {
 	m := &OrganizationsGetResponse_OrganizationsGetResponse_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -70,10 +58,23 @@ func CreateOrganizationsGetResponse_OrganizationsGetResponse_includedFromDiscrim
 	return result, nil
 }
 
-// GetEntitlementSets gets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetEntitlementSets gets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSets
 // returns a EntitlementSetsable when successful
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetEntitlementSets() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable {
-	return m.entitlementSets
+	val, err := m.GetBackingStore().Get("entitlementSets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -97,22 +98,43 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetIsCompos
 	return true
 }
 
-// GetOnboardingTaskLists gets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
+// GetOnboardingTaskLists gets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskLists
 // returns a OnboardingTaskListsable when successful
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetOnboardingTaskLists() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable {
-	return m.onboardingTaskLists
+	val, err := m.GetBackingStore().Get("onboardingTaskLists")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable)
+	}
+	return nil
 }
 
-// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects
 // returns a Projectsable when successful
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetProjects() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+	}
+	return nil
 }
 
-// GetSubscriptions gets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+// GetSubscriptions gets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptions
 // returns a Subscriptionsable when successful
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) GetSubscriptions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable {
-	return m.subscriptions
+	val, err := m.GetBackingStore().Get("subscriptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -141,32 +163,52 @@ func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) Serialize(w
 	return nil
 }
 
-// SetEntitlementSets sets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetEntitlementSets sets the entitlementSets property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSets
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable) {
-	m.entitlementSets = value
+	err := m.GetBackingStore().Set("entitlementSets", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetOnboardingTaskLists sets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
+// SetOnboardingTaskLists sets the onboardingTaskLists property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskLists
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetOnboardingTaskLists(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable) {
-	m.onboardingTaskLists = value
+	err := m.GetBackingStore().Set("onboardingTaskLists", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+// SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projects
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetSubscriptions sets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+// SetSubscriptions sets the subscriptions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptions
 func (m *OrganizationsGetResponse_OrganizationsGetResponse_included) SetSubscriptions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable) {
-	m.subscriptions = value
+	err := m.GetBackingStore().Set("subscriptions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OrganizationsGetResponse_OrganizationsGetResponse_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetEntitlementSets() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable
 	GetOnboardingTaskLists() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable
 	GetProjects() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
 	GetSubscriptions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Subscriptionsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetEntitlementSets(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EntitlementSetsable)
 	SetOnboardingTaskLists(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.OnboardingTaskListsable)
 	SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
@@ -176,6 +218,7 @@ type OrganizationsGetResponse_OrganizationsGetResponse_includedable interface {
 // NewOrganizationsGetResponse instantiates a new OrganizationsGetResponse and sets the default values.
 func NewOrganizationsGetResponse() *OrganizationsGetResponse {
 	m := &OrganizationsGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -189,13 +232,34 @@ func CreateOrganizationsGetResponseFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *OrganizationsGetResponse) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationsGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a []Organizationsable when successful
 func (m *OrganizationsGetResponse) GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -260,19 +324,40 @@ func (m *OrganizationsGetResponse) GetFieldDeserializers() map[string]func(i878a
 // GetIncluded gets the included property value. The included property
 // returns a []OrganizationsGetResponse_OrganizationsGetResponse_includedable when successful
 func (m *OrganizationsGetResponse) GetIncluded() []OrganizationsGetResponse_OrganizationsGetResponse_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]OrganizationsGetResponse_OrganizationsGetResponse_includedable)
+	}
+	return nil
 }
 
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *OrganizationsGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable {
-	return m.links
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	}
+	return nil
 }
 
 // GetMeta gets the meta property value. The meta property
 // returns a OrganizationsGetResponse_metaable when successful
 func (m *OrganizationsGetResponse) GetMeta() OrganizationsGetResponse_metaable {
-	return m.meta
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsGetResponse_metaable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -324,36 +409,59 @@ func (m *OrganizationsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *OrganizationsGetResponse) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationsGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *OrganizationsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *OrganizationsGetResponse) SetIncluded(value []OrganizationsGetResponse_OrganizationsGetResponse_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLinks sets the links property value. The links property
 func (m *OrganizationsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
-	m.links = value
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMeta sets the meta property value. The meta property
 func (m *OrganizationsGetResponse) SetMeta(value OrganizationsGetResponse_metaable) {
-	m.meta = value
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OrganizationsGetResponseable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
 	GetIncluded() []OrganizationsGetResponse_OrganizationsGetResponse_includedable
 	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
 	GetMeta() OrganizationsGetResponse_metaable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
 	SetIncluded(value []OrganizationsGetResponse_OrganizationsGetResponse_includedable)
 	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)

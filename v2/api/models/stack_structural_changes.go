@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackStructuralChanges struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The attributes property
-	attributes StackStructuralChanges_attributesable
-	// The id property
-	id *string
-	// The links property
-	links Selfable
-	// The relationships property
-	relationships StackStructuralChanges_relationshipsable
-	// The type property
-	typeEscaped *StackStructuralChanges_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackStructuralChanges instantiates a new StackStructuralChanges and sets the default values.
 func NewStackStructuralChanges() *StackStructuralChanges {
 	m := &StackStructuralChanges{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,13 +30,34 @@ func CreateStackStructuralChangesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackStructuralChanges) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttributes gets the attributes property value. The attributes property
 // returns a StackStructuralChanges_attributesable when successful
 func (m *StackStructuralChanges) GetAttributes() StackStructuralChanges_attributesable {
-	return m.attributes
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStructuralChanges_attributesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStructuralChanges) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -107,25 +120,53 @@ func (m *StackStructuralChanges) GetFieldDeserializers() map[string]func(i878a80
 // GetId gets the id property value. The id property
 // returns a *string when successful
 func (m *StackStructuralChanges) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetLinks gets the links property value. The links property
 // returns a Selfable when successful
 func (m *StackStructuralChanges) GetLinks() Selfable {
-	return m.links
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Selfable)
+	}
+	return nil
 }
 
 // GetRelationships gets the relationships property value. The relationships property
 // returns a StackStructuralChanges_relationshipsable when successful
 func (m *StackStructuralChanges) GetRelationships() StackStructuralChanges_relationshipsable {
-	return m.relationships
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStructuralChanges_relationshipsable)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The type property
 // returns a *StackStructuralChanges_type when successful
 func (m *StackStructuralChanges) GetTypeEscaped() *StackStructuralChanges_type {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackStructuralChanges_type)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -159,43 +200,69 @@ func (m *StackStructuralChanges) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackStructuralChanges) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttributes sets the attributes property value. The attributes property
 func (m *StackStructuralChanges) SetAttributes(value StackStructuralChanges_attributesable) {
-	m.attributes = value
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStructuralChanges) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The id property
 func (m *StackStructuralChanges) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLinks sets the links property value. The links property
 func (m *StackStructuralChanges) SetLinks(value Selfable) {
-	m.links = value
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRelationships sets the relationships property value. The relationships property
 func (m *StackStructuralChanges) SetRelationships(value StackStructuralChanges_relationshipsable) {
-	m.relationships = value
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The type property
 func (m *StackStructuralChanges) SetTypeEscaped(value *StackStructuralChanges_type) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackStructuralChangesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAttributes() StackStructuralChanges_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetLinks() Selfable
 	GetRelationships() StackStructuralChanges_relationshipsable
 	GetTypeEscaped() *StackStructuralChanges_type
 	SetAttributes(value StackStructuralChanges_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetLinks(value Selfable)
 	SetRelationships(value StackStructuralChanges_relationshipsable)

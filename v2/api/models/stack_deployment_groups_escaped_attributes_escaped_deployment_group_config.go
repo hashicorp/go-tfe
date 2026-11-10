@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeploymentGroups_attributes_deploymentGroupConfig struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The autoApproveChecks property
-	autoApproveChecks []string
-	// The custom property
-	custom *bool
-	// The eagerPlan property
-	eagerPlan *string
-	// The failureTolerance property
-	failureTolerance *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentGroups_attributes_deploymentGroupConfig instantiates a new StackDeploymentGroups_attributes_deploymentGroupConfig and sets the default values.
 func NewStackDeploymentGroups_attributes_deploymentGroupConfig() *StackDeploymentGroups_attributes_deploymentGroupConfig {
 	m := &StackDeploymentGroups_attributes_deploymentGroupConfig{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,31 +30,73 @@ func CreateStackDeploymentGroups_attributes_deploymentGroupConfigFromDiscriminat
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAutoApproveChecks gets the auto-approve-checks property value. The autoApproveChecks property
 // returns a []string when successful
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetAutoApproveChecks() []string {
-	return m.autoApproveChecks
+	val, err := m.GetBackingStore().Get("autoApproveChecks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCustom gets the custom property value. The custom property
 // returns a *bool when successful
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetCustom() *bool {
-	return m.custom
+	val, err := m.GetBackingStore().Get("custom")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetEagerPlan gets the eager-plan property value. The eagerPlan property
 // returns a *string when successful
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetEagerPlan() *string {
-	return m.eagerPlan
+	val, err := m.GetBackingStore().Get("eagerPlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFailureTolerance gets the failure-tolerance property value. The failureTolerance property
 // returns a *int32 when successful
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) GetFailureTolerance() *int32 {
-	return m.failureTolerance
+	val, err := m.GetBackingStore().Get("failureTolerance")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -135,37 +171,60 @@ func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) Serialize(write
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoApproveChecks sets the auto-approve-checks property value. The autoApproveChecks property
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetAutoApproveChecks(value []string) {
-	m.autoApproveChecks = value
+	err := m.GetBackingStore().Set("autoApproveChecks", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCustom sets the custom property value. The custom property
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetCustom(value *bool) {
-	m.custom = value
+	err := m.GetBackingStore().Set("custom", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEagerPlan sets the eager-plan property value. The eagerPlan property
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetEagerPlan(value *string) {
-	m.eagerPlan = value
+	err := m.GetBackingStore().Set("eagerPlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFailureTolerance sets the failure-tolerance property value. The failureTolerance property
 func (m *StackDeploymentGroups_attributes_deploymentGroupConfig) SetFailureTolerance(value *int32) {
-	m.failureTolerance = value
+	err := m.GetBackingStore().Set("failureTolerance", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentGroups_attributes_deploymentGroupConfigable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAutoApproveChecks() []string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCustom() *bool
 	GetEagerPlan() *string
 	GetFailureTolerance() *int32
 	SetAutoApproveChecks(value []string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCustom(value *bool)
 	SetEagerPlan(value *string)
 	SetFailureTolerance(value *int32)

@@ -5,28 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackStates_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The components property
-	components []StackStates_attributes_componentsable
-	// The deployment property
-	deployment *string
-	// The generation property
-	generation *int32
-	// The isCurrent property
-	isCurrent *bool
-	// The resourceInstanceCount property
-	resourceInstanceCount *int32
-	// The status property
-	status *StackStates_attributes_status
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackStates_attributes instantiates a new StackStates_attributes and sets the default values.
 func NewStackStates_attributes() *StackStates_attributes {
 	m := &StackStates_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -40,19 +30,47 @@ func CreateStackStates_attributesFromDiscriminatorValue(parseNode i878a80d2330e8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackStates_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStates_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetComponents gets the components property value. The components property
 // returns a []StackStates_attributes_componentsable when successful
 func (m *StackStates_attributes) GetComponents() []StackStates_attributes_componentsable {
-	return m.components
+	val, err := m.GetBackingStore().Get("components")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackStates_attributes_componentsable)
+	}
+	return nil
 }
 
 // GetDeployment gets the deployment property value. The deployment property
 // returns a *string when successful
 func (m *StackStates_attributes) GetDeployment() *string {
-	return m.deployment
+	val, err := m.GetBackingStore().Get("deployment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -131,25 +149,53 @@ func (m *StackStates_attributes) GetFieldDeserializers() map[string]func(i878a80
 // GetGeneration gets the generation property value. The generation property
 // returns a *int32 when successful
 func (m *StackStates_attributes) GetGeneration() *int32 {
-	return m.generation
+	val, err := m.GetBackingStore().Get("generation")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetIsCurrent gets the is-current property value. The isCurrent property
 // returns a *bool when successful
 func (m *StackStates_attributes) GetIsCurrent() *bool {
-	return m.isCurrent
+	val, err := m.GetBackingStore().Get("isCurrent")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetResourceInstanceCount gets the resource-instance-count property value. The resourceInstanceCount property
 // returns a *int32 when successful
 func (m *StackStates_attributes) GetResourceInstanceCount() *int32 {
-	return m.resourceInstanceCount
+	val, err := m.GetBackingStore().Get("resourceInstanceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *StackStates_attributes_status when successful
 func (m *StackStates_attributes) GetStatus() *StackStates_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackStates_attributes_status)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,48 +217,77 @@ func (m *StackStates_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackStates_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStates_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetComponents sets the components property value. The components property
 func (m *StackStates_attributes) SetComponents(value []StackStates_attributes_componentsable) {
-	m.components = value
+	err := m.GetBackingStore().Set("components", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeployment sets the deployment property value. The deployment property
 func (m *StackStates_attributes) SetDeployment(value *string) {
-	m.deployment = value
+	err := m.GetBackingStore().Set("deployment", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGeneration sets the generation property value. The generation property
 func (m *StackStates_attributes) SetGeneration(value *int32) {
-	m.generation = value
+	err := m.GetBackingStore().Set("generation", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsCurrent sets the is-current property value. The isCurrent property
 func (m *StackStates_attributes) SetIsCurrent(value *bool) {
-	m.isCurrent = value
+	err := m.GetBackingStore().Set("isCurrent", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceInstanceCount sets the resource-instance-count property value. The resourceInstanceCount property
 func (m *StackStates_attributes) SetResourceInstanceCount(value *int32) {
-	m.resourceInstanceCount = value
+	err := m.GetBackingStore().Set("resourceInstanceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *StackStates_attributes) SetStatus(value *StackStates_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackStates_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetComponents() []StackStates_attributes_componentsable
 	GetDeployment() *string
 	GetGeneration() *int32
 	GetIsCurrent() *bool
 	GetResourceInstanceCount() *int32
 	GetStatus() *StackStates_attributes_status
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetComponents(value []StackStates_attributes_componentsable)
 	SetDeployment(value *string)
 	SetGeneration(value *int32)

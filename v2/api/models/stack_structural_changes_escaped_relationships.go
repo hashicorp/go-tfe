@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackStructuralChanges_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The approvedBy property
-	approvedBy UsersHasOneable
-	// The rejectedBy property
-	rejectedBy UsersHasOneable
-	// The stack property
-	stack StacksHasOneable
-	// The stackConfiguration property
-	stackConfiguration StackConfigurationsHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackStructuralChanges_relationships instantiates a new StackStructuralChanges_relationships and sets the default values.
 func NewStackStructuralChanges_relationships() *StackStructuralChanges_relationships {
 	m := &StackStructuralChanges_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateStackStructuralChanges_relationshipsFromDiscriminatorValue(parseNode 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackStructuralChanges_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApprovedBy gets the approved-by property value. The approvedBy property
 // returns a UsersHasOneable when successful
 func (m *StackStructuralChanges_relationships) GetApprovedBy() UsersHasOneable {
-	return m.approvedBy
+	val, err := m.GetBackingStore().Get("approvedBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStructuralChanges_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *StackStructuralChanges_relationships) GetFieldDeserializers() map[strin
 // GetRejectedBy gets the rejected-by property value. The rejectedBy property
 // returns a UsersHasOneable when successful
 func (m *StackStructuralChanges_relationships) GetRejectedBy() UsersHasOneable {
-	return m.rejectedBy
+	val, err := m.GetBackingStore().Get("rejectedBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
 
 // GetStack gets the stack property value. The stack property
 // returns a StacksHasOneable when successful
 func (m *StackStructuralChanges_relationships) GetStack() StacksHasOneable {
-	return m.stack
+	val, err := m.GetBackingStore().Get("stack")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StacksHasOneable)
+	}
+	return nil
 }
 
 // GetStackConfiguration gets the stack-configuration property value. The stackConfiguration property
 // returns a StackConfigurationsHasOneable when successful
 func (m *StackStructuralChanges_relationships) GetStackConfiguration() StackConfigurationsHasOneable {
-	return m.stackConfiguration
+	val, err := m.GetBackingStore().Get("stackConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -147,37 +183,60 @@ func (m *StackStructuralChanges_relationships) Serialize(writer i878a80d2330e89d
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackStructuralChanges_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApprovedBy sets the approved-by property value. The approvedBy property
 func (m *StackStructuralChanges_relationships) SetApprovedBy(value UsersHasOneable) {
-	m.approvedBy = value
+	err := m.GetBackingStore().Set("approvedBy", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStructuralChanges_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetRejectedBy sets the rejected-by property value. The rejectedBy property
 func (m *StackStructuralChanges_relationships) SetRejectedBy(value UsersHasOneable) {
-	m.rejectedBy = value
+	err := m.GetBackingStore().Set("rejectedBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStack sets the stack property value. The stack property
 func (m *StackStructuralChanges_relationships) SetStack(value StacksHasOneable) {
-	m.stack = value
+	err := m.GetBackingStore().Set("stack", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackConfiguration sets the stack-configuration property value. The stackConfiguration property
 func (m *StackStructuralChanges_relationships) SetStackConfiguration(value StackConfigurationsHasOneable) {
-	m.stackConfiguration = value
+	err := m.GetBackingStore().Set("stackConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackStructuralChanges_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApprovedBy() UsersHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetRejectedBy() UsersHasOneable
 	GetStack() StacksHasOneable
 	GetStackConfiguration() StackConfigurationsHasOneable
 	SetApprovedBy(value UsersHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetRejectedBy(value UsersHasOneable)
 	SetStack(value StacksHasOneable)
 	SetStackConfiguration(value StackConfigurationsHasOneable)

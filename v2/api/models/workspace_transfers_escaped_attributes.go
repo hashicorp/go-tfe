@@ -5,49 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type WorkspaceTransfers_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The approvalMode property
-	approvalMode *WorkspaceTransfers_attributes_approvalMode
-	// Auto-delete partial destination workspace on failure
-	cleanupOnFailure *bool
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The destinationOrganizationId property
-	destinationOrganizationId *string
-	// The destinationProjectId property
-	destinationProjectId *string
-	// The destinationWorkspaceId property
-	destinationWorkspaceId *string
-	// Copy runs and state versions after this date. Null copies all history.
-	historyCutoff *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The pauseReason property
-	pauseReason *WorkspaceTransfers_attributes_pauseReason
-	// The policySetMode property
-	policySetMode *WorkspaceTransfers_attributes_policySetMode
-	// The sourceOrganizationId property
-	sourceOrganizationId *string
-	// The sourceWorkspaceId property
-	sourceWorkspaceId *string
-	// The status property
-	status *WorkspaceTransfers_attributes_status
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The variableMode property
-	variableMode *WorkspaceTransfers_attributes_variableMode
-	// Prepended to workspace name in destination
-	workspacePrefix *string
-	// Appended to workspace name in destination
-	workspaceSuffix *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewWorkspaceTransfers_attributes instantiates a new WorkspaceTransfers_attributes and sets the default values.
 func NewWorkspaceTransfers_attributes() *WorkspaceTransfers_attributes {
 	m := &WorkspaceTransfers_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	approvalModeValue := REQUIRED_WORKSPACETRANSFERS_ATTRIBUTES_APPROVALMODE
 	m.SetApprovalMode(&approvalModeValue)
@@ -69,43 +39,99 @@ func CreateWorkspaceTransfers_attributesFromDiscriminatorValue(parseNode i878a80
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *WorkspaceTransfers_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApprovalMode gets the approval-mode property value. The approvalMode property
 // returns a *WorkspaceTransfers_attributes_approvalMode when successful
 func (m *WorkspaceTransfers_attributes) GetApprovalMode() *WorkspaceTransfers_attributes_approvalMode {
-	return m.approvalMode
+	val, err := m.GetBackingStore().Get("approvalMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransfers_attributes_approvalMode)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceTransfers_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCleanupOnFailure gets the cleanup-on-failure property value. Auto-delete partial destination workspace on failure
 // returns a *bool when successful
 func (m *WorkspaceTransfers_attributes) GetCleanupOnFailure() *bool {
-	return m.cleanupOnFailure
+	val, err := m.GetBackingStore().Get("cleanupOnFailure")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *WorkspaceTransfers_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDestinationOrganizationId gets the destination-organization-id property value. The destinationOrganizationId property
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetDestinationOrganizationId() *string {
-	return m.destinationOrganizationId
+	val, err := m.GetBackingStore().Get("destinationOrganizationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDestinationProjectId gets the destination-project-id property value. The destinationProjectId property
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetDestinationProjectId() *string {
-	return m.destinationProjectId
+	val, err := m.GetBackingStore().Get("destinationProjectId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDestinationWorkspaceId gets the destination-workspace-id property value. The destinationWorkspaceId property
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetDestinationWorkspaceId() *string {
-	return m.destinationWorkspaceId
+	val, err := m.GetBackingStore().Get("destinationWorkspaceId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -278,61 +304,131 @@ func (m *WorkspaceTransfers_attributes) GetFieldDeserializers() map[string]func(
 // GetHistoryCutoff gets the history-cutoff property value. Copy runs and state versions after this date. Null copies all history.
 // returns a *Time when successful
 func (m *WorkspaceTransfers_attributes) GetHistoryCutoff() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.historyCutoff
+	val, err := m.GetBackingStore().Get("historyCutoff")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPauseReason gets the pause-reason property value. The pauseReason property
 // returns a *WorkspaceTransfers_attributes_pauseReason when successful
 func (m *WorkspaceTransfers_attributes) GetPauseReason() *WorkspaceTransfers_attributes_pauseReason {
-	return m.pauseReason
+	val, err := m.GetBackingStore().Get("pauseReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransfers_attributes_pauseReason)
+	}
+	return nil
 }
 
 // GetPolicySetMode gets the policy-set-mode property value. The policySetMode property
 // returns a *WorkspaceTransfers_attributes_policySetMode when successful
 func (m *WorkspaceTransfers_attributes) GetPolicySetMode() *WorkspaceTransfers_attributes_policySetMode {
-	return m.policySetMode
+	val, err := m.GetBackingStore().Get("policySetMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransfers_attributes_policySetMode)
+	}
+	return nil
 }
 
 // GetSourceOrganizationId gets the source-organization-id property value. The sourceOrganizationId property
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetSourceOrganizationId() *string {
-	return m.sourceOrganizationId
+	val, err := m.GetBackingStore().Get("sourceOrganizationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSourceWorkspaceId gets the source-workspace-id property value. The sourceWorkspaceId property
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetSourceWorkspaceId() *string {
-	return m.sourceWorkspaceId
+	val, err := m.GetBackingStore().Get("sourceWorkspaceId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *WorkspaceTransfers_attributes_status when successful
 func (m *WorkspaceTransfers_attributes) GetStatus() *WorkspaceTransfers_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransfers_attributes_status)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *WorkspaceTransfers_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVariableMode gets the variable-mode property value. The variableMode property
 // returns a *WorkspaceTransfers_attributes_variableMode when successful
 func (m *WorkspaceTransfers_attributes) GetVariableMode() *WorkspaceTransfers_attributes_variableMode {
-	return m.variableMode
+	val, err := m.GetBackingStore().Get("variableMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTransfers_attributes_variableMode)
+	}
+	return nil
 }
 
 // GetWorkspacePrefix gets the workspace-prefix property value. Prepended to workspace name in destination
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetWorkspacePrefix() *string {
-	return m.workspacePrefix
+	val, err := m.GetBackingStore().Get("workspacePrefix")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetWorkspaceSuffix gets the workspace-suffix property value. Appended to workspace name in destination
 // returns a *string when successful
 func (m *WorkspaceTransfers_attributes) GetWorkspaceSuffix() *string {
-	return m.workspaceSuffix
+	val, err := m.GetBackingStore().Get("workspaceSuffix")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -405,93 +501,151 @@ func (m *WorkspaceTransfers_attributes) Serialize(writer i878a80d2330e89d2689638
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *WorkspaceTransfers_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApprovalMode sets the approval-mode property value. The approvalMode property
 func (m *WorkspaceTransfers_attributes) SetApprovalMode(value *WorkspaceTransfers_attributes_approvalMode) {
-	m.approvalMode = value
+	err := m.GetBackingStore().Set("approvalMode", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceTransfers_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCleanupOnFailure sets the cleanup-on-failure property value. Auto-delete partial destination workspace on failure
 func (m *WorkspaceTransfers_attributes) SetCleanupOnFailure(value *bool) {
-	m.cleanupOnFailure = value
+	err := m.GetBackingStore().Set("cleanupOnFailure", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *WorkspaceTransfers_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDestinationOrganizationId sets the destination-organization-id property value. The destinationOrganizationId property
 func (m *WorkspaceTransfers_attributes) SetDestinationOrganizationId(value *string) {
-	m.destinationOrganizationId = value
+	err := m.GetBackingStore().Set("destinationOrganizationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDestinationProjectId sets the destination-project-id property value. The destinationProjectId property
 func (m *WorkspaceTransfers_attributes) SetDestinationProjectId(value *string) {
-	m.destinationProjectId = value
+	err := m.GetBackingStore().Set("destinationProjectId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDestinationWorkspaceId sets the destination-workspace-id property value. The destinationWorkspaceId property
 func (m *WorkspaceTransfers_attributes) SetDestinationWorkspaceId(value *string) {
-	m.destinationWorkspaceId = value
+	err := m.GetBackingStore().Set("destinationWorkspaceId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHistoryCutoff sets the history-cutoff property value. Copy runs and state versions after this date. Null copies all history.
 func (m *WorkspaceTransfers_attributes) SetHistoryCutoff(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.historyCutoff = value
+	err := m.GetBackingStore().Set("historyCutoff", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPauseReason sets the pause-reason property value. The pauseReason property
 func (m *WorkspaceTransfers_attributes) SetPauseReason(value *WorkspaceTransfers_attributes_pauseReason) {
-	m.pauseReason = value
+	err := m.GetBackingStore().Set("pauseReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetMode sets the policy-set-mode property value. The policySetMode property
 func (m *WorkspaceTransfers_attributes) SetPolicySetMode(value *WorkspaceTransfers_attributes_policySetMode) {
-	m.policySetMode = value
+	err := m.GetBackingStore().Set("policySetMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceOrganizationId sets the source-organization-id property value. The sourceOrganizationId property
 func (m *WorkspaceTransfers_attributes) SetSourceOrganizationId(value *string) {
-	m.sourceOrganizationId = value
+	err := m.GetBackingStore().Set("sourceOrganizationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceWorkspaceId sets the source-workspace-id property value. The sourceWorkspaceId property
 func (m *WorkspaceTransfers_attributes) SetSourceWorkspaceId(value *string) {
-	m.sourceWorkspaceId = value
+	err := m.GetBackingStore().Set("sourceWorkspaceId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *WorkspaceTransfers_attributes) SetStatus(value *WorkspaceTransfers_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *WorkspaceTransfers_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariableMode sets the variable-mode property value. The variableMode property
 func (m *WorkspaceTransfers_attributes) SetVariableMode(value *WorkspaceTransfers_attributes_variableMode) {
-	m.variableMode = value
+	err := m.GetBackingStore().Set("variableMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspacePrefix sets the workspace-prefix property value. Prepended to workspace name in destination
 func (m *WorkspaceTransfers_attributes) SetWorkspacePrefix(value *string) {
-	m.workspacePrefix = value
+	err := m.GetBackingStore().Set("workspacePrefix", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceSuffix sets the workspace-suffix property value. Appended to workspace name in destination
 func (m *WorkspaceTransfers_attributes) SetWorkspaceSuffix(value *string) {
-	m.workspaceSuffix = value
+	err := m.GetBackingStore().Set("workspaceSuffix", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type WorkspaceTransfers_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApprovalMode() *WorkspaceTransfers_attributes_approvalMode
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCleanupOnFailure() *bool
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDestinationOrganizationId() *string
@@ -508,6 +662,7 @@ type WorkspaceTransfers_attributesable interface {
 	GetWorkspacePrefix() *string
 	GetWorkspaceSuffix() *string
 	SetApprovalMode(value *WorkspaceTransfers_attributes_approvalMode)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCleanupOnFailure(value *bool)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDestinationOrganizationId(value *string)

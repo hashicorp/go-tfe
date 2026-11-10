@@ -5,36 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type DataRetentionPolicy_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The configurationVersionsDeleteAfterNDays property
-	configurationVersionsDeleteAfterNDays *int32
-	// The configurationVersionsKeepLatestCount property
-	configurationVersionsKeepLatestCount *int32
-	// The deleteConfigurationVersions property
-	deleteConfigurationVersions *bool
-	// The deleteOlderThanNDays property
-	deleteOlderThanNDays *int32
-	// The deleteRunDataAndLogs property
-	deleteRunDataAndLogs *bool
-	// The deleteStateVersions property
-	deleteStateVersions *bool
-	// The runDataAndLogsDeleteAfterNDays property
-	runDataAndLogsDeleteAfterNDays *int32
-	// The runDataKeepLatestCount property
-	runDataKeepLatestCount *int32
-	// The stateVersionsDeleteAfterNDays property
-	stateVersionsDeleteAfterNDays *int32
-	// The stateVersionsKeepLatestCount property
-	stateVersionsKeepLatestCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewDataRetentionPolicy_attributes instantiates a new DataRetentionPolicy_attributes and sets the default values.
 func NewDataRetentionPolicy_attributes() *DataRetentionPolicy_attributes {
 	m := &DataRetentionPolicy_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -48,43 +30,99 @@ func CreateDataRetentionPolicy_attributesFromDiscriminatorValue(parseNode i878a8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *DataRetentionPolicy_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *DataRetentionPolicy_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetConfigurationVersionsDeleteAfterNDays gets the configuration-versions-delete-after-n-days property value. The configurationVersionsDeleteAfterNDays property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsDeleteAfterNDays() *int32 {
-	return m.configurationVersionsDeleteAfterNDays
+	val, err := m.GetBackingStore().Get("configurationVersionsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetConfigurationVersionsKeepLatestCount gets the configuration-versions-keep-latest-count property value. The configurationVersionsKeepLatestCount property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsKeepLatestCount() *int32 {
-	return m.configurationVersionsKeepLatestCount
+	val, err := m.GetBackingStore().Get("configurationVersionsKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetDeleteConfigurationVersions gets the delete-configuration-versions property value. The deleteConfigurationVersions property
 // returns a *bool when successful
 func (m *DataRetentionPolicy_attributes) GetDeleteConfigurationVersions() *bool {
-	return m.deleteConfigurationVersions
+	val, err := m.GetBackingStore().Get("deleteConfigurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetDeleteOlderThanNDays gets the delete-older-than-n-days property value. The deleteOlderThanNDays property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetDeleteOlderThanNDays() *int32 {
-	return m.deleteOlderThanNDays
+	val, err := m.GetBackingStore().Get("deleteOlderThanNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetDeleteRunDataAndLogs gets the delete-run-data-and-logs property value. The deleteRunDataAndLogs property
 // returns a *bool when successful
 func (m *DataRetentionPolicy_attributes) GetDeleteRunDataAndLogs() *bool {
-	return m.deleteRunDataAndLogs
+	val, err := m.GetBackingStore().Get("deleteRunDataAndLogs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetDeleteStateVersions gets the delete-state-versions property value. The deleteStateVersions property
 // returns a *bool when successful
 func (m *DataRetentionPolicy_attributes) GetDeleteStateVersions() *bool {
-	return m.deleteStateVersions
+	val, err := m.GetBackingStore().Get("deleteStateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -197,25 +235,53 @@ func (m *DataRetentionPolicy_attributes) GetFieldDeserializers() map[string]func
 // GetRunDataAndLogsDeleteAfterNDays gets the run-data-and-logs-delete-after-n-days property value. The runDataAndLogsDeleteAfterNDays property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetRunDataAndLogsDeleteAfterNDays() *int32 {
-	return m.runDataAndLogsDeleteAfterNDays
+	val, err := m.GetBackingStore().Get("runDataAndLogsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRunDataKeepLatestCount gets the run-data-keep-latest-count property value. The runDataKeepLatestCount property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetRunDataKeepLatestCount() *int32 {
-	return m.runDataKeepLatestCount
+	val, err := m.GetBackingStore().Get("runDataKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStateVersionsDeleteAfterNDays gets the state-versions-delete-after-n-days property value. The stateVersionsDeleteAfterNDays property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetStateVersionsDeleteAfterNDays() *int32 {
-	return m.stateVersionsDeleteAfterNDays
+	val, err := m.GetBackingStore().Get("stateVersionsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStateVersionsKeepLatestCount gets the state-versions-keep-latest-count property value. The stateVersionsKeepLatestCount property
 // returns a *int32 when successful
 func (m *DataRetentionPolicy_attributes) GetStateVersionsKeepLatestCount() *int32 {
-	return m.stateVersionsKeepLatestCount
+	val, err := m.GetBackingStore().Get("stateVersionsKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -291,62 +357,102 @@ func (m *DataRetentionPolicy_attributes) Serialize(writer i878a80d2330e89d268963
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *DataRetentionPolicy_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *DataRetentionPolicy_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetConfigurationVersionsDeleteAfterNDays sets the configuration-versions-delete-after-n-days property value. The configurationVersionsDeleteAfterNDays property
 func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsDeleteAfterNDays(value *int32) {
-	m.configurationVersionsDeleteAfterNDays = value
+	err := m.GetBackingStore().Set("configurationVersionsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetConfigurationVersionsKeepLatestCount sets the configuration-versions-keep-latest-count property value. The configurationVersionsKeepLatestCount property
 func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsKeepLatestCount(value *int32) {
-	m.configurationVersionsKeepLatestCount = value
+	err := m.GetBackingStore().Set("configurationVersionsKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeleteConfigurationVersions sets the delete-configuration-versions property value. The deleteConfigurationVersions property
 func (m *DataRetentionPolicy_attributes) SetDeleteConfigurationVersions(value *bool) {
-	m.deleteConfigurationVersions = value
+	err := m.GetBackingStore().Set("deleteConfigurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeleteOlderThanNDays sets the delete-older-than-n-days property value. The deleteOlderThanNDays property
 func (m *DataRetentionPolicy_attributes) SetDeleteOlderThanNDays(value *int32) {
-	m.deleteOlderThanNDays = value
+	err := m.GetBackingStore().Set("deleteOlderThanNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeleteRunDataAndLogs sets the delete-run-data-and-logs property value. The deleteRunDataAndLogs property
 func (m *DataRetentionPolicy_attributes) SetDeleteRunDataAndLogs(value *bool) {
-	m.deleteRunDataAndLogs = value
+	err := m.GetBackingStore().Set("deleteRunDataAndLogs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeleteStateVersions sets the delete-state-versions property value. The deleteStateVersions property
 func (m *DataRetentionPolicy_attributes) SetDeleteStateVersions(value *bool) {
-	m.deleteStateVersions = value
+	err := m.GetBackingStore().Set("deleteStateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunDataAndLogsDeleteAfterNDays sets the run-data-and-logs-delete-after-n-days property value. The runDataAndLogsDeleteAfterNDays property
 func (m *DataRetentionPolicy_attributes) SetRunDataAndLogsDeleteAfterNDays(value *int32) {
-	m.runDataAndLogsDeleteAfterNDays = value
+	err := m.GetBackingStore().Set("runDataAndLogsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunDataKeepLatestCount sets the run-data-keep-latest-count property value. The runDataKeepLatestCount property
 func (m *DataRetentionPolicy_attributes) SetRunDataKeepLatestCount(value *int32) {
-	m.runDataKeepLatestCount = value
+	err := m.GetBackingStore().Set("runDataKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStateVersionsDeleteAfterNDays sets the state-versions-delete-after-n-days property value. The stateVersionsDeleteAfterNDays property
 func (m *DataRetentionPolicy_attributes) SetStateVersionsDeleteAfterNDays(value *int32) {
-	m.stateVersionsDeleteAfterNDays = value
+	err := m.GetBackingStore().Set("stateVersionsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStateVersionsKeepLatestCount sets the state-versions-keep-latest-count property value. The stateVersionsKeepLatestCount property
 func (m *DataRetentionPolicy_attributes) SetStateVersionsKeepLatestCount(value *int32) {
-	m.stateVersionsKeepLatestCount = value
+	err := m.GetBackingStore().Set("stateVersionsKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type DataRetentionPolicy_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurationVersionsDeleteAfterNDays() *int32
 	GetConfigurationVersionsKeepLatestCount() *int32
 	GetDeleteConfigurationVersions() *bool
@@ -357,6 +463,7 @@ type DataRetentionPolicy_attributesable interface {
 	GetRunDataKeepLatestCount() *int32
 	GetStateVersionsDeleteAfterNDays() *int32
 	GetStateVersionsKeepLatestCount() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurationVersionsDeleteAfterNDays(value *int32)
 	SetConfigurationVersionsKeepLatestCount(value *int32)
 	SetDeleteConfigurationVersions(value *bool)

@@ -5,47 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Teams_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Whether team members are allowed to manage their own authentication tokens.
-	allowMemberTokenManagement *bool
-	// Team description. Can be manually entered for all teams.
-	description *string
-	// The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
-	hcpResourceName *string
-	// Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
-	isUnified *bool
-	// The name of the team, which can only include letters, numbers, `-`, and `_`.
-	name *string
-	// The number of non-service account users in the team.
-	nonServiceUsersCount *int32
-	// Settings for the team's organization-level permissions.
-	organizationAccess Teams_attributes_organizationAccessable
-	// Permissions for the current user on this team.
-	permissions Teams_attributes_permissionsable
-	// The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	scimGroupName *string
-	// Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	scimLinked *bool
-	// Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	scimSyncPaused *bool
-	// The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	scimUpdatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The unique identifier of the team from the SAML MemberOf attribute.
-	ssoTeamId *string
-	// The number of active users in the team.
-	usersCount *int32
-	// The team's visibility. Can be "secret" or "organization" (visible).
-	visibility *Teams_attributes_visibility
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTeams_attributes instantiates a new Teams_attributes and sets the default values.
 func NewTeams_attributes() *Teams_attributes {
 	m := &Teams_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -59,19 +31,47 @@ func CreateTeams_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2689
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Teams_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAllowMemberTokenManagement gets the allow-member-token-management property value. Whether team members are allowed to manage their own authentication tokens.
 // returns a *bool when successful
 func (m *Teams_attributes) GetAllowMemberTokenManagement() *bool {
-	return m.allowMemberTokenManagement
+	val, err := m.GetBackingStore().Get("allowMemberTokenManagement")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Teams_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDescription gets the description property value. Team description. Can be manually entered for all teams.
 // returns a *string when successful
 func (m *Teams_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -234,79 +234,170 @@ func (m *Teams_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e
 // GetHcpResourceName gets the hcp-resource-name property value. The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Teams_attributes) GetHcpResourceName() *string {
-	return m.hcpResourceName
+	val, err := m.GetBackingStore().Get("hcpResourceName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsUnified gets the is-unified property value. Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Teams_attributes) GetIsUnified() *bool {
-	return m.isUnified
+	val, err := m.GetBackingStore().Get("isUnified")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name of the team, which can only include letters, numbers, `-`, and `_`.
 // returns a *string when successful
 func (m *Teams_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNonServiceUsersCount gets the non-service-users-count property value. The number of non-service account users in the team.
 // returns a *int32 when successful
 func (m *Teams_attributes) GetNonServiceUsersCount() *int32 {
-	return m.nonServiceUsersCount
+	val, err := m.GetBackingStore().Get("nonServiceUsersCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetOrganizationAccess gets the organization-access property value. Settings for the team's organization-level permissions.
 // returns a Teams_attributes_organizationAccessable when successful
 func (m *Teams_attributes) GetOrganizationAccess() Teams_attributes_organizationAccessable {
-	return m.organizationAccess
+	val, err := m.GetBackingStore().Get("organizationAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Teams_attributes_organizationAccessable)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. Permissions for the current user on this team.
 // returns a Teams_attributes_permissionsable when successful
 func (m *Teams_attributes) GetPermissions() Teams_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Teams_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetScimGroupName gets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *string when successful
 func (m *Teams_attributes) GetScimGroupName() *string {
-	return m.scimGroupName
+	val, err := m.GetBackingStore().Get("scimGroupName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetScimLinked gets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Teams_attributes) GetScimLinked() *bool {
-	return m.scimLinked
+	val, err := m.GetBackingStore().Get("scimLinked")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetScimSyncPaused gets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Teams_attributes) GetScimSyncPaused() *bool {
-	return m.scimSyncPaused
+	val, err := m.GetBackingStore().Get("scimSyncPaused")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetScimUpdatedAt gets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *Time when successful
 func (m *Teams_attributes) GetScimUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.scimUpdatedAt
+	val, err := m.GetBackingStore().Get("scimUpdatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetSsoTeamId gets the sso-team-id property value. The unique identifier of the team from the SAML MemberOf attribute.
 // returns a *string when successful
 func (m *Teams_attributes) GetSsoTeamId() *string {
-	return m.ssoTeamId
+	val, err := m.GetBackingStore().Get("ssoTeamId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUsersCount gets the users-count property value. The number of active users in the team.
 // returns a *int32 when successful
 func (m *Teams_attributes) GetUsersCount() *int32 {
-	return m.usersCount
+	val, err := m.GetBackingStore().Get("usersCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetVisibility gets the visibility property value. The team's visibility. Can be "secret" or "organization" (visible).
 // returns a *Teams_attributes_visibility when successful
 func (m *Teams_attributes) GetVisibility() *Teams_attributes_visibility {
-	return m.visibility
+	val, err := m.GetBackingStore().Get("visibility")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Teams_attributes_visibility)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -359,88 +450,143 @@ func (m *Teams_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Teams_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowMemberTokenManagement sets the allow-member-token-management property value. Whether team members are allowed to manage their own authentication tokens.
 func (m *Teams_attributes) SetAllowMemberTokenManagement(value *bool) {
-	m.allowMemberTokenManagement = value
+	err := m.GetBackingStore().Set("allowMemberTokenManagement", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Teams_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDescription sets the description property value. Team description. Can be manually entered for all teams.
 func (m *Teams_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHcpResourceName sets the hcp-resource-name property value. The HCP resource name for unified teams.This attribute is only available in HCP Terraform.
 func (m *Teams_attributes) SetHcpResourceName(value *string) {
-	m.hcpResourceName = value
+	err := m.GetBackingStore().Set("hcpResourceName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsUnified sets the is-unified property value. Whether this team is unified with HCP.This attribute is only available in HCP Terraform.
 func (m *Teams_attributes) SetIsUnified(value *bool) {
-	m.isUnified = value
+	err := m.GetBackingStore().Set("isUnified", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the team, which can only include letters, numbers, `-`, and `_`.
 func (m *Teams_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNonServiceUsersCount sets the non-service-users-count property value. The number of non-service account users in the team.
 func (m *Teams_attributes) SetNonServiceUsersCount(value *int32) {
-	m.nonServiceUsersCount = value
+	err := m.GetBackingStore().Set("nonServiceUsersCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganizationAccess sets the organization-access property value. Settings for the team's organization-level permissions.
 func (m *Teams_attributes) SetOrganizationAccess(value Teams_attributes_organizationAccessable) {
-	m.organizationAccess = value
+	err := m.GetBackingStore().Set("organizationAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. Permissions for the current user on this team.
 func (m *Teams_attributes) SetPermissions(value Teams_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimGroupName sets the scim-group-name property value. The display name of the linked SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimGroupName(value *string) {
-	m.scimGroupName = value
+	err := m.GetBackingStore().Set("scimGroupName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimLinked sets the scim-linked property value. Whether this team is linked to a SCIM group. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimLinked(value *bool) {
-	m.scimLinked = value
+	err := m.GetBackingStore().Set("scimLinked", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimSyncPaused sets the scim-sync-paused property value. Whether SCIM sync is paused for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimSyncPaused(value *bool) {
-	m.scimSyncPaused = value
+	err := m.GetBackingStore().Set("scimSyncPaused", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetScimUpdatedAt sets the scim-updated-at property value. The timestamp of the most recent SCIM sync update for this team. Only available when SCIM is enabled.This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Teams_attributes) SetScimUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.scimUpdatedAt = value
+	err := m.GetBackingStore().Set("scimUpdatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSsoTeamId sets the sso-team-id property value. The unique identifier of the team from the SAML MemberOf attribute.
 func (m *Teams_attributes) SetSsoTeamId(value *string) {
-	m.ssoTeamId = value
+	err := m.GetBackingStore().Set("ssoTeamId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUsersCount sets the users-count property value. The number of active users in the team.
 func (m *Teams_attributes) SetUsersCount(value *int32) {
-	m.usersCount = value
+	err := m.GetBackingStore().Set("usersCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVisibility sets the visibility property value. The team's visibility. Can be "secret" or "organization" (visible).
 func (m *Teams_attributes) SetVisibility(value *Teams_attributes_visibility) {
-	m.visibility = value
+	err := m.GetBackingStore().Set("visibility", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Teams_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAllowMemberTokenManagement() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDescription() *string
 	GetHcpResourceName() *string
 	GetIsUnified() *bool
@@ -456,6 +602,7 @@ type Teams_attributesable interface {
 	GetUsersCount() *int32
 	GetVisibility() *Teams_attributes_visibility
 	SetAllowMemberTokenManagement(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDescription(value *string)
 	SetHcpResourceName(value *string)
 	SetIsUnified(value *bool)

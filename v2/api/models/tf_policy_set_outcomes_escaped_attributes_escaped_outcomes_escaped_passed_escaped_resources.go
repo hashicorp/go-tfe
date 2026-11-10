@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicySetOutcomes_attributes_outcomes_passed_resources struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// List of informational messages from enforce blocks that this resource passed
-	info_messages []string
-	// The Terraform resource address (e.g., 'aws_s3_bucket.compliant')
-	resource_name *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTfPolicySetOutcomes_attributes_outcomes_passed_resources instantiates a new TfPolicySetOutcomes_attributes_outcomes_passed_resources and sets the default values.
 func NewTfPolicySetOutcomes_attributes_outcomes_passed_resources() *TfPolicySetOutcomes_attributes_outcomes_passed_resources {
 	m := &TfPolicySetOutcomes_attributes_outcomes_passed_resources{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateTfPolicySetOutcomes_attributes_outcomes_passed_resourcesFromDiscrimin
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -71,13 +83,27 @@ func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) GetFieldDeser
 // GetInfoMessages gets the info_messages property value. List of informational messages from enforce blocks that this resource passed
 // returns a []string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) GetInfoMessages() []string {
-	return m.info_messages
+	val, err := m.GetBackingStore().Get("info_messages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetResourceName gets the resource_name property value. The Terraform resource address (e.g., 'aws_s3_bucket.compliant')
 // returns a *string when successful
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) GetResourceName() *string {
-	return m.resource_name
+	val, err := m.GetBackingStore().Get("resource_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -105,24 +131,41 @@ func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) Serialize(wri
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetInfoMessages sets the info_messages property value. List of informational messages from enforce blocks that this resource passed
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) SetInfoMessages(value []string) {
-	m.info_messages = value
+	err := m.GetBackingStore().Set("info_messages", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceName sets the resource_name property value. The Terraform resource address (e.g., 'aws_s3_bucket.compliant')
 func (m *TfPolicySetOutcomes_attributes_outcomes_passed_resources) SetResourceName(value *string) {
-	m.resource_name = value
+	err := m.GetBackingStore().Set("resource_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetInfoMessages() []string
 	GetResourceName() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetInfoMessages(value []string)
 	SetResourceName(value *string)
 }

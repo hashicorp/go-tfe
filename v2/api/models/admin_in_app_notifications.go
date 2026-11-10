@@ -5,24 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminInAppNotifications struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The attributes property
-	attributes AdminInAppNotifications_attributesable
-	// The in-app notification's ID (ian-xxxxxxxxxxxxxxxx).
-	id *string
-	// The relationships property
-	relationships AdminInAppNotifications_relationshipsable
-	// The type property
-	typeEscaped *AdminInAppNotifications_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAdminInAppNotifications instantiates a new AdminInAppNotifications and sets the default values.
 func NewAdminInAppNotifications() *AdminInAppNotifications {
 	m := &AdminInAppNotifications{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -36,13 +30,34 @@ func CreateAdminInAppNotificationsFromDiscriminatorValue(parseNode i878a80d2330e
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AdminInAppNotifications) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttributes gets the attributes property value. The attributes property
 // returns a AdminInAppNotifications_attributesable when successful
 func (m *AdminInAppNotifications) GetAttributes() AdminInAppNotifications_attributesable {
-	return m.attributes
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AdminInAppNotifications_attributesable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminInAppNotifications) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -95,19 +110,40 @@ func (m *AdminInAppNotifications) GetFieldDeserializers() map[string]func(i878a8
 // GetId gets the id property value. The in-app notification's ID (ian-xxxxxxxxxxxxxxxx).
 // returns a *string when successful
 func (m *AdminInAppNotifications) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRelationships gets the relationships property value. The relationships property
 // returns a AdminInAppNotifications_relationshipsable when successful
 func (m *AdminInAppNotifications) GetRelationships() AdminInAppNotifications_relationshipsable {
-	return m.relationships
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AdminInAppNotifications_relationshipsable)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The type property
 // returns a *AdminInAppNotifications_type when successful
 func (m *AdminInAppNotifications) GetTypeEscaped() *AdminInAppNotifications_type {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminInAppNotifications_type)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -136,37 +172,60 @@ func (m *AdminInAppNotifications) Serialize(writer i878a80d2330e89d26896388a3f48
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AdminInAppNotifications) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttributes sets the attributes property value. The attributes property
 func (m *AdminInAppNotifications) SetAttributes(value AdminInAppNotifications_attributesable) {
-	m.attributes = value
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminInAppNotifications) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The in-app notification's ID (ian-xxxxxxxxxxxxxxxx).
 func (m *AdminInAppNotifications) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRelationships sets the relationships property value. The relationships property
 func (m *AdminInAppNotifications) SetRelationships(value AdminInAppNotifications_relationshipsable) {
-	m.relationships = value
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The type property
 func (m *AdminInAppNotifications) SetTypeEscaped(value *AdminInAppNotifications_type) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AdminInAppNotificationsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAttributes() AdminInAppNotifications_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetRelationships() AdminInAppNotifications_relationshipsable
 	GetTypeEscaped() *AdminInAppNotifications_type
 	SetAttributes(value AdminInAppNotifications_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetRelationships(value AdminInAppNotifications_relationshipsable)
 	SetTypeEscaped(value *AdminInAppNotifications_type)

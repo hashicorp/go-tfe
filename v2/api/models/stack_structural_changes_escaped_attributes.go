@@ -5,33 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackStructuralChanges_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// When the change was approved. Only present when the status is approved.
-	approvedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The source branch of the stack configuration whose topology change this record decides.
-	branch *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The reason property
-	reason *string
-	// When the change was rejected. Only present when the status is rejected.
-	rejectedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The status property
-	status *StackStructuralChanges_attributes_status
-	// The deployment topology changes this record decides, compared with the branch's last approved topology. A deployment that moves between groups appears in both lists.
-	topologyChanges StackStructuralChanges_attributes_topologyChangesable
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackStructuralChanges_attributes instantiates a new StackStructuralChanges_attributes and sets the default values.
 func NewStackStructuralChanges_attributes() *StackStructuralChanges_attributes {
 	m := &StackStructuralChanges_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -45,25 +31,60 @@ func CreateStackStructuralChanges_attributesFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackStructuralChanges_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApprovedAt gets the approved-at property value. When the change was approved. Only present when the status is approved.
 // returns a *Time when successful
 func (m *StackStructuralChanges_attributes) GetApprovedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.approvedAt
+	val, err := m.GetBackingStore().Get("approvedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStructuralChanges_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBranch gets the branch property value. The source branch of the stack configuration whose topology change this record decides.
 // returns a *string when successful
 func (m *StackStructuralChanges_attributes) GetBranch() *string {
-	return m.branch
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackStructuralChanges_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -156,31 +177,66 @@ func (m *StackStructuralChanges_attributes) GetFieldDeserializers() map[string]f
 // GetReason gets the reason property value. The reason property
 // returns a *string when successful
 func (m *StackStructuralChanges_attributes) GetReason() *string {
-	return m.reason
+	val, err := m.GetBackingStore().Get("reason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRejectedAt gets the rejected-at property value. When the change was rejected. Only present when the status is rejected.
 // returns a *Time when successful
 func (m *StackStructuralChanges_attributes) GetRejectedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.rejectedAt
+	val, err := m.GetBackingStore().Get("rejectedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *StackStructuralChanges_attributes_status when successful
 func (m *StackStructuralChanges_attributes) GetStatus() *StackStructuralChanges_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackStructuralChanges_attributes_status)
+	}
+	return nil
 }
 
 // GetTopologyChanges gets the topology-changes property value. The deployment topology changes this record decides, compared with the branch's last approved topology. A deployment that moves between groups appears in both lists.
 // returns a StackStructuralChanges_attributes_topologyChangesable when successful
 func (m *StackStructuralChanges_attributes) GetTopologyChanges() StackStructuralChanges_attributes_topologyChangesable {
-	return m.topologyChanges
+	val, err := m.GetBackingStore().Get("topologyChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStructuralChanges_attributes_topologyChangesable)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *StackStructuralChanges_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -202,53 +258,87 @@ func (m *StackStructuralChanges_attributes) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackStructuralChanges_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApprovedAt sets the approved-at property value. When the change was approved. Only present when the status is approved.
 func (m *StackStructuralChanges_attributes) SetApprovedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.approvedAt = value
+	err := m.GetBackingStore().Set("approvedAt", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStructuralChanges_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBranch sets the branch property value. The source branch of the stack configuration whose topology change this record decides.
 func (m *StackStructuralChanges_attributes) SetBranch(value *string) {
-	m.branch = value
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackStructuralChanges_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReason sets the reason property value. The reason property
 func (m *StackStructuralChanges_attributes) SetReason(value *string) {
-	m.reason = value
+	err := m.GetBackingStore().Set("reason", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRejectedAt sets the rejected-at property value. When the change was rejected. Only present when the status is rejected.
 func (m *StackStructuralChanges_attributes) SetRejectedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.rejectedAt = value
+	err := m.GetBackingStore().Set("rejectedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *StackStructuralChanges_attributes) SetStatus(value *StackStructuralChanges_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTopologyChanges sets the topology-changes property value. The deployment topology changes this record decides, compared with the branch's last approved topology. A deployment that moves between groups appears in both lists.
 func (m *StackStructuralChanges_attributes) SetTopologyChanges(value StackStructuralChanges_attributes_topologyChangesable) {
-	m.topologyChanges = value
+	err := m.GetBackingStore().Set("topologyChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *StackStructuralChanges_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackStructuralChanges_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApprovedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBranch() *string
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetReason() *string
@@ -257,6 +347,7 @@ type StackStructuralChanges_attributesable interface {
 	GetTopologyChanges() StackStructuralChanges_attributes_topologyChangesable
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetApprovedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBranch(value *string)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetReason(value *string)

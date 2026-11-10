@@ -5,27 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // Plans_attributes_executionDetails details about the execution of this plan. Null if plan has not started.
 type Plans_attributes_executionDetails struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
-	agentId *string
-	// Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
-	agentName *string
-	// ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
-	agentPoolId *string
-	// Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
-	agentPoolName *string
-	// Execution mode of the run
-	mode *Plans_attributes_executionDetails_mode
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPlans_attributes_executionDetails instantiates a new Plans_attributes_executionDetails and sets the default values.
 func NewPlans_attributes_executionDetails() *Plans_attributes_executionDetails {
 	m := &Plans_attributes_executionDetails{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -39,31 +31,73 @@ func CreatePlans_attributes_executionDetailsFromDiscriminatorValue(parseNode i87
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Plans_attributes_executionDetails) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentId gets the agent-id property value. ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentId() *string {
-	return m.agentId
+	val, err := m.GetBackingStore().Get("agentId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAgentName gets the agent-name property value. Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentName() *string {
-	return m.agentName
+	val, err := m.GetBackingStore().Get("agentName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAgentPoolId gets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentPoolId() *string {
-	return m.agentPoolId
+	val, err := m.GetBackingStore().Get("agentPoolId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAgentPoolName gets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 // returns a *string when successful
 func (m *Plans_attributes_executionDetails) GetAgentPoolName() *string {
-	return m.agentPoolName
+	val, err := m.GetBackingStore().Get("agentPoolName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Plans_attributes_executionDetails) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -126,7 +160,14 @@ func (m *Plans_attributes_executionDetails) GetFieldDeserializers() map[string]f
 // GetMode gets the mode property value. Execution mode of the run
 // returns a *Plans_attributes_executionDetails_mode when successful
 func (m *Plans_attributes_executionDetails) GetMode() *Plans_attributes_executionDetails_mode {
-	return m.mode
+	val, err := m.GetBackingStore().Get("mode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Plans_attributes_executionDetails_mode)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -173,45 +214,71 @@ func (m *Plans_attributes_executionDetails) Serialize(writer i878a80d2330e89d268
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Plans_attributes_executionDetails) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentId sets the agent-id property value. ID of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentId(value *string) {
-	m.agentId = value
+	err := m.GetBackingStore().Set("agentId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentName sets the agent-name property value. Name of the agent used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentName(value *string) {
-	m.agentName = value
+	err := m.GetBackingStore().Set("agentName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPoolId sets the agent-pool-id property value. ID of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentPoolId(value *string) {
-	m.agentPoolId = value
+	err := m.GetBackingStore().Set("agentPoolId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPoolName sets the agent-pool-name property value. Name of the agent pool used for this run (when mode is agent)This attribute is only available in HCP Terraform.
 func (m *Plans_attributes_executionDetails) SetAgentPoolName(value *string) {
-	m.agentPoolName = value
+	err := m.GetBackingStore().Set("agentPoolName", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Plans_attributes_executionDetails) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetMode sets the mode property value. Execution mode of the run
 func (m *Plans_attributes_executionDetails) SetMode(value *Plans_attributes_executionDetails_mode) {
-	m.mode = value
+	err := m.GetBackingStore().Set("mode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Plans_attributes_executionDetailsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentId() *string
 	GetAgentName() *string
 	GetAgentPoolId() *string
 	GetAgentPoolName() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetMode() *Plans_attributes_executionDetails_mode
 	SetAgentId(value *string)
 	SetAgentName(value *string)
 	SetAgentPoolId(value *string)
 	SetAgentPoolName(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetMode(value *Plans_attributes_executionDetails_mode)
 }

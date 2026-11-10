@@ -5,47 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TdpAddons_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The application this add-on is installed into.
-	application TdpAddons_attributes_applicationable
-	// The number of workspace resources provisioned by this add-on.
-	count *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The add-on definition this add-on was created from, including its name.
-	definition TdpAddons_attributes_definitionable
-	// A longer description of this add-on instance.
-	description *string
-	// Input variables to pass when creating an add-on from a definition.
-	inputVariables []TdpAddons_attributes_inputVariablesable
-	// Key-value labels attached to this add-on for categorization.
-	labels []string
-	// The internal ID of the Terraform module version backing this add-on.
-	moduleId *string
-	// The Terraform registry source address of the module backing this add-on.
-	moduleSource *string
-	// The name property
-	name *string
-	// User-authored readme content for this add-on instance.
-	readme *string
-	// A short one-line summary of what this add-on does.
-	summary *string
-	// Tags attached to this add-on for categorization.
-	tags []string
-	// The ID of the HCP Terraform workspace provisioned for this add-on.
-	terraformWorkspaceId *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTdpAddons_attributes instantiates a new TdpAddons_attributes and sets the default values.
 func NewTdpAddons_attributes() *TdpAddons_attributes {
 	m := &TdpAddons_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -59,37 +31,86 @@ func CreateTdpAddons_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TdpAddons_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetApplication gets the application property value. The application this add-on is installed into.
 // returns a TdpAddons_attributes_applicationable when successful
 func (m *TdpAddons_attributes) GetApplication() TdpAddons_attributes_applicationable {
-	return m.application
+	val, err := m.GetBackingStore().Get("application")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TdpAddons_attributes_applicationable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpAddons_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCount gets the count property value. The number of workspace resources provisioned by this add-on.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetCount() *string {
-	return m.count
+	val, err := m.GetBackingStore().Get("count")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *TdpAddons_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDefinition gets the definition property value. The add-on definition this add-on was created from, including its name.
 // returns a TdpAddons_attributes_definitionable when successful
 func (m *TdpAddons_attributes) GetDefinition() TdpAddons_attributes_definitionable {
-	return m.definition
+	val, err := m.GetBackingStore().Get("definition")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TdpAddons_attributes_definitionable)
+	}
+	return nil
 }
 
 // GetDescription gets the description property value. A longer description of this add-on instance.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -270,61 +291,131 @@ func (m *TdpAddons_attributes) GetFieldDeserializers() map[string]func(i878a80d2
 // GetInputVariables gets the input-variables property value. Input variables to pass when creating an add-on from a definition.
 // returns a []TdpAddons_attributes_inputVariablesable when successful
 func (m *TdpAddons_attributes) GetInputVariables() []TdpAddons_attributes_inputVariablesable {
-	return m.inputVariables
+	val, err := m.GetBackingStore().Get("inputVariables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpAddons_attributes_inputVariablesable)
+	}
+	return nil
 }
 
 // GetLabels gets the labels property value. Key-value labels attached to this add-on for categorization.
 // returns a []string when successful
 func (m *TdpAddons_attributes) GetLabels() []string {
-	return m.labels
+	val, err := m.GetBackingStore().Get("labels")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetModuleId gets the module-id property value. The internal ID of the Terraform module version backing this add-on.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetModuleId() *string {
-	return m.moduleId
+	val, err := m.GetBackingStore().Get("moduleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetModuleSource gets the module-source property value. The Terraform registry source address of the module backing this add-on.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetModuleSource() *string {
-	return m.moduleSource
+	val, err := m.GetBackingStore().Get("moduleSource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetReadme gets the readme property value. User-authored readme content for this add-on instance.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetReadme() *string {
-	return m.readme
+	val, err := m.GetBackingStore().Get("readme")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSummary gets the summary property value. A short one-line summary of what this add-on does.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetSummary() *string {
-	return m.summary
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTags gets the tags property value. Tags attached to this add-on for categorization.
 // returns a []string when successful
 func (m *TdpAddons_attributes) GetTags() []string {
-	return m.tags
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetTerraformWorkspaceId gets the terraform-workspace-id property value. The ID of the HCP Terraform workspace provisioned for this add-on.
 // returns a *string when successful
 func (m *TdpAddons_attributes) GetTerraformWorkspaceId() *string {
-	return m.terraformWorkspaceId
+	val, err := m.GetBackingStore().Get("terraformWorkspaceId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *TdpAddons_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -370,88 +461,143 @@ func (m *TdpAddons_attributes) Serialize(writer i878a80d2330e89d26896388a3f487ee
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TdpAddons_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplication sets the application property value. The application this add-on is installed into.
 func (m *TdpAddons_attributes) SetApplication(value TdpAddons_attributes_applicationable) {
-	m.application = value
+	err := m.GetBackingStore().Set("application", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpAddons_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCount sets the count property value. The number of workspace resources provisioned by this add-on.
 func (m *TdpAddons_attributes) SetCount(value *string) {
-	m.count = value
+	err := m.GetBackingStore().Set("count", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *TdpAddons_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDefinition sets the definition property value. The add-on definition this add-on was created from, including its name.
 func (m *TdpAddons_attributes) SetDefinition(value TdpAddons_attributes_definitionable) {
-	m.definition = value
+	err := m.GetBackingStore().Set("definition", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDescription sets the description property value. A longer description of this add-on instance.
 func (m *TdpAddons_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInputVariables sets the input-variables property value. Input variables to pass when creating an add-on from a definition.
 func (m *TdpAddons_attributes) SetInputVariables(value []TdpAddons_attributes_inputVariablesable) {
-	m.inputVariables = value
+	err := m.GetBackingStore().Set("inputVariables", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLabels sets the labels property value. Key-value labels attached to this add-on for categorization.
 func (m *TdpAddons_attributes) SetLabels(value []string) {
-	m.labels = value
+	err := m.GetBackingStore().Set("labels", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModuleId sets the module-id property value. The internal ID of the Terraform module version backing this add-on.
 func (m *TdpAddons_attributes) SetModuleId(value *string) {
-	m.moduleId = value
+	err := m.GetBackingStore().Set("moduleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModuleSource sets the module-source property value. The Terraform registry source address of the module backing this add-on.
 func (m *TdpAddons_attributes) SetModuleSource(value *string) {
-	m.moduleSource = value
+	err := m.GetBackingStore().Set("moduleSource", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *TdpAddons_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReadme sets the readme property value. User-authored readme content for this add-on instance.
 func (m *TdpAddons_attributes) SetReadme(value *string) {
-	m.readme = value
+	err := m.GetBackingStore().Set("readme", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSummary sets the summary property value. A short one-line summary of what this add-on does.
 func (m *TdpAddons_attributes) SetSummary(value *string) {
-	m.summary = value
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTags sets the tags property value. Tags attached to this add-on for categorization.
 func (m *TdpAddons_attributes) SetTags(value []string) {
-	m.tags = value
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformWorkspaceId sets the terraform-workspace-id property value. The ID of the HCP Terraform workspace provisioned for this add-on.
 func (m *TdpAddons_attributes) SetTerraformWorkspaceId(value *string) {
-	m.terraformWorkspaceId = value
+	err := m.GetBackingStore().Set("terraformWorkspaceId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *TdpAddons_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TdpAddons_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApplication() TdpAddons_attributes_applicationable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCount() *string
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDefinition() TdpAddons_attributes_definitionable
@@ -467,6 +613,7 @@ type TdpAddons_attributesable interface {
 	GetTerraformWorkspaceId() *string
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetApplication(value TdpAddons_attributes_applicationable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCount(value *string)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDefinition(value TdpAddons_attributes_definitionable)

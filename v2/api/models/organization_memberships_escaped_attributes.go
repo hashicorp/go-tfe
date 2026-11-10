@@ -5,25 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type OrganizationMemberships_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The timestamp when the organization membership was created.
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The email address of the user.
-	email *string
-	// Whether two-factor authentication is required for the organization. Only present for invited users.
-	isOrgTwoFactorRequired *bool
-	// The status of the organization membership. Can be "active", "invited", or "inactive".
-	status *OrganizationMemberships_attributes_status
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOrganizationMemberships_attributes instantiates a new OrganizationMemberships_attributes and sets the default values.
 func NewOrganizationMemberships_attributes() *OrganizationMemberships_attributes {
 	m := &OrganizationMemberships_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -37,19 +31,47 @@ func CreateOrganizationMemberships_attributesFromDiscriminatorValue(parseNode i8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *OrganizationMemberships_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationMemberships_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The timestamp when the organization membership was created.
 // returns a *Time when successful
 func (m *OrganizationMemberships_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetEmail gets the email property value. The email address of the user.
 // returns a *string when successful
 func (m *OrganizationMemberships_attributes) GetEmail() *string {
-	return m.email
+	val, err := m.GetBackingStore().Get("email")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -102,13 +124,27 @@ func (m *OrganizationMemberships_attributes) GetFieldDeserializers() map[string]
 // GetIsOrgTwoFactorRequired gets the is-org-two-factor-required property value. Whether two-factor authentication is required for the organization. Only present for invited users.
 // returns a *bool when successful
 func (m *OrganizationMemberships_attributes) GetIsOrgTwoFactorRequired() *bool {
-	return m.isOrgTwoFactorRequired
+	val, err := m.GetBackingStore().Get("isOrgTwoFactorRequired")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 // returns a *OrganizationMemberships_attributes_status when successful
 func (m *OrganizationMemberships_attributes) GetStatus() *OrganizationMemberships_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*OrganizationMemberships_attributes_status)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -130,36 +166,59 @@ func (m *OrganizationMemberships_attributes) Serialize(writer i878a80d2330e89d26
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *OrganizationMemberships_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationMemberships_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The timestamp when the organization membership was created.
 func (m *OrganizationMemberships_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEmail sets the email property value. The email address of the user.
 func (m *OrganizationMemberships_attributes) SetEmail(value *string) {
-	m.email = value
+	err := m.GetBackingStore().Set("email", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsOrgTwoFactorRequired sets the is-org-two-factor-required property value. Whether two-factor authentication is required for the organization. Only present for invited users.
 func (m *OrganizationMemberships_attributes) SetIsOrgTwoFactorRequired(value *bool) {
-	m.isOrgTwoFactorRequired = value
+	err := m.GetBackingStore().Set("isOrgTwoFactorRequired", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 func (m *OrganizationMemberships_attributes) SetStatus(value *OrganizationMemberships_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OrganizationMemberships_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetEmail() *string
 	GetIsOrgTwoFactorRequired() *bool
 	GetStatus() *OrganizationMemberships_attributes_status
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetEmail(value *string)
 	SetIsOrgTwoFactorRequired(value *bool)

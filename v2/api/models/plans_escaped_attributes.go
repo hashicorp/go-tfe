@@ -5,44 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Plans_attributes struct {
-	// Actions available for this plan
-	actions Plans_attributes_actionsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
-	backingDataState *Plans_attributes_backingDataState
-	// Details about the execution of this plan. Null if plan has not started.
-	executionDetails Plans_attributes_executionDetailsable
-	// Whether the plan generated new configuration as part of this run
-	generatedConfiguration *bool
-	// Whether the plan has any changes
-	hasChanges *bool
-	// URL to read the logs for this plan
-	logReadUrl *string
-	// Permissions for the current user related to this plan
-	permissions Plans_attributes_permissionsable
-	// Number of resources that will be added
-	resourceAdditions *int32
-	// Number of resources that will be changed
-	resourceChanges *int32
-	// Number of resources that will be destroyed
-	resourceDestructions *int32
-	// Number of resources that will be imported
-	resourceImports *int32
-	// Current status of the plan
-	status *Plans_attributes_status
-	// Timestamps for state transitions of the plan
-	statusTimestamps Plans_attributes_statusTimestampsable
-	// Whether structured run output is enabled
-	structuredRunOutputEnabled *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPlans_attributes instantiates a new Plans_attributes and sets the default values.
 func NewPlans_attributes() *Plans_attributes {
 	m := &Plans_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	generatedConfigurationValue := false
 	m.SetGeneratedConfiguration(&generatedConfigurationValue)
@@ -58,25 +32,60 @@ func CreatePlans_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2689
 // GetActions gets the actions property value. Actions available for this plan
 // returns a Plans_attributes_actionsable when successful
 func (m *Plans_attributes) GetActions() Plans_attributes_actionsable {
-	return m.actions
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Plans_attributes_actionsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Plans_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetBackingDataState gets the backing-data-state property value. Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
 // returns a *Plans_attributes_backingDataState when successful
 func (m *Plans_attributes) GetBackingDataState() *Plans_attributes_backingDataState {
-	return m.backingDataState
+	val, err := m.GetBackingStore().Get("backingDataState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Plans_attributes_backingDataState)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Plans_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExecutionDetails gets the execution-details property value. Details about the execution of this plan. Null if plan has not started.
 // returns a Plans_attributes_executionDetailsable when successful
 func (m *Plans_attributes) GetExecutionDetails() Plans_attributes_executionDetailsable {
-	return m.executionDetails
+	val, err := m.GetBackingStore().Get("executionDetails")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Plans_attributes_executionDetailsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -229,67 +238,144 @@ func (m *Plans_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e
 // GetGeneratedConfiguration gets the generated-configuration property value. Whether the plan generated new configuration as part of this run
 // returns a *bool when successful
 func (m *Plans_attributes) GetGeneratedConfiguration() *bool {
-	return m.generatedConfiguration
+	val, err := m.GetBackingStore().Get("generatedConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetHasChanges gets the has-changes property value. Whether the plan has any changes
 // returns a *bool when successful
 func (m *Plans_attributes) GetHasChanges() *bool {
-	return m.hasChanges
+	val, err := m.GetBackingStore().Get("hasChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLogReadUrl gets the log-read-url property value. URL to read the logs for this plan
 // returns a *string when successful
 func (m *Plans_attributes) GetLogReadUrl() *string {
-	return m.logReadUrl
+	val, err := m.GetBackingStore().Get("logReadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. Permissions for the current user related to this plan
 // returns a Plans_attributes_permissionsable when successful
 func (m *Plans_attributes) GetPermissions() Plans_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Plans_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetResourceAdditions gets the resource-additions property value. Number of resources that will be added
 // returns a *int32 when successful
 func (m *Plans_attributes) GetResourceAdditions() *int32 {
-	return m.resourceAdditions
+	val, err := m.GetBackingStore().Get("resourceAdditions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceChanges gets the resource-changes property value. Number of resources that will be changed
 // returns a *int32 when successful
 func (m *Plans_attributes) GetResourceChanges() *int32 {
-	return m.resourceChanges
+	val, err := m.GetBackingStore().Get("resourceChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceDestructions gets the resource-destructions property value. Number of resources that will be destroyed
 // returns a *int32 when successful
 func (m *Plans_attributes) GetResourceDestructions() *int32 {
-	return m.resourceDestructions
+	val, err := m.GetBackingStore().Get("resourceDestructions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResourceImports gets the resource-imports property value. Number of resources that will be imported
 // returns a *int32 when successful
 func (m *Plans_attributes) GetResourceImports() *int32 {
-	return m.resourceImports
+	val, err := m.GetBackingStore().Get("resourceImports")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. Current status of the plan
 // returns a *Plans_attributes_status when successful
 func (m *Plans_attributes) GetStatus() *Plans_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Plans_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. Timestamps for state transitions of the plan
 // returns a Plans_attributes_statusTimestampsable when successful
 func (m *Plans_attributes) GetStatusTimestamps() Plans_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Plans_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetStructuredRunOutputEnabled gets the structured-run-output-enabled property value. Whether structured run output is enabled
 // returns a *bool when successful
 func (m *Plans_attributes) GetStructuredRunOutputEnabled() *bool {
-	return m.structuredRunOutputEnabled
+	val, err := m.GetBackingStore().Get("structuredRunOutputEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -384,84 +470,136 @@ func (m *Plans_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
 
 // SetActions sets the actions property value. Actions available for this plan
 func (m *Plans_attributes) SetActions(value Plans_attributes_actionsable) {
-	m.actions = value
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Plans_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetBackingDataState sets the backing-data-state property value. Data retention lifecycle state of the plan's backing data.This attribute is only available in Terraform Enterprise.
 func (m *Plans_attributes) SetBackingDataState(value *Plans_attributes_backingDataState) {
-	m.backingDataState = value
+	err := m.GetBackingStore().Set("backingDataState", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Plans_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExecutionDetails sets the execution-details property value. Details about the execution of this plan. Null if plan has not started.
 func (m *Plans_attributes) SetExecutionDetails(value Plans_attributes_executionDetailsable) {
-	m.executionDetails = value
+	err := m.GetBackingStore().Set("executionDetails", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGeneratedConfiguration sets the generated-configuration property value. Whether the plan generated new configuration as part of this run
 func (m *Plans_attributes) SetGeneratedConfiguration(value *bool) {
-	m.generatedConfiguration = value
+	err := m.GetBackingStore().Set("generatedConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHasChanges sets the has-changes property value. Whether the plan has any changes
 func (m *Plans_attributes) SetHasChanges(value *bool) {
-	m.hasChanges = value
+	err := m.GetBackingStore().Set("hasChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLogReadUrl sets the log-read-url property value. URL to read the logs for this plan
 func (m *Plans_attributes) SetLogReadUrl(value *string) {
-	m.logReadUrl = value
+	err := m.GetBackingStore().Set("logReadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. Permissions for the current user related to this plan
 func (m *Plans_attributes) SetPermissions(value Plans_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceAdditions sets the resource-additions property value. Number of resources that will be added
 func (m *Plans_attributes) SetResourceAdditions(value *int32) {
-	m.resourceAdditions = value
+	err := m.GetBackingStore().Set("resourceAdditions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceChanges sets the resource-changes property value. Number of resources that will be changed
 func (m *Plans_attributes) SetResourceChanges(value *int32) {
-	m.resourceChanges = value
+	err := m.GetBackingStore().Set("resourceChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceDestructions sets the resource-destructions property value. Number of resources that will be destroyed
 func (m *Plans_attributes) SetResourceDestructions(value *int32) {
-	m.resourceDestructions = value
+	err := m.GetBackingStore().Set("resourceDestructions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceImports sets the resource-imports property value. Number of resources that will be imported
 func (m *Plans_attributes) SetResourceImports(value *int32) {
-	m.resourceImports = value
+	err := m.GetBackingStore().Set("resourceImports", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. Current status of the plan
 func (m *Plans_attributes) SetStatus(value *Plans_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. Timestamps for state transitions of the plan
 func (m *Plans_attributes) SetStatusTimestamps(value Plans_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStructuredRunOutputEnabled sets the structured-run-output-enabled property value. Whether structured run output is enabled
 func (m *Plans_attributes) SetStructuredRunOutputEnabled(value *bool) {
-	m.structuredRunOutputEnabled = value
+	err := m.GetBackingStore().Set("structuredRunOutputEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Plans_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActions() Plans_attributes_actionsable
 	GetBackingDataState() *Plans_attributes_backingDataState
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExecutionDetails() Plans_attributes_executionDetailsable
 	GetGeneratedConfiguration() *bool
 	GetHasChanges() *bool
@@ -476,6 +614,7 @@ type Plans_attributesable interface {
 	GetStructuredRunOutputEnabled() *bool
 	SetActions(value Plans_attributes_actionsable)
 	SetBackingDataState(value *Plans_attributes_backingDataState)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExecutionDetails(value Plans_attributes_executionDetailsable)
 	SetGeneratedConfiguration(value *bool)
 	SetHasChanges(value *bool)

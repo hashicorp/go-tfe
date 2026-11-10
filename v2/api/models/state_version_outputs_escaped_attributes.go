@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StateVersionOutputs_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// A detailed representation of the output type. May be a string for simple types or an array for complex types such as tuples and objects.
-	detailedType i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
-	// The name property
-	name *string
-	// The sensitive property
-	sensitive *bool
-	// The Terraform type of the output value (e.g. "string", "number", "bool", "list", "map", "set", "object", "tuple").
-	typeEscaped *string
-	// The value of the output. May be a string, number, boolean, array, or object. This can include null if `sensitive` is set to true and the endpoint does not reveal sensitive values; use `GET /state-version-outputs/{state_version_output_id}` to retrieve a sensitive value.
-	value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStateVersionOutputs_attributes instantiates a new StateVersionOutputs_attributes and sets the default values.
 func NewStateVersionOutputs_attributes() *StateVersionOutputs_attributes {
 	m := &StateVersionOutputs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,13 +30,34 @@ func CreateStateVersionOutputs_attributesFromDiscriminatorValue(parseNode i878a8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StateVersionOutputs_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersionOutputs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDetailedType gets the detailed-type property value. A detailed representation of the output type. May be a string for simple types or an array for complex types such as tuples and objects.
 // returns a UntypedNodeable when successful
 func (m *StateVersionOutputs_attributes) GetDetailedType() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable {
-	return m.detailedType
+	val, err := m.GetBackingStore().Get("detailedType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -107,25 +120,53 @@ func (m *StateVersionOutputs_attributes) GetFieldDeserializers() map[string]func
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *StateVersionOutputs_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSensitive gets the sensitive property value. The sensitive property
 // returns a *bool when successful
 func (m *StateVersionOutputs_attributes) GetSensitive() *bool {
-	return m.sensitive
+	val, err := m.GetBackingStore().Get("sensitive")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTypeEscaped gets the type property value. The Terraform type of the output value (e.g. "string", "number", "bool", "list", "map", "set", "object", "tuple").
 // returns a *string when successful
 func (m *StateVersionOutputs_attributes) GetTypeEscaped() *string {
-	return m.typeEscaped
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetValue gets the value property value. The value of the output. May be a string, number, boolean, array, or object. This can include null if `sensitive` is set to true and the endpoint does not reveal sensitive values; use `GET /state-version-outputs/{state_version_output_id}` to retrieve a sensitive value.
 // returns a UntypedNodeable when successful
 func (m *StateVersionOutputs_attributes) GetValue() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable {
-	return m.value
+	val, err := m.GetBackingStore().Get("value")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *StateVersionOutputs_attributes) Serialize(writer i878a80d2330e89d268963
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StateVersionOutputs_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersionOutputs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDetailedType sets the detailed-type property value. A detailed representation of the output type. May be a string for simple types or an array for complex types such as tuples and objects.
 func (m *StateVersionOutputs_attributes) SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
-	m.detailedType = value
+	err := m.GetBackingStore().Set("detailedType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *StateVersionOutputs_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSensitive sets the sensitive property value. The sensitive property
 func (m *StateVersionOutputs_attributes) SetSensitive(value *bool) {
-	m.sensitive = value
+	err := m.GetBackingStore().Set("sensitive", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTypeEscaped sets the type property value. The Terraform type of the output value (e.g. "string", "number", "bool", "list", "map", "set", "object", "tuple").
 func (m *StateVersionOutputs_attributes) SetTypeEscaped(value *string) {
-	m.typeEscaped = value
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetValue sets the value property value. The value of the output. May be a string, number, boolean, array, or object. This can include null if `sensitive` is set to true and the endpoint does not reveal sensitive values; use `GET /state-version-outputs/{state_version_output_id}` to retrieve a sensitive value.
 func (m *StateVersionOutputs_attributes) SetValue(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
-	m.value = value
+	err := m.GetBackingStore().Set("value", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StateVersionOutputs_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDetailedType() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
 	GetName() *string
 	GetSensitive() *bool
 	GetTypeEscaped() *string
 	GetValue() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
 	SetName(value *string)
 	SetSensitive(value *bool)

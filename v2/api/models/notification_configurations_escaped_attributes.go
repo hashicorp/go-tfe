@@ -5,41 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type NotificationConfigurations_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Responses from notification delivery attempts.
-	deliveryResponses []NotificationConfigurations_attributes_deliveryResponsesable
-	// The type of notification destination (e.g., email, slack, generic, microsoft-teams).
-	destinationType *NotificationConfigurations_attributes_destinationType
-	// Email addresses for email-type notifications.
-	emailAddresses []string
-	// Whether the notification configuration is enabled.
-	enabled *bool
-	// External email addresses (not associated with users) for this notification.
-	externalEmailAddresses []string
-	// The name of the notification configuration.
-	name *string
-	// The authentication token for the webhook.
-	token *string
-	// List of trigger events for this notification.
-	triggers []string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The webhook URL for non-email destinations.
-	url *string
-	// Email addresses of users associated with this notification.
-	userEmailAddresses []string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewNotificationConfigurations_attributes instantiates a new NotificationConfigurations_attributes and sets the default values.
 func NewNotificationConfigurations_attributes() *NotificationConfigurations_attributes {
 	m := &NotificationConfigurations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -53,43 +31,99 @@ func CreateNotificationConfigurations_attributesFromDiscriminatorValue(parseNode
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *NotificationConfigurations_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *NotificationConfigurations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *NotificationConfigurations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeliveryResponses gets the delivery-responses property value. Responses from notification delivery attempts.
 // returns a []NotificationConfigurations_attributes_deliveryResponsesable when successful
 func (m *NotificationConfigurations_attributes) GetDeliveryResponses() []NotificationConfigurations_attributes_deliveryResponsesable {
-	return m.deliveryResponses
+	val, err := m.GetBackingStore().Get("deliveryResponses")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]NotificationConfigurations_attributes_deliveryResponsesable)
+	}
+	return nil
 }
 
 // GetDestinationType gets the destination-type property value. The type of notification destination (e.g., email, slack, generic, microsoft-teams).
 // returns a *NotificationConfigurations_attributes_destinationType when successful
 func (m *NotificationConfigurations_attributes) GetDestinationType() *NotificationConfigurations_attributes_destinationType {
-	return m.destinationType
+	val, err := m.GetBackingStore().Get("destinationType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*NotificationConfigurations_attributes_destinationType)
+	}
+	return nil
 }
 
 // GetEmailAddresses gets the email-addresses property value. Email addresses for email-type notifications.
 // returns a []string when successful
 func (m *NotificationConfigurations_attributes) GetEmailAddresses() []string {
-	return m.emailAddresses
+	val, err := m.GetBackingStore().Get("emailAddresses")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetEnabled gets the enabled property value. Whether the notification configuration is enabled.
 // returns a *bool when successful
 func (m *NotificationConfigurations_attributes) GetEnabled() *bool {
-	return m.enabled
+	val, err := m.GetBackingStore().Get("enabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetExternalEmailAddresses gets the external-email-addresses property value. External email addresses (not associated with users) for this notification.
 // returns a []string when successful
 func (m *NotificationConfigurations_attributes) GetExternalEmailAddresses() []string {
-	return m.externalEmailAddresses
+	val, err := m.GetBackingStore().Get("externalEmailAddresses")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -252,37 +286,79 @@ func (m *NotificationConfigurations_attributes) GetFieldDeserializers() map[stri
 // GetName gets the name property value. The name of the notification configuration.
 // returns a *string when successful
 func (m *NotificationConfigurations_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetToken gets the token property value. The authentication token for the webhook.
 // returns a *string when successful
 func (m *NotificationConfigurations_attributes) GetToken() *string {
-	return m.token
+	val, err := m.GetBackingStore().Get("token")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggers gets the triggers property value. List of trigger events for this notification.
 // returns a []string when successful
 func (m *NotificationConfigurations_attributes) GetTriggers() []string {
-	return m.triggers
+	val, err := m.GetBackingStore().Get("triggers")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *NotificationConfigurations_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUrl gets the url property value. The webhook URL for non-email destinations.
 // returns a *string when successful
 func (m *NotificationConfigurations_attributes) GetUrl() *string {
-	return m.url
+	val, err := m.GetBackingStore().Get("url")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUserEmailAddresses gets the user-email-addresses property value. Email addresses of users associated with this notification.
 // returns a []string when successful
 func (m *NotificationConfigurations_attributes) GetUserEmailAddresses() []string {
-	return m.userEmailAddresses
+	val, err := m.GetBackingStore().Get("userEmailAddresses")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -341,72 +417,118 @@ func (m *NotificationConfigurations_attributes) Serialize(writer i878a80d2330e89
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *NotificationConfigurations_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *NotificationConfigurations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *NotificationConfigurations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeliveryResponses sets the delivery-responses property value. Responses from notification delivery attempts.
 func (m *NotificationConfigurations_attributes) SetDeliveryResponses(value []NotificationConfigurations_attributes_deliveryResponsesable) {
-	m.deliveryResponses = value
+	err := m.GetBackingStore().Set("deliveryResponses", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDestinationType sets the destination-type property value. The type of notification destination (e.g., email, slack, generic, microsoft-teams).
 func (m *NotificationConfigurations_attributes) SetDestinationType(value *NotificationConfigurations_attributes_destinationType) {
-	m.destinationType = value
+	err := m.GetBackingStore().Set("destinationType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEmailAddresses sets the email-addresses property value. Email addresses for email-type notifications.
 func (m *NotificationConfigurations_attributes) SetEmailAddresses(value []string) {
-	m.emailAddresses = value
+	err := m.GetBackingStore().Set("emailAddresses", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnabled sets the enabled property value. Whether the notification configuration is enabled.
 func (m *NotificationConfigurations_attributes) SetEnabled(value *bool) {
-	m.enabled = value
+	err := m.GetBackingStore().Set("enabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetExternalEmailAddresses sets the external-email-addresses property value. External email addresses (not associated with users) for this notification.
 func (m *NotificationConfigurations_attributes) SetExternalEmailAddresses(value []string) {
-	m.externalEmailAddresses = value
+	err := m.GetBackingStore().Set("externalEmailAddresses", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the notification configuration.
 func (m *NotificationConfigurations_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetToken sets the token property value. The authentication token for the webhook.
 func (m *NotificationConfigurations_attributes) SetToken(value *string) {
-	m.token = value
+	err := m.GetBackingStore().Set("token", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggers sets the triggers property value. List of trigger events for this notification.
 func (m *NotificationConfigurations_attributes) SetTriggers(value []string) {
-	m.triggers = value
+	err := m.GetBackingStore().Set("triggers", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *NotificationConfigurations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUrl sets the url property value. The webhook URL for non-email destinations.
 func (m *NotificationConfigurations_attributes) SetUrl(value *string) {
-	m.url = value
+	err := m.GetBackingStore().Set("url", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUserEmailAddresses sets the user-email-addresses property value. Email addresses of users associated with this notification.
 func (m *NotificationConfigurations_attributes) SetUserEmailAddresses(value []string) {
-	m.userEmailAddresses = value
+	err := m.GetBackingStore().Set("userEmailAddresses", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type NotificationConfigurations_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDeliveryResponses() []NotificationConfigurations_attributes_deliveryResponsesable
 	GetDestinationType() *NotificationConfigurations_attributes_destinationType
@@ -419,6 +541,7 @@ type NotificationConfigurations_attributesable interface {
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetUrl() *string
 	GetUserEmailAddresses() []string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDeliveryResponses(value []NotificationConfigurations_attributes_deliveryResponsesable)
 	SetDestinationType(value *NotificationConfigurations_attributes_destinationType)

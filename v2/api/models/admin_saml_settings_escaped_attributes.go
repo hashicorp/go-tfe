@@ -5,70 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminSamlSettings_attributes struct {
-	// Assertion Consumer Service URL to configure in the identity provider.
-	acsConsumerUrl *string
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
-	attrAvatar *string
-	// SAML attribute name for team membership.
-	attrGroups *string
-	// SAML attribute name that designates a site admin.
-	attrSiteAdmin *string
-	// SAML attribute name that designates a site auditor.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-	attrSiteAuditor *string
-	// SAML attribute name for the username.
-	attrUsername *string
-	// Whether authentication requests are signed.
-	authnRequestsSigned *bool
-	// PEM encoded X.509 certificate used to sign SAML requests.
-	certificate *string
-	// Whether SAML debug mode is enabled.
-	debug *bool
-	// Whether SAML single sign-on is enabled.
-	enabled *bool
-	// **Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.
-	// Deprecated:
-	idpCert *string
-	// Maximum accepted size of a SAML message, in bytes.
-	maxMessageSizeInBytes *int32
-	// Service provider metadata URL.
-	metadataUrl *string
-	// **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
-	// Deprecated:
-	oldIdpCert *string
-	// The permissions property
-	permissions AdminSamlSettings_attributes_permissionsable
-	// PEM encoded private key paired with `certificate`. Write-only: it is never returned in a response. Omit it on update to leave the stored key unchanged.
-	privateKey *string
-	// Identity provider family. `unknown` predates this setting.
-	providerType *AdminSamlSettings_attributes_providerType
-	// Signature digest method.
-	signatureDigestMethod *AdminSamlSettings_attributes_signatureDigestMethod
-	// Signature signing method.
-	signatureSigningMethod *AdminSamlSettings_attributes_signatureSigningMethod
-	// Role value that grants site admin permissions.
-	siteAdminRole *string
-	// Role value that grants site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-	siteAuditorRole *string
-	// Single Log Out URL of the identity provider.
-	sloEndpointUrl *string
-	// Session timeout, in seconds, for API tokens issued via SSO.
-	ssoApiTokenSessionTimeout *int32
-	// Single Sign On URL of the identity provider.
-	ssoEndpointUrl *string
-	// Whether team membership is managed by the identity provider.
-	teamManagementEnabled *bool
-	// Whether signed assertions are required from the identity provider.
-	wantAssertionsSigned *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAdminSamlSettings_attributes instantiates a new AdminSamlSettings_attributes and sets the default values.
 func NewAdminSamlSettings_attributes() *AdminSamlSettings_attributes {
 	m := &AdminSamlSettings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -82,67 +30,151 @@ func CreateAdminSamlSettings_attributesFromDiscriminatorValue(parseNode i878a80d
 // GetAcsConsumerUrl gets the acs-consumer-url property value. Assertion Consumer Service URL to configure in the identity provider.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAcsConsumerUrl() *string {
-	return m.acsConsumerUrl
+	val, err := m.GetBackingStore().Get("acsConsumerUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AdminSamlSettings_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAttrAvatar gets the attr-avatar property value. SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrAvatar() *string {
-	return m.attrAvatar
+	val, err := m.GetBackingStore().Get("attrAvatar")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAttrGroups gets the attr-groups property value. SAML attribute name for team membership.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrGroups() *string {
-	return m.attrGroups
+	val, err := m.GetBackingStore().Get("attrGroups")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAttrSiteAdmin gets the attr-site-admin property value. SAML attribute name that designates a site admin.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrSiteAdmin() *string {
-	return m.attrSiteAdmin
+	val, err := m.GetBackingStore().Get("attrSiteAdmin")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAttrSiteAuditor gets the attr-site-auditor property value. SAML attribute name that designates a site auditor.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrSiteAuditor() *string {
-	return m.attrSiteAuditor
+	val, err := m.GetBackingStore().Get("attrSiteAuditor")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAttrUsername gets the attr-username property value. SAML attribute name for the username.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrUsername() *string {
-	return m.attrUsername
+	val, err := m.GetBackingStore().Get("attrUsername")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAuthnRequestsSigned gets the authn-requests-signed property value. Whether authentication requests are signed.
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes) GetAuthnRequestsSigned() *bool {
-	return m.authnRequestsSigned
+	val, err := m.GetBackingStore().Get("authnRequestsSigned")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminSamlSettings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCertificate gets the certificate property value. PEM encoded X.509 certificate used to sign SAML requests.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetCertificate() *string {
-	return m.certificate
+	val, err := m.GetBackingStore().Get("certificate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDebug gets the debug property value. Whether SAML debug mode is enabled.
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes) GetDebug() *bool {
-	return m.debug
+	val, err := m.GetBackingStore().Get("debug")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetEnabled gets the enabled property value. Whether SAML single sign-on is enabled.
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes) GetEnabled() *bool {
-	return m.enabled
+	val, err := m.GetBackingStore().Get("enabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -416,98 +448,210 @@ func (m *AdminSamlSettings_attributes) GetFieldDeserializers() map[string]func(i
 // Deprecated:
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetIdpCert() *string {
-	return m.idpCert
+	val, err := m.GetBackingStore().Get("idpCert")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetMaxMessageSizeInBytes gets the max-message-size-in-bytes property value. Maximum accepted size of a SAML message, in bytes.
 // returns a *int32 when successful
 func (m *AdminSamlSettings_attributes) GetMaxMessageSizeInBytes() *int32 {
-	return m.maxMessageSizeInBytes
+	val, err := m.GetBackingStore().Get("maxMessageSizeInBytes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetMetadataUrl gets the metadata-url property value. Service provider metadata URL.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetMetadataUrl() *string {
-	return m.metadataUrl
+	val, err := m.GetBackingStore().Get("metadataUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOldIdpCert gets the old-idp-cert property value. **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
 // Deprecated:
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetOldIdpCert() *string {
-	return m.oldIdpCert
+	val, err := m.GetBackingStore().Get("oldIdpCert")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a AdminSamlSettings_attributes_permissionsable when successful
 func (m *AdminSamlSettings_attributes) GetPermissions() AdminSamlSettings_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AdminSamlSettings_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPrivateKey gets the private-key property value. PEM encoded private key paired with `certificate`. Write-only: it is never returned in a response. Omit it on update to leave the stored key unchanged.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetPrivateKey() *string {
-	return m.privateKey
+	val, err := m.GetBackingStore().Get("privateKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetProviderType gets the provider-type property value. Identity provider family. `unknown` predates this setting.
 // returns a *AdminSamlSettings_attributes_providerType when successful
 func (m *AdminSamlSettings_attributes) GetProviderType() *AdminSamlSettings_attributes_providerType {
-	return m.providerType
+	val, err := m.GetBackingStore().Get("providerType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminSamlSettings_attributes_providerType)
+	}
+	return nil
 }
 
 // GetSignatureDigestMethod gets the signature-digest-method property value. Signature digest method.
 // returns a *AdminSamlSettings_attributes_signatureDigestMethod when successful
 func (m *AdminSamlSettings_attributes) GetSignatureDigestMethod() *AdminSamlSettings_attributes_signatureDigestMethod {
-	return m.signatureDigestMethod
+	val, err := m.GetBackingStore().Get("signatureDigestMethod")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminSamlSettings_attributes_signatureDigestMethod)
+	}
+	return nil
 }
 
 // GetSignatureSigningMethod gets the signature-signing-method property value. Signature signing method.
 // returns a *AdminSamlSettings_attributes_signatureSigningMethod when successful
 func (m *AdminSamlSettings_attributes) GetSignatureSigningMethod() *AdminSamlSettings_attributes_signatureSigningMethod {
-	return m.signatureSigningMethod
+	val, err := m.GetBackingStore().Get("signatureSigningMethod")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminSamlSettings_attributes_signatureSigningMethod)
+	}
+	return nil
 }
 
 // GetSiteAdminRole gets the site-admin-role property value. Role value that grants site admin permissions.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetSiteAdminRole() *string {
-	return m.siteAdminRole
+	val, err := m.GetBackingStore().Get("siteAdminRole")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSiteAuditorRole gets the site-auditor-role property value. Role value that grants site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetSiteAuditorRole() *string {
-	return m.siteAuditorRole
+	val, err := m.GetBackingStore().Get("siteAuditorRole")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSloEndpointUrl gets the slo-endpoint-url property value. Single Log Out URL of the identity provider.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetSloEndpointUrl() *string {
-	return m.sloEndpointUrl
+	val, err := m.GetBackingStore().Get("sloEndpointUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSsoApiTokenSessionTimeout gets the sso-api-token-session-timeout property value. Session timeout, in seconds, for API tokens issued via SSO.
 // returns a *int32 when successful
 func (m *AdminSamlSettings_attributes) GetSsoApiTokenSessionTimeout() *int32 {
-	return m.ssoApiTokenSessionTimeout
+	val, err := m.GetBackingStore().Get("ssoApiTokenSessionTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSsoEndpointUrl gets the sso-endpoint-url property value. Single Sign On URL of the identity provider.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetSsoEndpointUrl() *string {
-	return m.ssoEndpointUrl
+	val, err := m.GetBackingStore().Get("ssoEndpointUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTeamManagementEnabled gets the team-management-enabled property value. Whether team membership is managed by the identity provider.
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes) GetTeamManagementEnabled() *bool {
-	return m.teamManagementEnabled
+	val, err := m.GetBackingStore().Get("teamManagementEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetWantAssertionsSigned gets the want-assertions-signed property value. Whether signed assertions are required from the identity provider.
 // returns a *bool when successful
 func (m *AdminSamlSettings_attributes) GetWantAssertionsSigned() *bool {
-	return m.wantAssertionsSigned
+	val, err := m.GetBackingStore().Get("wantAssertionsSigned")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -658,143 +802,230 @@ func (m *AdminSamlSettings_attributes) Serialize(writer i878a80d2330e89d26896388
 
 // SetAcsConsumerUrl sets the acs-consumer-url property value. Assertion Consumer Service URL to configure in the identity provider.
 func (m *AdminSamlSettings_attributes) SetAcsConsumerUrl(value *string) {
-	m.acsConsumerUrl = value
+	err := m.GetBackingStore().Set("acsConsumerUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AdminSamlSettings_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttrAvatar sets the attr-avatar property value. SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
 func (m *AdminSamlSettings_attributes) SetAttrAvatar(value *string) {
-	m.attrAvatar = value
+	err := m.GetBackingStore().Set("attrAvatar", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttrGroups sets the attr-groups property value. SAML attribute name for team membership.
 func (m *AdminSamlSettings_attributes) SetAttrGroups(value *string) {
-	m.attrGroups = value
+	err := m.GetBackingStore().Set("attrGroups", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttrSiteAdmin sets the attr-site-admin property value. SAML attribute name that designates a site admin.
 func (m *AdminSamlSettings_attributes) SetAttrSiteAdmin(value *string) {
-	m.attrSiteAdmin = value
+	err := m.GetBackingStore().Set("attrSiteAdmin", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttrSiteAuditor sets the attr-site-auditor property value. SAML attribute name that designates a site auditor.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 func (m *AdminSamlSettings_attributes) SetAttrSiteAuditor(value *string) {
-	m.attrSiteAuditor = value
+	err := m.GetBackingStore().Set("attrSiteAuditor", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAttrUsername sets the attr-username property value. SAML attribute name for the username.
 func (m *AdminSamlSettings_attributes) SetAttrUsername(value *string) {
-	m.attrUsername = value
+	err := m.GetBackingStore().Set("attrUsername", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAuthnRequestsSigned sets the authn-requests-signed property value. Whether authentication requests are signed.
 func (m *AdminSamlSettings_attributes) SetAuthnRequestsSigned(value *bool) {
-	m.authnRequestsSigned = value
+	err := m.GetBackingStore().Set("authnRequestsSigned", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminSamlSettings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCertificate sets the certificate property value. PEM encoded X.509 certificate used to sign SAML requests.
 func (m *AdminSamlSettings_attributes) SetCertificate(value *string) {
-	m.certificate = value
+	err := m.GetBackingStore().Set("certificate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDebug sets the debug property value. Whether SAML debug mode is enabled.
 func (m *AdminSamlSettings_attributes) SetDebug(value *bool) {
-	m.debug = value
+	err := m.GetBackingStore().Set("debug", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnabled sets the enabled property value. Whether SAML single sign-on is enabled.
 func (m *AdminSamlSettings_attributes) SetEnabled(value *bool) {
-	m.enabled = value
+	err := m.GetBackingStore().Set("enabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIdpCert sets the idp-cert property value. **Deprecated.** PEM-encoded primary IdP certificate. Use the `saml-settings/idp-certificates` resource instead. When the idp-certificates API is active this attribute reflects the cert body of the `legacy_primary` row; writing to it creates or rotates that row.
 // Deprecated:
 func (m *AdminSamlSettings_attributes) SetIdpCert(value *string) {
-	m.idpCert = value
+	err := m.GetBackingStore().Set("idpCert", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMaxMessageSizeInBytes sets the max-message-size-in-bytes property value. Maximum accepted size of a SAML message, in bytes.
 func (m *AdminSamlSettings_attributes) SetMaxMessageSizeInBytes(value *int32) {
-	m.maxMessageSizeInBytes = value
+	err := m.GetBackingStore().Set("maxMessageSizeInBytes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMetadataUrl sets the metadata-url property value. Service provider metadata URL.
 func (m *AdminSamlSettings_attributes) SetMetadataUrl(value *string) {
-	m.metadataUrl = value
+	err := m.GetBackingStore().Set("metadataUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOldIdpCert sets the old-idp-cert property value. **Deprecated.** Previous identity provider certificate retained after a rotation. Use the `saml-settings/idp-certificates` resource to manage certificates directly.
 // Deprecated:
 func (m *AdminSamlSettings_attributes) SetOldIdpCert(value *string) {
-	m.oldIdpCert = value
+	err := m.GetBackingStore().Set("oldIdpCert", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *AdminSamlSettings_attributes) SetPermissions(value AdminSamlSettings_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPrivateKey sets the private-key property value. PEM encoded private key paired with `certificate`. Write-only: it is never returned in a response. Omit it on update to leave the stored key unchanged.
 func (m *AdminSamlSettings_attributes) SetPrivateKey(value *string) {
-	m.privateKey = value
+	err := m.GetBackingStore().Set("privateKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProviderType sets the provider-type property value. Identity provider family. `unknown` predates this setting.
 func (m *AdminSamlSettings_attributes) SetProviderType(value *AdminSamlSettings_attributes_providerType) {
-	m.providerType = value
+	err := m.GetBackingStore().Set("providerType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSignatureDigestMethod sets the signature-digest-method property value. Signature digest method.
 func (m *AdminSamlSettings_attributes) SetSignatureDigestMethod(value *AdminSamlSettings_attributes_signatureDigestMethod) {
-	m.signatureDigestMethod = value
+	err := m.GetBackingStore().Set("signatureDigestMethod", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSignatureSigningMethod sets the signature-signing-method property value. Signature signing method.
 func (m *AdminSamlSettings_attributes) SetSignatureSigningMethod(value *AdminSamlSettings_attributes_signatureSigningMethod) {
-	m.signatureSigningMethod = value
+	err := m.GetBackingStore().Set("signatureSigningMethod", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSiteAdminRole sets the site-admin-role property value. Role value that grants site admin permissions.
 func (m *AdminSamlSettings_attributes) SetSiteAdminRole(value *string) {
-	m.siteAdminRole = value
+	err := m.GetBackingStore().Set("siteAdminRole", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSiteAuditorRole sets the site-auditor-role property value. Role value that grants site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 func (m *AdminSamlSettings_attributes) SetSiteAuditorRole(value *string) {
-	m.siteAuditorRole = value
+	err := m.GetBackingStore().Set("siteAuditorRole", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSloEndpointUrl sets the slo-endpoint-url property value. Single Log Out URL of the identity provider.
 func (m *AdminSamlSettings_attributes) SetSloEndpointUrl(value *string) {
-	m.sloEndpointUrl = value
+	err := m.GetBackingStore().Set("sloEndpointUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSsoApiTokenSessionTimeout sets the sso-api-token-session-timeout property value. Session timeout, in seconds, for API tokens issued via SSO.
 func (m *AdminSamlSettings_attributes) SetSsoApiTokenSessionTimeout(value *int32) {
-	m.ssoApiTokenSessionTimeout = value
+	err := m.GetBackingStore().Set("ssoApiTokenSessionTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSsoEndpointUrl sets the sso-endpoint-url property value. Single Sign On URL of the identity provider.
 func (m *AdminSamlSettings_attributes) SetSsoEndpointUrl(value *string) {
-	m.ssoEndpointUrl = value
+	err := m.GetBackingStore().Set("ssoEndpointUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTeamManagementEnabled sets the team-management-enabled property value. Whether team membership is managed by the identity provider.
 func (m *AdminSamlSettings_attributes) SetTeamManagementEnabled(value *bool) {
-	m.teamManagementEnabled = value
+	err := m.GetBackingStore().Set("teamManagementEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWantAssertionsSigned sets the want-assertions-signed property value. Whether signed assertions are required from the identity provider.
 func (m *AdminSamlSettings_attributes) SetWantAssertionsSigned(value *bool) {
-	m.wantAssertionsSigned = value
+	err := m.GetBackingStore().Set("wantAssertionsSigned", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AdminSamlSettings_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAcsConsumerUrl() *string
 	GetAttrAvatar() *string
@@ -803,6 +1034,7 @@ type AdminSamlSettings_attributesable interface {
 	GetAttrSiteAuditor() *string
 	GetAttrUsername() *string
 	GetAuthnRequestsSigned() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCertificate() *string
 	GetDebug() *bool
 	GetEnabled() *bool
@@ -829,6 +1061,7 @@ type AdminSamlSettings_attributesable interface {
 	SetAttrSiteAuditor(value *string)
 	SetAttrUsername(value *string)
 	SetAuthnRequestsSigned(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCertificate(value *string)
 	SetDebug(value *bool)
 	SetEnabled(value *bool)

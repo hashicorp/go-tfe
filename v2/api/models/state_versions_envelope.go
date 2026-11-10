@@ -5,37 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type StateVersionsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data StateVersionsable
-	// The included property
-	included []StateVersionsEnvelope_StateVersionsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// StateVersionsEnvelope_StateVersionsEnvelope_included composed type wrapper for classes ConfigurationVersionsable, HyokCustomerKeyVersionsable, HyokEncryptedDataKeysable, Runsable, StateVersionOutputsable, Usersable
+// StateVersionsEnvelope_StateVersionsEnvelope_included composed type wrapper for classes ConfigurationVersions, HyokCustomerKeyVersions, HyokEncryptedDataKeys, Runs, StateVersionOutputs, Users
 type StateVersionsEnvelope_StateVersionsEnvelope_included struct {
-	// Composed type representation for type ConfigurationVersionsable
-	configurationVersions ConfigurationVersionsable
-	// Composed type representation for type HyokCustomerKeyVersionsable
-	hyokCustomerKeyVersions HyokCustomerKeyVersionsable
-	// Composed type representation for type HyokEncryptedDataKeysable
-	hyokEncryptedDataKeys HyokEncryptedDataKeysable
-	// Composed type representation for type Runsable
-	runs Runsable
-	// Composed type representation for type StateVersionOutputsable
-	stateVersionOutputs StateVersionOutputsable
-	// Composed type representation for type Usersable
-	users Usersable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStateVersionsEnvelope_StateVersionsEnvelope_included instantiates a new StateVersionsEnvelope_StateVersionsEnvelope_included and sets the default values.
 func NewStateVersionsEnvelope_StateVersionsEnvelope_included() *StateVersionsEnvelope_StateVersionsEnvelope_included {
 	m := &StateVersionsEnvelope_StateVersionsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -73,10 +61,23 @@ func CreateStateVersionsEnvelope_StateVersionsEnvelope_includedFromDiscriminator
 	return result, nil
 }
 
-// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersions
 // returns a ConfigurationVersionsable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetConfigurationVersions() ConfigurationVersionsable {
-	return m.configurationVersions
+	val, err := m.GetBackingStore().Get("configurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersionsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -98,16 +99,30 @@ func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetFieldDeseriali
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersions
 // returns a HyokCustomerKeyVersionsable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsable {
-	return m.hyokCustomerKeyVersions
+	val, err := m.GetBackingStore().Get("hyokCustomerKeyVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokCustomerKeyVersionsable)
+	}
+	return nil
 }
 
-// GetHyokEncryptedDataKeys gets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeysable
+// GetHyokEncryptedDataKeys gets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeys
 // returns a HyokEncryptedDataKeysable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetHyokEncryptedDataKeys() HyokEncryptedDataKeysable {
-	return m.hyokEncryptedDataKeys
+	val, err := m.GetBackingStore().Get("hyokEncryptedDataKeys")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokEncryptedDataKeysable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -116,22 +131,43 @@ func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetIsComposedType
 	return true
 }
 
-// GetRuns gets the runs property value. Composed type representation for type Runsable
+// GetRuns gets the runs property value. Composed type representation for type Runs
 // returns a Runsable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetRuns() Runsable {
-	return m.runs
+	val, err := m.GetBackingStore().Get("runs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runsable)
+	}
+	return nil
 }
 
-// GetStateVersionOutputs gets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputsable
+// GetStateVersionOutputs gets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputs
 // returns a StateVersionOutputsable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetStateVersionOutputs() StateVersionOutputsable {
-	return m.stateVersionOutputs
+	val, err := m.GetBackingStore().Get("stateVersionOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionOutputsable)
+	}
+	return nil
 }
 
-// GetUsers gets the users property value. Composed type representation for type Usersable
+// GetUsers gets the users property value. Composed type representation for type Users
 // returns a Usersable when successful
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) GetUsers() Usersable {
-	return m.users
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Usersable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -170,44 +206,70 @@ func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) Serialize(writer 
 	return nil
 }
 
-// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersions
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetConfigurationVersions(value ConfigurationVersionsable) {
-	m.configurationVersions = value
+	err := m.GetBackingStore().Set("configurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersions
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable) {
-	m.hyokCustomerKeyVersions = value
+	err := m.GetBackingStore().Set("hyokCustomerKeyVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetHyokEncryptedDataKeys sets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeysable
+// SetHyokEncryptedDataKeys sets the hyokEncryptedDataKeys property value. Composed type representation for type HyokEncryptedDataKeys
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetHyokEncryptedDataKeys(value HyokEncryptedDataKeysable) {
-	m.hyokEncryptedDataKeys = value
+	err := m.GetBackingStore().Set("hyokEncryptedDataKeys", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetRuns sets the runs property value. Composed type representation for type Runsable
+// SetRuns sets the runs property value. Composed type representation for type Runs
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetRuns(value Runsable) {
-	m.runs = value
+	err := m.GetBackingStore().Set("runs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStateVersionOutputs sets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputsable
+// SetStateVersionOutputs sets the stateVersionOutputs property value. Composed type representation for type StateVersionOutputs
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetStateVersionOutputs(value StateVersionOutputsable) {
-	m.stateVersionOutputs = value
+	err := m.GetBackingStore().Set("stateVersionOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetUsers sets the users property value. Composed type representation for type Usersable
+// SetUsers sets the users property value. Composed type representation for type Users
 func (m *StateVersionsEnvelope_StateVersionsEnvelope_included) SetUsers(value Usersable) {
-	m.users = value
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StateVersionsEnvelope_StateVersionsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurationVersions() ConfigurationVersionsable
 	GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsable
 	GetHyokEncryptedDataKeys() HyokEncryptedDataKeysable
 	GetRuns() Runsable
 	GetStateVersionOutputs() StateVersionOutputsable
 	GetUsers() Usersable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurationVersions(value ConfigurationVersionsable)
 	SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)
 	SetHyokEncryptedDataKeys(value HyokEncryptedDataKeysable)
@@ -219,6 +281,7 @@ type StateVersionsEnvelope_StateVersionsEnvelope_includedable interface {
 // NewStateVersionsEnvelope instantiates a new StateVersionsEnvelope and sets the default values.
 func NewStateVersionsEnvelope() *StateVersionsEnvelope {
 	m := &StateVersionsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -232,13 +295,34 @@ func CreateStateVersionsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StateVersionsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersionsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a StateVersionsable when successful
 func (m *StateVersionsEnvelope) GetData() StateVersionsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -277,7 +361,14 @@ func (m *StateVersionsEnvelope) GetFieldDeserializers() map[string]func(i878a80d
 // GetIncluded gets the included property value. The included property
 // returns a []StateVersionsEnvelope_StateVersionsEnvelope_includedable when successful
 func (m *StateVersionsEnvelope) GetIncluded() []StateVersionsEnvelope_StateVersionsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StateVersionsEnvelope_StateVersionsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -311,24 +402,41 @@ func (m *StateVersionsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487e
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StateVersionsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersionsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *StateVersionsEnvelope) SetData(value StateVersionsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *StateVersionsEnvelope) SetIncluded(value []StateVersionsEnvelope_StateVersionsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StateVersionsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() StateVersionsable
 	GetIncluded() []StateVersionsEnvelope_StateVersionsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value StateVersionsable)
 	SetIncluded(value []StateVersionsEnvelope_StateVersionsEnvelope_includedable)
 }

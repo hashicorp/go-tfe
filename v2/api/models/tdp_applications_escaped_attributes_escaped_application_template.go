@@ -5,37 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TdpApplications_attributes_applicationTemplate the template this application was created from, including its configuration.
 type TdpApplications_attributes_applicationTemplate struct {
-	// The actionCfgRefs property
-	actionCfgRefs []TdpApplications_attributes_applicationTemplate_actionCfgRefsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// A longer description of this template.
-	description *string
-	// The labels property
-	labels []string
-	// The internal ID of the Terraform module version backing this template.
-	moduleId *string
-	// The Terraform registry source address of the module backing this template.
-	moduleSource *string
-	// The name of the template.
-	name *string
-	// A Markdown template used to generate the readme for applications created from this template.
-	readmeTemplate *string
-	// A short one-line summary of what this template provisions.
-	summary *string
-	// The tags property
-	tags []string
-	// The input variable definitions exposed to users when creating an application from this template.
-	variableOptions []TdpApplications_attributes_applicationTemplate_variableOptionsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTdpApplications_attributes_applicationTemplate instantiates a new TdpApplications_attributes_applicationTemplate and sets the default values.
 func NewTdpApplications_attributes_applicationTemplate() *TdpApplications_attributes_applicationTemplate {
 	m := &TdpApplications_attributes_applicationTemplate{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -49,19 +31,47 @@ func CreateTdpApplications_attributes_applicationTemplateFromDiscriminatorValue(
 // GetActionCfgRefs gets the action-cfg-refs property value. The actionCfgRefs property
 // returns a []TdpApplications_attributes_applicationTemplate_actionCfgRefsable when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetActionCfgRefs() []TdpApplications_attributes_applicationTemplate_actionCfgRefsable {
-	return m.actionCfgRefs
+	val, err := m.GetBackingStore().Get("actionCfgRefs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpApplications_attributes_applicationTemplate) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDescription gets the description property value. A longer description of this template.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -198,49 +208,105 @@ func (m *TdpApplications_attributes_applicationTemplate) GetFieldDeserializers()
 // GetLabels gets the labels property value. The labels property
 // returns a []string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetLabels() []string {
-	return m.labels
+	val, err := m.GetBackingStore().Get("labels")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetModuleId gets the module-id property value. The internal ID of the Terraform module version backing this template.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetModuleId() *string {
-	return m.moduleId
+	val, err := m.GetBackingStore().Get("moduleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetModuleSource gets the module-source property value. The Terraform registry source address of the module backing this template.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetModuleSource() *string {
-	return m.moduleSource
+	val, err := m.GetBackingStore().Get("moduleSource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name of the template.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetReadmeTemplate gets the readme-template property value. A Markdown template used to generate the readme for applications created from this template.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetReadmeTemplate() *string {
-	return m.readmeTemplate
+	val, err := m.GetBackingStore().Get("readmeTemplate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSummary gets the summary property value. A short one-line summary of what this template provisions.
 // returns a *string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetSummary() *string {
-	return m.summary
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTags gets the tags property value. The tags property
 // returns a []string when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetTags() []string {
-	return m.tags
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetVariableOptions gets the variable-options property value. The input variable definitions exposed to users when creating an application from this template.
 // returns a []TdpApplications_attributes_applicationTemplate_variableOptionsable when successful
 func (m *TdpApplications_attributes_applicationTemplate) GetVariableOptions() []TdpApplications_attributes_applicationTemplate_variableOptionsable {
-	return m.variableOptions
+	val, err := m.GetBackingStore().Get("variableOptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_applicationTemplate_variableOptionsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -328,63 +394,103 @@ func (m *TdpApplications_attributes_applicationTemplate) Serialize(writer i878a8
 
 // SetActionCfgRefs sets the action-cfg-refs property value. The actionCfgRefs property
 func (m *TdpApplications_attributes_applicationTemplate) SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable) {
-	m.actionCfgRefs = value
+	err := m.GetBackingStore().Set("actionCfgRefs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TdpApplications_attributes_applicationTemplate) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpApplications_attributes_applicationTemplate) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDescription sets the description property value. A longer description of this template.
 func (m *TdpApplications_attributes_applicationTemplate) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLabels sets the labels property value. The labels property
 func (m *TdpApplications_attributes_applicationTemplate) SetLabels(value []string) {
-	m.labels = value
+	err := m.GetBackingStore().Set("labels", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModuleId sets the module-id property value. The internal ID of the Terraform module version backing this template.
 func (m *TdpApplications_attributes_applicationTemplate) SetModuleId(value *string) {
-	m.moduleId = value
+	err := m.GetBackingStore().Set("moduleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetModuleSource sets the module-source property value. The Terraform registry source address of the module backing this template.
 func (m *TdpApplications_attributes_applicationTemplate) SetModuleSource(value *string) {
-	m.moduleSource = value
+	err := m.GetBackingStore().Set("moduleSource", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name of the template.
 func (m *TdpApplications_attributes_applicationTemplate) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReadmeTemplate sets the readme-template property value. A Markdown template used to generate the readme for applications created from this template.
 func (m *TdpApplications_attributes_applicationTemplate) SetReadmeTemplate(value *string) {
-	m.readmeTemplate = value
+	err := m.GetBackingStore().Set("readmeTemplate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSummary sets the summary property value. A short one-line summary of what this template provisions.
 func (m *TdpApplications_attributes_applicationTemplate) SetSummary(value *string) {
-	m.summary = value
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTags sets the tags property value. The tags property
 func (m *TdpApplications_attributes_applicationTemplate) SetTags(value []string) {
-	m.tags = value
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariableOptions sets the variable-options property value. The input variable definitions exposed to users when creating an application from this template.
 func (m *TdpApplications_attributes_applicationTemplate) SetVariableOptions(value []TdpApplications_attributes_applicationTemplate_variableOptionsable) {
-	m.variableOptions = value
+	err := m.GetBackingStore().Set("variableOptions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TdpApplications_attributes_applicationTemplateable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActionCfgRefs() []TdpApplications_attributes_applicationTemplate_actionCfgRefsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDescription() *string
 	GetLabels() []string
 	GetModuleId() *string
@@ -395,6 +501,7 @@ type TdpApplications_attributes_applicationTemplateable interface {
 	GetTags() []string
 	GetVariableOptions() []TdpApplications_attributes_applicationTemplate_variableOptionsable
 	SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDescription(value *string)
 	SetLabels(value []string)
 	SetModuleId(value *string)

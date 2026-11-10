@@ -5,50 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type IngressAttributes_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The branch property
-	branch *string
-	// The cloneUrl property
-	cloneUrl *string
-	// The commitMessage property
-	commitMessage *string
-	// The commitSha property
-	commitSha *string
-	// The commitUrl property
-	commitUrl *string
-	// The compareUrl property
-	compareUrl *string
-	// The identifier property
-	identifier *string
-	// The isPullRequest property
-	isPullRequest *bool
-	// The onDefaultBranch property
-	onDefaultBranch *bool
-	// The pullRequestBody property
-	pullRequestBody *string
-	// The pullRequestNumber property
-	pullRequestNumber *int32
-	// The pullRequestTitle property
-	pullRequestTitle *string
-	// The pullRequestUrl property
-	pullRequestUrl *string
-	// The senderAvatarUrl property
-	senderAvatarUrl *string
-	// The senderHtmlUrl property
-	senderHtmlUrl *string
-	// The senderUsername property
-	senderUsername *string
-	// The tag property
-	tag *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewIngressAttributes_attributes instantiates a new IngressAttributes_attributes and sets the default values.
 func NewIngressAttributes_attributes() *IngressAttributes_attributes {
 	m := &IngressAttributes_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -62,43 +30,99 @@ func CreateIngressAttributes_attributesFromDiscriminatorValue(parseNode i878a80d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *IngressAttributes_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *IngressAttributes_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBranch gets the branch property value. The branch property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetBranch() *string {
-	return m.branch
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCloneUrl gets the clone-url property value. The cloneUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetCloneUrl() *string {
-	return m.cloneUrl
+	val, err := m.GetBackingStore().Get("cloneUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCommitMessage gets the commit-message property value. The commitMessage property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetCommitMessage() *string {
-	return m.commitMessage
+	val, err := m.GetBackingStore().Get("commitMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCommitSha gets the commit-sha property value. The commitSha property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetCommitSha() *string {
-	return m.commitSha
+	val, err := m.GetBackingStore().Get("commitSha")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCommitUrl gets the commit-url property value. The commitUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetCommitUrl() *string {
-	return m.commitUrl
+	val, err := m.GetBackingStore().Get("commitUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCompareUrl gets the compare-url property value. The compareUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetCompareUrl() *string {
-	return m.compareUrl
+	val, err := m.GetBackingStore().Get("compareUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -281,67 +305,144 @@ func (m *IngressAttributes_attributes) GetFieldDeserializers() map[string]func(i
 // GetIdentifier gets the identifier property value. The identifier property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetIdentifier() *string {
-	return m.identifier
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsPullRequest gets the is-pull-request property value. The isPullRequest property
 // returns a *bool when successful
 func (m *IngressAttributes_attributes) GetIsPullRequest() *bool {
-	return m.isPullRequest
+	val, err := m.GetBackingStore().Get("isPullRequest")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetOnDefaultBranch gets the on-default-branch property value. The onDefaultBranch property
 // returns a *bool when successful
 func (m *IngressAttributes_attributes) GetOnDefaultBranch() *bool {
-	return m.onDefaultBranch
+	val, err := m.GetBackingStore().Get("onDefaultBranch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPullRequestBody gets the pull-request-body property value. The pullRequestBody property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetPullRequestBody() *string {
-	return m.pullRequestBody
+	val, err := m.GetBackingStore().Get("pullRequestBody")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPullRequestNumber gets the pull-request-number property value. The pullRequestNumber property
 // returns a *int32 when successful
 func (m *IngressAttributes_attributes) GetPullRequestNumber() *int32 {
-	return m.pullRequestNumber
+	val, err := m.GetBackingStore().Get("pullRequestNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPullRequestTitle gets the pull-request-title property value. The pullRequestTitle property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetPullRequestTitle() *string {
-	return m.pullRequestTitle
+	val, err := m.GetBackingStore().Get("pullRequestTitle")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPullRequestUrl gets the pull-request-url property value. The pullRequestUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetPullRequestUrl() *string {
-	return m.pullRequestUrl
+	val, err := m.GetBackingStore().Get("pullRequestUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSenderAvatarUrl gets the sender-avatar-url property value. The senderAvatarUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetSenderAvatarUrl() *string {
-	return m.senderAvatarUrl
+	val, err := m.GetBackingStore().Get("senderAvatarUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSenderHtmlUrl gets the sender-html-url property value. The senderHtmlUrl property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetSenderHtmlUrl() *string {
-	return m.senderHtmlUrl
+	val, err := m.GetBackingStore().Get("senderHtmlUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSenderUsername gets the sender-username property value. The senderUsername property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetSenderUsername() *string {
-	return m.senderUsername
+	val, err := m.GetBackingStore().Get("senderUsername")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTag gets the tag property value. The tag property
 // returns a *string when successful
 func (m *IngressAttributes_attributes) GetTag() *string {
-	return m.tag
+	val, err := m.GetBackingStore().Get("tag")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -459,97 +560,158 @@ func (m *IngressAttributes_attributes) Serialize(writer i878a80d2330e89d26896388
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *IngressAttributes_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *IngressAttributes_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBranch sets the branch property value. The branch property
 func (m *IngressAttributes_attributes) SetBranch(value *string) {
-	m.branch = value
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCloneUrl sets the clone-url property value. The cloneUrl property
 func (m *IngressAttributes_attributes) SetCloneUrl(value *string) {
-	m.cloneUrl = value
+	err := m.GetBackingStore().Set("cloneUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCommitMessage sets the commit-message property value. The commitMessage property
 func (m *IngressAttributes_attributes) SetCommitMessage(value *string) {
-	m.commitMessage = value
+	err := m.GetBackingStore().Set("commitMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCommitSha sets the commit-sha property value. The commitSha property
 func (m *IngressAttributes_attributes) SetCommitSha(value *string) {
-	m.commitSha = value
+	err := m.GetBackingStore().Set("commitSha", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCommitUrl sets the commit-url property value. The commitUrl property
 func (m *IngressAttributes_attributes) SetCommitUrl(value *string) {
-	m.commitUrl = value
+	err := m.GetBackingStore().Set("commitUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCompareUrl sets the compare-url property value. The compareUrl property
 func (m *IngressAttributes_attributes) SetCompareUrl(value *string) {
-	m.compareUrl = value
+	err := m.GetBackingStore().Set("compareUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIdentifier sets the identifier property value. The identifier property
 func (m *IngressAttributes_attributes) SetIdentifier(value *string) {
-	m.identifier = value
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsPullRequest sets the is-pull-request property value. The isPullRequest property
 func (m *IngressAttributes_attributes) SetIsPullRequest(value *bool) {
-	m.isPullRequest = value
+	err := m.GetBackingStore().Set("isPullRequest", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOnDefaultBranch sets the on-default-branch property value. The onDefaultBranch property
 func (m *IngressAttributes_attributes) SetOnDefaultBranch(value *bool) {
-	m.onDefaultBranch = value
+	err := m.GetBackingStore().Set("onDefaultBranch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPullRequestBody sets the pull-request-body property value. The pullRequestBody property
 func (m *IngressAttributes_attributes) SetPullRequestBody(value *string) {
-	m.pullRequestBody = value
+	err := m.GetBackingStore().Set("pullRequestBody", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPullRequestNumber sets the pull-request-number property value. The pullRequestNumber property
 func (m *IngressAttributes_attributes) SetPullRequestNumber(value *int32) {
-	m.pullRequestNumber = value
+	err := m.GetBackingStore().Set("pullRequestNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPullRequestTitle sets the pull-request-title property value. The pullRequestTitle property
 func (m *IngressAttributes_attributes) SetPullRequestTitle(value *string) {
-	m.pullRequestTitle = value
+	err := m.GetBackingStore().Set("pullRequestTitle", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPullRequestUrl sets the pull-request-url property value. The pullRequestUrl property
 func (m *IngressAttributes_attributes) SetPullRequestUrl(value *string) {
-	m.pullRequestUrl = value
+	err := m.GetBackingStore().Set("pullRequestUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSenderAvatarUrl sets the sender-avatar-url property value. The senderAvatarUrl property
 func (m *IngressAttributes_attributes) SetSenderAvatarUrl(value *string) {
-	m.senderAvatarUrl = value
+	err := m.GetBackingStore().Set("senderAvatarUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSenderHtmlUrl sets the sender-html-url property value. The senderHtmlUrl property
 func (m *IngressAttributes_attributes) SetSenderHtmlUrl(value *string) {
-	m.senderHtmlUrl = value
+	err := m.GetBackingStore().Set("senderHtmlUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSenderUsername sets the sender-username property value. The senderUsername property
 func (m *IngressAttributes_attributes) SetSenderUsername(value *string) {
-	m.senderUsername = value
+	err := m.GetBackingStore().Set("senderUsername", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTag sets the tag property value. The tag property
 func (m *IngressAttributes_attributes) SetTag(value *string) {
-	m.tag = value
+	err := m.GetBackingStore().Set("tag", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type IngressAttributes_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBranch() *string
 	GetCloneUrl() *string
 	GetCommitMessage() *string
@@ -567,6 +729,7 @@ type IngressAttributes_attributesable interface {
 	GetSenderHtmlUrl() *string
 	GetSenderUsername() *string
 	GetTag() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBranch(value *string)
 	SetCloneUrl(value *string)
 	SetCommitMessage(value *string)

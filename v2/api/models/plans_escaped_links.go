@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Plans_links struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// API URL for the JSON formatted execution plan (available for Terraform 0.12+)
-	jsonOutput *string
-	// API URL for the redacted JSON formatted execution plan (available for Terraform 0.15.2+)
-	jsonOutputRedacted *string
-	// API URL for the JSON schema of this plan (available for Terraform 0.12+)
-	jsonSchema *string
-	// API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
-	sanitizedPlan *string
-	// API URL for this plan
-	self *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPlans_links instantiates a new Plans_links and sets the default values.
 func NewPlans_links() *Plans_links {
 	m := &Plans_links{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,7 +30,21 @@ func CreatePlans_linksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Plans_links) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Plans_links) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -101,31 +107,66 @@ func (m *Plans_links) GetFieldDeserializers() map[string]func(i878a80d2330e89d26
 // GetJsonOutput gets the json-output property value. API URL for the JSON formatted execution plan (available for Terraform 0.12+)
 // returns a *string when successful
 func (m *Plans_links) GetJsonOutput() *string {
-	return m.jsonOutput
+	val, err := m.GetBackingStore().Get("jsonOutput")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetJsonOutputRedacted gets the json-output-redacted property value. API URL for the redacted JSON formatted execution plan (available for Terraform 0.15.2+)
 // returns a *string when successful
 func (m *Plans_links) GetJsonOutputRedacted() *string {
-	return m.jsonOutputRedacted
+	val, err := m.GetBackingStore().Get("jsonOutputRedacted")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetJsonSchema gets the json-schema property value. API URL for the JSON schema of this plan (available for Terraform 0.12+)
 // returns a *string when successful
 func (m *Plans_links) GetJsonSchema() *string {
-	return m.jsonSchema
+	val, err := m.GetBackingStore().Get("jsonSchema")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSanitizedPlan gets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
 // returns a *string when successful
 func (m *Plans_links) GetSanitizedPlan() *string {
-	return m.sanitizedPlan
+	val, err := m.GetBackingStore().Get("sanitizedPlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSelf gets the self property value. API URL for this plan
 // returns a *string when successful
 func (m *Plans_links) GetSelf() *string {
-	return m.self
+	val, err := m.GetBackingStore().Get("self")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *Plans_links) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Plans_links) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Plans_links) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetJsonOutput sets the json-output property value. API URL for the JSON formatted execution plan (available for Terraform 0.12+)
 func (m *Plans_links) SetJsonOutput(value *string) {
-	m.jsonOutput = value
+	err := m.GetBackingStore().Set("jsonOutput", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetJsonOutputRedacted sets the json-output-redacted property value. API URL for the redacted JSON formatted execution plan (available for Terraform 0.15.2+)
 func (m *Plans_links) SetJsonOutputRedacted(value *string) {
-	m.jsonOutputRedacted = value
+	err := m.GetBackingStore().Set("jsonOutputRedacted", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetJsonSchema sets the json-schema property value. API URL for the JSON schema of this plan (available for Terraform 0.12+)
 func (m *Plans_links) SetJsonSchema(value *string) {
-	m.jsonSchema = value
+	err := m.GetBackingStore().Set("jsonSchema", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSanitizedPlan sets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
 func (m *Plans_links) SetSanitizedPlan(value *string) {
-	m.sanitizedPlan = value
+	err := m.GetBackingStore().Set("sanitizedPlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSelf sets the self property value. API URL for this plan
 func (m *Plans_links) SetSelf(value *string) {
-	m.self = value
+	err := m.GetBackingStore().Set("self", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Plans_linksable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetJsonOutput() *string
 	GetJsonOutputRedacted() *string
 	GetJsonSchema() *string
 	GetSanitizedPlan() *string
 	GetSelf() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetJsonOutput(value *string)
 	SetJsonOutputRedacted(value *string)
 	SetJsonSchema(value *string)

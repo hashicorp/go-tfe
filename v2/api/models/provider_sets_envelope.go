@@ -5,29 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type ProviderSetsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data ProviderSetsable
-	// The included property
-	included []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// ProviderSetsEnvelope_ProviderSetsEnvelope_included composed type wrapper for classes Projectsable, Workspacesable
+// ProviderSetsEnvelope_ProviderSetsEnvelope_included composed type wrapper for classes Projects, Workspaces
 type ProviderSetsEnvelope_ProviderSetsEnvelope_included struct {
-	// Composed type representation for type Projectsable
-	projects Projectsable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewProviderSetsEnvelope_ProviderSetsEnvelope_included instantiates a new ProviderSetsEnvelope_ProviderSetsEnvelope_included and sets the default values.
 func NewProviderSetsEnvelope_ProviderSetsEnvelope_included() *ProviderSetsEnvelope_ProviderSetsEnvelope_included {
 	m := &ProviderSetsEnvelope_ProviderSetsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -57,6 +53,12 @@ func CreateProviderSetsEnvelope_ProviderSetsEnvelope_includedFromDiscriminatorVa
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -74,16 +76,30 @@ func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) GetIsComposedType()
 	return true
 }
 
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
 func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) GetProjects() Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -102,20 +118,34 @@ func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) Serialize(writer i8
 	return nil
 }
 
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
-func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) SetProjects(value Projectsable) {
-	m.projects = value
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetProjects sets the projects property value. Composed type representation for type Projects
+func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) SetProjects(value Projectsable) {
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *ProviderSetsEnvelope_ProviderSetsEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ProviderSetsEnvelope_ProviderSetsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetProjects() Projectsable
 	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetProjects(value Projectsable)
 	SetWorkspaces(value Workspacesable)
 }
@@ -123,6 +153,7 @@ type ProviderSetsEnvelope_ProviderSetsEnvelope_includedable interface {
 // NewProviderSetsEnvelope instantiates a new ProviderSetsEnvelope and sets the default values.
 func NewProviderSetsEnvelope() *ProviderSetsEnvelope {
 	m := &ProviderSetsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -136,13 +167,34 @@ func CreateProviderSetsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *ProviderSetsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ProviderSetsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a ProviderSetsable when successful
 func (m *ProviderSetsEnvelope) GetData() ProviderSetsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProviderSetsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -181,7 +233,14 @@ func (m *ProviderSetsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2
 // GetIncluded gets the included property value. The included property
 // returns a []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable when successful
 func (m *ProviderSetsEnvelope) GetIncluded() []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]ProviderSetsEnvelope_ProviderSetsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -215,24 +274,41 @@ func (m *ProviderSetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487ee
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *ProviderSetsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ProviderSetsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *ProviderSetsEnvelope) SetData(value ProviderSetsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *ProviderSetsEnvelope) SetIncluded(value []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type ProviderSetsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() ProviderSetsable
 	GetIncluded() []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value ProviderSetsable)
 	SetIncluded(value []ProviderSetsEnvelope_ProviderSetsEnvelope_includedable)
 }

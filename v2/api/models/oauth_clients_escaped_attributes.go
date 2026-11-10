@@ -5,53 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type OauthClients_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The adoEntraTenantId property
-	adoEntraTenantId *string
-	// The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
-	adoOrgName *string
-	// The affectedWorkspaces property
-	affectedWorkspaces []string
-	// The affectedWorkspacesCount property
-	affectedWorkspacesCount *int32
-	// The apiUrl property
-	apiUrl *string
-	// The callbackUrl property
-	callbackUrl *string
-	// The connectPath property
-	connectPath *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The httpUrl property
-	httpUrl *string
-	// The key property
-	key *string
-	// The name property
-	name *string
-	// The organizationScoped property
-	organizationScoped *bool
-	// The rsaPublicKey property
-	rsaPublicKey *string
-	// The secret property
-	secret *string
-	// The serviceProvider property
-	serviceProvider *string
-	// The serviceProviderDisplayName property
-	serviceProviderDisplayName *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The uuid property
-	uuid *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOauthClients_attributes instantiates a new OauthClients_attributes and sets the default values.
 func NewOauthClients_attributes() *OauthClients_attributes {
 	m := &OauthClients_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -65,55 +31,125 @@ func CreateOauthClients_attributesFromDiscriminatorValue(parseNode i878a80d2330e
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *OauthClients_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAdoEntraTenantId gets the ado-entra-tenant-id property value. The adoEntraTenantId property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetAdoEntraTenantId() *string {
-	return m.adoEntraTenantId
+	val, err := m.GetBackingStore().Get("adoEntraTenantId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAdoOrgName gets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
 // returns a *string when successful
 func (m *OauthClients_attributes) GetAdoOrgName() *string {
-	return m.adoOrgName
+	val, err := m.GetBackingStore().Get("adoOrgName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAffectedWorkspaces gets the affected-workspaces property value. The affectedWorkspaces property
 // returns a []string when successful
 func (m *OauthClients_attributes) GetAffectedWorkspaces() []string {
-	return m.affectedWorkspaces
+	val, err := m.GetBackingStore().Get("affectedWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetAffectedWorkspacesCount gets the affected-workspaces-count property value. The affectedWorkspacesCount property
 // returns a *int32 when successful
 func (m *OauthClients_attributes) GetAffectedWorkspacesCount() *int32 {
-	return m.affectedWorkspacesCount
+	val, err := m.GetBackingStore().Get("affectedWorkspacesCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetApiUrl gets the api-url property value. The apiUrl property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetApiUrl() *string {
-	return m.apiUrl
+	val, err := m.GetBackingStore().Get("apiUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OauthClients_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCallbackUrl gets the callback-url property value. The callbackUrl property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetCallbackUrl() *string {
-	return m.callbackUrl
+	val, err := m.GetBackingStore().Get("callbackUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetConnectPath gets the connect-path property value. The connectPath property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetConnectPath() *string {
-	return m.connectPath
+	val, err := m.GetBackingStore().Get("connectPath")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *OauthClients_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -312,61 +348,131 @@ func (m *OauthClients_attributes) GetFieldDeserializers() map[string]func(i878a8
 // GetHttpUrl gets the http-url property value. The httpUrl property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetHttpUrl() *string {
-	return m.httpUrl
+	val, err := m.GetBackingStore().Get("httpUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetKey gets the key property value. The key property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetKey() *string {
-	return m.key
+	val, err := m.GetBackingStore().Get("key")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOrganizationScoped gets the organization-scoped property value. The organizationScoped property
 // returns a *bool when successful
 func (m *OauthClients_attributes) GetOrganizationScoped() *bool {
-	return m.organizationScoped
+	val, err := m.GetBackingStore().Get("organizationScoped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetRsaPublicKey gets the rsa-public-key property value. The rsaPublicKey property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetRsaPublicKey() *string {
-	return m.rsaPublicKey
+	val, err := m.GetBackingStore().Get("rsaPublicKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSecret gets the secret property value. The secret property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetSecret() *string {
-	return m.secret
+	val, err := m.GetBackingStore().Get("secret")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetServiceProvider gets the service-provider property value. The serviceProvider property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetServiceProvider() *string {
-	return m.serviceProvider
+	val, err := m.GetBackingStore().Get("serviceProvider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetServiceProviderDisplayName gets the service-provider-display-name property value. The serviceProviderDisplayName property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetServiceProviderDisplayName() *string {
-	return m.serviceProviderDisplayName
+	val, err := m.GetBackingStore().Get("serviceProviderDisplayName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *OauthClients_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUuid gets the uuid property value. The uuid property
 // returns a *string when successful
 func (m *OauthClients_attributes) GetUuid() *string {
-	return m.uuid
+	val, err := m.GetBackingStore().Get("uuid")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -454,107 +560,171 @@ func (m *OauthClients_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *OauthClients_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdoEntraTenantId sets the ado-entra-tenant-id property value. The adoEntraTenantId property
 func (m *OauthClients_attributes) SetAdoEntraTenantId(value *string) {
-	m.adoEntraTenantId = value
+	err := m.GetBackingStore().Set("adoEntraTenantId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdoOrgName sets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
 func (m *OauthClients_attributes) SetAdoOrgName(value *string) {
-	m.adoOrgName = value
+	err := m.GetBackingStore().Set("adoOrgName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAffectedWorkspaces sets the affected-workspaces property value. The affectedWorkspaces property
 func (m *OauthClients_attributes) SetAffectedWorkspaces(value []string) {
-	m.affectedWorkspaces = value
+	err := m.GetBackingStore().Set("affectedWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAffectedWorkspacesCount sets the affected-workspaces-count property value. The affectedWorkspacesCount property
 func (m *OauthClients_attributes) SetAffectedWorkspacesCount(value *int32) {
-	m.affectedWorkspacesCount = value
+	err := m.GetBackingStore().Set("affectedWorkspacesCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApiUrl sets the api-url property value. The apiUrl property
 func (m *OauthClients_attributes) SetApiUrl(value *string) {
-	m.apiUrl = value
+	err := m.GetBackingStore().Set("apiUrl", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OauthClients_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCallbackUrl sets the callback-url property value. The callbackUrl property
 func (m *OauthClients_attributes) SetCallbackUrl(value *string) {
-	m.callbackUrl = value
+	err := m.GetBackingStore().Set("callbackUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetConnectPath sets the connect-path property value. The connectPath property
 func (m *OauthClients_attributes) SetConnectPath(value *string) {
-	m.connectPath = value
+	err := m.GetBackingStore().Set("connectPath", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *OauthClients_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHttpUrl sets the http-url property value. The httpUrl property
 func (m *OauthClients_attributes) SetHttpUrl(value *string) {
-	m.httpUrl = value
+	err := m.GetBackingStore().Set("httpUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetKey sets the key property value. The key property
 func (m *OauthClients_attributes) SetKey(value *string) {
-	m.key = value
+	err := m.GetBackingStore().Set("key", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *OauthClients_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganizationScoped sets the organization-scoped property value. The organizationScoped property
 func (m *OauthClients_attributes) SetOrganizationScoped(value *bool) {
-	m.organizationScoped = value
+	err := m.GetBackingStore().Set("organizationScoped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRsaPublicKey sets the rsa-public-key property value. The rsaPublicKey property
 func (m *OauthClients_attributes) SetRsaPublicKey(value *string) {
-	m.rsaPublicKey = value
+	err := m.GetBackingStore().Set("rsaPublicKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSecret sets the secret property value. The secret property
 func (m *OauthClients_attributes) SetSecret(value *string) {
-	m.secret = value
+	err := m.GetBackingStore().Set("secret", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetServiceProvider sets the service-provider property value. The serviceProvider property
 func (m *OauthClients_attributes) SetServiceProvider(value *string) {
-	m.serviceProvider = value
+	err := m.GetBackingStore().Set("serviceProvider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetServiceProviderDisplayName sets the service-provider-display-name property value. The serviceProviderDisplayName property
 func (m *OauthClients_attributes) SetServiceProviderDisplayName(value *string) {
-	m.serviceProviderDisplayName = value
+	err := m.GetBackingStore().Set("serviceProviderDisplayName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *OauthClients_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUuid sets the uuid property value. The uuid property
 func (m *OauthClients_attributes) SetUuid(value *string) {
-	m.uuid = value
+	err := m.GetBackingStore().Set("uuid", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type OauthClients_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAdoEntraTenantId() *string
 	GetAdoOrgName() *string
 	GetAffectedWorkspaces() []string
 	GetAffectedWorkspacesCount() *int32
 	GetApiUrl() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCallbackUrl() *string
 	GetConnectPath() *string
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -573,6 +743,7 @@ type OauthClients_attributesable interface {
 	SetAffectedWorkspaces(value []string)
 	SetAffectedWorkspacesCount(value *int32)
 	SetApiUrl(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCallbackUrl(value *string)
 	SetConnectPath(value *string)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

@@ -5,62 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminGeneralSettings_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The number of seconds agents wait before polling for new work.
-	agentPollingRetryAfter *int32
-	// Whether HCP Terraform agents are enabled.
-	agentsEnabled *bool
-	// Whether speculative plans are allowed on pull requests originating from forked repositories.
-	allowSpeculativePlansOnPullRequestsFromForks *bool
-	// The number of API requests allowed per second, per user token or IP address.
-	apiRateLimit *int32
-	// Whether API rate limiting is enabled.
-	apiRateLimitingEnabled *bool
-	// Alias of terraform-build-worker-apply-timeout. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string.
-	applyTimeout *string
-	// The interval, in hours, at which automatic health assessments run.
-	automaticAssessmentInterval *int32
-	// The default maximum number of organizations a single user may create.
-	defaultOrganizationsPerUserCeiling *int32
-	// Whether new workspaces allow global remote state access by default.
-	defaultRemoteStateAccess *bool
-	// The default maximum number of workspaces per organization.
-	defaultWorkspacesPerOrganizationCeiling *int32
-	// Whether public (self-service) user registration is enabled. Available only on Terraform Enterprise; silently ignored on HCP Terraform.This attribute is only available in Terraform Enterprise.
-	enablePublicRegistration *bool
-	// Deprecated. Always returns false. Retained for backwards compatibility with the public API contract.
-	fairRunQueuingEnabled *bool
-	// Whether the number of organizations a user may create is limited.
-	limitOrganizationsPerUser *bool
-	// Whether the creation of new organizations is limited to site administrators.
-	limitUserOrganizationCreation *bool
-	// Whether the number of workspaces per organization is limited.
-	limitWorkspacesPerOrganization *bool
-	// The maximum number of health assessments that may run concurrently.
-	maximumConcurrentAssessments *int32
-	// Alias of terraform-build-worker-plan-timeout. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string.
-	planTimeout *string
-	// Whether two-factor authentication is required for site administrators.
-	requireTwoFactorForAdmins *bool
-	// Whether passing commit statuses are sent for untriggered speculative plans.
-	sendPassingStatusesForUntriggeredSpeculativePlans *bool
-	// Whether stacks are enabled for use in this instance.This attribute is only available in Terraform Enterprise.
-	stacksEnabled *bool
-	// Whether the instance is licensed to use stacks.
-	stacksEntitled *bool
-	// The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string (for example, "24h").
-	terraformBuildWorkerApplyTimeout *string
-	// The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string (for example, "24h").
-	terraformBuildWorkerPlanTimeout *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAdminGeneralSettings_attributes instantiates a new AdminGeneralSettings_attributes and sets the default values.
 func NewAdminGeneralSettings_attributes() *AdminGeneralSettings_attributes {
 	m := &AdminGeneralSettings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -74,79 +30,177 @@ func CreateAdminGeneralSettings_attributesFromDiscriminatorValue(parseNode i878a
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AdminGeneralSettings_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentPollingRetryAfter gets the agent-polling-retry-after property value. The number of seconds agents wait before polling for new work.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetAgentPollingRetryAfter() *int32 {
-	return m.agentPollingRetryAfter
+	val, err := m.GetBackingStore().Get("agentPollingRetryAfter")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAgentsEnabled gets the agents-enabled property value. Whether HCP Terraform agents are enabled.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetAgentsEnabled() *bool {
-	return m.agentsEnabled
+	val, err := m.GetBackingStore().Get("agentsEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAllowSpeculativePlansOnPullRequestsFromForks gets the allow-speculative-plans-on-pull-requests-from-forks property value. Whether speculative plans are allowed on pull requests originating from forked repositories.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetAllowSpeculativePlansOnPullRequestsFromForks() *bool {
-	return m.allowSpeculativePlansOnPullRequestsFromForks
+	val, err := m.GetBackingStore().Get("allowSpeculativePlansOnPullRequestsFromForks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetApiRateLimit gets the api-rate-limit property value. The number of API requests allowed per second, per user token or IP address.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetApiRateLimit() *int32 {
-	return m.apiRateLimit
+	val, err := m.GetBackingStore().Get("apiRateLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetApiRateLimitingEnabled gets the api-rate-limiting-enabled property value. Whether API rate limiting is enabled.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetApiRateLimitingEnabled() *bool {
-	return m.apiRateLimitingEnabled
+	val, err := m.GetBackingStore().Get("apiRateLimitingEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetApplyTimeout gets the apply-timeout property value. Alias of terraform-build-worker-apply-timeout. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string.
 // returns a *string when successful
 func (m *AdminGeneralSettings_attributes) GetApplyTimeout() *string {
-	return m.applyTimeout
+	val, err := m.GetBackingStore().Get("applyTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAutomaticAssessmentInterval gets the automatic-assessment-interval property value. The interval, in hours, at which automatic health assessments run.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetAutomaticAssessmentInterval() *int32 {
-	return m.automaticAssessmentInterval
+	val, err := m.GetBackingStore().Get("automaticAssessmentInterval")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminGeneralSettings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDefaultOrganizationsPerUserCeiling gets the default-organizations-per-user-ceiling property value. The default maximum number of organizations a single user may create.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetDefaultOrganizationsPerUserCeiling() *int32 {
-	return m.defaultOrganizationsPerUserCeiling
+	val, err := m.GetBackingStore().Get("defaultOrganizationsPerUserCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetDefaultRemoteStateAccess gets the default-remote-state-access property value. Whether new workspaces allow global remote state access by default.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetDefaultRemoteStateAccess() *bool {
-	return m.defaultRemoteStateAccess
+	val, err := m.GetBackingStore().Get("defaultRemoteStateAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetDefaultWorkspacesPerOrganizationCeiling gets the default-workspaces-per-organization-ceiling property value. The default maximum number of workspaces per organization.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetDefaultWorkspacesPerOrganizationCeiling() *int32 {
-	return m.defaultWorkspacesPerOrganizationCeiling
+	val, err := m.GetBackingStore().Get("defaultWorkspacesPerOrganizationCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetEnablePublicRegistration gets the enable-public-registration property value. Whether public (self-service) user registration is enabled. Available only on Terraform Enterprise; silently ignored on HCP Terraform.This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetEnablePublicRegistration() *bool {
-	return m.enablePublicRegistration
+	val, err := m.GetBackingStore().Get("enablePublicRegistration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFairRunQueuingEnabled gets the fair-run-queuing-enabled property value. Deprecated. Always returns false. Retained for backwards compatibility with the public API contract.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetFairRunQueuingEnabled() *bool {
-	return m.fairRunQueuingEnabled
+	val, err := m.GetBackingStore().Get("fairRunQueuingEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -389,67 +443,144 @@ func (m *AdminGeneralSettings_attributes) GetFieldDeserializers() map[string]fun
 // GetLimitOrganizationsPerUser gets the limit-organizations-per-user property value. Whether the number of organizations a user may create is limited.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetLimitOrganizationsPerUser() *bool {
-	return m.limitOrganizationsPerUser
+	val, err := m.GetBackingStore().Get("limitOrganizationsPerUser")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLimitUserOrganizationCreation gets the limit-user-organization-creation property value. Whether the creation of new organizations is limited to site administrators.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetLimitUserOrganizationCreation() *bool {
-	return m.limitUserOrganizationCreation
+	val, err := m.GetBackingStore().Get("limitUserOrganizationCreation")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLimitWorkspacesPerOrganization gets the limit-workspaces-per-organization property value. Whether the number of workspaces per organization is limited.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetLimitWorkspacesPerOrganization() *bool {
-	return m.limitWorkspacesPerOrganization
+	val, err := m.GetBackingStore().Get("limitWorkspacesPerOrganization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetMaximumConcurrentAssessments gets the maximum-concurrent-assessments property value. The maximum number of health assessments that may run concurrently.
 // returns a *int32 when successful
 func (m *AdminGeneralSettings_attributes) GetMaximumConcurrentAssessments() *int32 {
-	return m.maximumConcurrentAssessments
+	val, err := m.GetBackingStore().Get("maximumConcurrentAssessments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPlanTimeout gets the plan-timeout property value. Alias of terraform-build-worker-plan-timeout. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string.
 // returns a *string when successful
 func (m *AdminGeneralSettings_attributes) GetPlanTimeout() *string {
-	return m.planTimeout
+	val, err := m.GetBackingStore().Get("planTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRequireTwoFactorForAdmins gets the require-two-factor-for-admins property value. Whether two-factor authentication is required for site administrators.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetRequireTwoFactorForAdmins() *bool {
-	return m.requireTwoFactorForAdmins
+	val, err := m.GetBackingStore().Get("requireTwoFactorForAdmins")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSendPassingStatusesForUntriggeredSpeculativePlans gets the send-passing-statuses-for-untriggered-speculative-plans property value. Whether passing commit statuses are sent for untriggered speculative plans.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetSendPassingStatusesForUntriggeredSpeculativePlans() *bool {
-	return m.sendPassingStatusesForUntriggeredSpeculativePlans
+	val, err := m.GetBackingStore().Get("sendPassingStatusesForUntriggeredSpeculativePlans")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetStacksEnabled gets the stacks-enabled property value. Whether stacks are enabled for use in this instance.This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetStacksEnabled() *bool {
-	return m.stacksEnabled
+	val, err := m.GetBackingStore().Get("stacksEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetStacksEntitled gets the stacks-entitled property value. Whether the instance is licensed to use stacks.
 // returns a *bool when successful
 func (m *AdminGeneralSettings_attributes) GetStacksEntitled() *bool {
-	return m.stacksEntitled
+	val, err := m.GetBackingStore().Get("stacksEntitled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTerraformBuildWorkerApplyTimeout gets the terraform-build-worker-apply-timeout property value. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string (for example, "24h").
 // returns a *string when successful
 func (m *AdminGeneralSettings_attributes) GetTerraformBuildWorkerApplyTimeout() *string {
-	return m.terraformBuildWorkerApplyTimeout
+	val, err := m.GetBackingStore().Get("terraformBuildWorkerApplyTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTerraformBuildWorkerPlanTimeout gets the terraform-build-worker-plan-timeout property value. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string (for example, "24h").
 // returns a *string when successful
 func (m *AdminGeneralSettings_attributes) GetTerraformBuildWorkerPlanTimeout() *string {
-	return m.terraformBuildWorkerPlanTimeout
+	val, err := m.GetBackingStore().Get("terraformBuildWorkerPlanTimeout")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -591,126 +722,204 @@ func (m *AdminGeneralSettings_attributes) Serialize(writer i878a80d2330e89d26896
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AdminGeneralSettings_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentPollingRetryAfter sets the agent-polling-retry-after property value. The number of seconds agents wait before polling for new work.
 func (m *AdminGeneralSettings_attributes) SetAgentPollingRetryAfter(value *int32) {
-	m.agentPollingRetryAfter = value
+	err := m.GetBackingStore().Set("agentPollingRetryAfter", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentsEnabled sets the agents-enabled property value. Whether HCP Terraform agents are enabled.
 func (m *AdminGeneralSettings_attributes) SetAgentsEnabled(value *bool) {
-	m.agentsEnabled = value
+	err := m.GetBackingStore().Set("agentsEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowSpeculativePlansOnPullRequestsFromForks sets the allow-speculative-plans-on-pull-requests-from-forks property value. Whether speculative plans are allowed on pull requests originating from forked repositories.
 func (m *AdminGeneralSettings_attributes) SetAllowSpeculativePlansOnPullRequestsFromForks(value *bool) {
-	m.allowSpeculativePlansOnPullRequestsFromForks = value
+	err := m.GetBackingStore().Set("allowSpeculativePlansOnPullRequestsFromForks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApiRateLimit sets the api-rate-limit property value. The number of API requests allowed per second, per user token or IP address.
 func (m *AdminGeneralSettings_attributes) SetApiRateLimit(value *int32) {
-	m.apiRateLimit = value
+	err := m.GetBackingStore().Set("apiRateLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApiRateLimitingEnabled sets the api-rate-limiting-enabled property value. Whether API rate limiting is enabled.
 func (m *AdminGeneralSettings_attributes) SetApiRateLimitingEnabled(value *bool) {
-	m.apiRateLimitingEnabled = value
+	err := m.GetBackingStore().Set("apiRateLimitingEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplyTimeout sets the apply-timeout property value. Alias of terraform-build-worker-apply-timeout. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string.
 func (m *AdminGeneralSettings_attributes) SetApplyTimeout(value *string) {
-	m.applyTimeout = value
+	err := m.GetBackingStore().Set("applyTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutomaticAssessmentInterval sets the automatic-assessment-interval property value. The interval, in hours, at which automatic health assessments run.
 func (m *AdminGeneralSettings_attributes) SetAutomaticAssessmentInterval(value *int32) {
-	m.automaticAssessmentInterval = value
+	err := m.GetBackingStore().Set("automaticAssessmentInterval", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminGeneralSettings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDefaultOrganizationsPerUserCeiling sets the default-organizations-per-user-ceiling property value. The default maximum number of organizations a single user may create.
 func (m *AdminGeneralSettings_attributes) SetDefaultOrganizationsPerUserCeiling(value *int32) {
-	m.defaultOrganizationsPerUserCeiling = value
+	err := m.GetBackingStore().Set("defaultOrganizationsPerUserCeiling", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDefaultRemoteStateAccess sets the default-remote-state-access property value. Whether new workspaces allow global remote state access by default.
 func (m *AdminGeneralSettings_attributes) SetDefaultRemoteStateAccess(value *bool) {
-	m.defaultRemoteStateAccess = value
+	err := m.GetBackingStore().Set("defaultRemoteStateAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDefaultWorkspacesPerOrganizationCeiling sets the default-workspaces-per-organization-ceiling property value. The default maximum number of workspaces per organization.
 func (m *AdminGeneralSettings_attributes) SetDefaultWorkspacesPerOrganizationCeiling(value *int32) {
-	m.defaultWorkspacesPerOrganizationCeiling = value
+	err := m.GetBackingStore().Set("defaultWorkspacesPerOrganizationCeiling", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnablePublicRegistration sets the enable-public-registration property value. Whether public (self-service) user registration is enabled. Available only on Terraform Enterprise; silently ignored on HCP Terraform.This attribute is only available in Terraform Enterprise.
 func (m *AdminGeneralSettings_attributes) SetEnablePublicRegistration(value *bool) {
-	m.enablePublicRegistration = value
+	err := m.GetBackingStore().Set("enablePublicRegistration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFairRunQueuingEnabled sets the fair-run-queuing-enabled property value. Deprecated. Always returns false. Retained for backwards compatibility with the public API contract.
 func (m *AdminGeneralSettings_attributes) SetFairRunQueuingEnabled(value *bool) {
-	m.fairRunQueuingEnabled = value
+	err := m.GetBackingStore().Set("fairRunQueuingEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLimitOrganizationsPerUser sets the limit-organizations-per-user property value. Whether the number of organizations a user may create is limited.
 func (m *AdminGeneralSettings_attributes) SetLimitOrganizationsPerUser(value *bool) {
-	m.limitOrganizationsPerUser = value
+	err := m.GetBackingStore().Set("limitOrganizationsPerUser", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLimitUserOrganizationCreation sets the limit-user-organization-creation property value. Whether the creation of new organizations is limited to site administrators.
 func (m *AdminGeneralSettings_attributes) SetLimitUserOrganizationCreation(value *bool) {
-	m.limitUserOrganizationCreation = value
+	err := m.GetBackingStore().Set("limitUserOrganizationCreation", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLimitWorkspacesPerOrganization sets the limit-workspaces-per-organization property value. Whether the number of workspaces per organization is limited.
 func (m *AdminGeneralSettings_attributes) SetLimitWorkspacesPerOrganization(value *bool) {
-	m.limitWorkspacesPerOrganization = value
+	err := m.GetBackingStore().Set("limitWorkspacesPerOrganization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMaximumConcurrentAssessments sets the maximum-concurrent-assessments property value. The maximum number of health assessments that may run concurrently.
 func (m *AdminGeneralSettings_attributes) SetMaximumConcurrentAssessments(value *int32) {
-	m.maximumConcurrentAssessments = value
+	err := m.GetBackingStore().Set("maximumConcurrentAssessments", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanTimeout sets the plan-timeout property value. Alias of terraform-build-worker-plan-timeout. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string.
 func (m *AdminGeneralSettings_attributes) SetPlanTimeout(value *string) {
-	m.planTimeout = value
+	err := m.GetBackingStore().Set("planTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRequireTwoFactorForAdmins sets the require-two-factor-for-admins property value. Whether two-factor authentication is required for site administrators.
 func (m *AdminGeneralSettings_attributes) SetRequireTwoFactorForAdmins(value *bool) {
-	m.requireTwoFactorForAdmins = value
+	err := m.GetBackingStore().Set("requireTwoFactorForAdmins", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSendPassingStatusesForUntriggeredSpeculativePlans sets the send-passing-statuses-for-untriggered-speculative-plans property value. Whether passing commit statuses are sent for untriggered speculative plans.
 func (m *AdminGeneralSettings_attributes) SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool) {
-	m.sendPassingStatusesForUntriggeredSpeculativePlans = value
+	err := m.GetBackingStore().Set("sendPassingStatusesForUntriggeredSpeculativePlans", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStacksEnabled sets the stacks-enabled property value. Whether stacks are enabled for use in this instance.This attribute is only available in Terraform Enterprise.
 func (m *AdminGeneralSettings_attributes) SetStacksEnabled(value *bool) {
-	m.stacksEnabled = value
+	err := m.GetBackingStore().Set("stacksEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStacksEntitled sets the stacks-entitled property value. Whether the instance is licensed to use stacks.
 func (m *AdminGeneralSettings_attributes) SetStacksEntitled(value *bool) {
-	m.stacksEntitled = value
+	err := m.GetBackingStore().Set("stacksEntitled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformBuildWorkerApplyTimeout sets the terraform-build-worker-apply-timeout property value. The maximum time a Terraform apply may run before it is canceled, expressed as a Go duration string (for example, "24h").
 func (m *AdminGeneralSettings_attributes) SetTerraformBuildWorkerApplyTimeout(value *string) {
-	m.terraformBuildWorkerApplyTimeout = value
+	err := m.GetBackingStore().Set("terraformBuildWorkerApplyTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformBuildWorkerPlanTimeout sets the terraform-build-worker-plan-timeout property value. The maximum time a Terraform plan may run before it is canceled, expressed as a Go duration string (for example, "24h").
 func (m *AdminGeneralSettings_attributes) SetTerraformBuildWorkerPlanTimeout(value *string) {
-	m.terraformBuildWorkerPlanTimeout = value
+	err := m.GetBackingStore().Set("terraformBuildWorkerPlanTimeout", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AdminGeneralSettings_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentPollingRetryAfter() *int32
 	GetAgentsEnabled() *bool
@@ -719,6 +928,7 @@ type AdminGeneralSettings_attributesable interface {
 	GetApiRateLimitingEnabled() *bool
 	GetApplyTimeout() *string
 	GetAutomaticAssessmentInterval() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDefaultOrganizationsPerUserCeiling() *int32
 	GetDefaultRemoteStateAccess() *bool
 	GetDefaultWorkspacesPerOrganizationCeiling() *int32
@@ -742,6 +952,7 @@ type AdminGeneralSettings_attributesable interface {
 	SetApiRateLimitingEnabled(value *bool)
 	SetApplyTimeout(value *string)
 	SetAutomaticAssessmentInterval(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDefaultOrganizationsPerUserCeiling(value *int32)
 	SetDefaultRemoteStateAccess(value *bool)
 	SetDefaultWorkspacesPerOrganizationCeiling(value *int32)

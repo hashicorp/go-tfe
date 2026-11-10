@@ -5,76 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Runs_attributes struct {
-	// The actions property
-	actions Runs_attributes_actionsable
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The allowConfigGeneration property
-	allowConfigGeneration *bool
-	// The allowEmptyApply property
-	allowEmptyApply *bool
-	// The autoApply property
-	autoApply *bool
-	// The canceledAt property
-	canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The comment property
-	comment *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The debuggingMode property
-	debuggingMode *bool
-	// The forceCancelAvailableAt property
-	forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The hasChanges property
-	hasChanges *bool
-	// The invokeActionAddrs property
-	invokeActionAddrs []string
-	// The isDestroy property
-	isDestroy *bool
-	// The message property
-	message *string
-	// The permissions property
-	permissions Runs_attributes_permissionsable
-	// The planOnly property
-	planOnly *bool
-	// The policyPaths property
-	// Deprecated:
-	policyPaths []string
-	// The refresh property
-	refresh *bool
-	// The refreshOnly property
-	refreshOnly *bool
-	// The replaceAddrs property
-	replaceAddrs []string
-	// The savePlan property
-	savePlan *bool
-	// The source property
-	source *string
-	// The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
-	status *Runs_attributes_status
-	// The statusTimestamps property
-	statusTimestamps Runs_attributes_statusTimestampsable
-	// The targetAddrs property
-	targetAddrs []string
-	// The terraformVersion property
-	terraformVersion *string
-	// The triggeringSourceName property
-	triggeringSourceName *string
-	// The triggerReason property
-	triggerReason *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The variables property
-	variables []Runs_attributes_variablesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRuns_attributes instantiates a new Runs_attributes and sets the default values.
 func NewRuns_attributes() *Runs_attributes {
 	m := &Runs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -88,55 +31,125 @@ func CreateRuns_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896
 // GetActions gets the actions property value. The actions property
 // returns a Runs_attributes_actionsable when successful
 func (m *Runs_attributes) GetActions() Runs_attributes_actionsable {
-	return m.actions
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_actionsable)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Runs_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAllowConfigGeneration gets the allow-config-generation property value. The allowConfigGeneration property
 // returns a *bool when successful
 func (m *Runs_attributes) GetAllowConfigGeneration() *bool {
-	return m.allowConfigGeneration
+	val, err := m.GetBackingStore().Get("allowConfigGeneration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAllowEmptyApply gets the allow-empty-apply property value. The allowEmptyApply property
 // returns a *bool when successful
 func (m *Runs_attributes) GetAllowEmptyApply() *bool {
-	return m.allowEmptyApply
+	val, err := m.GetBackingStore().Get("allowEmptyApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAutoApply gets the auto-apply property value. The autoApply property
 // returns a *bool when successful
 func (m *Runs_attributes) GetAutoApply() *bool {
-	return m.autoApply
+	val, err := m.GetBackingStore().Get("autoApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Runs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanceledAt gets the canceled-at property value. The canceledAt property
 // returns a *Time when successful
 func (m *Runs_attributes) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.canceledAt
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetComment gets the comment property value. The comment property
 // returns a *string when successful
 func (m *Runs_attributes) GetComment() *string {
-	return m.comment
+	val, err := m.GetBackingStore().Get("comment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *Runs_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDebuggingMode gets the debugging-mode property value. The debuggingMode property
 // returns a *bool when successful
 func (m *Runs_attributes) GetDebuggingMode() *bool {
-	return m.debuggingMode
+	val, err := m.GetBackingStore().Get("debuggingMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -469,128 +482,275 @@ func (m *Runs_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e8
 // GetForceCancelAvailableAt gets the force-cancel-available-at property value. The forceCancelAvailableAt property
 // returns a *Time when successful
 func (m *Runs_attributes) GetForceCancelAvailableAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.forceCancelAvailableAt
+	val, err := m.GetBackingStore().Get("forceCancelAvailableAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetHasChanges gets the has-changes property value. The hasChanges property
 // returns a *bool when successful
 func (m *Runs_attributes) GetHasChanges() *bool {
-	return m.hasChanges
+	val, err := m.GetBackingStore().Get("hasChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetInvokeActionAddrs gets the invoke-action-addrs property value. The invokeActionAddrs property
 // returns a []string when successful
 func (m *Runs_attributes) GetInvokeActionAddrs() []string {
-	return m.invokeActionAddrs
+	val, err := m.GetBackingStore().Get("invokeActionAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetIsDestroy gets the is-destroy property value. The isDestroy property
 // returns a *bool when successful
 func (m *Runs_attributes) GetIsDestroy() *bool {
-	return m.isDestroy
+	val, err := m.GetBackingStore().Get("isDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetMessage gets the message property value. The message property
 // returns a *string when successful
 func (m *Runs_attributes) GetMessage() *string {
-	return m.message
+	val, err := m.GetBackingStore().Get("message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Runs_attributes_permissionsable when successful
 func (m *Runs_attributes) GetPermissions() Runs_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPlanOnly gets the plan-only property value. The planOnly property
 // returns a *bool when successful
 func (m *Runs_attributes) GetPlanOnly() *bool {
-	return m.planOnly
+	val, err := m.GetBackingStore().Get("planOnly")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPolicyPaths gets the policy-paths property value. The policyPaths property
 // Deprecated:
 // returns a []string when successful
 func (m *Runs_attributes) GetPolicyPaths() []string {
-	return m.policyPaths
+	val, err := m.GetBackingStore().Get("policyPaths")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetRefresh gets the refresh property value. The refresh property
 // returns a *bool when successful
 func (m *Runs_attributes) GetRefresh() *bool {
-	return m.refresh
+	val, err := m.GetBackingStore().Get("refresh")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetRefreshOnly gets the refresh-only property value. The refreshOnly property
 // returns a *bool when successful
 func (m *Runs_attributes) GetRefreshOnly() *bool {
-	return m.refreshOnly
+	val, err := m.GetBackingStore().Get("refreshOnly")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetReplaceAddrs gets the replace-addrs property value. The replaceAddrs property
 // returns a []string when successful
 func (m *Runs_attributes) GetReplaceAddrs() []string {
-	return m.replaceAddrs
+	val, err := m.GetBackingStore().Get("replaceAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetSavePlan gets the save-plan property value. The savePlan property
 // returns a *bool when successful
 func (m *Runs_attributes) GetSavePlan() *bool {
-	return m.savePlan
+	val, err := m.GetBackingStore().Get("savePlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSource gets the source property value. The source property
 // returns a *string when successful
 func (m *Runs_attributes) GetSource() *string {
-	return m.source
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
 // returns a *Runs_attributes_status when successful
 func (m *Runs_attributes) GetStatus() *Runs_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Runs_attributes_status)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a Runs_attributes_statusTimestampsable when successful
 func (m *Runs_attributes) GetStatusTimestamps() Runs_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetTargetAddrs gets the target-addrs property value. The targetAddrs property
 // returns a []string when successful
 func (m *Runs_attributes) GetTargetAddrs() []string {
-	return m.targetAddrs
+	val, err := m.GetBackingStore().Get("targetAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
 func (m *Runs_attributes) GetTerraformVersion() *string {
-	return m.terraformVersion
+	val, err := m.GetBackingStore().Get("terraformVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggeringSourceName gets the triggering-source-name property value. The triggeringSourceName property
 // returns a *string when successful
 func (m *Runs_attributes) GetTriggeringSourceName() *string {
-	return m.triggeringSourceName
+	val, err := m.GetBackingStore().Get("triggeringSourceName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggerReason gets the trigger-reason property value. The triggerReason property
 // returns a *string when successful
 func (m *Runs_attributes) GetTriggerReason() *string {
-	return m.triggerReason
+	val, err := m.GetBackingStore().Get("triggerReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *Runs_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVariables gets the variables property value. The variables property
 // returns a []Runs_attributes_variablesable when successful
 func (m *Runs_attributes) GetVariables() []Runs_attributes_variablesable {
-	return m.variables
+	val, err := m.GetBackingStore().Get("variables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Runs_attributes_variablesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -763,162 +923,259 @@ func (m *Runs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0
 
 // SetActions sets the actions property value. The actions property
 func (m *Runs_attributes) SetActions(value Runs_attributes_actionsable) {
-	m.actions = value
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Runs_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowConfigGeneration sets the allow-config-generation property value. The allowConfigGeneration property
 func (m *Runs_attributes) SetAllowConfigGeneration(value *bool) {
-	m.allowConfigGeneration = value
+	err := m.GetBackingStore().Set("allowConfigGeneration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowEmptyApply sets the allow-empty-apply property value. The allowEmptyApply property
 func (m *Runs_attributes) SetAllowEmptyApply(value *bool) {
-	m.allowEmptyApply = value
+	err := m.GetBackingStore().Set("allowEmptyApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoApply sets the auto-apply property value. The autoApply property
 func (m *Runs_attributes) SetAutoApply(value *bool) {
-	m.autoApply = value
+	err := m.GetBackingStore().Set("autoApply", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Runs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanceledAt sets the canceled-at property value. The canceledAt property
 func (m *Runs_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.canceledAt = value
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetComment sets the comment property value. The comment property
 func (m *Runs_attributes) SetComment(value *string) {
-	m.comment = value
+	err := m.GetBackingStore().Set("comment", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *Runs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDebuggingMode sets the debugging-mode property value. The debuggingMode property
 func (m *Runs_attributes) SetDebuggingMode(value *bool) {
-	m.debuggingMode = value
+	err := m.GetBackingStore().Set("debuggingMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetForceCancelAvailableAt sets the force-cancel-available-at property value. The forceCancelAvailableAt property
 func (m *Runs_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.forceCancelAvailableAt = value
+	err := m.GetBackingStore().Set("forceCancelAvailableAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHasChanges sets the has-changes property value. The hasChanges property
 func (m *Runs_attributes) SetHasChanges(value *bool) {
-	m.hasChanges = value
+	err := m.GetBackingStore().Set("hasChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInvokeActionAddrs sets the invoke-action-addrs property value. The invokeActionAddrs property
 func (m *Runs_attributes) SetInvokeActionAddrs(value []string) {
-	m.invokeActionAddrs = value
+	err := m.GetBackingStore().Set("invokeActionAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsDestroy sets the is-destroy property value. The isDestroy property
 func (m *Runs_attributes) SetIsDestroy(value *bool) {
-	m.isDestroy = value
+	err := m.GetBackingStore().Set("isDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMessage sets the message property value. The message property
 func (m *Runs_attributes) SetMessage(value *string) {
-	m.message = value
+	err := m.GetBackingStore().Set("message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Runs_attributes) SetPermissions(value Runs_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanOnly sets the plan-only property value. The planOnly property
 func (m *Runs_attributes) SetPlanOnly(value *bool) {
-	m.planOnly = value
+	err := m.GetBackingStore().Set("planOnly", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyPaths sets the policy-paths property value. The policyPaths property
 // Deprecated:
 func (m *Runs_attributes) SetPolicyPaths(value []string) {
-	m.policyPaths = value
+	err := m.GetBackingStore().Set("policyPaths", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRefresh sets the refresh property value. The refresh property
 func (m *Runs_attributes) SetRefresh(value *bool) {
-	m.refresh = value
+	err := m.GetBackingStore().Set("refresh", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRefreshOnly sets the refresh-only property value. The refreshOnly property
 func (m *Runs_attributes) SetRefreshOnly(value *bool) {
-	m.refreshOnly = value
+	err := m.GetBackingStore().Set("refreshOnly", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetReplaceAddrs sets the replace-addrs property value. The replaceAddrs property
 func (m *Runs_attributes) SetReplaceAddrs(value []string) {
-	m.replaceAddrs = value
+	err := m.GetBackingStore().Set("replaceAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSavePlan sets the save-plan property value. The savePlan property
 func (m *Runs_attributes) SetSavePlan(value *bool) {
-	m.savePlan = value
+	err := m.GetBackingStore().Set("savePlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSource sets the source property value. The source property
 func (m *Runs_attributes) SetSource(value *string) {
-	m.source = value
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
 func (m *Runs_attributes) SetStatus(value *Runs_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *Runs_attributes) SetStatusTimestamps(value Runs_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTargetAddrs sets the target-addrs property value. The targetAddrs property
 func (m *Runs_attributes) SetTargetAddrs(value []string) {
-	m.targetAddrs = value
+	err := m.GetBackingStore().Set("targetAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
 func (m *Runs_attributes) SetTerraformVersion(value *string) {
-	m.terraformVersion = value
+	err := m.GetBackingStore().Set("terraformVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggeringSourceName sets the triggering-source-name property value. The triggeringSourceName property
 func (m *Runs_attributes) SetTriggeringSourceName(value *string) {
-	m.triggeringSourceName = value
+	err := m.GetBackingStore().Set("triggeringSourceName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerReason sets the trigger-reason property value. The triggerReason property
 func (m *Runs_attributes) SetTriggerReason(value *string) {
-	m.triggerReason = value
+	err := m.GetBackingStore().Set("triggerReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Runs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariables sets the variables property value. The variables property
 func (m *Runs_attributes) SetVariables(value []Runs_attributes_variablesable) {
-	m.variables = value
+	err := m.GetBackingStore().Set("variables", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Runs_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActions() Runs_attributes_actionsable
 	GetAllowConfigGeneration() *bool
 	GetAllowEmptyApply() *bool
 	GetAutoApply() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetComment() *string
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -948,6 +1205,7 @@ type Runs_attributesable interface {
 	SetAllowConfigGeneration(value *bool)
 	SetAllowEmptyApply(value *bool)
 	SetAutoApply(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetComment(value *string)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

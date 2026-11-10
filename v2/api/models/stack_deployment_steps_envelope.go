@@ -5,35 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type StackDeploymentStepsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data StackDeploymentStepsable
-	// The included property
-	included []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included composed type wrapper for classes StackOperationAllowImportsable, StackOperationAppliesable, StackOperationImportStatesable, StackOperationPlansable, StackPolicyEvaluationsable
+// StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included composed type wrapper for classes StackOperationAllowImports, StackOperationApplies, StackOperationImportStates, StackOperationPlans, StackPolicyEvaluations
 type StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included struct {
-	// Composed type representation for type StackOperationAllowImportsable
-	stackOperationAllowImports StackOperationAllowImportsable
-	// Composed type representation for type StackOperationAppliesable
-	stackOperationApplies StackOperationAppliesable
-	// Composed type representation for type StackOperationImportStatesable
-	stackOperationImportStates StackOperationImportStatesable
-	// Composed type representation for type StackOperationPlansable
-	stackOperationPlans StackOperationPlansable
-	// Composed type representation for type StackPolicyEvaluationsable
-	stackPolicyEvaluations StackPolicyEvaluationsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included instantiates a new StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included and sets the default values.
 func NewStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included() *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included {
 	m := &StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -69,6 +59,12 @@ func CreateStackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedFro
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -92,34 +88,69 @@ func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) Get
 	return true
 }
 
-// GetStackOperationAllowImports gets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImportsable
+// GetStackOperationAllowImports gets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImports
 // returns a StackOperationAllowImportsable when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationAllowImports() StackOperationAllowImportsable {
-	return m.stackOperationAllowImports
+	val, err := m.GetBackingStore().Get("stackOperationAllowImports")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackOperationAllowImportsable)
+	}
+	return nil
 }
 
-// GetStackOperationApplies gets the stackOperationApplies property value. Composed type representation for type StackOperationAppliesable
+// GetStackOperationApplies gets the stackOperationApplies property value. Composed type representation for type StackOperationApplies
 // returns a StackOperationAppliesable when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationApplies() StackOperationAppliesable {
-	return m.stackOperationApplies
+	val, err := m.GetBackingStore().Get("stackOperationApplies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackOperationAppliesable)
+	}
+	return nil
 }
 
-// GetStackOperationImportStates gets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStatesable
+// GetStackOperationImportStates gets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStates
 // returns a StackOperationImportStatesable when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationImportStates() StackOperationImportStatesable {
-	return m.stackOperationImportStates
+	val, err := m.GetBackingStore().Get("stackOperationImportStates")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackOperationImportStatesable)
+	}
+	return nil
 }
 
-// GetStackOperationPlans gets the stackOperationPlans property value. Composed type representation for type StackOperationPlansable
+// GetStackOperationPlans gets the stackOperationPlans property value. Composed type representation for type StackOperationPlans
 // returns a StackOperationPlansable when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackOperationPlans() StackOperationPlansable {
-	return m.stackOperationPlans
+	val, err := m.GetBackingStore().Get("stackOperationPlans")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackOperationPlansable)
+	}
+	return nil
 }
 
-// GetStackPolicyEvaluations gets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluationsable
+// GetStackPolicyEvaluations gets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluations
 // returns a StackPolicyEvaluationsable when successful
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) GetStackPolicyEvaluations() StackPolicyEvaluationsable {
-	return m.stackPolicyEvaluations
+	val, err := m.GetBackingStore().Get("stackPolicyEvaluations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicyEvaluationsable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -153,38 +184,61 @@ func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) Ser
 	return nil
 }
 
-// SetStackOperationAllowImports sets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImportsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetStackOperationAllowImports sets the stackOperationAllowImports property value. Composed type representation for type StackOperationAllowImports
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationAllowImports(value StackOperationAllowImportsable) {
-	m.stackOperationAllowImports = value
+	err := m.GetBackingStore().Set("stackOperationAllowImports", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackOperationApplies sets the stackOperationApplies property value. Composed type representation for type StackOperationAppliesable
+// SetStackOperationApplies sets the stackOperationApplies property value. Composed type representation for type StackOperationApplies
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationApplies(value StackOperationAppliesable) {
-	m.stackOperationApplies = value
+	err := m.GetBackingStore().Set("stackOperationApplies", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackOperationImportStates sets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStatesable
+// SetStackOperationImportStates sets the stackOperationImportStates property value. Composed type representation for type StackOperationImportStates
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationImportStates(value StackOperationImportStatesable) {
-	m.stackOperationImportStates = value
+	err := m.GetBackingStore().Set("stackOperationImportStates", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackOperationPlans sets the stackOperationPlans property value. Composed type representation for type StackOperationPlansable
+// SetStackOperationPlans sets the stackOperationPlans property value. Composed type representation for type StackOperationPlans
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackOperationPlans(value StackOperationPlansable) {
-	m.stackOperationPlans = value
+	err := m.GetBackingStore().Set("stackOperationPlans", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStackPolicyEvaluations sets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluationsable
+// SetStackPolicyEvaluations sets the stackPolicyEvaluations property value. Composed type representation for type StackPolicyEvaluations
 func (m *StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_included) SetStackPolicyEvaluations(value StackPolicyEvaluationsable) {
-	m.stackPolicyEvaluations = value
+	err := m.GetBackingStore().Set("stackPolicyEvaluations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetStackOperationAllowImports() StackOperationAllowImportsable
 	GetStackOperationApplies() StackOperationAppliesable
 	GetStackOperationImportStates() StackOperationImportStatesable
 	GetStackOperationPlans() StackOperationPlansable
 	GetStackPolicyEvaluations() StackPolicyEvaluationsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetStackOperationAllowImports(value StackOperationAllowImportsable)
 	SetStackOperationApplies(value StackOperationAppliesable)
 	SetStackOperationImportStates(value StackOperationImportStatesable)
@@ -195,6 +249,7 @@ type StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable inte
 // NewStackDeploymentStepsEnvelope instantiates a new StackDeploymentStepsEnvelope and sets the default values.
 func NewStackDeploymentStepsEnvelope() *StackDeploymentStepsEnvelope {
 	m := &StackDeploymentStepsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -208,13 +263,34 @@ func CreateStackDeploymentStepsEnvelopeFromDiscriminatorValue(parseNode i878a80d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentStepsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentStepsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a StackDeploymentStepsable when successful
 func (m *StackDeploymentStepsEnvelope) GetData() StackDeploymentStepsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentStepsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -253,7 +329,14 @@ func (m *StackDeploymentStepsEnvelope) GetFieldDeserializers() map[string]func(i
 // GetIncluded gets the included property value. The included property
 // returns a []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable when successful
 func (m *StackDeploymentStepsEnvelope) GetIncluded() []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -287,24 +370,41 @@ func (m *StackDeploymentStepsEnvelope) Serialize(writer i878a80d2330e89d26896388
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentStepsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentStepsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *StackDeploymentStepsEnvelope) SetData(value StackDeploymentStepsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *StackDeploymentStepsEnvelope) SetIncluded(value []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentStepsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() StackDeploymentStepsable
 	GetIncluded() []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value StackDeploymentStepsable)
 	SetIncluded(value []StackDeploymentStepsEnvelope_StackDeploymentStepsEnvelope_includedable)
 }

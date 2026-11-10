@@ -5,43 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type RunsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data Runsable
-	// The included property
-	included []RunsEnvelope_RunsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// RunsEnvelope_RunsEnvelope_included composed type wrapper for classes Appliesable, ConfigurationVersionsable, CostEstimatesable, IngressAttributesable, Plansable, TaskStagesable, TfPolicyEvaluationsable, Usersable, Workspacesable
+// RunsEnvelope_RunsEnvelope_included composed type wrapper for classes Applies, ConfigurationVersions, CostEstimates, IngressAttributes, Plans, TaskStages, TfPolicyEvaluations, Users, Workspaces
 type RunsEnvelope_RunsEnvelope_included struct {
-	// Composed type representation for type Appliesable
-	applies Appliesable
-	// Composed type representation for type ConfigurationVersionsable
-	configurationVersions ConfigurationVersionsable
-	// Composed type representation for type CostEstimatesable
-	costEstimates CostEstimatesable
-	// Composed type representation for type IngressAttributesable
-	ingressAttributes IngressAttributesable
-	// Composed type representation for type Plansable
-	plans Plansable
-	// Composed type representation for type TaskStagesable
-	taskStages TaskStagesable
-	// Composed type representation for type TfPolicyEvaluationsable
-	tfPolicyEvaluations TfPolicyEvaluationsable
-	// Composed type representation for type Usersable
-	users Usersable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewRunsEnvelope_RunsEnvelope_included instantiates a new RunsEnvelope_RunsEnvelope_included and sets the default values.
 func NewRunsEnvelope_RunsEnvelope_included() *RunsEnvelope_RunsEnvelope_included {
 	m := &RunsEnvelope_RunsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -85,22 +67,49 @@ func CreateRunsEnvelope_RunsEnvelope_includedFromDiscriminatorValue(parseNode i8
 	return result, nil
 }
 
-// GetApplies gets the applies property value. Composed type representation for type Appliesable
+// GetApplies gets the applies property value. Composed type representation for type Applies
 // returns a Appliesable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetApplies() Appliesable {
-	return m.applies
+	val, err := m.GetBackingStore().Get("applies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Appliesable)
+	}
+	return nil
 }
 
-// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RunsEnvelope_RunsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type ConfigurationVersions
 // returns a ConfigurationVersionsable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetConfigurationVersions() ConfigurationVersionsable {
-	return m.configurationVersions
+	val, err := m.GetBackingStore().Get("configurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersionsable)
+	}
+	return nil
 }
 
-// GetCostEstimates gets the costEstimates property value. Composed type representation for type CostEstimatesable
+// GetCostEstimates gets the costEstimates property value. Composed type representation for type CostEstimates
 // returns a CostEstimatesable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetCostEstimates() CostEstimatesable {
-	return m.costEstimates
+	val, err := m.GetBackingStore().Get("costEstimates")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CostEstimatesable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -128,10 +137,17 @@ func (m *RunsEnvelope_RunsEnvelope_included) GetFieldDeserializers() map[string]
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributes
 // returns a IngressAttributesable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetIngressAttributes() IngressAttributesable {
-	return m.ingressAttributes
+	val, err := m.GetBackingStore().Get("ingressAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(IngressAttributesable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -140,34 +156,69 @@ func (m *RunsEnvelope_RunsEnvelope_included) GetIsComposedType() bool {
 	return true
 }
 
-// GetPlans gets the plans property value. Composed type representation for type Plansable
+// GetPlans gets the plans property value. Composed type representation for type Plans
 // returns a Plansable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetPlans() Plansable {
-	return m.plans
+	val, err := m.GetBackingStore().Get("plans")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Plansable)
+	}
+	return nil
 }
 
-// GetTaskStages gets the taskStages property value. Composed type representation for type TaskStagesable
+// GetTaskStages gets the taskStages property value. Composed type representation for type TaskStages
 // returns a TaskStagesable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetTaskStages() TaskStagesable {
-	return m.taskStages
+	val, err := m.GetBackingStore().Get("taskStages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStagesable)
+	}
+	return nil
 }
 
-// GetTfPolicyEvaluations gets the tfPolicyEvaluations property value. Composed type representation for type TfPolicyEvaluationsable
+// GetTfPolicyEvaluations gets the tfPolicyEvaluations property value. Composed type representation for type TfPolicyEvaluations
 // returns a TfPolicyEvaluationsable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetTfPolicyEvaluations() TfPolicyEvaluationsable {
-	return m.tfPolicyEvaluations
+	val, err := m.GetBackingStore().Get("tfPolicyEvaluations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluationsable)
+	}
+	return nil
 }
 
-// GetUsers gets the users property value. Composed type representation for type Usersable
+// GetUsers gets the users property value. Composed type representation for type Users
 // returns a Usersable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetUsers() Usersable {
-	return m.users
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Usersable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *RunsEnvelope_RunsEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -221,54 +272,88 @@ func (m *RunsEnvelope_RunsEnvelope_included) Serialize(writer i878a80d2330e89d26
 	return nil
 }
 
-// SetApplies sets the applies property value. Composed type representation for type Appliesable
+// SetApplies sets the applies property value. Composed type representation for type Applies
 func (m *RunsEnvelope_RunsEnvelope_included) SetApplies(value Appliesable) {
-	m.applies = value
+	err := m.GetBackingStore().Set("applies", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersionsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RunsEnvelope_RunsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type ConfigurationVersions
 func (m *RunsEnvelope_RunsEnvelope_included) SetConfigurationVersions(value ConfigurationVersionsable) {
-	m.configurationVersions = value
+	err := m.GetBackingStore().Set("configurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetCostEstimates sets the costEstimates property value. Composed type representation for type CostEstimatesable
+// SetCostEstimates sets the costEstimates property value. Composed type representation for type CostEstimates
 func (m *RunsEnvelope_RunsEnvelope_included) SetCostEstimates(value CostEstimatesable) {
-	m.costEstimates = value
+	err := m.GetBackingStore().Set("costEstimates", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributes
 func (m *RunsEnvelope_RunsEnvelope_included) SetIngressAttributes(value IngressAttributesable) {
-	m.ingressAttributes = value
+	err := m.GetBackingStore().Set("ingressAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetPlans sets the plans property value. Composed type representation for type Plansable
+// SetPlans sets the plans property value. Composed type representation for type Plans
 func (m *RunsEnvelope_RunsEnvelope_included) SetPlans(value Plansable) {
-	m.plans = value
+	err := m.GetBackingStore().Set("plans", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetTaskStages sets the taskStages property value. Composed type representation for type TaskStagesable
+// SetTaskStages sets the taskStages property value. Composed type representation for type TaskStages
 func (m *RunsEnvelope_RunsEnvelope_included) SetTaskStages(value TaskStagesable) {
-	m.taskStages = value
+	err := m.GetBackingStore().Set("taskStages", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetTfPolicyEvaluations sets the tfPolicyEvaluations property value. Composed type representation for type TfPolicyEvaluationsable
+// SetTfPolicyEvaluations sets the tfPolicyEvaluations property value. Composed type representation for type TfPolicyEvaluations
 func (m *RunsEnvelope_RunsEnvelope_included) SetTfPolicyEvaluations(value TfPolicyEvaluationsable) {
-	m.tfPolicyEvaluations = value
+	err := m.GetBackingStore().Set("tfPolicyEvaluations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetUsers sets the users property value. Composed type representation for type Usersable
+// SetUsers sets the users property value. Composed type representation for type Users
 func (m *RunsEnvelope_RunsEnvelope_included) SetUsers(value Usersable) {
-	m.users = value
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *RunsEnvelope_RunsEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type RunsEnvelope_RunsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetApplies() Appliesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetConfigurationVersions() ConfigurationVersionsable
 	GetCostEstimates() CostEstimatesable
 	GetIngressAttributes() IngressAttributesable
@@ -278,6 +363,7 @@ type RunsEnvelope_RunsEnvelope_includedable interface {
 	GetUsers() Usersable
 	GetWorkspaces() Workspacesable
 	SetApplies(value Appliesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetConfigurationVersions(value ConfigurationVersionsable)
 	SetCostEstimates(value CostEstimatesable)
 	SetIngressAttributes(value IngressAttributesable)
@@ -291,6 +377,7 @@ type RunsEnvelope_RunsEnvelope_includedable interface {
 // NewRunsEnvelope instantiates a new RunsEnvelope and sets the default values.
 func NewRunsEnvelope() *RunsEnvelope {
 	m := &RunsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -304,13 +391,34 @@ func CreateRunsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *RunsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RunsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a Runsable when successful
 func (m *RunsEnvelope) GetData() Runsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -349,7 +457,14 @@ func (m *RunsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d2
 // GetIncluded gets the included property value. The included property
 // returns a []RunsEnvelope_RunsEnvelope_includedable when successful
 func (m *RunsEnvelope) GetIncluded() []RunsEnvelope_RunsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]RunsEnvelope_RunsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -383,24 +498,41 @@ func (m *RunsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *RunsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RunsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *RunsEnvelope) SetData(value Runsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *RunsEnvelope) SetIncluded(value []RunsEnvelope_RunsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type RunsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() Runsable
 	GetIncluded() []RunsEnvelope_RunsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value Runsable)
 	SetIncluded(value []RunsEnvelope_RunsEnvelope_includedable)
 }

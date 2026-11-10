@@ -5,71 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Subscriptions_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The agentsCeiling property
-	agentsCeiling *int32
-	// The contractApplyLimit property
-	contractApplyLimit *int32
-	// The contractManagedResourcesLimit property
-	contractManagedResourcesLimit *int32
-	// The contractStartAt property
-	contractStartAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The contractUserLimit property
-	contractUserLimit *int32
-	// The endAt property
-	endAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The freeApplyMonthlyLimit property
-	freeApplyMonthlyLimit *int32
-	// The freeApplyMonthlyLimitRemaining property
-	freeApplyMonthlyLimitRemaining *int32
-	// The freeApplyMonthlyLimitStartsAt property
-	freeApplyMonthlyLimitStartsAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The freeResourceUnderManagementMonthlyLimit property
-	freeResourceUnderManagementMonthlyLimit *int32
-	// The hcpOrganizationId property
-	hcpOrganizationId *string
-	// The hcpProjectId property
-	hcpProjectId *string
-	// The isActive property
-	isActive *bool
-	// The isChangeApproved property
-	isChangeApproved *bool
-	// The isPublicFreeTier property
-	isPublicFreeTier *bool
-	// The isSelfServeTrial property
-	isSelfServeTrial *bool
-	// The policyLimit property
-	policyLimit *int32
-	// The policyMandatoryEnforcementLimit property
-	policyMandatoryEnforcementLimit *int32
-	// The policySetLimit property
-	policySetLimit *int32
-	// The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
-	rumAlertThreshold *int32
-	// Timestamp of the last time a RUM usage threshold alert was sent for the current rum-alert-threshold. Null when no alert has been sent for the current threshold.
-	rumThresholdAlertSentAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The runsCeiling property
-	runsCeiling *int32
-	// The runTaskLimit property
-	runTaskLimit *int32
-	// The runTaskMandatoryEnforcementLimit property
-	runTaskMandatoryEnforcementLimit *int32
-	// The runTaskWorkspaceLimit property
-	runTaskWorkspaceLimit *int32
-	// The startAt property
-	startAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The versionedPolicySetLimit property
-	versionedPolicySetLimit *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewSubscriptions_attributes instantiates a new Subscriptions_attributes and sets the default values.
 func NewSubscriptions_attributes() *Subscriptions_attributes {
 	m := &Subscriptions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -83,43 +31,99 @@ func CreateSubscriptions_attributesFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Subscriptions_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgentsCeiling gets the agents-ceiling property value. The agentsCeiling property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetAgentsCeiling() *int32 {
-	return m.agentsCeiling
+	val, err := m.GetBackingStore().Get("agentsCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Subscriptions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetContractApplyLimit gets the contract-apply-limit property value. The contractApplyLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetContractApplyLimit() *int32 {
-	return m.contractApplyLimit
+	val, err := m.GetBackingStore().Get("contractApplyLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetContractManagedResourcesLimit gets the contract-managed-resources-limit property value. The contractManagedResourcesLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetContractManagedResourcesLimit() *int32 {
-	return m.contractManagedResourcesLimit
+	val, err := m.GetBackingStore().Get("contractManagedResourcesLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetContractStartAt gets the contract-start-at property value. The contractStartAt property
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetContractStartAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.contractStartAt
+	val, err := m.GetBackingStore().Get("contractStartAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetContractUserLimit gets the contract-user-limit property value. The contractUserLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetContractUserLimit() *int32 {
-	return m.contractUserLimit
+	val, err := m.GetBackingStore().Get("contractUserLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetEndAt gets the end-at property value. The endAt property
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetEndAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.endAt
+	val, err := m.GetBackingStore().Get("endAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -402,127 +406,274 @@ func (m *Subscriptions_attributes) GetFieldDeserializers() map[string]func(i878a
 // GetFreeApplyMonthlyLimit gets the free-apply-monthly-limit property value. The freeApplyMonthlyLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetFreeApplyMonthlyLimit() *int32 {
-	return m.freeApplyMonthlyLimit
+	val, err := m.GetBackingStore().Get("freeApplyMonthlyLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFreeApplyMonthlyLimitRemaining gets the free-apply-monthly-limit-remaining property value. The freeApplyMonthlyLimitRemaining property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetFreeApplyMonthlyLimitRemaining() *int32 {
-	return m.freeApplyMonthlyLimitRemaining
+	val, err := m.GetBackingStore().Get("freeApplyMonthlyLimitRemaining")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFreeApplyMonthlyLimitStartsAt gets the free-apply-monthly-limit-starts-at property value. The freeApplyMonthlyLimitStartsAt property
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetFreeApplyMonthlyLimitStartsAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.freeApplyMonthlyLimitStartsAt
+	val, err := m.GetBackingStore().Get("freeApplyMonthlyLimitStartsAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFreeResourceUnderManagementMonthlyLimit gets the free-resource-under-management-monthly-limit property value. The freeResourceUnderManagementMonthlyLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetFreeResourceUnderManagementMonthlyLimit() *int32 {
-	return m.freeResourceUnderManagementMonthlyLimit
+	val, err := m.GetBackingStore().Get("freeResourceUnderManagementMonthlyLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetHcpOrganizationId gets the hcp-organization-id property value. The hcpOrganizationId property
 // returns a *string when successful
 func (m *Subscriptions_attributes) GetHcpOrganizationId() *string {
-	return m.hcpOrganizationId
+	val, err := m.GetBackingStore().Get("hcpOrganizationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetHcpProjectId gets the hcp-project-id property value. The hcpProjectId property
 // returns a *string when successful
 func (m *Subscriptions_attributes) GetHcpProjectId() *string {
-	return m.hcpProjectId
+	val, err := m.GetBackingStore().Get("hcpProjectId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsActive gets the is-active property value. The isActive property
 // returns a *bool when successful
 func (m *Subscriptions_attributes) GetIsActive() *bool {
-	return m.isActive
+	val, err := m.GetBackingStore().Get("isActive")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsChangeApproved gets the is-change-approved property value. The isChangeApproved property
 // returns a *bool when successful
 func (m *Subscriptions_attributes) GetIsChangeApproved() *bool {
-	return m.isChangeApproved
+	val, err := m.GetBackingStore().Get("isChangeApproved")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsPublicFreeTier gets the is-public-free-tier property value. The isPublicFreeTier property
 // returns a *bool when successful
 func (m *Subscriptions_attributes) GetIsPublicFreeTier() *bool {
-	return m.isPublicFreeTier
+	val, err := m.GetBackingStore().Get("isPublicFreeTier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetIsSelfServeTrial gets the is-self-serve-trial property value. The isSelfServeTrial property
 // returns a *bool when successful
 func (m *Subscriptions_attributes) GetIsSelfServeTrial() *bool {
-	return m.isSelfServeTrial
+	val, err := m.GetBackingStore().Get("isSelfServeTrial")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetPolicyLimit gets the policy-limit property value. The policyLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetPolicyLimit() *int32 {
-	return m.policyLimit
+	val, err := m.GetBackingStore().Get("policyLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPolicyMandatoryEnforcementLimit gets the policy-mandatory-enforcement-limit property value. The policyMandatoryEnforcementLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetPolicyMandatoryEnforcementLimit() *int32 {
-	return m.policyMandatoryEnforcementLimit
+	val, err := m.GetBackingStore().Get("policyMandatoryEnforcementLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPolicySetLimit gets the policy-set-limit property value. The policySetLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetPolicySetLimit() *int32 {
-	return m.policySetLimit
+	val, err := m.GetBackingStore().Get("policySetLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRumAlertThreshold gets the rum-alert-threshold property value. The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRumAlertThreshold() *int32 {
-	return m.rumAlertThreshold
+	val, err := m.GetBackingStore().Get("rumAlertThreshold")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRumThresholdAlertSentAt gets the rum-threshold-alert-sent-at property value. Timestamp of the last time a RUM usage threshold alert was sent for the current rum-alert-threshold. Null when no alert has been sent for the current threshold.
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetRumThresholdAlertSentAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.rumThresholdAlertSentAt
+	val, err := m.GetBackingStore().Get("rumThresholdAlertSentAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetRunsCeiling gets the runs-ceiling property value. The runsCeiling property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRunsCeiling() *int32 {
-	return m.runsCeiling
+	val, err := m.GetBackingStore().Get("runsCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRunTaskLimit gets the run-task-limit property value. The runTaskLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRunTaskLimit() *int32 {
-	return m.runTaskLimit
+	val, err := m.GetBackingStore().Get("runTaskLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRunTaskMandatoryEnforcementLimit gets the run-task-mandatory-enforcement-limit property value. The runTaskMandatoryEnforcementLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRunTaskMandatoryEnforcementLimit() *int32 {
-	return m.runTaskMandatoryEnforcementLimit
+	val, err := m.GetBackingStore().Get("runTaskMandatoryEnforcementLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRunTaskWorkspaceLimit gets the run-task-workspace-limit property value. The runTaskWorkspaceLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRunTaskWorkspaceLimit() *int32 {
-	return m.runTaskWorkspaceLimit
+	val, err := m.GetBackingStore().Get("runTaskWorkspaceLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetStartAt gets the start-at property value. The startAt property
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetStartAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.startAt
+	val, err := m.GetBackingStore().Get("startAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVersionedPolicySetLimit gets the versioned-policy-set-limit property value. The versionedPolicySetLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetVersionedPolicySetLimit() *int32 {
-	return m.versionedPolicySetLimit
+	val, err := m.GetBackingStore().Get("versionedPolicySetLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -700,148 +851,239 @@ func (m *Subscriptions_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Subscriptions_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgentsCeiling sets the agents-ceiling property value. The agentsCeiling property
 func (m *Subscriptions_attributes) SetAgentsCeiling(value *int32) {
-	m.agentsCeiling = value
+	err := m.GetBackingStore().Set("agentsCeiling", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Subscriptions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetContractApplyLimit sets the contract-apply-limit property value. The contractApplyLimit property
 func (m *Subscriptions_attributes) SetContractApplyLimit(value *int32) {
-	m.contractApplyLimit = value
+	err := m.GetBackingStore().Set("contractApplyLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetContractManagedResourcesLimit sets the contract-managed-resources-limit property value. The contractManagedResourcesLimit property
 func (m *Subscriptions_attributes) SetContractManagedResourcesLimit(value *int32) {
-	m.contractManagedResourcesLimit = value
+	err := m.GetBackingStore().Set("contractManagedResourcesLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetContractStartAt sets the contract-start-at property value. The contractStartAt property
 func (m *Subscriptions_attributes) SetContractStartAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.contractStartAt = value
+	err := m.GetBackingStore().Set("contractStartAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetContractUserLimit sets the contract-user-limit property value. The contractUserLimit property
 func (m *Subscriptions_attributes) SetContractUserLimit(value *int32) {
-	m.contractUserLimit = value
+	err := m.GetBackingStore().Set("contractUserLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEndAt sets the end-at property value. The endAt property
 func (m *Subscriptions_attributes) SetEndAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.endAt = value
+	err := m.GetBackingStore().Set("endAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFreeApplyMonthlyLimit sets the free-apply-monthly-limit property value. The freeApplyMonthlyLimit property
 func (m *Subscriptions_attributes) SetFreeApplyMonthlyLimit(value *int32) {
-	m.freeApplyMonthlyLimit = value
+	err := m.GetBackingStore().Set("freeApplyMonthlyLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFreeApplyMonthlyLimitRemaining sets the free-apply-monthly-limit-remaining property value. The freeApplyMonthlyLimitRemaining property
 func (m *Subscriptions_attributes) SetFreeApplyMonthlyLimitRemaining(value *int32) {
-	m.freeApplyMonthlyLimitRemaining = value
+	err := m.GetBackingStore().Set("freeApplyMonthlyLimitRemaining", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFreeApplyMonthlyLimitStartsAt sets the free-apply-monthly-limit-starts-at property value. The freeApplyMonthlyLimitStartsAt property
 func (m *Subscriptions_attributes) SetFreeApplyMonthlyLimitStartsAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.freeApplyMonthlyLimitStartsAt = value
+	err := m.GetBackingStore().Set("freeApplyMonthlyLimitStartsAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFreeResourceUnderManagementMonthlyLimit sets the free-resource-under-management-monthly-limit property value. The freeResourceUnderManagementMonthlyLimit property
 func (m *Subscriptions_attributes) SetFreeResourceUnderManagementMonthlyLimit(value *int32) {
-	m.freeResourceUnderManagementMonthlyLimit = value
+	err := m.GetBackingStore().Set("freeResourceUnderManagementMonthlyLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHcpOrganizationId sets the hcp-organization-id property value. The hcpOrganizationId property
 func (m *Subscriptions_attributes) SetHcpOrganizationId(value *string) {
-	m.hcpOrganizationId = value
+	err := m.GetBackingStore().Set("hcpOrganizationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHcpProjectId sets the hcp-project-id property value. The hcpProjectId property
 func (m *Subscriptions_attributes) SetHcpProjectId(value *string) {
-	m.hcpProjectId = value
+	err := m.GetBackingStore().Set("hcpProjectId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsActive sets the is-active property value. The isActive property
 func (m *Subscriptions_attributes) SetIsActive(value *bool) {
-	m.isActive = value
+	err := m.GetBackingStore().Set("isActive", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsChangeApproved sets the is-change-approved property value. The isChangeApproved property
 func (m *Subscriptions_attributes) SetIsChangeApproved(value *bool) {
-	m.isChangeApproved = value
+	err := m.GetBackingStore().Set("isChangeApproved", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsPublicFreeTier sets the is-public-free-tier property value. The isPublicFreeTier property
 func (m *Subscriptions_attributes) SetIsPublicFreeTier(value *bool) {
-	m.isPublicFreeTier = value
+	err := m.GetBackingStore().Set("isPublicFreeTier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsSelfServeTrial sets the is-self-serve-trial property value. The isSelfServeTrial property
 func (m *Subscriptions_attributes) SetIsSelfServeTrial(value *bool) {
-	m.isSelfServeTrial = value
+	err := m.GetBackingStore().Set("isSelfServeTrial", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyLimit sets the policy-limit property value. The policyLimit property
 func (m *Subscriptions_attributes) SetPolicyLimit(value *int32) {
-	m.policyLimit = value
+	err := m.GetBackingStore().Set("policyLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyMandatoryEnforcementLimit sets the policy-mandatory-enforcement-limit property value. The policyMandatoryEnforcementLimit property
 func (m *Subscriptions_attributes) SetPolicyMandatoryEnforcementLimit(value *int32) {
-	m.policyMandatoryEnforcementLimit = value
+	err := m.GetBackingStore().Set("policyMandatoryEnforcementLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicySetLimit sets the policy-set-limit property value. The policySetLimit property
 func (m *Subscriptions_attributes) SetPolicySetLimit(value *int32) {
-	m.policySetLimit = value
+	err := m.GetBackingStore().Set("policySetLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRumAlertThreshold sets the rum-alert-threshold property value. The custom RUM usage alert threshold for the organization. When the organization's billable resource count meets or exceeds this value, an alert email is sent to org owners. Set to null to disable alerting. Only available on paid RUM plans.
 func (m *Subscriptions_attributes) SetRumAlertThreshold(value *int32) {
-	m.rumAlertThreshold = value
+	err := m.GetBackingStore().Set("rumAlertThreshold", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRumThresholdAlertSentAt sets the rum-threshold-alert-sent-at property value. Timestamp of the last time a RUM usage threshold alert was sent for the current rum-alert-threshold. Null when no alert has been sent for the current threshold.
 func (m *Subscriptions_attributes) SetRumThresholdAlertSentAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.rumThresholdAlertSentAt = value
+	err := m.GetBackingStore().Set("rumThresholdAlertSentAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunsCeiling sets the runs-ceiling property value. The runsCeiling property
 func (m *Subscriptions_attributes) SetRunsCeiling(value *int32) {
-	m.runsCeiling = value
+	err := m.GetBackingStore().Set("runsCeiling", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunTaskLimit sets the run-task-limit property value. The runTaskLimit property
 func (m *Subscriptions_attributes) SetRunTaskLimit(value *int32) {
-	m.runTaskLimit = value
+	err := m.GetBackingStore().Set("runTaskLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunTaskMandatoryEnforcementLimit sets the run-task-mandatory-enforcement-limit property value. The runTaskMandatoryEnforcementLimit property
 func (m *Subscriptions_attributes) SetRunTaskMandatoryEnforcementLimit(value *int32) {
-	m.runTaskMandatoryEnforcementLimit = value
+	err := m.GetBackingStore().Set("runTaskMandatoryEnforcementLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunTaskWorkspaceLimit sets the run-task-workspace-limit property value. The runTaskWorkspaceLimit property
 func (m *Subscriptions_attributes) SetRunTaskWorkspaceLimit(value *int32) {
-	m.runTaskWorkspaceLimit = value
+	err := m.GetBackingStore().Set("runTaskWorkspaceLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStartAt sets the start-at property value. The startAt property
 func (m *Subscriptions_attributes) SetStartAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.startAt = value
+	err := m.GetBackingStore().Set("startAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVersionedPolicySetLimit sets the versioned-policy-set-limit property value. The versionedPolicySetLimit property
 func (m *Subscriptions_attributes) SetVersionedPolicySetLimit(value *int32) {
-	m.versionedPolicySetLimit = value
+	err := m.GetBackingStore().Set("versionedPolicySetLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Subscriptions_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgentsCeiling() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetContractApplyLimit() *int32
 	GetContractManagedResourcesLimit() *int32
 	GetContractStartAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -869,6 +1111,7 @@ type Subscriptions_attributesable interface {
 	GetStartAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetVersionedPolicySetLimit() *int32
 	SetAgentsCeiling(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetContractApplyLimit(value *int32)
 	SetContractManagedResourcesLimit(value *int32)
 	SetContractStartAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

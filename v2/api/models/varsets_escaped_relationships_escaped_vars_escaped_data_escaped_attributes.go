@@ -5,22 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Varsets_relationships_vars_data_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The category property
-	category *Varsets_relationships_vars_data_attributes_category
-	// The key property
-	key *string
-	// The value property
-	value *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewVarsets_relationships_vars_data_attributes instantiates a new Varsets_relationships_vars_data_attributes and sets the default values.
 func NewVarsets_relationships_vars_data_attributes() *Varsets_relationships_vars_data_attributes {
 	m := &Varsets_relationships_vars_data_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -34,13 +30,34 @@ func CreateVarsets_relationships_vars_data_attributesFromDiscriminatorValue(pars
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Varsets_relationships_vars_data_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Varsets_relationships_vars_data_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCategory gets the category property value. The category property
 // returns a *Varsets_relationships_vars_data_attributes_category when successful
 func (m *Varsets_relationships_vars_data_attributes) GetCategory() *Varsets_relationships_vars_data_attributes_category {
-	return m.category
+	val, err := m.GetBackingStore().Get("category")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Varsets_relationships_vars_data_attributes_category)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -83,13 +100,27 @@ func (m *Varsets_relationships_vars_data_attributes) GetFieldDeserializers() map
 // GetKey gets the key property value. The key property
 // returns a *string when successful
 func (m *Varsets_relationships_vars_data_attributes) GetKey() *string {
-	return m.key
+	val, err := m.GetBackingStore().Get("key")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetValue gets the value property value. The value property
 // returns a *string when successful
 func (m *Varsets_relationships_vars_data_attributes) GetValue() *string {
-	return m.value
+	val, err := m.GetBackingStore().Get("value")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -124,30 +155,50 @@ func (m *Varsets_relationships_vars_data_attributes) Serialize(writer i878a80d23
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Varsets_relationships_vars_data_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Varsets_relationships_vars_data_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCategory sets the category property value. The category property
 func (m *Varsets_relationships_vars_data_attributes) SetCategory(value *Varsets_relationships_vars_data_attributes_category) {
-	m.category = value
+	err := m.GetBackingStore().Set("category", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetKey sets the key property value. The key property
 func (m *Varsets_relationships_vars_data_attributes) SetKey(value *string) {
-	m.key = value
+	err := m.GetBackingStore().Set("key", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetValue sets the value property value. The value property
 func (m *Varsets_relationships_vars_data_attributes) SetValue(value *string) {
-	m.value = value
+	err := m.GetBackingStore().Set("value", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Varsets_relationships_vars_data_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCategory() *Varsets_relationships_vars_data_attributes_category
 	GetKey() *string
 	GetValue() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCategory(value *Varsets_relationships_vars_data_attributes_category)
 	SetKey(value *string)
 	SetValue(value *string)

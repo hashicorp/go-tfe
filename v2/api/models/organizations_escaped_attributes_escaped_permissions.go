@@ -5,100 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Organizations_attributes_permissions struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The canAccessViaTeams property
-	canAccessViaTeams *bool
-	// The canCreateModule property
-	canCreateModule *bool
-	// The canCreateProject property
-	canCreateProject *bool
-	// This attribute is only available in HCP Terraform.
-	canCreateProjectInHcp *bool
-	// The canCreateProvider property
-	canCreateProvider *bool
-	// The canCreateTeam property
-	canCreateTeam *bool
-	// The canCreateWorkspace property
-	canCreateWorkspace *bool
-	// The canDeployNoCodeModules property
-	canDeployNoCodeModules *bool
-	// The canDestroy property
-	canDestroy *bool
-	// The canEnableStacks property
-	canEnableStacks *bool
-	// The canManageAssessments property
-	canManageAssessments *bool
-	// The canManageCustomProviders property
-	canManageCustomProviders *bool
-	// This attribute is only available in HCP Terraform.
-	canManageGroupsInHcp *bool
-	// The canManageNoCodeModules property
-	canManageNoCodeModules *bool
-	// The canManageOrgPublicModules property
-	canManageOrgPublicModules *bool
-	// The canManageOrgPublicProviders property
-	canManageOrgPublicProviders *bool
-	// The canManagePublicModules property
-	canManagePublicModules *bool
-	// The canManagePublicProviders property
-	canManagePublicProviders *bool
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	canManageRecoverableItems *bool
-	// The canManageRunTasks property
-	canManageRunTasks *bool
-	// The canManageSso property
-	canManageSso *bool
-	// The canManageSubscription property
-	canManageSubscription *bool
-	// The canManageTags property
-	canManageTags *bool
-	// The canManageUsers property
-	canManageUsers *bool
-	// The canManageVarsets property
-	canManageVarsets *bool
-	// The canReadAssessments property
-	canReadAssessments *bool
-	// This attribute is only available in Terraform Enterprise.
-	canReadPolicies *bool
-	// The canReadRunTasks property
-	canReadRunTasks *bool
-	// The canReadVarsets property
-	canReadVarsets *bool
-	// The canTraverse property
-	canTraverse *bool
-	// The canUpdate property
-	canUpdate *bool
-	// The canUpdateAgentPools property
-	canUpdateAgentPools *bool
-	// The canUpdateApiToken property
-	canUpdateApiToken *bool
-	// The canUpdateAuthenticationToken property
-	canUpdateAuthenticationToken *bool
-	// This attribute is only available in HCP Terraform.
-	canUpdateHyokConfiguration *bool
-	// The canUpdateOauth property
-	canUpdateOauth *bool
-	// The canUpdateSentinel property
-	canUpdateSentinel *bool
-	// The canUpdateSshKeys property
-	canUpdateSshKeys *bool
-	// The canViewAuthentication property
-	canViewAuthentication *bool
-	// The canViewExplorer property
-	canViewExplorer *bool
-	// The canViewUsage property
-	canViewUsage *bool
-	// The canViewUsers property
-	canViewUsers *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewOrganizations_attributes_permissions instantiates a new Organizations_attributes_permissions and sets the default values.
 func NewOrganizations_attributes_permissions() *Organizations_attributes_permissions {
 	m := &Organizations_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -112,259 +30,567 @@ func CreateOrganizations_attributes_permissionsFromDiscriminatorValue(parseNode 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Organizations_attributes_permissions) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Organizations_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanAccessViaTeams gets the can-access-via-teams property value. The canAccessViaTeams property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanAccessViaTeams() *bool {
-	return m.canAccessViaTeams
+	val, err := m.GetBackingStore().Get("canAccessViaTeams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateModule gets the can-create-module property value. The canCreateModule property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateModule() *bool {
-	return m.canCreateModule
+	val, err := m.GetBackingStore().Get("canCreateModule")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateProject gets the can-create-project property value. The canCreateProject property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateProject() *bool {
-	return m.canCreateProject
+	val, err := m.GetBackingStore().Get("canCreateProject")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateProjectInHcp gets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateProjectInHcp() *bool {
-	return m.canCreateProjectInHcp
+	val, err := m.GetBackingStore().Get("canCreateProjectInHcp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateProvider gets the can-create-provider property value. The canCreateProvider property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateProvider() *bool {
-	return m.canCreateProvider
+	val, err := m.GetBackingStore().Get("canCreateProvider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateTeam gets the can-create-team property value. The canCreateTeam property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateTeam() *bool {
-	return m.canCreateTeam
+	val, err := m.GetBackingStore().Get("canCreateTeam")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanCreateWorkspace gets the can-create-workspace property value. The canCreateWorkspace property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanCreateWorkspace() *bool {
-	return m.canCreateWorkspace
+	val, err := m.GetBackingStore().Get("canCreateWorkspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanDeployNoCodeModules gets the can-deploy-no-code-modules property value. The canDeployNoCodeModules property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanDeployNoCodeModules() *bool {
-	return m.canDeployNoCodeModules
+	val, err := m.GetBackingStore().Get("canDeployNoCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanDestroy gets the can-destroy property value. The canDestroy property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanDestroy() *bool {
-	return m.canDestroy
+	val, err := m.GetBackingStore().Get("canDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanEnableStacks gets the can-enable-stacks property value. The canEnableStacks property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanEnableStacks() *bool {
-	return m.canEnableStacks
+	val, err := m.GetBackingStore().Get("canEnableStacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageAssessments gets the can-manage-assessments property value. The canManageAssessments property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageAssessments() *bool {
-	return m.canManageAssessments
+	val, err := m.GetBackingStore().Get("canManageAssessments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageCustomProviders gets the can-manage-custom-providers property value. The canManageCustomProviders property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageCustomProviders() *bool {
-	return m.canManageCustomProviders
+	val, err := m.GetBackingStore().Get("canManageCustomProviders")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageGroupsInHcp gets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageGroupsInHcp() *bool {
-	return m.canManageGroupsInHcp
+	val, err := m.GetBackingStore().Get("canManageGroupsInHcp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageNoCodeModules gets the can-manage-no-code-modules property value. The canManageNoCodeModules property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageNoCodeModules() *bool {
-	return m.canManageNoCodeModules
+	val, err := m.GetBackingStore().Get("canManageNoCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageOrgPublicModules gets the can-manage-org-public-modules property value. The canManageOrgPublicModules property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageOrgPublicModules() *bool {
-	return m.canManageOrgPublicModules
+	val, err := m.GetBackingStore().Get("canManageOrgPublicModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageOrgPublicProviders gets the can-manage-org-public-providers property value. The canManageOrgPublicProviders property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageOrgPublicProviders() *bool {
-	return m.canManageOrgPublicProviders
+	val, err := m.GetBackingStore().Get("canManageOrgPublicProviders")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManagePublicModules gets the can-manage-public-modules property value. The canManagePublicModules property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManagePublicModules() *bool {
-	return m.canManagePublicModules
+	val, err := m.GetBackingStore().Get("canManagePublicModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManagePublicProviders gets the can-manage-public-providers property value. The canManagePublicProviders property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManagePublicProviders() *bool {
-	return m.canManagePublicProviders
+	val, err := m.GetBackingStore().Get("canManagePublicProviders")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageRecoverableItems gets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageRecoverableItems() *bool {
-	return m.canManageRecoverableItems
+	val, err := m.GetBackingStore().Get("canManageRecoverableItems")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageRunTasks gets the can-manage-run-tasks property value. The canManageRunTasks property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageRunTasks() *bool {
-	return m.canManageRunTasks
+	val, err := m.GetBackingStore().Get("canManageRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageSso gets the can-manage-sso property value. The canManageSso property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageSso() *bool {
-	return m.canManageSso
+	val, err := m.GetBackingStore().Get("canManageSso")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageSubscription gets the can-manage-subscription property value. The canManageSubscription property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageSubscription() *bool {
-	return m.canManageSubscription
+	val, err := m.GetBackingStore().Get("canManageSubscription")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageTags gets the can-manage-tags property value. The canManageTags property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageTags() *bool {
-	return m.canManageTags
+	val, err := m.GetBackingStore().Get("canManageTags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageUsers gets the can-manage-users property value. The canManageUsers property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageUsers() *bool {
-	return m.canManageUsers
+	val, err := m.GetBackingStore().Get("canManageUsers")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageVarsets gets the can-manage-varsets property value. The canManageVarsets property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanManageVarsets() *bool {
-	return m.canManageVarsets
+	val, err := m.GetBackingStore().Get("canManageVarsets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadAssessments gets the can-read-assessments property value. The canReadAssessments property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadAssessments() *bool {
-	return m.canReadAssessments
+	val, err := m.GetBackingStore().Get("canReadAssessments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadPolicies gets the can-read-policies property value. This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadPolicies() *bool {
-	return m.canReadPolicies
+	val, err := m.GetBackingStore().Get("canReadPolicies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadRunTasks gets the can-read-run-tasks property value. The canReadRunTasks property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadRunTasks() *bool {
-	return m.canReadRunTasks
+	val, err := m.GetBackingStore().Get("canReadRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadVarsets gets the can-read-varsets property value. The canReadVarsets property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanReadVarsets() *bool {
-	return m.canReadVarsets
+	val, err := m.GetBackingStore().Get("canReadVarsets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanTraverse gets the can-traverse property value. The canTraverse property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanTraverse() *bool {
-	return m.canTraverse
+	val, err := m.GetBackingStore().Get("canTraverse")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdate gets the can-update property value. The canUpdate property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdate() *bool {
-	return m.canUpdate
+	val, err := m.GetBackingStore().Get("canUpdate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateAgentPools gets the can-update-agent-pools property value. The canUpdateAgentPools property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateAgentPools() *bool {
-	return m.canUpdateAgentPools
+	val, err := m.GetBackingStore().Get("canUpdateAgentPools")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateApiToken gets the can-update-api-token property value. The canUpdateApiToken property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateApiToken() *bool {
-	return m.canUpdateApiToken
+	val, err := m.GetBackingStore().Get("canUpdateApiToken")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateAuthenticationToken gets the can-update-authentication-token property value. The canUpdateAuthenticationToken property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateAuthenticationToken() *bool {
-	return m.canUpdateAuthenticationToken
+	val, err := m.GetBackingStore().Get("canUpdateAuthenticationToken")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateHyokConfiguration gets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateHyokConfiguration() *bool {
-	return m.canUpdateHyokConfiguration
+	val, err := m.GetBackingStore().Get("canUpdateHyokConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateOauth gets the can-update-oauth property value. The canUpdateOauth property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateOauth() *bool {
-	return m.canUpdateOauth
+	val, err := m.GetBackingStore().Get("canUpdateOauth")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateSentinel gets the can-update-sentinel property value. The canUpdateSentinel property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateSentinel() *bool {
-	return m.canUpdateSentinel
+	val, err := m.GetBackingStore().Get("canUpdateSentinel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateSshKeys gets the can-update-ssh-keys property value. The canUpdateSshKeys property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanUpdateSshKeys() *bool {
-	return m.canUpdateSshKeys
+	val, err := m.GetBackingStore().Get("canUpdateSshKeys")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewAuthentication gets the can-view-authentication property value. The canViewAuthentication property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewAuthentication() *bool {
-	return m.canViewAuthentication
+	val, err := m.GetBackingStore().Get("canViewAuthentication")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewExplorer gets the can-view-explorer property value. The canViewExplorer property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewExplorer() *bool {
-	return m.canViewExplorer
+	val, err := m.GetBackingStore().Get("canViewExplorer")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewUsage gets the can-view-usage property value. The canViewUsage property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewUsage() *bool {
-	return m.canViewUsage
+	val, err := m.GetBackingStore().Get("canViewUsage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewUsers gets the can-view-users property value. The canViewUsers property
 // returns a *bool when successful
 func (m *Organizations_attributes_permissions) GetCanViewUsers() *bool {
-	return m.canViewUsers
+	val, err := m.GetBackingStore().Get("canViewUsers")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -1059,222 +1285,358 @@ func (m *Organizations_attributes_permissions) Serialize(writer i878a80d2330e89d
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Organizations_attributes_permissions) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Organizations_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanAccessViaTeams sets the can-access-via-teams property value. The canAccessViaTeams property
 func (m *Organizations_attributes_permissions) SetCanAccessViaTeams(value *bool) {
-	m.canAccessViaTeams = value
+	err := m.GetBackingStore().Set("canAccessViaTeams", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateModule sets the can-create-module property value. The canCreateModule property
 func (m *Organizations_attributes_permissions) SetCanCreateModule(value *bool) {
-	m.canCreateModule = value
+	err := m.GetBackingStore().Set("canCreateModule", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateProject sets the can-create-project property value. The canCreateProject property
 func (m *Organizations_attributes_permissions) SetCanCreateProject(value *bool) {
-	m.canCreateProject = value
+	err := m.GetBackingStore().Set("canCreateProject", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateProjectInHcp sets the can-create-project-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanCreateProjectInHcp(value *bool) {
-	m.canCreateProjectInHcp = value
+	err := m.GetBackingStore().Set("canCreateProjectInHcp", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateProvider sets the can-create-provider property value. The canCreateProvider property
 func (m *Organizations_attributes_permissions) SetCanCreateProvider(value *bool) {
-	m.canCreateProvider = value
+	err := m.GetBackingStore().Set("canCreateProvider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateTeam sets the can-create-team property value. The canCreateTeam property
 func (m *Organizations_attributes_permissions) SetCanCreateTeam(value *bool) {
-	m.canCreateTeam = value
+	err := m.GetBackingStore().Set("canCreateTeam", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanCreateWorkspace sets the can-create-workspace property value. The canCreateWorkspace property
 func (m *Organizations_attributes_permissions) SetCanCreateWorkspace(value *bool) {
-	m.canCreateWorkspace = value
+	err := m.GetBackingStore().Set("canCreateWorkspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanDeployNoCodeModules sets the can-deploy-no-code-modules property value. The canDeployNoCodeModules property
 func (m *Organizations_attributes_permissions) SetCanDeployNoCodeModules(value *bool) {
-	m.canDeployNoCodeModules = value
+	err := m.GetBackingStore().Set("canDeployNoCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanDestroy sets the can-destroy property value. The canDestroy property
 func (m *Organizations_attributes_permissions) SetCanDestroy(value *bool) {
-	m.canDestroy = value
+	err := m.GetBackingStore().Set("canDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanEnableStacks sets the can-enable-stacks property value. The canEnableStacks property
 func (m *Organizations_attributes_permissions) SetCanEnableStacks(value *bool) {
-	m.canEnableStacks = value
+	err := m.GetBackingStore().Set("canEnableStacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageAssessments sets the can-manage-assessments property value. The canManageAssessments property
 func (m *Organizations_attributes_permissions) SetCanManageAssessments(value *bool) {
-	m.canManageAssessments = value
+	err := m.GetBackingStore().Set("canManageAssessments", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageCustomProviders sets the can-manage-custom-providers property value. The canManageCustomProviders property
 func (m *Organizations_attributes_permissions) SetCanManageCustomProviders(value *bool) {
-	m.canManageCustomProviders = value
+	err := m.GetBackingStore().Set("canManageCustomProviders", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageGroupsInHcp sets the can-manage-groups-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanManageGroupsInHcp(value *bool) {
-	m.canManageGroupsInHcp = value
+	err := m.GetBackingStore().Set("canManageGroupsInHcp", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageNoCodeModules sets the can-manage-no-code-modules property value. The canManageNoCodeModules property
 func (m *Organizations_attributes_permissions) SetCanManageNoCodeModules(value *bool) {
-	m.canManageNoCodeModules = value
+	err := m.GetBackingStore().Set("canManageNoCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageOrgPublicModules sets the can-manage-org-public-modules property value. The canManageOrgPublicModules property
 func (m *Organizations_attributes_permissions) SetCanManageOrgPublicModules(value *bool) {
-	m.canManageOrgPublicModules = value
+	err := m.GetBackingStore().Set("canManageOrgPublicModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageOrgPublicProviders sets the can-manage-org-public-providers property value. The canManageOrgPublicProviders property
 func (m *Organizations_attributes_permissions) SetCanManageOrgPublicProviders(value *bool) {
-	m.canManageOrgPublicProviders = value
+	err := m.GetBackingStore().Set("canManageOrgPublicProviders", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManagePublicModules sets the can-manage-public-modules property value. The canManagePublicModules property
 func (m *Organizations_attributes_permissions) SetCanManagePublicModules(value *bool) {
-	m.canManagePublicModules = value
+	err := m.GetBackingStore().Set("canManagePublicModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManagePublicProviders sets the can-manage-public-providers property value. The canManagePublicProviders property
 func (m *Organizations_attributes_permissions) SetCanManagePublicProviders(value *bool) {
-	m.canManagePublicProviders = value
+	err := m.GetBackingStore().Set("canManagePublicProviders", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageRecoverableItems sets the can-manage-recoverable-items property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Organizations_attributes_permissions) SetCanManageRecoverableItems(value *bool) {
-	m.canManageRecoverableItems = value
+	err := m.GetBackingStore().Set("canManageRecoverableItems", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageRunTasks sets the can-manage-run-tasks property value. The canManageRunTasks property
 func (m *Organizations_attributes_permissions) SetCanManageRunTasks(value *bool) {
-	m.canManageRunTasks = value
+	err := m.GetBackingStore().Set("canManageRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageSso sets the can-manage-sso property value. The canManageSso property
 func (m *Organizations_attributes_permissions) SetCanManageSso(value *bool) {
-	m.canManageSso = value
+	err := m.GetBackingStore().Set("canManageSso", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageSubscription sets the can-manage-subscription property value. The canManageSubscription property
 func (m *Organizations_attributes_permissions) SetCanManageSubscription(value *bool) {
-	m.canManageSubscription = value
+	err := m.GetBackingStore().Set("canManageSubscription", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageTags sets the can-manage-tags property value. The canManageTags property
 func (m *Organizations_attributes_permissions) SetCanManageTags(value *bool) {
-	m.canManageTags = value
+	err := m.GetBackingStore().Set("canManageTags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageUsers sets the can-manage-users property value. The canManageUsers property
 func (m *Organizations_attributes_permissions) SetCanManageUsers(value *bool) {
-	m.canManageUsers = value
+	err := m.GetBackingStore().Set("canManageUsers", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageVarsets sets the can-manage-varsets property value. The canManageVarsets property
 func (m *Organizations_attributes_permissions) SetCanManageVarsets(value *bool) {
-	m.canManageVarsets = value
+	err := m.GetBackingStore().Set("canManageVarsets", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadAssessments sets the can-read-assessments property value. The canReadAssessments property
 func (m *Organizations_attributes_permissions) SetCanReadAssessments(value *bool) {
-	m.canReadAssessments = value
+	err := m.GetBackingStore().Set("canReadAssessments", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadPolicies sets the can-read-policies property value. This attribute is only available in Terraform Enterprise.
 func (m *Organizations_attributes_permissions) SetCanReadPolicies(value *bool) {
-	m.canReadPolicies = value
+	err := m.GetBackingStore().Set("canReadPolicies", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadRunTasks sets the can-read-run-tasks property value. The canReadRunTasks property
 func (m *Organizations_attributes_permissions) SetCanReadRunTasks(value *bool) {
-	m.canReadRunTasks = value
+	err := m.GetBackingStore().Set("canReadRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadVarsets sets the can-read-varsets property value. The canReadVarsets property
 func (m *Organizations_attributes_permissions) SetCanReadVarsets(value *bool) {
-	m.canReadVarsets = value
+	err := m.GetBackingStore().Set("canReadVarsets", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanTraverse sets the can-traverse property value. The canTraverse property
 func (m *Organizations_attributes_permissions) SetCanTraverse(value *bool) {
-	m.canTraverse = value
+	err := m.GetBackingStore().Set("canTraverse", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdate sets the can-update property value. The canUpdate property
 func (m *Organizations_attributes_permissions) SetCanUpdate(value *bool) {
-	m.canUpdate = value
+	err := m.GetBackingStore().Set("canUpdate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateAgentPools sets the can-update-agent-pools property value. The canUpdateAgentPools property
 func (m *Organizations_attributes_permissions) SetCanUpdateAgentPools(value *bool) {
-	m.canUpdateAgentPools = value
+	err := m.GetBackingStore().Set("canUpdateAgentPools", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateApiToken sets the can-update-api-token property value. The canUpdateApiToken property
 func (m *Organizations_attributes_permissions) SetCanUpdateApiToken(value *bool) {
-	m.canUpdateApiToken = value
+	err := m.GetBackingStore().Set("canUpdateApiToken", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateAuthenticationToken sets the can-update-authentication-token property value. The canUpdateAuthenticationToken property
 func (m *Organizations_attributes_permissions) SetCanUpdateAuthenticationToken(value *bool) {
-	m.canUpdateAuthenticationToken = value
+	err := m.GetBackingStore().Set("canUpdateAuthenticationToken", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateHyokConfiguration sets the can-update-hyok-configuration property value. This attribute is only available in HCP Terraform.
 func (m *Organizations_attributes_permissions) SetCanUpdateHyokConfiguration(value *bool) {
-	m.canUpdateHyokConfiguration = value
+	err := m.GetBackingStore().Set("canUpdateHyokConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateOauth sets the can-update-oauth property value. The canUpdateOauth property
 func (m *Organizations_attributes_permissions) SetCanUpdateOauth(value *bool) {
-	m.canUpdateOauth = value
+	err := m.GetBackingStore().Set("canUpdateOauth", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateSentinel sets the can-update-sentinel property value. The canUpdateSentinel property
 func (m *Organizations_attributes_permissions) SetCanUpdateSentinel(value *bool) {
-	m.canUpdateSentinel = value
+	err := m.GetBackingStore().Set("canUpdateSentinel", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateSshKeys sets the can-update-ssh-keys property value. The canUpdateSshKeys property
 func (m *Organizations_attributes_permissions) SetCanUpdateSshKeys(value *bool) {
-	m.canUpdateSshKeys = value
+	err := m.GetBackingStore().Set("canUpdateSshKeys", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewAuthentication sets the can-view-authentication property value. The canViewAuthentication property
 func (m *Organizations_attributes_permissions) SetCanViewAuthentication(value *bool) {
-	m.canViewAuthentication = value
+	err := m.GetBackingStore().Set("canViewAuthentication", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewExplorer sets the can-view-explorer property value. The canViewExplorer property
 func (m *Organizations_attributes_permissions) SetCanViewExplorer(value *bool) {
-	m.canViewExplorer = value
+	err := m.GetBackingStore().Set("canViewExplorer", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewUsage sets the can-view-usage property value. The canViewUsage property
 func (m *Organizations_attributes_permissions) SetCanViewUsage(value *bool) {
-	m.canViewUsage = value
+	err := m.GetBackingStore().Set("canViewUsage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewUsers sets the can-view-users property value. The canViewUsers property
 func (m *Organizations_attributes_permissions) SetCanViewUsers(value *bool) {
-	m.canViewUsers = value
+	err := m.GetBackingStore().Set("canViewUsers", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Organizations_attributes_permissionsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanAccessViaTeams() *bool
 	GetCanCreateModule() *bool
 	GetCanCreateProject() *bool
@@ -1317,6 +1679,7 @@ type Organizations_attributes_permissionsable interface {
 	GetCanViewExplorer() *bool
 	GetCanViewUsage() *bool
 	GetCanViewUsers() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanAccessViaTeams(value *bool)
 	SetCanCreateModule(value *bool)
 	SetCanCreateProject(value *bool)

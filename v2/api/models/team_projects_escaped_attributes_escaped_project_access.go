@@ -5,23 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TeamProjects_attributes_projectAccess fine-grained project access permissions. Only meaningful when access is "custom".
 type TeamProjects_attributes_projectAccess struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Permission level for project settings.
-	settings *TeamProjects_attributes_projectAccess_settings
-	// Permission level for managing project teams.
-	teams *TeamProjects_attributes_projectAccess_teams
-	// Permission level for project variable sets.
-	variableSets *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTeamProjects_attributes_projectAccess instantiates a new TeamProjects_attributes_projectAccess and sets the default values.
 func NewTeamProjects_attributes_projectAccess() *TeamProjects_attributes_projectAccess {
 	m := &TeamProjects_attributes_projectAccess{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -35,7 +31,21 @@ func CreateTeamProjects_attributes_projectAccessFromDiscriminatorValue(parseNode
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TeamProjects_attributes_projectAccess) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamProjects_attributes_projectAccess) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -78,19 +88,40 @@ func (m *TeamProjects_attributes_projectAccess) GetFieldDeserializers() map[stri
 // GetSettings gets the settings property value. Permission level for project settings.
 // returns a *TeamProjects_attributes_projectAccess_settings when successful
 func (m *TeamProjects_attributes_projectAccess) GetSettings() *TeamProjects_attributes_projectAccess_settings {
-	return m.settings
+	val, err := m.GetBackingStore().Get("settings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_projectAccess_settings)
+	}
+	return nil
 }
 
 // GetTeams gets the teams property value. Permission level for managing project teams.
 // returns a *TeamProjects_attributes_projectAccess_teams when successful
 func (m *TeamProjects_attributes_projectAccess) GetTeams() *TeamProjects_attributes_projectAccess_teams {
-	return m.teams
+	val, err := m.GetBackingStore().Get("teams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_projectAccess_teams)
+	}
+	return nil
 }
 
 // GetVariableSets gets the variable-sets property value. Permission level for project variable sets.
 // returns a *string when successful
 func (m *TeamProjects_attributes_projectAccess) GetVariableSets() *string {
-	return m.variableSets
+	val, err := m.GetBackingStore().Get("variableSets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -126,30 +157,50 @@ func (m *TeamProjects_attributes_projectAccess) Serialize(writer i878a80d2330e89
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TeamProjects_attributes_projectAccess) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamProjects_attributes_projectAccess) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetSettings sets the settings property value. Permission level for project settings.
 func (m *TeamProjects_attributes_projectAccess) SetSettings(value *TeamProjects_attributes_projectAccess_settings) {
-	m.settings = value
+	err := m.GetBackingStore().Set("settings", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTeams sets the teams property value. Permission level for managing project teams.
 func (m *TeamProjects_attributes_projectAccess) SetTeams(value *TeamProjects_attributes_projectAccess_teams) {
-	m.teams = value
+	err := m.GetBackingStore().Set("teams", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariableSets sets the variable-sets property value. Permission level for project variable sets.
 func (m *TeamProjects_attributes_projectAccess) SetVariableSets(value *string) {
-	m.variableSets = value
+	err := m.GetBackingStore().Set("variableSets", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TeamProjects_attributes_projectAccessable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetSettings() *TeamProjects_attributes_projectAccess_settings
 	GetTeams() *TeamProjects_attributes_projectAccess_teams
 	GetVariableSets() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetSettings(value *TeamProjects_attributes_projectAccess_settings)
 	SetTeams(value *TeamProjects_attributes_projectAccess_teams)
 	SetVariableSets(value *string)

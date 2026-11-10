@@ -5,29 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type PolicyChecksEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data PolicyChecksable
-	// The included property
-	included []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// PolicyChecksEnvelope_PolicyChecksEnvelope_included composed type wrapper for classes Runsable, Workspacesable
+// PolicyChecksEnvelope_PolicyChecksEnvelope_included composed type wrapper for classes Runs, Workspaces
 type PolicyChecksEnvelope_PolicyChecksEnvelope_included struct {
-	// Composed type representation for type Runsable
-	runs Runsable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicyChecksEnvelope_PolicyChecksEnvelope_included instantiates a new PolicyChecksEnvelope_PolicyChecksEnvelope_included and sets the default values.
 func NewPolicyChecksEnvelope_PolicyChecksEnvelope_included() *PolicyChecksEnvelope_PolicyChecksEnvelope_included {
 	m := &PolicyChecksEnvelope_PolicyChecksEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -57,6 +53,12 @@ func CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorVa
 	return result, nil
 }
 
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
 func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
@@ -74,16 +76,30 @@ func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetIsComposedType()
 	return true
 }
 
-// GetRuns gets the runs property value. Composed type representation for type Runsable
+// GetRuns gets the runs property value. Composed type representation for type Runs
 // returns a Runsable when successful
 func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetRuns() Runsable {
-	return m.runs
+	val, err := m.GetBackingStore().Get("runs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runsable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -102,20 +118,34 @@ func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) Serialize(writer i8
 	return nil
 }
 
-// SetRuns sets the runs property value. Composed type representation for type Runsable
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetRuns(value Runsable) {
-	m.runs = value
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetRuns sets the runs property value. Composed type representation for type Runs
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetRuns(value Runsable) {
+	err := m.GetBackingStore().Set("runs", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicyChecksEnvelope_PolicyChecksEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetRuns() Runsable
 	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetRuns(value Runsable)
 	SetWorkspaces(value Workspacesable)
 }
@@ -123,6 +153,7 @@ type PolicyChecksEnvelope_PolicyChecksEnvelope_includedable interface {
 // NewPolicyChecksEnvelope instantiates a new PolicyChecksEnvelope and sets the default values.
 func NewPolicyChecksEnvelope() *PolicyChecksEnvelope {
 	m := &PolicyChecksEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -136,13 +167,34 @@ func CreatePolicyChecksEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicyChecksEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyChecksEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a PolicyChecksable when successful
 func (m *PolicyChecksEnvelope) GetData() PolicyChecksable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecksable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -181,7 +233,14 @@ func (m *PolicyChecksEnvelope) GetFieldDeserializers() map[string]func(i878a80d2
 // GetIncluded gets the included property value. The included property
 // returns a []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable when successful
 func (m *PolicyChecksEnvelope) GetIncluded() []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -215,24 +274,41 @@ func (m *PolicyChecksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487ee
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicyChecksEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyChecksEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *PolicyChecksEnvelope) SetData(value PolicyChecksable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *PolicyChecksEnvelope) SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicyChecksEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() PolicyChecksable
 	GetIncluded() []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value PolicyChecksable)
 	SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
 }

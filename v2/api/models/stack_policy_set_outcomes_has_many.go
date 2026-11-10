@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackPolicySetOutcomesHasMany struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data []StackPolicySetOutcomesIdentifierable
-	// The meta property
-	meta StackPolicySetOutcomesHasMany_metaable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackPolicySetOutcomesHasMany instantiates a new StackPolicySetOutcomesHasMany and sets the default values.
 func NewStackPolicySetOutcomesHasMany() *StackPolicySetOutcomesHasMany {
 	m := &StackPolicySetOutcomesHasMany{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,13 +30,34 @@ func CreateStackPolicySetOutcomesHasManyFromDiscriminatorValue(parseNode i878a80
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackPolicySetOutcomesHasMany) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackPolicySetOutcomesHasMany) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a []StackPolicySetOutcomesIdentifierable when successful
 func (m *StackPolicySetOutcomesHasMany) GetData() []StackPolicySetOutcomesIdentifierable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackPolicySetOutcomesIdentifierable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -77,7 +96,14 @@ func (m *StackPolicySetOutcomesHasMany) GetFieldDeserializers() map[string]func(
 // GetMeta gets the meta property value. The meta property
 // returns a StackPolicySetOutcomesHasMany_metaable when successful
 func (m *StackPolicySetOutcomesHasMany) GetMeta() StackPolicySetOutcomesHasMany_metaable {
-	return m.meta
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicySetOutcomesHasMany_metaable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -111,24 +137,41 @@ func (m *StackPolicySetOutcomesHasMany) Serialize(writer i878a80d2330e89d2689638
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackPolicySetOutcomesHasMany) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackPolicySetOutcomesHasMany) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *StackPolicySetOutcomesHasMany) SetData(value []StackPolicySetOutcomesIdentifierable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMeta sets the meta property value. The meta property
 func (m *StackPolicySetOutcomesHasMany) SetMeta(value StackPolicySetOutcomesHasMany_metaable) {
-	m.meta = value
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackPolicySetOutcomesHasManyable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() []StackPolicySetOutcomesIdentifierable
 	GetMeta() StackPolicySetOutcomesHasMany_metaable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value []StackPolicySetOutcomesIdentifierable)
 	SetMeta(value StackPolicySetOutcomesHasMany_metaable)
 }

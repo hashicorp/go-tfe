@@ -5,48 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Projects_attributes_permissions struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The canCreateWorkspace property
-	canCreateWorkspace *bool
-	// The canDeployNoCodeModules property
-	canDeployNoCodeModules *bool
-	// The canDestroy property
-	canDestroy *bool
-	// The canManageEphemeralWorkspaceForProjects property
-	canManageEphemeralWorkspaceForProjects *bool
-	// This attribute is only available in HCP Terraform.
-	canManageInHcp *bool
-	// The canManageStacks property
-	canManageStacks *bool
-	// The canManageTags property
-	canManageTags *bool
-	// The canManageTeams property
-	canManageTeams *bool
-	// The canManageVarsets property
-	canManageVarsets *bool
-	// The canMoveStack property
-	canMoveStack *bool
-	// The canMoveWorkspace property
-	canMoveWorkspace *bool
-	// The canRead property
-	canRead *bool
-	// The canReadTeams property
-	canReadTeams *bool
-	// The canUpdate property
-	canUpdate *bool
-	// The canUpdateStacks property
-	canUpdateStacks *bool
-	// The canViewStacks property
-	canViewStacks *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewProjects_attributes_permissions instantiates a new Projects_attributes_permissions and sets the default values.
 func NewProjects_attributes_permissions() *Projects_attributes_permissions {
 	m := &Projects_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -60,103 +30,229 @@ func CreateProjects_attributes_permissionsFromDiscriminatorValue(parseNode i878a
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Projects_attributes_permissions) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Projects_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanCreateWorkspace gets the can-create-workspace property value. The canCreateWorkspace property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanCreateWorkspace() *bool {
-	return m.canCreateWorkspace
+	val, err := m.GetBackingStore().Get("canCreateWorkspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanDeployNoCodeModules gets the can-deploy-no-code-modules property value. The canDeployNoCodeModules property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanDeployNoCodeModules() *bool {
-	return m.canDeployNoCodeModules
+	val, err := m.GetBackingStore().Get("canDeployNoCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanDestroy gets the can-destroy property value. The canDestroy property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanDestroy() *bool {
-	return m.canDestroy
+	val, err := m.GetBackingStore().Get("canDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageEphemeralWorkspaceForProjects gets the can-manage-ephemeral-workspace-for-projects property value. The canManageEphemeralWorkspaceForProjects property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageEphemeralWorkspaceForProjects() *bool {
-	return m.canManageEphemeralWorkspaceForProjects
+	val, err := m.GetBackingStore().Get("canManageEphemeralWorkspaceForProjects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageInHcp gets the can-manage-in-hcp property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageInHcp() *bool {
-	return m.canManageInHcp
+	val, err := m.GetBackingStore().Get("canManageInHcp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageStacks gets the can-manage-stacks property value. The canManageStacks property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageStacks() *bool {
-	return m.canManageStacks
+	val, err := m.GetBackingStore().Get("canManageStacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageTags gets the can-manage-tags property value. The canManageTags property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageTags() *bool {
-	return m.canManageTags
+	val, err := m.GetBackingStore().Get("canManageTags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageTeams gets the can-manage-teams property value. The canManageTeams property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageTeams() *bool {
-	return m.canManageTeams
+	val, err := m.GetBackingStore().Get("canManageTeams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanManageVarsets gets the can-manage-varsets property value. The canManageVarsets property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanManageVarsets() *bool {
-	return m.canManageVarsets
+	val, err := m.GetBackingStore().Get("canManageVarsets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanMoveStack gets the can-move-stack property value. The canMoveStack property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanMoveStack() *bool {
-	return m.canMoveStack
+	val, err := m.GetBackingStore().Get("canMoveStack")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanMoveWorkspace gets the can-move-workspace property value. The canMoveWorkspace property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanMoveWorkspace() *bool {
-	return m.canMoveWorkspace
+	val, err := m.GetBackingStore().Get("canMoveWorkspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanRead gets the can-read property value. The canRead property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanRead() *bool {
-	return m.canRead
+	val, err := m.GetBackingStore().Get("canRead")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanReadTeams gets the can-read-teams property value. The canReadTeams property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanReadTeams() *bool {
-	return m.canReadTeams
+	val, err := m.GetBackingStore().Get("canReadTeams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdate gets the can-update property value. The canUpdate property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanUpdate() *bool {
-	return m.canUpdate
+	val, err := m.GetBackingStore().Get("canUpdate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanUpdateStacks gets the can-update-stacks property value. The canUpdateStacks property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanUpdateStacks() *bool {
-	return m.canUpdateStacks
+	val, err := m.GetBackingStore().Get("canUpdateStacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetCanViewStacks gets the can-view-stacks property value. The canViewStacks property
 // returns a *bool when successful
 func (m *Projects_attributes_permissions) GetCanViewStacks() *bool {
-	return m.canViewStacks
+	val, err := m.GetBackingStore().Get("canViewStacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -435,92 +531,150 @@ func (m *Projects_attributes_permissions) Serialize(writer i878a80d2330e89d26896
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Projects_attributes_permissions) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Projects_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanCreateWorkspace sets the can-create-workspace property value. The canCreateWorkspace property
 func (m *Projects_attributes_permissions) SetCanCreateWorkspace(value *bool) {
-	m.canCreateWorkspace = value
+	err := m.GetBackingStore().Set("canCreateWorkspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanDeployNoCodeModules sets the can-deploy-no-code-modules property value. The canDeployNoCodeModules property
 func (m *Projects_attributes_permissions) SetCanDeployNoCodeModules(value *bool) {
-	m.canDeployNoCodeModules = value
+	err := m.GetBackingStore().Set("canDeployNoCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanDestroy sets the can-destroy property value. The canDestroy property
 func (m *Projects_attributes_permissions) SetCanDestroy(value *bool) {
-	m.canDestroy = value
+	err := m.GetBackingStore().Set("canDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageEphemeralWorkspaceForProjects sets the can-manage-ephemeral-workspace-for-projects property value. The canManageEphemeralWorkspaceForProjects property
 func (m *Projects_attributes_permissions) SetCanManageEphemeralWorkspaceForProjects(value *bool) {
-	m.canManageEphemeralWorkspaceForProjects = value
+	err := m.GetBackingStore().Set("canManageEphemeralWorkspaceForProjects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageInHcp sets the can-manage-in-hcp property value. This attribute is only available in HCP Terraform.
 func (m *Projects_attributes_permissions) SetCanManageInHcp(value *bool) {
-	m.canManageInHcp = value
+	err := m.GetBackingStore().Set("canManageInHcp", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageStacks sets the can-manage-stacks property value. The canManageStacks property
 func (m *Projects_attributes_permissions) SetCanManageStacks(value *bool) {
-	m.canManageStacks = value
+	err := m.GetBackingStore().Set("canManageStacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageTags sets the can-manage-tags property value. The canManageTags property
 func (m *Projects_attributes_permissions) SetCanManageTags(value *bool) {
-	m.canManageTags = value
+	err := m.GetBackingStore().Set("canManageTags", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageTeams sets the can-manage-teams property value. The canManageTeams property
 func (m *Projects_attributes_permissions) SetCanManageTeams(value *bool) {
-	m.canManageTeams = value
+	err := m.GetBackingStore().Set("canManageTeams", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanManageVarsets sets the can-manage-varsets property value. The canManageVarsets property
 func (m *Projects_attributes_permissions) SetCanManageVarsets(value *bool) {
-	m.canManageVarsets = value
+	err := m.GetBackingStore().Set("canManageVarsets", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanMoveStack sets the can-move-stack property value. The canMoveStack property
 func (m *Projects_attributes_permissions) SetCanMoveStack(value *bool) {
-	m.canMoveStack = value
+	err := m.GetBackingStore().Set("canMoveStack", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanMoveWorkspace sets the can-move-workspace property value. The canMoveWorkspace property
 func (m *Projects_attributes_permissions) SetCanMoveWorkspace(value *bool) {
-	m.canMoveWorkspace = value
+	err := m.GetBackingStore().Set("canMoveWorkspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanRead sets the can-read property value. The canRead property
 func (m *Projects_attributes_permissions) SetCanRead(value *bool) {
-	m.canRead = value
+	err := m.GetBackingStore().Set("canRead", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanReadTeams sets the can-read-teams property value. The canReadTeams property
 func (m *Projects_attributes_permissions) SetCanReadTeams(value *bool) {
-	m.canReadTeams = value
+	err := m.GetBackingStore().Set("canReadTeams", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdate sets the can-update property value. The canUpdate property
 func (m *Projects_attributes_permissions) SetCanUpdate(value *bool) {
-	m.canUpdate = value
+	err := m.GetBackingStore().Set("canUpdate", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanUpdateStacks sets the can-update-stacks property value. The canUpdateStacks property
 func (m *Projects_attributes_permissions) SetCanUpdateStacks(value *bool) {
-	m.canUpdateStacks = value
+	err := m.GetBackingStore().Set("canUpdateStacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCanViewStacks sets the can-view-stacks property value. The canViewStacks property
 func (m *Projects_attributes_permissions) SetCanViewStacks(value *bool) {
-	m.canViewStacks = value
+	err := m.GetBackingStore().Set("canViewStacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Projects_attributes_permissionsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanCreateWorkspace() *bool
 	GetCanDeployNoCodeModules() *bool
 	GetCanDestroy() *bool
@@ -537,6 +691,7 @@ type Projects_attributes_permissionsable interface {
 	GetCanUpdate() *bool
 	GetCanUpdateStacks() *bool
 	GetCanViewStacks() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanCreateWorkspace(value *bool)
 	SetCanDeployNoCodeModules(value *bool)
 	SetCanDestroy(value *bool)

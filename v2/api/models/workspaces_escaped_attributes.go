@@ -5,119 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Workspaces_attributes struct {
-	// The actions property
-	actions Workspaces_attributes_actionsable
-	// The allowDestroyPlan property
-	allowDestroyPlan *bool
-	// The applyDurationAverage property
-	applyDurationAverage *int32
-	// The assessmentsEnabled property
-	assessmentsEnabled *bool
-	// The autoApply property
-	autoApply *bool
-	// The autoApplyRunTrigger property
-	autoApplyRunTrigger *bool
-	// The autoDestroyActivityDuration property
-	autoDestroyActivityDuration *string
-	// The autoDestroyAt property
-	autoDestroyAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The autoDestroyStatus property
-	autoDestroyStatus *string
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The description property
-	description *string
-	// A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-	effectiveRunDataRetentionDesc *string
-	// A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-	effectiveStateVersionRetentionDesc *string
-	// The environment property
-	environment *string
-	// The executionMode property
-	executionMode *Workspaces_attributes_executionMode
-	// The fileTriggersEnabled property
-	fileTriggersEnabled *bool
-	// The globalRemoteState property
-	globalRemoteState *bool
-	// HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
-	hyokEnabled *bool
-	// The inheritsProjectAutoDestroy property
-	inheritsProjectAutoDestroy *bool
-	// The lastAssessmentResultAt property
-	lastAssessmentResultAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The latestChangeAt property
-	latestChangeAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The locked property
-	locked *bool
-	// The lockedReason property
-	lockedReason *string
-	// The name property
-	name *string
-	// Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
-	noCodeUpgradeAvailable *bool
-	// The display name of the OAuth client associated with this workspace, if any.
-	oauthClientName *string
-	// Deprecated. Use execution-mode instead.
-	operations *bool
-	// This attribute is only available in Terraform Enterprise.
-	parentDataRetentionPolicyInfo *string
-	// The permissions property
-	permissions Workspaces_attributes_permissionsable
-	// The planDurationAverage property
-	planDurationAverage *int32
-	// The policyCheckFailures property
-	policyCheckFailures *int32
-	// The projectRemoteState property
-	projectRemoteState *bool
-	// The queueAllRuns property
-	queueAllRuns *bool
-	// The resourceCount property
-	resourceCount *int32
-	// The runFailures property
-	runFailures *int32
-	// The settingOverwrites property
-	settingOverwrites Workspaces_attributes_settingOverwritesable
-	// The source property
-	source *string
-	// Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
-	sourceModuleId *string
-	// The sourceName property
-	sourceName *string
-	// The sourceUrl property
-	sourceUrl *string
-	// The speculativeEnabled property
-	speculativeEnabled *bool
-	// The structuredRunOutputEnabled property
-	structuredRunOutputEnabled *bool
-	// The tagNames property
-	tagNames []string
-	// The terraformVersion property
-	terraformVersion *string
-	// The triggerPatterns property
-	triggerPatterns []string
-	// The triggerPrefixes property
-	triggerPrefixes []string
-	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-	unarchivedWorkspaceChangeRequestsCount *int32
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The vcsRepo property
-	vcsRepo Workspaces_attributes_vcsRepoable
-	// The vcsRepoIdentifier property
-	vcsRepoIdentifier *string
-	// The workingDirectory property
-	workingDirectory *string
-	// The workspaceKpisRunsCount property
-	workspaceKpisRunsCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewWorkspaces_attributes instantiates a new Workspaces_attributes and sets the default values.
 func NewWorkspaces_attributes() *Workspaces_attributes {
 	m := &Workspaces_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -130,91 +30,202 @@ func CreateWorkspaces_attributesFromDiscriminatorValue(parseNode i878a80d2330e89
 // GetActions gets the actions property value. The actions property
 // returns a Workspaces_attributes_actionsable when successful
 func (m *Workspaces_attributes) GetActions() Workspaces_attributes_actionsable {
-	return m.actions
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_actionsable)
+	}
+	return nil
 }
 
 // GetAllowDestroyPlan gets the allow-destroy-plan property value. The allowDestroyPlan property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetAllowDestroyPlan() *bool {
-	return m.allowDestroyPlan
+	val, err := m.GetBackingStore().Get("allowDestroyPlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetApplyDurationAverage gets the apply-duration-average property value. The applyDurationAverage property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetApplyDurationAverage() *int32 {
-	return m.applyDurationAverage
+	val, err := m.GetBackingStore().Get("applyDurationAverage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetAssessmentsEnabled gets the assessments-enabled property value. The assessmentsEnabled property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetAssessmentsEnabled() *bool {
-	return m.assessmentsEnabled
+	val, err := m.GetBackingStore().Get("assessmentsEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAutoApply gets the auto-apply property value. The autoApply property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetAutoApply() *bool {
-	return m.autoApply
+	val, err := m.GetBackingStore().Get("autoApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAutoApplyRunTrigger gets the auto-apply-run-trigger property value. The autoApplyRunTrigger property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetAutoApplyRunTrigger() *bool {
-	return m.autoApplyRunTrigger
+	val, err := m.GetBackingStore().Get("autoApplyRunTrigger")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetAutoDestroyActivityDuration gets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetAutoDestroyActivityDuration() *string {
-	return m.autoDestroyActivityDuration
+	val, err := m.GetBackingStore().Get("autoDestroyActivityDuration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAutoDestroyAt gets the auto-destroy-at property value. The autoDestroyAt property
 // returns a *Time when successful
 func (m *Workspaces_attributes) GetAutoDestroyAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.autoDestroyAt
+	val, err := m.GetBackingStore().Get("autoDestroyAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetAutoDestroyStatus gets the auto-destroy-status property value. The autoDestroyStatus property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetAutoDestroyStatus() *string {
-	return m.autoDestroyStatus
+	val, err := m.GetBackingStore().Get("autoDestroyStatus")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Workspaces_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *Workspaces_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetDescription() *string {
-	return m.description
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc() *string {
-	return m.effectiveRunDataRetentionDesc
+	val, err := m.GetBackingStore().Get("effectiveRunDataRetentionDesc")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc() *string {
-	return m.effectiveStateVersionRetentionDesc
+	val, err := m.GetBackingStore().Get("effectiveStateVersionRetentionDesc")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEnvironment gets the environment property value. The environment property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetEnvironment() *string {
-	return m.environment
+	val, err := m.GetBackingStore().Get("environment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetExecutionMode gets the execution-mode property value. The executionMode property
 // returns a *Workspaces_attributes_executionMode when successful
 func (m *Workspaces_attributes) GetExecutionMode() *Workspaces_attributes_executionMode {
-	return m.executionMode
+	val, err := m.GetBackingStore().Get("executionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Workspaces_attributes_executionMode)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -765,223 +776,482 @@ func (m *Workspaces_attributes) GetFieldDeserializers() map[string]func(i878a80d
 // GetFileTriggersEnabled gets the file-triggers-enabled property value. The fileTriggersEnabled property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetFileTriggersEnabled() *bool {
-	return m.fileTriggersEnabled
+	val, err := m.GetBackingStore().Get("fileTriggersEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetGlobalRemoteState gets the global-remote-state property value. The globalRemoteState property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetGlobalRemoteState() *bool {
-	return m.globalRemoteState
+	val, err := m.GetBackingStore().Get("globalRemoteState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetHyokEnabled gets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetHyokEnabled() *bool {
-	return m.hyokEnabled
+	val, err := m.GetBackingStore().Get("hyokEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetInheritsProjectAutoDestroy gets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetInheritsProjectAutoDestroy() *bool {
-	return m.inheritsProjectAutoDestroy
+	val, err := m.GetBackingStore().Get("inheritsProjectAutoDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLastAssessmentResultAt gets the last-assessment-result-at property value. The lastAssessmentResultAt property
 // returns a *Time when successful
 func (m *Workspaces_attributes) GetLastAssessmentResultAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.lastAssessmentResultAt
+	val, err := m.GetBackingStore().Get("lastAssessmentResultAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetLatestChangeAt gets the latest-change-at property value. The latestChangeAt property
 // returns a *Time when successful
 func (m *Workspaces_attributes) GetLatestChangeAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.latestChangeAt
+	val, err := m.GetBackingStore().Get("latestChangeAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetLocked gets the locked property value. The locked property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetLocked() *bool {
-	return m.locked
+	val, err := m.GetBackingStore().Get("locked")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetLockedReason gets the locked-reason property value. The lockedReason property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetLockedReason() *string {
-	return m.lockedReason
+	val, err := m.GetBackingStore().Get("lockedReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNoCodeUpgradeAvailable gets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetNoCodeUpgradeAvailable() *bool {
-	return m.noCodeUpgradeAvailable
+	val, err := m.GetBackingStore().Get("noCodeUpgradeAvailable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetOauthClientName gets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetOauthClientName() *string {
-	return m.oauthClientName
+	val, err := m.GetBackingStore().Get("oauthClientName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOperations gets the operations property value. Deprecated. Use execution-mode instead.
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetOperations() *bool {
-	return m.operations
+	val, err := m.GetBackingStore().Get("operations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetParentDataRetentionPolicyInfo() *string {
-	return m.parentDataRetentionPolicyInfo
+	val, err := m.GetBackingStore().Get("parentDataRetentionPolicyInfo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Workspaces_attributes_permissionsable when successful
 func (m *Workspaces_attributes) GetPermissions() Workspaces_attributes_permissionsable {
-	return m.permissions
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_permissionsable)
+	}
+	return nil
 }
 
 // GetPlanDurationAverage gets the plan-duration-average property value. The planDurationAverage property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetPlanDurationAverage() *int32 {
-	return m.planDurationAverage
+	val, err := m.GetBackingStore().Get("planDurationAverage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPolicyCheckFailures gets the policy-check-failures property value. The policyCheckFailures property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetPolicyCheckFailures() *int32 {
-	return m.policyCheckFailures
+	val, err := m.GetBackingStore().Get("policyCheckFailures")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetProjectRemoteState gets the project-remote-state property value. The projectRemoteState property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetProjectRemoteState() *bool {
-	return m.projectRemoteState
+	val, err := m.GetBackingStore().Get("projectRemoteState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetQueueAllRuns gets the queue-all-runs property value. The queueAllRuns property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetQueueAllRuns() *bool {
-	return m.queueAllRuns
+	val, err := m.GetBackingStore().Get("queueAllRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetResourceCount gets the resource-count property value. The resourceCount property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetResourceCount() *int32 {
-	return m.resourceCount
+	val, err := m.GetBackingStore().Get("resourceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetRunFailures gets the run-failures property value. The runFailures property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetRunFailures() *int32 {
-	return m.runFailures
+	val, err := m.GetBackingStore().Get("runFailures")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Workspaces_attributes_settingOverwritesable when successful
 func (m *Workspaces_attributes) GetSettingOverwrites() Workspaces_attributes_settingOverwritesable {
-	return m.settingOverwrites
+	val, err := m.GetBackingStore().Get("settingOverwrites")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_settingOverwritesable)
+	}
+	return nil
 }
 
 // GetSource gets the source property value. The source property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetSource() *string {
-	return m.source
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSourceModuleId gets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
 // returns a *string when successful
 func (m *Workspaces_attributes) GetSourceModuleId() *string {
-	return m.sourceModuleId
+	val, err := m.GetBackingStore().Get("sourceModuleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSourceName gets the source-name property value. The sourceName property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetSourceName() *string {
-	return m.sourceName
+	val, err := m.GetBackingStore().Get("sourceName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSourceUrl gets the source-url property value. The sourceUrl property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetSourceUrl() *string {
-	return m.sourceUrl
+	val, err := m.GetBackingStore().Get("sourceUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSpeculativeEnabled gets the speculative-enabled property value. The speculativeEnabled property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetSpeculativeEnabled() *bool {
-	return m.speculativeEnabled
+	val, err := m.GetBackingStore().Get("speculativeEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetStructuredRunOutputEnabled gets the structured-run-output-enabled property value. The structuredRunOutputEnabled property
 // returns a *bool when successful
 func (m *Workspaces_attributes) GetStructuredRunOutputEnabled() *bool {
-	return m.structuredRunOutputEnabled
+	val, err := m.GetBackingStore().Get("structuredRunOutputEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetTagNames gets the tag-names property value. The tagNames property
 // returns a []string when successful
 func (m *Workspaces_attributes) GetTagNames() []string {
-	return m.tagNames
+	val, err := m.GetBackingStore().Get("tagNames")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetTerraformVersion() *string {
-	return m.terraformVersion
+	val, err := m.GetBackingStore().Get("terraformVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggerPatterns gets the trigger-patterns property value. The triggerPatterns property
 // returns a []string when successful
 func (m *Workspaces_attributes) GetTriggerPatterns() []string {
-	return m.triggerPatterns
+	val, err := m.GetBackingStore().Get("triggerPatterns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetTriggerPrefixes gets the trigger-prefixes property value. The triggerPrefixes property
 // returns a []string when successful
 func (m *Workspaces_attributes) GetTriggerPrefixes() []string {
-	return m.triggerPrefixes
+	val, err := m.GetBackingStore().Get("triggerPrefixes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetUnarchivedWorkspaceChangeRequestsCount gets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetUnarchivedWorkspaceChangeRequestsCount() *int32 {
-	return m.unarchivedWorkspaceChangeRequestsCount
+	val, err := m.GetBackingStore().Get("unarchivedWorkspaceChangeRequestsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *Workspaces_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a Workspaces_attributes_vcsRepoable when successful
 func (m *Workspaces_attributes) GetVcsRepo() Workspaces_attributes_vcsRepoable {
-	return m.vcsRepo
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_vcsRepoable)
+	}
+	return nil
 }
 
 // GetVcsRepoIdentifier gets the vcs-repo-identifier property value. The vcsRepoIdentifier property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetVcsRepoIdentifier() *string {
-	return m.vcsRepoIdentifier
+	val, err := m.GetBackingStore().Get("vcsRepoIdentifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetWorkingDirectory gets the working-directory property value. The workingDirectory property
 // returns a *string when successful
 func (m *Workspaces_attributes) GetWorkingDirectory() *string {
-	return m.workingDirectory
+	val, err := m.GetBackingStore().Get("workingDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetWorkspaceKpisRunsCount gets the workspace-kpis-runs-count property value. The workspaceKpisRunsCount property
 // returns a *int32 when successful
 func (m *Workspaces_attributes) GetWorkspaceKpisRunsCount() *int32 {
-	return m.workspaceKpisRunsCount
+	val, err := m.GetBackingStore().Get("workspaceKpisRunsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -1280,265 +1550,427 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
 
 // SetActions sets the actions property value. The actions property
 func (m *Workspaces_attributes) SetActions(value Workspaces_attributes_actionsable) {
-	m.actions = value
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowDestroyPlan sets the allow-destroy-plan property value. The allowDestroyPlan property
 func (m *Workspaces_attributes) SetAllowDestroyPlan(value *bool) {
-	m.allowDestroyPlan = value
+	err := m.GetBackingStore().Set("allowDestroyPlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetApplyDurationAverage sets the apply-duration-average property value. The applyDurationAverage property
 func (m *Workspaces_attributes) SetApplyDurationAverage(value *int32) {
-	m.applyDurationAverage = value
+	err := m.GetBackingStore().Set("applyDurationAverage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAssessmentsEnabled sets the assessments-enabled property value. The assessmentsEnabled property
 func (m *Workspaces_attributes) SetAssessmentsEnabled(value *bool) {
-	m.assessmentsEnabled = value
+	err := m.GetBackingStore().Set("assessmentsEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoApply sets the auto-apply property value. The autoApply property
 func (m *Workspaces_attributes) SetAutoApply(value *bool) {
-	m.autoApply = value
+	err := m.GetBackingStore().Set("autoApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoApplyRunTrigger sets the auto-apply-run-trigger property value. The autoApplyRunTrigger property
 func (m *Workspaces_attributes) SetAutoApplyRunTrigger(value *bool) {
-	m.autoApplyRunTrigger = value
+	err := m.GetBackingStore().Set("autoApplyRunTrigger", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoDestroyActivityDuration sets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
 func (m *Workspaces_attributes) SetAutoDestroyActivityDuration(value *string) {
-	m.autoDestroyActivityDuration = value
+	err := m.GetBackingStore().Set("autoDestroyActivityDuration", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoDestroyAt sets the auto-destroy-at property value. The autoDestroyAt property
 func (m *Workspaces_attributes) SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.autoDestroyAt = value
+	err := m.GetBackingStore().Set("autoDestroyAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAutoDestroyStatus sets the auto-destroy-status property value. The autoDestroyStatus property
 func (m *Workspaces_attributes) SetAutoDestroyStatus(value *string) {
-	m.autoDestroyStatus = value
+	err := m.GetBackingStore().Set("autoDestroyStatus", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Workspaces_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDescription sets the description property value. The description property
 func (m *Workspaces_attributes) SetDescription(value *string) {
-	m.description = value
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
 func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string) {
-	m.effectiveRunDataRetentionDesc = value
+	err := m.GetBackingStore().Set("effectiveRunDataRetentionDesc", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
 func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string) {
-	m.effectiveStateVersionRetentionDesc = value
+	err := m.GetBackingStore().Set("effectiveStateVersionRetentionDesc", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEnvironment sets the environment property value. The environment property
 func (m *Workspaces_attributes) SetEnvironment(value *string) {
-	m.environment = value
+	err := m.GetBackingStore().Set("environment", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetExecutionMode sets the execution-mode property value. The executionMode property
 func (m *Workspaces_attributes) SetExecutionMode(value *Workspaces_attributes_executionMode) {
-	m.executionMode = value
+	err := m.GetBackingStore().Set("executionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFileTriggersEnabled sets the file-triggers-enabled property value. The fileTriggersEnabled property
 func (m *Workspaces_attributes) SetFileTriggersEnabled(value *bool) {
-	m.fileTriggersEnabled = value
+	err := m.GetBackingStore().Set("fileTriggersEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGlobalRemoteState sets the global-remote-state property value. The globalRemoteState property
 func (m *Workspaces_attributes) SetGlobalRemoteState(value *bool) {
-	m.globalRemoteState = value
+	err := m.GetBackingStore().Set("globalRemoteState", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHyokEnabled sets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
 func (m *Workspaces_attributes) SetHyokEnabled(value *bool) {
-	m.hyokEnabled = value
+	err := m.GetBackingStore().Set("hyokEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetInheritsProjectAutoDestroy sets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 func (m *Workspaces_attributes) SetInheritsProjectAutoDestroy(value *bool) {
-	m.inheritsProjectAutoDestroy = value
+	err := m.GetBackingStore().Set("inheritsProjectAutoDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLastAssessmentResultAt sets the last-assessment-result-at property value. The lastAssessmentResultAt property
 func (m *Workspaces_attributes) SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.lastAssessmentResultAt = value
+	err := m.GetBackingStore().Set("lastAssessmentResultAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLatestChangeAt sets the latest-change-at property value. The latestChangeAt property
 func (m *Workspaces_attributes) SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.latestChangeAt = value
+	err := m.GetBackingStore().Set("latestChangeAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLocked sets the locked property value. The locked property
 func (m *Workspaces_attributes) SetLocked(value *bool) {
-	m.locked = value
+	err := m.GetBackingStore().Set("locked", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetLockedReason sets the locked-reason property value. The lockedReason property
 func (m *Workspaces_attributes) SetLockedReason(value *string) {
-	m.lockedReason = value
+	err := m.GetBackingStore().Set("lockedReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *Workspaces_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNoCodeUpgradeAvailable sets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
 func (m *Workspaces_attributes) SetNoCodeUpgradeAvailable(value *bool) {
-	m.noCodeUpgradeAvailable = value
+	err := m.GetBackingStore().Set("noCodeUpgradeAvailable", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOauthClientName sets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
 func (m *Workspaces_attributes) SetOauthClientName(value *string) {
-	m.oauthClientName = value
+	err := m.GetBackingStore().Set("oauthClientName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOperations sets the operations property value. Deprecated. Use execution-mode instead.
 func (m *Workspaces_attributes) SetOperations(value *bool) {
-	m.operations = value
+	err := m.GetBackingStore().Set("operations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 func (m *Workspaces_attributes) SetParentDataRetentionPolicyInfo(value *string) {
-	m.parentDataRetentionPolicyInfo = value
+	err := m.GetBackingStore().Set("parentDataRetentionPolicyInfo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Workspaces_attributes) SetPermissions(value Workspaces_attributes_permissionsable) {
-	m.permissions = value
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanDurationAverage sets the plan-duration-average property value. The planDurationAverage property
 func (m *Workspaces_attributes) SetPlanDurationAverage(value *int32) {
-	m.planDurationAverage = value
+	err := m.GetBackingStore().Set("planDurationAverage", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPolicyCheckFailures sets the policy-check-failures property value. The policyCheckFailures property
 func (m *Workspaces_attributes) SetPolicyCheckFailures(value *int32) {
-	m.policyCheckFailures = value
+	err := m.GetBackingStore().Set("policyCheckFailures", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetProjectRemoteState sets the project-remote-state property value. The projectRemoteState property
 func (m *Workspaces_attributes) SetProjectRemoteState(value *bool) {
-	m.projectRemoteState = value
+	err := m.GetBackingStore().Set("projectRemoteState", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetQueueAllRuns sets the queue-all-runs property value. The queueAllRuns property
 func (m *Workspaces_attributes) SetQueueAllRuns(value *bool) {
-	m.queueAllRuns = value
+	err := m.GetBackingStore().Set("queueAllRuns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResourceCount sets the resource-count property value. The resourceCount property
 func (m *Workspaces_attributes) SetResourceCount(value *int32) {
-	m.resourceCount = value
+	err := m.GetBackingStore().Set("resourceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRunFailures sets the run-failures property value. The runFailures property
 func (m *Workspaces_attributes) SetRunFailures(value *int32) {
-	m.runFailures = value
+	err := m.GetBackingStore().Set("runFailures", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
 func (m *Workspaces_attributes) SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable) {
-	m.settingOverwrites = value
+	err := m.GetBackingStore().Set("settingOverwrites", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSource sets the source property value. The source property
 func (m *Workspaces_attributes) SetSource(value *string) {
-	m.source = value
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceModuleId sets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
 func (m *Workspaces_attributes) SetSourceModuleId(value *string) {
-	m.sourceModuleId = value
+	err := m.GetBackingStore().Set("sourceModuleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceName sets the source-name property value. The sourceName property
 func (m *Workspaces_attributes) SetSourceName(value *string) {
-	m.sourceName = value
+	err := m.GetBackingStore().Set("sourceName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceUrl sets the source-url property value. The sourceUrl property
 func (m *Workspaces_attributes) SetSourceUrl(value *string) {
-	m.sourceUrl = value
+	err := m.GetBackingStore().Set("sourceUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSpeculativeEnabled sets the speculative-enabled property value. The speculativeEnabled property
 func (m *Workspaces_attributes) SetSpeculativeEnabled(value *bool) {
-	m.speculativeEnabled = value
+	err := m.GetBackingStore().Set("speculativeEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStructuredRunOutputEnabled sets the structured-run-output-enabled property value. The structuredRunOutputEnabled property
 func (m *Workspaces_attributes) SetStructuredRunOutputEnabled(value *bool) {
-	m.structuredRunOutputEnabled = value
+	err := m.GetBackingStore().Set("structuredRunOutputEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTagNames sets the tag-names property value. The tagNames property
 func (m *Workspaces_attributes) SetTagNames(value []string) {
-	m.tagNames = value
+	err := m.GetBackingStore().Set("tagNames", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
 func (m *Workspaces_attributes) SetTerraformVersion(value *string) {
-	m.terraformVersion = value
+	err := m.GetBackingStore().Set("terraformVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerPatterns sets the trigger-patterns property value. The triggerPatterns property
 func (m *Workspaces_attributes) SetTriggerPatterns(value []string) {
-	m.triggerPatterns = value
+	err := m.GetBackingStore().Set("triggerPatterns", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerPrefixes sets the trigger-prefixes property value. The triggerPrefixes property
 func (m *Workspaces_attributes) SetTriggerPrefixes(value []string) {
-	m.triggerPrefixes = value
+	err := m.GetBackingStore().Set("triggerPrefixes", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUnarchivedWorkspaceChangeRequestsCount sets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *Workspaces_attributes) SetUnarchivedWorkspaceChangeRequestsCount(value *int32) {
-	m.unarchivedWorkspaceChangeRequestsCount = value
+	err := m.GetBackingStore().Set("unarchivedWorkspaceChangeRequestsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *Workspaces_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
 func (m *Workspaces_attributes) SetVcsRepo(value Workspaces_attributes_vcsRepoable) {
-	m.vcsRepo = value
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVcsRepoIdentifier sets the vcs-repo-identifier property value. The vcsRepoIdentifier property
 func (m *Workspaces_attributes) SetVcsRepoIdentifier(value *string) {
-	m.vcsRepoIdentifier = value
+	err := m.GetBackingStore().Set("vcsRepoIdentifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkingDirectory sets the working-directory property value. The workingDirectory property
 func (m *Workspaces_attributes) SetWorkingDirectory(value *string) {
-	m.workingDirectory = value
+	err := m.GetBackingStore().Set("workingDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaceKpisRunsCount sets the workspace-kpis-runs-count property value. The workspaceKpisRunsCount property
 func (m *Workspaces_attributes) SetWorkspaceKpisRunsCount(value *int32) {
-	m.workspaceKpisRunsCount = value
+	err := m.GetBackingStore().Set("workspaceKpisRunsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Workspaces_attributesable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetActions() Workspaces_attributes_actionsable
 	GetAllowDestroyPlan() *bool
@@ -1549,6 +1981,7 @@ type Workspaces_attributesable interface {
 	GetAutoDestroyActivityDuration() *string
 	GetAutoDestroyAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetAutoDestroyStatus() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDescription() *string
 	GetEffectiveRunDataRetentionDesc() *string
@@ -1601,6 +2034,7 @@ type Workspaces_attributesable interface {
 	SetAutoDestroyActivityDuration(value *string)
 	SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetAutoDestroyStatus(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDescription(value *string)
 	SetEffectiveRunDataRetentionDesc(value *string)

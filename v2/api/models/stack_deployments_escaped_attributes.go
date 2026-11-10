@@ -5,22 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeployments_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
-	branch *string
-	// Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
-	groupName *string
-	// The name property
-	name *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeployments_attributes instantiates a new StackDeployments_attributes and sets the default values.
 func NewStackDeployments_attributes() *StackDeployments_attributes {
 	m := &StackDeployments_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -34,13 +30,34 @@ func CreateStackDeployments_attributesFromDiscriminatorValue(parseNode i878a80d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeployments_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeployments_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBranch gets the branch property value. Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
 // returns a *string when successful
 func (m *StackDeployments_attributes) GetBranch() *string {
-	return m.branch
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -83,13 +100,27 @@ func (m *StackDeployments_attributes) GetFieldDeserializers() map[string]func(i8
 // GetGroupName gets the group-name property value. Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
 // returns a *string when successful
 func (m *StackDeployments_attributes) GetGroupName() *string {
-	return m.groupName
+	val, err := m.GetBackingStore().Get("groupName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *StackDeployments_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -123,30 +154,50 @@ func (m *StackDeployments_attributes) Serialize(writer i878a80d2330e89d26896388a
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeployments_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeployments_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBranch sets the branch property value. Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
 func (m *StackDeployments_attributes) SetBranch(value *string) {
-	m.branch = value
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetGroupName sets the group-name property value. Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
 func (m *StackDeployments_attributes) SetGroupName(value *string) {
-	m.groupName = value
+	err := m.GetBackingStore().Set("groupName", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *StackDeployments_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeployments_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBranch() *string
 	GetGroupName() *string
 	GetName() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBranch(value *string)
 	SetGroupName(value *string)
 	SetName(value *string)

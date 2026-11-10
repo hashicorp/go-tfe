@@ -5,32 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Stacks_attributes_vcsRepo struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The branch property
-	branch *string
-	// The displayIdentifier property
-	displayIdentifier *string
-	// The identifier property
-	identifier *string
-	// The oauthTokenId property
-	oauthTokenId *string
-	// The repositoryHttpUrl property
-	repositoryHttpUrl *string
-	// The serviceProvider property
-	serviceProvider *string
-	// The tagsRegex property
-	tagsRegex *string
-	// The triggerDisabled property
-	triggerDisabled *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStacks_attributes_vcsRepo instantiates a new Stacks_attributes_vcsRepo and sets the default values.
 func NewStacks_attributes_vcsRepo() *Stacks_attributes_vcsRepo {
 	m := &Stacks_attributes_vcsRepo{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -44,19 +30,47 @@ func CreateStacks_attributes_vcsRepoFromDiscriminatorValue(parseNode i878a80d233
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *Stacks_attributes_vcsRepo) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Stacks_attributes_vcsRepo) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetBranch gets the branch property value. The branch property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetBranch() *string {
-	return m.branch
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetDisplayIdentifier gets the display-identifier property value. The displayIdentifier property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetDisplayIdentifier() *string {
-	return m.displayIdentifier
+	val, err := m.GetBackingStore().Get("displayIdentifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -149,37 +163,79 @@ func (m *Stacks_attributes_vcsRepo) GetFieldDeserializers() map[string]func(i878
 // GetIdentifier gets the identifier property value. The identifier property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetIdentifier() *string {
-	return m.identifier
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetOauthTokenId gets the oauth-token-id property value. The oauthTokenId property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetOauthTokenId() *string {
-	return m.oauthTokenId
+	val, err := m.GetBackingStore().Get("oauthTokenId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetRepositoryHttpUrl gets the repository-http-url property value. The repositoryHttpUrl property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetRepositoryHttpUrl() *string {
-	return m.repositoryHttpUrl
+	val, err := m.GetBackingStore().Get("repositoryHttpUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetServiceProvider gets the service-provider property value. The serviceProvider property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetServiceProvider() *string {
-	return m.serviceProvider
+	val, err := m.GetBackingStore().Get("serviceProvider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTagsRegex gets the tags-regex property value. The tagsRegex property
 // returns a *string when successful
 func (m *Stacks_attributes_vcsRepo) GetTagsRegex() *string {
-	return m.tagsRegex
+	val, err := m.GetBackingStore().Get("tagsRegex")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTriggerDisabled gets the trigger-disabled property value. The triggerDisabled property
 // returns a *bool when successful
 func (m *Stacks_attributes_vcsRepo) GetTriggerDisabled() *bool {
-	return m.triggerDisabled
+	val, err := m.GetBackingStore().Get("triggerDisabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -243,52 +299,86 @@ func (m *Stacks_attributes_vcsRepo) Serialize(writer i878a80d2330e89d26896388a3f
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *Stacks_attributes_vcsRepo) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Stacks_attributes_vcsRepo) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetBranch sets the branch property value. The branch property
 func (m *Stacks_attributes_vcsRepo) SetBranch(value *string) {
-	m.branch = value
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDisplayIdentifier sets the display-identifier property value. The displayIdentifier property
 func (m *Stacks_attributes_vcsRepo) SetDisplayIdentifier(value *string) {
-	m.displayIdentifier = value
+	err := m.GetBackingStore().Set("displayIdentifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIdentifier sets the identifier property value. The identifier property
 func (m *Stacks_attributes_vcsRepo) SetIdentifier(value *string) {
-	m.identifier = value
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOauthTokenId sets the oauth-token-id property value. The oauthTokenId property
 func (m *Stacks_attributes_vcsRepo) SetOauthTokenId(value *string) {
-	m.oauthTokenId = value
+	err := m.GetBackingStore().Set("oauthTokenId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetRepositoryHttpUrl sets the repository-http-url property value. The repositoryHttpUrl property
 func (m *Stacks_attributes_vcsRepo) SetRepositoryHttpUrl(value *string) {
-	m.repositoryHttpUrl = value
+	err := m.GetBackingStore().Set("repositoryHttpUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetServiceProvider sets the service-provider property value. The serviceProvider property
 func (m *Stacks_attributes_vcsRepo) SetServiceProvider(value *string) {
-	m.serviceProvider = value
+	err := m.GetBackingStore().Set("serviceProvider", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTagsRegex sets the tags-regex property value. The tagsRegex property
 func (m *Stacks_attributes_vcsRepo) SetTagsRegex(value *string) {
-	m.tagsRegex = value
+	err := m.GetBackingStore().Set("tagsRegex", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTriggerDisabled sets the trigger-disabled property value. The triggerDisabled property
 func (m *Stacks_attributes_vcsRepo) SetTriggerDisabled(value *bool) {
-	m.triggerDisabled = value
+	err := m.GetBackingStore().Set("triggerDisabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Stacks_attributes_vcsRepoable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetBranch() *string
 	GetDisplayIdentifier() *string
 	GetIdentifier() *string
@@ -297,6 +387,7 @@ type Stacks_attributes_vcsRepoable interface {
 	GetServiceProvider() *string
 	GetTagsRegex() *string
 	GetTriggerDisabled() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetBranch(value *string)
 	SetDisplayIdentifier(value *string)
 	SetIdentifier(value *string)

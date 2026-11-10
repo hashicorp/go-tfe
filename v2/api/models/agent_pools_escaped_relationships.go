@@ -5,30 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AgentPools_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The agents property
-	agents Links_relatedable
-	// The allowedProjects property
-	allowedProjects ProjectsHasManyable
-	// The allowedWorkspaces property
-	allowedWorkspaces WorkspacesHasManyable
-	// The authenticationTokens property
-	authenticationTokens Links_relatedable
-	// The excludedWorkspaces property
-	excludedWorkspaces WorkspacesHasManyable
-	// The organization property
-	organization OrganizationsHasOneable
-	// The workspaces property
-	workspaces WorkspacesHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAgentPools_relationships instantiates a new AgentPools_relationships and sets the default values.
 func NewAgentPools_relationships() *AgentPools_relationships {
 	m := &AgentPools_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -42,37 +30,86 @@ func CreateAgentPools_relationshipsFromDiscriminatorValue(parseNode i878a80d2330
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AgentPools_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAgents gets the agents property value. The agents property
 // returns a Links_relatedable when successful
 func (m *AgentPools_relationships) GetAgents() Links_relatedable {
-	return m.agents
+	val, err := m.GetBackingStore().Get("agents")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
 
 // GetAllowedProjects gets the allowed-projects property value. The allowedProjects property
 // returns a ProjectsHasManyable when successful
 func (m *AgentPools_relationships) GetAllowedProjects() ProjectsHasManyable {
-	return m.allowedProjects
+	val, err := m.GetBackingStore().Get("allowedProjects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasManyable)
+	}
+	return nil
 }
 
 // GetAllowedWorkspaces gets the allowed-workspaces property value. The allowedWorkspaces property
 // returns a WorkspacesHasManyable when successful
 func (m *AgentPools_relationships) GetAllowedWorkspaces() WorkspacesHasManyable {
-	return m.allowedWorkspaces
+	val, err := m.GetBackingStore().Get("allowedWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasManyable)
+	}
+	return nil
 }
 
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
 // returns a Links_relatedable when successful
 func (m *AgentPools_relationships) GetAuthenticationTokens() Links_relatedable {
-	return m.authenticationTokens
+	val, err := m.GetBackingStore().Get("authenticationTokens")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AgentPools_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExcludedWorkspaces gets the excluded-workspaces property value. The excludedWorkspaces property
 // returns a WorkspacesHasManyable when successful
 func (m *AgentPools_relationships) GetExcludedWorkspaces() WorkspacesHasManyable {
-	return m.excludedWorkspaces
+	val, err := m.GetBackingStore().Get("excludedWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasManyable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -155,13 +192,27 @@ func (m *AgentPools_relationships) GetFieldDeserializers() map[string]func(i878a
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *AgentPools_relationships) GetOrganization() OrganizationsHasOneable {
-	return m.organization
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
 
 // GetWorkspaces gets the workspaces property value. The workspaces property
 // returns a WorkspacesHasManyable when successful
 func (m *AgentPools_relationships) GetWorkspaces() WorkspacesHasManyable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasManyable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -219,51 +270,82 @@ func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AgentPools_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAgents sets the agents property value. The agents property
 func (m *AgentPools_relationships) SetAgents(value Links_relatedable) {
-	m.agents = value
+	err := m.GetBackingStore().Set("agents", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowedProjects sets the allowed-projects property value. The allowedProjects property
 func (m *AgentPools_relationships) SetAllowedProjects(value ProjectsHasManyable) {
-	m.allowedProjects = value
+	err := m.GetBackingStore().Set("allowedProjects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAllowedWorkspaces sets the allowed-workspaces property value. The allowedWorkspaces property
 func (m *AgentPools_relationships) SetAllowedWorkspaces(value WorkspacesHasManyable) {
-	m.allowedWorkspaces = value
+	err := m.GetBackingStore().Set("allowedWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
 func (m *AgentPools_relationships) SetAuthenticationTokens(value Links_relatedable) {
-	m.authenticationTokens = value
+	err := m.GetBackingStore().Set("authenticationTokens", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AgentPools_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExcludedWorkspaces sets the excluded-workspaces property value. The excludedWorkspaces property
 func (m *AgentPools_relationships) SetExcludedWorkspaces(value WorkspacesHasManyable) {
-	m.excludedWorkspaces = value
+	err := m.GetBackingStore().Set("excludedWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetOrganization sets the organization property value. The organization property
 func (m *AgentPools_relationships) SetOrganization(value OrganizationsHasOneable) {
-	m.organization = value
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetWorkspaces sets the workspaces property value. The workspaces property
 func (m *AgentPools_relationships) SetWorkspaces(value WorkspacesHasManyable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AgentPools_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAgents() Links_relatedable
 	GetAllowedProjects() ProjectsHasManyable
 	GetAllowedWorkspaces() WorkspacesHasManyable
 	GetAuthenticationTokens() Links_relatedable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExcludedWorkspaces() WorkspacesHasManyable
 	GetOrganization() OrganizationsHasOneable
 	GetWorkspaces() WorkspacesHasManyable
@@ -271,6 +353,7 @@ type AgentPools_relationshipsable interface {
 	SetAllowedProjects(value ProjectsHasManyable)
 	SetAllowedWorkspaces(value WorkspacesHasManyable)
 	SetAuthenticationTokens(value Links_relatedable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExcludedWorkspaces(value WorkspacesHasManyable)
 	SetOrganization(value OrganizationsHasOneable)
 	SetWorkspaces(value WorkspacesHasManyable)

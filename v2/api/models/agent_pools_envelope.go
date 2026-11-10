@@ -5,41 +5,25 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type AgentPoolsEnvelope struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The data property
-	data AgentPoolsable
-	// The included property
-	included []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
-// AgentPoolsEnvelope_AgentPoolsEnvelope_included composed type wrapper for classes CidrRangeListsable, CidrRangesable, HyokConfigurationsable, OauthClientsable, Projectsable, RegistryModulesable, Stacksable, Workspacesable
+// AgentPoolsEnvelope_AgentPoolsEnvelope_included composed type wrapper for classes CidrRangeLists, CidrRanges, HyokConfigurations, OauthClients, Projects, RegistryModules, Stacks, Workspaces
 type AgentPoolsEnvelope_AgentPoolsEnvelope_included struct {
-	// Composed type representation for type CidrRangeListsable
-	cidrRangeLists CidrRangeListsable
-	// Composed type representation for type CidrRangesable
-	cidrRanges CidrRangesable
-	// Composed type representation for type HyokConfigurationsable
-	hyokConfigurations HyokConfigurationsable
-	// Composed type representation for type OauthClientsable
-	oauthClients OauthClientsable
-	// Composed type representation for type Projectsable
-	projects Projectsable
-	// Composed type representation for type RegistryModulesable
-	registryModules RegistryModulesable
-	// Composed type representation for type Stacksable
-	stacks Stacksable
-	// Composed type representation for type Workspacesable
-	workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewAgentPoolsEnvelope_AgentPoolsEnvelope_included instantiates a new AgentPoolsEnvelope_AgentPoolsEnvelope_included and sets the default values.
 func NewAgentPoolsEnvelope_AgentPoolsEnvelope_included() *AgentPoolsEnvelope_AgentPoolsEnvelope_included {
 	m := &AgentPoolsEnvelope_AgentPoolsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	return m
 }
 
@@ -81,16 +65,36 @@ func CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue(
 	return result, nil
 }
 
-// GetCidrRangeLists gets the cidrRangeLists property value. Composed type representation for type CidrRangeListsable
-// returns a CidrRangeListsable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRangeLists() CidrRangeListsable {
-	return m.cidrRangeLists
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
-// GetCidrRanges gets the cidrRanges property value. Composed type representation for type CidrRangesable
+// GetCidrRangeLists gets the cidrRangeLists property value. Composed type representation for type CidrRangeLists
+// returns a CidrRangeListsable when successful
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRangeLists() CidrRangeListsable {
+	val, err := m.GetBackingStore().Get("cidrRangeLists")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CidrRangeListsable)
+	}
+	return nil
+}
+
+// GetCidrRanges gets the cidrRanges property value. Composed type representation for type CidrRanges
 // returns a CidrRangesable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRanges() CidrRangesable {
-	return m.cidrRanges
+	val, err := m.GetBackingStore().Get("cidrRanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CidrRangesable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -116,10 +120,17 @@ func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetFieldDeserializers()
 	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
 
-// GetHyokConfigurations gets the hyokConfigurations property value. Composed type representation for type HyokConfigurationsable
+// GetHyokConfigurations gets the hyokConfigurations property value. Composed type representation for type HyokConfigurations
 // returns a HyokConfigurationsable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetHyokConfigurations() HyokConfigurationsable {
-	return m.hyokConfigurations
+	val, err := m.GetBackingStore().Get("hyokConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurationsable)
+	}
+	return nil
 }
 
 // GetIsComposedType determines if the current object is a wrapper around a composed type
@@ -128,34 +139,69 @@ func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetIsComposedType() boo
 	return true
 }
 
-// GetOauthClients gets the oauthClients property value. Composed type representation for type OauthClientsable
+// GetOauthClients gets the oauthClients property value. Composed type representation for type OauthClients
 // returns a OauthClientsable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetOauthClients() OauthClientsable {
-	return m.oauthClients
+	val, err := m.GetBackingStore().Get("oauthClients")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OauthClientsable)
+	}
+	return nil
 }
 
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetProjects() Projectsable {
-	return m.projects
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
 
-// GetRegistryModules gets the registryModules property value. Composed type representation for type RegistryModulesable
+// GetRegistryModules gets the registryModules property value. Composed type representation for type RegistryModules
 // returns a RegistryModulesable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetRegistryModules() RegistryModulesable {
-	return m.registryModules
+	val, err := m.GetBackingStore().Get("registryModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModulesable)
+	}
+	return nil
 }
 
-// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+// GetStacks gets the stacks property value. Composed type representation for type Stacks
 // returns a Stacksable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetStacks() Stacksable {
-	return m.stacks
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacksable)
+	}
+	return nil
 }
 
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetWorkspaces() Workspacesable {
-	return m.workspaces
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -204,48 +250,79 @@ func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) Serialize(writer i878a8
 	return nil
 }
 
-// SetCidrRangeLists sets the cidrRangeLists property value. Composed type representation for type CidrRangeListsable
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
+// SetCidrRangeLists sets the cidrRangeLists property value. Composed type representation for type CidrRangeLists
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRangeLists(value CidrRangeListsable) {
-	m.cidrRangeLists = value
+	err := m.GetBackingStore().Set("cidrRangeLists", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetCidrRanges sets the cidrRanges property value. Composed type representation for type CidrRangesable
+// SetCidrRanges sets the cidrRanges property value. Composed type representation for type CidrRanges
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRanges(value CidrRangesable) {
-	m.cidrRanges = value
+	err := m.GetBackingStore().Set("cidrRanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetHyokConfigurations sets the hyokConfigurations property value. Composed type representation for type HyokConfigurationsable
+// SetHyokConfigurations sets the hyokConfigurations property value. Composed type representation for type HyokConfigurations
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetHyokConfigurations(value HyokConfigurationsable) {
-	m.hyokConfigurations = value
+	err := m.GetBackingStore().Set("hyokConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetOauthClients sets the oauthClients property value. Composed type representation for type OauthClientsable
+// SetOauthClients sets the oauthClients property value. Composed type representation for type OauthClients
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetOauthClients(value OauthClientsable) {
-	m.oauthClients = value
+	err := m.GetBackingStore().Set("oauthClients", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
+// SetProjects sets the projects property value. Composed type representation for type Projects
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetProjects(value Projectsable) {
-	m.projects = value
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetRegistryModules sets the registryModules property value. Composed type representation for type RegistryModulesable
+// SetRegistryModules sets the registryModules property value. Composed type representation for type RegistryModules
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetRegistryModules(value RegistryModulesable) {
-	m.registryModules = value
+	err := m.GetBackingStore().Set("registryModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetStacks sets the stacks property value. Composed type representation for type Stacksable
+// SetStacks sets the stacks property value. Composed type representation for type Stacks
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetStacks(value Stacksable) {
-	m.stacks = value
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
 func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetWorkspaces(value Workspacesable) {
-	m.workspaces = value
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AgentPoolsEnvelope_AgentPoolsEnvelope_includedable interface {
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCidrRangeLists() CidrRangeListsable
 	GetCidrRanges() CidrRangesable
 	GetHyokConfigurations() HyokConfigurationsable
@@ -254,6 +331,7 @@ type AgentPoolsEnvelope_AgentPoolsEnvelope_includedable interface {
 	GetRegistryModules() RegistryModulesable
 	GetStacks() Stacksable
 	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCidrRangeLists(value CidrRangeListsable)
 	SetCidrRanges(value CidrRangesable)
 	SetHyokConfigurations(value HyokConfigurationsable)
@@ -267,6 +345,7 @@ type AgentPoolsEnvelope_AgentPoolsEnvelope_includedable interface {
 // NewAgentPoolsEnvelope instantiates a new AgentPoolsEnvelope and sets the default values.
 func NewAgentPoolsEnvelope() *AgentPoolsEnvelope {
 	m := &AgentPoolsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -280,13 +359,34 @@ func CreateAgentPoolsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *AgentPoolsEnvelope) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AgentPoolsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetData gets the data property value. The data property
 // returns a AgentPoolsable when successful
 func (m *AgentPoolsEnvelope) GetData() AgentPoolsable {
-	return m.data
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AgentPoolsable)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -325,7 +425,14 @@ func (m *AgentPoolsEnvelope) GetFieldDeserializers() map[string]func(i878a80d233
 // GetIncluded gets the included property value. The included property
 // returns a []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable when successful
 func (m *AgentPoolsEnvelope) GetIncluded() []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable {
-	return m.included
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -359,24 +466,41 @@ func (m *AgentPoolsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *AgentPoolsEnvelope) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AgentPoolsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetData sets the data property value. The data property
 func (m *AgentPoolsEnvelope) SetData(value AgentPoolsable) {
-	m.data = value
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIncluded sets the included property value. The included property
 func (m *AgentPoolsEnvelope) SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable) {
-	m.included = value
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type AgentPoolsEnvelopeable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetData() AgentPoolsable
 	GetIncluded() []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetData(value AgentPoolsable)
 	SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
 }

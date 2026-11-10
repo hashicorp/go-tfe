@@ -5,33 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // PolicyChecks_attributes_result the result of the policy evaluation. Null until the policy check completes. The `sentinel` key contains low-level Sentinel details and its structure may change over time.
 type PolicyChecks_attributes_result struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The advisoryFailed property
-	advisoryFailed *int32
-	// The durationMs property
-	durationMs *int32
-	// The hardFailed property
-	hardFailed *int32
-	// The passed property
-	passed *int32
-	// The result property
-	result *bool
-	// The sentinel property
-	sentinel PolicyChecks_attributes_result_sentinelable
-	// The softFailed property
-	softFailed *int32
-	// The totalFailed property
-	totalFailed *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewPolicyChecks_attributes_result instantiates a new PolicyChecks_attributes_result and sets the default values.
 func NewPolicyChecks_attributes_result() *PolicyChecks_attributes_result {
 	m := &PolicyChecks_attributes_result{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -45,19 +31,47 @@ func CreatePolicyChecks_attributes_resultFromDiscriminatorValue(parseNode i878a8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *PolicyChecks_attributes_result) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
 
 // GetAdvisoryFailed gets the advisory-failed property value. The advisoryFailed property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetAdvisoryFailed() *int32 {
-	return m.advisoryFailed
+	val, err := m.GetBackingStore().Get("advisoryFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyChecks_attributes_result) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetDurationMs gets the duration-ms property value. The durationMs property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetDurationMs() *int32 {
-	return m.durationMs
+	val, err := m.GetBackingStore().Get("durationMs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -150,37 +164,79 @@ func (m *PolicyChecks_attributes_result) GetFieldDeserializers() map[string]func
 // GetHardFailed gets the hard-failed property value. The hardFailed property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetHardFailed() *int32 {
-	return m.hardFailed
+	val, err := m.GetBackingStore().Get("hardFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetPassed gets the passed property value. The passed property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetPassed() *int32 {
-	return m.passed
+	val, err := m.GetBackingStore().Get("passed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetResult gets the result property value. The result property
 // returns a *bool when successful
 func (m *PolicyChecks_attributes_result) GetResult() *bool {
-	return m.result
+	val, err := m.GetBackingStore().Get("result")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSentinel gets the sentinel property value. The sentinel property
 // returns a PolicyChecks_attributes_result_sentinelable when successful
 func (m *PolicyChecks_attributes_result) GetSentinel() PolicyChecks_attributes_result_sentinelable {
-	return m.sentinel
+	val, err := m.GetBackingStore().Get("sentinel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecks_attributes_result_sentinelable)
+	}
+	return nil
 }
 
 // GetSoftFailed gets the soft-failed property value. The softFailed property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetSoftFailed() *int32 {
-	return m.softFailed
+	val, err := m.GetBackingStore().Get("softFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTotalFailed gets the total-failed property value. The totalFailed property
 // returns a *int32 when successful
 func (m *PolicyChecks_attributes_result) GetTotalFailed() *int32 {
-	return m.totalFailed
+	val, err := m.GetBackingStore().Get("totalFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -244,53 +300,87 @@ func (m *PolicyChecks_attributes_result) Serialize(writer i878a80d2330e89d268963
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *PolicyChecks_attributes_result) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdvisoryFailed sets the advisory-failed property value. The advisoryFailed property
 func (m *PolicyChecks_attributes_result) SetAdvisoryFailed(value *int32) {
-	m.advisoryFailed = value
+	err := m.GetBackingStore().Set("advisoryFailed", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyChecks_attributes_result) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetDurationMs sets the duration-ms property value. The durationMs property
 func (m *PolicyChecks_attributes_result) SetDurationMs(value *int32) {
-	m.durationMs = value
+	err := m.GetBackingStore().Set("durationMs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetHardFailed sets the hard-failed property value. The hardFailed property
 func (m *PolicyChecks_attributes_result) SetHardFailed(value *int32) {
-	m.hardFailed = value
+	err := m.GetBackingStore().Set("hardFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPassed sets the passed property value. The passed property
 func (m *PolicyChecks_attributes_result) SetPassed(value *int32) {
-	m.passed = value
+	err := m.GetBackingStore().Set("passed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetResult sets the result property value. The result property
 func (m *PolicyChecks_attributes_result) SetResult(value *bool) {
-	m.result = value
+	err := m.GetBackingStore().Set("result", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSentinel sets the sentinel property value. The sentinel property
 func (m *PolicyChecks_attributes_result) SetSentinel(value PolicyChecks_attributes_result_sentinelable) {
-	m.sentinel = value
+	err := m.GetBackingStore().Set("sentinel", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSoftFailed sets the soft-failed property value. The softFailed property
 func (m *PolicyChecks_attributes_result) SetSoftFailed(value *int32) {
-	m.softFailed = value
+	err := m.GetBackingStore().Set("softFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTotalFailed sets the total-failed property value. The totalFailed property
 func (m *PolicyChecks_attributes_result) SetTotalFailed(value *int32) {
-	m.totalFailed = value
+	err := m.GetBackingStore().Set("totalFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type PolicyChecks_attributes_resultable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAdvisoryFailed() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetDurationMs() *int32
 	GetHardFailed() *int32
 	GetPassed() *int32
@@ -299,6 +389,7 @@ type PolicyChecks_attributes_resultable interface {
 	GetSoftFailed() *int32
 	GetTotalFailed() *int32
 	SetAdvisoryFailed(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetDurationMs(value *int32)
 	SetHardFailed(value *int32)
 	SetPassed(value *int32)

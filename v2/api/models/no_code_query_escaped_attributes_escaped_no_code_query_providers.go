@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type NoCodeQuery_attributes_noCodeQueryProviders struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The id property
-	id *string
-	// The name property
-	name *string
-	// The namespace property
-	namespace *string
-	// The noCodeQueryResources property
-	noCodeQueryResources []NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable
-	// The version property
-	version *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewNoCodeQuery_attributes_noCodeQueryProviders instantiates a new NoCodeQuery_attributes_noCodeQueryProviders and sets the default values.
 func NewNoCodeQuery_attributes_noCodeQueryProviders() *NoCodeQuery_attributes_noCodeQueryProviders {
 	m := &NoCodeQuery_attributes_noCodeQueryProviders{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,7 +30,21 @@ func CreateNoCodeQuery_attributes_noCodeQueryProvidersFromDiscriminatorValue(par
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -107,31 +113,66 @@ func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetFieldDeserializers() ma
 // GetId gets the id property value. The id property
 // returns a *string when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetId() *string {
-	return m.id
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNamespace gets the namespace property value. The namespace property
 // returns a *string when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetNamespace() *string {
-	return m.namespace
+	val, err := m.GetBackingStore().Get("namespace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetNoCodeQueryResources gets the no-code-query-resources property value. The noCodeQueryResources property
 // returns a []NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetNoCodeQueryResources() []NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable {
-	return m.noCodeQueryResources
+	val, err := m.GetBackingStore().Get("noCodeQueryResources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable)
+	}
+	return nil
 }
 
 // GetVersion gets the version property value. The version property
 // returns a *string when successful
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) GetVersion() *string {
-	return m.version
+	val, err := m.GetBackingStore().Get("version")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -177,42 +218,68 @@ func (m *NoCodeQuery_attributes_noCodeQueryProviders) Serialize(writer i878a80d2
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetId sets the id property value. The id property
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetId(value *string) {
-	m.id = value
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNamespace sets the namespace property value. The namespace property
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetNamespace(value *string) {
-	m.namespace = value
+	err := m.GetBackingStore().Set("namespace", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetNoCodeQueryResources sets the no-code-query-resources property value. The noCodeQueryResources property
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetNoCodeQueryResources(value []NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable) {
-	m.noCodeQueryResources = value
+	err := m.GetBackingStore().Set("noCodeQueryResources", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVersion sets the version property value. The version property
 func (m *NoCodeQuery_attributes_noCodeQueryProviders) SetVersion(value *string) {
-	m.version = value
+	err := m.GetBackingStore().Set("version", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type NoCodeQuery_attributes_noCodeQueryProvidersable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetId() *string
 	GetName() *string
 	GetNamespace() *string
 	GetNoCodeQueryResources() []NoCodeQuery_attributes_noCodeQueryProviders_noCodeQueryResourcesable
 	GetVersion() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetId(value *string)
 	SetName(value *string)
 	SetNamespace(value *string)

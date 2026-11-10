@@ -5,25 +5,19 @@ package admin
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type SamlSettingsActionsCertValidationPostResponse_data_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// ISO 8601 UTC datetime when the certificate expires. Only present when parseable.
-	expiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Human-readable issuer derived from the O and CN fields of the certificate. Only present when parseable.
-	issuer *string
-	// Whether the certificate is parseable and non-expired.
-	isValid *bool
-	// Signature algorithm of the certificate (e.g. `sha256WithRSAEncryption`). Only present when parseable.
-	signatureAlgorithm *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewSamlSettingsActionsCertValidationPostResponse_data_attributes instantiates a new SamlSettingsActionsCertValidationPostResponse_data_attributes and sets the default values.
 func NewSamlSettingsActionsCertValidationPostResponse_data_attributes() *SamlSettingsActionsCertValidationPostResponse_data_attributes {
 	m := &SamlSettingsActionsCertValidationPostResponse_data_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -37,13 +31,34 @@ func CreateSamlSettingsActionsCertValidationPostResponse_data_attributesFromDisc
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetExpiresAt gets the expires-at property value. ISO 8601 UTC datetime when the certificate expires. Only present when parseable.
 // returns a *Time when successful
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.expiresAt
+	val, err := m.GetBackingStore().Get("expiresAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -96,19 +111,40 @@ func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetField
 // GetIssuer gets the issuer property value. Human-readable issuer derived from the O and CN fields of the certificate. Only present when parseable.
 // returns a *string when successful
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetIssuer() *string {
-	return m.issuer
+	val, err := m.GetBackingStore().Get("issuer")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetIsValid gets the is-valid property value. Whether the certificate is parseable and non-expired.
 // returns a *bool when successful
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetIsValid() *bool {
-	return m.isValid
+	val, err := m.GetBackingStore().Get("isValid")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetSignatureAlgorithm gets the signature-algorithm property value. Signature algorithm of the certificate (e.g. `sha256WithRSAEncryption`). Only present when parseable.
 // returns a *string when successful
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) GetSignatureAlgorithm() *string {
-	return m.signatureAlgorithm
+	val, err := m.GetBackingStore().Get("signatureAlgorithm")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -148,36 +184,59 @@ func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) Serializ
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetExpiresAt sets the expires-at property value. ISO 8601 UTC datetime when the certificate expires. Only present when parseable.
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.expiresAt = value
+	err := m.GetBackingStore().Set("expiresAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIssuer sets the issuer property value. Human-readable issuer derived from the O and CN fields of the certificate. Only present when parseable.
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetIssuer(value *string) {
-	m.issuer = value
+	err := m.GetBackingStore().Set("issuer", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetIsValid sets the is-valid property value. Whether the certificate is parseable and non-expired.
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetIsValid(value *bool) {
-	m.isValid = value
+	err := m.GetBackingStore().Set("isValid", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSignatureAlgorithm sets the signature-algorithm property value. Signature algorithm of the certificate (e.g. `sha256WithRSAEncryption`). Only present when parseable.
 func (m *SamlSettingsActionsCertValidationPostResponse_data_attributes) SetSignatureAlgorithm(value *string) {
-	m.signatureAlgorithm = value
+	err := m.GetBackingStore().Set("signatureAlgorithm", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type SamlSettingsActionsCertValidationPostResponse_data_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetIssuer() *string
 	GetIsValid() *bool
 	GetSignatureAlgorithm() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetIssuer(value *string)
 	SetIsValid(value *bool)

@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeploymentSteps_relationships struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The stackApproval property
-	stackApproval StackApprovalsHasOneable
-	// The stackDeploymentRun property
-	stackDeploymentRun StackDeploymentRunsHasOneable
-	// The stackDiagnostics property
-	stackDiagnostics StackDeploymentSteps_relationships_stackDiagnosticsable
-	// The stackOperation property
-	stackOperation StackOperationHasOneable
-	// The stackState property
-	stackState StackStatesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentSteps_relationships instantiates a new StackDeploymentSteps_relationships and sets the default values.
 func NewStackDeploymentSteps_relationships() *StackDeploymentSteps_relationships {
 	m := &StackDeploymentSteps_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,7 +30,21 @@ func CreateStackDeploymentSteps_relationshipsFromDiscriminatorValue(parseNode i8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentSteps_relationships) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentSteps_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -101,31 +107,66 @@ func (m *StackDeploymentSteps_relationships) GetFieldDeserializers() map[string]
 // GetStackApproval gets the stack-approval property value. The stackApproval property
 // returns a StackApprovalsHasOneable when successful
 func (m *StackDeploymentSteps_relationships) GetStackApproval() StackApprovalsHasOneable {
-	return m.stackApproval
+	val, err := m.GetBackingStore().Get("stackApproval")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackApprovalsHasOneable)
+	}
+	return nil
 }
 
 // GetStackDeploymentRun gets the stack-deployment-run property value. The stackDeploymentRun property
 // returns a StackDeploymentRunsHasOneable when successful
 func (m *StackDeploymentSteps_relationships) GetStackDeploymentRun() StackDeploymentRunsHasOneable {
-	return m.stackDeploymentRun
+	val, err := m.GetBackingStore().Get("stackDeploymentRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentRunsHasOneable)
+	}
+	return nil
 }
 
 // GetStackDiagnostics gets the stack-diagnostics property value. The stackDiagnostics property
 // returns a StackDeploymentSteps_relationships_stackDiagnosticsable when successful
 func (m *StackDeploymentSteps_relationships) GetStackDiagnostics() StackDeploymentSteps_relationships_stackDiagnosticsable {
-	return m.stackDiagnostics
+	val, err := m.GetBackingStore().Get("stackDiagnostics")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentSteps_relationships_stackDiagnosticsable)
+	}
+	return nil
 }
 
 // GetStackOperation gets the stack-operation property value. The stackOperation property
 // returns a StackOperationHasOneable when successful
 func (m *StackDeploymentSteps_relationships) GetStackOperation() StackOperationHasOneable {
-	return m.stackOperation
+	val, err := m.GetBackingStore().Get("stackOperation")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackOperationHasOneable)
+	}
+	return nil
 }
 
 // GetStackState gets the stack-state property value. The stackState property
 // returns a StackStatesHasOneable when successful
 func (m *StackDeploymentSteps_relationships) GetStackState() StackStatesHasOneable {
-	return m.stackState
+	val, err := m.GetBackingStore().Get("stackState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStatesHasOneable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -171,42 +212,68 @@ func (m *StackDeploymentSteps_relationships) Serialize(writer i878a80d2330e89d26
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentSteps_relationships) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentSteps_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetStackApproval sets the stack-approval property value. The stackApproval property
 func (m *StackDeploymentSteps_relationships) SetStackApproval(value StackApprovalsHasOneable) {
-	m.stackApproval = value
+	err := m.GetBackingStore().Set("stackApproval", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDeploymentRun sets the stack-deployment-run property value. The stackDeploymentRun property
 func (m *StackDeploymentSteps_relationships) SetStackDeploymentRun(value StackDeploymentRunsHasOneable) {
-	m.stackDeploymentRun = value
+	err := m.GetBackingStore().Set("stackDeploymentRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackDiagnostics sets the stack-diagnostics property value. The stackDiagnostics property
 func (m *StackDeploymentSteps_relationships) SetStackDiagnostics(value StackDeploymentSteps_relationships_stackDiagnosticsable) {
-	m.stackDiagnostics = value
+	err := m.GetBackingStore().Set("stackDiagnostics", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackOperation sets the stack-operation property value. The stackOperation property
 func (m *StackDeploymentSteps_relationships) SetStackOperation(value StackOperationHasOneable) {
-	m.stackOperation = value
+	err := m.GetBackingStore().Set("stackOperation", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStackState sets the stack-state property value. The stackState property
 func (m *StackDeploymentSteps_relationships) SetStackState(value StackStatesHasOneable) {
-	m.stackState = value
+	err := m.GetBackingStore().Set("stackState", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentSteps_relationshipsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetStackApproval() StackApprovalsHasOneable
 	GetStackDeploymentRun() StackDeploymentRunsHasOneable
 	GetStackDiagnostics() StackDeploymentSteps_relationships_stackDiagnosticsable
 	GetStackOperation() StackOperationHasOneable
 	GetStackState() StackStatesHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetStackApproval(value StackApprovalsHasOneable)
 	SetStackDeploymentRun(value StackDeploymentRunsHasOneable)
 	SetStackDiagnostics(value StackDeploymentSteps_relationships_stackDiagnosticsable)

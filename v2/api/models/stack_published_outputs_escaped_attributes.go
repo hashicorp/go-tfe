@@ -5,26 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackPublishedOutputs_attributes struct {
-	// The action property
-	action *string
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The currentValue property
-	currentValue *string
-	// The name property
-	name *string
-	// The previousValue property
-	previousValue *string
-	// The sourceRange property
-	sourceRange *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackPublishedOutputs_attributes instantiates a new StackPublishedOutputs_attributes and sets the default values.
 func NewStackPublishedOutputs_attributes() *StackPublishedOutputs_attributes {
 	m := &StackPublishedOutputs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -38,19 +30,47 @@ func CreateStackPublishedOutputs_attributesFromDiscriminatorValue(parseNode i878
 // GetAction gets the action property value. The action property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetAction() *string {
-	return m.action
+	val, err := m.GetBackingStore().Get("action")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackPublishedOutputs_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackPublishedOutputs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCurrentValue gets the current-value property value. The currentValue property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetCurrentValue() *string {
-	return m.currentValue
+	val, err := m.GetBackingStore().Get("currentValue")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -113,19 +133,40 @@ func (m *StackPublishedOutputs_attributes) GetFieldDeserializers() map[string]fu
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetName() *string {
-	return m.name
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetPreviousValue gets the previous-value property value. The previousValue property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetPreviousValue() *string {
-	return m.previousValue
+	val, err := m.GetBackingStore().Get("previousValue")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetSourceRange gets the source-range property value. The sourceRange property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetSourceRange() *string {
-	return m.sourceRange
+	val, err := m.GetBackingStore().Get("sourceRange")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -141,43 +182,69 @@ func (m *StackPublishedOutputs_attributes) Serialize(writer i878a80d2330e89d2689
 
 // SetAction sets the action property value. The action property
 func (m *StackPublishedOutputs_attributes) SetAction(value *string) {
-	m.action = value
+	err := m.GetBackingStore().Set("action", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackPublishedOutputs_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackPublishedOutputs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCurrentValue sets the current-value property value. The currentValue property
 func (m *StackPublishedOutputs_attributes) SetCurrentValue(value *string) {
-	m.currentValue = value
+	err := m.GetBackingStore().Set("currentValue", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetName sets the name property value. The name property
 func (m *StackPublishedOutputs_attributes) SetName(value *string) {
-	m.name = value
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreviousValue sets the previous-value property value. The previousValue property
 func (m *StackPublishedOutputs_attributes) SetPreviousValue(value *string) {
-	m.previousValue = value
+	err := m.GetBackingStore().Set("previousValue", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSourceRange sets the source-range property value. The sourceRange property
 func (m *StackPublishedOutputs_attributes) SetSourceRange(value *string) {
-	m.sourceRange = value
+	err := m.GetBackingStore().Set("sourceRange", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackPublishedOutputs_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAction() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCurrentValue() *string
 	GetName() *string
 	GetPreviousValue() *string
 	GetSourceRange() *string
 	SetAction(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCurrentValue(value *string)
 	SetName(value *string)
 	SetPreviousValue(value *string)

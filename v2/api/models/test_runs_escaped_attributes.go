@@ -5,53 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TestRuns_attributes struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The filters property
-	filters []string
-	// The message property
-	message *string
-	// The parallelism property
-	parallelism *int32
-	// The source property
-	source *string
-	// The status property
-	status *string
-	// The statusTimestamps property
-	statusTimestamps TestRuns_attributes_statusTimestampsable
-	// The testConfigurableId property
-	testConfigurableId *string
-	// The testConfigurableType property
-	testConfigurableType *string
-	// The testDirectory property
-	testDirectory *string
-	// The testsErrored property
-	testsErrored *int32
-	// The testsFailed property
-	testsFailed *int32
-	// The testsPassed property
-	testsPassed *int32
-	// The testsSkipped property
-	testsSkipped *int32
-	// The testStatus property
-	testStatus *string
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The variables property
-	variables []TestRuns_attributes_variablesable
-	// The verbose property
-	verbose *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTestRuns_attributes instantiates a new TestRuns_attributes and sets the default values.
 func NewTestRuns_attributes() *TestRuns_attributes {
 	m := &TestRuns_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -65,13 +31,34 @@ func CreateTestRuns_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TestRuns_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TestRuns_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *TestRuns_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -276,103 +263,222 @@ func (m *TestRuns_attributes) GetFieldDeserializers() map[string]func(i878a80d23
 // GetFilters gets the filters property value. The filters property
 // returns a []string when successful
 func (m *TestRuns_attributes) GetFilters() []string {
-	return m.filters
+	val, err := m.GetBackingStore().Get("filters")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
 
 // GetMessage gets the message property value. The message property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetMessage() *string {
-	return m.message
+	val, err := m.GetBackingStore().Get("message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetParallelism gets the parallelism property value. The parallelism property
 // returns a *int32 when successful
 func (m *TestRuns_attributes) GetParallelism() *int32 {
-	return m.parallelism
+	val, err := m.GetBackingStore().Get("parallelism")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetSource gets the source property value. The source property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetSource() *string {
-	return m.source
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetStatus() *string {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a TestRuns_attributes_statusTimestampsable when successful
 func (m *TestRuns_attributes) GetStatusTimestamps() TestRuns_attributes_statusTimestampsable {
-	return m.statusTimestamps
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TestRuns_attributes_statusTimestampsable)
+	}
+	return nil
 }
 
 // GetTestConfigurableId gets the test-configurable-id property value. The testConfigurableId property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetTestConfigurableId() *string {
-	return m.testConfigurableId
+	val, err := m.GetBackingStore().Get("testConfigurableId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTestConfigurableType gets the test-configurable-type property value. The testConfigurableType property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetTestConfigurableType() *string {
-	return m.testConfigurableType
+	val, err := m.GetBackingStore().Get("testConfigurableType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTestDirectory gets the test-directory property value. The testDirectory property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetTestDirectory() *string {
-	return m.testDirectory
+	val, err := m.GetBackingStore().Get("testDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetTestsErrored gets the tests-errored property value. The testsErrored property
 // returns a *int32 when successful
 func (m *TestRuns_attributes) GetTestsErrored() *int32 {
-	return m.testsErrored
+	val, err := m.GetBackingStore().Get("testsErrored")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTestsFailed gets the tests-failed property value. The testsFailed property
 // returns a *int32 when successful
 func (m *TestRuns_attributes) GetTestsFailed() *int32 {
-	return m.testsFailed
+	val, err := m.GetBackingStore().Get("testsFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTestsPassed gets the tests-passed property value. The testsPassed property
 // returns a *int32 when successful
 func (m *TestRuns_attributes) GetTestsPassed() *int32 {
-	return m.testsPassed
+	val, err := m.GetBackingStore().Get("testsPassed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTestsSkipped gets the tests-skipped property value. The testsSkipped property
 // returns a *int32 when successful
 func (m *TestRuns_attributes) GetTestsSkipped() *int32 {
-	return m.testsSkipped
+	val, err := m.GetBackingStore().Get("testsSkipped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
 
 // GetTestStatus gets the test-status property value. The testStatus property
 // returns a *string when successful
 func (m *TestRuns_attributes) GetTestStatus() *string {
-	return m.testStatus
+	val, err := m.GetBackingStore().Get("testStatus")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *TestRuns_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetVariables gets the variables property value. The variables property
 // returns a []TestRuns_attributes_variablesable when successful
 func (m *TestRuns_attributes) GetVariables() []TestRuns_attributes_variablesable {
-	return m.variables
+	val, err := m.GetBackingStore().Get("variables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TestRuns_attributes_variablesable)
+	}
+	return nil
 }
 
 // GetVerbose gets the verbose property value. The verbose property
 // returns a *bool when successful
 func (m *TestRuns_attributes) GetVerbose() *bool {
-	return m.verbose
+	val, err := m.GetBackingStore().Get("verbose")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -430,102 +536,166 @@ func (m *TestRuns_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TestRuns_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TestRuns_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *TestRuns_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFilters sets the filters property value. The filters property
 func (m *TestRuns_attributes) SetFilters(value []string) {
-	m.filters = value
+	err := m.GetBackingStore().Set("filters", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetMessage sets the message property value. The message property
 func (m *TestRuns_attributes) SetMessage(value *string) {
-	m.message = value
+	err := m.GetBackingStore().Set("message", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetParallelism sets the parallelism property value. The parallelism property
 func (m *TestRuns_attributes) SetParallelism(value *int32) {
-	m.parallelism = value
+	err := m.GetBackingStore().Set("parallelism", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSource sets the source property value. The source property
 func (m *TestRuns_attributes) SetSource(value *string) {
-	m.source = value
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *TestRuns_attributes) SetStatus(value *string) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
 func (m *TestRuns_attributes) SetStatusTimestamps(value TestRuns_attributes_statusTimestampsable) {
-	m.statusTimestamps = value
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestConfigurableId sets the test-configurable-id property value. The testConfigurableId property
 func (m *TestRuns_attributes) SetTestConfigurableId(value *string) {
-	m.testConfigurableId = value
+	err := m.GetBackingStore().Set("testConfigurableId", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestConfigurableType sets the test-configurable-type property value. The testConfigurableType property
 func (m *TestRuns_attributes) SetTestConfigurableType(value *string) {
-	m.testConfigurableType = value
+	err := m.GetBackingStore().Set("testConfigurableType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestDirectory sets the test-directory property value. The testDirectory property
 func (m *TestRuns_attributes) SetTestDirectory(value *string) {
-	m.testDirectory = value
+	err := m.GetBackingStore().Set("testDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestsErrored sets the tests-errored property value. The testsErrored property
 func (m *TestRuns_attributes) SetTestsErrored(value *int32) {
-	m.testsErrored = value
+	err := m.GetBackingStore().Set("testsErrored", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestsFailed sets the tests-failed property value. The testsFailed property
 func (m *TestRuns_attributes) SetTestsFailed(value *int32) {
-	m.testsFailed = value
+	err := m.GetBackingStore().Set("testsFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestsPassed sets the tests-passed property value. The testsPassed property
 func (m *TestRuns_attributes) SetTestsPassed(value *int32) {
-	m.testsPassed = value
+	err := m.GetBackingStore().Set("testsPassed", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestsSkipped sets the tests-skipped property value. The testsSkipped property
 func (m *TestRuns_attributes) SetTestsSkipped(value *int32) {
-	m.testsSkipped = value
+	err := m.GetBackingStore().Set("testsSkipped", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTestStatus sets the test-status property value. The testStatus property
 func (m *TestRuns_attributes) SetTestStatus(value *string) {
-	m.testStatus = value
+	err := m.GetBackingStore().Set("testStatus", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *TestRuns_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVariables sets the variables property value. The variables property
 func (m *TestRuns_attributes) SetVariables(value []TestRuns_attributes_variablesable) {
-	m.variables = value
+	err := m.GetBackingStore().Set("variables", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetVerbose sets the verbose property value. The verbose property
 func (m *TestRuns_attributes) SetVerbose(value *bool) {
-	m.verbose = value
+	err := m.GetBackingStore().Set("verbose", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TestRuns_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetFilters() []string
 	GetMessage() *string
@@ -544,6 +714,7 @@ type TestRuns_attributesable interface {
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetVariables() []TestRuns_attributes_variablesable
 	GetVerbose() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetFilters(value []string)
 	SetMessage(value *string)

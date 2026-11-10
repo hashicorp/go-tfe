@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TokenTtlPolicyEntry struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The maximum time-to-live for the token in milliseconds
-	maxTtlMs *int64
-	// The type of the token TTL policy
-	tokenType *TokenTtlPolicyEntry_tokenType
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTokenTtlPolicyEntry instantiates a new TokenTtlPolicyEntry and sets the default values.
 func NewTokenTtlPolicyEntry() *TokenTtlPolicyEntry {
 	m := &TokenTtlPolicyEntry{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateTokenTtlPolicyEntryFromDiscriminatorValue(parseNode i878a80d2330e89d2
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TokenTtlPolicyEntry) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TokenTtlPolicyEntry) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -65,13 +77,27 @@ func (m *TokenTtlPolicyEntry) GetFieldDeserializers() map[string]func(i878a80d23
 // GetMaxTtlMs gets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
 // returns a *int64 when successful
 func (m *TokenTtlPolicyEntry) GetMaxTtlMs() *int64 {
-	return m.maxTtlMs
+	val, err := m.GetBackingStore().Get("maxTtlMs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int64)
+	}
+	return nil
 }
 
 // GetTokenType gets the token-type property value. The type of the token TTL policy
 // returns a *TokenTtlPolicyEntry_tokenType when successful
 func (m *TokenTtlPolicyEntry) GetTokenType() *TokenTtlPolicyEntry_tokenType {
-	return m.tokenType
+	val, err := m.GetBackingStore().Get("tokenType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TokenTtlPolicyEntry_tokenType)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -100,24 +126,41 @@ func (m *TokenTtlPolicyEntry) Serialize(writer i878a80d2330e89d26896388a3f487eef
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TokenTtlPolicyEntry) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TokenTtlPolicyEntry) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetMaxTtlMs sets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
 func (m *TokenTtlPolicyEntry) SetMaxTtlMs(value *int64) {
-	m.maxTtlMs = value
+	err := m.GetBackingStore().Set("maxTtlMs", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetTokenType sets the token-type property value. The type of the token TTL policy
 func (m *TokenTtlPolicyEntry) SetTokenType(value *TokenTtlPolicyEntry_tokenType) {
-	m.tokenType = value
+	err := m.GetBackingStore().Set("tokenType", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TokenTtlPolicyEntryable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetMaxTtlMs() *int64
 	GetTokenType() *TokenTtlPolicyEntry_tokenType
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetMaxTtlMs(value *int64)
 	SetTokenType(value *TokenTtlPolicyEntry_tokenType)
 }

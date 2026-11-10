@@ -5,49 +5,19 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackDeploymentRuns_attributes struct {
-	// The abandonedAt property
-	abandonedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The acquiringLockAt property
-	acquiringLockAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
-	canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The createdAt property
-	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The deployingAt property
-	deployingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The deployingPendingOperatorAt property
-	deployingPendingOperatorAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The deployment property
-	deployment *string
-	// The eligibleForRerun property
-	eligibleForRerun *bool
-	// The failedAt property
-	failedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The pendingCapacityAt property
-	pendingCapacityAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The planMode property
-	planMode *StackDeploymentRuns_attributes_planMode
-	// The preDeployingAt property
-	preDeployingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The preDeployingPendingOperatorAt property
-	preDeployingPendingOperatorAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The status property
-	status *StackDeploymentRuns_attributes_status
-	// The succeededAt property
-	succeededAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-	// The updatedAt property
-	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewStackDeploymentRuns_attributes instantiates a new StackDeploymentRuns_attributes and sets the default values.
 func NewStackDeploymentRuns_attributes() *StackDeploymentRuns_attributes {
 	m := &StackDeploymentRuns_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -61,61 +31,138 @@ func CreateStackDeploymentRuns_attributesFromDiscriminatorValue(parseNode i878a8
 // GetAbandonedAt gets the abandoned-at property value. The abandonedAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetAbandonedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.abandonedAt
+	val, err := m.GetBackingStore().Get("abandonedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetAcquiringLockAt gets the acquiring-lock-at property value. The acquiringLockAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetAcquiringLockAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.acquiringLockAt
+	val, err := m.GetBackingStore().Get("acquiringLockAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *StackDeploymentRuns_attributes) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentRuns_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetCanceledAt gets the canceled-at property value. When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.canceledAt
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.createdAt
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeployingAt gets the deploying-at property value. The deployingAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetDeployingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.deployingAt
+	val, err := m.GetBackingStore().Get("deployingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeployingPendingOperatorAt gets the deploying-pending-operator-at property value. The deployingPendingOperatorAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetDeployingPendingOperatorAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.deployingPendingOperatorAt
+	val, err := m.GetBackingStore().Get("deployingPendingOperatorAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetDeployment gets the deployment property value. The deployment property
 // returns a *string when successful
 func (m *StackDeploymentRuns_attributes) GetDeployment() *string {
-	return m.deployment
+	val, err := m.GetBackingStore().Get("deployment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetEligibleForRerun gets the eligible-for-rerun property value. The eligibleForRerun property
 // returns a *bool when successful
 func (m *StackDeploymentRuns_attributes) GetEligibleForRerun() *bool {
-	return m.eligibleForRerun
+	val, err := m.GetBackingStore().Get("eligibleForRerun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
 
 // GetFailedAt gets the failed-at property value. The failedAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.failedAt
+	val, err := m.GetBackingStore().Get("failedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -288,43 +335,92 @@ func (m *StackDeploymentRuns_attributes) GetFieldDeserializers() map[string]func
 // GetPendingCapacityAt gets the pending-capacity-at property value. The pendingCapacityAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetPendingCapacityAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.pendingCapacityAt
+	val, err := m.GetBackingStore().Get("pendingCapacityAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPlanMode gets the plan-mode property value. The planMode property
 // returns a *StackDeploymentRuns_attributes_planMode when successful
 func (m *StackDeploymentRuns_attributes) GetPlanMode() *StackDeploymentRuns_attributes_planMode {
-	return m.planMode
+	val, err := m.GetBackingStore().Get("planMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackDeploymentRuns_attributes_planMode)
+	}
+	return nil
 }
 
 // GetPreDeployingAt gets the pre-deploying-at property value. The preDeployingAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetPreDeployingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.preDeployingAt
+	val, err := m.GetBackingStore().Get("preDeployingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetPreDeployingPendingOperatorAt gets the pre-deploying-pending-operator-at property value. The preDeployingPendingOperatorAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetPreDeployingPendingOperatorAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.preDeployingPendingOperatorAt
+	val, err := m.GetBackingStore().Get("preDeployingPendingOperatorAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetStatus gets the status property value. The status property
 // returns a *StackDeploymentRuns_attributes_status when successful
 func (m *StackDeploymentRuns_attributes) GetStatus() *StackDeploymentRuns_attributes_status {
-	return m.status
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackDeploymentRuns_attributes_status)
+	}
+	return nil
 }
 
 // GetSucceededAt gets the succeeded-at property value. The succeededAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetSucceededAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.succeededAt
+	val, err := m.GetBackingStore().Get("succeededAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
 func (m *StackDeploymentRuns_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
-	return m.updatedAt
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -340,94 +436,152 @@ func (m *StackDeploymentRuns_attributes) Serialize(writer i878a80d2330e89d268963
 
 // SetAbandonedAt sets the abandoned-at property value. The abandonedAt property
 func (m *StackDeploymentRuns_attributes) SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.abandonedAt = value
+	err := m.GetBackingStore().Set("abandonedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAcquiringLockAt sets the acquiring-lock-at property value. The acquiringLockAt property
 func (m *StackDeploymentRuns_attributes) SetAcquiringLockAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.acquiringLockAt = value
+	err := m.GetBackingStore().Set("acquiringLockAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *StackDeploymentRuns_attributes) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentRuns_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetCanceledAt sets the canceled-at property value. When the most recent accepted cancel request was received for this run. Null if no cancel was recorded; runs canceled before this field existed are not backfilled. A canceled run still ends as failed or abandoned, and the underlying operation may still be stopping.
 func (m *StackDeploymentRuns_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.canceledAt = value
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackDeploymentRuns_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.createdAt = value
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeployingAt sets the deploying-at property value. The deployingAt property
 func (m *StackDeploymentRuns_attributes) SetDeployingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.deployingAt = value
+	err := m.GetBackingStore().Set("deployingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeployingPendingOperatorAt sets the deploying-pending-operator-at property value. The deployingPendingOperatorAt property
 func (m *StackDeploymentRuns_attributes) SetDeployingPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.deployingPendingOperatorAt = value
+	err := m.GetBackingStore().Set("deployingPendingOperatorAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetDeployment sets the deployment property value. The deployment property
 func (m *StackDeploymentRuns_attributes) SetDeployment(value *string) {
-	m.deployment = value
+	err := m.GetBackingStore().Set("deployment", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetEligibleForRerun sets the eligible-for-rerun property value. The eligibleForRerun property
 func (m *StackDeploymentRuns_attributes) SetEligibleForRerun(value *bool) {
-	m.eligibleForRerun = value
+	err := m.GetBackingStore().Set("eligibleForRerun", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetFailedAt sets the failed-at property value. The failedAt property
 func (m *StackDeploymentRuns_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.failedAt = value
+	err := m.GetBackingStore().Set("failedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPendingCapacityAt sets the pending-capacity-at property value. The pendingCapacityAt property
 func (m *StackDeploymentRuns_attributes) SetPendingCapacityAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.pendingCapacityAt = value
+	err := m.GetBackingStore().Set("pendingCapacityAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPlanMode sets the plan-mode property value. The planMode property
 func (m *StackDeploymentRuns_attributes) SetPlanMode(value *StackDeploymentRuns_attributes_planMode) {
-	m.planMode = value
+	err := m.GetBackingStore().Set("planMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreDeployingAt sets the pre-deploying-at property value. The preDeployingAt property
 func (m *StackDeploymentRuns_attributes) SetPreDeployingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.preDeployingAt = value
+	err := m.GetBackingStore().Set("preDeployingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetPreDeployingPendingOperatorAt sets the pre-deploying-pending-operator-at property value. The preDeployingPendingOperatorAt property
 func (m *StackDeploymentRuns_attributes) SetPreDeployingPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.preDeployingPendingOperatorAt = value
+	err := m.GetBackingStore().Set("preDeployingPendingOperatorAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetStatus sets the status property value. The status property
 func (m *StackDeploymentRuns_attributes) SetStatus(value *StackDeploymentRuns_attributes_status) {
-	m.status = value
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetSucceededAt sets the succeeded-at property value. The succeededAt property
 func (m *StackDeploymentRuns_attributes) SetSucceededAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.succeededAt = value
+	err := m.GetBackingStore().Set("succeededAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *StackDeploymentRuns_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-	m.updatedAt = value
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type StackDeploymentRuns_attributesable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 	GetAbandonedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetAcquiringLockAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	GetDeployingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -444,6 +598,7 @@ type StackDeploymentRuns_attributesable interface {
 	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 	SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetAcquiringLockAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 	SetDeployingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)

@@ -5,20 +5,18 @@ package models
 
 import (
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TaskResultOutcomes_attributes_tags struct {
-	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-	additionalData map[string]any
-	// The tag category name.
-	label *string
-	// The value property
-	value []TaskResultOutcomes_attributes_tags_valueable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
 
 // NewTaskResultOutcomes_attributes_tags instantiates a new TaskResultOutcomes_attributes_tags and sets the default values.
 func NewTaskResultOutcomes_attributes_tags() *TaskResultOutcomes_attributes_tags {
 	m := &TaskResultOutcomes_attributes_tags{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
 	m.SetAdditionalData(make(map[string]any))
 	return m
 }
@@ -32,7 +30,21 @@ func CreateTaskResultOutcomes_attributes_tagsFromDiscriminatorValue(parseNode i8
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
 func (m *TaskResultOutcomes_attributes_tags) GetAdditionalData() map[string]any {
-	return m.additionalData
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
+}
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskResultOutcomes_attributes_tags) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
 }
 
 // GetFieldDeserializers the deserialization information for the current model
@@ -71,13 +83,27 @@ func (m *TaskResultOutcomes_attributes_tags) GetFieldDeserializers() map[string]
 // GetLabel gets the label property value. The tag category name.
 // returns a *string when successful
 func (m *TaskResultOutcomes_attributes_tags) GetLabel() *string {
-	return m.label
+	val, err := m.GetBackingStore().Get("label")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
 
 // GetValue gets the value property value. The value property
 // returns a []TaskResultOutcomes_attributes_tags_valueable when successful
 func (m *TaskResultOutcomes_attributes_tags) GetValue() []TaskResultOutcomes_attributes_tags_valueable {
-	return m.value
+	val, err := m.GetBackingStore().Get("value")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TaskResultOutcomes_attributes_tags_valueable)
+	}
+	return nil
 }
 
 // Serialize serializes information the current object
@@ -111,24 +137,41 @@ func (m *TaskResultOutcomes_attributes_tags) Serialize(writer i878a80d2330e89d26
 
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 func (m *TaskResultOutcomes_attributes_tags) SetAdditionalData(value map[string]any) {
-	m.additionalData = value
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskResultOutcomes_attributes_tags) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
 
 // SetLabel sets the label property value. The tag category name.
 func (m *TaskResultOutcomes_attributes_tags) SetLabel(value *string) {
-	m.label = value
+	err := m.GetBackingStore().Set("label", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // SetValue sets the value property value. The value property
 func (m *TaskResultOutcomes_attributes_tags) SetValue(value []TaskResultOutcomes_attributes_tags_valueable) {
-	m.value = value
+	err := m.GetBackingStore().Set("value", value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 type TaskResultOutcomes_attributes_tagsable interface {
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
 	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 	GetLabel() *string
 	GetValue() []TaskResultOutcomes_attributes_tags_valueable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 	SetLabel(value *string)
 	SetValue(value []TaskResultOutcomes_attributes_tags_valueable)
 }
