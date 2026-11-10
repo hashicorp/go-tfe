@@ -16,6 +16,11 @@ type ItemActionsRequestBuilder struct {
 func (m *ItemActionsRequestBuilder) Apply()(*ItemActionsApplyRequestBuilder) {
     return NewItemActionsApplyRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Cancel the cancel property
+// returns a *ItemActionsCancelRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) Cancel()(*ItemActionsCancelRequestBuilder) {
+    return NewItemActionsCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewItemActionsRequestBuilderInternal instantiates a new ItemActionsRequestBuilder and sets the default values.
 func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
     m := &ItemActionsRequestBuilder{
@@ -28,4 +33,19 @@ func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     urlParams := make(map[string]string)
     urlParams["request-raw-url"] = rawUrl
     return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
+}
+// Discard the discard property
+// returns a *ItemActionsDiscardRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) Discard()(*ItemActionsDiscardRequestBuilder) {
+    return NewItemActionsDiscardRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ForceCancel the forceCancel property
+// returns a *ItemActionsForceCancelRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) ForceCancel()(*ItemActionsForceCancelRequestBuilder) {
+    return NewItemActionsForceCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ForceExecute the forceExecute property
+// returns a *ItemActionsForceExecuteRequestBuilder when successful
+func (m *ItemActionsRequestBuilder) ForceExecute()(*ItemActionsForceExecuteRequestBuilder) {
+    return NewItemActionsForceExecuteRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

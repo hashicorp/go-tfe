@@ -12,6 +12,8 @@ type AdminSamlSettings_attributes struct {
     acsConsumerUrl *string
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
+    attrAvatar *string
     // SAML attribute name for team membership.
     attrGroups *string
     // SAML attribute name that designates a site admin.
@@ -85,6 +87,11 @@ func (m *AdminSamlSettings_attributes) GetAcsConsumerUrl()(*string) {
 func (m *AdminSamlSettings_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetAttrAvatar gets the attr-avatar property value. SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
+// returns a *string when successful
+func (m *AdminSamlSettings_attributes) GetAttrAvatar()(*string) {
+    return m.attrAvatar
+}
 // GetAttrGroups gets the attr-groups property value. SAML attribute name for team membership.
 // returns a *string when successful
 func (m *AdminSamlSettings_attributes) GetAttrGroups()(*string) {
@@ -136,6 +143,16 @@ func (m *AdminSamlSettings_attributes) GetFieldDeserializers()(map[string]func(i
         }
         if val != nil {
             m.SetAcsConsumerUrl(val)
+        }
+        return nil
+    }
+    res["attr-avatar"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAttrAvatar(val)
         }
         return nil
     }
@@ -466,6 +483,12 @@ func (m *AdminSamlSettings_attributes) GetWantAssertionsSigned()(*bool) {
 // Serialize serializes information the current object
 func (m *AdminSamlSettings_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteStringValue("attr-avatar", m.GetAttrAvatar())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("attr-groups", m.GetAttrGroups())
         if err != nil {
             return err
@@ -610,6 +633,10 @@ func (m *AdminSamlSettings_attributes) SetAcsConsumerUrl(value *string)() {
 func (m *AdminSamlSettings_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetAttrAvatar sets the attr-avatar property value. SAML attribute name that contains the user's avatar URL or base64-encoded image. When blank or absent, the SAML avatar source is ignored even if enabled.This attribute is only available in Terraform Enterprise version 2.2.0 or later.
+func (m *AdminSamlSettings_attributes) SetAttrAvatar(value *string)() {
+    m.attrAvatar = value
+}
 // SetAttrGroups sets the attr-groups property value. SAML attribute name for team membership.
 func (m *AdminSamlSettings_attributes) SetAttrGroups(value *string)() {
     m.attrGroups = value
@@ -712,6 +739,7 @@ type AdminSamlSettings_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAcsConsumerUrl()(*string)
+    GetAttrAvatar()(*string)
     GetAttrGroups()(*string)
     GetAttrSiteAdmin()(*string)
     GetAttrSiteAuditor()(*string)
@@ -737,6 +765,7 @@ type AdminSamlSettings_attributesable interface {
     GetTeamManagementEnabled()(*bool)
     GetWantAssertionsSigned()(*bool)
     SetAcsConsumerUrl(value *string)()
+    SetAttrAvatar(value *string)()
     SetAttrGroups(value *string)()
     SetAttrSiteAdmin(value *string)()
     SetAttrSiteAuditor(value *string)()

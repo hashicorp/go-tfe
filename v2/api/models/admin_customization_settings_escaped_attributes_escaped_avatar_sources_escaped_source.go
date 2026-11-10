@@ -6,15 +6,18 @@ package models
 type AdminCustomizationSettings_attributes_avatarSources_source int
 
 const (
-    GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE AdminCustomizationSettings_attributes_avatarSources_source = iota
+    SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE AdminCustomizationSettings_attributes_avatarSources_source = iota
+    GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
 )
 
 func (i AdminCustomizationSettings_attributes_avatarSources_source) String() string {
-    return []string{"gravatar"}[i]
+    return []string{"saml", "gravatar"}[i]
 }
 func ParseAdminCustomizationSettings_attributes_avatarSources_source(v string) (any, error) {
-    result := GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
+    result := SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
     switch v {
+        case "saml":
+            result = SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
         case "gravatar":
             result = GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
         default:
