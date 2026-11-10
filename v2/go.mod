@@ -1,15 +1,15 @@
 module github.com/hashicorp/go-tfe/v2
 
-go 1.26.4
+go 1.27.4
 
 require (
 	github.com/google/uuid v1.6.0
 	github.com/microsoft/kiota-abstractions-go v1.12.1
 	github.com/microsoft/kiota-http-go v1.6.1
-	github.com/microsoft/kiota-serialization-form-go v1.1.3
-	github.com/microsoft/kiota-serialization-json-go v1.1.2
-	github.com/microsoft/kiota-serialization-multipart-go v1.1.2
-	github.com/microsoft/kiota-serialization-text-go v1.1.3
+	github.com/microsoft/kiota-serialization-form-go v1.1.7
+	github.com/microsoft/kiota-serialization-json-go v1.1.5
+	github.com/microsoft/kiota-serialization-multipart-go v1.1.5
+	github.com/microsoft/kiota-serialization-text-go v1.1.7
 	github.com/stretchr/testify v1.12.1
 )
 
