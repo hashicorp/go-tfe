@@ -23,7 +23,7 @@ type OrganizationsRequestBuilderGetQueryParameters struct {
     Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
-    // A search query string. Organizations are searchable by name and notification email.
+    // A search query string. Organizations are searchable by name and notification email. Queries starting with `org-` also match an exact organization ID.
     Q *string "uriparametername:\"q\""
     // A search query string. This query searches organizations by notification email.
     Qemail *string "uriparametername:\"q%5Bemail%5D\""
