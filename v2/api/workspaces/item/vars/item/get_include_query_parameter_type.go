@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    OVERWRITER_GETINCLUDEQUERYPARAMETERTYPE
+	OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	OVERWRITER_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"overwritten", "overwriter"}[i]
+	return []string{"overwritten", "overwriter"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "overwritten":
-            result = OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE
-        case "overwriter":
-            result = OVERWRITER_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "overwritten":
+		result = OVERWRITTEN_GETINCLUDEQUERYPARAMETERTYPE
+	case "overwriter":
+		result = OVERWRITER_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

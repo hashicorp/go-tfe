@@ -4,700 +4,752 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Users_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The authMethod property
-    authMethod *string
-    // TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
-    avatarColorIndex *int32
-    // Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
-    avatarUrl *string
-    // Human-readable display name for the user.
-    displayName *string
-    // The email property
-    email *string
-    // The enterpriseSupport property
-    enterpriseSupport *bool
-    // The hasGitHubAppToken property
-    hasGitHubAppToken *bool
-    // The hasLinkedHcp property
-    hasLinkedHcp *bool
-    // TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
-    initials *string
-    // The isAdmin property
-    isAdmin *bool
-    // The isConfirmed property
-    isConfirmed *bool
-    // Indicates whether this user is a synthetic user representing a team or organization.
-    isServiceAccount *bool
-    // Deprecated. Use is-admin.
-    isSiteAdmin *bool
-    // The isSsoLogin property
-    isSsoLogin *bool
-    // The isSudo property
-    isSudo *bool
-    // The isUnified property
-    isUnified *bool
-    // The password property
-    password *string
-    // The permissions property
-    permissions Users_attributes_permissionsable
-    // The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
-    preferredLanguage *string
-    // The twoFactor property
-    twoFactor Users_attributes_twoFactorable
-    // The unconfirmedEmail property
-    unconfirmedEmail *string
-    // The username property
-    username *string
-    // The v2Only property
-    v2Only *bool
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The authMethod property
+	authMethod *string
+	// TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
+	avatarColorIndex *int32
+	// Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
+	avatarUrl *string
+	// Human-readable display name for the user.
+	displayName *string
+	// The email property
+	email *string
+	// The enterpriseSupport property
+	enterpriseSupport *bool
+	// The hasGitHubAppToken property
+	hasGitHubAppToken *bool
+	// The hasLinkedHcp property
+	hasLinkedHcp *bool
+	// TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
+	initials *string
+	// The isAdmin property
+	isAdmin *bool
+	// The isConfirmed property
+	isConfirmed *bool
+	// Indicates whether this user is a synthetic user representing a team or organization.
+	isServiceAccount *bool
+	// Deprecated. Use is-admin.
+	isSiteAdmin *bool
+	// The isSsoLogin property
+	isSsoLogin *bool
+	// The isSudo property
+	isSudo *bool
+	// The isUnified property
+	isUnified *bool
+	// The password property
+	password *string
+	// The permissions property
+	permissions Users_attributes_permissionsable
+	// The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
+	preferredLanguage *string
+	// The twoFactor property
+	twoFactor Users_attributes_twoFactorable
+	// The unconfirmedEmail property
+	unconfirmedEmail *string
+	// The username property
+	username *string
+	// The v2Only property
+	v2Only *bool
 }
+
 // NewUsers_attributes instantiates a new Users_attributes and sets the default values.
-func NewUsers_attributes()(*Users_attributes) {
-    m := &Users_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewUsers_attributes() *Users_attributes {
+	m := &Users_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateUsers_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateUsers_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewUsers_attributes(), nil
+func CreateUsers_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewUsers_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Users_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Users_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAuthMethod gets the auth-method property value. The authMethod property
 // returns a *string when successful
-func (m *Users_attributes) GetAuthMethod()(*string) {
-    return m.authMethod
+func (m *Users_attributes) GetAuthMethod() *string {
+	return m.authMethod
 }
+
 // GetAvatarColorIndex gets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
 // returns a *int32 when successful
-func (m *Users_attributes) GetAvatarColorIndex()(*int32) {
-    return m.avatarColorIndex
+func (m *Users_attributes) GetAvatarColorIndex() *int32 {
+	return m.avatarColorIndex
 }
+
 // GetAvatarUrl gets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
 // returns a *string when successful
-func (m *Users_attributes) GetAvatarUrl()(*string) {
-    return m.avatarUrl
+func (m *Users_attributes) GetAvatarUrl() *string {
+	return m.avatarUrl
 }
+
 // GetDisplayName gets the display-name property value. Human-readable display name for the user.
 // returns a *string when successful
-func (m *Users_attributes) GetDisplayName()(*string) {
-    return m.displayName
+func (m *Users_attributes) GetDisplayName() *string {
+	return m.displayName
 }
+
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
-func (m *Users_attributes) GetEmail()(*string) {
-    return m.email
+func (m *Users_attributes) GetEmail() *string {
+	return m.email
 }
+
 // GetEnterpriseSupport gets the enterprise-support property value. The enterpriseSupport property
 // returns a *bool when successful
-func (m *Users_attributes) GetEnterpriseSupport()(*bool) {
-    return m.enterpriseSupport
+func (m *Users_attributes) GetEnterpriseSupport() *bool {
+	return m.enterpriseSupport
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["auth-method"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthMethod(val)
-        }
-        return nil
-    }
-    res["avatar-color-index"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAvatarColorIndex(val)
-        }
-        return nil
-    }
-    res["avatar-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAvatarUrl(val)
-        }
-        return nil
-    }
-    res["display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDisplayName(val)
-        }
-        return nil
-    }
-    res["email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEmail(val)
-        }
-        return nil
-    }
-    res["enterprise-support"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnterpriseSupport(val)
-        }
-        return nil
-    }
-    res["has-git-hub-app-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHasGitHubAppToken(val)
-        }
-        return nil
-    }
-    res["has-linked-hcp"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHasLinkedHcp(val)
-        }
-        return nil
-    }
-    res["initials"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInitials(val)
-        }
-        return nil
-    }
-    res["is-admin"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsAdmin(val)
-        }
-        return nil
-    }
-    res["is-confirmed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsConfirmed(val)
-        }
-        return nil
-    }
-    res["is-service-account"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsServiceAccount(val)
-        }
-        return nil
-    }
-    res["is-site-admin"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsSiteAdmin(val)
-        }
-        return nil
-    }
-    res["is-sso-login"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsSsoLogin(val)
-        }
-        return nil
-    }
-    res["is-sudo"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsSudo(val)
-        }
-        return nil
-    }
-    res["is-unified"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsUnified(val)
-        }
-        return nil
-    }
-    res["password"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPassword(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsers_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(Users_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["preferred-language"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPreferredLanguage(val)
-        }
-        return nil
-    }
-    res["two-factor"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsers_attributes_twoFactorFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTwoFactor(val.(Users_attributes_twoFactorable))
-        }
-        return nil
-    }
-    res["unconfirmed-email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUnconfirmedEmail(val)
-        }
-        return nil
-    }
-    res["username"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUsername(val)
-        }
-        return nil
-    }
-    res["v2-only"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetV2Only(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Users_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["auth-method"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthMethod(val)
+		}
+		return nil
+	}
+	res["avatar-color-index"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAvatarColorIndex(val)
+		}
+		return nil
+	}
+	res["avatar-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAvatarUrl(val)
+		}
+		return nil
+	}
+	res["display-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDisplayName(val)
+		}
+		return nil
+	}
+	res["email"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEmail(val)
+		}
+		return nil
+	}
+	res["enterprise-support"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnterpriseSupport(val)
+		}
+		return nil
+	}
+	res["has-git-hub-app-token"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHasGitHubAppToken(val)
+		}
+		return nil
+	}
+	res["has-linked-hcp"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHasLinkedHcp(val)
+		}
+		return nil
+	}
+	res["initials"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInitials(val)
+		}
+		return nil
+	}
+	res["is-admin"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsAdmin(val)
+		}
+		return nil
+	}
+	res["is-confirmed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsConfirmed(val)
+		}
+		return nil
+	}
+	res["is-service-account"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsServiceAccount(val)
+		}
+		return nil
+	}
+	res["is-site-admin"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsSiteAdmin(val)
+		}
+		return nil
+	}
+	res["is-sso-login"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsSsoLogin(val)
+		}
+		return nil
+	}
+	res["is-sudo"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsSudo(val)
+		}
+		return nil
+	}
+	res["is-unified"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsUnified(val)
+		}
+		return nil
+	}
+	res["password"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPassword(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsers_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(Users_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["preferred-language"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPreferredLanguage(val)
+		}
+		return nil
+	}
+	res["two-factor"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsers_attributes_twoFactorFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTwoFactor(val.(Users_attributes_twoFactorable))
+		}
+		return nil
+	}
+	res["unconfirmed-email"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUnconfirmedEmail(val)
+		}
+		return nil
+	}
+	res["username"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUsername(val)
+		}
+		return nil
+	}
+	res["v2-only"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetV2Only(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHasGitHubAppToken gets the has-git-hub-app-token property value. The hasGitHubAppToken property
 // returns a *bool when successful
-func (m *Users_attributes) GetHasGitHubAppToken()(*bool) {
-    return m.hasGitHubAppToken
+func (m *Users_attributes) GetHasGitHubAppToken() *bool {
+	return m.hasGitHubAppToken
 }
+
 // GetHasLinkedHcp gets the has-linked-hcp property value. The hasLinkedHcp property
 // returns a *bool when successful
-func (m *Users_attributes) GetHasLinkedHcp()(*bool) {
-    return m.hasLinkedHcp
+func (m *Users_attributes) GetHasLinkedHcp() *bool {
+	return m.hasLinkedHcp
 }
+
 // GetInitials gets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
 // returns a *string when successful
-func (m *Users_attributes) GetInitials()(*string) {
-    return m.initials
+func (m *Users_attributes) GetInitials() *string {
+	return m.initials
 }
+
 // GetIsAdmin gets the is-admin property value. The isAdmin property
 // returns a *bool when successful
-func (m *Users_attributes) GetIsAdmin()(*bool) {
-    return m.isAdmin
+func (m *Users_attributes) GetIsAdmin() *bool {
+	return m.isAdmin
 }
+
 // GetIsConfirmed gets the is-confirmed property value. The isConfirmed property
 // returns a *bool when successful
-func (m *Users_attributes) GetIsConfirmed()(*bool) {
-    return m.isConfirmed
+func (m *Users_attributes) GetIsConfirmed() *bool {
+	return m.isConfirmed
 }
+
 // GetIsServiceAccount gets the is-service-account property value. Indicates whether this user is a synthetic user representing a team or organization.
 // returns a *bool when successful
-func (m *Users_attributes) GetIsServiceAccount()(*bool) {
-    return m.isServiceAccount
+func (m *Users_attributes) GetIsServiceAccount() *bool {
+	return m.isServiceAccount
 }
+
 // GetIsSiteAdmin gets the is-site-admin property value. Deprecated. Use is-admin.
 // returns a *bool when successful
-func (m *Users_attributes) GetIsSiteAdmin()(*bool) {
-    return m.isSiteAdmin
+func (m *Users_attributes) GetIsSiteAdmin() *bool {
+	return m.isSiteAdmin
 }
+
 // GetIsSsoLogin gets the is-sso-login property value. The isSsoLogin property
 // returns a *bool when successful
-func (m *Users_attributes) GetIsSsoLogin()(*bool) {
-    return m.isSsoLogin
+func (m *Users_attributes) GetIsSsoLogin() *bool {
+	return m.isSsoLogin
 }
+
 // GetIsSudo gets the is-sudo property value. The isSudo property
 // returns a *bool when successful
-func (m *Users_attributes) GetIsSudo()(*bool) {
-    return m.isSudo
+func (m *Users_attributes) GetIsSudo() *bool {
+	return m.isSudo
 }
+
 // GetIsUnified gets the is-unified property value. The isUnified property
 // returns a *bool when successful
-func (m *Users_attributes) GetIsUnified()(*bool) {
-    return m.isUnified
+func (m *Users_attributes) GetIsUnified() *bool {
+	return m.isUnified
 }
+
 // GetPassword gets the password property value. The password property
 // returns a *string when successful
-func (m *Users_attributes) GetPassword()(*string) {
-    return m.password
+func (m *Users_attributes) GetPassword() *string {
+	return m.password
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Users_attributes_permissionsable when successful
-func (m *Users_attributes) GetPermissions()(Users_attributes_permissionsable) {
-    return m.permissions
+func (m *Users_attributes) GetPermissions() Users_attributes_permissionsable {
+	return m.permissions
 }
+
 // GetPreferredLanguage gets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
 // returns a *string when successful
-func (m *Users_attributes) GetPreferredLanguage()(*string) {
-    return m.preferredLanguage
+func (m *Users_attributes) GetPreferredLanguage() *string {
+	return m.preferredLanguage
 }
+
 // GetTwoFactor gets the two-factor property value. The twoFactor property
 // returns a Users_attributes_twoFactorable when successful
-func (m *Users_attributes) GetTwoFactor()(Users_attributes_twoFactorable) {
-    return m.twoFactor
+func (m *Users_attributes) GetTwoFactor() Users_attributes_twoFactorable {
+	return m.twoFactor
 }
+
 // GetUnconfirmedEmail gets the unconfirmed-email property value. The unconfirmedEmail property
 // returns a *string when successful
-func (m *Users_attributes) GetUnconfirmedEmail()(*string) {
-    return m.unconfirmedEmail
+func (m *Users_attributes) GetUnconfirmedEmail() *string {
+	return m.unconfirmedEmail
 }
+
 // GetUsername gets the username property value. The username property
 // returns a *string when successful
-func (m *Users_attributes) GetUsername()(*string) {
-    return m.username
+func (m *Users_attributes) GetUsername() *string {
+	return m.username
 }
+
 // GetV2Only gets the v2-only property value. The v2Only property
 // returns a *bool when successful
-func (m *Users_attributes) GetV2Only()(*bool) {
-    return m.v2Only
+func (m *Users_attributes) GetV2Only() *bool {
+	return m.v2Only
 }
+
 // Serialize serializes information the current object
-func (m *Users_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("auth-method", m.GetAuthMethod())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("avatar-url", m.GetAvatarUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("email", m.GetEmail())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("enterprise-support", m.GetEnterpriseSupport())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("has-git-hub-app-token", m.GetHasGitHubAppToken())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("has-linked-hcp", m.GetHasLinkedHcp())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-admin", m.GetIsAdmin())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-confirmed", m.GetIsConfirmed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-service-account", m.GetIsServiceAccount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-site-admin", m.GetIsSiteAdmin())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-sso-login", m.GetIsSsoLogin())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-sudo", m.GetIsSudo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-unified", m.GetIsUnified())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("password", m.GetPassword())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("preferred-language", m.GetPreferredLanguage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("two-factor", m.GetTwoFactor())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("unconfirmed-email", m.GetUnconfirmedEmail())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("username", m.GetUsername())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("v2-only", m.GetV2Only())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Users_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("auth-method", m.GetAuthMethod())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("avatar-url", m.GetAvatarUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("email", m.GetEmail())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("enterprise-support", m.GetEnterpriseSupport())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("has-git-hub-app-token", m.GetHasGitHubAppToken())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("has-linked-hcp", m.GetHasLinkedHcp())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-admin", m.GetIsAdmin())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-confirmed", m.GetIsConfirmed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-service-account", m.GetIsServiceAccount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-site-admin", m.GetIsSiteAdmin())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-sso-login", m.GetIsSsoLogin())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-sudo", m.GetIsSudo())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-unified", m.GetIsUnified())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("password", m.GetPassword())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("preferred-language", m.GetPreferredLanguage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("two-factor", m.GetTwoFactor())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("unconfirmed-email", m.GetUnconfirmedEmail())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("username", m.GetUsername())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("v2-only", m.GetV2Only())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Users_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Users_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAuthMethod sets the auth-method property value. The authMethod property
-func (m *Users_attributes) SetAuthMethod(value *string)() {
-    m.authMethod = value
+func (m *Users_attributes) SetAuthMethod(value *string) {
+	m.authMethod = value
 }
+
 // SetAvatarColorIndex sets the avatar-color-index property value. TFE only. Stable index into the frontend avatar fallback colour palette, derived from the user's external ID. Colour uniqueness across users is not guaranteed.
-func (m *Users_attributes) SetAvatarColorIndex(value *int32)() {
-    m.avatarColorIndex = value
+func (m *Users_attributes) SetAvatarColorIndex(value *int32) {
+	m.avatarColorIndex = value
 }
+
 // SetAvatarUrl sets the avatar-url property value. Gravatar URL for the user. Null in TFE when an admin has disabled Gravatar via the avatar_sources setting.
-func (m *Users_attributes) SetAvatarUrl(value *string)() {
-    m.avatarUrl = value
+func (m *Users_attributes) SetAvatarUrl(value *string) {
+	m.avatarUrl = value
 }
+
 // SetDisplayName sets the display-name property value. Human-readable display name for the user.
-func (m *Users_attributes) SetDisplayName(value *string)() {
-    m.displayName = value
+func (m *Users_attributes) SetDisplayName(value *string) {
+	m.displayName = value
 }
+
 // SetEmail sets the email property value. The email property
-func (m *Users_attributes) SetEmail(value *string)() {
-    m.email = value
+func (m *Users_attributes) SetEmail(value *string) {
+	m.email = value
 }
+
 // SetEnterpriseSupport sets the enterprise-support property value. The enterpriseSupport property
-func (m *Users_attributes) SetEnterpriseSupport(value *bool)() {
-    m.enterpriseSupport = value
+func (m *Users_attributes) SetEnterpriseSupport(value *bool) {
+	m.enterpriseSupport = value
 }
+
 // SetHasGitHubAppToken sets the has-git-hub-app-token property value. The hasGitHubAppToken property
-func (m *Users_attributes) SetHasGitHubAppToken(value *bool)() {
-    m.hasGitHubAppToken = value
+func (m *Users_attributes) SetHasGitHubAppToken(value *bool) {
+	m.hasGitHubAppToken = value
 }
+
 // SetHasLinkedHcp sets the has-linked-hcp property value. The hasLinkedHcp property
-func (m *Users_attributes) SetHasLinkedHcp(value *bool)() {
-    m.hasLinkedHcp = value
+func (m *Users_attributes) SetHasLinkedHcp(value *bool) {
+	m.hasLinkedHcp = value
 }
+
 // SetInitials sets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
-func (m *Users_attributes) SetInitials(value *string)() {
-    m.initials = value
+func (m *Users_attributes) SetInitials(value *string) {
+	m.initials = value
 }
+
 // SetIsAdmin sets the is-admin property value. The isAdmin property
-func (m *Users_attributes) SetIsAdmin(value *bool)() {
-    m.isAdmin = value
+func (m *Users_attributes) SetIsAdmin(value *bool) {
+	m.isAdmin = value
 }
+
 // SetIsConfirmed sets the is-confirmed property value. The isConfirmed property
-func (m *Users_attributes) SetIsConfirmed(value *bool)() {
-    m.isConfirmed = value
+func (m *Users_attributes) SetIsConfirmed(value *bool) {
+	m.isConfirmed = value
 }
+
 // SetIsServiceAccount sets the is-service-account property value. Indicates whether this user is a synthetic user representing a team or organization.
-func (m *Users_attributes) SetIsServiceAccount(value *bool)() {
-    m.isServiceAccount = value
+func (m *Users_attributes) SetIsServiceAccount(value *bool) {
+	m.isServiceAccount = value
 }
+
 // SetIsSiteAdmin sets the is-site-admin property value. Deprecated. Use is-admin.
-func (m *Users_attributes) SetIsSiteAdmin(value *bool)() {
-    m.isSiteAdmin = value
+func (m *Users_attributes) SetIsSiteAdmin(value *bool) {
+	m.isSiteAdmin = value
 }
+
 // SetIsSsoLogin sets the is-sso-login property value. The isSsoLogin property
-func (m *Users_attributes) SetIsSsoLogin(value *bool)() {
-    m.isSsoLogin = value
+func (m *Users_attributes) SetIsSsoLogin(value *bool) {
+	m.isSsoLogin = value
 }
+
 // SetIsSudo sets the is-sudo property value. The isSudo property
-func (m *Users_attributes) SetIsSudo(value *bool)() {
-    m.isSudo = value
+func (m *Users_attributes) SetIsSudo(value *bool) {
+	m.isSudo = value
 }
+
 // SetIsUnified sets the is-unified property value. The isUnified property
-func (m *Users_attributes) SetIsUnified(value *bool)() {
-    m.isUnified = value
+func (m *Users_attributes) SetIsUnified(value *bool) {
+	m.isUnified = value
 }
+
 // SetPassword sets the password property value. The password property
-func (m *Users_attributes) SetPassword(value *string)() {
-    m.password = value
+func (m *Users_attributes) SetPassword(value *string) {
+	m.password = value
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *Users_attributes) SetPermissions(value Users_attributes_permissionsable)() {
-    m.permissions = value
+func (m *Users_attributes) SetPermissions(value Users_attributes_permissionsable) {
+	m.permissions = value
 }
+
 // SetPreferredLanguage sets the preferred-language property value. The user's preferred language as a locale code (for example, "en" or "fr"). Must be one of the application's supported locales. Only returned for the current user.
-func (m *Users_attributes) SetPreferredLanguage(value *string)() {
-    m.preferredLanguage = value
+func (m *Users_attributes) SetPreferredLanguage(value *string) {
+	m.preferredLanguage = value
 }
+
 // SetTwoFactor sets the two-factor property value. The twoFactor property
-func (m *Users_attributes) SetTwoFactor(value Users_attributes_twoFactorable)() {
-    m.twoFactor = value
+func (m *Users_attributes) SetTwoFactor(value Users_attributes_twoFactorable) {
+	m.twoFactor = value
 }
+
 // SetUnconfirmedEmail sets the unconfirmed-email property value. The unconfirmedEmail property
-func (m *Users_attributes) SetUnconfirmedEmail(value *string)() {
-    m.unconfirmedEmail = value
+func (m *Users_attributes) SetUnconfirmedEmail(value *string) {
+	m.unconfirmedEmail = value
 }
+
 // SetUsername sets the username property value. The username property
-func (m *Users_attributes) SetUsername(value *string)() {
-    m.username = value
+func (m *Users_attributes) SetUsername(value *string) {
+	m.username = value
 }
+
 // SetV2Only sets the v2-only property value. The v2Only property
-func (m *Users_attributes) SetV2Only(value *bool)() {
-    m.v2Only = value
+func (m *Users_attributes) SetV2Only(value *bool) {
+	m.v2Only = value
 }
+
 type Users_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAuthMethod()(*string)
-    GetAvatarColorIndex()(*int32)
-    GetAvatarUrl()(*string)
-    GetDisplayName()(*string)
-    GetEmail()(*string)
-    GetEnterpriseSupport()(*bool)
-    GetHasGitHubAppToken()(*bool)
-    GetHasLinkedHcp()(*bool)
-    GetInitials()(*string)
-    GetIsAdmin()(*bool)
-    GetIsConfirmed()(*bool)
-    GetIsServiceAccount()(*bool)
-    GetIsSiteAdmin()(*bool)
-    GetIsSsoLogin()(*bool)
-    GetIsSudo()(*bool)
-    GetIsUnified()(*bool)
-    GetPassword()(*string)
-    GetPermissions()(Users_attributes_permissionsable)
-    GetPreferredLanguage()(*string)
-    GetTwoFactor()(Users_attributes_twoFactorable)
-    GetUnconfirmedEmail()(*string)
-    GetUsername()(*string)
-    GetV2Only()(*bool)
-    SetAuthMethod(value *string)()
-    SetAvatarColorIndex(value *int32)()
-    SetAvatarUrl(value *string)()
-    SetDisplayName(value *string)()
-    SetEmail(value *string)()
-    SetEnterpriseSupport(value *bool)()
-    SetHasGitHubAppToken(value *bool)()
-    SetHasLinkedHcp(value *bool)()
-    SetInitials(value *string)()
-    SetIsAdmin(value *bool)()
-    SetIsConfirmed(value *bool)()
-    SetIsServiceAccount(value *bool)()
-    SetIsSiteAdmin(value *bool)()
-    SetIsSsoLogin(value *bool)()
-    SetIsSudo(value *bool)()
-    SetIsUnified(value *bool)()
-    SetPassword(value *string)()
-    SetPermissions(value Users_attributes_permissionsable)()
-    SetPreferredLanguage(value *string)()
-    SetTwoFactor(value Users_attributes_twoFactorable)()
-    SetUnconfirmedEmail(value *string)()
-    SetUsername(value *string)()
-    SetV2Only(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAuthMethod() *string
+	GetAvatarColorIndex() *int32
+	GetAvatarUrl() *string
+	GetDisplayName() *string
+	GetEmail() *string
+	GetEnterpriseSupport() *bool
+	GetHasGitHubAppToken() *bool
+	GetHasLinkedHcp() *bool
+	GetInitials() *string
+	GetIsAdmin() *bool
+	GetIsConfirmed() *bool
+	GetIsServiceAccount() *bool
+	GetIsSiteAdmin() *bool
+	GetIsSsoLogin() *bool
+	GetIsSudo() *bool
+	GetIsUnified() *bool
+	GetPassword() *string
+	GetPermissions() Users_attributes_permissionsable
+	GetPreferredLanguage() *string
+	GetTwoFactor() Users_attributes_twoFactorable
+	GetUnconfirmedEmail() *string
+	GetUsername() *string
+	GetV2Only() *bool
+	SetAuthMethod(value *string)
+	SetAvatarColorIndex(value *int32)
+	SetAvatarUrl(value *string)
+	SetDisplayName(value *string)
+	SetEmail(value *string)
+	SetEnterpriseSupport(value *bool)
+	SetHasGitHubAppToken(value *bool)
+	SetHasLinkedHcp(value *bool)
+	SetInitials(value *string)
+	SetIsAdmin(value *bool)
+	SetIsConfirmed(value *bool)
+	SetIsServiceAccount(value *bool)
+	SetIsSiteAdmin(value *bool)
+	SetIsSsoLogin(value *bool)
+	SetIsSudo(value *bool)
+	SetIsUnified(value *bool)
+	SetPassword(value *string)
+	SetPermissions(value Users_attributes_permissionsable)
+	SetPreferredLanguage(value *string)
+	SetTwoFactor(value Users_attributes_twoFactorable)
+	SetUnconfirmedEmail(value *string)
+	SetUsername(value *string)
+	SetV2Only(value *bool)
 }

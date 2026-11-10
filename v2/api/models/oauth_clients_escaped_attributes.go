@@ -4,544 +4,586 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type OauthClients_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The adoEntraTenantId property
-    adoEntraTenantId *string
-    // The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
-    adoOrgName *string
-    // The affectedWorkspaces property
-    affectedWorkspaces []string
-    // The affectedWorkspacesCount property
-    affectedWorkspacesCount *int32
-    // The apiUrl property
-    apiUrl *string
-    // The callbackUrl property
-    callbackUrl *string
-    // The connectPath property
-    connectPath *string
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The httpUrl property
-    httpUrl *string
-    // The key property
-    key *string
-    // The name property
-    name *string
-    // The organizationScoped property
-    organizationScoped *bool
-    // The rsaPublicKey property
-    rsaPublicKey *string
-    // The secret property
-    secret *string
-    // The serviceProvider property
-    serviceProvider *string
-    // The serviceProviderDisplayName property
-    serviceProviderDisplayName *string
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The uuid property
-    uuid *string
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The adoEntraTenantId property
+	adoEntraTenantId *string
+	// The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
+	adoOrgName *string
+	// The affectedWorkspaces property
+	affectedWorkspaces []string
+	// The affectedWorkspacesCount property
+	affectedWorkspacesCount *int32
+	// The apiUrl property
+	apiUrl *string
+	// The callbackUrl property
+	callbackUrl *string
+	// The connectPath property
+	connectPath *string
+	// The createdAt property
+	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The httpUrl property
+	httpUrl *string
+	// The key property
+	key *string
+	// The name property
+	name *string
+	// The organizationScoped property
+	organizationScoped *bool
+	// The rsaPublicKey property
+	rsaPublicKey *string
+	// The secret property
+	secret *string
+	// The serviceProvider property
+	serviceProvider *string
+	// The serviceProviderDisplayName property
+	serviceProviderDisplayName *string
+	// The updatedAt property
+	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The uuid property
+	uuid *string
 }
+
 // NewOauthClients_attributes instantiates a new OauthClients_attributes and sets the default values.
-func NewOauthClients_attributes()(*OauthClients_attributes) {
-    m := &OauthClients_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOauthClients_attributes() *OauthClients_attributes {
+	m := &OauthClients_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOauthClients_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOauthClients_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOauthClients_attributes(), nil
+func CreateOauthClients_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOauthClients_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OauthClients_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OauthClients_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAdoEntraTenantId gets the ado-entra-tenant-id property value. The adoEntraTenantId property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetAdoEntraTenantId()(*string) {
-    return m.adoEntraTenantId
+func (m *OauthClients_attributes) GetAdoEntraTenantId() *string {
+	return m.adoEntraTenantId
 }
+
 // GetAdoOrgName gets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
 // returns a *string when successful
-func (m *OauthClients_attributes) GetAdoOrgName()(*string) {
-    return m.adoOrgName
+func (m *OauthClients_attributes) GetAdoOrgName() *string {
+	return m.adoOrgName
 }
+
 // GetAffectedWorkspaces gets the affected-workspaces property value. The affectedWorkspaces property
 // returns a []string when successful
-func (m *OauthClients_attributes) GetAffectedWorkspaces()([]string) {
-    return m.affectedWorkspaces
+func (m *OauthClients_attributes) GetAffectedWorkspaces() []string {
+	return m.affectedWorkspaces
 }
+
 // GetAffectedWorkspacesCount gets the affected-workspaces-count property value. The affectedWorkspacesCount property
 // returns a *int32 when successful
-func (m *OauthClients_attributes) GetAffectedWorkspacesCount()(*int32) {
-    return m.affectedWorkspacesCount
+func (m *OauthClients_attributes) GetAffectedWorkspacesCount() *int32 {
+	return m.affectedWorkspacesCount
 }
+
 // GetApiUrl gets the api-url property value. The apiUrl property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetApiUrl()(*string) {
-    return m.apiUrl
+func (m *OauthClients_attributes) GetApiUrl() *string {
+	return m.apiUrl
 }
+
 // GetCallbackUrl gets the callback-url property value. The callbackUrl property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetCallbackUrl()(*string) {
-    return m.callbackUrl
+func (m *OauthClients_attributes) GetCallbackUrl() *string {
+	return m.callbackUrl
 }
+
 // GetConnectPath gets the connect-path property value. The connectPath property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetConnectPath()(*string) {
-    return m.connectPath
+func (m *OauthClients_attributes) GetConnectPath() *string {
+	return m.connectPath
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *OauthClients_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *OauthClients_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.createdAt
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OauthClients_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["ado-entra-tenant-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAdoEntraTenantId(val)
-        }
-        return nil
-    }
-    res["ado-org-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAdoOrgName(val)
-        }
-        return nil
-    }
-    res["affected-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetAffectedWorkspaces(res)
-        }
-        return nil
-    }
-    res["affected-workspaces-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAffectedWorkspacesCount(val)
-        }
-        return nil
-    }
-    res["api-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetApiUrl(val)
-        }
-        return nil
-    }
-    res["callback-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCallbackUrl(val)
-        }
-        return nil
-    }
-    res["connect-path"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConnectPath(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["http-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHttpUrl(val)
-        }
-        return nil
-    }
-    res["key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKey(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["organization-scoped"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganizationScoped(val)
-        }
-        return nil
-    }
-    res["rsa-public-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRsaPublicKey(val)
-        }
-        return nil
-    }
-    res["secret"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSecret(val)
-        }
-        return nil
-    }
-    res["service-provider"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetServiceProvider(val)
-        }
-        return nil
-    }
-    res["service-provider-display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetServiceProviderDisplayName(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    res["uuid"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUuid(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OauthClients_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["ado-entra-tenant-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAdoEntraTenantId(val)
+		}
+		return nil
+	}
+	res["ado-org-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAdoOrgName(val)
+		}
+		return nil
+	}
+	res["affected-workspaces"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetAffectedWorkspaces(res)
+		}
+		return nil
+	}
+	res["affected-workspaces-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAffectedWorkspacesCount(val)
+		}
+		return nil
+	}
+	res["api-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetApiUrl(val)
+		}
+		return nil
+	}
+	res["callback-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCallbackUrl(val)
+		}
+		return nil
+	}
+	res["connect-path"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConnectPath(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["http-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHttpUrl(val)
+		}
+		return nil
+	}
+	res["key"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKey(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["organization-scoped"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganizationScoped(val)
+		}
+		return nil
+	}
+	res["rsa-public-key"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRsaPublicKey(val)
+		}
+		return nil
+	}
+	res["secret"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSecret(val)
+		}
+		return nil
+	}
+	res["service-provider"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetServiceProvider(val)
+		}
+		return nil
+	}
+	res["service-provider-display-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetServiceProviderDisplayName(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	res["uuid"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUuid(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHttpUrl gets the http-url property value. The httpUrl property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetHttpUrl()(*string) {
-    return m.httpUrl
+func (m *OauthClients_attributes) GetHttpUrl() *string {
+	return m.httpUrl
 }
+
 // GetKey gets the key property value. The key property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetKey()(*string) {
-    return m.key
+func (m *OauthClients_attributes) GetKey() *string {
+	return m.key
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetName()(*string) {
-    return m.name
+func (m *OauthClients_attributes) GetName() *string {
+	return m.name
 }
+
 // GetOrganizationScoped gets the organization-scoped property value. The organizationScoped property
 // returns a *bool when successful
-func (m *OauthClients_attributes) GetOrganizationScoped()(*bool) {
-    return m.organizationScoped
+func (m *OauthClients_attributes) GetOrganizationScoped() *bool {
+	return m.organizationScoped
 }
+
 // GetRsaPublicKey gets the rsa-public-key property value. The rsaPublicKey property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetRsaPublicKey()(*string) {
-    return m.rsaPublicKey
+func (m *OauthClients_attributes) GetRsaPublicKey() *string {
+	return m.rsaPublicKey
 }
+
 // GetSecret gets the secret property value. The secret property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetSecret()(*string) {
-    return m.secret
+func (m *OauthClients_attributes) GetSecret() *string {
+	return m.secret
 }
+
 // GetServiceProvider gets the service-provider property value. The serviceProvider property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetServiceProvider()(*string) {
-    return m.serviceProvider
+func (m *OauthClients_attributes) GetServiceProvider() *string {
+	return m.serviceProvider
 }
+
 // GetServiceProviderDisplayName gets the service-provider-display-name property value. The serviceProviderDisplayName property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetServiceProviderDisplayName()(*string) {
-    return m.serviceProviderDisplayName
+func (m *OauthClients_attributes) GetServiceProviderDisplayName() *string {
+	return m.serviceProviderDisplayName
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *OauthClients_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *OauthClients_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.updatedAt
 }
+
 // GetUuid gets the uuid property value. The uuid property
 // returns a *string when successful
-func (m *OauthClients_attributes) GetUuid()(*string) {
-    return m.uuid
+func (m *OauthClients_attributes) GetUuid() *string {
+	return m.uuid
 }
+
 // Serialize serializes information the current object
-func (m *OauthClients_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("ado-entra-tenant-id", m.GetAdoEntraTenantId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("ado-org-name", m.GetAdoOrgName())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetAffectedWorkspaces() != nil {
-        err := writer.WriteCollectionOfStringValues("affected-workspaces", m.GetAffectedWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("affected-workspaces-count", m.GetAffectedWorkspacesCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("api-url", m.GetApiUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("http-url", m.GetHttpUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("key", m.GetKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("organization-scoped", m.GetOrganizationScoped())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("rsa-public-key", m.GetRsaPublicKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("secret", m.GetSecret())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("service-provider", m.GetServiceProvider())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OauthClients_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("ado-entra-tenant-id", m.GetAdoEntraTenantId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("ado-org-name", m.GetAdoOrgName())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetAffectedWorkspaces() != nil {
+		err := writer.WriteCollectionOfStringValues("affected-workspaces", m.GetAffectedWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("affected-workspaces-count", m.GetAffectedWorkspacesCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("api-url", m.GetApiUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("http-url", m.GetHttpUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("key", m.GetKey())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("organization-scoped", m.GetOrganizationScoped())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("rsa-public-key", m.GetRsaPublicKey())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("secret", m.GetSecret())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("service-provider", m.GetServiceProvider())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OauthClients_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OauthClients_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAdoEntraTenantId sets the ado-entra-tenant-id property value. The adoEntraTenantId property
-func (m *OauthClients_attributes) SetAdoEntraTenantId(value *string)() {
-    m.adoEntraTenantId = value
+func (m *OauthClients_attributes) SetAdoEntraTenantId(value *string) {
+	m.adoEntraTenantId = value
 }
+
 // SetAdoOrgName sets the ado-org-name property value. The Azure DevOps organization name for connections using an org-scoped Personal Access Token (PAT). Must start and end with a letter or number and may contain only letters, numbers, and hyphens (e.g. "my-company"). Required when using an org-scoped PAT; omit or set to null when using a globally-scoped PAT.
-func (m *OauthClients_attributes) SetAdoOrgName(value *string)() {
-    m.adoOrgName = value
+func (m *OauthClients_attributes) SetAdoOrgName(value *string) {
+	m.adoOrgName = value
 }
+
 // SetAffectedWorkspaces sets the affected-workspaces property value. The affectedWorkspaces property
-func (m *OauthClients_attributes) SetAffectedWorkspaces(value []string)() {
-    m.affectedWorkspaces = value
+func (m *OauthClients_attributes) SetAffectedWorkspaces(value []string) {
+	m.affectedWorkspaces = value
 }
+
 // SetAffectedWorkspacesCount sets the affected-workspaces-count property value. The affectedWorkspacesCount property
-func (m *OauthClients_attributes) SetAffectedWorkspacesCount(value *int32)() {
-    m.affectedWorkspacesCount = value
+func (m *OauthClients_attributes) SetAffectedWorkspacesCount(value *int32) {
+	m.affectedWorkspacesCount = value
 }
+
 // SetApiUrl sets the api-url property value. The apiUrl property
-func (m *OauthClients_attributes) SetApiUrl(value *string)() {
-    m.apiUrl = value
+func (m *OauthClients_attributes) SetApiUrl(value *string) {
+	m.apiUrl = value
 }
+
 // SetCallbackUrl sets the callback-url property value. The callbackUrl property
-func (m *OauthClients_attributes) SetCallbackUrl(value *string)() {
-    m.callbackUrl = value
+func (m *OauthClients_attributes) SetCallbackUrl(value *string) {
+	m.callbackUrl = value
 }
+
 // SetConnectPath sets the connect-path property value. The connectPath property
-func (m *OauthClients_attributes) SetConnectPath(value *string)() {
-    m.connectPath = value
+func (m *OauthClients_attributes) SetConnectPath(value *string) {
+	m.connectPath = value
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *OauthClients_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *OauthClients_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.createdAt = value
 }
+
 // SetHttpUrl sets the http-url property value. The httpUrl property
-func (m *OauthClients_attributes) SetHttpUrl(value *string)() {
-    m.httpUrl = value
+func (m *OauthClients_attributes) SetHttpUrl(value *string) {
+	m.httpUrl = value
 }
+
 // SetKey sets the key property value. The key property
-func (m *OauthClients_attributes) SetKey(value *string)() {
-    m.key = value
+func (m *OauthClients_attributes) SetKey(value *string) {
+	m.key = value
 }
+
 // SetName sets the name property value. The name property
-func (m *OauthClients_attributes) SetName(value *string)() {
-    m.name = value
+func (m *OauthClients_attributes) SetName(value *string) {
+	m.name = value
 }
+
 // SetOrganizationScoped sets the organization-scoped property value. The organizationScoped property
-func (m *OauthClients_attributes) SetOrganizationScoped(value *bool)() {
-    m.organizationScoped = value
+func (m *OauthClients_attributes) SetOrganizationScoped(value *bool) {
+	m.organizationScoped = value
 }
+
 // SetRsaPublicKey sets the rsa-public-key property value. The rsaPublicKey property
-func (m *OauthClients_attributes) SetRsaPublicKey(value *string)() {
-    m.rsaPublicKey = value
+func (m *OauthClients_attributes) SetRsaPublicKey(value *string) {
+	m.rsaPublicKey = value
 }
+
 // SetSecret sets the secret property value. The secret property
-func (m *OauthClients_attributes) SetSecret(value *string)() {
-    m.secret = value
+func (m *OauthClients_attributes) SetSecret(value *string) {
+	m.secret = value
 }
+
 // SetServiceProvider sets the service-provider property value. The serviceProvider property
-func (m *OauthClients_attributes) SetServiceProvider(value *string)() {
-    m.serviceProvider = value
+func (m *OauthClients_attributes) SetServiceProvider(value *string) {
+	m.serviceProvider = value
 }
+
 // SetServiceProviderDisplayName sets the service-provider-display-name property value. The serviceProviderDisplayName property
-func (m *OauthClients_attributes) SetServiceProviderDisplayName(value *string)() {
-    m.serviceProviderDisplayName = value
+func (m *OauthClients_attributes) SetServiceProviderDisplayName(value *string) {
+	m.serviceProviderDisplayName = value
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *OauthClients_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *OauthClients_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.updatedAt = value
 }
+
 // SetUuid sets the uuid property value. The uuid property
-func (m *OauthClients_attributes) SetUuid(value *string)() {
-    m.uuid = value
+func (m *OauthClients_attributes) SetUuid(value *string) {
+	m.uuid = value
 }
+
 type OauthClients_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAdoEntraTenantId()(*string)
-    GetAdoOrgName()(*string)
-    GetAffectedWorkspaces()([]string)
-    GetAffectedWorkspacesCount()(*int32)
-    GetApiUrl()(*string)
-    GetCallbackUrl()(*string)
-    GetConnectPath()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetHttpUrl()(*string)
-    GetKey()(*string)
-    GetName()(*string)
-    GetOrganizationScoped()(*bool)
-    GetRsaPublicKey()(*string)
-    GetSecret()(*string)
-    GetServiceProvider()(*string)
-    GetServiceProviderDisplayName()(*string)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetUuid()(*string)
-    SetAdoEntraTenantId(value *string)()
-    SetAdoOrgName(value *string)()
-    SetAffectedWorkspaces(value []string)()
-    SetAffectedWorkspacesCount(value *int32)()
-    SetApiUrl(value *string)()
-    SetCallbackUrl(value *string)()
-    SetConnectPath(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetHttpUrl(value *string)()
-    SetKey(value *string)()
-    SetName(value *string)()
-    SetOrganizationScoped(value *bool)()
-    SetRsaPublicKey(value *string)()
-    SetSecret(value *string)()
-    SetServiceProvider(value *string)()
-    SetServiceProviderDisplayName(value *string)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetUuid(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAdoEntraTenantId() *string
+	GetAdoOrgName() *string
+	GetAffectedWorkspaces() []string
+	GetAffectedWorkspacesCount() *int32
+	GetApiUrl() *string
+	GetCallbackUrl() *string
+	GetConnectPath() *string
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetHttpUrl() *string
+	GetKey() *string
+	GetName() *string
+	GetOrganizationScoped() *bool
+	GetRsaPublicKey() *string
+	GetSecret() *string
+	GetServiceProvider() *string
+	GetServiceProviderDisplayName() *string
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetUuid() *string
+	SetAdoEntraTenantId(value *string)
+	SetAdoOrgName(value *string)
+	SetAffectedWorkspaces(value []string)
+	SetAffectedWorkspacesCount(value *int32)
+	SetApiUrl(value *string)
+	SetCallbackUrl(value *string)
+	SetConnectPath(value *string)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetHttpUrl(value *string)
+	SetKey(value *string)
+	SetName(value *string)
+	SetOrganizationScoped(value *bool)
+	SetRsaPublicKey(value *string)
+	SetSecret(value *string)
+	SetServiceProvider(value *string)
+	SetServiceProviderDisplayName(value *string)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetUuid(value *string)
 }

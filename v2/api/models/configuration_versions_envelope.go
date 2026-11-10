@@ -4,121 +4,131 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type ConfigurationVersionsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data ConfigurationVersionsable
-    // The included property
-    included []IngressAttributesable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The data property
+	data ConfigurationVersionsable
+	// The included property
+	included []IngressAttributesable
 }
+
 // NewConfigurationVersionsEnvelope instantiates a new ConfigurationVersionsEnvelope and sets the default values.
-func NewConfigurationVersionsEnvelope()(*ConfigurationVersionsEnvelope) {
-    m := &ConfigurationVersionsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewConfigurationVersionsEnvelope() *ConfigurationVersionsEnvelope {
+	m := &ConfigurationVersionsEnvelope{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateConfigurationVersionsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateConfigurationVersionsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewConfigurationVersionsEnvelope(), nil
+func CreateConfigurationVersionsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewConfigurationVersionsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ConfigurationVersionsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ConfigurationVersionsEnvelope) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetData gets the data property value. The data property
 // returns a ConfigurationVersionsable when successful
-func (m *ConfigurationVersionsEnvelope) GetData()(ConfigurationVersionsable) {
-    return m.data
+func (m *ConfigurationVersionsEnvelope) GetData() ConfigurationVersionsable {
+	return m.data
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ConfigurationVersionsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateConfigurationVersionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(ConfigurationVersionsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateIngressAttributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]IngressAttributesable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(IngressAttributesable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ConfigurationVersionsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateConfigurationVersionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(ConfigurationVersionsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateIngressAttributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]IngressAttributesable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(IngressAttributesable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []IngressAttributesable when successful
-func (m *ConfigurationVersionsEnvelope) GetIncluded()([]IngressAttributesable) {
-    return m.included
+func (m *ConfigurationVersionsEnvelope) GetIncluded() []IngressAttributesable {
+	return m.included
 }
+
 // Serialize serializes information the current object
-func (m *ConfigurationVersionsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ConfigurationVersionsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ConfigurationVersionsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ConfigurationVersionsEnvelope) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetData sets the data property value. The data property
-func (m *ConfigurationVersionsEnvelope) SetData(value ConfigurationVersionsable)() {
-    m.data = value
+func (m *ConfigurationVersionsEnvelope) SetData(value ConfigurationVersionsable) {
+	m.data = value
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *ConfigurationVersionsEnvelope) SetIncluded(value []IngressAttributesable)() {
-    m.included = value
+func (m *ConfigurationVersionsEnvelope) SetIncluded(value []IngressAttributesable) {
+	m.included = value
 }
+
 type ConfigurationVersionsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ConfigurationVersionsable)
-    GetIncluded()([]IngressAttributesable)
-    SetData(value ConfigurationVersionsable)()
-    SetIncluded(value []IngressAttributesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetData() ConfigurationVersionsable
+	GetIncluded() []IngressAttributesable
+	SetData(value ConfigurationVersionsable)
+	SetIncluded(value []IngressAttributesable)
 }

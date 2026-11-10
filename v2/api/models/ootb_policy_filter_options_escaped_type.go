@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type OotbPolicyFilterOptions_type int
 
 const (
-    OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE OotbPolicyFilterOptions_type = iota
+	OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE OotbPolicyFilterOptions_type = iota
 )
 
 func (i OotbPolicyFilterOptions_type) String() string {
-    return []string{"ootb-policy-filter-options"}[i]
+	return []string{"ootb-policy-filter-options"}[i]
 }
+
 func ParseOotbPolicyFilterOptions_type(v string) (any, error) {
-    result := OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE
-    switch v {
-        case "ootb-policy-filter-options":
-            result = OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE
+	switch v {
+	case "ootb-policy-filter-options":
+		result = OOTBPOLICYFILTEROPTIONS_OOTBPOLICYFILTEROPTIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOotbPolicyFilterOptions_type(values []OotbPolicyFilterOptions_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OotbPolicyFilterOptions_type) isMultiValue() bool {
-    return false
+	return false
 }

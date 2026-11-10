@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackDiagnostics_type int
 
 const (
-    STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE StackDiagnostics_type = iota
+	STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE StackDiagnostics_type = iota
 )
 
 func (i StackDiagnostics_type) String() string {
-    return []string{"stack-diagnostics"}[i]
+	return []string{"stack-diagnostics"}[i]
 }
+
 func ParseStackDiagnostics_type(v string) (any, error) {
-    result := STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE
-    switch v {
-        case "stack-diagnostics":
-            result = STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE
+	switch v {
+	case "stack-diagnostics":
+		result = STACKDIAGNOSTICS_STACKDIAGNOSTICS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackDiagnostics_type(values []StackDiagnostics_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackDiagnostics_type) isMultiValue() bool {
-    return false
+	return false
 }

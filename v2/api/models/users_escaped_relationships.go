@@ -4,138 +4,150 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Users_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The authenticatedResource property
-    authenticatedResource AuthenticatedResourceHasOneable
-    // The authenticationTokens property
-    authenticationTokens Links_relatedable
-    // The githubAppOauthTokens property
-    githubAppOauthTokens Links_relatedable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The authenticatedResource property
+	authenticatedResource AuthenticatedResourceHasOneable
+	// The authenticationTokens property
+	authenticationTokens Links_relatedable
+	// The githubAppOauthTokens property
+	githubAppOauthTokens Links_relatedable
 }
+
 // NewUsers_relationships instantiates a new Users_relationships and sets the default values.
-func NewUsers_relationships()(*Users_relationships) {
-    m := &Users_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewUsers_relationships() *Users_relationships {
+	m := &Users_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateUsers_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateUsers_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewUsers_relationships(), nil
+func CreateUsers_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewUsers_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Users_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Users_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAuthenticatedResource gets the authenticated-resource property value. The authenticatedResource property
 // returns a AuthenticatedResourceHasOneable when successful
-func (m *Users_relationships) GetAuthenticatedResource()(AuthenticatedResourceHasOneable) {
-    return m.authenticatedResource
+func (m *Users_relationships) GetAuthenticatedResource() AuthenticatedResourceHasOneable {
+	return m.authenticatedResource
 }
+
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
 // returns a Links_relatedable when successful
-func (m *Users_relationships) GetAuthenticationTokens()(Links_relatedable) {
-    return m.authenticationTokens
+func (m *Users_relationships) GetAuthenticationTokens() Links_relatedable {
+	return m.authenticationTokens
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Users_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["authenticated-resource"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuthenticatedResourceHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthenticatedResource(val.(AuthenticatedResourceHasOneable))
-        }
-        return nil
-    }
-    res["authentication-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthenticationTokens(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["github-app-oauth-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGithubAppOauthTokens(val.(Links_relatedable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Users_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["authenticated-resource"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuthenticatedResourceHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthenticatedResource(val.(AuthenticatedResourceHasOneable))
+		}
+		return nil
+	}
+	res["authentication-tokens"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthenticationTokens(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["github-app-oauth-tokens"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGithubAppOauthTokens(val.(Links_relatedable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGithubAppOauthTokens gets the github-app-oauth-tokens property value. The githubAppOauthTokens property
 // returns a Links_relatedable when successful
-func (m *Users_relationships) GetGithubAppOauthTokens()(Links_relatedable) {
-    return m.githubAppOauthTokens
+func (m *Users_relationships) GetGithubAppOauthTokens() Links_relatedable {
+	return m.githubAppOauthTokens
 }
+
 // Serialize serializes information the current object
-func (m *Users_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("authenticated-resource", m.GetAuthenticatedResource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("authentication-tokens", m.GetAuthenticationTokens())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("github-app-oauth-tokens", m.GetGithubAppOauthTokens())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Users_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("authenticated-resource", m.GetAuthenticatedResource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("authentication-tokens", m.GetAuthenticationTokens())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("github-app-oauth-tokens", m.GetGithubAppOauthTokens())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Users_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Users_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAuthenticatedResource sets the authenticated-resource property value. The authenticatedResource property
-func (m *Users_relationships) SetAuthenticatedResource(value AuthenticatedResourceHasOneable)() {
-    m.authenticatedResource = value
+func (m *Users_relationships) SetAuthenticatedResource(value AuthenticatedResourceHasOneable) {
+	m.authenticatedResource = value
 }
+
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
-func (m *Users_relationships) SetAuthenticationTokens(value Links_relatedable)() {
-    m.authenticationTokens = value
+func (m *Users_relationships) SetAuthenticationTokens(value Links_relatedable) {
+	m.authenticationTokens = value
 }
+
 // SetGithubAppOauthTokens sets the github-app-oauth-tokens property value. The githubAppOauthTokens property
-func (m *Users_relationships) SetGithubAppOauthTokens(value Links_relatedable)() {
-    m.githubAppOauthTokens = value
+func (m *Users_relationships) SetGithubAppOauthTokens(value Links_relatedable) {
+	m.githubAppOauthTokens = value
 }
+
 type Users_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAuthenticatedResource()(AuthenticatedResourceHasOneable)
-    GetAuthenticationTokens()(Links_relatedable)
-    GetGithubAppOauthTokens()(Links_relatedable)
-    SetAuthenticatedResource(value AuthenticatedResourceHasOneable)()
-    SetAuthenticationTokens(value Links_relatedable)()
-    SetGithubAppOauthTokens(value Links_relatedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAuthenticatedResource() AuthenticatedResourceHasOneable
+	GetAuthenticationTokens() Links_relatedable
+	GetGithubAppOauthTokens() Links_relatedable
+	SetAuthenticatedResource(value AuthenticatedResourceHasOneable)
+	SetAuthenticationTokens(value Links_relatedable)
+	SetGithubAppOauthTokens(value Links_relatedable)
 }

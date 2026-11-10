@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package organizationmemberships
+
 type GetFilterIs_service_accountQueryParameterType int
 
 const (
-    TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE GetFilterIs_service_accountQueryParameterType = iota
-    FALSE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
+	TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE GetFilterIs_service_accountQueryParameterType = iota
+	FALSE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
 )
 
 func (i GetFilterIs_service_accountQueryParameterType) String() string {
-    return []string{"true", "false"}[i]
+	return []string{"true", "false"}[i]
 }
+
 func ParseGetFilterIs_service_accountQueryParameterType(v string) (any, error) {
-    result := TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
-    switch v {
-        case "true":
-            result = TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
-        case "false":
-            result = FALSE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
+	switch v {
+	case "true":
+		result = TRUE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
+	case "false":
+		result = FALSE_GETFILTERIS_SERVICE_ACCOUNTQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterIs_service_accountQueryParameterType(values []GetFilterIs_service_accountQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterIs_service_accountQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

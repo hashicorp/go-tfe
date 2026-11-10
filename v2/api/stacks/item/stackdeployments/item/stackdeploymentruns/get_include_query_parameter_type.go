@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentruns
+
 type GetIncludeQueryParameterType int
 
 const (
-    STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
-    CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+	CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack_configuration", "current_step", "canceled_by"}[i]
+	return []string{"stack_configuration", "current_step", "canceled_by"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "stack_configuration":
-            result = STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
-        case "current_step":
-            result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
-        case "canceled_by":
-            result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "stack_configuration":
+		result = STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+	case "current_step":
+		result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+	case "canceled_by":
+		result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

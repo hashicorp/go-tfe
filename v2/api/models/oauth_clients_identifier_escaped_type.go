@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type OauthClientsIdentifier_type int
 
 const (
-    OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE OauthClientsIdentifier_type = iota
+	OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE OauthClientsIdentifier_type = iota
 )
 
 func (i OauthClientsIdentifier_type) String() string {
-    return []string{"oauth-clients"}[i]
+	return []string{"oauth-clients"}[i]
 }
+
 func ParseOauthClientsIdentifier_type(v string) (any, error) {
-    result := OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE
-    switch v {
-        case "oauth-clients":
-            result = OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE
+	switch v {
+	case "oauth-clients":
+		result = OAUTHCLIENTS_OAUTHCLIENTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOauthClientsIdentifier_type(values []OauthClientsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OauthClientsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

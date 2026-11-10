@@ -4,43 +4,49 @@
 package configurationversions
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemActionsRequestBuilder builds and executes requests for operations under \configuration-versions\{configuration_version_id}\actions
 type ItemActionsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // Archive the archive property
 // returns a *ItemActionsArchiveRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Archive()(*ItemActionsArchiveRequestBuilder) {
-    return NewItemActionsArchiveRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Archive() *ItemActionsArchiveRequestBuilder {
+	return NewItemActionsArchiveRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewItemActionsRequestBuilderInternal instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    m := &ItemActionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/configuration-versions/{configuration_version_id}/actions", pathParameters),
-    }
-    return m
+func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	m := &ItemActionsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/configuration-versions/{configuration_version_id}/actions", pathParameters),
+	}
+	return m
 }
+
 // NewItemActionsRequestBuilder instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Permanently_delete_backing_data the permanently_delete_backing_data property
 // returns a *ItemActionsPermanently_delete_backing_dataRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Permanently_delete_backing_data()(*ItemActionsPermanently_delete_backing_dataRequestBuilder) {
-    return NewItemActionsPermanently_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Permanently_delete_backing_data() *ItemActionsPermanently_delete_backing_dataRequestBuilder {
+	return NewItemActionsPermanently_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Restore_backing_data the restore_backing_data property
 // returns a *ItemActionsRestore_backing_dataRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Restore_backing_data()(*ItemActionsRestore_backing_dataRequestBuilder) {
-    return NewItemActionsRestore_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Restore_backing_data() *ItemActionsRestore_backing_dataRequestBuilder {
+	return NewItemActionsRestore_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Soft_delete_backing_data the soft_delete_backing_data property
 // returns a *ItemActionsSoft_delete_backing_dataRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Soft_delete_backing_data()(*ItemActionsSoft_delete_backing_dataRequestBuilder) {
-    return NewItemActionsSoft_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Soft_delete_backing_data() *ItemActionsSoft_delete_backing_dataRequestBuilder {
+	return NewItemActionsSoft_delete_backing_dataRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

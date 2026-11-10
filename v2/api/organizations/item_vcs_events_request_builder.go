@@ -4,79 +4,85 @@
 package organizations
 
 import (
-    "context"
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e "github.com/hashicorp/go-tfe/v2/api/organizations/item/vcsevents"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e "github.com/hashicorp/go-tfe/v2/api/organizations/item/vcsevents"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 // ItemVcsEventsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs-events
 type ItemVcsEventsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemVcsEventsRequestBuilderGetQueryParameters list VCS events for an organization.
 type ItemVcsEventsRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for vcs-events resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsvcsEvents []string "uriparametername:\"fields%5Bvcs%2Devents%5D\""
-    // RFC3339 formatted UTC timestamp. If omitted, defaults to 10 days ago.
-    Filterfrom *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bfrom%5D\""
-    // Comma-separated list of event levels to filter by. Accepted values are "info" and "error".
-    Filterlevels *string "uriparametername:\"filter%5Blevels%5D\""
-    // Comma-separated list of OAuth client external IDs to filter by.
-    Filteroauth_client_external_ids *string "uriparametername:\"filter%5Boauth_client_external_ids%5D\""
-    // RFC3339 formatted UTC timestamp. If omitted, defaults to now.
-    Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bto%5D\""
-    // Optionally side-load the specified relationships.
-    Include []ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e.GetIncludeQueryParameterType "uriparametername:\"include\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for vcs-events resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsvcsEvents []string "uriparametername:\"fields%5Bvcs%2Devents%5D\""
+	// RFC3339 formatted UTC timestamp. If omitted, defaults to 10 days ago.
+	Filterfrom *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bfrom%5D\""
+	// Comma-separated list of event levels to filter by. Accepted values are "info" and "error".
+	Filterlevels *string "uriparametername:\"filter%5Blevels%5D\""
+	// Comma-separated list of OAuth client external IDs to filter by.
+	Filteroauth_client_external_ids *string "uriparametername:\"filter%5Boauth_client_external_ids%5D\""
+	// RFC3339 formatted UTC timestamp. If omitted, defaults to now.
+	Filterto *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time "uriparametername:\"filter%5Bto%5D\""
+	// Optionally side-load the specified relationships.
+	Include []ia2e0e0ba84fc4705fe0aff525404b2a3c155d5e7ab94c4ceeaaa6d038a242b7e.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
-func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
-    m := &ItemVcsEventsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?fields%5Bvcs%2Devents%5D,filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsEventsRequestBuilder {
+	m := &ItemVcsEventsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs-events{?fields%5Bvcs%2Devents%5D,filter%5Bfrom%5D*,filter%5Blevels%5D*,filter%5Boauth_client_external_ids%5D*,filter%5Bto%5D*,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemVcsEventsRequestBuilder instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
-func NewItemVcsEventsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemVcsEventsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemVcsEventsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsEventsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemVcsEventsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list VCS events for an organization.
 // returns a ItemVcsEventsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVcsEventsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters])(ItemVcsEventsGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVcsEventsGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVcsEventsGetResponseable), nil
+func (m *ItemVcsEventsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters]) (ItemVcsEventsGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVcsEventsGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemVcsEventsGetResponseable), nil
 }
+
 // ToGetRequestInformation list VCS events for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemVcsEventsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemVcsEventsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemVcsEventsRequestBuilder when successful
-func (m *ItemVcsEventsRequestBuilder) WithUrl(rawUrl string)(*ItemVcsEventsRequestBuilder) {
-    return NewItemVcsEventsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemVcsEventsRequestBuilder) WithUrl(rawUrl string) *ItemVcsEventsRequestBuilder {
+	return NewItemVcsEventsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

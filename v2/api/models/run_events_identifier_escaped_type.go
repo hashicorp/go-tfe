@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type RunEventsIdentifier_type int
 
 const (
-    RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE RunEventsIdentifier_type = iota
+	RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE RunEventsIdentifier_type = iota
 )
 
 func (i RunEventsIdentifier_type) String() string {
-    return []string{"run-events"}[i]
+	return []string{"run-events"}[i]
 }
+
 func ParseRunEventsIdentifier_type(v string) (any, error) {
-    result := RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE
-    switch v {
-        case "run-events":
-            result = RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE
+	switch v {
+	case "run-events":
+		result = RUNEVENTS_RUNEVENTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeRunEventsIdentifier_type(values []RunEventsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i RunEventsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

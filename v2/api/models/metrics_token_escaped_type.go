@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type MetricsToken_type int
 
 const (
-    METRICSTOKENS_METRICSTOKEN_TYPE MetricsToken_type = iota
+	METRICSTOKENS_METRICSTOKEN_TYPE MetricsToken_type = iota
 )
 
 func (i MetricsToken_type) String() string {
-    return []string{"metrics-tokens"}[i]
+	return []string{"metrics-tokens"}[i]
 }
+
 func ParseMetricsToken_type(v string) (any, error) {
-    result := METRICSTOKENS_METRICSTOKEN_TYPE
-    switch v {
-        case "metrics-tokens":
-            result = METRICSTOKENS_METRICSTOKEN_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := METRICSTOKENS_METRICSTOKEN_TYPE
+	switch v {
+	case "metrics-tokens":
+		result = METRICSTOKENS_METRICSTOKEN_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeMetricsToken_type(values []MetricsToken_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i MetricsToken_type) isMultiValue() bool {
-    return false
+	return false
 }

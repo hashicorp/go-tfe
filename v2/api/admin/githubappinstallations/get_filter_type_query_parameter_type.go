@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package githubappinstallations
+
 type GetFilterTypeQueryParameterType int
 
 const (
-    ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE GetFilterTypeQueryParameterType = iota
-    USER_GETFILTERTYPEQUERYPARAMETERTYPE
+	ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE GetFilterTypeQueryParameterType = iota
+	USER_GETFILTERTYPEQUERYPARAMETERTYPE
 )
 
 func (i GetFilterTypeQueryParameterType) String() string {
-    return []string{"Organization", "User"}[i]
+	return []string{"Organization", "User"}[i]
 }
+
 func ParseGetFilterTypeQueryParameterType(v string) (any, error) {
-    result := ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE
-    switch v {
-        case "Organization":
-            result = ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE
-        case "User":
-            result = USER_GETFILTERTYPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE
+	switch v {
+	case "Organization":
+		result = ORGANIZATION_GETFILTERTYPEQUERYPARAMETERTYPE
+	case "User":
+		result = USER_GETFILTERTYPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterTypeQueryParameterType(values []GetFilterTypeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterTypeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

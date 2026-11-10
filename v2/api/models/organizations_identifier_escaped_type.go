@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type OrganizationsIdentifier_type int
 
 const (
-    ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE OrganizationsIdentifier_type = iota
+	ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE OrganizationsIdentifier_type = iota
 )
 
 func (i OrganizationsIdentifier_type) String() string {
-    return []string{"organizations"}[i]
+	return []string{"organizations"}[i]
 }
+
 func ParseOrganizationsIdentifier_type(v string) (any, error) {
-    result := ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE
-    switch v {
-        case "organizations":
-            result = ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE
+	switch v {
+	case "organizations":
+		result = ORGANIZATIONS_ORGANIZATIONSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOrganizationsIdentifier_type(values []OrganizationsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OrganizationsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

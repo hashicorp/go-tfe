@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TdpApplications_type int
 
 const (
-    TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE TdpApplications_type = iota
+	TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE TdpApplications_type = iota
 )
 
 func (i TdpApplications_type) String() string {
-    return []string{"tdp-applications"}[i]
+	return []string{"tdp-applications"}[i]
 }
+
 func ParseTdpApplications_type(v string) (any, error) {
-    result := TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE
-    switch v {
-        case "tdp-applications":
-            result = TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE
+	switch v {
+	case "tdp-applications":
+		result = TDPAPPLICATIONS_TDPAPPLICATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTdpApplications_type(values []TdpApplications_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TdpApplications_type) isMultiValue() bool {
-    return false
+	return false
 }

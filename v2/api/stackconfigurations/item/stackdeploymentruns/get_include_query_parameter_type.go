@@ -2,44 +2,48 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentruns
+
 type GetIncludeQueryParameterType int
 
 const (
-    STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    STACK_APPROVAL_GETINCLUDEQUERYPARAMETERTYPE
-    CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
-    DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
-    CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	STACK_APPROVAL_GETINCLUDEQUERYPARAMETERTYPE
+	CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+	DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+	CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack_deployment_group", "stack_approval", "current_step", "destroy_stack_configuration", "canceled_by"}[i]
+	return []string{"stack_deployment_group", "stack_approval", "current_step", "destroy_stack_configuration", "canceled_by"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "stack_deployment_group":
-            result = STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE
-        case "stack_approval":
-            result = STACK_APPROVAL_GETINCLUDEQUERYPARAMETERTYPE
-        case "current_step":
-            result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
-        case "destroy_stack_configuration":
-            result = DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
-        case "canceled_by":
-            result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "stack_deployment_group":
+		result = STACK_DEPLOYMENT_GROUP_GETINCLUDEQUERYPARAMETERTYPE
+	case "stack_approval":
+		result = STACK_APPROVAL_GETINCLUDEQUERYPARAMETERTYPE
+	case "current_step":
+		result = CURRENT_STEP_GETINCLUDEQUERYPARAMETERTYPE
+	case "destroy_stack_configuration":
+		result = DESTROY_STACK_CONFIGURATION_GETINCLUDEQUERYPARAMETERTYPE
+	case "canceled_by":
+		result = CANCELED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

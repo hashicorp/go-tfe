@@ -4,167 +4,181 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Tasks_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentPool property
-    agentPool AgentPoolsHasOneable
-    // The integration property
-    integration IntegrationsHasOneable
-    // The organization property
-    organization OrganizationsHasOneable
-    // The workspaceTasks property
-    workspaceTasks WorkspaceTasksHasManyable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The agentPool property
+	agentPool AgentPoolsHasOneable
+	// The integration property
+	integration IntegrationsHasOneable
+	// The organization property
+	organization OrganizationsHasOneable
+	// The workspaceTasks property
+	workspaceTasks WorkspaceTasksHasManyable
 }
+
 // NewTasks_relationships instantiates a new Tasks_relationships and sets the default values.
-func NewTasks_relationships()(*Tasks_relationships) {
-    m := &Tasks_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTasks_relationships() *Tasks_relationships {
+	m := &Tasks_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTasks_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTasks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTasks_relationships(), nil
+func CreateTasks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTasks_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Tasks_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Tasks_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *Tasks_relationships) GetAgentPool()(AgentPoolsHasOneable) {
-    return m.agentPool
+func (m *Tasks_relationships) GetAgentPool() AgentPoolsHasOneable {
+	return m.agentPool
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Tasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["integration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateIntegrationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIntegration(val.(IntegrationsHasOneable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["workspace-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceTasksHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceTasks(val.(WorkspaceTasksHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Tasks_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["integration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateIntegrationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIntegration(val.(IntegrationsHasOneable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["workspace-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceTasksHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceTasks(val.(WorkspaceTasksHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIntegration gets the integration property value. The integration property
 // returns a IntegrationsHasOneable when successful
-func (m *Tasks_relationships) GetIntegration()(IntegrationsHasOneable) {
-    return m.integration
+func (m *Tasks_relationships) GetIntegration() IntegrationsHasOneable {
+	return m.integration
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *Tasks_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *Tasks_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // GetWorkspaceTasks gets the workspace-tasks property value. The workspaceTasks property
 // returns a WorkspaceTasksHasManyable when successful
-func (m *Tasks_relationships) GetWorkspaceTasks()(WorkspaceTasksHasManyable) {
-    return m.workspaceTasks
+func (m *Tasks_relationships) GetWorkspaceTasks() WorkspaceTasksHasManyable {
+	return m.workspaceTasks
 }
+
 // Serialize serializes information the current object
-func (m *Tasks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("integration", m.GetIntegration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace-tasks", m.GetWorkspaceTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Tasks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("integration", m.GetIntegration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace-tasks", m.GetWorkspaceTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Tasks_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Tasks_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *Tasks_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
-    m.agentPool = value
+func (m *Tasks_relationships) SetAgentPool(value AgentPoolsHasOneable) {
+	m.agentPool = value
 }
+
 // SetIntegration sets the integration property value. The integration property
-func (m *Tasks_relationships) SetIntegration(value IntegrationsHasOneable)() {
-    m.integration = value
+func (m *Tasks_relationships) SetIntegration(value IntegrationsHasOneable) {
+	m.integration = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *Tasks_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *Tasks_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 // SetWorkspaceTasks sets the workspace-tasks property value. The workspaceTasks property
-func (m *Tasks_relationships) SetWorkspaceTasks(value WorkspaceTasksHasManyable)() {
-    m.workspaceTasks = value
+func (m *Tasks_relationships) SetWorkspaceTasks(value WorkspaceTasksHasManyable) {
+	m.workspaceTasks = value
 }
+
 type Tasks_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsHasOneable)
-    GetIntegration()(IntegrationsHasOneable)
-    GetOrganization()(OrganizationsHasOneable)
-    GetWorkspaceTasks()(WorkspaceTasksHasManyable)
-    SetAgentPool(value AgentPoolsHasOneable)()
-    SetIntegration(value IntegrationsHasOneable)()
-    SetOrganization(value OrganizationsHasOneable)()
-    SetWorkspaceTasks(value WorkspaceTasksHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPool() AgentPoolsHasOneable
+	GetIntegration() IntegrationsHasOneable
+	GetOrganization() OrganizationsHasOneable
+	GetWorkspaceTasks() WorkspaceTasksHasManyable
+	SetAgentPool(value AgentPoolsHasOneable)
+	SetIntegration(value IntegrationsHasOneable)
+	SetOrganization(value OrganizationsHasOneable)
+	SetWorkspaceTasks(value WorkspaceTasksHasManyable)
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AdminSamlSettings_type int
 
 const (
-    SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE AdminSamlSettings_type = iota
+	SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE AdminSamlSettings_type = iota
 )
 
 func (i AdminSamlSettings_type) String() string {
-    return []string{"saml-settings"}[i]
+	return []string{"saml-settings"}[i]
 }
+
 func ParseAdminSamlSettings_type(v string) (any, error) {
-    result := SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE
-    switch v {
-        case "saml-settings":
-            result = SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE
+	switch v {
+	case "saml-settings":
+		result = SAMLSETTINGS_ADMINSAMLSETTINGS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminSamlSettings_type(values []AdminSamlSettings_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminSamlSettings_type) isMultiValue() bool {
-    return false
+	return false
 }

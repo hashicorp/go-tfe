@@ -4,196 +4,212 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Queries_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The canceledBy property
-    canceledBy UsersHasOneable
-    // The configurationVersion property
-    configurationVersion ConfigurationVersionsHasOneable
-    // The createdBy property
-    createdBy UsersHasOneable
-    // The noCodeQuery property
-    noCodeQuery NoCodeQueriesHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The canceledBy property
+	canceledBy UsersHasOneable
+	// The configurationVersion property
+	configurationVersion ConfigurationVersionsHasOneable
+	// The createdBy property
+	createdBy UsersHasOneable
+	// The noCodeQuery property
+	noCodeQuery NoCodeQueriesHasOneable
+	// The workspace property
+	workspace WorkspacesHasOneable
 }
+
 // NewQueries_relationships instantiates a new Queries_relationships and sets the default values.
-func NewQueries_relationships()(*Queries_relationships) {
-    m := &Queries_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewQueries_relationships() *Queries_relationships {
+	m := &Queries_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateQueries_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateQueries_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewQueries_relationships(), nil
+func CreateQueries_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewQueries_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Queries_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Queries_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetCanceledBy gets the canceled-by property value. The canceledBy property
 // returns a UsersHasOneable when successful
-func (m *Queries_relationships) GetCanceledBy()(UsersHasOneable) {
-    return m.canceledBy
+func (m *Queries_relationships) GetCanceledBy() UsersHasOneable {
+	return m.canceledBy
 }
+
 // GetConfigurationVersion gets the configuration-version property value. The configurationVersion property
 // returns a ConfigurationVersionsHasOneable when successful
-func (m *Queries_relationships) GetConfigurationVersion()(ConfigurationVersionsHasOneable) {
-    return m.configurationVersion
+func (m *Queries_relationships) GetConfigurationVersion() ConfigurationVersionsHasOneable {
+	return m.configurationVersion
 }
+
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a UsersHasOneable when successful
-func (m *Queries_relationships) GetCreatedBy()(UsersHasOneable) {
-    return m.createdBy
+func (m *Queries_relationships) GetCreatedBy() UsersHasOneable {
+	return m.createdBy
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Queries_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["canceled-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["configuration-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConfigurationVersion(val.(ConfigurationVersionsHasOneable))
-        }
-        return nil
-    }
-    res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["no-code-query"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNoCodeQueriesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNoCodeQuery(val.(NoCodeQueriesHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Queries_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["canceled-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["configuration-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConfigurationVersion(val.(ConfigurationVersionsHasOneable))
+		}
+		return nil
+	}
+	res["created-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["no-code-query"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateNoCodeQueriesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNoCodeQuery(val.(NoCodeQueriesHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetNoCodeQuery gets the no-code-query property value. The noCodeQuery property
 // returns a NoCodeQueriesHasOneable when successful
-func (m *Queries_relationships) GetNoCodeQuery()(NoCodeQueriesHasOneable) {
-    return m.noCodeQuery
+func (m *Queries_relationships) GetNoCodeQuery() NoCodeQueriesHasOneable {
+	return m.noCodeQuery
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *Queries_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *Queries_relationships) GetWorkspace() WorkspacesHasOneable {
+	return m.workspace
 }
+
 // Serialize serializes information the current object
-func (m *Queries_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("configuration-version", m.GetConfigurationVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("no-code-query", m.GetNoCodeQuery())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Queries_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("configuration-version", m.GetConfigurationVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("no-code-query", m.GetNoCodeQuery())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Queries_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Queries_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetCanceledBy sets the canceled-by property value. The canceledBy property
-func (m *Queries_relationships) SetCanceledBy(value UsersHasOneable)() {
-    m.canceledBy = value
+func (m *Queries_relationships) SetCanceledBy(value UsersHasOneable) {
+	m.canceledBy = value
 }
+
 // SetConfigurationVersion sets the configuration-version property value. The configurationVersion property
-func (m *Queries_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable)() {
-    m.configurationVersion = value
+func (m *Queries_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable) {
+	m.configurationVersion = value
 }
+
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *Queries_relationships) SetCreatedBy(value UsersHasOneable)() {
-    m.createdBy = value
+func (m *Queries_relationships) SetCreatedBy(value UsersHasOneable) {
+	m.createdBy = value
 }
+
 // SetNoCodeQuery sets the no-code-query property value. The noCodeQuery property
-func (m *Queries_relationships) SetNoCodeQuery(value NoCodeQueriesHasOneable)() {
-    m.noCodeQuery = value
+func (m *Queries_relationships) SetNoCodeQuery(value NoCodeQueriesHasOneable) {
+	m.noCodeQuery = value
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *Queries_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *Queries_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	m.workspace = value
 }
+
 type Queries_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCanceledBy()(UsersHasOneable)
-    GetConfigurationVersion()(ConfigurationVersionsHasOneable)
-    GetCreatedBy()(UsersHasOneable)
-    GetNoCodeQuery()(NoCodeQueriesHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetCanceledBy(value UsersHasOneable)()
-    SetConfigurationVersion(value ConfigurationVersionsHasOneable)()
-    SetCreatedBy(value UsersHasOneable)()
-    SetNoCodeQuery(value NoCodeQueriesHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetCanceledBy() UsersHasOneable
+	GetConfigurationVersion() ConfigurationVersionsHasOneable
+	GetCreatedBy() UsersHasOneable
+	GetNoCodeQuery() NoCodeQueriesHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetCanceledBy(value UsersHasOneable)
+	SetConfigurationVersion(value ConfigurationVersionsHasOneable)
+	SetCreatedBy(value UsersHasOneable)
+	SetNoCodeQuery(value NoCodeQueriesHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

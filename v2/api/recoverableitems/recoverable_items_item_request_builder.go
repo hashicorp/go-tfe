@@ -4,28 +4,31 @@
 package recoverableitems
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // RecoverableItemsItemRequestBuilder builds and executes requests for operations under \recoverable-items\{id}
 type RecoverableItemsItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
-func (m *RecoverableItemsItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
-    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *RecoverableItemsItemRequestBuilder) Actions() *ItemActionsRequestBuilder {
+	return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewRecoverableItemsItemRequestBuilderInternal instantiates a new RecoverableItemsItemRequestBuilder and sets the default values.
-func NewRecoverableItemsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RecoverableItemsItemRequestBuilder) {
-    m := &RecoverableItemsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/recoverable-items/{id}", pathParameters),
-    }
-    return m
+func NewRecoverableItemsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *RecoverableItemsItemRequestBuilder {
+	m := &RecoverableItemsItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/recoverable-items/{id}", pathParameters),
+	}
+	return m
 }
+
 // NewRecoverableItemsItemRequestBuilder instantiates a new RecoverableItemsItemRequestBuilder and sets the default values.
-func NewRecoverableItemsItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RecoverableItemsItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewRecoverableItemsItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewRecoverableItemsItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *RecoverableItemsItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewRecoverableItemsItemRequestBuilderInternal(urlParams, requestAdapter)
 }

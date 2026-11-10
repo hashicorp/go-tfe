@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type ConfigurableIdentifier_type int
 
 const (
-    WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE ConfigurableIdentifier_type = iota
-    POLICYSETS_CONFIGURABLEIDENTIFIER_TYPE
-    VARSETS_CONFIGURABLEIDENTIFIER_TYPE
+	WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE ConfigurableIdentifier_type = iota
+	POLICYSETS_CONFIGURABLEIDENTIFIER_TYPE
+	VARSETS_CONFIGURABLEIDENTIFIER_TYPE
 )
 
 func (i ConfigurableIdentifier_type) String() string {
-    return []string{"workspaces", "policy-sets", "varsets"}[i]
+	return []string{"workspaces", "policy-sets", "varsets"}[i]
 }
+
 func ParseConfigurableIdentifier_type(v string) (any, error) {
-    result := WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE
-    switch v {
-        case "workspaces":
-            result = WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE
-        case "policy-sets":
-            result = POLICYSETS_CONFIGURABLEIDENTIFIER_TYPE
-        case "varsets":
-            result = VARSETS_CONFIGURABLEIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE
+	switch v {
+	case "workspaces":
+		result = WORKSPACES_CONFIGURABLEIDENTIFIER_TYPE
+	case "policy-sets":
+		result = POLICYSETS_CONFIGURABLEIDENTIFIER_TYPE
+	case "varsets":
+		result = VARSETS_CONFIGURABLEIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeConfigurableIdentifier_type(values []ConfigurableIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ConfigurableIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

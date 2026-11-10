@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package recoverableitems
+
 type GetFilterRecoverable_typeQueryParameterType int
 
 const (
-    WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE GetFilterRecoverable_typeQueryParameterType = iota
-    STACKS_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
+	WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE GetFilterRecoverable_typeQueryParameterType = iota
+	STACKS_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
 )
 
 func (i GetFilterRecoverable_typeQueryParameterType) String() string {
-    return []string{"workspaces", "stacks"}[i]
+	return []string{"workspaces", "stacks"}[i]
 }
+
 func ParseGetFilterRecoverable_typeQueryParameterType(v string) (any, error) {
-    result := WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
-    switch v {
-        case "workspaces":
-            result = WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
-        case "stacks":
-            result = STACKS_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
+	switch v {
+	case "workspaces":
+		result = WORKSPACES_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
+	case "stacks":
+		result = STACKS_GETFILTERRECOVERABLE_TYPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterRecoverable_typeQueryParameterType(values []GetFilterRecoverable_typeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterRecoverable_typeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

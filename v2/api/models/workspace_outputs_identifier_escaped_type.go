@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceOutputsIdentifier_type int
 
 const (
-    WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE WorkspaceOutputsIdentifier_type = iota
+	WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE WorkspaceOutputsIdentifier_type = iota
 )
 
 func (i WorkspaceOutputsIdentifier_type) String() string {
-    return []string{"workspace-outputs"}[i]
+	return []string{"workspace-outputs"}[i]
 }
+
 func ParseWorkspaceOutputsIdentifier_type(v string) (any, error) {
-    result := WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE
-    switch v {
-        case "workspace-outputs":
-            result = WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE
+	switch v {
+	case "workspace-outputs":
+		result = WORKSPACEOUTPUTS_WORKSPACEOUTPUTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceOutputsIdentifier_type(values []WorkspaceOutputsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceOutputsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

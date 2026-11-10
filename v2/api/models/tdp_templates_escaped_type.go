@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TdpTemplates_type int
 
 const (
-    TDPTEMPLATES_TDPTEMPLATES_TYPE TdpTemplates_type = iota
+	TDPTEMPLATES_TDPTEMPLATES_TYPE TdpTemplates_type = iota
 )
 
 func (i TdpTemplates_type) String() string {
-    return []string{"tdp-templates"}[i]
+	return []string{"tdp-templates"}[i]
 }
+
 func ParseTdpTemplates_type(v string) (any, error) {
-    result := TDPTEMPLATES_TDPTEMPLATES_TYPE
-    switch v {
-        case "tdp-templates":
-            result = TDPTEMPLATES_TDPTEMPLATES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TDPTEMPLATES_TDPTEMPLATES_TYPE
+	switch v {
+	case "tdp-templates":
+		result = TDPTEMPLATES_TDPTEMPLATES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTdpTemplates_type(values []TdpTemplates_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TdpTemplates_type) isMultiValue() bool {
-    return false
+	return false
 }

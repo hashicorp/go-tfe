@@ -4,40 +4,44 @@
 package organizations
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemRegistryModulesRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\registry-modules
 type ItemRegistryModulesRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ByRegistry_name gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item.registryModules.item collection
 // returns a *ItemRegistryModulesWithRegistry_nameItemRequestBuilder when successful
-func (m *ItemRegistryModulesRequestBuilder) ByRegistry_name(registry_name string)(*ItemRegistryModulesWithRegistry_nameItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if registry_name != "" {
-        urlTplParams["registry_name"] = registry_name
-    }
-    return NewItemRegistryModulesWithRegistry_nameItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRegistryModulesRequestBuilder) ByRegistry_name(registry_name string) *ItemRegistryModulesWithRegistry_nameItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if registry_name != "" {
+		urlTplParams["registry_name"] = registry_name
+	}
+	return NewItemRegistryModulesWithRegistry_nameItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewItemRegistryModulesRequestBuilderInternal instantiates a new ItemRegistryModulesRequestBuilder and sets the default values.
-func NewItemRegistryModulesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesRequestBuilder) {
-    m := &ItemRegistryModulesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules", pathParameters),
-    }
-    return m
+func NewItemRegistryModulesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRegistryModulesRequestBuilder {
+	m := &ItemRegistryModulesRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/registry-modules", pathParameters),
+	}
+	return m
 }
+
 // NewItemRegistryModulesRequestBuilder instantiates a new ItemRegistryModulesRequestBuilder and sets the default values.
-func NewItemRegistryModulesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRegistryModulesRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemRegistryModulesRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemRegistryModulesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRegistryModulesRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemRegistryModulesRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Validation the validation property
 // returns a *ItemRegistryModulesValidationRequestBuilder when successful
-func (m *ItemRegistryModulesRequestBuilder) Validation()(*ItemRegistryModulesValidationRequestBuilder) {
-    return NewItemRegistryModulesValidationRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRegistryModulesRequestBuilder) Validation() *ItemRegistryModulesValidationRequestBuilder {
+	return NewItemRegistryModulesValidationRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

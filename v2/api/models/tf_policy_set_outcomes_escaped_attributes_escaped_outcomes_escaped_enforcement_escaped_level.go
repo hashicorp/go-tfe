@@ -2,39 +2,43 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The enforcement level of the policy
 type TfPolicySetOutcomes_attributes_outcomes_enforcement_level int
 
 const (
-    ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL TfPolicySetOutcomes_attributes_outcomes_enforcement_level = iota
-    MANDATORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
-    MANDATORY_OVERRIDABLE_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL TfPolicySetOutcomes_attributes_outcomes_enforcement_level = iota
+	MANDATORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	MANDATORY_OVERRIDABLE_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
 )
 
 func (i TfPolicySetOutcomes_attributes_outcomes_enforcement_level) String() string {
-    return []string{"advisory", "mandatory", "mandatory_overridable"}[i]
+	return []string{"advisory", "mandatory", "mandatory_overridable"}[i]
 }
+
 func ParseTfPolicySetOutcomes_attributes_outcomes_enforcement_level(v string) (any, error) {
-    result := ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
-    switch v {
-        case "advisory":
-            result = ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
-        case "mandatory":
-            result = MANDATORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
-        case "mandatory_overridable":
-            result = MANDATORY_OVERRIDABLE_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	switch v {
+	case "advisory":
+		result = ADVISORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	case "mandatory":
+		result = MANDATORY_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	case "mandatory_overridable":
+		result = MANDATORY_OVERRIDABLE_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_ENFORCEMENT_LEVEL
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTfPolicySetOutcomes_attributes_outcomes_enforcement_level(values []TfPolicySetOutcomes_attributes_outcomes_enforcement_level) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TfPolicySetOutcomes_attributes_outcomes_enforcement_level) isMultiValue() bool {
-    return false
+	return false
 }

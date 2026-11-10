@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package authenticationtoken
+
 type DeleteTokenQueryParameterType int
 
 const (
-    AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE DeleteTokenQueryParameterType = iota
+	AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE DeleteTokenQueryParameterType = iota
 )
 
 func (i DeleteTokenQueryParameterType) String() string {
-    return []string{"audit-trails"}[i]
+	return []string{"audit-trails"}[i]
 }
+
 func ParseDeleteTokenQueryParameterType(v string) (any, error) {
-    result := AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE
-    switch v {
-        case "audit-trails":
-            result = AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE
+	switch v {
+	case "audit-trails":
+		result = AUDITTRAILS_DELETETOKENQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeDeleteTokenQueryParameterType(values []DeleteTokenQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i DeleteTokenQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

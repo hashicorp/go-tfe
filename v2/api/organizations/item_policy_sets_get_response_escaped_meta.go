@@ -4,110 +4,120 @@
 package organizations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type ItemPolicySetsGetResponse_meta struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.
-    ootbPolicyUpdates ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable
-    // The pagination property
-    pagination i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.
+	ootbPolicyUpdates ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable
+	// The pagination property
+	pagination i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
 }
+
 // NewItemPolicySetsGetResponse_meta instantiates a new ItemPolicySetsGetResponse_meta and sets the default values.
-func NewItemPolicySetsGetResponse_meta()(*ItemPolicySetsGetResponse_meta) {
-    m := &ItemPolicySetsGetResponse_meta{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemPolicySetsGetResponse_meta() *ItemPolicySetsGetResponse_meta {
+	m := &ItemPolicySetsGetResponse_meta{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemPolicySetsGetResponse_metaFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemPolicySetsGetResponse_metaFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemPolicySetsGetResponse_meta(), nil
+func CreateItemPolicySetsGetResponse_metaFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemPolicySetsGetResponse_meta(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemPolicySetsGetResponse_meta) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemPolicySetsGetResponse_meta) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemPolicySetsGetResponse_meta) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["ootb-policy-updates"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemPolicySetsGetResponse_meta_ootbPolicyUpdatesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOotbPolicyUpdates(val.(ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable))
-        }
-        return nil
-    }
-    res["pagination"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPagination(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemPolicySetsGetResponse_meta) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["ootb-policy-updates"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemPolicySetsGetResponse_meta_ootbPolicyUpdatesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOotbPolicyUpdates(val.(ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable))
+		}
+		return nil
+	}
+	res["pagination"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPagination(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOotbPolicyUpdates gets the ootb-policy-updates property value. Present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.
 // returns a ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable when successful
-func (m *ItemPolicySetsGetResponse_meta) GetOotbPolicyUpdates()(ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable) {
-    return m.ootbPolicyUpdates
+func (m *ItemPolicySetsGetResponse_meta) GetOotbPolicyUpdates() ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable {
+	return m.ootbPolicyUpdates
 }
+
 // GetPagination gets the pagination property value. The pagination property
 // returns a Paginationable when successful
-func (m *ItemPolicySetsGetResponse_meta) GetPagination()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
-    return m.pagination
+func (m *ItemPolicySetsGetResponse_meta) GetPagination() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable {
+	return m.pagination
 }
+
 // Serialize serializes information the current object
-func (m *ItemPolicySetsGetResponse_meta) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("ootb-policy-updates", m.GetOotbPolicyUpdates())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("pagination", m.GetPagination())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemPolicySetsGetResponse_meta) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("ootb-policy-updates", m.GetOotbPolicyUpdates())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("pagination", m.GetPagination())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemPolicySetsGetResponse_meta) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemPolicySetsGetResponse_meta) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetOotbPolicyUpdates sets the ootb-policy-updates property value. Present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.
-func (m *ItemPolicySetsGetResponse_meta) SetOotbPolicyUpdates(value ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable)() {
-    m.ootbPolicyUpdates = value
+func (m *ItemPolicySetsGetResponse_meta) SetOotbPolicyUpdates(value ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable) {
+	m.ootbPolicyUpdates = value
 }
+
 // SetPagination sets the pagination property value. The pagination property
-func (m *ItemPolicySetsGetResponse_meta) SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)() {
-    m.pagination = value
+func (m *ItemPolicySetsGetResponse_meta) SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
+	m.pagination = value
 }
+
 type ItemPolicySetsGetResponse_metaable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOotbPolicyUpdates()(ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable)
-    GetPagination()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
-    SetOotbPolicyUpdates(value ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable)()
-    SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetOotbPolicyUpdates() ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable
+	GetPagination() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+	SetOotbPolicyUpdates(value ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable)
+	SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
 }

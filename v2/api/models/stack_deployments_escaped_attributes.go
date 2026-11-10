@@ -4,138 +4,150 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type StackDeployments_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
-    branch *string
-    // Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
-    groupName *string
-    // The name property
-    name *string
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
+	branch *string
+	// Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
+	groupName *string
+	// The name property
+	name *string
 }
+
 // NewStackDeployments_attributes instantiates a new StackDeployments_attributes and sets the default values.
-func NewStackDeployments_attributes()(*StackDeployments_attributes) {
-    m := &StackDeployments_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackDeployments_attributes() *StackDeployments_attributes {
+	m := &StackDeployments_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackDeployments_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackDeployments_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackDeployments_attributes(), nil
+func CreateStackDeployments_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackDeployments_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackDeployments_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackDeployments_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetBranch gets the branch property value. Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
 // returns a *string when successful
-func (m *StackDeployments_attributes) GetBranch()(*string) {
-    return m.branch
+func (m *StackDeployments_attributes) GetBranch() *string {
+	return m.branch
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackDeployments_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBranch(val)
-        }
-        return nil
-    }
-    res["group-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGroupName(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackDeployments_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["branch"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBranch(val)
+		}
+		return nil
+	}
+	res["group-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGroupName(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGroupName gets the group-name property value. Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
 // returns a *string when successful
-func (m *StackDeployments_attributes) GetGroupName()(*string) {
-    return m.groupName
+func (m *StackDeployments_attributes) GetGroupName() *string {
+	return m.groupName
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *StackDeployments_attributes) GetName()(*string) {
-    return m.name
+func (m *StackDeployments_attributes) GetName() *string {
+	return m.name
 }
+
 // Serialize serializes information the current object
-func (m *StackDeployments_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("branch", m.GetBranch())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("group-name", m.GetGroupName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackDeployments_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("branch", m.GetBranch())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("group-name", m.GetGroupName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackDeployments_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackDeployments_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetBranch sets the branch property value. Branch that the stack configuration of the deployment's latest run was created against, or null for configurations without VCS metadata. Only present when the `stacks-multi-branch` feature is enabled.
-func (m *StackDeployments_attributes) SetBranch(value *string)() {
-    m.branch = value
+func (m *StackDeployments_attributes) SetBranch(value *string) {
+	m.branch = value
 }
+
 // SetGroupName sets the group-name property value. Name of the deployment group of the deployment's latest run. Only present when the `stacks-multi-branch` feature is enabled.
-func (m *StackDeployments_attributes) SetGroupName(value *string)() {
-    m.groupName = value
+func (m *StackDeployments_attributes) SetGroupName(value *string) {
+	m.groupName = value
 }
+
 // SetName sets the name property value. The name property
-func (m *StackDeployments_attributes) SetName(value *string)() {
-    m.name = value
+func (m *StackDeployments_attributes) SetName(value *string) {
+	m.name = value
 }
+
 type StackDeployments_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetBranch()(*string)
-    GetGroupName()(*string)
-    GetName()(*string)
-    SetBranch(value *string)()
-    SetGroupName(value *string)()
-    SetName(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBranch() *string
+	GetGroupName() *string
+	GetName() *string
+	SetBranch(value *string)
+	SetGroupName(value *string)
+	SetName(value *string)
 }

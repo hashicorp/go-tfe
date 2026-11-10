@@ -4,611 +4,657 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type PolicySets_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentEnabled property
-    agentEnabled *bool
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The description property
-    description *string
-    // The global property
-    global *bool
-    // The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
-    kind *PolicySets_attributes_kind
-    // The name property
-    name *string
-    // The overridable property
-    overridable *bool
-    // The policiesPath property
-    policiesPath *string
-    // The policyCount property
-    policyCount *int32
-    // The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
-    policyToolVersion *string
-    // The policyUpdatePatterns property
-    policyUpdatePatterns []string
-    // The projectCount property
-    projectCount *int32
-    // Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
-    scopingType *PolicySets_attributes_scopingType
-    // The stackCount property
-    stackCount *int32
-    // Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
-    tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
-    // The tagSelectors property
-    tagSelectors []PolicySets_attributes_tagSelectorsable
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The vcsRepo property
-    vcsRepo PolicySets_attributes_vcsRepoable
-    // The versioned property
-    versioned *bool
-    // The workspaceCount property
-    workspaceCount *int32
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The agentEnabled property
+	agentEnabled *bool
+	// The createdAt property
+	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The description property
+	description *string
+	// The global property
+	global *bool
+	// The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
+	kind *PolicySets_attributes_kind
+	// The name property
+	name *string
+	// The overridable property
+	overridable *bool
+	// The policiesPath property
+	policiesPath *string
+	// The policyCount property
+	policyCount *int32
+	// The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
+	policyToolVersion *string
+	// The policyUpdatePatterns property
+	policyUpdatePatterns []string
+	// The projectCount property
+	projectCount *int32
+	// Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
+	scopingType *PolicySets_attributes_scopingType
+	// The stackCount property
+	stackCount *int32
+	// Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
+	tagSelectorMatchingLogic *PolicySets_attributes_tagSelectorMatchingLogic
+	// The tagSelectors property
+	tagSelectors []PolicySets_attributes_tagSelectorsable
+	// The updatedAt property
+	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The vcsRepo property
+	vcsRepo PolicySets_attributes_vcsRepoable
+	// The versioned property
+	versioned *bool
+	// The workspaceCount property
+	workspaceCount *int32
 }
+
 // NewPolicySets_attributes instantiates a new PolicySets_attributes and sets the default values.
-func NewPolicySets_attributes()(*PolicySets_attributes) {
-    m := &PolicySets_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicySets_attributes() *PolicySets_attributes {
+	m := &PolicySets_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicySets_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicySets_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicySets_attributes(), nil
+func CreatePolicySets_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicySets_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicySets_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicySets_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAgentEnabled gets the agent-enabled property value. The agentEnabled property
 // returns a *bool when successful
-func (m *PolicySets_attributes) GetAgentEnabled()(*bool) {
-    return m.agentEnabled
+func (m *PolicySets_attributes) GetAgentEnabled() *bool {
+	return m.agentEnabled
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *PolicySets_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *PolicySets_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.createdAt
 }
+
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
-func (m *PolicySets_attributes) GetDescription()(*string) {
-    return m.description
+func (m *PolicySets_attributes) GetDescription() *string {
+	return m.description
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicySets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentEnabled(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["global"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobal(val)
-        }
-        return nil
-    }
-    res["kind"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicySets_attributes_kind)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKind(val.(*PolicySets_attributes_kind))
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["overridable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOverridable(val)
-        }
-        return nil
-    }
-    res["policies-path"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPoliciesPath(val)
-        }
-        return nil
-    }
-    res["policy-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyCount(val)
-        }
-        return nil
-    }
-    res["policy-tool-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyToolVersion(val)
-        }
-        return nil
-    }
-    res["policy-update-patterns"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetPolicyUpdatePatterns(res)
-        }
-        return nil
-    }
-    res["project-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjectCount(val)
-        }
-        return nil
-    }
-    res["scoping-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicySets_attributes_scopingType)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScopingType(val.(*PolicySets_attributes_scopingType))
-        }
-        return nil
-    }
-    res["stack-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackCount(val)
-        }
-        return nil
-    }
-    res["tag-selector-matching-logic"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicySets_attributes_tagSelectorMatchingLogic)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTagSelectorMatchingLogic(val.(*PolicySets_attributes_tagSelectorMatchingLogic))
-        }
-        return nil
-    }
-    res["tag-selectors"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePolicySets_attributes_tagSelectorsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]PolicySets_attributes_tagSelectorsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(PolicySets_attributes_tagSelectorsable)
-                }
-            }
-            m.SetTagSelectors(res)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    res["vcs-repo"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySets_attributes_vcsRepoFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVcsRepo(val.(PolicySets_attributes_vcsRepoable))
-        }
-        return nil
-    }
-    res["versioned"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVersioned(val)
-        }
-        return nil
-    }
-    res["workspace-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicySets_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentEnabled(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["global"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobal(val)
+		}
+		return nil
+	}
+	res["kind"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicySets_attributes_kind)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKind(val.(*PolicySets_attributes_kind))
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["overridable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOverridable(val)
+		}
+		return nil
+	}
+	res["policies-path"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPoliciesPath(val)
+		}
+		return nil
+	}
+	res["policy-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyCount(val)
+		}
+		return nil
+	}
+	res["policy-tool-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyToolVersion(val)
+		}
+		return nil
+	}
+	res["policy-update-patterns"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetPolicyUpdatePatterns(res)
+		}
+		return nil
+	}
+	res["project-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjectCount(val)
+		}
+		return nil
+	}
+	res["scoping-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicySets_attributes_scopingType)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScopingType(val.(*PolicySets_attributes_scopingType))
+		}
+		return nil
+	}
+	res["stack-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackCount(val)
+		}
+		return nil
+	}
+	res["tag-selector-matching-logic"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicySets_attributes_tagSelectorMatchingLogic)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTagSelectorMatchingLogic(val.(*PolicySets_attributes_tagSelectorMatchingLogic))
+		}
+		return nil
+	}
+	res["tag-selectors"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreatePolicySets_attributes_tagSelectorsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]PolicySets_attributes_tagSelectorsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(PolicySets_attributes_tagSelectorsable)
+				}
+			}
+			m.SetTagSelectors(res)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	res["vcs-repo"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicySets_attributes_vcsRepoFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVcsRepo(val.(PolicySets_attributes_vcsRepoable))
+		}
+		return nil
+	}
+	res["versioned"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVersioned(val)
+		}
+		return nil
+	}
+	res["workspace-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGlobal gets the global property value. The global property
 // returns a *bool when successful
-func (m *PolicySets_attributes) GetGlobal()(*bool) {
-    return m.global
+func (m *PolicySets_attributes) GetGlobal() *bool {
+	return m.global
 }
+
 // GetKind gets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 // returns a *PolicySets_attributes_kind when successful
-func (m *PolicySets_attributes) GetKind()(*PolicySets_attributes_kind) {
-    return m.kind
+func (m *PolicySets_attributes) GetKind() *PolicySets_attributes_kind {
+	return m.kind
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *PolicySets_attributes) GetName()(*string) {
-    return m.name
+func (m *PolicySets_attributes) GetName() *string {
+	return m.name
 }
+
 // GetOverridable gets the overridable property value. The overridable property
 // returns a *bool when successful
-func (m *PolicySets_attributes) GetOverridable()(*bool) {
-    return m.overridable
+func (m *PolicySets_attributes) GetOverridable() *bool {
+	return m.overridable
 }
+
 // GetPoliciesPath gets the policies-path property value. The policiesPath property
 // returns a *string when successful
-func (m *PolicySets_attributes) GetPoliciesPath()(*string) {
-    return m.policiesPath
+func (m *PolicySets_attributes) GetPoliciesPath() *string {
+	return m.policiesPath
 }
+
 // GetPolicyCount gets the policy-count property value. The policyCount property
 // returns a *int32 when successful
-func (m *PolicySets_attributes) GetPolicyCount()(*int32) {
-    return m.policyCount
+func (m *PolicySets_attributes) GetPolicyCount() *int32 {
+	return m.policyCount
 }
+
 // GetPolicyToolVersion gets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
 // returns a *string when successful
-func (m *PolicySets_attributes) GetPolicyToolVersion()(*string) {
-    return m.policyToolVersion
+func (m *PolicySets_attributes) GetPolicyToolVersion() *string {
+	return m.policyToolVersion
 }
+
 // GetPolicyUpdatePatterns gets the policy-update-patterns property value. The policyUpdatePatterns property
 // returns a []string when successful
-func (m *PolicySets_attributes) GetPolicyUpdatePatterns()([]string) {
-    return m.policyUpdatePatterns
+func (m *PolicySets_attributes) GetPolicyUpdatePatterns() []string {
+	return m.policyUpdatePatterns
 }
+
 // GetProjectCount gets the project-count property value. The projectCount property
 // returns a *int32 when successful
-func (m *PolicySets_attributes) GetProjectCount()(*int32) {
-    return m.projectCount
+func (m *PolicySets_attributes) GetProjectCount() *int32 {
+	return m.projectCount
 }
+
 // GetScopingType gets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
 // returns a *PolicySets_attributes_scopingType when successful
-func (m *PolicySets_attributes) GetScopingType()(*PolicySets_attributes_scopingType) {
-    return m.scopingType
+func (m *PolicySets_attributes) GetScopingType() *PolicySets_attributes_scopingType {
+	return m.scopingType
 }
+
 // GetStackCount gets the stack-count property value. The stackCount property
 // returns a *int32 when successful
-func (m *PolicySets_attributes) GetStackCount()(*int32) {
-    return m.stackCount
+func (m *PolicySets_attributes) GetStackCount() *int32 {
+	return m.stackCount
 }
+
 // GetTagSelectorMatchingLogic gets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
 // returns a *PolicySets_attributes_tagSelectorMatchingLogic when successful
-func (m *PolicySets_attributes) GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic) {
-    return m.tagSelectorMatchingLogic
+func (m *PolicySets_attributes) GetTagSelectorMatchingLogic() *PolicySets_attributes_tagSelectorMatchingLogic {
+	return m.tagSelectorMatchingLogic
 }
+
 // GetTagSelectors gets the tag-selectors property value. The tagSelectors property
 // returns a []PolicySets_attributes_tagSelectorsable when successful
-func (m *PolicySets_attributes) GetTagSelectors()([]PolicySets_attributes_tagSelectorsable) {
-    return m.tagSelectors
+func (m *PolicySets_attributes) GetTagSelectors() []PolicySets_attributes_tagSelectorsable {
+	return m.tagSelectors
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *PolicySets_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *PolicySets_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.updatedAt
 }
+
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a PolicySets_attributes_vcsRepoable when successful
-func (m *PolicySets_attributes) GetVcsRepo()(PolicySets_attributes_vcsRepoable) {
-    return m.vcsRepo
+func (m *PolicySets_attributes) GetVcsRepo() PolicySets_attributes_vcsRepoable {
+	return m.vcsRepo
 }
+
 // GetVersioned gets the versioned property value. The versioned property
 // returns a *bool when successful
-func (m *PolicySets_attributes) GetVersioned()(*bool) {
-    return m.versioned
+func (m *PolicySets_attributes) GetVersioned() *bool {
+	return m.versioned
 }
+
 // GetWorkspaceCount gets the workspace-count property value. The workspaceCount property
 // returns a *int32 when successful
-func (m *PolicySets_attributes) GetWorkspaceCount()(*int32) {
-    return m.workspaceCount
+func (m *PolicySets_attributes) GetWorkspaceCount() *int32 {
+	return m.workspaceCount
 }
+
 // Serialize serializes information the current object
-func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("agent-enabled", m.GetAgentEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global", m.GetGlobal())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetKind() != nil {
-        cast := (*m.GetKind()).String()
-        err := writer.WriteStringValue("kind", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("overridable", m.GetOverridable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("policies-path", m.GetPoliciesPath())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("policy-tool-version", m.GetPolicyToolVersion())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetPolicyUpdatePatterns() != nil {
-        err := writer.WriteCollectionOfStringValues("policy-update-patterns", m.GetPolicyUpdatePatterns())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetScopingType() != nil {
-        cast := (*m.GetScopingType()).String()
-        err := writer.WriteStringValue("scoping-type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTagSelectorMatchingLogic() != nil {
-        cast := (*m.GetTagSelectorMatchingLogic()).String()
-        err := writer.WriteStringValue("tag-selector-matching-logic", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTagSelectors() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTagSelectors()))
-        for i, v := range m.GetTagSelectors() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("tag-selectors", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("agent-enabled", m.GetAgentEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global", m.GetGlobal())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetKind() != nil {
+		cast := (*m.GetKind()).String()
+		err := writer.WriteStringValue("kind", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("overridable", m.GetOverridable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("policies-path", m.GetPoliciesPath())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("policy-tool-version", m.GetPolicyToolVersion())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetPolicyUpdatePatterns() != nil {
+		err := writer.WriteCollectionOfStringValues("policy-update-patterns", m.GetPolicyUpdatePatterns())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetScopingType() != nil {
+		cast := (*m.GetScopingType()).String()
+		err := writer.WriteStringValue("scoping-type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTagSelectorMatchingLogic() != nil {
+		cast := (*m.GetTagSelectorMatchingLogic()).String()
+		err := writer.WriteStringValue("tag-selector-matching-logic", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTagSelectors() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTagSelectors()))
+		for i, v := range m.GetTagSelectors() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("tag-selectors", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicySets_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicySets_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAgentEnabled sets the agent-enabled property value. The agentEnabled property
-func (m *PolicySets_attributes) SetAgentEnabled(value *bool)() {
-    m.agentEnabled = value
+func (m *PolicySets_attributes) SetAgentEnabled(value *bool) {
+	m.agentEnabled = value
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *PolicySets_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *PolicySets_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.createdAt = value
 }
+
 // SetDescription sets the description property value. The description property
-func (m *PolicySets_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *PolicySets_attributes) SetDescription(value *string) {
+	m.description = value
 }
+
 // SetGlobal sets the global property value. The global property
-func (m *PolicySets_attributes) SetGlobal(value *bool)() {
-    m.global = value
+func (m *PolicySets_attributes) SetGlobal(value *bool) {
+	m.global = value
 }
+
 // SetKind sets the kind property value. The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
-func (m *PolicySets_attributes) SetKind(value *PolicySets_attributes_kind)() {
-    m.kind = value
+func (m *PolicySets_attributes) SetKind(value *PolicySets_attributes_kind) {
+	m.kind = value
 }
+
 // SetName sets the name property value. The name property
-func (m *PolicySets_attributes) SetName(value *string)() {
-    m.name = value
+func (m *PolicySets_attributes) SetName(value *string) {
+	m.name = value
 }
+
 // SetOverridable sets the overridable property value. The overridable property
-func (m *PolicySets_attributes) SetOverridable(value *bool)() {
-    m.overridable = value
+func (m *PolicySets_attributes) SetOverridable(value *bool) {
+	m.overridable = value
 }
+
 // SetPoliciesPath sets the policies-path property value. The policiesPath property
-func (m *PolicySets_attributes) SetPoliciesPath(value *string)() {
-    m.policiesPath = value
+func (m *PolicySets_attributes) SetPoliciesPath(value *string) {
+	m.policiesPath = value
 }
+
 // SetPolicyCount sets the policy-count property value. The policyCount property
-func (m *PolicySets_attributes) SetPolicyCount(value *int32)() {
-    m.policyCount = value
+func (m *PolicySets_attributes) SetPolicyCount(value *int32) {
+	m.policyCount = value
 }
+
 // SetPolicyToolVersion sets the policy-tool-version property value. The version of the policy tool used to evaluate this policy set. Accepts aversion or version constraint. Only applies to `opa`, `tfpolicy`, andagent-enabled `sentinel` policy sets; for other policy sets it is ignored inrequests and omitted from responses.For `tfpolicy` policy sets, the following special values are also supported:- `latest` - Always use the latest available Terraform Policy version. This is  the default when no value is provided.- `managed` - The Terraform Policy version is managed by the policy set's  configuration. Only supported for versioned policy sets whose policies come  from a VCS connection or an API upload; it cannot be used with individually  managed policies. While set, the policy set's `kind` cannot be changed.
-func (m *PolicySets_attributes) SetPolicyToolVersion(value *string)() {
-    m.policyToolVersion = value
+func (m *PolicySets_attributes) SetPolicyToolVersion(value *string) {
+	m.policyToolVersion = value
 }
+
 // SetPolicyUpdatePatterns sets the policy-update-patterns property value. The policyUpdatePatterns property
-func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string)() {
-    m.policyUpdatePatterns = value
+func (m *PolicySets_attributes) SetPolicyUpdatePatterns(value []string) {
+	m.policyUpdatePatterns = value
 }
+
 // SetProjectCount sets the project-count property value. The projectCount property
-func (m *PolicySets_attributes) SetProjectCount(value *int32)() {
-    m.projectCount = value
+func (m *PolicySets_attributes) SetProjectCount(value *int32) {
+	m.projectCount = value
 }
+
 // SetScopingType sets the scoping-type property value. Scoping mode for the policy set. "tag" is dynamic tag-based scoping. "explicit" uses explicit workspace/project associations.
-func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType)() {
-    m.scopingType = value
+func (m *PolicySets_attributes) SetScopingType(value *PolicySets_attributes_scopingType) {
+	m.scopingType = value
 }
+
 // SetStackCount sets the stack-count property value. The stackCount property
-func (m *PolicySets_attributes) SetStackCount(value *int32)() {
-    m.stackCount = value
+func (m *PolicySets_attributes) SetStackCount(value *int32) {
+	m.stackCount = value
 }
+
 // SetTagSelectorMatchingLogic sets the tag-selector-matching-logic property value. Matching logic for tag selectors. `any` means any selector may match (OR). `all` means every selector must match (AND). `null` means the policy set is explicitly scoped, so tag matching does not apply. Under `all`, exclusion selectors must also fully match.Must be set explicitly when using tag-based scoping.
-func (m *PolicySets_attributes) SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)() {
-    m.tagSelectorMatchingLogic = value
+func (m *PolicySets_attributes) SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic) {
+	m.tagSelectorMatchingLogic = value
 }
+
 // SetTagSelectors sets the tag-selectors property value. The tagSelectors property
-func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)() {
-    m.tagSelectors = value
+func (m *PolicySets_attributes) SetTagSelectors(value []PolicySets_attributes_tagSelectorsable) {
+	m.tagSelectors = value
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *PolicySets_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *PolicySets_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.updatedAt = value
 }
+
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
-func (m *PolicySets_attributes) SetVcsRepo(value PolicySets_attributes_vcsRepoable)() {
-    m.vcsRepo = value
+func (m *PolicySets_attributes) SetVcsRepo(value PolicySets_attributes_vcsRepoable) {
+	m.vcsRepo = value
 }
+
 // SetVersioned sets the versioned property value. The versioned property
-func (m *PolicySets_attributes) SetVersioned(value *bool)() {
-    m.versioned = value
+func (m *PolicySets_attributes) SetVersioned(value *bool) {
+	m.versioned = value
 }
+
 // SetWorkspaceCount sets the workspace-count property value. The workspaceCount property
-func (m *PolicySets_attributes) SetWorkspaceCount(value *int32)() {
-    m.workspaceCount = value
+func (m *PolicySets_attributes) SetWorkspaceCount(value *int32) {
+	m.workspaceCount = value
 }
+
 type PolicySets_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentEnabled()(*bool)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDescription()(*string)
-    GetGlobal()(*bool)
-    GetKind()(*PolicySets_attributes_kind)
-    GetName()(*string)
-    GetOverridable()(*bool)
-    GetPoliciesPath()(*string)
-    GetPolicyCount()(*int32)
-    GetPolicyToolVersion()(*string)
-    GetPolicyUpdatePatterns()([]string)
-    GetProjectCount()(*int32)
-    GetScopingType()(*PolicySets_attributes_scopingType)
-    GetStackCount()(*int32)
-    GetTagSelectorMatchingLogic()(*PolicySets_attributes_tagSelectorMatchingLogic)
-    GetTagSelectors()([]PolicySets_attributes_tagSelectorsable)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetVcsRepo()(PolicySets_attributes_vcsRepoable)
-    GetVersioned()(*bool)
-    GetWorkspaceCount()(*int32)
-    SetAgentEnabled(value *bool)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDescription(value *string)()
-    SetGlobal(value *bool)()
-    SetKind(value *PolicySets_attributes_kind)()
-    SetName(value *string)()
-    SetOverridable(value *bool)()
-    SetPoliciesPath(value *string)()
-    SetPolicyCount(value *int32)()
-    SetPolicyToolVersion(value *string)()
-    SetPolicyUpdatePatterns(value []string)()
-    SetProjectCount(value *int32)()
-    SetScopingType(value *PolicySets_attributes_scopingType)()
-    SetStackCount(value *int32)()
-    SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)()
-    SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetVcsRepo(value PolicySets_attributes_vcsRepoable)()
-    SetVersioned(value *bool)()
-    SetWorkspaceCount(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentEnabled() *bool
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDescription() *string
+	GetGlobal() *bool
+	GetKind() *PolicySets_attributes_kind
+	GetName() *string
+	GetOverridable() *bool
+	GetPoliciesPath() *string
+	GetPolicyCount() *int32
+	GetPolicyToolVersion() *string
+	GetPolicyUpdatePatterns() []string
+	GetProjectCount() *int32
+	GetScopingType() *PolicySets_attributes_scopingType
+	GetStackCount() *int32
+	GetTagSelectorMatchingLogic() *PolicySets_attributes_tagSelectorMatchingLogic
+	GetTagSelectors() []PolicySets_attributes_tagSelectorsable
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetVcsRepo() PolicySets_attributes_vcsRepoable
+	GetVersioned() *bool
+	GetWorkspaceCount() *int32
+	SetAgentEnabled(value *bool)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDescription(value *string)
+	SetGlobal(value *bool)
+	SetKind(value *PolicySets_attributes_kind)
+	SetName(value *string)
+	SetOverridable(value *bool)
+	SetPoliciesPath(value *string)
+	SetPolicyCount(value *int32)
+	SetPolicyToolVersion(value *string)
+	SetPolicyUpdatePatterns(value []string)
+	SetProjectCount(value *int32)
+	SetScopingType(value *PolicySets_attributes_scopingType)
+	SetStackCount(value *int32)
+	SetTagSelectorMatchingLogic(value *PolicySets_attributes_tagSelectorMatchingLogic)
+	SetTagSelectors(value []PolicySets_attributes_tagSelectorsable)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetVcsRepo(value PolicySets_attributes_vcsRepoable)
+	SetVersioned(value *bool)
+	SetWorkspaceCount(value *int32)
 }

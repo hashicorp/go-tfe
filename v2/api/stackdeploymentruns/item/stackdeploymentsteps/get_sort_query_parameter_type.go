@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentsteps
+
 type GetSortQueryParameterType int
 
 const (
-    ORDER_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
-    MINUS_ORDER_GETSORTQUERYPARAMETERTYPE
+	ORDER_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
+	MINUS_ORDER_GETSORTQUERYPARAMETERTYPE
 )
 
 func (i GetSortQueryParameterType) String() string {
-    return []string{"order", "-order"}[i]
+	return []string{"order", "-order"}[i]
 }
+
 func ParseGetSortQueryParameterType(v string) (any, error) {
-    result := ORDER_GETSORTQUERYPARAMETERTYPE
-    switch v {
-        case "order":
-            result = ORDER_GETSORTQUERYPARAMETERTYPE
-        case "-order":
-            result = MINUS_ORDER_GETSORTQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORDER_GETSORTQUERYPARAMETERTYPE
+	switch v {
+	case "order":
+		result = ORDER_GETSORTQUERYPARAMETERTYPE
+	case "-order":
+		result = MINUS_ORDER_GETSORTQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetSortQueryParameterType(values []GetSortQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetSortQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

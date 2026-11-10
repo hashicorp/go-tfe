@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PolicySetOutcomesIdentifier_type int
 
 const (
-    POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE PolicySetOutcomesIdentifier_type = iota
+	POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE PolicySetOutcomesIdentifier_type = iota
 )
 
 func (i PolicySetOutcomesIdentifier_type) String() string {
-    return []string{"policy-set-outcomes"}[i]
+	return []string{"policy-set-outcomes"}[i]
 }
+
 func ParsePolicySetOutcomesIdentifier_type(v string) (any, error) {
-    result := POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE
-    switch v {
-        case "policy-set-outcomes":
-            result = POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE
+	switch v {
+	case "policy-set-outcomes":
+		result = POLICYSETOUTCOMES_POLICYSETOUTCOMESIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicySetOutcomesIdentifier_type(values []PolicySetOutcomesIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PolicySetOutcomesIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

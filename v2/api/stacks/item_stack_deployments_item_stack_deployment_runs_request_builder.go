@@ -4,70 +4,76 @@
 package stacks
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i9ce01d9dd9a265a05a53f07ce662f5dd38c39ed32bf5de6ccf047ac5d3187d34 "github.com/hashicorp/go-tfe/v2/api/stacks/item/stackdeployments/item/stackdeploymentruns"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i9ce01d9dd9a265a05a53f07ce662f5dd38c39ed32bf5de6ccf047ac5d3187d34 "github.com/hashicorp/go-tfe/v2/api/stacks/item/stackdeployments/item/stackdeploymentruns"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder builds and executes requests for operations under \stacks\{stack_id}\stack-deployments\{deployment}\stack-deployment-runs
 type ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters list stack deployment runs.
 type ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i9ce01d9dd9a265a05a53f07ce662f5dd38c39ed32bf5de6ccf047ac5d3187d34.GetIncludeQueryParameterType "uriparametername:\"include\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for stack-deployment-runs resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsstackDeploymentRuns []string "uriparametername:\"fields%5Bstack%2Ddeployment%2Druns%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i9ce01d9dd9a265a05a53f07ce662f5dd38c39ed32bf5de6ccf047ac5d3187d34.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal instantiates a new ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder and sets the default values.
-func NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) {
-    m := &ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments/{deployment}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder {
+	m := &ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments/{deployment}/stack-deployment-runs{?fields%5Bstack%2Ddeployment%2Druns%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilder instantiates a new ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder and sets the default values.
-func NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list stack deployment runs.
 // returns a ItemStackDeploymentsItemStackDeploymentRunsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters])(ItemStackDeploymentsItemStackDeploymentRunsGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemStackDeploymentsItemStackDeploymentRunsGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemStackDeploymentsItemStackDeploymentRunsGetResponseable), nil
+func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters]) (ItemStackDeploymentsItemStackDeploymentRunsGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemStackDeploymentsItemStackDeploymentRunsGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemStackDeploymentsItemStackDeploymentRunsGetResponseable), nil
 }
+
 // ToGetRequestInformation list stack deployment runs.
 // returns a *RequestInformation when successful
-func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemStackDeploymentsItemStackDeploymentRunsRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder when successful
-func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) WithUrl(rawUrl string)(*ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) {
-    return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) WithUrl(rawUrl string) *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder {
+	return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

@@ -4,167 +4,181 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type TaskStages_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The costEstimate property
-    costEstimate CostEstimatesHasOneable
-    // The policyEvaluations property
-    policyEvaluations PolicyEvaluationsHasManyable
-    // The run property
-    run RunsHasOneable
-    // The taskResults property
-    taskResults TaskResultsHasManyable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The costEstimate property
+	costEstimate CostEstimatesHasOneable
+	// The policyEvaluations property
+	policyEvaluations PolicyEvaluationsHasManyable
+	// The run property
+	run RunsHasOneable
+	// The taskResults property
+	taskResults TaskResultsHasManyable
 }
+
 // NewTaskStages_relationships instantiates a new TaskStages_relationships and sets the default values.
-func NewTaskStages_relationships()(*TaskStages_relationships) {
-    m := &TaskStages_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTaskStages_relationships() *TaskStages_relationships {
+	m := &TaskStages_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTaskStages_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTaskStages_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTaskStages_relationships(), nil
+func CreateTaskStages_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTaskStages_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TaskStages_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TaskStages_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetCostEstimate gets the cost-estimate property value. The costEstimate property
 // returns a CostEstimatesHasOneable when successful
-func (m *TaskStages_relationships) GetCostEstimate()(CostEstimatesHasOneable) {
-    return m.costEstimate
+func (m *TaskStages_relationships) GetCostEstimate() CostEstimatesHasOneable {
+	return m.costEstimate
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TaskStages_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["cost-estimate"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateCostEstimatesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCostEstimate(val.(CostEstimatesHasOneable))
-        }
-        return nil
-    }
-    res["policy-evaluations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluationsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyEvaluations(val.(PolicyEvaluationsHasManyable))
-        }
-        return nil
-    }
-    res["run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRun(val.(RunsHasOneable))
-        }
-        return nil
-    }
-    res["task-results"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskResultsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskResults(val.(TaskResultsHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TaskStages_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["cost-estimate"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateCostEstimatesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCostEstimate(val.(CostEstimatesHasOneable))
+		}
+		return nil
+	}
+	res["policy-evaluations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyEvaluationsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyEvaluations(val.(PolicyEvaluationsHasManyable))
+		}
+		return nil
+	}
+	res["run"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRun(val.(RunsHasOneable))
+		}
+		return nil
+	}
+	res["task-results"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTaskResultsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskResults(val.(TaskResultsHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPolicyEvaluations gets the policy-evaluations property value. The policyEvaluations property
 // returns a PolicyEvaluationsHasManyable when successful
-func (m *TaskStages_relationships) GetPolicyEvaluations()(PolicyEvaluationsHasManyable) {
-    return m.policyEvaluations
+func (m *TaskStages_relationships) GetPolicyEvaluations() PolicyEvaluationsHasManyable {
+	return m.policyEvaluations
 }
+
 // GetRun gets the run property value. The run property
 // returns a RunsHasOneable when successful
-func (m *TaskStages_relationships) GetRun()(RunsHasOneable) {
-    return m.run
+func (m *TaskStages_relationships) GetRun() RunsHasOneable {
+	return m.run
 }
+
 // GetTaskResults gets the task-results property value. The taskResults property
 // returns a TaskResultsHasManyable when successful
-func (m *TaskStages_relationships) GetTaskResults()(TaskResultsHasManyable) {
-    return m.taskResults
+func (m *TaskStages_relationships) GetTaskResults() TaskResultsHasManyable {
+	return m.taskResults
 }
+
 // Serialize serializes information the current object
-func (m *TaskStages_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("cost-estimate", m.GetCostEstimate())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("policy-evaluations", m.GetPolicyEvaluations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("run", m.GetRun())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("task-results", m.GetTaskResults())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TaskStages_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("cost-estimate", m.GetCostEstimate())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("policy-evaluations", m.GetPolicyEvaluations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("run", m.GetRun())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("task-results", m.GetTaskResults())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TaskStages_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TaskStages_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetCostEstimate sets the cost-estimate property value. The costEstimate property
-func (m *TaskStages_relationships) SetCostEstimate(value CostEstimatesHasOneable)() {
-    m.costEstimate = value
+func (m *TaskStages_relationships) SetCostEstimate(value CostEstimatesHasOneable) {
+	m.costEstimate = value
 }
+
 // SetPolicyEvaluations sets the policy-evaluations property value. The policyEvaluations property
-func (m *TaskStages_relationships) SetPolicyEvaluations(value PolicyEvaluationsHasManyable)() {
-    m.policyEvaluations = value
+func (m *TaskStages_relationships) SetPolicyEvaluations(value PolicyEvaluationsHasManyable) {
+	m.policyEvaluations = value
 }
+
 // SetRun sets the run property value. The run property
-func (m *TaskStages_relationships) SetRun(value RunsHasOneable)() {
-    m.run = value
+func (m *TaskStages_relationships) SetRun(value RunsHasOneable) {
+	m.run = value
 }
+
 // SetTaskResults sets the task-results property value. The taskResults property
-func (m *TaskStages_relationships) SetTaskResults(value TaskResultsHasManyable)() {
-    m.taskResults = value
+func (m *TaskStages_relationships) SetTaskResults(value TaskResultsHasManyable) {
+	m.taskResults = value
 }
+
 type TaskStages_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCostEstimate()(CostEstimatesHasOneable)
-    GetPolicyEvaluations()(PolicyEvaluationsHasManyable)
-    GetRun()(RunsHasOneable)
-    GetTaskResults()(TaskResultsHasManyable)
-    SetCostEstimate(value CostEstimatesHasOneable)()
-    SetPolicyEvaluations(value PolicyEvaluationsHasManyable)()
-    SetRun(value RunsHasOneable)()
-    SetTaskResults(value TaskResultsHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetCostEstimate() CostEstimatesHasOneable
+	GetPolicyEvaluations() PolicyEvaluationsHasManyable
+	GetRun() RunsHasOneable
+	GetTaskResults() TaskResultsHasManyable
+	SetCostEstimate(value CostEstimatesHasOneable)
+	SetPolicyEvaluations(value PolicyEvaluationsHasManyable)
+	SetRun(value RunsHasOneable)
+	SetTaskResults(value TaskResultsHasManyable)
 }

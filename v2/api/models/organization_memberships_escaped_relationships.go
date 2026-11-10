@@ -4,167 +4,181 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type OrganizationMemberships_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The organization property
-    organization OrganizationsHasOneable
-    // The scimIdentity property
-    scimIdentity ScimIdentitiesHasOneable
-    // The teams property
-    teams TeamsHasManyable
-    // The user property
-    user UsersHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The organization property
+	organization OrganizationsHasOneable
+	// The scimIdentity property
+	scimIdentity ScimIdentitiesHasOneable
+	// The teams property
+	teams TeamsHasManyable
+	// The user property
+	user UsersHasOneable
 }
+
 // NewOrganizationMemberships_relationships instantiates a new OrganizationMemberships_relationships and sets the default values.
-func NewOrganizationMemberships_relationships()(*OrganizationMemberships_relationships) {
-    m := &OrganizationMemberships_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOrganizationMemberships_relationships() *OrganizationMemberships_relationships {
+	m := &OrganizationMemberships_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOrganizationMemberships_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationMemberships_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOrganizationMemberships_relationships(), nil
+func CreateOrganizationMemberships_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOrganizationMemberships_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OrganizationMemberships_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OrganizationMemberships_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationMemberships_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["scim-identity"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateScimIdentitiesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScimIdentity(val.(ScimIdentitiesHasOneable))
-        }
-        return nil
-    }
-    res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTeams(val.(TeamsHasManyable))
-        }
-        return nil
-    }
-    res["user"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUser(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationMemberships_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["scim-identity"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateScimIdentitiesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScimIdentity(val.(ScimIdentitiesHasOneable))
+		}
+		return nil
+	}
+	res["teams"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTeamsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTeams(val.(TeamsHasManyable))
+		}
+		return nil
+	}
+	res["user"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUser(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *OrganizationMemberships_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *OrganizationMemberships_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // GetScimIdentity gets the scim-identity property value. The scimIdentity property
 // returns a ScimIdentitiesHasOneable when successful
-func (m *OrganizationMemberships_relationships) GetScimIdentity()(ScimIdentitiesHasOneable) {
-    return m.scimIdentity
+func (m *OrganizationMemberships_relationships) GetScimIdentity() ScimIdentitiesHasOneable {
+	return m.scimIdentity
 }
+
 // GetTeams gets the teams property value. The teams property
 // returns a TeamsHasManyable when successful
-func (m *OrganizationMemberships_relationships) GetTeams()(TeamsHasManyable) {
-    return m.teams
+func (m *OrganizationMemberships_relationships) GetTeams() TeamsHasManyable {
+	return m.teams
 }
+
 // GetUser gets the user property value. The user property
 // returns a UsersHasOneable when successful
-func (m *OrganizationMemberships_relationships) GetUser()(UsersHasOneable) {
-    return m.user
+func (m *OrganizationMemberships_relationships) GetUser() UsersHasOneable {
+	return m.user
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationMemberships_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("scim-identity", m.GetScimIdentity())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("teams", m.GetTeams())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("user", m.GetUser())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationMemberships_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("scim-identity", m.GetScimIdentity())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("teams", m.GetTeams())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("user", m.GetUser())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OrganizationMemberships_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OrganizationMemberships_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *OrganizationMemberships_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *OrganizationMemberships_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 // SetScimIdentity sets the scim-identity property value. The scimIdentity property
-func (m *OrganizationMemberships_relationships) SetScimIdentity(value ScimIdentitiesHasOneable)() {
-    m.scimIdentity = value
+func (m *OrganizationMemberships_relationships) SetScimIdentity(value ScimIdentitiesHasOneable) {
+	m.scimIdentity = value
 }
+
 // SetTeams sets the teams property value. The teams property
-func (m *OrganizationMemberships_relationships) SetTeams(value TeamsHasManyable)() {
-    m.teams = value
+func (m *OrganizationMemberships_relationships) SetTeams(value TeamsHasManyable) {
+	m.teams = value
 }
+
 // SetUser sets the user property value. The user property
-func (m *OrganizationMemberships_relationships) SetUser(value UsersHasOneable)() {
-    m.user = value
+func (m *OrganizationMemberships_relationships) SetUser(value UsersHasOneable) {
+	m.user = value
 }
+
 type OrganizationMemberships_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganization()(OrganizationsHasOneable)
-    GetScimIdentity()(ScimIdentitiesHasOneable)
-    GetTeams()(TeamsHasManyable)
-    GetUser()(UsersHasOneable)
-    SetOrganization(value OrganizationsHasOneable)()
-    SetScimIdentity(value ScimIdentitiesHasOneable)()
-    SetTeams(value TeamsHasManyable)()
-    SetUser(value UsersHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetOrganization() OrganizationsHasOneable
+	GetScimIdentity() ScimIdentitiesHasOneable
+	GetTeams() TeamsHasManyable
+	GetUser() UsersHasOneable
+	SetOrganization(value OrganizationsHasOneable)
+	SetScimIdentity(value ScimIdentitiesHasOneable)
+	SetTeams(value TeamsHasManyable)
+	SetUser(value UsersHasOneable)
 }

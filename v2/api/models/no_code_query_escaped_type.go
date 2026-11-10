@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type NoCodeQuery_type int
 
 const (
-    NOCODEQUERIES_NOCODEQUERY_TYPE NoCodeQuery_type = iota
+	NOCODEQUERIES_NOCODEQUERY_TYPE NoCodeQuery_type = iota
 )
 
 func (i NoCodeQuery_type) String() string {
-    return []string{"no-code-queries"}[i]
+	return []string{"no-code-queries"}[i]
 }
+
 func ParseNoCodeQuery_type(v string) (any, error) {
-    result := NOCODEQUERIES_NOCODEQUERY_TYPE
-    switch v {
-        case "no-code-queries":
-            result = NOCODEQUERIES_NOCODEQUERY_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := NOCODEQUERIES_NOCODEQUERY_TYPE
+	switch v {
+	case "no-code-queries":
+		result = NOCODEQUERIES_NOCODEQUERY_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeNoCodeQuery_type(values []NoCodeQuery_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i NoCodeQuery_type) isMultiValue() bool {
-    return false
+	return false
 }

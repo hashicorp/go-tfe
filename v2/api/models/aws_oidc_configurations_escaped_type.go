@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AwsOidcConfigurations_type int
 
 const (
-    AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE AwsOidcConfigurations_type = iota
+	AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE AwsOidcConfigurations_type = iota
 )
 
 func (i AwsOidcConfigurations_type) String() string {
-    return []string{"aws-oidc-configurations"}[i]
+	return []string{"aws-oidc-configurations"}[i]
 }
+
 func ParseAwsOidcConfigurations_type(v string) (any, error) {
-    result := AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE
-    switch v {
-        case "aws-oidc-configurations":
-            result = AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE
+	switch v {
+	case "aws-oidc-configurations":
+		result = AWSOIDCCONFIGURATIONS_AWSOIDCCONFIGURATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAwsOidcConfigurations_type(values []AwsOidcConfigurations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AwsOidcConfigurations_type) isMultiValue() bool {
-    return false
+	return false
 }

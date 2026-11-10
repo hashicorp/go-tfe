@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package providersets
+
 type GetIncludeQueryParameterType int
 
 const (
-    WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+	WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"workspaces", "projects"}[i]
+	return []string{"workspaces", "projects"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "workspaces":
-            result = WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
-        case "projects":
-            result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "workspaces":
+		result = WORKSPACES_GETINCLUDEQUERYPARAMETERTYPE
+	case "projects":
+		result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

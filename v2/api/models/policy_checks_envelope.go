@@ -4,215 +4,235 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type PolicyChecksEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data PolicyChecksable
-    // The included property
-    included []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The data property
+	data PolicyChecksable
+	// The included property
+	included []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable
 }
+
 // PolicyChecksEnvelope_PolicyChecksEnvelope_included composed type wrapper for classes Runsable, Workspacesable
 type PolicyChecksEnvelope_PolicyChecksEnvelope_included struct {
-    // Composed type representation for type Runsable
-    runs Runsable
-    // Composed type representation for type Workspacesable
-    workspaces Workspacesable
+	// Composed type representation for type Runsable
+	runs Runsable
+	// Composed type representation for type Workspacesable
+	workspaces Workspacesable
 }
+
 // NewPolicyChecksEnvelope_PolicyChecksEnvelope_included instantiates a new PolicyChecksEnvelope_PolicyChecksEnvelope_included and sets the default values.
-func NewPolicyChecksEnvelope_PolicyChecksEnvelope_included()(*PolicyChecksEnvelope_PolicyChecksEnvelope_included) {
-    m := &PolicyChecksEnvelope_PolicyChecksEnvelope_included{
-    }
-    return m
+func NewPolicyChecksEnvelope_PolicyChecksEnvelope_included() *PolicyChecksEnvelope_PolicyChecksEnvelope_included {
+	m := &PolicyChecksEnvelope_PolicyChecksEnvelope_included{}
+	return m
 }
+
 // CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewPolicyChecksEnvelope_PolicyChecksEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
-                    result.SetRuns(NewRuns())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
-                    result.SetWorkspaces(NewWorkspaces())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewPolicyChecksEnvelope_PolicyChecksEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+					result.SetRuns(NewRuns())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+					result.SetWorkspaces(NewWorkspaces())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetRuns() != nil {
-        return m.GetRuns().GetFieldDeserializers()
-    } else if m.GetWorkspaces() != nil {
-        return m.GetWorkspaces().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetRuns() != nil {
+		return m.GetRuns().GetFieldDeserializers()
+	} else if m.GetWorkspaces() != nil {
+		return m.GetWorkspaces().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetIsComposedType() bool {
+	return true
 }
+
 // GetRuns gets the runs property value. Composed type representation for type Runsable
 // returns a Runsable when successful
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetRuns()(Runsable) {
-    return m.runs
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetRuns() Runsable {
+	return m.runs
 }
+
 // GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
 // returns a Workspacesable when successful
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetWorkspaces()(Workspacesable) {
-    return m.workspaces
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) GetWorkspaces() Workspacesable {
+	return m.workspaces
 }
+
 // Serialize serializes information the current object
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetRuns() != nil {
-        err := writer.WriteObjectValue("", m.GetRuns())
-        if err != nil {
-            return err
-        }
-    } else if m.GetWorkspaces() != nil {
-        err := writer.WriteObjectValue("", m.GetWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetRuns() != nil {
+		err := writer.WriteObjectValue("", m.GetRuns())
+		if err != nil {
+			return err
+		}
+	} else if m.GetWorkspaces() != nil {
+		err := writer.WriteObjectValue("", m.GetWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetRuns sets the runs property value. Composed type representation for type Runsable
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetRuns(value Runsable)() {
-    m.runs = value
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetRuns(value Runsable) {
+	m.runs = value
 }
+
 // SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
-func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetWorkspaces(value Workspacesable)() {
-    m.workspaces = value
+func (m *PolicyChecksEnvelope_PolicyChecksEnvelope_included) SetWorkspaces(value Workspacesable) {
+	m.workspaces = value
 }
+
 type PolicyChecksEnvelope_PolicyChecksEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetRuns()(Runsable)
-    GetWorkspaces()(Workspacesable)
-    SetRuns(value Runsable)()
-    SetWorkspaces(value Workspacesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetRuns() Runsable
+	GetWorkspaces() Workspacesable
+	SetRuns(value Runsable)
+	SetWorkspaces(value Workspacesable)
 }
+
 // NewPolicyChecksEnvelope instantiates a new PolicyChecksEnvelope and sets the default values.
-func NewPolicyChecksEnvelope()(*PolicyChecksEnvelope) {
-    m := &PolicyChecksEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicyChecksEnvelope() *PolicyChecksEnvelope {
+	m := &PolicyChecksEnvelope{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicyChecksEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicyChecksEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicyChecksEnvelope(), nil
+func CreatePolicyChecksEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicyChecksEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicyChecksEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicyChecksEnvelope) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetData gets the data property value. The data property
 // returns a PolicyChecksable when successful
-func (m *PolicyChecksEnvelope) GetData()(PolicyChecksable) {
-    return m.data
+func (m *PolicyChecksEnvelope) GetData() PolicyChecksable {
+	return m.data
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicyChecksEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecksFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(PolicyChecksable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]PolicyChecksEnvelope_PolicyChecksEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicyChecksEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecksFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(PolicyChecksable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreatePolicyChecksEnvelope_PolicyChecksEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]PolicyChecksEnvelope_PolicyChecksEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable when successful
-func (m *PolicyChecksEnvelope) GetIncluded()([]PolicyChecksEnvelope_PolicyChecksEnvelope_includedable) {
-    return m.included
+func (m *PolicyChecksEnvelope) GetIncluded() []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable {
+	return m.included
 }
+
 // Serialize serializes information the current object
-func (m *PolicyChecksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicyChecksEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicyChecksEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicyChecksEnvelope) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetData sets the data property value. The data property
-func (m *PolicyChecksEnvelope) SetData(value PolicyChecksable)() {
-    m.data = value
+func (m *PolicyChecksEnvelope) SetData(value PolicyChecksable) {
+	m.data = value
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *PolicyChecksEnvelope) SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)() {
-    m.included = value
+func (m *PolicyChecksEnvelope) SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable) {
+	m.included = value
 }
+
 type PolicyChecksEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(PolicyChecksable)
-    GetIncluded()([]PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
-    SetData(value PolicyChecksable)()
-    SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetData() PolicyChecksable
+	GetIncluded() []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable
+	SetData(value PolicyChecksable)
+	SetIncluded(value []PolicyChecksEnvelope_PolicyChecksEnvelope_includedable)
 }

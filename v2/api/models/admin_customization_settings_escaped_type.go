@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AdminCustomizationSettings_type int
 
 const (
-    CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE AdminCustomizationSettings_type = iota
+	CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE AdminCustomizationSettings_type = iota
 )
 
 func (i AdminCustomizationSettings_type) String() string {
-    return []string{"customization-settings"}[i]
+	return []string{"customization-settings"}[i]
 }
+
 func ParseAdminCustomizationSettings_type(v string) (any, error) {
-    result := CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE
-    switch v {
-        case "customization-settings":
-            result = CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE
+	switch v {
+	case "customization-settings":
+		result = CUSTOMIZATIONSETTINGS_ADMINCUSTOMIZATIONSETTINGS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminCustomizationSettings_type(values []AdminCustomizationSettings_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminCustomizationSettings_type) isMultiValue() bool {
-    return false
+	return false
 }

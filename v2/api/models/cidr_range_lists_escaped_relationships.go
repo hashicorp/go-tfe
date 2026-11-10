@@ -4,138 +4,150 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type CidrRangeLists_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentPools property
-    agentPools AgentPoolsHasManyable
-    // The cidrRanges property
-    cidrRanges CidrRangesEnvelopeManyable
-    // The organization property
-    organization OrganizationsHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The agentPools property
+	agentPools AgentPoolsHasManyable
+	// The cidrRanges property
+	cidrRanges CidrRangesEnvelopeManyable
+	// The organization property
+	organization OrganizationsHasOneable
 }
+
 // NewCidrRangeLists_relationships instantiates a new CidrRangeLists_relationships and sets the default values.
-func NewCidrRangeLists_relationships()(*CidrRangeLists_relationships) {
-    m := &CidrRangeLists_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewCidrRangeLists_relationships() *CidrRangeLists_relationships {
+	m := &CidrRangeLists_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateCidrRangeLists_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateCidrRangeLists_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewCidrRangeLists_relationships(), nil
+func CreateCidrRangeLists_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewCidrRangeLists_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *CidrRangeLists_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *CidrRangeLists_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAgentPools gets the agent-pools property value. The agentPools property
 // returns a AgentPoolsHasManyable when successful
-func (m *CidrRangeLists_relationships) GetAgentPools()(AgentPoolsHasManyable) {
-    return m.agentPools
+func (m *CidrRangeLists_relationships) GetAgentPools() AgentPoolsHasManyable {
+	return m.agentPools
 }
+
 // GetCidrRanges gets the cidr-ranges property value. The cidrRanges property
 // returns a CidrRangesEnvelopeManyable when successful
-func (m *CidrRangeLists_relationships) GetCidrRanges()(CidrRangesEnvelopeManyable) {
-    return m.cidrRanges
+func (m *CidrRangeLists_relationships) GetCidrRanges() CidrRangesEnvelopeManyable {
+	return m.cidrRanges
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *CidrRangeLists_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-pools"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPools(val.(AgentPoolsHasManyable))
-        }
-        return nil
-    }
-    res["cidr-ranges"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateCidrRangesEnvelopeManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCidrRanges(val.(CidrRangesEnvelopeManyable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *CidrRangeLists_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-pools"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPools(val.(AgentPoolsHasManyable))
+		}
+		return nil
+	}
+	res["cidr-ranges"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateCidrRangesEnvelopeManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCidrRanges(val.(CidrRangesEnvelopeManyable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *CidrRangeLists_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *CidrRangeLists_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // Serialize serializes information the current object
-func (m *CidrRangeLists_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("agent-pools", m.GetAgentPools())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("cidr-ranges", m.GetCidrRanges())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *CidrRangeLists_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("agent-pools", m.GetAgentPools())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("cidr-ranges", m.GetCidrRanges())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *CidrRangeLists_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *CidrRangeLists_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAgentPools sets the agent-pools property value. The agentPools property
-func (m *CidrRangeLists_relationships) SetAgentPools(value AgentPoolsHasManyable)() {
-    m.agentPools = value
+func (m *CidrRangeLists_relationships) SetAgentPools(value AgentPoolsHasManyable) {
+	m.agentPools = value
 }
+
 // SetCidrRanges sets the cidr-ranges property value. The cidrRanges property
-func (m *CidrRangeLists_relationships) SetCidrRanges(value CidrRangesEnvelopeManyable)() {
-    m.cidrRanges = value
+func (m *CidrRangeLists_relationships) SetCidrRanges(value CidrRangesEnvelopeManyable) {
+	m.cidrRanges = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *CidrRangeLists_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *CidrRangeLists_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 type CidrRangeLists_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPools()(AgentPoolsHasManyable)
-    GetCidrRanges()(CidrRangesEnvelopeManyable)
-    GetOrganization()(OrganizationsHasOneable)
-    SetAgentPools(value AgentPoolsHasManyable)()
-    SetCidrRanges(value CidrRangesEnvelopeManyable)()
-    SetOrganization(value OrganizationsHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPools() AgentPoolsHasManyable
+	GetCidrRanges() CidrRangesEnvelopeManyable
+	GetOrganization() OrganizationsHasOneable
+	SetAgentPools(value AgentPoolsHasManyable)
+	SetCidrRanges(value CidrRangesEnvelopeManyable)
+	SetOrganization(value OrganizationsHasOneable)
 }

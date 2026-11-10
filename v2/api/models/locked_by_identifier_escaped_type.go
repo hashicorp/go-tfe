@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type LockedByIdentifier_type int
 
 const (
-    USERS_LOCKEDBYIDENTIFIER_TYPE LockedByIdentifier_type = iota
-    TEAMS_LOCKEDBYIDENTIFIER_TYPE
-    RUNS_LOCKEDBYIDENTIFIER_TYPE
+	USERS_LOCKEDBYIDENTIFIER_TYPE LockedByIdentifier_type = iota
+	TEAMS_LOCKEDBYIDENTIFIER_TYPE
+	RUNS_LOCKEDBYIDENTIFIER_TYPE
 )
 
 func (i LockedByIdentifier_type) String() string {
-    return []string{"users", "teams", "runs"}[i]
+	return []string{"users", "teams", "runs"}[i]
 }
+
 func ParseLockedByIdentifier_type(v string) (any, error) {
-    result := USERS_LOCKEDBYIDENTIFIER_TYPE
-    switch v {
-        case "users":
-            result = USERS_LOCKEDBYIDENTIFIER_TYPE
-        case "teams":
-            result = TEAMS_LOCKEDBYIDENTIFIER_TYPE
-        case "runs":
-            result = RUNS_LOCKEDBYIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := USERS_LOCKEDBYIDENTIFIER_TYPE
+	switch v {
+	case "users":
+		result = USERS_LOCKEDBYIDENTIFIER_TYPE
+	case "teams":
+		result = TEAMS_LOCKEDBYIDENTIFIER_TYPE
+	case "runs":
+		result = RUNS_LOCKEDBYIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeLockedByIdentifier_type(values []LockedByIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i LockedByIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

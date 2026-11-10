@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package forcecancel
+
 type ForceCancelPostResponse int
 
 const (
-    NULL_FORCECANCELPOSTRESPONSE ForceCancelPostResponse = iota
+	NULL_FORCECANCELPOSTRESPONSE ForceCancelPostResponse = iota
 )
 
 func (i ForceCancelPostResponse) String() string {
-    return []string{"null"}[i]
+	return []string{"null"}[i]
 }
+
 func ParseForceCancelPostResponse(v string) (any, error) {
-    result := NULL_FORCECANCELPOSTRESPONSE
-    switch v {
-        case "null":
-            result = NULL_FORCECANCELPOSTRESPONSE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := NULL_FORCECANCELPOSTRESPONSE
+	switch v {
+	case "null":
+		result = NULL_FORCECANCELPOSTRESPONSE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeForceCancelPostResponse(values []ForceCancelPostResponse) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ForceCancelPostResponse) isMultiValue() bool {
-    return false
+	return false
 }

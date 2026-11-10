@@ -4,151 +4,163 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type NoCodeQuery_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false.
-    generateConfigOut *bool
-    // The noCodeQueryProviders property
-    noCodeQueryProviders []NoCodeQuery_attributes_noCodeQueryProvidersable
-    // The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
-    source *NoCodeQuery_attributes_source
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false.
+	generateConfigOut *bool
+	// The noCodeQueryProviders property
+	noCodeQueryProviders []NoCodeQuery_attributes_noCodeQueryProvidersable
+	// The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
+	source *NoCodeQuery_attributes_source
 }
+
 // NewNoCodeQuery_attributes instantiates a new NoCodeQuery_attributes and sets the default values.
-func NewNoCodeQuery_attributes()(*NoCodeQuery_attributes) {
-    m := &NoCodeQuery_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewNoCodeQuery_attributes() *NoCodeQuery_attributes {
+	m := &NoCodeQuery_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateNoCodeQuery_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateNoCodeQuery_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewNoCodeQuery_attributes(), nil
+func CreateNoCodeQuery_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewNoCodeQuery_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *NoCodeQuery_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *NoCodeQuery_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *NoCodeQuery_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["generate-config-out"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGenerateConfigOut(val)
-        }
-        return nil
-    }
-    res["no-code-query-providers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateNoCodeQuery_attributes_noCodeQueryProvidersFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]NoCodeQuery_attributes_noCodeQueryProvidersable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(NoCodeQuery_attributes_noCodeQueryProvidersable)
-                }
-            }
-            m.SetNoCodeQueryProviders(res)
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseNoCodeQuery_attributes_source)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val.(*NoCodeQuery_attributes_source))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *NoCodeQuery_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["generate-config-out"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGenerateConfigOut(val)
+		}
+		return nil
+	}
+	res["no-code-query-providers"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateNoCodeQuery_attributes_noCodeQueryProvidersFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]NoCodeQuery_attributes_noCodeQueryProvidersable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(NoCodeQuery_attributes_noCodeQueryProvidersable)
+				}
+			}
+			m.SetNoCodeQueryProviders(res)
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseNoCodeQuery_attributes_source)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val.(*NoCodeQuery_attributes_source))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGenerateConfigOut gets the generate-config-out property value. Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false.
 // returns a *bool when successful
-func (m *NoCodeQuery_attributes) GetGenerateConfigOut()(*bool) {
-    return m.generateConfigOut
+func (m *NoCodeQuery_attributes) GetGenerateConfigOut() *bool {
+	return m.generateConfigOut
 }
+
 // GetNoCodeQueryProviders gets the no-code-query-providers property value. The noCodeQueryProviders property
 // returns a []NoCodeQuery_attributes_noCodeQueryProvidersable when successful
-func (m *NoCodeQuery_attributes) GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable) {
-    return m.noCodeQueryProviders
+func (m *NoCodeQuery_attributes) GetNoCodeQueryProviders() []NoCodeQuery_attributes_noCodeQueryProvidersable {
+	return m.noCodeQueryProviders
 }
+
 // GetSource gets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
 // returns a *NoCodeQuery_attributes_source when successful
-func (m *NoCodeQuery_attributes) GetSource()(*NoCodeQuery_attributes_source) {
-    return m.source
+func (m *NoCodeQuery_attributes) GetSource() *NoCodeQuery_attributes_source {
+	return m.source
 }
+
 // Serialize serializes information the current object
-func (m *NoCodeQuery_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("generate-config-out", m.GetGenerateConfigOut())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetNoCodeQueryProviders() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetNoCodeQueryProviders()))
-        for i, v := range m.GetNoCodeQueryProviders() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("no-code-query-providers", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetSource() != nil {
-        cast := (*m.GetSource()).String()
-        err := writer.WriteStringValue("source", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *NoCodeQuery_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("generate-config-out", m.GetGenerateConfigOut())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetNoCodeQueryProviders() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetNoCodeQueryProviders()))
+		for i, v := range m.GetNoCodeQueryProviders() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("no-code-query-providers", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetSource() != nil {
+		cast := (*m.GetSource()).String()
+		err := writer.WriteStringValue("source", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *NoCodeQuery_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *NoCodeQuery_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetGenerateConfigOut sets the generate-config-out property value. Whether to generate config output for the query run triggered on create. This is a create-only input and is not returned by the GET endpoint. Defaults to false.
-func (m *NoCodeQuery_attributes) SetGenerateConfigOut(value *bool)() {
-    m.generateConfigOut = value
+func (m *NoCodeQuery_attributes) SetGenerateConfigOut(value *bool) {
+	m.generateConfigOut = value
 }
+
 // SetNoCodeQueryProviders sets the no-code-query-providers property value. The noCodeQueryProviders property
-func (m *NoCodeQuery_attributes) SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)() {
-    m.noCodeQueryProviders = value
+func (m *NoCodeQuery_attributes) SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable) {
+	m.noCodeQueryProviders = value
 }
+
 // SetSource sets the source property value. The source assigned to the query run triggered on create. Only Terraform MCP may explicitly set this value. When omitted, the query run uses the default No-Code Query source.
-func (m *NoCodeQuery_attributes) SetSource(value *NoCodeQuery_attributes_source)() {
-    m.source = value
+func (m *NoCodeQuery_attributes) SetSource(value *NoCodeQuery_attributes_source) {
+	m.source = value
 }
+
 type NoCodeQuery_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetGenerateConfigOut()(*bool)
-    GetNoCodeQueryProviders()([]NoCodeQuery_attributes_noCodeQueryProvidersable)
-    GetSource()(*NoCodeQuery_attributes_source)
-    SetGenerateConfigOut(value *bool)()
-    SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)()
-    SetSource(value *NoCodeQuery_attributes_source)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetGenerateConfigOut() *bool
+	GetNoCodeQueryProviders() []NoCodeQuery_attributes_noCodeQueryProvidersable
+	GetSource() *NoCodeQuery_attributes_source
+	SetGenerateConfigOut(value *bool)
+	SetNoCodeQueryProviders(value []NoCodeQuery_attributes_noCodeQueryProvidersable)
+	SetSource(value *NoCodeQuery_attributes_source)
 }

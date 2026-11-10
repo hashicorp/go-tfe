@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceVarsUpdateDocument_data_attributes_category int
 
 const (
-    TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY WorkspaceVarsUpdateDocument_data_attributes_category = iota
-    ENV_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
+	TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY WorkspaceVarsUpdateDocument_data_attributes_category = iota
+	ENV_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
 )
 
 func (i WorkspaceVarsUpdateDocument_data_attributes_category) String() string {
-    return []string{"terraform", "env"}[i]
+	return []string{"terraform", "env"}[i]
 }
+
 func ParseWorkspaceVarsUpdateDocument_data_attributes_category(v string) (any, error) {
-    result := TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
-    switch v {
-        case "terraform":
-            result = TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
-        case "env":
-            result = ENV_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
+	switch v {
+	case "terraform":
+		result = TERRAFORM_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
+	case "env":
+		result = ENV_WORKSPACEVARSUPDATEDOCUMENT_DATA_ATTRIBUTES_CATEGORY
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceVarsUpdateDocument_data_attributes_category(values []WorkspaceVarsUpdateDocument_data_attributes_category) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceVarsUpdateDocument_data_attributes_category) isMultiValue() bool {
-    return false
+	return false
 }

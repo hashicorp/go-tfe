@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type WorkspaceTasks_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The task property
-    task TasksHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The task property
+	task TasksHasOneable
+	// The workspace property
+	workspace WorkspacesHasOneable
 }
+
 // NewWorkspaceTasks_relationships instantiates a new WorkspaceTasks_relationships and sets the default values.
-func NewWorkspaceTasks_relationships()(*WorkspaceTasks_relationships) {
-    m := &WorkspaceTasks_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewWorkspaceTasks_relationships() *WorkspaceTasks_relationships {
+	m := &WorkspaceTasks_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateWorkspaceTasks_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaceTasks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaceTasks_relationships(), nil
+func CreateWorkspaceTasks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaceTasks_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *WorkspaceTasks_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *WorkspaceTasks_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *WorkspaceTasks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["task"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasksHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTask(val.(TasksHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *WorkspaceTasks_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["task"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTasksHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTask(val.(TasksHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTask gets the task property value. The task property
 // returns a TasksHasOneable when successful
-func (m *WorkspaceTasks_relationships) GetTask()(TasksHasOneable) {
-    return m.task
+func (m *WorkspaceTasks_relationships) GetTask() TasksHasOneable {
+	return m.task
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *WorkspaceTasks_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *WorkspaceTasks_relationships) GetWorkspace() WorkspacesHasOneable {
+	return m.workspace
 }
+
 // Serialize serializes information the current object
-func (m *WorkspaceTasks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("task", m.GetTask())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *WorkspaceTasks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("task", m.GetTask())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *WorkspaceTasks_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *WorkspaceTasks_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetTask sets the task property value. The task property
-func (m *WorkspaceTasks_relationships) SetTask(value TasksHasOneable)() {
-    m.task = value
+func (m *WorkspaceTasks_relationships) SetTask(value TasksHasOneable) {
+	m.task = value
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *WorkspaceTasks_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *WorkspaceTasks_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	m.workspace = value
 }
+
 type WorkspaceTasks_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTask()(TasksHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetTask(value TasksHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetTask() TasksHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetTask(value TasksHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentgroups
+
 type GetIncludeQueryParameterType int
 
 const (
-    STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
+	STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"stack_deployment_group_summary", "run_status_summaries"}[i]
+	return []string{"stack_deployment_group_summary", "run_status_summaries"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "stack_deployment_group_summary":
-            result = STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
-        case "run_status_summaries":
-            result = RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "stack_deployment_group_summary":
+		result = STACK_DEPLOYMENT_GROUP_SUMMARY_GETINCLUDEQUERYPARAMETERTYPE
+	case "run_status_summaries":
+		result = RUN_STATUS_SUMMARIES_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

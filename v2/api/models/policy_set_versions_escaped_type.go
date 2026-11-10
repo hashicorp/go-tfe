@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PolicySetVersions_type int
 
 const (
-    POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE PolicySetVersions_type = iota
+	POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE PolicySetVersions_type = iota
 )
 
 func (i PolicySetVersions_type) String() string {
-    return []string{"policy-set-versions"}[i]
+	return []string{"policy-set-versions"}[i]
 }
+
 func ParsePolicySetVersions_type(v string) (any, error) {
-    result := POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE
-    switch v {
-        case "policy-set-versions":
-            result = POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE
+	switch v {
+	case "policy-set-versions":
+		result = POLICYSETVERSIONS_POLICYSETVERSIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicySetVersions_type(values []PolicySetVersions_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PolicySetVersions_type) isMultiValue() bool {
-    return false
+	return false
 }

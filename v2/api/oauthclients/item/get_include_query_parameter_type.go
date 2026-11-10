@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
-    AGENT_POOL_GETINCLUDEQUERYPARAMETERTYPE
+	OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+	AGENT_POOL_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"oauth_tokens", "projects", "agent_pool"}[i]
+	return []string{"oauth_tokens", "projects", "agent_pool"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "oauth_tokens":
-            result = OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE
-        case "projects":
-            result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
-        case "agent_pool":
-            result = AGENT_POOL_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "oauth_tokens":
+		result = OAUTH_TOKENS_GETINCLUDEQUERYPARAMETERTYPE
+	case "projects":
+		result = PROJECTS_GETINCLUDEQUERYPARAMETERTYPE
+	case "agent_pool":
+		result = AGENT_POOL_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceTransferEventsIdentifier_type int
 
 const (
-    WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE WorkspaceTransferEventsIdentifier_type = iota
+	WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE WorkspaceTransferEventsIdentifier_type = iota
 )
 
 func (i WorkspaceTransferEventsIdentifier_type) String() string {
-    return []string{"workspace-transfer-events"}[i]
+	return []string{"workspace-transfer-events"}[i]
 }
+
 func ParseWorkspaceTransferEventsIdentifier_type(v string) (any, error) {
-    result := WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE
-    switch v {
-        case "workspace-transfer-events":
-            result = WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE
+	switch v {
+	case "workspace-transfer-events":
+		result = WORKSPACETRANSFEREVENTS_WORKSPACETRANSFEREVENTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceTransferEventsIdentifier_type(values []WorkspaceTransferEventsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceTransferEventsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type AssessmentResults_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The source property
-    source AssessmentSourceHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The source property
+	source AssessmentSourceHasOneable
+	// The workspace property
+	workspace WorkspacesHasOneable
 }
+
 // NewAssessmentResults_relationships instantiates a new AssessmentResults_relationships and sets the default values.
-func NewAssessmentResults_relationships()(*AssessmentResults_relationships) {
-    m := &AssessmentResults_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAssessmentResults_relationships() *AssessmentResults_relationships {
+	m := &AssessmentResults_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAssessmentResults_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAssessmentResults_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAssessmentResults_relationships(), nil
+func CreateAssessmentResults_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAssessmentResults_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AssessmentResults_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AssessmentResults_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AssessmentResults_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAssessmentSourceHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val.(AssessmentSourceHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AssessmentResults_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAssessmentSourceHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val.(AssessmentSourceHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSource gets the source property value. The source property
 // returns a AssessmentSourceHasOneable when successful
-func (m *AssessmentResults_relationships) GetSource()(AssessmentSourceHasOneable) {
-    return m.source
+func (m *AssessmentResults_relationships) GetSource() AssessmentSourceHasOneable {
+	return m.source
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *AssessmentResults_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *AssessmentResults_relationships) GetWorkspace() WorkspacesHasOneable {
+	return m.workspace
 }
+
 // Serialize serializes information the current object
-func (m *AssessmentResults_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("source", m.GetSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AssessmentResults_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("source", m.GetSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AssessmentResults_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AssessmentResults_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetSource sets the source property value. The source property
-func (m *AssessmentResults_relationships) SetSource(value AssessmentSourceHasOneable)() {
-    m.source = value
+func (m *AssessmentResults_relationships) SetSource(value AssessmentSourceHasOneable) {
+	m.source = value
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *AssessmentResults_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *AssessmentResults_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	m.workspace = value
 }
+
 type AssessmentResults_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetSource()(AssessmentSourceHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetSource(value AssessmentSourceHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetSource() AssessmentSourceHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetSource(value AssessmentSourceHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

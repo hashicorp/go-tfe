@@ -4,55 +4,60 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	"context"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemGithubAppInstallationsItemLinkAccountRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\github-app-installations\{github_app_installation_id}\link-account
 type ItemGithubAppInstallationsItemLinkAccountRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal instantiates a new ItemGithubAppInstallationsItemLinkAccountRequestBuilder and sets the default values.
-func NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppInstallationsItemLinkAccountRequestBuilder) {
-    m := &ItemGithubAppInstallationsItemLinkAccountRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/github-app-installations/{github_app_installation_id}/link-account", pathParameters),
-    }
-    return m
+func NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemGithubAppInstallationsItemLinkAccountRequestBuilder {
+	m := &ItemGithubAppInstallationsItemLinkAccountRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/github-app-installations/{github_app_installation_id}/link-account", pathParameters),
+	}
+	return m
 }
+
 // NewItemGithubAppInstallationsItemLinkAccountRequestBuilder instantiates a new ItemGithubAppInstallationsItemLinkAccountRequestBuilder and sets the default values.
-func NewItemGithubAppInstallationsItemLinkAccountRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppInstallationsItemLinkAccountRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemGithubAppInstallationsItemLinkAccountRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemGithubAppInstallationsItemLinkAccountRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Post link a GitHub App installation to an organization.
 // returns a ItemGithubAppInstallationsItemLinkAccount4XXError error when the service returns a 4XX status code
 // returns a ItemGithubAppInstallationsItemLinkAccount5XXError error when the service returns a 5XX status code
-func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "4XX": CreateItemGithubAppInstallationsItemLinkAccount4XXErrorFromDiscriminatorValue,
-        "5XX": CreateItemGithubAppInstallationsItemLinkAccount5XXErrorFromDiscriminatorValue,
-    }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) error {
+	requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"4XX": CreateItemGithubAppInstallationsItemLinkAccount4XXErrorFromDiscriminatorValue,
+		"5XX": CreateItemGithubAppInstallationsItemLinkAccount5XXErrorFromDiscriminatorValue,
+	}
+	err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 // ToPostRequestInformation link a GitHub App installation to an organization.
 // returns a *RequestInformation when successful
-func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/json, application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/json, application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemGithubAppInstallationsItemLinkAccountRequestBuilder when successful
-func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) WithUrl(rawUrl string)(*ItemGithubAppInstallationsItemLinkAccountRequestBuilder) {
-    return NewItemGithubAppInstallationsItemLinkAccountRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) WithUrl(rawUrl string) *ItemGithubAppInstallationsItemLinkAccountRequestBuilder {
+	return NewItemGithubAppInstallationsItemLinkAccountRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

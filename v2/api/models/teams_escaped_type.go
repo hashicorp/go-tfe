@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Teams_type int
 
 const (
-    TEAMS_TEAMS_TYPE Teams_type = iota
+	TEAMS_TEAMS_TYPE Teams_type = iota
 )
 
 func (i Teams_type) String() string {
-    return []string{"teams"}[i]
+	return []string{"teams"}[i]
 }
+
 func ParseTeams_type(v string) (any, error) {
-    result := TEAMS_TEAMS_TYPE
-    switch v {
-        case "teams":
-            result = TEAMS_TEAMS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TEAMS_TEAMS_TYPE
+	switch v {
+	case "teams":
+		result = TEAMS_TEAMS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTeams_type(values []Teams_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Teams_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type ApprovedByIdentifier_type int
 
 const (
-    USERS_APPROVEDBYIDENTIFIER_TYPE ApprovedByIdentifier_type = iota
-    TEAMS_APPROVEDBYIDENTIFIER_TYPE
-    ORGANIZATIONS_APPROVEDBYIDENTIFIER_TYPE
+	USERS_APPROVEDBYIDENTIFIER_TYPE ApprovedByIdentifier_type = iota
+	TEAMS_APPROVEDBYIDENTIFIER_TYPE
+	ORGANIZATIONS_APPROVEDBYIDENTIFIER_TYPE
 )
 
 func (i ApprovedByIdentifier_type) String() string {
-    return []string{"users", "teams", "organizations"}[i]
+	return []string{"users", "teams", "organizations"}[i]
 }
+
 func ParseApprovedByIdentifier_type(v string) (any, error) {
-    result := USERS_APPROVEDBYIDENTIFIER_TYPE
-    switch v {
-        case "users":
-            result = USERS_APPROVEDBYIDENTIFIER_TYPE
-        case "teams":
-            result = TEAMS_APPROVEDBYIDENTIFIER_TYPE
-        case "organizations":
-            result = ORGANIZATIONS_APPROVEDBYIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := USERS_APPROVEDBYIDENTIFIER_TYPE
+	switch v {
+	case "users":
+		result = USERS_APPROVEDBYIDENTIFIER_TYPE
+	case "teams":
+		result = TEAMS_APPROVEDBYIDENTIFIER_TYPE
+	case "organizations":
+		result = ORGANIZATIONS_APPROVEDBYIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeApprovedByIdentifier_type(values []ApprovedByIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ApprovedByIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

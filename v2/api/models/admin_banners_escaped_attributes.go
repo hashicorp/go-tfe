@@ -4,280 +4,302 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type AdminBanners_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Which users see the banner.
-    audience *AdminBanners_attributes_audience
-    // Body text of the banner. Accepts the same HTML as the other customization settings (footer, login help, error and new user instructions): Rails' default allow-list, which permits common formatting such as bold, italic, links, lists, headings and code, and strips scripts, inline styles and form controls. Maximum 500 characters after sanitization.
-    body *string
-    // Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
-    publishedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.
-    scheduledExpireAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.
-    scheduledPublishAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Visual style controlling how the banner is rendered.
-    style *AdminBanners_attributes_style
-    // IANA timezone identifier for the scheduled times (e.g. "America/New_York", "UTC"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.
-    timezone *string
-    // Short heading for the banner (max 100 characters).
-    title *string
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Which users see the banner.
+	audience *AdminBanners_attributes_audience
+	// Body text of the banner. Accepts the same HTML as the other customization settings (footer, login help, error and new user instructions): Rails' default allow-list, which permits common formatting such as bold, italic, links, lists, headings and code, and strips scripts, inline styles and form controls. Maximum 500 characters after sanitization.
+	body *string
+	// Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
+	publishedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.
+	scheduledExpireAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.
+	scheduledPublishAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Visual style controlling how the banner is rendered.
+	style *AdminBanners_attributes_style
+	// IANA timezone identifier for the scheduled times (e.g. "America/New_York", "UTC"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.
+	timezone *string
+	// Short heading for the banner (max 100 characters).
+	title *string
 }
+
 // NewAdminBanners_attributes instantiates a new AdminBanners_attributes and sets the default values.
-func NewAdminBanners_attributes()(*AdminBanners_attributes) {
-    m := &AdminBanners_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAdminBanners_attributes() *AdminBanners_attributes {
+	m := &AdminBanners_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAdminBanners_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAdminBanners_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAdminBanners_attributes(), nil
+func CreateAdminBanners_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAdminBanners_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AdminBanners_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AdminBanners_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAudience gets the audience property value. Which users see the banner.
 // returns a *AdminBanners_attributes_audience when successful
-func (m *AdminBanners_attributes) GetAudience()(*AdminBanners_attributes_audience) {
-    return m.audience
+func (m *AdminBanners_attributes) GetAudience() *AdminBanners_attributes_audience {
+	return m.audience
 }
+
 // GetBody gets the body property value. Body text of the banner. Accepts the same HTML as the other customization settings (footer, login help, error and new user instructions): Rails' default allow-list, which permits common formatting such as bold, italic, links, lists, headings and code, and strips scripts, inline styles and form controls. Maximum 500 characters after sanitization.
 // returns a *string when successful
-func (m *AdminBanners_attributes) GetBody()(*string) {
-    return m.body
+func (m *AdminBanners_attributes) GetBody() *string {
+	return m.body
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AdminBanners_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["audience"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseAdminBanners_attributes_audience)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAudience(val.(*AdminBanners_attributes_audience))
-        }
-        return nil
-    }
-    res["body"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBody(val)
-        }
-        return nil
-    }
-    res["published-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPublishedAt(val)
-        }
-        return nil
-    }
-    res["scheduled-expire-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScheduledExpireAt(val)
-        }
-        return nil
-    }
-    res["scheduled-publish-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScheduledPublishAt(val)
-        }
-        return nil
-    }
-    res["style"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseAdminBanners_attributes_style)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStyle(val.(*AdminBanners_attributes_style))
-        }
-        return nil
-    }
-    res["timezone"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTimezone(val)
-        }
-        return nil
-    }
-    res["title"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTitle(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AdminBanners_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["audience"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseAdminBanners_attributes_audience)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAudience(val.(*AdminBanners_attributes_audience))
+		}
+		return nil
+	}
+	res["body"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBody(val)
+		}
+		return nil
+	}
+	res["published-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPublishedAt(val)
+		}
+		return nil
+	}
+	res["scheduled-expire-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScheduledExpireAt(val)
+		}
+		return nil
+	}
+	res["scheduled-publish-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScheduledPublishAt(val)
+		}
+		return nil
+	}
+	res["style"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseAdminBanners_attributes_style)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStyle(val.(*AdminBanners_attributes_style))
+		}
+		return nil
+	}
+	res["timezone"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTimezone(val)
+		}
+		return nil
+	}
+	res["title"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTitle(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPublishedAt gets the published-at property value. Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
 // returns a *Time when successful
-func (m *AdminBanners_attributes) GetPublishedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.publishedAt
+func (m *AdminBanners_attributes) GetPublishedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.publishedAt
 }
+
 // GetScheduledExpireAt gets the scheduled-expire-at property value. ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.
 // returns a *Time when successful
-func (m *AdminBanners_attributes) GetScheduledExpireAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.scheduledExpireAt
+func (m *AdminBanners_attributes) GetScheduledExpireAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.scheduledExpireAt
 }
+
 // GetScheduledPublishAt gets the scheduled-publish-at property value. ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.
 // returns a *Time when successful
-func (m *AdminBanners_attributes) GetScheduledPublishAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.scheduledPublishAt
+func (m *AdminBanners_attributes) GetScheduledPublishAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.scheduledPublishAt
 }
+
 // GetStyle gets the style property value. Visual style controlling how the banner is rendered.
 // returns a *AdminBanners_attributes_style when successful
-func (m *AdminBanners_attributes) GetStyle()(*AdminBanners_attributes_style) {
-    return m.style
+func (m *AdminBanners_attributes) GetStyle() *AdminBanners_attributes_style {
+	return m.style
 }
+
 // GetTimezone gets the timezone property value. IANA timezone identifier for the scheduled times (e.g. "America/New_York", "UTC"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.
 // returns a *string when successful
-func (m *AdminBanners_attributes) GetTimezone()(*string) {
-    return m.timezone
+func (m *AdminBanners_attributes) GetTimezone() *string {
+	return m.timezone
 }
+
 // GetTitle gets the title property value. Short heading for the banner (max 100 characters).
 // returns a *string when successful
-func (m *AdminBanners_attributes) GetTitle()(*string) {
-    return m.title
+func (m *AdminBanners_attributes) GetTitle() *string {
+	return m.title
 }
+
 // Serialize serializes information the current object
-func (m *AdminBanners_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAudience() != nil {
-        cast := (*m.GetAudience()).String()
-        err := writer.WriteStringValue("audience", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("body", m.GetBody())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("scheduled-expire-at", m.GetScheduledExpireAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("scheduled-publish-at", m.GetScheduledPublishAt())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStyle() != nil {
-        cast := (*m.GetStyle()).String()
-        err := writer.WriteStringValue("style", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("timezone", m.GetTimezone())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("title", m.GetTitle())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AdminBanners_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAudience() != nil {
+		cast := (*m.GetAudience()).String()
+		err := writer.WriteStringValue("audience", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("body", m.GetBody())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("scheduled-expire-at", m.GetScheduledExpireAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("scheduled-publish-at", m.GetScheduledPublishAt())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStyle() != nil {
+		cast := (*m.GetStyle()).String()
+		err := writer.WriteStringValue("style", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("timezone", m.GetTimezone())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("title", m.GetTitle())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AdminBanners_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AdminBanners_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAudience sets the audience property value. Which users see the banner.
-func (m *AdminBanners_attributes) SetAudience(value *AdminBanners_attributes_audience)() {
-    m.audience = value
+func (m *AdminBanners_attributes) SetAudience(value *AdminBanners_attributes_audience) {
+	m.audience = value
 }
+
 // SetBody sets the body property value. Body text of the banner. Accepts the same HTML as the other customization settings (footer, login help, error and new user instructions): Rails' default allow-list, which permits common formatting such as bold, italic, links, lists, headings and code, and strips scripts, inline styles and form controls. Maximum 500 characters after sanitization.
-func (m *AdminBanners_attributes) SetBody(value *string)() {
-    m.body = value
+func (m *AdminBanners_attributes) SetBody(value *string) {
+	m.body = value
 }
+
 // SetPublishedAt sets the published-at property value. Set to the current time the first time this banner becomes immediately active: on creation without a schedule, or when a scheduled banner has its schedule cleared via update. Once set, this value is not changed by subsequent updates. Null when the banner has an active schedule (scheduled-publish-at is set) and has not yet had it cleared.
-func (m *AdminBanners_attributes) SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.publishedAt = value
+func (m *AdminBanners_attributes) SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.publishedAt = value
 }
+
 // SetScheduledExpireAt sets the scheduled-expire-at property value. ISO 8601 datetime (UTC) when the banner should be automatically deactivated. Must be provided together with scheduled-publish-at and timezone.
-func (m *AdminBanners_attributes) SetScheduledExpireAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.scheduledExpireAt = value
+func (m *AdminBanners_attributes) SetScheduledExpireAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.scheduledExpireAt = value
 }
+
 // SetScheduledPublishAt sets the scheduled-publish-at property value. ISO 8601 datetime (UTC) when the banner should become active. scheduled-publish-at, scheduled-expire-at, and timezone must all be provided together or all omitted. Providing only a subset is a validation error.
-func (m *AdminBanners_attributes) SetScheduledPublishAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.scheduledPublishAt = value
+func (m *AdminBanners_attributes) SetScheduledPublishAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.scheduledPublishAt = value
 }
+
 // SetStyle sets the style property value. Visual style controlling how the banner is rendered.
-func (m *AdminBanners_attributes) SetStyle(value *AdminBanners_attributes_style)() {
-    m.style = value
+func (m *AdminBanners_attributes) SetStyle(value *AdminBanners_attributes_style) {
+	m.style = value
 }
+
 // SetTimezone sets the timezone property value. IANA timezone identifier for the scheduled times (e.g. "America/New_York", "UTC"). Required when scheduled-publish-at and scheduled-expire-at are provided. Used by the UI to display the schedule in the administrator's local timezone; stored and returned as-is.
-func (m *AdminBanners_attributes) SetTimezone(value *string)() {
-    m.timezone = value
+func (m *AdminBanners_attributes) SetTimezone(value *string) {
+	m.timezone = value
 }
+
 // SetTitle sets the title property value. Short heading for the banner (max 100 characters).
-func (m *AdminBanners_attributes) SetTitle(value *string)() {
-    m.title = value
+func (m *AdminBanners_attributes) SetTitle(value *string) {
+	m.title = value
 }
+
 type AdminBanners_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAudience()(*AdminBanners_attributes_audience)
-    GetBody()(*string)
-    GetPublishedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetScheduledExpireAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetScheduledPublishAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetStyle()(*AdminBanners_attributes_style)
-    GetTimezone()(*string)
-    GetTitle()(*string)
-    SetAudience(value *AdminBanners_attributes_audience)()
-    SetBody(value *string)()
-    SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetScheduledExpireAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetScheduledPublishAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetStyle(value *AdminBanners_attributes_style)()
-    SetTimezone(value *string)()
-    SetTitle(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAudience() *AdminBanners_attributes_audience
+	GetBody() *string
+	GetPublishedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetScheduledExpireAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetScheduledPublishAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetStyle() *AdminBanners_attributes_style
+	GetTimezone() *string
+	GetTitle() *string
+	SetAudience(value *AdminBanners_attributes_audience)
+	SetBody(value *string)
+	SetPublishedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetScheduledExpireAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetScheduledPublishAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetStyle(value *AdminBanners_attributes_style)
+	SetTimezone(value *string)
+	SetTitle(value *string)
 }

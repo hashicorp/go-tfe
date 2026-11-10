@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type HyokConfigurations_type int
 
 const (
-    HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE HyokConfigurations_type = iota
+	HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE HyokConfigurations_type = iota
 )
 
 func (i HyokConfigurations_type) String() string {
-    return []string{"hyok-configurations"}[i]
+	return []string{"hyok-configurations"}[i]
 }
+
 func ParseHyokConfigurations_type(v string) (any, error) {
-    result := HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE
-    switch v {
-        case "hyok-configurations":
-            result = HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE
+	switch v {
+	case "hyok-configurations":
+		result = HYOKCONFIGURATIONS_HYOKCONFIGURATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeHyokConfigurations_type(values []HyokConfigurations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i HyokConfigurations_type) isMultiValue() bool {
-    return false
+	return false
 }

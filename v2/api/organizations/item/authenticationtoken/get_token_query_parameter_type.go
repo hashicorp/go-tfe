@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package authenticationtoken
+
 type GetTokenQueryParameterType int
 
 const (
-    AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE GetTokenQueryParameterType = iota
+	AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE GetTokenQueryParameterType = iota
 )
 
 func (i GetTokenQueryParameterType) String() string {
-    return []string{"audit-trails"}[i]
+	return []string{"audit-trails"}[i]
 }
+
 func ParseGetTokenQueryParameterType(v string) (any, error) {
-    result := AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE
-    switch v {
-        case "audit-trails":
-            result = AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE
+	switch v {
+	case "audit-trails":
+		result = AUDITTRAILS_GETTOKENQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetTokenQueryParameterType(values []GetTokenQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetTokenQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

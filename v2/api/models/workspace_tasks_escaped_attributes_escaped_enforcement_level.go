@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceTasks_attributes_enforcementLevel int
 
 const (
-    ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL WorkspaceTasks_attributes_enforcementLevel = iota
-    MANDATORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
+	ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL WorkspaceTasks_attributes_enforcementLevel = iota
+	MANDATORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
 )
 
 func (i WorkspaceTasks_attributes_enforcementLevel) String() string {
-    return []string{"advisory", "mandatory"}[i]
+	return []string{"advisory", "mandatory"}[i]
 }
+
 func ParseWorkspaceTasks_attributes_enforcementLevel(v string) (any, error) {
-    result := ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
-    switch v {
-        case "advisory":
-            result = ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
-        case "mandatory":
-            result = MANDATORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
+	switch v {
+	case "advisory":
+		result = ADVISORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
+	case "mandatory":
+		result = MANDATORY_WORKSPACETASKS_ATTRIBUTES_ENFORCEMENTLEVEL
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceTasks_attributes_enforcementLevel(values []WorkspaceTasks_attributes_enforcementLevel) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceTasks_attributes_enforcementLevel) isMultiValue() bool {
-    return false
+	return false
 }

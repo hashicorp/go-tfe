@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type SshKeys_type int
 
 const (
-    SSHKEYS_SSHKEYS_TYPE SshKeys_type = iota
+	SSHKEYS_SSHKEYS_TYPE SshKeys_type = iota
 )
 
 func (i SshKeys_type) String() string {
-    return []string{"ssh-keys"}[i]
+	return []string{"ssh-keys"}[i]
 }
+
 func ParseSshKeys_type(v string) (any, error) {
-    result := SSHKEYS_SSHKEYS_TYPE
-    switch v {
-        case "ssh-keys":
-            result = SSHKEYS_SSHKEYS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SSHKEYS_SSHKEYS_TYPE
+	switch v {
+	case "ssh-keys":
+		result = SSHKEYS_SSHKEYS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeSshKeys_type(values []SshKeys_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i SshKeys_type) isMultiValue() bool {
-    return false
+	return false
 }

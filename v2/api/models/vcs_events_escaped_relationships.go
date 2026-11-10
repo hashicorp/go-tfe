@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type VcsEvents_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The oauthClient property
-    oauthClient OauthClientsHasOneable
-    // The oauthToken property
-    oauthToken OauthTokensHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The oauthClient property
+	oauthClient OauthClientsHasOneable
+	// The oauthToken property
+	oauthToken OauthTokensHasOneable
 }
+
 // NewVcsEvents_relationships instantiates a new VcsEvents_relationships and sets the default values.
-func NewVcsEvents_relationships()(*VcsEvents_relationships) {
-    m := &VcsEvents_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewVcsEvents_relationships() *VcsEvents_relationships {
+	m := &VcsEvents_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateVcsEvents_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateVcsEvents_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewVcsEvents_relationships(), nil
+func CreateVcsEvents_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewVcsEvents_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *VcsEvents_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *VcsEvents_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *VcsEvents_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["oauth-client"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthClientsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOauthClient(val.(OauthClientsHasOneable))
-        }
-        return nil
-    }
-    res["oauth-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthTokensHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOauthToken(val.(OauthTokensHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *VcsEvents_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["oauth-client"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOauthClientsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOauthClient(val.(OauthClientsHasOneable))
+		}
+		return nil
+	}
+	res["oauth-token"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOauthTokensHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOauthToken(val.(OauthTokensHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOauthClient gets the oauth-client property value. The oauthClient property
 // returns a OauthClientsHasOneable when successful
-func (m *VcsEvents_relationships) GetOauthClient()(OauthClientsHasOneable) {
-    return m.oauthClient
+func (m *VcsEvents_relationships) GetOauthClient() OauthClientsHasOneable {
+	return m.oauthClient
 }
+
 // GetOauthToken gets the oauth-token property value. The oauthToken property
 // returns a OauthTokensHasOneable when successful
-func (m *VcsEvents_relationships) GetOauthToken()(OauthTokensHasOneable) {
-    return m.oauthToken
+func (m *VcsEvents_relationships) GetOauthToken() OauthTokensHasOneable {
+	return m.oauthToken
 }
+
 // Serialize serializes information the current object
-func (m *VcsEvents_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("oauth-client", m.GetOauthClient())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("oauth-token", m.GetOauthToken())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *VcsEvents_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("oauth-client", m.GetOauthClient())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("oauth-token", m.GetOauthToken())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *VcsEvents_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *VcsEvents_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetOauthClient sets the oauth-client property value. The oauthClient property
-func (m *VcsEvents_relationships) SetOauthClient(value OauthClientsHasOneable)() {
-    m.oauthClient = value
+func (m *VcsEvents_relationships) SetOauthClient(value OauthClientsHasOneable) {
+	m.oauthClient = value
 }
+
 // SetOauthToken sets the oauth-token property value. The oauthToken property
-func (m *VcsEvents_relationships) SetOauthToken(value OauthTokensHasOneable)() {
-    m.oauthToken = value
+func (m *VcsEvents_relationships) SetOauthToken(value OauthTokensHasOneable) {
+	m.oauthToken = value
 }
+
 type VcsEvents_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOauthClient()(OauthClientsHasOneable)
-    GetOauthToken()(OauthTokensHasOneable)
-    SetOauthClient(value OauthClientsHasOneable)()
-    SetOauthToken(value OauthTokensHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetOauthClient() OauthClientsHasOneable
+	GetOauthToken() OauthTokensHasOneable
+	SetOauthClient(value OauthClientsHasOneable)
+	SetOauthToken(value OauthTokensHasOneable)
 }

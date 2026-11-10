@@ -4,1227 +4,1321 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Organizations_attributes struct {
-    // The aggregatedCommitStatusEnabled property
-    aggregatedCommitStatusEnabled *bool
-    // The allowForceDeleteWorkspaces property
-    allowForceDeleteWorkspaces *bool
-    // The assessmentsEnforced property
-    assessmentsEnforced *bool
-    // The collaboratorAuthPolicy property
-    collaboratorAuthPolicy *Organizations_attributes_collaboratorAuthPolicy
-    // The costEstimationEnabled property
-    costEstimationEnabled *bool
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The defaultExecutionMode property
-    defaultExecutionMode *Organizations_attributes_defaultExecutionMode
-    // The eligibleForConcurrencyAddOns property
-    eligibleForConcurrencyAddOns *bool
-    // The email property
-    email *string
-    // The enforceHyok property
-    enforceHyok *bool
-    // The externalId property
-    externalId *string
-    // The fairRunQueuingEnabled property
-    fairRunQueuingEnabled *bool
-    // This attribute is only available in Terraform Enterprise.
-    globalModuleSharing *bool
-    // This attribute is only available in Terraform Enterprise.
-    globalProviderSharing *bool
-    // This attribute is only available in HCP Terraform.
-    hcpId *string
-    // The isInDegradedMode property
-    isInDegradedMode *bool
-    // This attribute is only available in HCP Terraform.
-    isUnified *bool
-    // The managedResourceCount property
-    managedResourceCount *int32
-    // This attribute is only available in Terraform Enterprise.
-    moduleConsumingOrganizationsCount *int32
-    // The name property
-    name *string
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    overStacksResourceLimit *bool
-    // The ownersTeamSamlRoleId property
-    ownersTeamSamlRoleId *string
-    // This attribute is only available in Terraform Enterprise.
-    parentDataRetentionPolicyInfo *string
-    // The permissions property
-    permissions Organizations_attributes_permissionsable
-    // The planExpired property
-    planExpired *bool
-    // The planExpiresAt property
-    planExpiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The planIdentifier property
-    planIdentifier *string
-    // The planIsEnterprise property
-    planIsEnterprise *bool
-    // The planIsTrial property
-    planIsTrial *bool
-    // This attribute is only available in Terraform Enterprise.
-    providerConsumingOrganizationsCount *int32
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    recoverableItemsEnabled *bool
-    // The remainingTestableCount property
-    remainingTestableCount *int32
-    // The samlEnabled property
-    samlEnabled *bool
-    // The scimConfigurationPresent property
-    scimConfigurationPresent *bool
-    // The sendPassingStatusesForUntriggeredSpeculativePlans property
-    sendPassingStatusesForUntriggeredSpeculativePlans *bool
-    // The sessionRemember property
-    sessionRemember *int32
-    // The sessionTimeout property
-    sessionTimeout *int32
-    // The speculativePlanManagementEnabled property
-    speculativePlanManagementEnabled *bool
-    // The ssoEnabled property
-    ssoEnabled *bool
-    // The ssoIdpCertExpiration property
-    ssoIdpCertExpiration *string
-    // The stacksDefaultExecutionMode property
-    stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    stacksEnabled *bool
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    testGenerationEnabled *bool
-    // The twoFactorConformant property
-    twoFactorConformant *bool
-    // The userTokensEnabled property
-    userTokensEnabled *bool
+	// The aggregatedCommitStatusEnabled property
+	aggregatedCommitStatusEnabled *bool
+	// The allowForceDeleteWorkspaces property
+	allowForceDeleteWorkspaces *bool
+	// The assessmentsEnforced property
+	assessmentsEnforced *bool
+	// The collaboratorAuthPolicy property
+	collaboratorAuthPolicy *Organizations_attributes_collaboratorAuthPolicy
+	// The costEstimationEnabled property
+	costEstimationEnabled *bool
+	// The createdAt property
+	createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The defaultExecutionMode property
+	defaultExecutionMode *Organizations_attributes_defaultExecutionMode
+	// The eligibleForConcurrencyAddOns property
+	eligibleForConcurrencyAddOns *bool
+	// The email property
+	email *string
+	// The enforceHyok property
+	enforceHyok *bool
+	// The externalId property
+	externalId *string
+	// The fairRunQueuingEnabled property
+	fairRunQueuingEnabled *bool
+	// This attribute is only available in Terraform Enterprise.
+	globalModuleSharing *bool
+	// This attribute is only available in Terraform Enterprise.
+	globalProviderSharing *bool
+	// This attribute is only available in HCP Terraform.
+	hcpId *string
+	// The isInDegradedMode property
+	isInDegradedMode *bool
+	// This attribute is only available in HCP Terraform.
+	isUnified *bool
+	// The managedResourceCount property
+	managedResourceCount *int32
+	// This attribute is only available in Terraform Enterprise.
+	moduleConsumingOrganizationsCount *int32
+	// The name property
+	name *string
+	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+	overStacksResourceLimit *bool
+	// The ownersTeamSamlRoleId property
+	ownersTeamSamlRoleId *string
+	// This attribute is only available in Terraform Enterprise.
+	parentDataRetentionPolicyInfo *string
+	// The permissions property
+	permissions Organizations_attributes_permissionsable
+	// The planExpired property
+	planExpired *bool
+	// The planExpiresAt property
+	planExpiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// The planIdentifier property
+	planIdentifier *string
+	// The planIsEnterprise property
+	planIsEnterprise *bool
+	// The planIsTrial property
+	planIsTrial *bool
+	// This attribute is only available in Terraform Enterprise.
+	providerConsumingOrganizationsCount *int32
+	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+	recoverableItemsEnabled *bool
+	// The remainingTestableCount property
+	remainingTestableCount *int32
+	// The samlEnabled property
+	samlEnabled *bool
+	// The scimConfigurationPresent property
+	scimConfigurationPresent *bool
+	// The sendPassingStatusesForUntriggeredSpeculativePlans property
+	sendPassingStatusesForUntriggeredSpeculativePlans *bool
+	// The sessionRemember property
+	sessionRemember *int32
+	// The sessionTimeout property
+	sessionTimeout *int32
+	// The speculativePlanManagementEnabled property
+	speculativePlanManagementEnabled *bool
+	// The ssoEnabled property
+	ssoEnabled *bool
+	// The ssoIdpCertExpiration property
+	ssoIdpCertExpiration *string
+	// The stacksDefaultExecutionMode property
+	stacksDefaultExecutionMode *Organizations_attributes_stacksDefaultExecutionMode
+	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+	stacksEnabled *bool
+	// This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
+	testGenerationEnabled *bool
+	// The twoFactorConformant property
+	twoFactorConformant *bool
+	// The userTokensEnabled property
+	userTokensEnabled *bool
 }
+
 // NewOrganizations_attributes instantiates a new Organizations_attributes and sets the default values.
-func NewOrganizations_attributes()(*Organizations_attributes) {
-    m := &Organizations_attributes{
-    }
-    return m
+func NewOrganizations_attributes() *Organizations_attributes {
+	m := &Organizations_attributes{}
+	return m
 }
+
 // CreateOrganizations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOrganizations_attributes(), nil
+func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOrganizations_attributes(), nil
 }
+
 // GetAggregatedCommitStatusEnabled gets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetAggregatedCommitStatusEnabled()(*bool) {
-    return m.aggregatedCommitStatusEnabled
+func (m *Organizations_attributes) GetAggregatedCommitStatusEnabled() *bool {
+	return m.aggregatedCommitStatusEnabled
 }
+
 // GetAllowForceDeleteWorkspaces gets the allow-force-delete-workspaces property value. The allowForceDeleteWorkspaces property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetAllowForceDeleteWorkspaces()(*bool) {
-    return m.allowForceDeleteWorkspaces
+func (m *Organizations_attributes) GetAllowForceDeleteWorkspaces() *bool {
+	return m.allowForceDeleteWorkspaces
 }
+
 // GetAssessmentsEnforced gets the assessments-enforced property value. The assessmentsEnforced property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetAssessmentsEnforced()(*bool) {
-    return m.assessmentsEnforced
+func (m *Organizations_attributes) GetAssessmentsEnforced() *bool {
+	return m.assessmentsEnforced
 }
+
 // GetCollaboratorAuthPolicy gets the collaborator-auth-policy property value. The collaboratorAuthPolicy property
 // returns a *Organizations_attributes_collaboratorAuthPolicy when successful
-func (m *Organizations_attributes) GetCollaboratorAuthPolicy()(*Organizations_attributes_collaboratorAuthPolicy) {
-    return m.collaboratorAuthPolicy
+func (m *Organizations_attributes) GetCollaboratorAuthPolicy() *Organizations_attributes_collaboratorAuthPolicy {
+	return m.collaboratorAuthPolicy
 }
+
 // GetCostEstimationEnabled gets the cost-estimation-enabled property value. The costEstimationEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetCostEstimationEnabled()(*bool) {
-    return m.costEstimationEnabled
+func (m *Organizations_attributes) GetCostEstimationEnabled() *bool {
+	return m.costEstimationEnabled
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *Organizations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *Organizations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.createdAt
 }
+
 // GetDefaultExecutionMode gets the default-execution-mode property value. The defaultExecutionMode property
 // returns a *Organizations_attributes_defaultExecutionMode when successful
-func (m *Organizations_attributes) GetDefaultExecutionMode()(*Organizations_attributes_defaultExecutionMode) {
-    return m.defaultExecutionMode
+func (m *Organizations_attributes) GetDefaultExecutionMode() *Organizations_attributes_defaultExecutionMode {
+	return m.defaultExecutionMode
 }
+
 // GetEligibleForConcurrencyAddOns gets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetEligibleForConcurrencyAddOns()(*bool) {
-    return m.eligibleForConcurrencyAddOns
+func (m *Organizations_attributes) GetEligibleForConcurrencyAddOns() *bool {
+	return m.eligibleForConcurrencyAddOns
 }
+
 // GetEmail gets the email property value. The email property
 // returns a *string when successful
-func (m *Organizations_attributes) GetEmail()(*string) {
-    return m.email
+func (m *Organizations_attributes) GetEmail() *string {
+	return m.email
 }
+
 // GetEnforceHyok gets the enforce-hyok property value. The enforceHyok property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetEnforceHyok()(*bool) {
-    return m.enforceHyok
+func (m *Organizations_attributes) GetEnforceHyok() *bool {
+	return m.enforceHyok
 }
+
 // GetExternalId gets the external-id property value. The externalId property
 // returns a *string when successful
-func (m *Organizations_attributes) GetExternalId()(*string) {
-    return m.externalId
+func (m *Organizations_attributes) GetExternalId() *string {
+	return m.externalId
 }
+
 // GetFairRunQueuingEnabled gets the fair-run-queuing-enabled property value. The fairRunQueuingEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetFairRunQueuingEnabled()(*bool) {
-    return m.fairRunQueuingEnabled
+func (m *Organizations_attributes) GetFairRunQueuingEnabled() *bool {
+	return m.fairRunQueuingEnabled
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Organizations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["aggregated-commit-status-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAggregatedCommitStatusEnabled(val)
-        }
-        return nil
-    }
-    res["allow-force-delete-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAllowForceDeleteWorkspaces(val)
-        }
-        return nil
-    }
-    res["assessments-enforced"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAssessmentsEnforced(val)
-        }
-        return nil
-    }
-    res["collaborator-auth-policy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseOrganizations_attributes_collaboratorAuthPolicy)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCollaboratorAuthPolicy(val.(*Organizations_attributes_collaboratorAuthPolicy))
-        }
-        return nil
-    }
-    res["cost-estimation-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCostEstimationEnabled(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseOrganizations_attributes_defaultExecutionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultExecutionMode(val.(*Organizations_attributes_defaultExecutionMode))
-        }
-        return nil
-    }
-    res["eligible-for-concurrency-add-ons"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEligibleForConcurrencyAddOns(val)
-        }
-        return nil
-    }
-    res["email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEmail(val)
-        }
-        return nil
-    }
-    res["enforce-hyok"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforceHyok(val)
-        }
-        return nil
-    }
-    res["external-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExternalId(val)
-        }
-        return nil
-    }
-    res["fair-run-queuing-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFairRunQueuingEnabled(val)
-        }
-        return nil
-    }
-    res["global-module-sharing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobalModuleSharing(val)
-        }
-        return nil
-    }
-    res["global-provider-sharing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobalProviderSharing(val)
-        }
-        return nil
-    }
-    res["hcp-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHcpId(val)
-        }
-        return nil
-    }
-    res["is-in-degraded-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsInDegradedMode(val)
-        }
-        return nil
-    }
-    res["is-unified"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsUnified(val)
-        }
-        return nil
-    }
-    res["managed-resource-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManagedResourceCount(val)
-        }
-        return nil
-    }
-    res["module-consuming-organizations-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleConsumingOrganizationsCount(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["over-stacks-resource-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOverStacksResourceLimit(val)
-        }
-        return nil
-    }
-    res["owners-team-saml-role-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOwnersTeamSamlRoleId(val)
-        }
-        return nil
-    }
-    res["parent-data-retention-policy-info"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetParentDataRetentionPolicyInfo(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizations_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(Organizations_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["plan-expired"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanExpired(val)
-        }
-        return nil
-    }
-    res["plan-expires-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanExpiresAt(val)
-        }
-        return nil
-    }
-    res["plan-identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanIdentifier(val)
-        }
-        return nil
-    }
-    res["plan-is-enterprise"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanIsEnterprise(val)
-        }
-        return nil
-    }
-    res["plan-is-trial"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanIsTrial(val)
-        }
-        return nil
-    }
-    res["provider-consuming-organizations-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProviderConsumingOrganizationsCount(val)
-        }
-        return nil
-    }
-    res["recoverable-items-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRecoverableItemsEnabled(val)
-        }
-        return nil
-    }
-    res["remaining-testable-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRemainingTestableCount(val)
-        }
-        return nil
-    }
-    res["saml-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSamlEnabled(val)
-        }
-        return nil
-    }
-    res["scim-configuration-present"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScimConfigurationPresent(val)
-        }
-        return nil
-    }
-    res["send-passing-statuses-for-untriggered-speculative-plans"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSendPassingStatusesForUntriggeredSpeculativePlans(val)
-        }
-        return nil
-    }
-    res["session-remember"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSessionRemember(val)
-        }
-        return nil
-    }
-    res["session-timeout"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSessionTimeout(val)
-        }
-        return nil
-    }
-    res["speculative-plan-management-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSpeculativePlanManagementEnabled(val)
-        }
-        return nil
-    }
-    res["sso-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSsoEnabled(val)
-        }
-        return nil
-    }
-    res["sso-idp-cert-expiration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSsoIdpCertExpiration(val)
-        }
-        return nil
-    }
-    res["stacks-default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseOrganizations_attributes_stacksDefaultExecutionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksDefaultExecutionMode(val.(*Organizations_attributes_stacksDefaultExecutionMode))
-        }
-        return nil
-    }
-    res["stacks-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksEnabled(val)
-        }
-        return nil
-    }
-    res["test-generation-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTestGenerationEnabled(val)
-        }
-        return nil
-    }
-    res["two-factor-conformant"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTwoFactorConformant(val)
-        }
-        return nil
-    }
-    res["user-tokens-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUserTokensEnabled(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Organizations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["aggregated-commit-status-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAggregatedCommitStatusEnabled(val)
+		}
+		return nil
+	}
+	res["allow-force-delete-workspaces"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAllowForceDeleteWorkspaces(val)
+		}
+		return nil
+	}
+	res["assessments-enforced"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAssessmentsEnforced(val)
+		}
+		return nil
+	}
+	res["collaborator-auth-policy"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseOrganizations_attributes_collaboratorAuthPolicy)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCollaboratorAuthPolicy(val.(*Organizations_attributes_collaboratorAuthPolicy))
+		}
+		return nil
+	}
+	res["cost-estimation-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCostEstimationEnabled(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseOrganizations_attributes_defaultExecutionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultExecutionMode(val.(*Organizations_attributes_defaultExecutionMode))
+		}
+		return nil
+	}
+	res["eligible-for-concurrency-add-ons"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEligibleForConcurrencyAddOns(val)
+		}
+		return nil
+	}
+	res["email"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEmail(val)
+		}
+		return nil
+	}
+	res["enforce-hyok"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforceHyok(val)
+		}
+		return nil
+	}
+	res["external-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExternalId(val)
+		}
+		return nil
+	}
+	res["fair-run-queuing-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFairRunQueuingEnabled(val)
+		}
+		return nil
+	}
+	res["global-module-sharing"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobalModuleSharing(val)
+		}
+		return nil
+	}
+	res["global-provider-sharing"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobalProviderSharing(val)
+		}
+		return nil
+	}
+	res["hcp-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHcpId(val)
+		}
+		return nil
+	}
+	res["is-in-degraded-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsInDegradedMode(val)
+		}
+		return nil
+	}
+	res["is-unified"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsUnified(val)
+		}
+		return nil
+	}
+	res["managed-resource-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManagedResourceCount(val)
+		}
+		return nil
+	}
+	res["module-consuming-organizations-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleConsumingOrganizationsCount(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["over-stacks-resource-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOverStacksResourceLimit(val)
+		}
+		return nil
+	}
+	res["owners-team-saml-role-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOwnersTeamSamlRoleId(val)
+		}
+		return nil
+	}
+	res["parent-data-retention-policy-info"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetParentDataRetentionPolicyInfo(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizations_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(Organizations_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["plan-expired"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanExpired(val)
+		}
+		return nil
+	}
+	res["plan-expires-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanExpiresAt(val)
+		}
+		return nil
+	}
+	res["plan-identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanIdentifier(val)
+		}
+		return nil
+	}
+	res["plan-is-enterprise"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanIsEnterprise(val)
+		}
+		return nil
+	}
+	res["plan-is-trial"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanIsTrial(val)
+		}
+		return nil
+	}
+	res["provider-consuming-organizations-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProviderConsumingOrganizationsCount(val)
+		}
+		return nil
+	}
+	res["recoverable-items-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRecoverableItemsEnabled(val)
+		}
+		return nil
+	}
+	res["remaining-testable-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRemainingTestableCount(val)
+		}
+		return nil
+	}
+	res["saml-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSamlEnabled(val)
+		}
+		return nil
+	}
+	res["scim-configuration-present"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScimConfigurationPresent(val)
+		}
+		return nil
+	}
+	res["send-passing-statuses-for-untriggered-speculative-plans"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSendPassingStatusesForUntriggeredSpeculativePlans(val)
+		}
+		return nil
+	}
+	res["session-remember"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSessionRemember(val)
+		}
+		return nil
+	}
+	res["session-timeout"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSessionTimeout(val)
+		}
+		return nil
+	}
+	res["speculative-plan-management-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSpeculativePlanManagementEnabled(val)
+		}
+		return nil
+	}
+	res["sso-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSsoEnabled(val)
+		}
+		return nil
+	}
+	res["sso-idp-cert-expiration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSsoIdpCertExpiration(val)
+		}
+		return nil
+	}
+	res["stacks-default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseOrganizations_attributes_stacksDefaultExecutionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksDefaultExecutionMode(val.(*Organizations_attributes_stacksDefaultExecutionMode))
+		}
+		return nil
+	}
+	res["stacks-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksEnabled(val)
+		}
+		return nil
+	}
+	res["test-generation-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTestGenerationEnabled(val)
+		}
+		return nil
+	}
+	res["two-factor-conformant"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTwoFactorConformant(val)
+		}
+		return nil
+	}
+	res["user-tokens-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUserTokensEnabled(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGlobalModuleSharing gets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetGlobalModuleSharing()(*bool) {
-    return m.globalModuleSharing
+func (m *Organizations_attributes) GetGlobalModuleSharing() *bool {
+	return m.globalModuleSharing
 }
+
 // GetGlobalProviderSharing gets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetGlobalProviderSharing()(*bool) {
-    return m.globalProviderSharing
+func (m *Organizations_attributes) GetGlobalProviderSharing() *bool {
+	return m.globalProviderSharing
 }
+
 // GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
-func (m *Organizations_attributes) GetHcpId()(*string) {
-    return m.hcpId
+func (m *Organizations_attributes) GetHcpId() *string {
+	return m.hcpId
 }
+
 // GetIsInDegradedMode gets the is-in-degraded-mode property value. The isInDegradedMode property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetIsInDegradedMode()(*bool) {
-    return m.isInDegradedMode
+func (m *Organizations_attributes) GetIsInDegradedMode() *bool {
+	return m.isInDegradedMode
 }
+
 // GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetIsUnified()(*bool) {
-    return m.isUnified
+func (m *Organizations_attributes) GetIsUnified() *bool {
+	return m.isUnified
 }
+
 // GetManagedResourceCount gets the managed-resource-count property value. The managedResourceCount property
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetManagedResourceCount()(*int32) {
-    return m.managedResourceCount
+func (m *Organizations_attributes) GetManagedResourceCount() *int32 {
+	return m.managedResourceCount
 }
+
 // GetModuleConsumingOrganizationsCount gets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetModuleConsumingOrganizationsCount()(*int32) {
-    return m.moduleConsumingOrganizationsCount
+func (m *Organizations_attributes) GetModuleConsumingOrganizationsCount() *int32 {
+	return m.moduleConsumingOrganizationsCount
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *Organizations_attributes) GetName()(*string) {
-    return m.name
+func (m *Organizations_attributes) GetName() *string {
+	return m.name
 }
+
 // GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetOverStacksResourceLimit()(*bool) {
-    return m.overStacksResourceLimit
+func (m *Organizations_attributes) GetOverStacksResourceLimit() *bool {
+	return m.overStacksResourceLimit
 }
+
 // GetOwnersTeamSamlRoleId gets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 // returns a *string when successful
-func (m *Organizations_attributes) GetOwnersTeamSamlRoleId()(*string) {
-    return m.ownersTeamSamlRoleId
+func (m *Organizations_attributes) GetOwnersTeamSamlRoleId() *string {
+	return m.ownersTeamSamlRoleId
 }
+
 // GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
-func (m *Organizations_attributes) GetParentDataRetentionPolicyInfo()(*string) {
-    return m.parentDataRetentionPolicyInfo
+func (m *Organizations_attributes) GetParentDataRetentionPolicyInfo() *string {
+	return m.parentDataRetentionPolicyInfo
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Organizations_attributes_permissionsable when successful
-func (m *Organizations_attributes) GetPermissions()(Organizations_attributes_permissionsable) {
-    return m.permissions
+func (m *Organizations_attributes) GetPermissions() Organizations_attributes_permissionsable {
+	return m.permissions
 }
+
 // GetPlanExpired gets the plan-expired property value. The planExpired property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetPlanExpired()(*bool) {
-    return m.planExpired
+func (m *Organizations_attributes) GetPlanExpired() *bool {
+	return m.planExpired
 }
+
 // GetPlanExpiresAt gets the plan-expires-at property value. The planExpiresAt property
 // returns a *Time when successful
-func (m *Organizations_attributes) GetPlanExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.planExpiresAt
+func (m *Organizations_attributes) GetPlanExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.planExpiresAt
 }
+
 // GetPlanIdentifier gets the plan-identifier property value. The planIdentifier property
 // returns a *string when successful
-func (m *Organizations_attributes) GetPlanIdentifier()(*string) {
-    return m.planIdentifier
+func (m *Organizations_attributes) GetPlanIdentifier() *string {
+	return m.planIdentifier
 }
+
 // GetPlanIsEnterprise gets the plan-is-enterprise property value. The planIsEnterprise property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetPlanIsEnterprise()(*bool) {
-    return m.planIsEnterprise
+func (m *Organizations_attributes) GetPlanIsEnterprise() *bool {
+	return m.planIsEnterprise
 }
+
 // GetPlanIsTrial gets the plan-is-trial property value. The planIsTrial property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetPlanIsTrial()(*bool) {
-    return m.planIsTrial
+func (m *Organizations_attributes) GetPlanIsTrial() *bool {
+	return m.planIsTrial
 }
+
 // GetProviderConsumingOrganizationsCount gets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetProviderConsumingOrganizationsCount()(*int32) {
-    return m.providerConsumingOrganizationsCount
+func (m *Organizations_attributes) GetProviderConsumingOrganizationsCount() *int32 {
+	return m.providerConsumingOrganizationsCount
 }
+
 // GetRecoverableItemsEnabled gets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetRecoverableItemsEnabled()(*bool) {
-    return m.recoverableItemsEnabled
+func (m *Organizations_attributes) GetRecoverableItemsEnabled() *bool {
+	return m.recoverableItemsEnabled
 }
+
 // GetRemainingTestableCount gets the remaining-testable-count property value. The remainingTestableCount property
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetRemainingTestableCount()(*int32) {
-    return m.remainingTestableCount
+func (m *Organizations_attributes) GetRemainingTestableCount() *int32 {
+	return m.remainingTestableCount
 }
+
 // GetSamlEnabled gets the saml-enabled property value. The samlEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetSamlEnabled()(*bool) {
-    return m.samlEnabled
+func (m *Organizations_attributes) GetSamlEnabled() *bool {
+	return m.samlEnabled
 }
+
 // GetScimConfigurationPresent gets the scim-configuration-present property value. The scimConfigurationPresent property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetScimConfigurationPresent()(*bool) {
-    return m.scimConfigurationPresent
+func (m *Organizations_attributes) GetScimConfigurationPresent() *bool {
+	return m.scimConfigurationPresent
 }
+
 // GetSendPassingStatusesForUntriggeredSpeculativePlans gets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetSendPassingStatusesForUntriggeredSpeculativePlans()(*bool) {
-    return m.sendPassingStatusesForUntriggeredSpeculativePlans
+func (m *Organizations_attributes) GetSendPassingStatusesForUntriggeredSpeculativePlans() *bool {
+	return m.sendPassingStatusesForUntriggeredSpeculativePlans
 }
+
 // GetSessionRemember gets the session-remember property value. The sessionRemember property
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetSessionRemember()(*int32) {
-    return m.sessionRemember
+func (m *Organizations_attributes) GetSessionRemember() *int32 {
+	return m.sessionRemember
 }
+
 // GetSessionTimeout gets the session-timeout property value. The sessionTimeout property
 // returns a *int32 when successful
-func (m *Organizations_attributes) GetSessionTimeout()(*int32) {
-    return m.sessionTimeout
+func (m *Organizations_attributes) GetSessionTimeout() *int32 {
+	return m.sessionTimeout
 }
+
 // GetSpeculativePlanManagementEnabled gets the speculative-plan-management-enabled property value. The speculativePlanManagementEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled()(*bool) {
-    return m.speculativePlanManagementEnabled
+func (m *Organizations_attributes) GetSpeculativePlanManagementEnabled() *bool {
+	return m.speculativePlanManagementEnabled
 }
+
 // GetSsoEnabled gets the sso-enabled property value. The ssoEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetSsoEnabled()(*bool) {
-    return m.ssoEnabled
+func (m *Organizations_attributes) GetSsoEnabled() *bool {
+	return m.ssoEnabled
 }
+
 // GetSsoIdpCertExpiration gets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
 // returns a *string when successful
-func (m *Organizations_attributes) GetSsoIdpCertExpiration()(*string) {
-    return m.ssoIdpCertExpiration
+func (m *Organizations_attributes) GetSsoIdpCertExpiration() *string {
+	return m.ssoIdpCertExpiration
 }
+
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Organizations_attributes_stacksDefaultExecutionMode when successful
-func (m *Organizations_attributes) GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode) {
-    return m.stacksDefaultExecutionMode
+func (m *Organizations_attributes) GetStacksDefaultExecutionMode() *Organizations_attributes_stacksDefaultExecutionMode {
+	return m.stacksDefaultExecutionMode
 }
+
 // GetStacksEnabled gets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetStacksEnabled()(*bool) {
-    return m.stacksEnabled
+func (m *Organizations_attributes) GetStacksEnabled() *bool {
+	return m.stacksEnabled
 }
+
 // GetTestGenerationEnabled gets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
-func (m *Organizations_attributes) GetTestGenerationEnabled()(*bool) {
-    return m.testGenerationEnabled
+func (m *Organizations_attributes) GetTestGenerationEnabled() *bool {
+	return m.testGenerationEnabled
 }
+
 // GetTwoFactorConformant gets the two-factor-conformant property value. The twoFactorConformant property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetTwoFactorConformant()(*bool) {
-    return m.twoFactorConformant
+func (m *Organizations_attributes) GetTwoFactorConformant() *bool {
+	return m.twoFactorConformant
 }
+
 // GetUserTokensEnabled gets the user-tokens-enabled property value. The userTokensEnabled property
 // returns a *bool when successful
-func (m *Organizations_attributes) GetUserTokensEnabled()(*bool) {
-    return m.userTokensEnabled
+func (m *Organizations_attributes) GetUserTokensEnabled() *bool {
+	return m.userTokensEnabled
 }
+
 // Serialize serializes information the current object
-func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("aggregated-commit-status-enabled", m.GetAggregatedCommitStatusEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("allow-force-delete-workspaces", m.GetAllowForceDeleteWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("assessments-enforced", m.GetAssessmentsEnforced())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetCollaboratorAuthPolicy() != nil {
-        cast := (*m.GetCollaboratorAuthPolicy()).String()
-        err := writer.WriteStringValue("collaborator-auth-policy", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("cost-estimation-enabled", m.GetCostEstimationEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetDefaultExecutionMode() != nil {
-        cast := (*m.GetDefaultExecutionMode()).String()
-        err := writer.WriteStringValue("default-execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("eligible-for-concurrency-add-ons", m.GetEligibleForConcurrencyAddOns())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("email", m.GetEmail())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("enforce-hyok", m.GetEnforceHyok())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global-module-sharing", m.GetGlobalModuleSharing())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global-provider-sharing", m.GetGlobalProviderSharing())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("owners-team-saml-role-id", m.GetOwnersTeamSamlRoleId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("recoverable-items-enabled", m.GetRecoverableItemsEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("saml-enabled", m.GetSamlEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("scim-configuration-present", m.GetScimConfigurationPresent())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("send-passing-statuses-for-untriggered-speculative-plans", m.GetSendPassingStatusesForUntriggeredSpeculativePlans())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("session-remember", m.GetSessionRemember())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("session-timeout", m.GetSessionTimeout())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("speculative-plan-management-enabled", m.GetSpeculativePlanManagementEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("sso-idp-cert-expiration", m.GetSsoIdpCertExpiration())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStacksDefaultExecutionMode() != nil {
-        cast := (*m.GetStacksDefaultExecutionMode()).String()
-        err := writer.WriteStringValue("stacks-default-execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("stacks-enabled", m.GetStacksEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("two-factor-conformant", m.GetTwoFactorConformant())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("user-tokens-enabled", m.GetUserTokensEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("aggregated-commit-status-enabled", m.GetAggregatedCommitStatusEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("allow-force-delete-workspaces", m.GetAllowForceDeleteWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("assessments-enforced", m.GetAssessmentsEnforced())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetCollaboratorAuthPolicy() != nil {
+		cast := (*m.GetCollaboratorAuthPolicy()).String()
+		err := writer.WriteStringValue("collaborator-auth-policy", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("cost-estimation-enabled", m.GetCostEstimationEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetDefaultExecutionMode() != nil {
+		cast := (*m.GetDefaultExecutionMode()).String()
+		err := writer.WriteStringValue("default-execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("eligible-for-concurrency-add-ons", m.GetEligibleForConcurrencyAddOns())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("email", m.GetEmail())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("enforce-hyok", m.GetEnforceHyok())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global-module-sharing", m.GetGlobalModuleSharing())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global-provider-sharing", m.GetGlobalProviderSharing())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("owners-team-saml-role-id", m.GetOwnersTeamSamlRoleId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("recoverable-items-enabled", m.GetRecoverableItemsEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("saml-enabled", m.GetSamlEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("scim-configuration-present", m.GetScimConfigurationPresent())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("send-passing-statuses-for-untriggered-speculative-plans", m.GetSendPassingStatusesForUntriggeredSpeculativePlans())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("session-remember", m.GetSessionRemember())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("session-timeout", m.GetSessionTimeout())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("speculative-plan-management-enabled", m.GetSpeculativePlanManagementEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("sso-idp-cert-expiration", m.GetSsoIdpCertExpiration())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStacksDefaultExecutionMode() != nil {
+		cast := (*m.GetStacksDefaultExecutionMode()).String()
+		err := writer.WriteStringValue("stacks-default-execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("stacks-enabled", m.GetStacksEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("two-factor-conformant", m.GetTwoFactorConformant())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("user-tokens-enabled", m.GetUserTokensEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAggregatedCommitStatusEnabled sets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
-func (m *Organizations_attributes) SetAggregatedCommitStatusEnabled(value *bool)() {
-    m.aggregatedCommitStatusEnabled = value
+func (m *Organizations_attributes) SetAggregatedCommitStatusEnabled(value *bool) {
+	m.aggregatedCommitStatusEnabled = value
 }
+
 // SetAllowForceDeleteWorkspaces sets the allow-force-delete-workspaces property value. The allowForceDeleteWorkspaces property
-func (m *Organizations_attributes) SetAllowForceDeleteWorkspaces(value *bool)() {
-    m.allowForceDeleteWorkspaces = value
+func (m *Organizations_attributes) SetAllowForceDeleteWorkspaces(value *bool) {
+	m.allowForceDeleteWorkspaces = value
 }
+
 // SetAssessmentsEnforced sets the assessments-enforced property value. The assessmentsEnforced property
-func (m *Organizations_attributes) SetAssessmentsEnforced(value *bool)() {
-    m.assessmentsEnforced = value
+func (m *Organizations_attributes) SetAssessmentsEnforced(value *bool) {
+	m.assessmentsEnforced = value
 }
+
 // SetCollaboratorAuthPolicy sets the collaborator-auth-policy property value. The collaboratorAuthPolicy property
-func (m *Organizations_attributes) SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy)() {
-    m.collaboratorAuthPolicy = value
+func (m *Organizations_attributes) SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy) {
+	m.collaboratorAuthPolicy = value
 }
+
 // SetCostEstimationEnabled sets the cost-estimation-enabled property value. The costEstimationEnabled property
-func (m *Organizations_attributes) SetCostEstimationEnabled(value *bool)() {
-    m.costEstimationEnabled = value
+func (m *Organizations_attributes) SetCostEstimationEnabled(value *bool) {
+	m.costEstimationEnabled = value
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *Organizations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *Organizations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.createdAt = value
 }
+
 // SetDefaultExecutionMode sets the default-execution-mode property value. The defaultExecutionMode property
-func (m *Organizations_attributes) SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode)() {
-    m.defaultExecutionMode = value
+func (m *Organizations_attributes) SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode) {
+	m.defaultExecutionMode = value
 }
+
 // SetEligibleForConcurrencyAddOns sets the eligible-for-concurrency-add-ons property value. The eligibleForConcurrencyAddOns property
-func (m *Organizations_attributes) SetEligibleForConcurrencyAddOns(value *bool)() {
-    m.eligibleForConcurrencyAddOns = value
+func (m *Organizations_attributes) SetEligibleForConcurrencyAddOns(value *bool) {
+	m.eligibleForConcurrencyAddOns = value
 }
+
 // SetEmail sets the email property value. The email property
-func (m *Organizations_attributes) SetEmail(value *string)() {
-    m.email = value
+func (m *Organizations_attributes) SetEmail(value *string) {
+	m.email = value
 }
+
 // SetEnforceHyok sets the enforce-hyok property value. The enforceHyok property
-func (m *Organizations_attributes) SetEnforceHyok(value *bool)() {
-    m.enforceHyok = value
+func (m *Organizations_attributes) SetEnforceHyok(value *bool) {
+	m.enforceHyok = value
 }
+
 // SetExternalId sets the external-id property value. The externalId property
-func (m *Organizations_attributes) SetExternalId(value *string)() {
-    m.externalId = value
+func (m *Organizations_attributes) SetExternalId(value *string) {
+	m.externalId = value
 }
+
 // SetFairRunQueuingEnabled sets the fair-run-queuing-enabled property value. The fairRunQueuingEnabled property
-func (m *Organizations_attributes) SetFairRunQueuingEnabled(value *bool)() {
-    m.fairRunQueuingEnabled = value
+func (m *Organizations_attributes) SetFairRunQueuingEnabled(value *bool) {
+	m.fairRunQueuingEnabled = value
 }
+
 // SetGlobalModuleSharing sets the global-module-sharing property value. This attribute is only available in Terraform Enterprise.
-func (m *Organizations_attributes) SetGlobalModuleSharing(value *bool)() {
-    m.globalModuleSharing = value
+func (m *Organizations_attributes) SetGlobalModuleSharing(value *bool) {
+	m.globalModuleSharing = value
 }
+
 // SetGlobalProviderSharing sets the global-provider-sharing property value. This attribute is only available in Terraform Enterprise.
-func (m *Organizations_attributes) SetGlobalProviderSharing(value *bool)() {
-    m.globalProviderSharing = value
+func (m *Organizations_attributes) SetGlobalProviderSharing(value *bool) {
+	m.globalProviderSharing = value
 }
+
 // SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
-func (m *Organizations_attributes) SetHcpId(value *string)() {
-    m.hcpId = value
+func (m *Organizations_attributes) SetHcpId(value *string) {
+	m.hcpId = value
 }
+
 // SetIsInDegradedMode sets the is-in-degraded-mode property value. The isInDegradedMode property
-func (m *Organizations_attributes) SetIsInDegradedMode(value *bool)() {
-    m.isInDegradedMode = value
+func (m *Organizations_attributes) SetIsInDegradedMode(value *bool) {
+	m.isInDegradedMode = value
 }
+
 // SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
-func (m *Organizations_attributes) SetIsUnified(value *bool)() {
-    m.isUnified = value
+func (m *Organizations_attributes) SetIsUnified(value *bool) {
+	m.isUnified = value
 }
+
 // SetManagedResourceCount sets the managed-resource-count property value. The managedResourceCount property
-func (m *Organizations_attributes) SetManagedResourceCount(value *int32)() {
-    m.managedResourceCount = value
+func (m *Organizations_attributes) SetManagedResourceCount(value *int32) {
+	m.managedResourceCount = value
 }
+
 // SetModuleConsumingOrganizationsCount sets the module-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
-func (m *Organizations_attributes) SetModuleConsumingOrganizationsCount(value *int32)() {
-    m.moduleConsumingOrganizationsCount = value
+func (m *Organizations_attributes) SetModuleConsumingOrganizationsCount(value *int32) {
+	m.moduleConsumingOrganizationsCount = value
 }
+
 // SetName sets the name property value. The name property
-func (m *Organizations_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Organizations_attributes) SetName(value *string) {
+	m.name = value
 }
+
 // SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *Organizations_attributes) SetOverStacksResourceLimit(value *bool)() {
-    m.overStacksResourceLimit = value
+func (m *Organizations_attributes) SetOverStacksResourceLimit(value *bool) {
+	m.overStacksResourceLimit = value
 }
+
 // SetOwnersTeamSamlRoleId sets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
-func (m *Organizations_attributes) SetOwnersTeamSamlRoleId(value *string)() {
-    m.ownersTeamSamlRoleId = value
+func (m *Organizations_attributes) SetOwnersTeamSamlRoleId(value *string) {
+	m.ownersTeamSamlRoleId = value
 }
+
 // SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
-func (m *Organizations_attributes) SetParentDataRetentionPolicyInfo(value *string)() {
-    m.parentDataRetentionPolicyInfo = value
+func (m *Organizations_attributes) SetParentDataRetentionPolicyInfo(value *string) {
+	m.parentDataRetentionPolicyInfo = value
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *Organizations_attributes) SetPermissions(value Organizations_attributes_permissionsable)() {
-    m.permissions = value
+func (m *Organizations_attributes) SetPermissions(value Organizations_attributes_permissionsable) {
+	m.permissions = value
 }
+
 // SetPlanExpired sets the plan-expired property value. The planExpired property
-func (m *Organizations_attributes) SetPlanExpired(value *bool)() {
-    m.planExpired = value
+func (m *Organizations_attributes) SetPlanExpired(value *bool) {
+	m.planExpired = value
 }
+
 // SetPlanExpiresAt sets the plan-expires-at property value. The planExpiresAt property
-func (m *Organizations_attributes) SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.planExpiresAt = value
+func (m *Organizations_attributes) SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.planExpiresAt = value
 }
+
 // SetPlanIdentifier sets the plan-identifier property value. The planIdentifier property
-func (m *Organizations_attributes) SetPlanIdentifier(value *string)() {
-    m.planIdentifier = value
+func (m *Organizations_attributes) SetPlanIdentifier(value *string) {
+	m.planIdentifier = value
 }
+
 // SetPlanIsEnterprise sets the plan-is-enterprise property value. The planIsEnterprise property
-func (m *Organizations_attributes) SetPlanIsEnterprise(value *bool)() {
-    m.planIsEnterprise = value
+func (m *Organizations_attributes) SetPlanIsEnterprise(value *bool) {
+	m.planIsEnterprise = value
 }
+
 // SetPlanIsTrial sets the plan-is-trial property value. The planIsTrial property
-func (m *Organizations_attributes) SetPlanIsTrial(value *bool)() {
-    m.planIsTrial = value
+func (m *Organizations_attributes) SetPlanIsTrial(value *bool) {
+	m.planIsTrial = value
 }
+
 // SetProviderConsumingOrganizationsCount sets the provider-consuming-organizations-count property value. This attribute is only available in Terraform Enterprise.
-func (m *Organizations_attributes) SetProviderConsumingOrganizationsCount(value *int32)() {
-    m.providerConsumingOrganizationsCount = value
+func (m *Organizations_attributes) SetProviderConsumingOrganizationsCount(value *int32) {
+	m.providerConsumingOrganizationsCount = value
 }
+
 // SetRecoverableItemsEnabled sets the recoverable-items-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *Organizations_attributes) SetRecoverableItemsEnabled(value *bool)() {
-    m.recoverableItemsEnabled = value
+func (m *Organizations_attributes) SetRecoverableItemsEnabled(value *bool) {
+	m.recoverableItemsEnabled = value
 }
+
 // SetRemainingTestableCount sets the remaining-testable-count property value. The remainingTestableCount property
-func (m *Organizations_attributes) SetRemainingTestableCount(value *int32)() {
-    m.remainingTestableCount = value
+func (m *Organizations_attributes) SetRemainingTestableCount(value *int32) {
+	m.remainingTestableCount = value
 }
+
 // SetSamlEnabled sets the saml-enabled property value. The samlEnabled property
-func (m *Organizations_attributes) SetSamlEnabled(value *bool)() {
-    m.samlEnabled = value
+func (m *Organizations_attributes) SetSamlEnabled(value *bool) {
+	m.samlEnabled = value
 }
+
 // SetScimConfigurationPresent sets the scim-configuration-present property value. The scimConfigurationPresent property
-func (m *Organizations_attributes) SetScimConfigurationPresent(value *bool)() {
-    m.scimConfigurationPresent = value
+func (m *Organizations_attributes) SetScimConfigurationPresent(value *bool) {
+	m.scimConfigurationPresent = value
 }
+
 // SetSendPassingStatusesForUntriggeredSpeculativePlans sets the send-passing-statuses-for-untriggered-speculative-plans property value. The sendPassingStatusesForUntriggeredSpeculativePlans property
-func (m *Organizations_attributes) SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool)() {
-    m.sendPassingStatusesForUntriggeredSpeculativePlans = value
+func (m *Organizations_attributes) SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool) {
+	m.sendPassingStatusesForUntriggeredSpeculativePlans = value
 }
+
 // SetSessionRemember sets the session-remember property value. The sessionRemember property
-func (m *Organizations_attributes) SetSessionRemember(value *int32)() {
-    m.sessionRemember = value
+func (m *Organizations_attributes) SetSessionRemember(value *int32) {
+	m.sessionRemember = value
 }
+
 // SetSessionTimeout sets the session-timeout property value. The sessionTimeout property
-func (m *Organizations_attributes) SetSessionTimeout(value *int32)() {
-    m.sessionTimeout = value
+func (m *Organizations_attributes) SetSessionTimeout(value *int32) {
+	m.sessionTimeout = value
 }
+
 // SetSpeculativePlanManagementEnabled sets the speculative-plan-management-enabled property value. The speculativePlanManagementEnabled property
-func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bool)() {
-    m.speculativePlanManagementEnabled = value
+func (m *Organizations_attributes) SetSpeculativePlanManagementEnabled(value *bool) {
+	m.speculativePlanManagementEnabled = value
 }
+
 // SetSsoEnabled sets the sso-enabled property value. The ssoEnabled property
-func (m *Organizations_attributes) SetSsoEnabled(value *bool)() {
-    m.ssoEnabled = value
+func (m *Organizations_attributes) SetSsoEnabled(value *bool) {
+	m.ssoEnabled = value
 }
+
 // SetSsoIdpCertExpiration sets the sso-idp-cert-expiration property value. The ssoIdpCertExpiration property
-func (m *Organizations_attributes) SetSsoIdpCertExpiration(value *string)() {
-    m.ssoIdpCertExpiration = value
+func (m *Organizations_attributes) SetSsoIdpCertExpiration(value *string) {
+	m.ssoIdpCertExpiration = value
 }
+
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
-func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)() {
-    m.stacksDefaultExecutionMode = value
+func (m *Organizations_attributes) SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode) {
+	m.stacksDefaultExecutionMode = value
 }
+
 // SetStacksEnabled sets the stacks-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *Organizations_attributes) SetStacksEnabled(value *bool)() {
-    m.stacksEnabled = value
+func (m *Organizations_attributes) SetStacksEnabled(value *bool) {
+	m.stacksEnabled = value
 }
+
 // SetTestGenerationEnabled sets the test-generation-enabled property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool)() {
-    m.testGenerationEnabled = value
+func (m *Organizations_attributes) SetTestGenerationEnabled(value *bool) {
+	m.testGenerationEnabled = value
 }
+
 // SetTwoFactorConformant sets the two-factor-conformant property value. The twoFactorConformant property
-func (m *Organizations_attributes) SetTwoFactorConformant(value *bool)() {
-    m.twoFactorConformant = value
+func (m *Organizations_attributes) SetTwoFactorConformant(value *bool) {
+	m.twoFactorConformant = value
 }
+
 // SetUserTokensEnabled sets the user-tokens-enabled property value. The userTokensEnabled property
-func (m *Organizations_attributes) SetUserTokensEnabled(value *bool)() {
-    m.userTokensEnabled = value
+func (m *Organizations_attributes) SetUserTokensEnabled(value *bool) {
+	m.userTokensEnabled = value
 }
+
 type Organizations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAggregatedCommitStatusEnabled()(*bool)
-    GetAllowForceDeleteWorkspaces()(*bool)
-    GetAssessmentsEnforced()(*bool)
-    GetCollaboratorAuthPolicy()(*Organizations_attributes_collaboratorAuthPolicy)
-    GetCostEstimationEnabled()(*bool)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDefaultExecutionMode()(*Organizations_attributes_defaultExecutionMode)
-    GetEligibleForConcurrencyAddOns()(*bool)
-    GetEmail()(*string)
-    GetEnforceHyok()(*bool)
-    GetExternalId()(*string)
-    GetFairRunQueuingEnabled()(*bool)
-    GetGlobalModuleSharing()(*bool)
-    GetGlobalProviderSharing()(*bool)
-    GetHcpId()(*string)
-    GetIsInDegradedMode()(*bool)
-    GetIsUnified()(*bool)
-    GetManagedResourceCount()(*int32)
-    GetModuleConsumingOrganizationsCount()(*int32)
-    GetName()(*string)
-    GetOverStacksResourceLimit()(*bool)
-    GetOwnersTeamSamlRoleId()(*string)
-    GetParentDataRetentionPolicyInfo()(*string)
-    GetPermissions()(Organizations_attributes_permissionsable)
-    GetPlanExpired()(*bool)
-    GetPlanExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPlanIdentifier()(*string)
-    GetPlanIsEnterprise()(*bool)
-    GetPlanIsTrial()(*bool)
-    GetProviderConsumingOrganizationsCount()(*int32)
-    GetRecoverableItemsEnabled()(*bool)
-    GetRemainingTestableCount()(*int32)
-    GetSamlEnabled()(*bool)
-    GetScimConfigurationPresent()(*bool)
-    GetSendPassingStatusesForUntriggeredSpeculativePlans()(*bool)
-    GetSessionRemember()(*int32)
-    GetSessionTimeout()(*int32)
-    GetSpeculativePlanManagementEnabled()(*bool)
-    GetSsoEnabled()(*bool)
-    GetSsoIdpCertExpiration()(*string)
-    GetStacksDefaultExecutionMode()(*Organizations_attributes_stacksDefaultExecutionMode)
-    GetStacksEnabled()(*bool)
-    GetTestGenerationEnabled()(*bool)
-    GetTwoFactorConformant()(*bool)
-    GetUserTokensEnabled()(*bool)
-    SetAggregatedCommitStatusEnabled(value *bool)()
-    SetAllowForceDeleteWorkspaces(value *bool)()
-    SetAssessmentsEnforced(value *bool)()
-    SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy)()
-    SetCostEstimationEnabled(value *bool)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode)()
-    SetEligibleForConcurrencyAddOns(value *bool)()
-    SetEmail(value *string)()
-    SetEnforceHyok(value *bool)()
-    SetExternalId(value *string)()
-    SetFairRunQueuingEnabled(value *bool)()
-    SetGlobalModuleSharing(value *bool)()
-    SetGlobalProviderSharing(value *bool)()
-    SetHcpId(value *string)()
-    SetIsInDegradedMode(value *bool)()
-    SetIsUnified(value *bool)()
-    SetManagedResourceCount(value *int32)()
-    SetModuleConsumingOrganizationsCount(value *int32)()
-    SetName(value *string)()
-    SetOverStacksResourceLimit(value *bool)()
-    SetOwnersTeamSamlRoleId(value *string)()
-    SetParentDataRetentionPolicyInfo(value *string)()
-    SetPermissions(value Organizations_attributes_permissionsable)()
-    SetPlanExpired(value *bool)()
-    SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPlanIdentifier(value *string)()
-    SetPlanIsEnterprise(value *bool)()
-    SetPlanIsTrial(value *bool)()
-    SetProviderConsumingOrganizationsCount(value *int32)()
-    SetRecoverableItemsEnabled(value *bool)()
-    SetRemainingTestableCount(value *int32)()
-    SetSamlEnabled(value *bool)()
-    SetScimConfigurationPresent(value *bool)()
-    SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool)()
-    SetSessionRemember(value *int32)()
-    SetSessionTimeout(value *int32)()
-    SetSpeculativePlanManagementEnabled(value *bool)()
-    SetSsoEnabled(value *bool)()
-    SetSsoIdpCertExpiration(value *string)()
-    SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)()
-    SetStacksEnabled(value *bool)()
-    SetTestGenerationEnabled(value *bool)()
-    SetTwoFactorConformant(value *bool)()
-    SetUserTokensEnabled(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAggregatedCommitStatusEnabled() *bool
+	GetAllowForceDeleteWorkspaces() *bool
+	GetAssessmentsEnforced() *bool
+	GetCollaboratorAuthPolicy() *Organizations_attributes_collaboratorAuthPolicy
+	GetCostEstimationEnabled() *bool
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDefaultExecutionMode() *Organizations_attributes_defaultExecutionMode
+	GetEligibleForConcurrencyAddOns() *bool
+	GetEmail() *string
+	GetEnforceHyok() *bool
+	GetExternalId() *string
+	GetFairRunQueuingEnabled() *bool
+	GetGlobalModuleSharing() *bool
+	GetGlobalProviderSharing() *bool
+	GetHcpId() *string
+	GetIsInDegradedMode() *bool
+	GetIsUnified() *bool
+	GetManagedResourceCount() *int32
+	GetModuleConsumingOrganizationsCount() *int32
+	GetName() *string
+	GetOverStacksResourceLimit() *bool
+	GetOwnersTeamSamlRoleId() *string
+	GetParentDataRetentionPolicyInfo() *string
+	GetPermissions() Organizations_attributes_permissionsable
+	GetPlanExpired() *bool
+	GetPlanExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPlanIdentifier() *string
+	GetPlanIsEnterprise() *bool
+	GetPlanIsTrial() *bool
+	GetProviderConsumingOrganizationsCount() *int32
+	GetRecoverableItemsEnabled() *bool
+	GetRemainingTestableCount() *int32
+	GetSamlEnabled() *bool
+	GetScimConfigurationPresent() *bool
+	GetSendPassingStatusesForUntriggeredSpeculativePlans() *bool
+	GetSessionRemember() *int32
+	GetSessionTimeout() *int32
+	GetSpeculativePlanManagementEnabled() *bool
+	GetSsoEnabled() *bool
+	GetSsoIdpCertExpiration() *string
+	GetStacksDefaultExecutionMode() *Organizations_attributes_stacksDefaultExecutionMode
+	GetStacksEnabled() *bool
+	GetTestGenerationEnabled() *bool
+	GetTwoFactorConformant() *bool
+	GetUserTokensEnabled() *bool
+	SetAggregatedCommitStatusEnabled(value *bool)
+	SetAllowForceDeleteWorkspaces(value *bool)
+	SetAssessmentsEnforced(value *bool)
+	SetCollaboratorAuthPolicy(value *Organizations_attributes_collaboratorAuthPolicy)
+	SetCostEstimationEnabled(value *bool)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDefaultExecutionMode(value *Organizations_attributes_defaultExecutionMode)
+	SetEligibleForConcurrencyAddOns(value *bool)
+	SetEmail(value *string)
+	SetEnforceHyok(value *bool)
+	SetExternalId(value *string)
+	SetFairRunQueuingEnabled(value *bool)
+	SetGlobalModuleSharing(value *bool)
+	SetGlobalProviderSharing(value *bool)
+	SetHcpId(value *string)
+	SetIsInDegradedMode(value *bool)
+	SetIsUnified(value *bool)
+	SetManagedResourceCount(value *int32)
+	SetModuleConsumingOrganizationsCount(value *int32)
+	SetName(value *string)
+	SetOverStacksResourceLimit(value *bool)
+	SetOwnersTeamSamlRoleId(value *string)
+	SetParentDataRetentionPolicyInfo(value *string)
+	SetPermissions(value Organizations_attributes_permissionsable)
+	SetPlanExpired(value *bool)
+	SetPlanExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPlanIdentifier(value *string)
+	SetPlanIsEnterprise(value *bool)
+	SetPlanIsTrial(value *bool)
+	SetProviderConsumingOrganizationsCount(value *int32)
+	SetRecoverableItemsEnabled(value *bool)
+	SetRemainingTestableCount(value *int32)
+	SetSamlEnabled(value *bool)
+	SetScimConfigurationPresent(value *bool)
+	SetSendPassingStatusesForUntriggeredSpeculativePlans(value *bool)
+	SetSessionRemember(value *int32)
+	SetSessionTimeout(value *int32)
+	SetSpeculativePlanManagementEnabled(value *bool)
+	SetSsoEnabled(value *bool)
+	SetSsoIdpCertExpiration(value *string)
+	SetStacksDefaultExecutionMode(value *Organizations_attributes_stacksDefaultExecutionMode)
+	SetStacksEnabled(value *bool)
+	SetTestGenerationEnabled(value *bool)
+	SetTwoFactorConformant(value *bool)
+	SetUserTokensEnabled(value *bool)
 }

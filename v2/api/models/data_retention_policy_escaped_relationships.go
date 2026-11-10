@@ -4,80 +4,88 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type DataRetentionPolicy_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The target property
-    target DataRetentionTargetHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The target property
+	target DataRetentionTargetHasOneable
 }
+
 // NewDataRetentionPolicy_relationships instantiates a new DataRetentionPolicy_relationships and sets the default values.
-func NewDataRetentionPolicy_relationships()(*DataRetentionPolicy_relationships) {
-    m := &DataRetentionPolicy_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewDataRetentionPolicy_relationships() *DataRetentionPolicy_relationships {
+	m := &DataRetentionPolicy_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateDataRetentionPolicy_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateDataRetentionPolicy_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewDataRetentionPolicy_relationships(), nil
+func CreateDataRetentionPolicy_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewDataRetentionPolicy_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *DataRetentionPolicy_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *DataRetentionPolicy_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *DataRetentionPolicy_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["target"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateDataRetentionTargetHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTarget(val.(DataRetentionTargetHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *DataRetentionPolicy_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["target"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateDataRetentionTargetHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTarget(val.(DataRetentionTargetHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTarget gets the target property value. The target property
 // returns a DataRetentionTargetHasOneable when successful
-func (m *DataRetentionPolicy_relationships) GetTarget()(DataRetentionTargetHasOneable) {
-    return m.target
+func (m *DataRetentionPolicy_relationships) GetTarget() DataRetentionTargetHasOneable {
+	return m.target
 }
+
 // Serialize serializes information the current object
-func (m *DataRetentionPolicy_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("target", m.GetTarget())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *DataRetentionPolicy_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("target", m.GetTarget())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *DataRetentionPolicy_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *DataRetentionPolicy_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetTarget sets the target property value. The target property
-func (m *DataRetentionPolicy_relationships) SetTarget(value DataRetentionTargetHasOneable)() {
-    m.target = value
+func (m *DataRetentionPolicy_relationships) SetTarget(value DataRetentionTargetHasOneable) {
+	m.target = value
 }
+
 type DataRetentionPolicy_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTarget()(DataRetentionTargetHasOneable)
-    SetTarget(value DataRetentionTargetHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetTarget() DataRetentionTargetHasOneable
+	SetTarget(value DataRetentionTargetHasOneable)
 }

@@ -2,45 +2,49 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 type Policies_attributes_enforcementLevel int
 
 const (
-    HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL Policies_attributes_enforcementLevel = iota
-    SOFTMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-    ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-    MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-    MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL Policies_attributes_enforcementLevel = iota
+	SOFTMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
 )
 
 func (i Policies_attributes_enforcementLevel) String() string {
-    return []string{"hard-mandatory", "soft-mandatory", "advisory", "mandatory", "mandatory_overridable"}[i]
+	return []string{"hard-mandatory", "soft-mandatory", "advisory", "mandatory", "mandatory_overridable"}[i]
 }
+
 func ParsePolicies_attributes_enforcementLevel(v string) (any, error) {
-    result := HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-    switch v {
-        case "hard-mandatory":
-            result = HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-        case "soft-mandatory":
-            result = SOFTMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-        case "advisory":
-            result = ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-        case "mandatory":
-            result = MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-        case "mandatory_overridable":
-            result = MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	switch v {
+	case "hard-mandatory":
+		result = HARDMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	case "soft-mandatory":
+		result = SOFTMANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	case "advisory":
+		result = ADVISORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	case "mandatory":
+		result = MANDATORY_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	case "mandatory_overridable":
+		result = MANDATORY_OVERRIDABLE_POLICIES_ATTRIBUTES_ENFORCEMENTLEVEL
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicies_attributes_enforcementLevel(values []Policies_attributes_enforcementLevel) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Policies_attributes_enforcementLevel) isMultiValue() bool {
-    return false
+	return false
 }

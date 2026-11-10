@@ -4,196 +4,212 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type HyokConfigurations_attributes_kmsOptions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Only required with GCP KMS
-    keyLocation *string
-    // Only required with AWS KMS
-    keyRegion *string
-    // Only required with GCP KMS
-    keyRingId *string
-    // Optional for AWS KMS
-    multiRegion *bool
-    // Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
-    transitPath *string
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Only required with GCP KMS
+	keyLocation *string
+	// Only required with AWS KMS
+	keyRegion *string
+	// Only required with GCP KMS
+	keyRingId *string
+	// Optional for AWS KMS
+	multiRegion *bool
+	// Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
+	transitPath *string
 }
+
 // NewHyokConfigurations_attributes_kmsOptions instantiates a new HyokConfigurations_attributes_kmsOptions and sets the default values.
-func NewHyokConfigurations_attributes_kmsOptions()(*HyokConfigurations_attributes_kmsOptions) {
-    m := &HyokConfigurations_attributes_kmsOptions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHyokConfigurations_attributes_kmsOptions() *HyokConfigurations_attributes_kmsOptions {
+	m := &HyokConfigurations_attributes_kmsOptions{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHyokConfigurations_attributes_kmsOptionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokConfigurations_attributes_kmsOptionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHyokConfigurations_attributes_kmsOptions(), nil
+func CreateHyokConfigurations_attributes_kmsOptionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHyokConfigurations_attributes_kmsOptions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HyokConfigurations_attributes_kmsOptions) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["key-location"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKeyLocation(val)
-        }
-        return nil
-    }
-    res["key-region"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKeyRegion(val)
-        }
-        return nil
-    }
-    res["key-ring-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKeyRingId(val)
-        }
-        return nil
-    }
-    res["multi-region"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMultiRegion(val)
-        }
-        return nil
-    }
-    res["transit-path"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTransitPath(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokConfigurations_attributes_kmsOptions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["key-location"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKeyLocation(val)
+		}
+		return nil
+	}
+	res["key-region"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKeyRegion(val)
+		}
+		return nil
+	}
+	res["key-ring-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKeyRingId(val)
+		}
+		return nil
+	}
+	res["multi-region"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMultiRegion(val)
+		}
+		return nil
+	}
+	res["transit-path"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTransitPath(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetKeyLocation gets the key-location property value. Only required with GCP KMS
 // returns a *string when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetKeyLocation()(*string) {
-    return m.keyLocation
+func (m *HyokConfigurations_attributes_kmsOptions) GetKeyLocation() *string {
+	return m.keyLocation
 }
+
 // GetKeyRegion gets the key-region property value. Only required with AWS KMS
 // returns a *string when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRegion()(*string) {
-    return m.keyRegion
+func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRegion() *string {
+	return m.keyRegion
 }
+
 // GetKeyRingId gets the key-ring-id property value. Only required with GCP KMS
 // returns a *string when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRingId()(*string) {
-    return m.keyRingId
+func (m *HyokConfigurations_attributes_kmsOptions) GetKeyRingId() *string {
+	return m.keyRingId
 }
+
 // GetMultiRegion gets the multi-region property value. Optional for AWS KMS
 // returns a *bool when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetMultiRegion()(*bool) {
-    return m.multiRegion
+func (m *HyokConfigurations_attributes_kmsOptions) GetMultiRegion() *bool {
+	return m.multiRegion
 }
+
 // GetTransitPath gets the transit-path property value. Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
 // returns a *string when successful
-func (m *HyokConfigurations_attributes_kmsOptions) GetTransitPath()(*string) {
-    return m.transitPath
+func (m *HyokConfigurations_attributes_kmsOptions) GetTransitPath() *string {
+	return m.transitPath
 }
+
 // Serialize serializes information the current object
-func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("key-location", m.GetKeyLocation())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("key-region", m.GetKeyRegion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("key-ring-id", m.GetKeyRingId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("multi-region", m.GetMultiRegion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("transit-path", m.GetTransitPath())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokConfigurations_attributes_kmsOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("key-location", m.GetKeyLocation())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("key-region", m.GetKeyRegion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("key-ring-id", m.GetKeyRingId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("multi-region", m.GetMultiRegion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("transit-path", m.GetTransitPath())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HyokConfigurations_attributes_kmsOptions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetKeyLocation sets the key-location property value. Only required with GCP KMS
-func (m *HyokConfigurations_attributes_kmsOptions) SetKeyLocation(value *string)() {
-    m.keyLocation = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetKeyLocation(value *string) {
+	m.keyLocation = value
 }
+
 // SetKeyRegion sets the key-region property value. Only required with AWS KMS
-func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRegion(value *string)() {
-    m.keyRegion = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRegion(value *string) {
+	m.keyRegion = value
 }
+
 // SetKeyRingId sets the key-ring-id property value. Only required with GCP KMS
-func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRingId(value *string)() {
-    m.keyRingId = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetKeyRingId(value *string) {
+	m.keyRingId = value
 }
+
 // SetMultiRegion sets the multi-region property value. Optional for AWS KMS
-func (m *HyokConfigurations_attributes_kmsOptions) SetMultiRegion(value *bool)() {
-    m.multiRegion = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetMultiRegion(value *bool) {
+	m.multiRegion = value
 }
+
 // SetTransitPath sets the transit-path property value. Optional for Vault KMS. The mount path of Vault's Transit Secrets Engine. Defaults to "transit".
-func (m *HyokConfigurations_attributes_kmsOptions) SetTransitPath(value *string)() {
-    m.transitPath = value
+func (m *HyokConfigurations_attributes_kmsOptions) SetTransitPath(value *string) {
+	m.transitPath = value
 }
+
 type HyokConfigurations_attributes_kmsOptionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetKeyLocation()(*string)
-    GetKeyRegion()(*string)
-    GetKeyRingId()(*string)
-    GetMultiRegion()(*bool)
-    GetTransitPath()(*string)
-    SetKeyLocation(value *string)()
-    SetKeyRegion(value *string)()
-    SetKeyRingId(value *string)()
-    SetMultiRegion(value *bool)()
-    SetTransitPath(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetKeyLocation() *string
+	GetKeyRegion() *string
+	GetKeyRingId() *string
+	GetMultiRegion() *bool
+	GetTransitPath() *string
+	SetKeyLocation(value *string)
+	SetKeyRegion(value *string)
+	SetKeyRingId(value *string)
+	SetMultiRegion(value *bool)
+	SetTransitPath(value *string)
 }

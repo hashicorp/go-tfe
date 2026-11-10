@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Organizations_attributes_collaboratorAuthPolicy int
 
 const (
-    PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY Organizations_attributes_collaboratorAuthPolicy = iota
-    TWO_FACTOR_MANDATORY_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
+	PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY Organizations_attributes_collaboratorAuthPolicy = iota
+	TWO_FACTOR_MANDATORY_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
 )
 
 func (i Organizations_attributes_collaboratorAuthPolicy) String() string {
-    return []string{"password", "two_factor_mandatory"}[i]
+	return []string{"password", "two_factor_mandatory"}[i]
 }
+
 func ParseOrganizations_attributes_collaboratorAuthPolicy(v string) (any, error) {
-    result := PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
-    switch v {
-        case "password":
-            result = PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
-        case "two_factor_mandatory":
-            result = TWO_FACTOR_MANDATORY_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
+	switch v {
+	case "password":
+		result = PASSWORD_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
+	case "two_factor_mandatory":
+		result = TWO_FACTOR_MANDATORY_ORGANIZATIONS_ATTRIBUTES_COLLABORATORAUTHPOLICY
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOrganizations_attributes_collaboratorAuthPolicy(values []Organizations_attributes_collaboratorAuthPolicy) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Organizations_attributes_collaboratorAuthPolicy) isMultiValue() bool {
-    return false
+	return false
 }

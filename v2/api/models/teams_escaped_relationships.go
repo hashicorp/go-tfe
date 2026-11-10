@@ -4,196 +4,212 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Teams_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The authenticationToken property
-    authenticationToken Links_relatedable
-    // The authenticationTokens property
-    authenticationTokens Links_relatedable
-    // The organization property
-    organization OrganizationsHasOneable
-    // The organizationMemberships property
-    organizationMemberships OrganizationMembershipsHasManyable
-    // The users property
-    users UsersHasManyable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The authenticationToken property
+	authenticationToken Links_relatedable
+	// The authenticationTokens property
+	authenticationTokens Links_relatedable
+	// The organization property
+	organization OrganizationsHasOneable
+	// The organizationMemberships property
+	organizationMemberships OrganizationMembershipsHasManyable
+	// The users property
+	users UsersHasManyable
 }
+
 // NewTeams_relationships instantiates a new Teams_relationships and sets the default values.
-func NewTeams_relationships()(*Teams_relationships) {
-    m := &Teams_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTeams_relationships() *Teams_relationships {
+	m := &Teams_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTeams_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTeams_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTeams_relationships(), nil
+func CreateTeams_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTeams_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Teams_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Teams_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAuthenticationToken gets the authentication-token property value. The authenticationToken property
 // returns a Links_relatedable when successful
-func (m *Teams_relationships) GetAuthenticationToken()(Links_relatedable) {
-    return m.authenticationToken
+func (m *Teams_relationships) GetAuthenticationToken() Links_relatedable {
+	return m.authenticationToken
 }
+
 // GetAuthenticationTokens gets the authentication-tokens property value. The authenticationTokens property
 // returns a Links_relatedable when successful
-func (m *Teams_relationships) GetAuthenticationTokens()(Links_relatedable) {
-    return m.authenticationTokens
+func (m *Teams_relationships) GetAuthenticationTokens() Links_relatedable {
+	return m.authenticationTokens
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Teams_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["authentication-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthenticationToken(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["authentication-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthenticationTokens(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["organization-memberships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMembershipsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganizationMemberships(val.(OrganizationMembershipsHasManyable))
-        }
-        return nil
-    }
-    res["users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUsers(val.(UsersHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Teams_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["authentication-token"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthenticationToken(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["authentication-tokens"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthenticationTokens(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["organization-memberships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationMembershipsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganizationMemberships(val.(OrganizationMembershipsHasManyable))
+		}
+		return nil
+	}
+	res["users"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUsers(val.(UsersHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *Teams_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *Teams_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // GetOrganizationMemberships gets the organization-memberships property value. The organizationMemberships property
 // returns a OrganizationMembershipsHasManyable when successful
-func (m *Teams_relationships) GetOrganizationMemberships()(OrganizationMembershipsHasManyable) {
-    return m.organizationMemberships
+func (m *Teams_relationships) GetOrganizationMemberships() OrganizationMembershipsHasManyable {
+	return m.organizationMemberships
 }
+
 // GetUsers gets the users property value. The users property
 // returns a UsersHasManyable when successful
-func (m *Teams_relationships) GetUsers()(UsersHasManyable) {
-    return m.users
+func (m *Teams_relationships) GetUsers() UsersHasManyable {
+	return m.users
 }
+
 // Serialize serializes information the current object
-func (m *Teams_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("authentication-token", m.GetAuthenticationToken())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("authentication-tokens", m.GetAuthenticationTokens())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization-memberships", m.GetOrganizationMemberships())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("users", m.GetUsers())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Teams_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("authentication-token", m.GetAuthenticationToken())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("authentication-tokens", m.GetAuthenticationTokens())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization-memberships", m.GetOrganizationMemberships())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("users", m.GetUsers())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Teams_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Teams_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAuthenticationToken sets the authentication-token property value. The authenticationToken property
-func (m *Teams_relationships) SetAuthenticationToken(value Links_relatedable)() {
-    m.authenticationToken = value
+func (m *Teams_relationships) SetAuthenticationToken(value Links_relatedable) {
+	m.authenticationToken = value
 }
+
 // SetAuthenticationTokens sets the authentication-tokens property value. The authenticationTokens property
-func (m *Teams_relationships) SetAuthenticationTokens(value Links_relatedable)() {
-    m.authenticationTokens = value
+func (m *Teams_relationships) SetAuthenticationTokens(value Links_relatedable) {
+	m.authenticationTokens = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *Teams_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *Teams_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 // SetOrganizationMemberships sets the organization-memberships property value. The organizationMemberships property
-func (m *Teams_relationships) SetOrganizationMemberships(value OrganizationMembershipsHasManyable)() {
-    m.organizationMemberships = value
+func (m *Teams_relationships) SetOrganizationMemberships(value OrganizationMembershipsHasManyable) {
+	m.organizationMemberships = value
 }
+
 // SetUsers sets the users property value. The users property
-func (m *Teams_relationships) SetUsers(value UsersHasManyable)() {
-    m.users = value
+func (m *Teams_relationships) SetUsers(value UsersHasManyable) {
+	m.users = value
 }
+
 type Teams_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAuthenticationToken()(Links_relatedable)
-    GetAuthenticationTokens()(Links_relatedable)
-    GetOrganization()(OrganizationsHasOneable)
-    GetOrganizationMemberships()(OrganizationMembershipsHasManyable)
-    GetUsers()(UsersHasManyable)
-    SetAuthenticationToken(value Links_relatedable)()
-    SetAuthenticationTokens(value Links_relatedable)()
-    SetOrganization(value OrganizationsHasOneable)()
-    SetOrganizationMemberships(value OrganizationMembershipsHasManyable)()
-    SetUsers(value UsersHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAuthenticationToken() Links_relatedable
+	GetAuthenticationTokens() Links_relatedable
+	GetOrganization() OrganizationsHasOneable
+	GetOrganizationMemberships() OrganizationMembershipsHasManyable
+	GetUsers() UsersHasManyable
+	SetAuthenticationToken(value Links_relatedable)
+	SetAuthenticationTokens(value Links_relatedable)
+	SetOrganization(value OrganizationsHasOneable)
+	SetOrganizationMemberships(value OrganizationMembershipsHasManyable)
+	SetUsers(value UsersHasManyable)
 }

@@ -2,4 +2,5 @@ Warning: KiotaBuilder OpenAPI warning: #/paths/~1organizations~1{organization_na
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-tfpolicy-version-architecture/properties/url - The format uri is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/admin-tfpolicy-versions/properties/attributes/properties/url - The format uri is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/organization-memberships/properties/attributes/properties/email - The format email is not supported by Kiota and the string type will be used.
+Warning: KiotaBuilder API client was generated with version 1.31.1 and the current version is 1.38.0, it will be upgraded and you should upgrade dependencies
 Warning: KiotaBuilder Discriminator projects-identifier is not inherited from inheritedFromHasOne_data.

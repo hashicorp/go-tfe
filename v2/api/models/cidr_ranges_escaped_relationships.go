@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type CidrRanges_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The cidrRangeList property
-    cidrRangeList CidrRangeListsHasOneable
-    // The organization property
-    organization OrganizationsHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The cidrRangeList property
+	cidrRangeList CidrRangeListsHasOneable
+	// The organization property
+	organization OrganizationsHasOneable
 }
+
 // NewCidrRanges_relationships instantiates a new CidrRanges_relationships and sets the default values.
-func NewCidrRanges_relationships()(*CidrRanges_relationships) {
-    m := &CidrRanges_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewCidrRanges_relationships() *CidrRanges_relationships {
+	m := &CidrRanges_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateCidrRanges_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateCidrRanges_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewCidrRanges_relationships(), nil
+func CreateCidrRanges_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewCidrRanges_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *CidrRanges_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *CidrRanges_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetCidrRangeList gets the cidr-range-list property value. The cidrRangeList property
 // returns a CidrRangeListsHasOneable when successful
-func (m *CidrRanges_relationships) GetCidrRangeList()(CidrRangeListsHasOneable) {
-    return m.cidrRangeList
+func (m *CidrRanges_relationships) GetCidrRangeList() CidrRangeListsHasOneable {
+	return m.cidrRangeList
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *CidrRanges_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["cidr-range-list"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateCidrRangeListsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCidrRangeList(val.(CidrRangeListsHasOneable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *CidrRanges_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["cidr-range-list"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateCidrRangeListsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCidrRangeList(val.(CidrRangeListsHasOneable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *CidrRanges_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *CidrRanges_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // Serialize serializes information the current object
-func (m *CidrRanges_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("cidr-range-list", m.GetCidrRangeList())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *CidrRanges_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("cidr-range-list", m.GetCidrRangeList())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *CidrRanges_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *CidrRanges_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetCidrRangeList sets the cidr-range-list property value. The cidrRangeList property
-func (m *CidrRanges_relationships) SetCidrRangeList(value CidrRangeListsHasOneable)() {
-    m.cidrRangeList = value
+func (m *CidrRanges_relationships) SetCidrRangeList(value CidrRangeListsHasOneable) {
+	m.cidrRangeList = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *CidrRanges_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *CidrRanges_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 type CidrRanges_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCidrRangeList()(CidrRangeListsHasOneable)
-    GetOrganization()(OrganizationsHasOneable)
-    SetCidrRangeList(value CidrRangeListsHasOneable)()
-    SetOrganization(value OrganizationsHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetCidrRangeList() CidrRangeListsHasOneable
+	GetOrganization() OrganizationsHasOneable
+	SetCidrRangeList(value CidrRangeListsHasOneable)
+	SetOrganization(value OrganizationsHasOneable)
 }

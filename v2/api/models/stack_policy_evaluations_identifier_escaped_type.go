@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackPolicyEvaluationsIdentifier_type int
 
 const (
-    STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE StackPolicyEvaluationsIdentifier_type = iota
+	STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE StackPolicyEvaluationsIdentifier_type = iota
 )
 
 func (i StackPolicyEvaluationsIdentifier_type) String() string {
-    return []string{"stack-policy-evaluations"}[i]
+	return []string{"stack-policy-evaluations"}[i]
 }
+
 func ParseStackPolicyEvaluationsIdentifier_type(v string) (any, error) {
-    result := STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE
-    switch v {
-        case "stack-policy-evaluations":
-            result = STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE
+	switch v {
+	case "stack-policy-evaluations":
+		result = STACKPOLICYEVALUATIONS_STACKPOLICYEVALUATIONSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackPolicyEvaluationsIdentifier_type(values []StackPolicyEvaluationsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackPolicyEvaluationsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

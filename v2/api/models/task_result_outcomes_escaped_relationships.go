@@ -4,80 +4,88 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type TaskResultOutcomes_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The taskResult property
-    taskResult TaskResultsHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The taskResult property
+	taskResult TaskResultsHasOneable
 }
+
 // NewTaskResultOutcomes_relationships instantiates a new TaskResultOutcomes_relationships and sets the default values.
-func NewTaskResultOutcomes_relationships()(*TaskResultOutcomes_relationships) {
-    m := &TaskResultOutcomes_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTaskResultOutcomes_relationships() *TaskResultOutcomes_relationships {
+	m := &TaskResultOutcomes_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTaskResultOutcomes_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTaskResultOutcomes_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTaskResultOutcomes_relationships(), nil
+func CreateTaskResultOutcomes_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTaskResultOutcomes_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TaskResultOutcomes_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TaskResultOutcomes_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TaskResultOutcomes_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["task-result"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskResultsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskResult(val.(TaskResultsHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TaskResultOutcomes_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["task-result"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTaskResultsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskResult(val.(TaskResultsHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTaskResult gets the task-result property value. The taskResult property
 // returns a TaskResultsHasOneable when successful
-func (m *TaskResultOutcomes_relationships) GetTaskResult()(TaskResultsHasOneable) {
-    return m.taskResult
+func (m *TaskResultOutcomes_relationships) GetTaskResult() TaskResultsHasOneable {
+	return m.taskResult
 }
+
 // Serialize serializes information the current object
-func (m *TaskResultOutcomes_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("task-result", m.GetTaskResult())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TaskResultOutcomes_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("task-result", m.GetTaskResult())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TaskResultOutcomes_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TaskResultOutcomes_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetTaskResult sets the task-result property value. The taskResult property
-func (m *TaskResultOutcomes_relationships) SetTaskResult(value TaskResultsHasOneable)() {
-    m.taskResult = value
+func (m *TaskResultOutcomes_relationships) SetTaskResult(value TaskResultsHasOneable) {
+	m.taskResult = value
 }
+
 type TaskResultOutcomes_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTaskResult()(TaskResultsHasOneable)
-    SetTaskResult(value TaskResultsHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetTaskResult() TaskResultsHasOneable
+	SetTaskResult(value TaskResultsHasOneable)
 }

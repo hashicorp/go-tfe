@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"ootb_policy_libraries"}[i]
+	return []string{"ootb_policy_libraries"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "ootb_policy_libraries":
-            result = OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "ootb_policy_libraries":
+		result = OOTB_POLICY_LIBRARIES_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

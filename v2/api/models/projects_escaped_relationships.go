@@ -4,196 +4,212 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Projects_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The defaultAgentPool property
-    defaultAgentPool AgentPoolsHasOneable
-    // The defaultHyokConfiguration property
-    defaultHyokConfiguration HyokConfigurationsHasOneable
-    // The organization property
-    organization OrganizationsHasOneable
-    // The stacksDefaultAgentPool property
-    stacksDefaultAgentPool AgentPoolsHasOneable
-    // The tagBindings property
-    tagBindings Projects_relationships_tagBindingsable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The defaultAgentPool property
+	defaultAgentPool AgentPoolsHasOneable
+	// The defaultHyokConfiguration property
+	defaultHyokConfiguration HyokConfigurationsHasOneable
+	// The organization property
+	organization OrganizationsHasOneable
+	// The stacksDefaultAgentPool property
+	stacksDefaultAgentPool AgentPoolsHasOneable
+	// The tagBindings property
+	tagBindings Projects_relationships_tagBindingsable
 }
+
 // NewProjects_relationships instantiates a new Projects_relationships and sets the default values.
-func NewProjects_relationships()(*Projects_relationships) {
-    m := &Projects_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewProjects_relationships() *Projects_relationships {
+	m := &Projects_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateProjects_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateProjects_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewProjects_relationships(), nil
+func CreateProjects_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewProjects_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Projects_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Projects_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetDefaultAgentPool gets the default-agent-pool property value. The defaultAgentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *Projects_relationships) GetDefaultAgentPool()(AgentPoolsHasOneable) {
-    return m.defaultAgentPool
+func (m *Projects_relationships) GetDefaultAgentPool() AgentPoolsHasOneable {
+	return m.defaultAgentPool
 }
+
 // GetDefaultHyokConfiguration gets the default-hyok-configuration property value. The defaultHyokConfiguration property
 // returns a HyokConfigurationsHasOneable when successful
-func (m *Projects_relationships) GetDefaultHyokConfiguration()(HyokConfigurationsHasOneable) {
-    return m.defaultHyokConfiguration
+func (m *Projects_relationships) GetDefaultHyokConfiguration() HyokConfigurationsHasOneable {
+	return m.defaultHyokConfiguration
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Projects_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["default-hyok-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultHyokConfiguration(val.(HyokConfigurationsHasOneable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["stacks-default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksDefaultAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjects_relationships_tagBindingsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTagBindings(val.(Projects_relationships_tagBindingsable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Projects_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["default-agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["default-hyok-configuration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokConfigurationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultHyokConfiguration(val.(HyokConfigurationsHasOneable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["stacks-default-agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksDefaultAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["tag-bindings"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjects_relationships_tagBindingsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTagBindings(val.(Projects_relationships_tagBindingsable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *Projects_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *Projects_relationships) GetOrganization() OrganizationsHasOneable {
+	return m.organization
 }
+
 // GetStacksDefaultAgentPool gets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *Projects_relationships) GetStacksDefaultAgentPool()(AgentPoolsHasOneable) {
-    return m.stacksDefaultAgentPool
+func (m *Projects_relationships) GetStacksDefaultAgentPool() AgentPoolsHasOneable {
+	return m.stacksDefaultAgentPool
 }
+
 // GetTagBindings gets the tag-bindings property value. The tagBindings property
 // returns a Projects_relationships_tagBindingsable when successful
-func (m *Projects_relationships) GetTagBindings()(Projects_relationships_tagBindingsable) {
-    return m.tagBindings
+func (m *Projects_relationships) GetTagBindings() Projects_relationships_tagBindingsable {
+	return m.tagBindings
 }
+
 // Serialize serializes information the current object
-func (m *Projects_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("default-agent-pool", m.GetDefaultAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("default-hyok-configuration", m.GetDefaultHyokConfiguration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stacks-default-agent-pool", m.GetStacksDefaultAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("tag-bindings", m.GetTagBindings())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Projects_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("default-agent-pool", m.GetDefaultAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("default-hyok-configuration", m.GetDefaultHyokConfiguration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stacks-default-agent-pool", m.GetStacksDefaultAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("tag-bindings", m.GetTagBindings())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Projects_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Projects_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetDefaultAgentPool sets the default-agent-pool property value. The defaultAgentPool property
-func (m *Projects_relationships) SetDefaultAgentPool(value AgentPoolsHasOneable)() {
-    m.defaultAgentPool = value
+func (m *Projects_relationships) SetDefaultAgentPool(value AgentPoolsHasOneable) {
+	m.defaultAgentPool = value
 }
+
 // SetDefaultHyokConfiguration sets the default-hyok-configuration property value. The defaultHyokConfiguration property
-func (m *Projects_relationships) SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable)() {
-    m.defaultHyokConfiguration = value
+func (m *Projects_relationships) SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable) {
+	m.defaultHyokConfiguration = value
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *Projects_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *Projects_relationships) SetOrganization(value OrganizationsHasOneable) {
+	m.organization = value
 }
+
 // SetStacksDefaultAgentPool sets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
-func (m *Projects_relationships) SetStacksDefaultAgentPool(value AgentPoolsHasOneable)() {
-    m.stacksDefaultAgentPool = value
+func (m *Projects_relationships) SetStacksDefaultAgentPool(value AgentPoolsHasOneable) {
+	m.stacksDefaultAgentPool = value
 }
+
 // SetTagBindings sets the tag-bindings property value. The tagBindings property
-func (m *Projects_relationships) SetTagBindings(value Projects_relationships_tagBindingsable)() {
-    m.tagBindings = value
+func (m *Projects_relationships) SetTagBindings(value Projects_relationships_tagBindingsable) {
+	m.tagBindings = value
 }
+
 type Projects_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDefaultAgentPool()(AgentPoolsHasOneable)
-    GetDefaultHyokConfiguration()(HyokConfigurationsHasOneable)
-    GetOrganization()(OrganizationsHasOneable)
-    GetStacksDefaultAgentPool()(AgentPoolsHasOneable)
-    GetTagBindings()(Projects_relationships_tagBindingsable)
-    SetDefaultAgentPool(value AgentPoolsHasOneable)()
-    SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable)()
-    SetOrganization(value OrganizationsHasOneable)()
-    SetStacksDefaultAgentPool(value AgentPoolsHasOneable)()
-    SetTagBindings(value Projects_relationships_tagBindingsable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetDefaultAgentPool() AgentPoolsHasOneable
+	GetDefaultHyokConfiguration() HyokConfigurationsHasOneable
+	GetOrganization() OrganizationsHasOneable
+	GetStacksDefaultAgentPool() AgentPoolsHasOneable
+	GetTagBindings() Projects_relationships_tagBindingsable
+	SetDefaultAgentPool(value AgentPoolsHasOneable)
+	SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable)
+	SetOrganization(value OrganizationsHasOneable)
+	SetStacksDefaultAgentPool(value AgentPoolsHasOneable)
+	SetTagBindings(value Projects_relationships_tagBindingsable)
 }

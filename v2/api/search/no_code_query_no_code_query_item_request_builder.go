@@ -4,63 +4,69 @@
 package search
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // NoCodeQueryNoCodeQueryItemRequestBuilder builds and executes requests for operations under \search\no-code-query\{id}
 type NoCodeQueryNoCodeQueryItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for no-code-queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsnoCodeQueries []string "uriparametername:\"fields%5Bno%2Dcode%2Dqueries%5D\""
+	// Return only the specified fields for no-code-queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsnoCodeQueries []string "uriparametername:\"fields%5Bno%2Dcode%2Dqueries%5D\""
 }
+
 // NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal instantiates a new NoCodeQueryNoCodeQueryItemRequestBuilder and sets the default values.
-func NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*NoCodeQueryNoCodeQueryItemRequestBuilder) {
-    m := &NoCodeQueryNoCodeQueryItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/search/no-code-query/{id}{?fields%5Bno%2Dcode%2Dqueries%5D}", pathParameters),
-    }
-    return m
+func NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *NoCodeQueryNoCodeQueryItemRequestBuilder {
+	m := &NoCodeQueryNoCodeQueryItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/search/no-code-query/{id}{?fields%5Bno%2Dcode%2Dqueries%5D}", pathParameters),
+	}
+	return m
 }
+
 // NewNoCodeQueryNoCodeQueryItemRequestBuilder instantiates a new NoCodeQueryNoCodeQueryItemRequestBuilder and sets the default values.
-func NewNoCodeQueryNoCodeQueryItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*NoCodeQueryNoCodeQueryItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewNoCodeQueryNoCodeQueryItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *NoCodeQueryNoCodeQueryItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewNoCodeQueryNoCodeQueryItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a NoCodeQueryItemNoCodeQueryGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters])(NoCodeQueryItemNoCodeQueryGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateNoCodeQueryItemNoCodeQueryGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(NoCodeQueryItemNoCodeQueryGetResponseable), nil
+func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters]) (NoCodeQueryItemNoCodeQueryGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateNoCodeQueryItemNoCodeQueryGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(NoCodeQueryItemNoCodeQueryGetResponseable), nil
 }
+
 // ToGetRequestInformation get the configuration of a specific no-code query.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
-func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[NoCodeQueryNoCodeQueryItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *NoCodeQueryNoCodeQueryItemRequestBuilder when successful
-func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) WithUrl(rawUrl string)(*NoCodeQueryNoCodeQueryItemRequestBuilder) {
-    return NewNoCodeQueryNoCodeQueryItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *NoCodeQueryNoCodeQueryItemRequestBuilder) WithUrl(rawUrl string) *NoCodeQueryNoCodeQueryItemRequestBuilder {
+	return NewNoCodeQueryNoCodeQueryItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

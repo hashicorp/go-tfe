@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package varsets
+
 type GetScopeQueryParameterType int
 
 const (
-    OWNED_GETSCOPEQUERYPARAMETERTYPE GetScopeQueryParameterType = iota
+	OWNED_GETSCOPEQUERYPARAMETERTYPE GetScopeQueryParameterType = iota
 )
 
 func (i GetScopeQueryParameterType) String() string {
-    return []string{"owned"}[i]
+	return []string{"owned"}[i]
 }
+
 func ParseGetScopeQueryParameterType(v string) (any, error) {
-    result := OWNED_GETSCOPEQUERYPARAMETERTYPE
-    switch v {
-        case "owned":
-            result = OWNED_GETSCOPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OWNED_GETSCOPEQUERYPARAMETERTYPE
+	switch v {
+	case "owned":
+		result = OWNED_GETSCOPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetScopeQueryParameterType(values []GetScopeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetScopeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

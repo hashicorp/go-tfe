@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type CidrRangeLists_attributes_enforcementScope int
 
 const (
-    ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE CidrRangeLists_attributes_enforcementScope = iota
-    ALL_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
-    SELECTED_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE CidrRangeLists_attributes_enforcementScope = iota
+	ALL_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	SELECTED_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
 )
 
 func (i CidrRangeLists_attributes_enforcementScope) String() string {
-    return []string{"organization", "all_agent_pools", "selected_agent_pools"}[i]
+	return []string{"organization", "all_agent_pools", "selected_agent_pools"}[i]
 }
+
 func ParseCidrRangeLists_attributes_enforcementScope(v string) (any, error) {
-    result := ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
-    switch v {
-        case "organization":
-            result = ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
-        case "all_agent_pools":
-            result = ALL_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
-        case "selected_agent_pools":
-            result = SELECTED_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	switch v {
+	case "organization":
+		result = ORGANIZATION_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	case "all_agent_pools":
+		result = ALL_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	case "selected_agent_pools":
+		result = SELECTED_AGENT_POOLS_CIDRRANGELISTS_ATTRIBUTES_ENFORCEMENTSCOPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeCidrRangeLists_attributes_enforcementScope(values []CidrRangeLists_attributes_enforcementScope) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i CidrRangeLists_attributes_enforcementScope) isMultiValue() bool {
-    return false
+	return false
 }

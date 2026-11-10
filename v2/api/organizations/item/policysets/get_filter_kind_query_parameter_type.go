@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package policysets
+
 type GetFilterKindQueryParameterType int
 
 const (
-    SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE GetFilterKindQueryParameterType = iota
-    OPA_GETFILTERKINDQUERYPARAMETERTYPE
-    TFPOLICY_GETFILTERKINDQUERYPARAMETERTYPE
+	SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE GetFilterKindQueryParameterType = iota
+	OPA_GETFILTERKINDQUERYPARAMETERTYPE
+	TFPOLICY_GETFILTERKINDQUERYPARAMETERTYPE
 )
 
 func (i GetFilterKindQueryParameterType) String() string {
-    return []string{"sentinel", "opa", "tfpolicy"}[i]
+	return []string{"sentinel", "opa", "tfpolicy"}[i]
 }
+
 func ParseGetFilterKindQueryParameterType(v string) (any, error) {
-    result := SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE
-    switch v {
-        case "sentinel":
-            result = SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE
-        case "opa":
-            result = OPA_GETFILTERKINDQUERYPARAMETERTYPE
-        case "tfpolicy":
-            result = TFPOLICY_GETFILTERKINDQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE
+	switch v {
+	case "sentinel":
+		result = SENTINEL_GETFILTERKINDQUERYPARAMETERTYPE
+	case "opa":
+		result = OPA_GETFILTERKINDQUERYPARAMETERTYPE
+	case "tfpolicy":
+		result = TFPOLICY_GETFILTERKINDQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterKindQueryParameterType(values []GetFilterKindQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterKindQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

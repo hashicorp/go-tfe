@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type IngressAttributesIdentifier_type int
 
 const (
-    INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE IngressAttributesIdentifier_type = iota
+	INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE IngressAttributesIdentifier_type = iota
 )
 
 func (i IngressAttributesIdentifier_type) String() string {
-    return []string{"ingress-attributes"}[i]
+	return []string{"ingress-attributes"}[i]
 }
+
 func ParseIngressAttributesIdentifier_type(v string) (any, error) {
-    result := INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE
-    switch v {
-        case "ingress-attributes":
-            result = INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE
+	switch v {
+	case "ingress-attributes":
+		result = INGRESSATTRIBUTES_INGRESSATTRIBUTESIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeIngressAttributesIdentifier_type(values []IngressAttributesIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i IngressAttributesIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package providersets
+
 type ProviderSetsDeleteRequestBody_data_type int
 
 const (
-    PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE ProviderSetsDeleteRequestBody_data_type = iota
+	PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE ProviderSetsDeleteRequestBody_data_type = iota
 )
 
 func (i ProviderSetsDeleteRequestBody_data_type) String() string {
-    return []string{"provider-sets"}[i]
+	return []string{"provider-sets"}[i]
 }
+
 func ParseProviderSetsDeleteRequestBody_data_type(v string) (any, error) {
-    result := PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE
-    switch v {
-        case "provider-sets":
-            result = PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE
+	switch v {
+	case "provider-sets":
+		result = PROVIDERSETS_PROVIDERSETSDELETEREQUESTBODY_DATA_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeProviderSetsDeleteRequestBody_data_type(values []ProviderSetsDeleteRequestBody_data_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ProviderSetsDeleteRequestBody_data_type) isMultiValue() bool {
-    return false
+	return false
 }

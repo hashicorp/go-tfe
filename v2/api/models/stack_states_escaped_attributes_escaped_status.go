@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackStates_attributes_status int
 
 const (
-    CREATED_STACKSTATES_ATTRIBUTES_STATUS StackStates_attributes_status = iota
-    STORED_STACKSTATES_ATTRIBUTES_STATUS
-    COMPLETED_STACKSTATES_ATTRIBUTES_STATUS
-    DISCARDED_STACKSTATES_ATTRIBUTES_STATUS
+	CREATED_STACKSTATES_ATTRIBUTES_STATUS StackStates_attributes_status = iota
+	STORED_STACKSTATES_ATTRIBUTES_STATUS
+	COMPLETED_STACKSTATES_ATTRIBUTES_STATUS
+	DISCARDED_STACKSTATES_ATTRIBUTES_STATUS
 )
 
 func (i StackStates_attributes_status) String() string {
-    return []string{"created", "stored", "completed", "discarded"}[i]
+	return []string{"created", "stored", "completed", "discarded"}[i]
 }
+
 func ParseStackStates_attributes_status(v string) (any, error) {
-    result := CREATED_STACKSTATES_ATTRIBUTES_STATUS
-    switch v {
-        case "created":
-            result = CREATED_STACKSTATES_ATTRIBUTES_STATUS
-        case "stored":
-            result = STORED_STACKSTATES_ATTRIBUTES_STATUS
-        case "completed":
-            result = COMPLETED_STACKSTATES_ATTRIBUTES_STATUS
-        case "discarded":
-            result = DISCARDED_STACKSTATES_ATTRIBUTES_STATUS
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := CREATED_STACKSTATES_ATTRIBUTES_STATUS
+	switch v {
+	case "created":
+		result = CREATED_STACKSTATES_ATTRIBUTES_STATUS
+	case "stored":
+		result = STORED_STACKSTATES_ATTRIBUTES_STATUS
+	case "completed":
+		result = COMPLETED_STACKSTATES_ATTRIBUTES_STATUS
+	case "discarded":
+		result = DISCARDED_STACKSTATES_ATTRIBUTES_STATUS
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackStates_attributes_status(values []StackStates_attributes_status) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackStates_attributes_status) isMultiValue() bool {
-    return false
+	return false
 }

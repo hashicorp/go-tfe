@@ -4,28 +4,31 @@
 package stacks
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemStackDeploymentsWithDeploymentItemRequestBuilder builds and executes requests for operations under \stacks\{stack_id}\stack-deployments\{deployment}
 type ItemStackDeploymentsWithDeploymentItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemStackDeploymentsWithDeploymentItemRequestBuilderInternal instantiates a new ItemStackDeploymentsWithDeploymentItemRequestBuilder and sets the default values.
-func NewItemStackDeploymentsWithDeploymentItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsWithDeploymentItemRequestBuilder) {
-    m := &ItemStackDeploymentsWithDeploymentItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments/{deployment}", pathParameters),
-    }
-    return m
+func NewItemStackDeploymentsWithDeploymentItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemStackDeploymentsWithDeploymentItemRequestBuilder {
+	m := &ItemStackDeploymentsWithDeploymentItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stacks/{stack_id}/stack-deployments/{deployment}", pathParameters),
+	}
+	return m
 }
+
 // NewItemStackDeploymentsWithDeploymentItemRequestBuilder instantiates a new ItemStackDeploymentsWithDeploymentItemRequestBuilder and sets the default values.
-func NewItemStackDeploymentsWithDeploymentItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStackDeploymentsWithDeploymentItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemStackDeploymentsWithDeploymentItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemStackDeploymentsWithDeploymentItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemStackDeploymentsWithDeploymentItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemStackDeploymentsWithDeploymentItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // StackDeploymentRuns the stackDeploymentRuns property
 // returns a *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder when successful
-func (m *ItemStackDeploymentsWithDeploymentItemRequestBuilder) StackDeploymentRuns()(*ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder) {
-    return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemStackDeploymentsWithDeploymentItemRequestBuilder) StackDeploymentRuns() *ItemStackDeploymentsItemStackDeploymentRunsRequestBuilder {
+	return NewItemStackDeploymentsItemStackDeploymentRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

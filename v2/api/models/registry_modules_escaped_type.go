@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type RegistryModules_type int
 
 const (
-    REGISTRYMODULES_REGISTRYMODULES_TYPE RegistryModules_type = iota
+	REGISTRYMODULES_REGISTRYMODULES_TYPE RegistryModules_type = iota
 )
 
 func (i RegistryModules_type) String() string {
-    return []string{"registry-modules"}[i]
+	return []string{"registry-modules"}[i]
 }
+
 func ParseRegistryModules_type(v string) (any, error) {
-    result := REGISTRYMODULES_REGISTRYMODULES_TYPE
-    switch v {
-        case "registry-modules":
-            result = REGISTRYMODULES_REGISTRYMODULES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := REGISTRYMODULES_REGISTRYMODULES_TYPE
+	switch v {
+	case "registry-modules":
+		result = REGISTRYMODULES_REGISTRYMODULES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeRegistryModules_type(values []RegistryModules_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i RegistryModules_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,196 +4,212 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Stacks_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentPool property
-    agentPool AgentPoolsHasOneable
-    // The latestStackConfiguration property
-    latestStackConfiguration StackConfigurationsHasOneable
-    // The project property
-    project ProjectsHasOneable
-    // The stackConfigurations property
-    stackConfigurations Links_relatedable
-    // Returned in stack show responses only.
-    stackVersionControlSetting StackVersionControlSettingsHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The agentPool property
+	agentPool AgentPoolsHasOneable
+	// The latestStackConfiguration property
+	latestStackConfiguration StackConfigurationsHasOneable
+	// The project property
+	project ProjectsHasOneable
+	// The stackConfigurations property
+	stackConfigurations Links_relatedable
+	// Returned in stack show responses only.
+	stackVersionControlSetting StackVersionControlSettingsHasOneable
 }
+
 // NewStacks_relationships instantiates a new Stacks_relationships and sets the default values.
-func NewStacks_relationships()(*Stacks_relationships) {
-    m := &Stacks_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStacks_relationships() *Stacks_relationships {
+	m := &Stacks_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStacks_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStacks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStacks_relationships(), nil
+func CreateStacks_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStacks_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Stacks_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Stacks_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *Stacks_relationships) GetAgentPool()(AgentPoolsHasOneable) {
-    return m.agentPool
+func (m *Stacks_relationships) GetAgentPool() AgentPoolsHasOneable {
+	return m.agentPool
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Stacks_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["latest-stack-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLatestStackConfiguration(val.(StackConfigurationsHasOneable))
-        }
-        return nil
-    }
-    res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProject(val.(ProjectsHasOneable))
-        }
-        return nil
-    }
-    res["stack-configurations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackConfigurations(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["stack-version-control-setting"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackVersionControlSettingsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackVersionControlSetting(val.(StackVersionControlSettingsHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Stacks_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["latest-stack-configuration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLatestStackConfiguration(val.(StackConfigurationsHasOneable))
+		}
+		return nil
+	}
+	res["project"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProject(val.(ProjectsHasOneable))
+		}
+		return nil
+	}
+	res["stack-configurations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackConfigurations(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["stack-version-control-setting"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackVersionControlSettingsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackVersionControlSetting(val.(StackVersionControlSettingsHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLatestStackConfiguration gets the latest-stack-configuration property value. The latestStackConfiguration property
 // returns a StackConfigurationsHasOneable when successful
-func (m *Stacks_relationships) GetLatestStackConfiguration()(StackConfigurationsHasOneable) {
-    return m.latestStackConfiguration
+func (m *Stacks_relationships) GetLatestStackConfiguration() StackConfigurationsHasOneable {
+	return m.latestStackConfiguration
 }
+
 // GetProject gets the project property value. The project property
 // returns a ProjectsHasOneable when successful
-func (m *Stacks_relationships) GetProject()(ProjectsHasOneable) {
-    return m.project
+func (m *Stacks_relationships) GetProject() ProjectsHasOneable {
+	return m.project
 }
+
 // GetStackConfigurations gets the stack-configurations property value. The stackConfigurations property
 // returns a Links_relatedable when successful
-func (m *Stacks_relationships) GetStackConfigurations()(Links_relatedable) {
-    return m.stackConfigurations
+func (m *Stacks_relationships) GetStackConfigurations() Links_relatedable {
+	return m.stackConfigurations
 }
+
 // GetStackVersionControlSetting gets the stack-version-control-setting property value. Returned in stack show responses only.
 // returns a StackVersionControlSettingsHasOneable when successful
-func (m *Stacks_relationships) GetStackVersionControlSetting()(StackVersionControlSettingsHasOneable) {
-    return m.stackVersionControlSetting
+func (m *Stacks_relationships) GetStackVersionControlSetting() StackVersionControlSettingsHasOneable {
+	return m.stackVersionControlSetting
 }
+
 // Serialize serializes information the current object
-func (m *Stacks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("latest-stack-configuration", m.GetLatestStackConfiguration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("project", m.GetProject())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-configurations", m.GetStackConfigurations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-version-control-setting", m.GetStackVersionControlSetting())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Stacks_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("latest-stack-configuration", m.GetLatestStackConfiguration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("project", m.GetProject())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-configurations", m.GetStackConfigurations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-version-control-setting", m.GetStackVersionControlSetting())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Stacks_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Stacks_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *Stacks_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
-    m.agentPool = value
+func (m *Stacks_relationships) SetAgentPool(value AgentPoolsHasOneable) {
+	m.agentPool = value
 }
+
 // SetLatestStackConfiguration sets the latest-stack-configuration property value. The latestStackConfiguration property
-func (m *Stacks_relationships) SetLatestStackConfiguration(value StackConfigurationsHasOneable)() {
-    m.latestStackConfiguration = value
+func (m *Stacks_relationships) SetLatestStackConfiguration(value StackConfigurationsHasOneable) {
+	m.latestStackConfiguration = value
 }
+
 // SetProject sets the project property value. The project property
-func (m *Stacks_relationships) SetProject(value ProjectsHasOneable)() {
-    m.project = value
+func (m *Stacks_relationships) SetProject(value ProjectsHasOneable) {
+	m.project = value
 }
+
 // SetStackConfigurations sets the stack-configurations property value. The stackConfigurations property
-func (m *Stacks_relationships) SetStackConfigurations(value Links_relatedable)() {
-    m.stackConfigurations = value
+func (m *Stacks_relationships) SetStackConfigurations(value Links_relatedable) {
+	m.stackConfigurations = value
 }
+
 // SetStackVersionControlSetting sets the stack-version-control-setting property value. Returned in stack show responses only.
-func (m *Stacks_relationships) SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable)() {
-    m.stackVersionControlSetting = value
+func (m *Stacks_relationships) SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable) {
+	m.stackVersionControlSetting = value
 }
+
 type Stacks_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsHasOneable)
-    GetLatestStackConfiguration()(StackConfigurationsHasOneable)
-    GetProject()(ProjectsHasOneable)
-    GetStackConfigurations()(Links_relatedable)
-    GetStackVersionControlSetting()(StackVersionControlSettingsHasOneable)
-    SetAgentPool(value AgentPoolsHasOneable)()
-    SetLatestStackConfiguration(value StackConfigurationsHasOneable)()
-    SetProject(value ProjectsHasOneable)()
-    SetStackConfigurations(value Links_relatedable)()
-    SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPool() AgentPoolsHasOneable
+	GetLatestStackConfiguration() StackConfigurationsHasOneable
+	GetProject() ProjectsHasOneable
+	GetStackConfigurations() Links_relatedable
+	GetStackVersionControlSetting() StackVersionControlSettingsHasOneable
+	SetAgentPool(value AgentPoolsHasOneable)
+	SetLatestStackConfiguration(value StackConfigurationsHasOneable)
+	SetProject(value ProjectsHasOneable)
+	SetStackConfigurations(value Links_relatedable)
+	SetStackVersionControlSetting(value StackVersionControlSettingsHasOneable)
 }

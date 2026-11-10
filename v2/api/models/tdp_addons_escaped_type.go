@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TdpAddons_type int
 
 const (
-    TDPADDONS_TDPADDONS_TYPE TdpAddons_type = iota
+	TDPADDONS_TDPADDONS_TYPE TdpAddons_type = iota
 )
 
 func (i TdpAddons_type) String() string {
-    return []string{"tdp-addons"}[i]
+	return []string{"tdp-addons"}[i]
 }
+
 func ParseTdpAddons_type(v string) (any, error) {
-    result := TDPADDONS_TDPADDONS_TYPE
-    switch v {
-        case "tdp-addons":
-            result = TDPADDONS_TDPADDONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TDPADDONS_TDPADDONS_TYPE
+	switch v {
+	case "tdp-addons":
+		result = TDPADDONS_TDPADDONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTdpAddons_type(values []TdpAddons_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TdpAddons_type) isMultiValue() bool {
-    return false
+	return false
 }

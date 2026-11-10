@@ -4,332 +4,358 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Policies_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Text describing the policy's purpose. Supports Markdown.
-    description *string
-    // DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
-    enforce []Policies_attributes_enforceable
-    // The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
-    enforcementLevel *Policies_attributes_enforcementLevel
-    // The policy-as-code framework for the policy.
-    kind *Policies_attributes_kind
-    // The name of the policy.
-    name *string
-    // Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
-    ootbUpdate Policies_attributes_ootbUpdateable
-    // The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
-    origin *Policies_attributes_origin
-    // The number of policy sets that include this policy.
-    policySetCount *int32
-    // The OPA query to run. Only present for OPA policies.
-    query *string
-    // The time of the most recent policy code upload.
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// Text describing the policy's purpose. Supports Markdown.
+	description *string
+	// DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
+	enforce []Policies_attributes_enforceable
+	// The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
+	enforcementLevel *Policies_attributes_enforcementLevel
+	// The policy-as-code framework for the policy.
+	kind *Policies_attributes_kind
+	// The name of the policy.
+	name *string
+	// Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
+	ootbUpdate Policies_attributes_ootbUpdateable
+	// The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
+	origin *Policies_attributes_origin
+	// The number of policy sets that include this policy.
+	policySetCount *int32
+	// The OPA query to run. Only present for OPA policies.
+	query *string
+	// The time of the most recent policy code upload.
+	updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 }
+
 // NewPolicies_attributes instantiates a new Policies_attributes and sets the default values.
-func NewPolicies_attributes()(*Policies_attributes) {
-    m := &Policies_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicies_attributes() *Policies_attributes {
+	m := &Policies_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicies_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicies_attributes(), nil
+func CreatePolicies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicies_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Policies_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Policies_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetDescription gets the description property value. Text describing the policy's purpose. Supports Markdown.
 // returns a *string when successful
-func (m *Policies_attributes) GetDescription()(*string) {
-    return m.description
+func (m *Policies_attributes) GetDescription() *string {
+	return m.description
 }
+
 // GetEnforce gets the enforce property value. DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
 // returns a []Policies_attributes_enforceable when successful
-func (m *Policies_attributes) GetEnforce()([]Policies_attributes_enforceable) {
-    return m.enforce
+func (m *Policies_attributes) GetEnforce() []Policies_attributes_enforceable {
+	return m.enforce
 }
+
 // GetEnforcementLevel gets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
 // returns a *Policies_attributes_enforcementLevel when successful
-func (m *Policies_attributes) GetEnforcementLevel()(*Policies_attributes_enforcementLevel) {
-    return m.enforcementLevel
+func (m *Policies_attributes) GetEnforcementLevel() *Policies_attributes_enforcementLevel {
+	return m.enforcementLevel
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Policies_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["enforce"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePolicies_attributes_enforceFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]Policies_attributes_enforceable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(Policies_attributes_enforceable)
-                }
-            }
-            m.SetEnforce(res)
-        }
-        return nil
-    }
-    res["enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicies_attributes_enforcementLevel)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val.(*Policies_attributes_enforcementLevel))
-        }
-        return nil
-    }
-    res["kind"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicies_attributes_kind)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKind(val.(*Policies_attributes_kind))
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["ootb-update"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicies_attributes_ootbUpdateFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOotbUpdate(val.(Policies_attributes_ootbUpdateable))
-        }
-        return nil
-    }
-    res["origin"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicies_attributes_origin)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrigin(val.(*Policies_attributes_origin))
-        }
-        return nil
-    }
-    res["policy-set-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicySetCount(val)
-        }
-        return nil
-    }
-    res["query"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQuery(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Policies_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["enforce"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreatePolicies_attributes_enforceFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]Policies_attributes_enforceable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(Policies_attributes_enforceable)
+				}
+			}
+			m.SetEnforce(res)
+		}
+		return nil
+	}
+	res["enforcement-level"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicies_attributes_enforcementLevel)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforcementLevel(val.(*Policies_attributes_enforcementLevel))
+		}
+		return nil
+	}
+	res["kind"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicies_attributes_kind)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKind(val.(*Policies_attributes_kind))
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["ootb-update"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicies_attributes_ootbUpdateFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOotbUpdate(val.(Policies_attributes_ootbUpdateable))
+		}
+		return nil
+	}
+	res["origin"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicies_attributes_origin)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrigin(val.(*Policies_attributes_origin))
+		}
+		return nil
+	}
+	res["policy-set-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicySetCount(val)
+		}
+		return nil
+	}
+	res["query"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQuery(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetKind gets the kind property value. The policy-as-code framework for the policy.
 // returns a *Policies_attributes_kind when successful
-func (m *Policies_attributes) GetKind()(*Policies_attributes_kind) {
-    return m.kind
+func (m *Policies_attributes) GetKind() *Policies_attributes_kind {
+	return m.kind
 }
+
 // GetName gets the name property value. The name of the policy.
 // returns a *string when successful
-func (m *Policies_attributes) GetName()(*string) {
-    return m.name
+func (m *Policies_attributes) GetName() *string {
+	return m.name
 }
+
 // GetOotbUpdate gets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
 // returns a Policies_attributes_ootbUpdateable when successful
-func (m *Policies_attributes) GetOotbUpdate()(Policies_attributes_ootbUpdateable) {
-    return m.ootbUpdate
+func (m *Policies_attributes) GetOotbUpdate() Policies_attributes_ootbUpdateable {
+	return m.ootbUpdate
 }
+
 // GetOrigin gets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
 // returns a *Policies_attributes_origin when successful
-func (m *Policies_attributes) GetOrigin()(*Policies_attributes_origin) {
-    return m.origin
+func (m *Policies_attributes) GetOrigin() *Policies_attributes_origin {
+	return m.origin
 }
+
 // GetPolicySetCount gets the policy-set-count property value. The number of policy sets that include this policy.
 // returns a *int32 when successful
-func (m *Policies_attributes) GetPolicySetCount()(*int32) {
-    return m.policySetCount
+func (m *Policies_attributes) GetPolicySetCount() *int32 {
+	return m.policySetCount
 }
+
 // GetQuery gets the query property value. The OPA query to run. Only present for OPA policies.
 // returns a *string when successful
-func (m *Policies_attributes) GetQuery()(*string) {
-    return m.query
+func (m *Policies_attributes) GetQuery() *string {
+	return m.query
 }
+
 // GetUpdatedAt gets the updated-at property value. The time of the most recent policy code upload.
 // returns a *Time when successful
-func (m *Policies_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *Policies_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	return m.updatedAt
 }
+
 // Serialize serializes information the current object
-func (m *Policies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetEnforce() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetEnforce()))
-        for i, v := range m.GetEnforce() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("enforce", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetEnforcementLevel() != nil {
-        cast := (*m.GetEnforcementLevel()).String()
-        err := writer.WriteStringValue("enforcement-level", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetKind() != nil {
-        cast := (*m.GetKind()).String()
-        err := writer.WriteStringValue("kind", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("query", m.GetQuery())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Policies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetEnforce() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetEnforce()))
+		for i, v := range m.GetEnforce() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("enforce", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetEnforcementLevel() != nil {
+		cast := (*m.GetEnforcementLevel()).String()
+		err := writer.WriteStringValue("enforcement-level", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetKind() != nil {
+		cast := (*m.GetKind()).String()
+		err := writer.WriteStringValue("kind", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("query", m.GetQuery())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Policies_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Policies_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetDescription sets the description property value. Text describing the policy's purpose. Supports Markdown.
-func (m *Policies_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *Policies_attributes) SetDescription(value *string) {
+	m.description = value
 }
+
 // SetEnforce sets the enforce property value. DEPRECATED: Use enforcement-level instead. An array of enforcement configurations mapping policy file paths to their enforcement modes.
-func (m *Policies_attributes) SetEnforce(value []Policies_attributes_enforceable)() {
-    m.enforce = value
+func (m *Policies_attributes) SetEnforce(value []Policies_attributes_enforceable) {
+	m.enforce = value
 }
+
 // SetEnforcementLevel sets the enforcement-level property value. The enforcement level of the policy. Sentinel: hard-mandatory, soft-mandatory, advisory. OPA: mandatory, advisory. TFPolicy: mandatory, advisory, mandatory_overridable.
-func (m *Policies_attributes) SetEnforcementLevel(value *Policies_attributes_enforcementLevel)() {
-    m.enforcementLevel = value
+func (m *Policies_attributes) SetEnforcementLevel(value *Policies_attributes_enforcementLevel) {
+	m.enforcementLevel = value
 }
+
 // SetKind sets the kind property value. The policy-as-code framework for the policy.
-func (m *Policies_attributes) SetKind(value *Policies_attributes_kind)() {
-    m.kind = value
+func (m *Policies_attributes) SetKind(value *Policies_attributes_kind) {
+	m.kind = value
 }
+
 // SetName sets the name property value. The name of the policy.
-func (m *Policies_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Policies_attributes) SetName(value *string) {
+	m.name = value
 }
+
 // SetOotbUpdate sets the ootb-update property value. Present only when the request opts in with `include-ootb-update=true` and OOTB policy updates are available for the organization and the actor is authorized for update metadata. `null` when no forward update is available for this policy (including non-OOTB policies). Never a submit payload; apply re-resolves the target version independently.This attribute is only available in HCP Terraform.
-func (m *Policies_attributes) SetOotbUpdate(value Policies_attributes_ootbUpdateable)() {
-    m.ootbUpdate = value
+func (m *Policies_attributes) SetOotbUpdate(value Policies_attributes_ootbUpdateable) {
+	m.ootbUpdate = value
 }
+
 // SetOrigin sets the origin property value. The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
-func (m *Policies_attributes) SetOrigin(value *Policies_attributes_origin)() {
-    m.origin = value
+func (m *Policies_attributes) SetOrigin(value *Policies_attributes_origin) {
+	m.origin = value
 }
+
 // SetPolicySetCount sets the policy-set-count property value. The number of policy sets that include this policy.
-func (m *Policies_attributes) SetPolicySetCount(value *int32)() {
-    m.policySetCount = value
+func (m *Policies_attributes) SetPolicySetCount(value *int32) {
+	m.policySetCount = value
 }
+
 // SetQuery sets the query property value. The OPA query to run. Only present for OPA policies.
-func (m *Policies_attributes) SetQuery(value *string)() {
-    m.query = value
+func (m *Policies_attributes) SetQuery(value *string) {
+	m.query = value
 }
+
 // SetUpdatedAt sets the updated-at property value. The time of the most recent policy code upload.
-func (m *Policies_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *Policies_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	m.updatedAt = value
 }
+
 type Policies_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDescription()(*string)
-    GetEnforce()([]Policies_attributes_enforceable)
-    GetEnforcementLevel()(*Policies_attributes_enforcementLevel)
-    GetKind()(*Policies_attributes_kind)
-    GetName()(*string)
-    GetOotbUpdate()(Policies_attributes_ootbUpdateable)
-    GetOrigin()(*Policies_attributes_origin)
-    GetPolicySetCount()(*int32)
-    GetQuery()(*string)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetDescription(value *string)()
-    SetEnforce(value []Policies_attributes_enforceable)()
-    SetEnforcementLevel(value *Policies_attributes_enforcementLevel)()
-    SetKind(value *Policies_attributes_kind)()
-    SetName(value *string)()
-    SetOotbUpdate(value Policies_attributes_ootbUpdateable)()
-    SetOrigin(value *Policies_attributes_origin)()
-    SetPolicySetCount(value *int32)()
-    SetQuery(value *string)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetDescription() *string
+	GetEnforce() []Policies_attributes_enforceable
+	GetEnforcementLevel() *Policies_attributes_enforcementLevel
+	GetKind() *Policies_attributes_kind
+	GetName() *string
+	GetOotbUpdate() Policies_attributes_ootbUpdateable
+	GetOrigin() *Policies_attributes_origin
+	GetPolicySetCount() *int32
+	GetQuery() *string
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetDescription(value *string)
+	SetEnforce(value []Policies_attributes_enforceable)
+	SetEnforcementLevel(value *Policies_attributes_enforcementLevel)
+	SetKind(value *Policies_attributes_kind)
+	SetName(value *string)
+	SetOotbUpdate(value Policies_attributes_ootbUpdateable)
+	SetOrigin(value *Policies_attributes_origin)
+	SetPolicySetCount(value *int32)
+	SetQuery(value *string)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type GcpOidcConfigurations_type int
 
 const (
-    GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE GcpOidcConfigurations_type = iota
+	GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE GcpOidcConfigurations_type = iota
 )
 
 func (i GcpOidcConfigurations_type) String() string {
-    return []string{"gcp-oidc-configurations"}[i]
+	return []string{"gcp-oidc-configurations"}[i]
 }
+
 func ParseGcpOidcConfigurations_type(v string) (any, error) {
-    result := GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE
-    switch v {
-        case "gcp-oidc-configurations":
-            result = GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE
+	switch v {
+	case "gcp-oidc-configurations":
+		result = GCPOIDCCONFIGURATIONS_GCPOIDCCONFIGURATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGcpOidcConfigurations_type(values []GcpOidcConfigurations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GcpOidcConfigurations_type) isMultiValue() bool {
-    return false
+	return false
 }

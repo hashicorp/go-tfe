@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package organizationmemberships
+
 type GetSortQueryParameterType int
 
 const (
-    STATUS_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
-    MINUS_STATUS_GETSORTQUERYPARAMETERTYPE
+	STATUS_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
+	MINUS_STATUS_GETSORTQUERYPARAMETERTYPE
 )
 
 func (i GetSortQueryParameterType) String() string {
-    return []string{"status", "-status"}[i]
+	return []string{"status", "-status"}[i]
 }
+
 func ParseGetSortQueryParameterType(v string) (any, error) {
-    result := STATUS_GETSORTQUERYPARAMETERTYPE
-    switch v {
-        case "status":
-            result = STATUS_GETSORTQUERYPARAMETERTYPE
-        case "-status":
-            result = MINUS_STATUS_GETSORTQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STATUS_GETSORTQUERYPARAMETERTYPE
+	switch v {
+	case "status":
+		result = STATUS_GETSORTQUERYPARAMETERTYPE
+	case "-status":
+		result = MINUS_STATUS_GETSORTQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetSortQueryParameterType(values []GetSortQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetSortQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

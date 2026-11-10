@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StateVersionOutputs_type int
 
 const (
-    STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE StateVersionOutputs_type = iota
+	STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE StateVersionOutputs_type = iota
 )
 
 func (i StateVersionOutputs_type) String() string {
-    return []string{"state-version-outputs"}[i]
+	return []string{"state-version-outputs"}[i]
 }
+
 func ParseStateVersionOutputs_type(v string) (any, error) {
-    result := STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE
-    switch v {
-        case "state-version-outputs":
-            result = STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE
+	switch v {
+	case "state-version-outputs":
+		result = STATEVERSIONOUTPUTS_STATEVERSIONOUTPUTS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStateVersionOutputs_type(values []StateVersionOutputs_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StateVersionOutputs_type) isMultiValue() bool {
-    return false
+	return false
 }

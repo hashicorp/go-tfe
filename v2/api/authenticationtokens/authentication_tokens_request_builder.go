@@ -4,35 +4,38 @@
 package authenticationtokens
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // AuthenticationTokensRequestBuilder builds and executes requests for operations under \authentication-tokens
 type AuthenticationTokensRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.authenticationTokens.item collection
 // returns a *AuthenticationTokensItemRequestBuilder when successful
-func (m *AuthenticationTokensRequestBuilder) ById(id string)(*AuthenticationTokensItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if id != "" {
-        urlTplParams["id"] = id
-    }
-    return NewAuthenticationTokensItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *AuthenticationTokensRequestBuilder) ById(id string) *AuthenticationTokensItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if id != "" {
+		urlTplParams["id"] = id
+	}
+	return NewAuthenticationTokensItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewAuthenticationTokensRequestBuilderInternal instantiates a new AuthenticationTokensRequestBuilder and sets the default values.
-func NewAuthenticationTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensRequestBuilder) {
-    m := &AuthenticationTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens", pathParameters),
-    }
-    return m
+func NewAuthenticationTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *AuthenticationTokensRequestBuilder {
+	m := &AuthenticationTokensRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens", pathParameters),
+	}
+	return m
 }
+
 // NewAuthenticationTokensRequestBuilder instantiates a new AuthenticationTokensRequestBuilder and sets the default values.
-func NewAuthenticationTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewAuthenticationTokensRequestBuilderInternal(urlParams, requestAdapter)
+func NewAuthenticationTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *AuthenticationTokensRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewAuthenticationTokensRequestBuilderInternal(urlParams, requestAdapter)
 }

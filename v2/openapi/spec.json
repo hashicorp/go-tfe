@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "124db3db",
+    "version": "a4ac0f5a",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -881,7 +881,7 @@
             }
           },
           "422": {
-            "description": "Validation error.",
+            "description": "Validation error. If a rotated `idp-cert` has the same fingerprint as an existing IdP certificate, the error detail names that certificate's external ID and display name (e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`).\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -1148,7 +1148,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, display-name is missing or longer than 90 characters, or the maximum of 1000 IdP certificates has been reached (\"Cert limit of 1000 reached; delete expired or unused certificates before adding more\").\n",
+            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted (the error detail names the existing certificate's external ID and display name, e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`), display-name is missing or longer than 90 characters, or the maximum of 1000 IdP certificates has been reached (\"Cert limit of 1000 reached; delete expired or unused certificates before adding more\").\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -1289,7 +1289,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, invalid cert content, or a new display-name that is blank or longer than 90 characters.\n",
+            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, invalid cert content, a new cert whose fingerprint matches a different existing certificate (the error detail names that certificate's external ID and display name, e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`), or a new display-name that is blank or longer than 90 characters.\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {

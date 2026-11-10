@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type GithubAppInstallations_type int
 
 const (
-    GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE GithubAppInstallations_type = iota
+	GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE GithubAppInstallations_type = iota
 )
 
 func (i GithubAppInstallations_type) String() string {
-    return []string{"github-app-installations"}[i]
+	return []string{"github-app-installations"}[i]
 }
+
 func ParseGithubAppInstallations_type(v string) (any, error) {
-    result := GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE
-    switch v {
-        case "github-app-installations":
-            result = GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE
+	switch v {
+	case "github-app-installations":
+		result = GITHUBAPPINSTALLATIONS_GITHUBAPPINSTALLATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGithubAppInstallations_type(values []GithubAppInstallations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GithubAppInstallations_type) isMultiValue() bool {
-    return false
+	return false
 }

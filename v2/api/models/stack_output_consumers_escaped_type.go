@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackOutputConsumers_type int
 
 const (
-    STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE StackOutputConsumers_type = iota
+	STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE StackOutputConsumers_type = iota
 )
 
 func (i StackOutputConsumers_type) String() string {
-    return []string{"stack-output-consumers"}[i]
+	return []string{"stack-output-consumers"}[i]
 }
+
 func ParseStackOutputConsumers_type(v string) (any, error) {
-    result := STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE
-    switch v {
-        case "stack-output-consumers":
-            result = STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE
+	switch v {
+	case "stack-output-consumers":
+		result = STACKOUTPUTCONSUMERS_STACKOUTPUTCONSUMERS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackOutputConsumers_type(values []StackOutputConsumers_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackOutputConsumers_type) isMultiValue() bool {
-    return false
+	return false
 }

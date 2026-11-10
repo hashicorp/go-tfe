@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TagsRemoveArrayDocument_data_type int
 
 const (
-    TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE TagsRemoveArrayDocument_data_type = iota
+	TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE TagsRemoveArrayDocument_data_type = iota
 )
 
 func (i TagsRemoveArrayDocument_data_type) String() string {
-    return []string{"tags"}[i]
+	return []string{"tags"}[i]
 }
+
 func ParseTagsRemoveArrayDocument_data_type(v string) (any, error) {
-    result := TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE
-    switch v {
-        case "tags":
-            result = TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE
+	switch v {
+	case "tags":
+		result = TAGS_TAGSREMOVEARRAYDOCUMENT_DATA_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTagsRemoveArrayDocument_data_type(values []TagsRemoveArrayDocument_data_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TagsRemoveArrayDocument_data_type) isMultiValue() bool {
-    return false
+	return false
 }

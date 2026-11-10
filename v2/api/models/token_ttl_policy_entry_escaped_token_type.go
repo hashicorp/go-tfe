@@ -2,45 +2,49 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The type of the token TTL policy
 type TokenTtlPolicyEntry_tokenType int
 
 const (
-    ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE TokenTtlPolicyEntry_tokenType = iota
-    TEAM_TOKENTTLPOLICYENTRY_TOKENTYPE
-    USER_TOKENTTLPOLICYENTRY_TOKENTYPE
-    AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
-    METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
+	ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE TokenTtlPolicyEntry_tokenType = iota
+	TEAM_TOKENTTLPOLICYENTRY_TOKENTYPE
+	USER_TOKENTTLPOLICYENTRY_TOKENTYPE
+	AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
+	METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
 )
 
 func (i TokenTtlPolicyEntry_tokenType) String() string {
-    return []string{"organization", "team", "user", "audit_trails", "metrics"}[i]
+	return []string{"organization", "team", "user", "audit_trails", "metrics"}[i]
 }
+
 func ParseTokenTtlPolicyEntry_tokenType(v string) (any, error) {
-    result := ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE
-    switch v {
-        case "organization":
-            result = ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE
-        case "team":
-            result = TEAM_TOKENTTLPOLICYENTRY_TOKENTYPE
-        case "user":
-            result = USER_TOKENTTLPOLICYENTRY_TOKENTYPE
-        case "audit_trails":
-            result = AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
-        case "metrics":
-            result = METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE
+	switch v {
+	case "organization":
+		result = ORGANIZATION_TOKENTTLPOLICYENTRY_TOKENTYPE
+	case "team":
+		result = TEAM_TOKENTTLPOLICYENTRY_TOKENTYPE
+	case "user":
+		result = USER_TOKENTTLPOLICYENTRY_TOKENTYPE
+	case "audit_trails":
+		result = AUDIT_TRAILS_TOKENTTLPOLICYENTRY_TOKENTYPE
+	case "metrics":
+		result = METRICS_TOKENTTLPOLICYENTRY_TOKENTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTokenTtlPolicyEntry_tokenType(values []TokenTtlPolicyEntry_tokenType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TokenTtlPolicyEntry_tokenType) isMultiValue() bool {
-    return false
+	return false
 }

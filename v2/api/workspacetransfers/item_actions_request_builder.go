@@ -4,33 +4,37 @@
 package workspacetransfers
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemActionsRequestBuilder builds and executes requests for operations under \workspace-transfers\{workspace_transfer_id}\actions
 type ItemActionsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // Cancel the cancel property
 // returns a *ItemActionsCancelRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Cancel()(*ItemActionsCancelRequestBuilder) {
-    return NewItemActionsCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Cancel() *ItemActionsCancelRequestBuilder {
+	return NewItemActionsCancelRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewItemActionsRequestBuilderInternal instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    m := &ItemActionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}/actions", pathParameters),
-    }
-    return m
+func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	m := &ItemActionsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}/actions", pathParameters),
+	}
+	return m
 }
+
 // NewItemActionsRequestBuilder instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Resume the resume property
 // returns a *ItemActionsResumeRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Resume()(*ItemActionsResumeRequestBuilder) {
-    return NewItemActionsResumeRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Resume() *ItemActionsResumeRequestBuilder {
+	return NewItemActionsResumeRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

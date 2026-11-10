@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type HyokEncryptedDataKeys_type int
 
 const (
-    HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE HyokEncryptedDataKeys_type = iota
+	HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE HyokEncryptedDataKeys_type = iota
 )
 
 func (i HyokEncryptedDataKeys_type) String() string {
-    return []string{"hyok-encrypted-data-keys"}[i]
+	return []string{"hyok-encrypted-data-keys"}[i]
 }
+
 func ParseHyokEncryptedDataKeys_type(v string) (any, error) {
-    result := HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE
-    switch v {
-        case "hyok-encrypted-data-keys":
-            result = HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE
+	switch v {
+	case "hyok-encrypted-data-keys":
+		result = HYOKENCRYPTEDDATAKEYS_HYOKENCRYPTEDDATAKEYS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeHyokEncryptedDataKeys_type(values []HyokEncryptedDataKeys_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i HyokEncryptedDataKeys_type) isMultiValue() bool {
-    return false
+	return false
 }

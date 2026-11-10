@@ -2,33 +2,37 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // Operating system for this architecture. Currently only "linux" is supported.
 type AdminTfpolicyVersionArchitecture_os int
 
 const (
-    LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS AdminTfpolicyVersionArchitecture_os = iota
+	LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS AdminTfpolicyVersionArchitecture_os = iota
 )
 
 func (i AdminTfpolicyVersionArchitecture_os) String() string {
-    return []string{"linux"}[i]
+	return []string{"linux"}[i]
 }
+
 func ParseAdminTfpolicyVersionArchitecture_os(v string) (any, error) {
-    result := LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS
-    switch v {
-        case "linux":
-            result = LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS
+	switch v {
+	case "linux":
+		result = LINUX_ADMINTFPOLICYVERSIONARCHITECTURE_OS
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminTfpolicyVersionArchitecture_os(values []AdminTfpolicyVersionArchitecture_os) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminTfpolicyVersionArchitecture_os) isMultiValue() bool {
-    return false
+	return false
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspacesIdentifierArrayDocument_data_type int
 
 const (
-    WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE WorkspacesIdentifierArrayDocument_data_type = iota
+	WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE WorkspacesIdentifierArrayDocument_data_type = iota
 )
 
 func (i WorkspacesIdentifierArrayDocument_data_type) String() string {
-    return []string{"workspaces"}[i]
+	return []string{"workspaces"}[i]
 }
+
 func ParseWorkspacesIdentifierArrayDocument_data_type(v string) (any, error) {
-    result := WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE
-    switch v {
-        case "workspaces":
-            result = WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE
+	switch v {
+	case "workspaces":
+		result = WORKSPACES_WORKSPACESIDENTIFIERARRAYDOCUMENT_DATA_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspacesIdentifierArrayDocument_data_type(values []WorkspacesIdentifierArrayDocument_data_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspacesIdentifierArrayDocument_data_type) isMultiValue() bool {
-    return false
+	return false
 }

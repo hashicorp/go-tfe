@@ -4,215 +4,235 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type CidrRangeListEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data CidrRangeListsable
-    // The included property
-    included []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The data property
+	data CidrRangeListsable
+	// The included property
+	included []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable
 }
+
 // CidrRangeListEnvelope_CidrRangeListEnvelope_included composed type wrapper for classes AgentPoolsable, CidrRangesable
 type CidrRangeListEnvelope_CidrRangeListEnvelope_included struct {
-    // Composed type representation for type AgentPoolsable
-    agentPools AgentPoolsable
-    // Composed type representation for type CidrRangesable
-    cidrRanges CidrRangesable
+	// Composed type representation for type AgentPoolsable
+	agentPools AgentPoolsable
+	// Composed type representation for type CidrRangesable
+	cidrRanges CidrRangesable
 }
+
 // NewCidrRangeListEnvelope_CidrRangeListEnvelope_included instantiates a new CidrRangeListEnvelope_CidrRangeListEnvelope_included and sets the default values.
-func NewCidrRangeListEnvelope_CidrRangeListEnvelope_included()(*CidrRangeListEnvelope_CidrRangeListEnvelope_included) {
-    m := &CidrRangeListEnvelope_CidrRangeListEnvelope_included{
-    }
-    return m
+func NewCidrRangeListEnvelope_CidrRangeListEnvelope_included() *CidrRangeListEnvelope_CidrRangeListEnvelope_included {
+	m := &CidrRangeListEnvelope_CidrRangeListEnvelope_included{}
+	return m
 }
+
 // CreateCidrRangeListEnvelope_CidrRangeListEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateCidrRangeListEnvelope_CidrRangeListEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewCidrRangeListEnvelope_CidrRangeListEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
-                    result.SetAgentPools(NewAgentPools())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-ranges") {
-                    result.SetCidrRanges(NewCidrRanges())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateCidrRangeListEnvelope_CidrRangeListEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewCidrRangeListEnvelope_CidrRangeListEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+					result.SetAgentPools(NewAgentPools())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-ranges") {
+					result.SetCidrRanges(NewCidrRanges())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
 // GetAgentPools gets the agentPools property value. Composed type representation for type AgentPoolsable
 // returns a AgentPoolsable when successful
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetAgentPools()(AgentPoolsable) {
-    return m.agentPools
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetAgentPools() AgentPoolsable {
+	return m.agentPools
 }
+
 // GetCidrRanges gets the cidrRanges property value. Composed type representation for type CidrRangesable
 // returns a CidrRangesable when successful
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetCidrRanges()(CidrRangesable) {
-    return m.cidrRanges
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetCidrRanges() CidrRangesable {
+	return m.cidrRanges
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetAgentPools() != nil {
-        return m.GetAgentPools().GetFieldDeserializers()
-    } else if m.GetCidrRanges() != nil {
-        return m.GetCidrRanges().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetAgentPools() != nil {
+		return m.GetAgentPools().GetFieldDeserializers()
+	} else if m.GetCidrRanges() != nil {
+		return m.GetCidrRanges().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) GetIsComposedType() bool {
+	return true
 }
+
 // Serialize serializes information the current object
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAgentPools() != nil {
-        err := writer.WriteObjectValue("", m.GetAgentPools())
-        if err != nil {
-            return err
-        }
-    } else if m.GetCidrRanges() != nil {
-        err := writer.WriteObjectValue("", m.GetCidrRanges())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAgentPools() != nil {
+		err := writer.WriteObjectValue("", m.GetAgentPools())
+		if err != nil {
+			return err
+		}
+	} else if m.GetCidrRanges() != nil {
+		err := writer.WriteObjectValue("", m.GetCidrRanges())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAgentPools sets the agentPools property value. Composed type representation for type AgentPoolsable
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) SetAgentPools(value AgentPoolsable)() {
-    m.agentPools = value
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) SetAgentPools(value AgentPoolsable) {
+	m.agentPools = value
 }
+
 // SetCidrRanges sets the cidrRanges property value. Composed type representation for type CidrRangesable
-func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) SetCidrRanges(value CidrRangesable)() {
-    m.cidrRanges = value
+func (m *CidrRangeListEnvelope_CidrRangeListEnvelope_included) SetCidrRanges(value CidrRangesable) {
+	m.cidrRanges = value
 }
+
 type CidrRangeListEnvelope_CidrRangeListEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPools()(AgentPoolsable)
-    GetCidrRanges()(CidrRangesable)
-    SetAgentPools(value AgentPoolsable)()
-    SetCidrRanges(value CidrRangesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPools() AgentPoolsable
+	GetCidrRanges() CidrRangesable
+	SetAgentPools(value AgentPoolsable)
+	SetCidrRanges(value CidrRangesable)
 }
+
 // NewCidrRangeListEnvelope instantiates a new CidrRangeListEnvelope and sets the default values.
-func NewCidrRangeListEnvelope()(*CidrRangeListEnvelope) {
-    m := &CidrRangeListEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewCidrRangeListEnvelope() *CidrRangeListEnvelope {
+	m := &CidrRangeListEnvelope{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateCidrRangeListEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateCidrRangeListEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewCidrRangeListEnvelope(), nil
+func CreateCidrRangeListEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewCidrRangeListEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *CidrRangeListEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *CidrRangeListEnvelope) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetData gets the data property value. The data property
 // returns a CidrRangeListsable when successful
-func (m *CidrRangeListEnvelope) GetData()(CidrRangeListsable) {
-    return m.data
+func (m *CidrRangeListEnvelope) GetData() CidrRangeListsable {
+	return m.data
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *CidrRangeListEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateCidrRangeListsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(CidrRangeListsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateCidrRangeListEnvelope_CidrRangeListEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]CidrRangeListEnvelope_CidrRangeListEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *CidrRangeListEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateCidrRangeListsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(CidrRangeListsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateCidrRangeListEnvelope_CidrRangeListEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]CidrRangeListEnvelope_CidrRangeListEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable when successful
-func (m *CidrRangeListEnvelope) GetIncluded()([]CidrRangeListEnvelope_CidrRangeListEnvelope_includedable) {
-    return m.included
+func (m *CidrRangeListEnvelope) GetIncluded() []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable {
+	return m.included
 }
+
 // Serialize serializes information the current object
-func (m *CidrRangeListEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *CidrRangeListEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *CidrRangeListEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *CidrRangeListEnvelope) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetData sets the data property value. The data property
-func (m *CidrRangeListEnvelope) SetData(value CidrRangeListsable)() {
-    m.data = value
+func (m *CidrRangeListEnvelope) SetData(value CidrRangeListsable) {
+	m.data = value
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *CidrRangeListEnvelope) SetIncluded(value []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)() {
-    m.included = value
+func (m *CidrRangeListEnvelope) SetIncluded(value []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable) {
+	m.included = value
 }
+
 type CidrRangeListEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(CidrRangeListsable)
-    GetIncluded()([]CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)
-    SetData(value CidrRangeListsable)()
-    SetIncluded(value []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetData() CidrRangeListsable
+	GetIncluded() []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable
+	SetData(value CidrRangeListsable)
+	SetIncluded(value []CidrRangeListEnvelope_CidrRangeListEnvelope_includedable)
 }

@@ -4,180 +4,186 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type PoliciesIdentifierArrayDocument struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The data property
+	data []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable
 }
+
 // PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data composed type wrapper for classes PoliciesIdentifierArrayDocument_dataMember1able, PoliciesIdentifierArrayDocument_dataMember2able
 type PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data struct {
-    // Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
-    policiesIdentifierArrayDocument_dataMember1 PoliciesIdentifierArrayDocument_dataMember1able
-    // Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
-    policiesIdentifierArrayDocument_dataMember2 PoliciesIdentifierArrayDocument_dataMember2able
+	// Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
+	policiesIdentifierArrayDocument_dataMember1 PoliciesIdentifierArrayDocument_dataMember1able
+	// Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
+	policiesIdentifierArrayDocument_dataMember2 PoliciesIdentifierArrayDocument_dataMember2able
 }
+
 // NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data instantiates a new PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data and sets the default values.
-func NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data()(*PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) {
-    m := &PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data{
-    }
-    return m
+func NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data() *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data {
+	m := &PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data{}
+	return m
 }
+
 // CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-            }
-        }
-    }
-    return result, nil
+func CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewPoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data()
+	if parseNode != nil {
+	}
+	return result, nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetPoliciesIdentifierArrayDocumentDataMember1() != nil {
-        return m.GetPoliciesIdentifierArrayDocumentDataMember1().GetFieldDeserializers()
-    } else if m.GetPoliciesIdentifierArrayDocumentDataMember2() != nil {
-        return m.GetPoliciesIdentifierArrayDocumentDataMember2().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetPoliciesIdentifierArrayDocumentDataMember1() != nil {
+		return m.GetPoliciesIdentifierArrayDocumentDataMember1().GetFieldDeserializers()
+	} else if m.GetPoliciesIdentifierArrayDocumentDataMember2() != nil {
+		return m.GetPoliciesIdentifierArrayDocumentDataMember2().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetIsComposedType()(bool) {
-    return true
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetIsComposedType() bool {
+	return true
 }
+
 // GetPoliciesIdentifierArrayDocumentDataMember1 gets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
 // returns a PoliciesIdentifierArrayDocument_dataMember1able when successful
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember1()(PoliciesIdentifierArrayDocument_dataMember1able) {
-    return m.policiesIdentifierArrayDocument_dataMember1
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember1() PoliciesIdentifierArrayDocument_dataMember1able {
+	return m.policiesIdentifierArrayDocument_dataMember1
 }
+
 // GetPoliciesIdentifierArrayDocumentDataMember2 gets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
 // returns a PoliciesIdentifierArrayDocument_dataMember2able when successful
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember2()(PoliciesIdentifierArrayDocument_dataMember2able) {
-    return m.policiesIdentifierArrayDocument_dataMember2
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) GetPoliciesIdentifierArrayDocumentDataMember2() PoliciesIdentifierArrayDocument_dataMember2able {
+	return m.policiesIdentifierArrayDocument_dataMember2
 }
+
 // Serialize serializes information the current object
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetPoliciesIdentifierArrayDocumentDataMember1() != nil {
-        err := writer.WriteObjectValue("", m.GetPoliciesIdentifierArrayDocumentDataMember1())
-        if err != nil {
-            return err
-        }
-    } else if m.GetPoliciesIdentifierArrayDocumentDataMember2() != nil {
-        err := writer.WriteObjectValue("", m.GetPoliciesIdentifierArrayDocumentDataMember2())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetPoliciesIdentifierArrayDocumentDataMember1() != nil {
+		err := writer.WriteObjectValue("", m.GetPoliciesIdentifierArrayDocumentDataMember1())
+		if err != nil {
+			return err
+		}
+	} else if m.GetPoliciesIdentifierArrayDocumentDataMember2() != nil {
+		err := writer.WriteObjectValue("", m.GetPoliciesIdentifierArrayDocumentDataMember2())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetPoliciesIdentifierArrayDocumentDataMember1 sets the policiesIdentifierArrayDocument_dataMember1 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember1able
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able)() {
-    m.policiesIdentifierArrayDocument_dataMember1 = value
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able) {
+	m.policiesIdentifierArrayDocument_dataMember1 = value
 }
+
 // SetPoliciesIdentifierArrayDocumentDataMember2 sets the policiesIdentifierArrayDocument_dataMember2 property value. Composed type representation for type PoliciesIdentifierArrayDocument_dataMember2able
-func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able)() {
-    m.policiesIdentifierArrayDocument_dataMember2 = value
+func (m *PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_data) SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able) {
+	m.policiesIdentifierArrayDocument_dataMember2 = value
 }
+
 type PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPoliciesIdentifierArrayDocumentDataMember1()(PoliciesIdentifierArrayDocument_dataMember1able)
-    GetPoliciesIdentifierArrayDocumentDataMember2()(PoliciesIdentifierArrayDocument_dataMember2able)
-    SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able)()
-    SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetPoliciesIdentifierArrayDocumentDataMember1() PoliciesIdentifierArrayDocument_dataMember1able
+	GetPoliciesIdentifierArrayDocumentDataMember2() PoliciesIdentifierArrayDocument_dataMember2able
+	SetPoliciesIdentifierArrayDocumentDataMember1(value PoliciesIdentifierArrayDocument_dataMember1able)
+	SetPoliciesIdentifierArrayDocumentDataMember2(value PoliciesIdentifierArrayDocument_dataMember2able)
 }
+
 // NewPoliciesIdentifierArrayDocument instantiates a new PoliciesIdentifierArrayDocument and sets the default values.
-func NewPoliciesIdentifierArrayDocument()(*PoliciesIdentifierArrayDocument) {
-    m := &PoliciesIdentifierArrayDocument{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPoliciesIdentifierArrayDocument() *PoliciesIdentifierArrayDocument {
+	m := &PoliciesIdentifierArrayDocument{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePoliciesIdentifierArrayDocumentFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePoliciesIdentifierArrayDocumentFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPoliciesIdentifierArrayDocument(), nil
+func CreatePoliciesIdentifierArrayDocumentFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPoliciesIdentifierArrayDocument(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PoliciesIdentifierArrayDocument) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PoliciesIdentifierArrayDocument) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetData gets the data property value. The data property
 // returns a []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable when successful
-func (m *PoliciesIdentifierArrayDocument) GetData()([]PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable) {
-    return m.data
+func (m *PoliciesIdentifierArrayDocument) GetData() []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable {
+	return m.data
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PoliciesIdentifierArrayDocument) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
-                }
-            }
-            m.SetData(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PoliciesIdentifierArrayDocument) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreatePoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
+				}
+			}
+			m.SetData(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *PoliciesIdentifierArrayDocument) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PoliciesIdentifierArrayDocument) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetData() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+		for i, v := range m.GetData() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("data", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PoliciesIdentifierArrayDocument) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PoliciesIdentifierArrayDocument) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetData sets the data property value. The data property
-func (m *PoliciesIdentifierArrayDocument) SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)() {
-    m.data = value
+func (m *PoliciesIdentifierArrayDocument) SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable) {
+	m.data = value
 }
+
 type PoliciesIdentifierArrayDocumentable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
-    SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetData() []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable
+	SetData(value []PoliciesIdentifierArrayDocument_PoliciesIdentifierArrayDocument_dataable)
 }

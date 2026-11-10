@@ -2,36 +2,40 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The source of the policy. "ootb" for policies materialized from the out-of-the-box policy catalog; "custom" for user-defined policies.
 type Policies_attributes_origin int
 
 const (
-    CUSTOM_POLICIES_ATTRIBUTES_ORIGIN Policies_attributes_origin = iota
-    OOTB_POLICIES_ATTRIBUTES_ORIGIN
+	CUSTOM_POLICIES_ATTRIBUTES_ORIGIN Policies_attributes_origin = iota
+	OOTB_POLICIES_ATTRIBUTES_ORIGIN
 )
 
 func (i Policies_attributes_origin) String() string {
-    return []string{"custom", "ootb"}[i]
+	return []string{"custom", "ootb"}[i]
 }
+
 func ParsePolicies_attributes_origin(v string) (any, error) {
-    result := CUSTOM_POLICIES_ATTRIBUTES_ORIGIN
-    switch v {
-        case "custom":
-            result = CUSTOM_POLICIES_ATTRIBUTES_ORIGIN
-        case "ootb":
-            result = OOTB_POLICIES_ATTRIBUTES_ORIGIN
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := CUSTOM_POLICIES_ATTRIBUTES_ORIGIN
+	switch v {
+	case "custom":
+		result = CUSTOM_POLICIES_ATTRIBUTES_ORIGIN
+	case "ootb":
+		result = OOTB_POLICIES_ATTRIBUTES_ORIGIN
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicies_attributes_origin(values []Policies_attributes_origin) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Policies_attributes_origin) isMultiValue() bool {
-    return false
+	return false
 }

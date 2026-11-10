@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackOperationIdentifier_type int
 
 const (
-    STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE StackOperationIdentifier_type = iota
-    STACKOPERATIONAPPLIES_STACKOPERATIONIDENTIFIER_TYPE
-    STACKOPERATIONIMPORTSTATES_STACKOPERATIONIDENTIFIER_TYPE
-    STACKOPERATIONALLOWIMPORTS_STACKOPERATIONIDENTIFIER_TYPE
+	STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE StackOperationIdentifier_type = iota
+	STACKOPERATIONAPPLIES_STACKOPERATIONIDENTIFIER_TYPE
+	STACKOPERATIONIMPORTSTATES_STACKOPERATIONIDENTIFIER_TYPE
+	STACKOPERATIONALLOWIMPORTS_STACKOPERATIONIDENTIFIER_TYPE
 )
 
 func (i StackOperationIdentifier_type) String() string {
-    return []string{"stack-operation-plans", "stack-operation-applies", "stack-operation-import-states", "stack-operation-allow-imports"}[i]
+	return []string{"stack-operation-plans", "stack-operation-applies", "stack-operation-import-states", "stack-operation-allow-imports"}[i]
 }
+
 func ParseStackOperationIdentifier_type(v string) (any, error) {
-    result := STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE
-    switch v {
-        case "stack-operation-plans":
-            result = STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE
-        case "stack-operation-applies":
-            result = STACKOPERATIONAPPLIES_STACKOPERATIONIDENTIFIER_TYPE
-        case "stack-operation-import-states":
-            result = STACKOPERATIONIMPORTSTATES_STACKOPERATIONIDENTIFIER_TYPE
-        case "stack-operation-allow-imports":
-            result = STACKOPERATIONALLOWIMPORTS_STACKOPERATIONIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE
+	switch v {
+	case "stack-operation-plans":
+		result = STACKOPERATIONPLANS_STACKOPERATIONIDENTIFIER_TYPE
+	case "stack-operation-applies":
+		result = STACKOPERATIONAPPLIES_STACKOPERATIONIDENTIFIER_TYPE
+	case "stack-operation-import-states":
+		result = STACKOPERATIONIMPORTSTATES_STACKOPERATIONIDENTIFIER_TYPE
+	case "stack-operation-allow-imports":
+		result = STACKOPERATIONALLOWIMPORTS_STACKOPERATIONIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackOperationIdentifier_type(values []StackOperationIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackOperationIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

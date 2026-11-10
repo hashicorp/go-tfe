@@ -4,58 +4,67 @@
 package policysets
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemRelationshipsRequestBuilder builds and executes requests for operations under \policy-sets\{policy_set_id}\relationships
 type ItemRelationshipsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemRelationshipsRequestBuilderInternal instantiates a new ItemRelationshipsRequestBuilder and sets the default values.
-func NewItemRelationshipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRequestBuilder) {
-    m := &ItemRelationshipsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}/relationships", pathParameters),
-    }
-    return m
+func NewItemRelationshipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRelationshipsRequestBuilder {
+	m := &ItemRelationshipsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-sets/{policy_set_id}/relationships", pathParameters),
+	}
+	return m
 }
+
 // NewItemRelationshipsRequestBuilder instantiates a new ItemRelationshipsRequestBuilder and sets the default values.
-func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRelationshipsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Policies the policies property
 // returns a *ItemRelationshipsPoliciesRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) Policies()(*ItemRelationshipsPoliciesRequestBuilder) {
-    return NewItemRelationshipsPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) Policies() *ItemRelationshipsPoliciesRequestBuilder {
+	return NewItemRelationshipsPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // ProjectExclusions the projectExclusions property
 // returns a *ItemRelationshipsProjectExclusionsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) ProjectExclusions()(*ItemRelationshipsProjectExclusionsRequestBuilder) {
-    return NewItemRelationshipsProjectExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) ProjectExclusions() *ItemRelationshipsProjectExclusionsRequestBuilder {
+	return NewItemRelationshipsProjectExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Projects the projects property
 // returns a *ItemRelationshipsProjectsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) Projects()(*ItemRelationshipsProjectsRequestBuilder) {
-    return NewItemRelationshipsProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) Projects() *ItemRelationshipsProjectsRequestBuilder {
+	return NewItemRelationshipsProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // StackExclusions the stackExclusions property
 // returns a *ItemRelationshipsStackExclusionsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) StackExclusions()(*ItemRelationshipsStackExclusionsRequestBuilder) {
-    return NewItemRelationshipsStackExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) StackExclusions() *ItemRelationshipsStackExclusionsRequestBuilder {
+	return NewItemRelationshipsStackExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Stacks the stacks property
 // returns a *ItemRelationshipsStacksRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) Stacks()(*ItemRelationshipsStacksRequestBuilder) {
-    return NewItemRelationshipsStacksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) Stacks() *ItemRelationshipsStacksRequestBuilder {
+	return NewItemRelationshipsStacksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // WorkspaceExclusions the workspaceExclusions property
 // returns a *ItemRelationshipsWorkspaceExclusionsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) WorkspaceExclusions()(*ItemRelationshipsWorkspaceExclusionsRequestBuilder) {
-    return NewItemRelationshipsWorkspaceExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) WorkspaceExclusions() *ItemRelationshipsWorkspaceExclusionsRequestBuilder {
+	return NewItemRelationshipsWorkspaceExclusionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Workspaces the workspaces property
 // returns a *ItemRelationshipsWorkspacesRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) Workspaces()(*ItemRelationshipsWorkspacesRequestBuilder) {
-    return NewItemRelationshipsWorkspacesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) Workspaces() *ItemRelationshipsWorkspacesRequestBuilder {
+	return NewItemRelationshipsWorkspacesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

@@ -4,138 +4,150 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Plans_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The exports property
-    exports PlanExportsHasManyable
-    // The hyokEncryptedDataKey property
-    hyokEncryptedDataKey HyokEncryptedDataKeysHasOneable
-    // The stateVersions property
-    stateVersions StateVersionsHasManyable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The exports property
+	exports PlanExportsHasManyable
+	// The hyokEncryptedDataKey property
+	hyokEncryptedDataKey HyokEncryptedDataKeysHasOneable
+	// The stateVersions property
+	stateVersions StateVersionsHasManyable
 }
+
 // NewPlans_relationships instantiates a new Plans_relationships and sets the default values.
-func NewPlans_relationships()(*Plans_relationships) {
-    m := &Plans_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPlans_relationships() *Plans_relationships {
+	m := &Plans_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePlans_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePlans_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPlans_relationships(), nil
+func CreatePlans_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPlans_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Plans_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Plans_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetExports gets the exports property value. The exports property
 // returns a PlanExportsHasManyable when successful
-func (m *Plans_relationships) GetExports()(PlanExportsHasManyable) {
-    return m.exports
+func (m *Plans_relationships) GetExports() PlanExportsHasManyable {
+	return m.exports
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Plans_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["exports"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlanExportsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExports(val.(PlanExportsHasManyable))
-        }
-        return nil
-    }
-    res["hyok-encrypted-data-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokEncryptedDataKeysHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHyokEncryptedDataKey(val.(HyokEncryptedDataKeysHasOneable))
-        }
-        return nil
-    }
-    res["state-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStateVersions(val.(StateVersionsHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Plans_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["exports"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePlanExportsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExports(val.(PlanExportsHasManyable))
+		}
+		return nil
+	}
+	res["hyok-encrypted-data-key"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokEncryptedDataKeysHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHyokEncryptedDataKey(val.(HyokEncryptedDataKeysHasOneable))
+		}
+		return nil
+	}
+	res["state-versions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStateVersions(val.(StateVersionsHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
 // returns a HyokEncryptedDataKeysHasOneable when successful
-func (m *Plans_relationships) GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable) {
-    return m.hyokEncryptedDataKey
+func (m *Plans_relationships) GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable {
+	return m.hyokEncryptedDataKey
 }
+
 // GetStateVersions gets the state-versions property value. The stateVersions property
 // returns a StateVersionsHasManyable when successful
-func (m *Plans_relationships) GetStateVersions()(StateVersionsHasManyable) {
-    return m.stateVersions
+func (m *Plans_relationships) GetStateVersions() StateVersionsHasManyable {
+	return m.stateVersions
 }
+
 // Serialize serializes information the current object
-func (m *Plans_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("exports", m.GetExports())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("hyok-encrypted-data-key", m.GetHyokEncryptedDataKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("state-versions", m.GetStateVersions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Plans_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("exports", m.GetExports())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("hyok-encrypted-data-key", m.GetHyokEncryptedDataKey())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("state-versions", m.GetStateVersions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Plans_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Plans_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetExports sets the exports property value. The exports property
-func (m *Plans_relationships) SetExports(value PlanExportsHasManyable)() {
-    m.exports = value
+func (m *Plans_relationships) SetExports(value PlanExportsHasManyable) {
+	m.exports = value
 }
+
 // SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
-func (m *Plans_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)() {
-    m.hyokEncryptedDataKey = value
+func (m *Plans_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable) {
+	m.hyokEncryptedDataKey = value
 }
+
 // SetStateVersions sets the state-versions property value. The stateVersions property
-func (m *Plans_relationships) SetStateVersions(value StateVersionsHasManyable)() {
-    m.stateVersions = value
+func (m *Plans_relationships) SetStateVersions(value StateVersionsHasManyable) {
+	m.stateVersions = value
 }
+
 type Plans_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetExports()(PlanExportsHasManyable)
-    GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable)
-    GetStateVersions()(StateVersionsHasManyable)
-    SetExports(value PlanExportsHasManyable)()
-    SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)()
-    SetStateVersions(value StateVersionsHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetExports() PlanExportsHasManyable
+	GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable
+	GetStateVersions() StateVersionsHasManyable
+	SetExports(value PlanExportsHasManyable)
+	SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)
+	SetStateVersions(value StateVersionsHasManyable)
 }

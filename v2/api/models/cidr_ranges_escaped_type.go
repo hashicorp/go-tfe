@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type CidrRanges_type int
 
 const (
-    CIDRRANGES_CIDRRANGES_TYPE CidrRanges_type = iota
+	CIDRRANGES_CIDRRANGES_TYPE CidrRanges_type = iota
 )
 
 func (i CidrRanges_type) String() string {
-    return []string{"cidr-ranges"}[i]
+	return []string{"cidr-ranges"}[i]
 }
+
 func ParseCidrRanges_type(v string) (any, error) {
-    result := CIDRRANGES_CIDRRANGES_TYPE
-    switch v {
-        case "cidr-ranges":
-            result = CIDRRANGES_CIDRRANGES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := CIDRRANGES_CIDRRANGES_TYPE
+	switch v {
+	case "cidr-ranges":
+		result = CIDRRANGES_CIDRRANGES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeCidrRanges_type(values []CidrRanges_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i CidrRanges_type) isMultiValue() bool {
-    return false
+	return false
 }

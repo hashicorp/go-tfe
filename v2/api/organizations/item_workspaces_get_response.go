@@ -4,616 +4,670 @@
 package organizations
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type ItemWorkspacesGetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
-    // The included property
-    included []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable
-    // The links property
-    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
-    // The meta property
-    meta ItemWorkspacesGetResponse_metaable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The data property
+	data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+	// The included property
+	included []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable
+	// The links property
+	links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+	// The meta property
+	meta ItemWorkspacesGetResponse_metaable
 }
+
 // ItemWorkspacesGetResponse_WorkspacesGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
 type ItemWorkspacesGetResponse_WorkspacesGetResponse_included struct {
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
-    agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
-    applies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
-    assessmentResults i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-    configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
-    effectiveTagBindings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-    ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
-    noCodeModules i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
-    noCodeModuleVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-    organizations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
-    plans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-    projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-    runs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-    stateVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-    users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
-    vars i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
-    workspaceOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
-    workspaceReadme i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+	agentPools i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+	applies i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+	assessmentResults i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+	configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+	effectiveTagBindings i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+	ingressAttributes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
+	noCodeModules i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+	noCodeModuleVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+	organizations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+	plans i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+	projects i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+	runs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+	stateVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+	users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+	vars i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
+	workspaceOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
+	// Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+	workspaceReadme i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
 }
+
 // NewItemWorkspacesGetResponse_WorkspacesGetResponse_included instantiates a new ItemWorkspacesGetResponse_WorkspacesGetResponse_included and sets the default values.
-func NewItemWorkspacesGetResponse_WorkspacesGetResponse_included()(*ItemWorkspacesGetResponse_WorkspacesGetResponse_included) {
-    m := &ItemWorkspacesGetResponse_WorkspacesGetResponse_included{
-    }
-    return m
+func NewItemWorkspacesGetResponse_WorkspacesGetResponse_included() *ItemWorkspacesGetResponse_WorkspacesGetResponse_included {
+	m := &ItemWorkspacesGetResponse_WorkspacesGetResponse_included{}
+	return m
 }
+
 // CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewItemWorkspacesGetResponse_WorkspacesGetResponse_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
-                    result.SetAgentPools(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAgentPools())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "applies") {
-                    result.SetApplies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewApplies())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "assessment-results") {
-                    result.SetAssessmentResults(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAssessmentResults())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
-                    result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "effective-tag-bindings") {
-                    result.SetEffectiveTagBindings(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewEffectiveTagBindings())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
-                    result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-modules") {
-                    result.SetNoCodeModules(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModules())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-module-versions") {
-                    result.SetNoCodeModuleVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModuleVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
-                    result.SetOrganizations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOrganizations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "plans") {
-                    result.SetPlans(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewPlans())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
-                    result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
-                    result.SetRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewRuns())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-versions") {
-                    result.SetStateVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStateVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
-                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
-                    result.SetVars(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewVars())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-outputs") {
-                    result.SetWorkspaceOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceOutputs())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-readme") {
-                    result.SetWorkspaceReadme(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceReadme())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewItemWorkspacesGetResponse_WorkspacesGetResponse_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "agent-pools") {
+					result.SetAgentPools(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAgentPools())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "applies") {
+					result.SetApplies(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewApplies())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "assessment-results") {
+					result.SetAssessmentResults(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewAssessmentResults())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+					result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "effective-tag-bindings") {
+					result.SetEffectiveTagBindings(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewEffectiveTagBindings())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+					result.SetIngressAttributes(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewIngressAttributes())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-modules") {
+					result.SetNoCodeModules(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModules())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "no-code-module-versions") {
+					result.SetNoCodeModuleVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewNoCodeModuleVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+					result.SetOrganizations(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewOrganizations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "plans") {
+					result.SetPlans(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewPlans())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+					result.SetProjects(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewProjects())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+					result.SetRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewRuns())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-versions") {
+					result.SetStateVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStateVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+					result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vars") {
+					result.SetVars(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewVars())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-outputs") {
+					result.SetWorkspaceOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceOutputs())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspace-readme") {
+					result.SetWorkspaceReadme(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewWorkspaceReadme())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
 // GetAgentPools gets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
 // returns a AgentPoolsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
-    return m.agentPools
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAgentPools() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable {
+	return m.agentPools
 }
+
 // GetApplies gets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
 // returns a Appliesable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable) {
-    return m.applies
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetApplies() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable {
+	return m.applies
 }
+
 // GetAssessmentResults gets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
 // returns a AssessmentResultsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAssessmentResults()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable) {
-    return m.assessmentResults
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetAssessmentResults() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable {
+	return m.assessmentResults
 }
+
 // GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
 // returns a ConfigurationVersionsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
-    return m.configurationVersions
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable {
+	return m.configurationVersions
 }
+
 // GetEffectiveTagBindings gets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
 // returns a EffectiveTagBindingsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable) {
-    return m.effectiveTagBindings
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetEffectiveTagBindings() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable {
+	return m.effectiveTagBindings
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetAgentPools() != nil {
-        return m.GetAgentPools().GetFieldDeserializers()
-    } else if m.GetApplies() != nil {
-        return m.GetApplies().GetFieldDeserializers()
-    } else if m.GetAssessmentResults() != nil {
-        return m.GetAssessmentResults().GetFieldDeserializers()
-    } else if m.GetConfigurationVersions() != nil {
-        return m.GetConfigurationVersions().GetFieldDeserializers()
-    } else if m.GetEffectiveTagBindings() != nil {
-        return m.GetEffectiveTagBindings().GetFieldDeserializers()
-    } else if m.GetIngressAttributes() != nil {
-        return m.GetIngressAttributes().GetFieldDeserializers()
-    } else if m.GetNoCodeModules() != nil {
-        return m.GetNoCodeModules().GetFieldDeserializers()
-    } else if m.GetNoCodeModuleVersions() != nil {
-        return m.GetNoCodeModuleVersions().GetFieldDeserializers()
-    } else if m.GetOrganizations() != nil {
-        return m.GetOrganizations().GetFieldDeserializers()
-    } else if m.GetPlans() != nil {
-        return m.GetPlans().GetFieldDeserializers()
-    } else if m.GetProjects() != nil {
-        return m.GetProjects().GetFieldDeserializers()
-    } else if m.GetRuns() != nil {
-        return m.GetRuns().GetFieldDeserializers()
-    } else if m.GetStateVersions() != nil {
-        return m.GetStateVersions().GetFieldDeserializers()
-    } else if m.GetUsers() != nil {
-        return m.GetUsers().GetFieldDeserializers()
-    } else if m.GetVars() != nil {
-        return m.GetVars().GetFieldDeserializers()
-    } else if m.GetWorkspaceOutputs() != nil {
-        return m.GetWorkspaceOutputs().GetFieldDeserializers()
-    } else if m.GetWorkspaceReadme() != nil {
-        return m.GetWorkspaceReadme().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetAgentPools() != nil {
+		return m.GetAgentPools().GetFieldDeserializers()
+	} else if m.GetApplies() != nil {
+		return m.GetApplies().GetFieldDeserializers()
+	} else if m.GetAssessmentResults() != nil {
+		return m.GetAssessmentResults().GetFieldDeserializers()
+	} else if m.GetConfigurationVersions() != nil {
+		return m.GetConfigurationVersions().GetFieldDeserializers()
+	} else if m.GetEffectiveTagBindings() != nil {
+		return m.GetEffectiveTagBindings().GetFieldDeserializers()
+	} else if m.GetIngressAttributes() != nil {
+		return m.GetIngressAttributes().GetFieldDeserializers()
+	} else if m.GetNoCodeModules() != nil {
+		return m.GetNoCodeModules().GetFieldDeserializers()
+	} else if m.GetNoCodeModuleVersions() != nil {
+		return m.GetNoCodeModuleVersions().GetFieldDeserializers()
+	} else if m.GetOrganizations() != nil {
+		return m.GetOrganizations().GetFieldDeserializers()
+	} else if m.GetPlans() != nil {
+		return m.GetPlans().GetFieldDeserializers()
+	} else if m.GetProjects() != nil {
+		return m.GetProjects().GetFieldDeserializers()
+	} else if m.GetRuns() != nil {
+		return m.GetRuns().GetFieldDeserializers()
+	} else if m.GetStateVersions() != nil {
+		return m.GetStateVersions().GetFieldDeserializers()
+	} else if m.GetUsers() != nil {
+		return m.GetUsers().GetFieldDeserializers()
+	} else if m.GetVars() != nil {
+		return m.GetVars().GetFieldDeserializers()
+	} else if m.GetWorkspaceOutputs() != nil {
+		return m.GetWorkspaceOutputs().GetFieldDeserializers()
+	} else if m.GetWorkspaceReadme() != nil {
+		return m.GetWorkspaceReadme().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
 // returns a IngressAttributesable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
-    return m.ingressAttributes
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIngressAttributes() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable {
+	return m.ingressAttributes
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIsComposedType()(bool) {
-    return true
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetIsComposedType() bool {
+	return true
 }
+
 // GetNoCodeModules gets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
 // returns a NoCodeModulesable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModules()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable) {
-    return m.noCodeModules
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModules() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable {
+	return m.noCodeModules
 }
+
 // GetNoCodeModuleVersions gets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
 // returns a NoCodeModuleVersionsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModuleVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable) {
-    return m.noCodeModuleVersions
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetNoCodeModuleVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable {
+	return m.noCodeModuleVersions
 }
+
 // GetOrganizations gets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
 // returns a Organizationsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetOrganizations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable) {
-    return m.organizations
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetOrganizations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable {
+	return m.organizations
 }
+
 // GetPlans gets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
 // returns a Plansable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable) {
-    return m.plans
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetPlans() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable {
+	return m.plans
 }
+
 // GetProjects gets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
 // returns a Projectsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
-    return m.projects
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetProjects() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable {
+	return m.projects
 }
+
 // GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
 // returns a Runsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
-    return m.runs
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetRuns() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable {
+	return m.runs
 }
+
 // GetStateVersions gets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
 // returns a StateVersionsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetStateVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
-    return m.stateVersions
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetStateVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable {
+	return m.stateVersions
 }
+
 // GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
 // returns a Usersable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
-    return m.users
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetUsers() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable {
+	return m.users
 }
+
 // GetVars gets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
 // returns a Varsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
-    return m.vars
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetVars() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable {
+	return m.vars
 }
+
 // GetWorkspaceOutputs gets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
 // returns a WorkspaceOutputsable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable) {
-    return m.workspaceOutputs
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceOutputs() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable {
+	return m.workspaceOutputs
 }
+
 // GetWorkspaceReadme gets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
 // returns a WorkspaceReadmeable when successful
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceReadme()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable) {
-    return m.workspaceReadme
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) GetWorkspaceReadme() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable {
+	return m.workspaceReadme
 }
+
 // Serialize serializes information the current object
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAgentPools() != nil {
-        err := writer.WriteObjectValue("", m.GetAgentPools())
-        if err != nil {
-            return err
-        }
-    } else if m.GetApplies() != nil {
-        err := writer.WriteObjectValue("", m.GetApplies())
-        if err != nil {
-            return err
-        }
-    } else if m.GetAssessmentResults() != nil {
-        err := writer.WriteObjectValue("", m.GetAssessmentResults())
-        if err != nil {
-            return err
-        }
-    } else if m.GetConfigurationVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetEffectiveTagBindings() != nil {
-        err := writer.WriteObjectValue("", m.GetEffectiveTagBindings())
-        if err != nil {
-            return err
-        }
-    } else if m.GetIngressAttributes() != nil {
-        err := writer.WriteObjectValue("", m.GetIngressAttributes())
-        if err != nil {
-            return err
-        }
-    } else if m.GetNoCodeModules() != nil {
-        err := writer.WriteObjectValue("", m.GetNoCodeModules())
-        if err != nil {
-            return err
-        }
-    } else if m.GetNoCodeModuleVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetNoCodeModuleVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetOrganizations() != nil {
-        err := writer.WriteObjectValue("", m.GetOrganizations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetPlans() != nil {
-        err := writer.WriteObjectValue("", m.GetPlans())
-        if err != nil {
-            return err
-        }
-    } else if m.GetProjects() != nil {
-        err := writer.WriteObjectValue("", m.GetProjects())
-        if err != nil {
-            return err
-        }
-    } else if m.GetRuns() != nil {
-        err := writer.WriteObjectValue("", m.GetRuns())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStateVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetStateVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetUsers() != nil {
-        err := writer.WriteObjectValue("", m.GetUsers())
-        if err != nil {
-            return err
-        }
-    } else if m.GetVars() != nil {
-        err := writer.WriteObjectValue("", m.GetVars())
-        if err != nil {
-            return err
-        }
-    } else if m.GetWorkspaceOutputs() != nil {
-        err := writer.WriteObjectValue("", m.GetWorkspaceOutputs())
-        if err != nil {
-            return err
-        }
-    } else if m.GetWorkspaceReadme() != nil {
-        err := writer.WriteObjectValue("", m.GetWorkspaceReadme())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAgentPools() != nil {
+		err := writer.WriteObjectValue("", m.GetAgentPools())
+		if err != nil {
+			return err
+		}
+	} else if m.GetApplies() != nil {
+		err := writer.WriteObjectValue("", m.GetApplies())
+		if err != nil {
+			return err
+		}
+	} else if m.GetAssessmentResults() != nil {
+		err := writer.WriteObjectValue("", m.GetAssessmentResults())
+		if err != nil {
+			return err
+		}
+	} else if m.GetConfigurationVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetEffectiveTagBindings() != nil {
+		err := writer.WriteObjectValue("", m.GetEffectiveTagBindings())
+		if err != nil {
+			return err
+		}
+	} else if m.GetIngressAttributes() != nil {
+		err := writer.WriteObjectValue("", m.GetIngressAttributes())
+		if err != nil {
+			return err
+		}
+	} else if m.GetNoCodeModules() != nil {
+		err := writer.WriteObjectValue("", m.GetNoCodeModules())
+		if err != nil {
+			return err
+		}
+	} else if m.GetNoCodeModuleVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetNoCodeModuleVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetOrganizations() != nil {
+		err := writer.WriteObjectValue("", m.GetOrganizations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetPlans() != nil {
+		err := writer.WriteObjectValue("", m.GetPlans())
+		if err != nil {
+			return err
+		}
+	} else if m.GetProjects() != nil {
+		err := writer.WriteObjectValue("", m.GetProjects())
+		if err != nil {
+			return err
+		}
+	} else if m.GetRuns() != nil {
+		err := writer.WriteObjectValue("", m.GetRuns())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStateVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetStateVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetUsers() != nil {
+		err := writer.WriteObjectValue("", m.GetUsers())
+		if err != nil {
+			return err
+		}
+	} else if m.GetVars() != nil {
+		err := writer.WriteObjectValue("", m.GetVars())
+		if err != nil {
+			return err
+		}
+	} else if m.GetWorkspaceOutputs() != nil {
+		err := writer.WriteObjectValue("", m.GetWorkspaceOutputs())
+		if err != nil {
+			return err
+		}
+	} else if m.GetWorkspaceReadme() != nil {
+		err := writer.WriteObjectValue("", m.GetWorkspaceReadme())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAgentPools sets the agentPools property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)() {
-    m.agentPools = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable) {
+	m.agentPools = value
 }
+
 // SetApplies sets the applies property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)() {
-    m.applies = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable) {
+	m.applies = value
 }
+
 // SetAssessmentResults sets the assessmentResults property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)() {
-    m.assessmentResults = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable) {
+	m.assessmentResults = value
 }
+
 // SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)() {
-    m.configurationVersions = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
+	m.configurationVersions = value
 }
+
 // SetEffectiveTagBindings sets the effectiveTagBindings property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)() {
-    m.effectiveTagBindings = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable) {
+	m.effectiveTagBindings = value
 }
+
 // SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)() {
-    m.ingressAttributes = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable) {
+	m.ingressAttributes = value
 }
+
 // SetNoCodeModules sets the noCodeModules property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)() {
-    m.noCodeModules = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable) {
+	m.noCodeModules = value
 }
+
 // SetNoCodeModuleVersions sets the noCodeModuleVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)() {
-    m.noCodeModuleVersions = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable) {
+	m.noCodeModuleVersions = value
 }
+
 // SetOrganizations sets the organizations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)() {
-    m.organizations = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable) {
+	m.organizations = value
 }
+
 // SetPlans sets the plans property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)() {
-    m.plans = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable) {
+	m.plans = value
 }
+
 // SetProjects sets the projects property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)() {
-    m.projects = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable) {
+	m.projects = value
 }
+
 // SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)() {
-    m.runs = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
+	m.runs = value
 }
+
 // SetStateVersions sets the stateVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)() {
-    m.stateVersions = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
+	m.stateVersions = value
 }
+
 // SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
-    m.users = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
+	m.users = value
 }
+
 // SetVars sets the vars property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)() {
-    m.vars = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable) {
+	m.vars = value
 }
+
 // SetWorkspaceOutputs sets the workspaceOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)() {
-    m.workspaceOutputs = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable) {
+	m.workspaceOutputs = value
 }
+
 // SetWorkspaceReadme sets the workspaceReadme property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
-func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)() {
-    m.workspaceReadme = value
+func (m *ItemWorkspacesGetResponse_WorkspacesGetResponse_included) SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable) {
+	m.workspaceReadme = value
 }
+
 type ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPools()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
-    GetApplies()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)
-    GetAssessmentResults()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)
-    GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
-    GetEffectiveTagBindings()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
-    GetIngressAttributes()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
-    GetNoCodeModules()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)
-    GetNoCodeModuleVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)
-    GetOrganizations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
-    GetPlans()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)
-    GetProjects()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
-    GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
-    GetStateVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
-    GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
-    GetVars()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
-    GetWorkspaceOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)
-    GetWorkspaceReadme()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)
-    SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)()
-    SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)()
-    SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)()
-    SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)()
-    SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)()
-    SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)()
-    SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)()
-    SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)()
-    SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)()
-    SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)()
-    SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)()
-    SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)()
-    SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)()
-    SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
-    SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)()
-    SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)()
-    SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPools() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable
+	GetApplies() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable
+	GetAssessmentResults() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable
+	GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+	GetEffectiveTagBindings() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable
+	GetIngressAttributes() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable
+	GetNoCodeModules() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable
+	GetNoCodeModuleVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable
+	GetOrganizations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable
+	GetPlans() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable
+	GetProjects() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable
+	GetRuns() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+	GetStateVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+	GetUsers() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+	GetVars() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable
+	GetWorkspaceOutputs() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable
+	GetWorkspaceReadme() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable
+	SetAgentPools(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AgentPoolsable)
+	SetApplies(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Appliesable)
+	SetAssessmentResults(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AssessmentResultsable)
+	SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+	SetEffectiveTagBindings(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.EffectiveTagBindingsable)
+	SetIngressAttributes(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.IngressAttributesable)
+	SetNoCodeModules(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModulesable)
+	SetNoCodeModuleVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NoCodeModuleVersionsable)
+	SetOrganizations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Organizationsable)
+	SetPlans(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Plansable)
+	SetProjects(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Projectsable)
+	SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
+	SetStateVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+	SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
+	SetVars(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Varsable)
+	SetWorkspaceOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceOutputsable)
+	SetWorkspaceReadme(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceReadmeable)
 }
+
 // NewItemWorkspacesGetResponse instantiates a new ItemWorkspacesGetResponse and sets the default values.
-func NewItemWorkspacesGetResponse()(*ItemWorkspacesGetResponse) {
-    m := &ItemWorkspacesGetResponse{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemWorkspacesGetResponse() *ItemWorkspacesGetResponse {
+	m := &ItemWorkspacesGetResponse{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemWorkspacesGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemWorkspacesGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemWorkspacesGetResponse(), nil
+func CreateItemWorkspacesGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemWorkspacesGetResponse(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemWorkspacesGetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemWorkspacesGetResponse) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetData gets the data property value. The data property
 // returns a []Workspacesable when successful
-func (m *ItemWorkspacesGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
-    return m.data
+func (m *ItemWorkspacesGetResponse) GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable {
+	return m.data
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemWorkspacesGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspacesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
-                }
-            }
-            m.SetData(res)
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
-        }
-        return nil
-    }
-    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemWorkspacesGetResponse_metaFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMeta(val.(ItemWorkspacesGetResponse_metaable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemWorkspacesGetResponse) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspacesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+				}
+			}
+			m.SetData(res)
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateItemWorkspacesGetResponse_WorkspacesGetResponse_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
+		}
+		return nil
+	}
+	res["meta"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemWorkspacesGetResponse_metaFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMeta(val.(ItemWorkspacesGetResponse_metaable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable when successful
-func (m *ItemWorkspacesGetResponse) GetIncluded()([]ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable) {
-    return m.included
+func (m *ItemWorkspacesGetResponse) GetIncluded() []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable {
+	return m.included
 }
+
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
-func (m *ItemWorkspacesGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
-    return m.links
+func (m *ItemWorkspacesGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable {
+	return m.links
 }
+
 // GetMeta gets the meta property value. The meta property
 // returns a ItemWorkspacesGetResponse_metaable when successful
-func (m *ItemWorkspacesGetResponse) GetMeta()(ItemWorkspacesGetResponse_metaable) {
-    return m.meta
+func (m *ItemWorkspacesGetResponse) GetMeta() ItemWorkspacesGetResponse_metaable {
+	return m.meta
 }
+
 // Serialize serializes information the current object
-func (m *ItemWorkspacesGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("meta", m.GetMeta())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemWorkspacesGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetData() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+		for i, v := range m.GetData() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("data", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("meta", m.GetMeta())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemWorkspacesGetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemWorkspacesGetResponse) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetData sets the data property value. The data property
-func (m *ItemWorkspacesGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)() {
-    m.data = value
+func (m *ItemWorkspacesGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable) {
+	m.data = value
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *ItemWorkspacesGetResponse) SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)() {
-    m.included = value
+func (m *ItemWorkspacesGetResponse) SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable) {
+	m.included = value
 }
+
 // SetLinks sets the links property value. The links property
-func (m *ItemWorkspacesGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
-    m.links = value
+func (m *ItemWorkspacesGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
+	m.links = value
 }
+
 // SetMeta sets the meta property value. The meta property
-func (m *ItemWorkspacesGetResponse) SetMeta(value ItemWorkspacesGetResponse_metaable)() {
-    m.meta = value
+func (m *ItemWorkspacesGetResponse) SetMeta(value ItemWorkspacesGetResponse_metaable) {
+	m.meta = value
 }
+
 type ItemWorkspacesGetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
-    GetIncluded()([]ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
-    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
-    GetMeta()(ItemWorkspacesGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)()
-    SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)()
-    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
-    SetMeta(value ItemWorkspacesGetResponse_metaable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable
+	GetIncluded() []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable
+	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+	GetMeta() ItemWorkspacesGetResponse_metaable
+	SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Workspacesable)
+	SetIncluded(value []ItemWorkspacesGetResponse_WorkspacesGetResponse_includedable)
+	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	SetMeta(value ItemWorkspacesGetResponse_metaable)
 }

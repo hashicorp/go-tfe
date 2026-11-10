@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package teamprojects
+
 type GetIncludeQueryParameterType int
 
 const (
-    TEAM_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	TEAM_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"team"}[i]
+	return []string{"team"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := TEAM_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "team":
-            result = TEAM_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TEAM_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "team":
+		result = TEAM_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,515 +4,553 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type Runs_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The apply property
-    apply AppliesHasOneable
-    // The canceledBy property
-    canceledBy UsersHasOneable
-    // The comments property
-    comments WorkspaceCommentsHasManyable
-    // The configurationVersion property
-    configurationVersion ConfigurationVersionsHasOneable
-    // The confirmedBy property
-    confirmedBy UsersHasOneable
-    // The costEstimate property
-    costEstimate CostEstimatesHasOneable
-    // The createdBy property
-    createdBy UsersHasOneable
-    // The plan property
-    plan PlansHasOneable
-    // The policyChecks property
-    policyChecks PolicyChecksHasManyable
-    // The runEvents property
-    runEvents RunEventsHasManyable
-    // The runTriggerSnapshots property
-    runTriggerSnapshots Links_relatedable
-    // The taskStages property
-    taskStages TaskStagesHasManyable
-    // The tfPolicyEvaluations property
-    tfPolicyEvaluations TfPolicyEvaluationsHasManyable
-    // The triggeringRun property
-    triggeringRun RunsHasOneable
-    // The triggeringSource property
-    triggeringSource WorkspacesHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The apply property
+	apply AppliesHasOneable
+	// The canceledBy property
+	canceledBy UsersHasOneable
+	// The comments property
+	comments WorkspaceCommentsHasManyable
+	// The configurationVersion property
+	configurationVersion ConfigurationVersionsHasOneable
+	// The confirmedBy property
+	confirmedBy UsersHasOneable
+	// The costEstimate property
+	costEstimate CostEstimatesHasOneable
+	// The createdBy property
+	createdBy UsersHasOneable
+	// The plan property
+	plan PlansHasOneable
+	// The policyChecks property
+	policyChecks PolicyChecksHasManyable
+	// The runEvents property
+	runEvents RunEventsHasManyable
+	// The runTriggerSnapshots property
+	runTriggerSnapshots Links_relatedable
+	// The taskStages property
+	taskStages TaskStagesHasManyable
+	// The tfPolicyEvaluations property
+	tfPolicyEvaluations TfPolicyEvaluationsHasManyable
+	// The triggeringRun property
+	triggeringRun RunsHasOneable
+	// The triggeringSource property
+	triggeringSource WorkspacesHasOneable
+	// The workspace property
+	workspace WorkspacesHasOneable
 }
+
 // NewRuns_relationships instantiates a new Runs_relationships and sets the default values.
-func NewRuns_relationships()(*Runs_relationships) {
-    m := &Runs_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRuns_relationships() *Runs_relationships {
+	m := &Runs_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRuns_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRuns_relationships(), nil
+func CreateRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRuns_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Runs_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Runs_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetApply gets the apply property value. The apply property
 // returns a AppliesHasOneable when successful
-func (m *Runs_relationships) GetApply()(AppliesHasOneable) {
-    return m.apply
+func (m *Runs_relationships) GetApply() AppliesHasOneable {
+	return m.apply
 }
+
 // GetCanceledBy gets the canceled-by property value. The canceledBy property
 // returns a UsersHasOneable when successful
-func (m *Runs_relationships) GetCanceledBy()(UsersHasOneable) {
-    return m.canceledBy
+func (m *Runs_relationships) GetCanceledBy() UsersHasOneable {
+	return m.canceledBy
 }
+
 // GetComments gets the comments property value. The comments property
 // returns a WorkspaceCommentsHasManyable when successful
-func (m *Runs_relationships) GetComments()(WorkspaceCommentsHasManyable) {
-    return m.comments
+func (m *Runs_relationships) GetComments() WorkspaceCommentsHasManyable {
+	return m.comments
 }
+
 // GetConfigurationVersion gets the configuration-version property value. The configurationVersion property
 // returns a ConfigurationVersionsHasOneable when successful
-func (m *Runs_relationships) GetConfigurationVersion()(ConfigurationVersionsHasOneable) {
-    return m.configurationVersion
+func (m *Runs_relationships) GetConfigurationVersion() ConfigurationVersionsHasOneable {
+	return m.configurationVersion
 }
+
 // GetConfirmedBy gets the confirmed-by property value. The confirmedBy property
 // returns a UsersHasOneable when successful
-func (m *Runs_relationships) GetConfirmedBy()(UsersHasOneable) {
-    return m.confirmedBy
+func (m *Runs_relationships) GetConfirmedBy() UsersHasOneable {
+	return m.confirmedBy
 }
+
 // GetCostEstimate gets the cost-estimate property value. The costEstimate property
 // returns a CostEstimatesHasOneable when successful
-func (m *Runs_relationships) GetCostEstimate()(CostEstimatesHasOneable) {
-    return m.costEstimate
+func (m *Runs_relationships) GetCostEstimate() CostEstimatesHasOneable {
+	return m.costEstimate
 }
+
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a UsersHasOneable when successful
-func (m *Runs_relationships) GetCreatedBy()(UsersHasOneable) {
-    return m.createdBy
+func (m *Runs_relationships) GetCreatedBy() UsersHasOneable {
+	return m.createdBy
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Runs_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAppliesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetApply(val.(AppliesHasOneable))
-        }
-        return nil
-    }
-    res["canceled-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["comments"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceCommentsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetComments(val.(WorkspaceCommentsHasManyable))
-        }
-        return nil
-    }
-    res["configuration-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConfigurationVersion(val.(ConfigurationVersionsHasOneable))
-        }
-        return nil
-    }
-    res["confirmed-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConfirmedBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["cost-estimate"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateCostEstimatesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCostEstimate(val.(CostEstimatesHasOneable))
-        }
-        return nil
-    }
-    res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePlansHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlan(val.(PlansHasOneable))
-        }
-        return nil
-    }
-    res["policy-checks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecksHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyChecks(val.(PolicyChecksHasManyable))
-        }
-        return nil
-    }
-    res["run-events"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunEventsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunEvents(val.(RunEventsHasManyable))
-        }
-        return nil
-    }
-    res["run-trigger-snapshots"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunTriggerSnapshots(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["task-stages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskStagesHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskStages(val.(TaskStagesHasManyable))
-        }
-        return nil
-    }
-    res["tf-policy-evaluations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluationsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTfPolicyEvaluations(val.(TfPolicyEvaluationsHasManyable))
-        }
-        return nil
-    }
-    res["triggering-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTriggeringRun(val.(RunsHasOneable))
-        }
-        return nil
-    }
-    res["triggering-source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTriggeringSource(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Runs_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["apply"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAppliesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetApply(val.(AppliesHasOneable))
+		}
+		return nil
+	}
+	res["canceled-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["comments"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceCommentsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetComments(val.(WorkspaceCommentsHasManyable))
+		}
+		return nil
+	}
+	res["configuration-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConfigurationVersion(val.(ConfigurationVersionsHasOneable))
+		}
+		return nil
+	}
+	res["confirmed-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConfirmedBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["cost-estimate"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateCostEstimatesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCostEstimate(val.(CostEstimatesHasOneable))
+		}
+		return nil
+	}
+	res["created-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["plan"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePlansHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlan(val.(PlansHasOneable))
+		}
+		return nil
+	}
+	res["policy-checks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecksHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyChecks(val.(PolicyChecksHasManyable))
+		}
+		return nil
+	}
+	res["run-events"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunEventsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunEvents(val.(RunEventsHasManyable))
+		}
+		return nil
+	}
+	res["run-trigger-snapshots"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunTriggerSnapshots(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["task-stages"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTaskStagesHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskStages(val.(TaskStagesHasManyable))
+		}
+		return nil
+	}
+	res["tf-policy-evaluations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluationsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTfPolicyEvaluations(val.(TfPolicyEvaluationsHasManyable))
+		}
+		return nil
+	}
+	res["triggering-run"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTriggeringRun(val.(RunsHasOneable))
+		}
+		return nil
+	}
+	res["triggering-source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTriggeringSource(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPlan gets the plan property value. The plan property
 // returns a PlansHasOneable when successful
-func (m *Runs_relationships) GetPlan()(PlansHasOneable) {
-    return m.plan
+func (m *Runs_relationships) GetPlan() PlansHasOneable {
+	return m.plan
 }
+
 // GetPolicyChecks gets the policy-checks property value. The policyChecks property
 // returns a PolicyChecksHasManyable when successful
-func (m *Runs_relationships) GetPolicyChecks()(PolicyChecksHasManyable) {
-    return m.policyChecks
+func (m *Runs_relationships) GetPolicyChecks() PolicyChecksHasManyable {
+	return m.policyChecks
 }
+
 // GetRunEvents gets the run-events property value. The runEvents property
 // returns a RunEventsHasManyable when successful
-func (m *Runs_relationships) GetRunEvents()(RunEventsHasManyable) {
-    return m.runEvents
+func (m *Runs_relationships) GetRunEvents() RunEventsHasManyable {
+	return m.runEvents
 }
+
 // GetRunTriggerSnapshots gets the run-trigger-snapshots property value. The runTriggerSnapshots property
 // returns a Links_relatedable when successful
-func (m *Runs_relationships) GetRunTriggerSnapshots()(Links_relatedable) {
-    return m.runTriggerSnapshots
+func (m *Runs_relationships) GetRunTriggerSnapshots() Links_relatedable {
+	return m.runTriggerSnapshots
 }
+
 // GetTaskStages gets the task-stages property value. The taskStages property
 // returns a TaskStagesHasManyable when successful
-func (m *Runs_relationships) GetTaskStages()(TaskStagesHasManyable) {
-    return m.taskStages
+func (m *Runs_relationships) GetTaskStages() TaskStagesHasManyable {
+	return m.taskStages
 }
+
 // GetTfPolicyEvaluations gets the tf-policy-evaluations property value. The tfPolicyEvaluations property
 // returns a TfPolicyEvaluationsHasManyable when successful
-func (m *Runs_relationships) GetTfPolicyEvaluations()(TfPolicyEvaluationsHasManyable) {
-    return m.tfPolicyEvaluations
+func (m *Runs_relationships) GetTfPolicyEvaluations() TfPolicyEvaluationsHasManyable {
+	return m.tfPolicyEvaluations
 }
+
 // GetTriggeringRun gets the triggering-run property value. The triggeringRun property
 // returns a RunsHasOneable when successful
-func (m *Runs_relationships) GetTriggeringRun()(RunsHasOneable) {
-    return m.triggeringRun
+func (m *Runs_relationships) GetTriggeringRun() RunsHasOneable {
+	return m.triggeringRun
 }
+
 // GetTriggeringSource gets the triggering-source property value. The triggeringSource property
 // returns a WorkspacesHasOneable when successful
-func (m *Runs_relationships) GetTriggeringSource()(WorkspacesHasOneable) {
-    return m.triggeringSource
+func (m *Runs_relationships) GetTriggeringSource() WorkspacesHasOneable {
+	return m.triggeringSource
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *Runs_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *Runs_relationships) GetWorkspace() WorkspacesHasOneable {
+	return m.workspace
 }
+
 // Serialize serializes information the current object
-func (m *Runs_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("apply", m.GetApply())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("comments", m.GetComments())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("configuration-version", m.GetConfigurationVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("confirmed-by", m.GetConfirmedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("cost-estimate", m.GetCostEstimate())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("plan", m.GetPlan())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("policy-checks", m.GetPolicyChecks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("run-events", m.GetRunEvents())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("run-trigger-snapshots", m.GetRunTriggerSnapshots())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("task-stages", m.GetTaskStages())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("tf-policy-evaluations", m.GetTfPolicyEvaluations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("triggering-run", m.GetTriggeringRun())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("triggering-source", m.GetTriggeringSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Runs_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("apply", m.GetApply())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("comments", m.GetComments())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("configuration-version", m.GetConfigurationVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("confirmed-by", m.GetConfirmedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("cost-estimate", m.GetCostEstimate())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("plan", m.GetPlan())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("policy-checks", m.GetPolicyChecks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("run-events", m.GetRunEvents())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("run-trigger-snapshots", m.GetRunTriggerSnapshots())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("task-stages", m.GetTaskStages())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("tf-policy-evaluations", m.GetTfPolicyEvaluations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("triggering-run", m.GetTriggeringRun())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("triggering-source", m.GetTriggeringSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Runs_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Runs_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetApply sets the apply property value. The apply property
-func (m *Runs_relationships) SetApply(value AppliesHasOneable)() {
-    m.apply = value
+func (m *Runs_relationships) SetApply(value AppliesHasOneable) {
+	m.apply = value
 }
+
 // SetCanceledBy sets the canceled-by property value. The canceledBy property
-func (m *Runs_relationships) SetCanceledBy(value UsersHasOneable)() {
-    m.canceledBy = value
+func (m *Runs_relationships) SetCanceledBy(value UsersHasOneable) {
+	m.canceledBy = value
 }
+
 // SetComments sets the comments property value. The comments property
-func (m *Runs_relationships) SetComments(value WorkspaceCommentsHasManyable)() {
-    m.comments = value
+func (m *Runs_relationships) SetComments(value WorkspaceCommentsHasManyable) {
+	m.comments = value
 }
+
 // SetConfigurationVersion sets the configuration-version property value. The configurationVersion property
-func (m *Runs_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable)() {
-    m.configurationVersion = value
+func (m *Runs_relationships) SetConfigurationVersion(value ConfigurationVersionsHasOneable) {
+	m.configurationVersion = value
 }
+
 // SetConfirmedBy sets the confirmed-by property value. The confirmedBy property
-func (m *Runs_relationships) SetConfirmedBy(value UsersHasOneable)() {
-    m.confirmedBy = value
+func (m *Runs_relationships) SetConfirmedBy(value UsersHasOneable) {
+	m.confirmedBy = value
 }
+
 // SetCostEstimate sets the cost-estimate property value. The costEstimate property
-func (m *Runs_relationships) SetCostEstimate(value CostEstimatesHasOneable)() {
-    m.costEstimate = value
+func (m *Runs_relationships) SetCostEstimate(value CostEstimatesHasOneable) {
+	m.costEstimate = value
 }
+
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *Runs_relationships) SetCreatedBy(value UsersHasOneable)() {
-    m.createdBy = value
+func (m *Runs_relationships) SetCreatedBy(value UsersHasOneable) {
+	m.createdBy = value
 }
+
 // SetPlan sets the plan property value. The plan property
-func (m *Runs_relationships) SetPlan(value PlansHasOneable)() {
-    m.plan = value
+func (m *Runs_relationships) SetPlan(value PlansHasOneable) {
+	m.plan = value
 }
+
 // SetPolicyChecks sets the policy-checks property value. The policyChecks property
-func (m *Runs_relationships) SetPolicyChecks(value PolicyChecksHasManyable)() {
-    m.policyChecks = value
+func (m *Runs_relationships) SetPolicyChecks(value PolicyChecksHasManyable) {
+	m.policyChecks = value
 }
+
 // SetRunEvents sets the run-events property value. The runEvents property
-func (m *Runs_relationships) SetRunEvents(value RunEventsHasManyable)() {
-    m.runEvents = value
+func (m *Runs_relationships) SetRunEvents(value RunEventsHasManyable) {
+	m.runEvents = value
 }
+
 // SetRunTriggerSnapshots sets the run-trigger-snapshots property value. The runTriggerSnapshots property
-func (m *Runs_relationships) SetRunTriggerSnapshots(value Links_relatedable)() {
-    m.runTriggerSnapshots = value
+func (m *Runs_relationships) SetRunTriggerSnapshots(value Links_relatedable) {
+	m.runTriggerSnapshots = value
 }
+
 // SetTaskStages sets the task-stages property value. The taskStages property
-func (m *Runs_relationships) SetTaskStages(value TaskStagesHasManyable)() {
-    m.taskStages = value
+func (m *Runs_relationships) SetTaskStages(value TaskStagesHasManyable) {
+	m.taskStages = value
 }
+
 // SetTfPolicyEvaluations sets the tf-policy-evaluations property value. The tfPolicyEvaluations property
-func (m *Runs_relationships) SetTfPolicyEvaluations(value TfPolicyEvaluationsHasManyable)() {
-    m.tfPolicyEvaluations = value
+func (m *Runs_relationships) SetTfPolicyEvaluations(value TfPolicyEvaluationsHasManyable) {
+	m.tfPolicyEvaluations = value
 }
+
 // SetTriggeringRun sets the triggering-run property value. The triggeringRun property
-func (m *Runs_relationships) SetTriggeringRun(value RunsHasOneable)() {
-    m.triggeringRun = value
+func (m *Runs_relationships) SetTriggeringRun(value RunsHasOneable) {
+	m.triggeringRun = value
 }
+
 // SetTriggeringSource sets the triggering-source property value. The triggeringSource property
-func (m *Runs_relationships) SetTriggeringSource(value WorkspacesHasOneable)() {
-    m.triggeringSource = value
+func (m *Runs_relationships) SetTriggeringSource(value WorkspacesHasOneable) {
+	m.triggeringSource = value
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *Runs_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *Runs_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	m.workspace = value
 }
+
 type Runs_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetApply()(AppliesHasOneable)
-    GetCanceledBy()(UsersHasOneable)
-    GetComments()(WorkspaceCommentsHasManyable)
-    GetConfigurationVersion()(ConfigurationVersionsHasOneable)
-    GetConfirmedBy()(UsersHasOneable)
-    GetCostEstimate()(CostEstimatesHasOneable)
-    GetCreatedBy()(UsersHasOneable)
-    GetPlan()(PlansHasOneable)
-    GetPolicyChecks()(PolicyChecksHasManyable)
-    GetRunEvents()(RunEventsHasManyable)
-    GetRunTriggerSnapshots()(Links_relatedable)
-    GetTaskStages()(TaskStagesHasManyable)
-    GetTfPolicyEvaluations()(TfPolicyEvaluationsHasManyable)
-    GetTriggeringRun()(RunsHasOneable)
-    GetTriggeringSource()(WorkspacesHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetApply(value AppliesHasOneable)()
-    SetCanceledBy(value UsersHasOneable)()
-    SetComments(value WorkspaceCommentsHasManyable)()
-    SetConfigurationVersion(value ConfigurationVersionsHasOneable)()
-    SetConfirmedBy(value UsersHasOneable)()
-    SetCostEstimate(value CostEstimatesHasOneable)()
-    SetCreatedBy(value UsersHasOneable)()
-    SetPlan(value PlansHasOneable)()
-    SetPolicyChecks(value PolicyChecksHasManyable)()
-    SetRunEvents(value RunEventsHasManyable)()
-    SetRunTriggerSnapshots(value Links_relatedable)()
-    SetTaskStages(value TaskStagesHasManyable)()
-    SetTfPolicyEvaluations(value TfPolicyEvaluationsHasManyable)()
-    SetTriggeringRun(value RunsHasOneable)()
-    SetTriggeringSource(value WorkspacesHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetApply() AppliesHasOneable
+	GetCanceledBy() UsersHasOneable
+	GetComments() WorkspaceCommentsHasManyable
+	GetConfigurationVersion() ConfigurationVersionsHasOneable
+	GetConfirmedBy() UsersHasOneable
+	GetCostEstimate() CostEstimatesHasOneable
+	GetCreatedBy() UsersHasOneable
+	GetPlan() PlansHasOneable
+	GetPolicyChecks() PolicyChecksHasManyable
+	GetRunEvents() RunEventsHasManyable
+	GetRunTriggerSnapshots() Links_relatedable
+	GetTaskStages() TaskStagesHasManyable
+	GetTfPolicyEvaluations() TfPolicyEvaluationsHasManyable
+	GetTriggeringRun() RunsHasOneable
+	GetTriggeringSource() WorkspacesHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetApply(value AppliesHasOneable)
+	SetCanceledBy(value UsersHasOneable)
+	SetComments(value WorkspaceCommentsHasManyable)
+	SetConfigurationVersion(value ConfigurationVersionsHasOneable)
+	SetConfirmedBy(value UsersHasOneable)
+	SetCostEstimate(value CostEstimatesHasOneable)
+	SetCreatedBy(value UsersHasOneable)
+	SetPlan(value PlansHasOneable)
+	SetPolicyChecks(value PolicyChecksHasManyable)
+	SetRunEvents(value RunEventsHasManyable)
+	SetRunTriggerSnapshots(value Links_relatedable)
+	SetTaskStages(value TaskStagesHasManyable)
+	SetTfPolicyEvaluations(value TfPolicyEvaluationsHasManyable)
+	SetTriggeringRun(value RunsHasOneable)
+	SetTriggeringSource(value WorkspacesHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package githubappinstallations
+
 type GetFilterStatusQueryParameterType int
 
 const (
-    ALL_GETFILTERSTATUSQUERYPARAMETERTYPE GetFilterStatusQueryParameterType = iota
-    CONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
-    DISCONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
-    SUSPENDED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	ALL_GETFILTERSTATUSQUERYPARAMETERTYPE GetFilterStatusQueryParameterType = iota
+	CONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	DISCONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	SUSPENDED_GETFILTERSTATUSQUERYPARAMETERTYPE
 )
 
 func (i GetFilterStatusQueryParameterType) String() string {
-    return []string{"all", "connected", "disconnected", "suspended"}[i]
+	return []string{"all", "connected", "disconnected", "suspended"}[i]
 }
+
 func ParseGetFilterStatusQueryParameterType(v string) (any, error) {
-    result := ALL_GETFILTERSTATUSQUERYPARAMETERTYPE
-    switch v {
-        case "all":
-            result = ALL_GETFILTERSTATUSQUERYPARAMETERTYPE
-        case "connected":
-            result = CONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
-        case "disconnected":
-            result = DISCONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
-        case "suspended":
-            result = SUSPENDED_GETFILTERSTATUSQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ALL_GETFILTERSTATUSQUERYPARAMETERTYPE
+	switch v {
+	case "all":
+		result = ALL_GETFILTERSTATUSQUERYPARAMETERTYPE
+	case "connected":
+		result = CONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	case "disconnected":
+		result = DISCONNECTED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	case "suspended":
+		result = SUSPENDED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterStatusQueryParameterType(values []GetFilterStatusQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterStatusQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

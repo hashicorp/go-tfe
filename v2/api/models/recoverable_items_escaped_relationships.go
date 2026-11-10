@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type RecoverableItems_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The project property
-    project ProjectsHasOneable
-    // The recoverable property
-    recoverable RecoverableHasOneable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The project property
+	project ProjectsHasOneable
+	// The recoverable property
+	recoverable RecoverableHasOneable
 }
+
 // NewRecoverableItems_relationships instantiates a new RecoverableItems_relationships and sets the default values.
-func NewRecoverableItems_relationships()(*RecoverableItems_relationships) {
-    m := &RecoverableItems_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRecoverableItems_relationships() *RecoverableItems_relationships {
+	m := &RecoverableItems_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRecoverableItems_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRecoverableItems_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRecoverableItems_relationships(), nil
+func CreateRecoverableItems_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRecoverableItems_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *RecoverableItems_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *RecoverableItems_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *RecoverableItems_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProject(val.(ProjectsHasOneable))
-        }
-        return nil
-    }
-    res["recoverable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRecoverableHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRecoverable(val.(RecoverableHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *RecoverableItems_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["project"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProject(val.(ProjectsHasOneable))
+		}
+		return nil
+	}
+	res["recoverable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRecoverableHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRecoverable(val.(RecoverableHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetProject gets the project property value. The project property
 // returns a ProjectsHasOneable when successful
-func (m *RecoverableItems_relationships) GetProject()(ProjectsHasOneable) {
-    return m.project
+func (m *RecoverableItems_relationships) GetProject() ProjectsHasOneable {
+	return m.project
 }
+
 // GetRecoverable gets the recoverable property value. The recoverable property
 // returns a RecoverableHasOneable when successful
-func (m *RecoverableItems_relationships) GetRecoverable()(RecoverableHasOneable) {
-    return m.recoverable
+func (m *RecoverableItems_relationships) GetRecoverable() RecoverableHasOneable {
+	return m.recoverable
 }
+
 // Serialize serializes information the current object
-func (m *RecoverableItems_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("project", m.GetProject())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("recoverable", m.GetRecoverable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *RecoverableItems_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("project", m.GetProject())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("recoverable", m.GetRecoverable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *RecoverableItems_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *RecoverableItems_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetProject sets the project property value. The project property
-func (m *RecoverableItems_relationships) SetProject(value ProjectsHasOneable)() {
-    m.project = value
+func (m *RecoverableItems_relationships) SetProject(value ProjectsHasOneable) {
+	m.project = value
 }
+
 // SetRecoverable sets the recoverable property value. The recoverable property
-func (m *RecoverableItems_relationships) SetRecoverable(value RecoverableHasOneable)() {
-    m.recoverable = value
+func (m *RecoverableItems_relationships) SetRecoverable(value RecoverableHasOneable) {
+	m.recoverable = value
 }
+
 type RecoverableItems_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetProject()(ProjectsHasOneable)
-    GetRecoverable()(RecoverableHasOneable)
-    SetProject(value ProjectsHasOneable)()
-    SetRecoverable(value RecoverableHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetProject() ProjectsHasOneable
+	GetRecoverable() RecoverableHasOneable
+	SetProject(value ProjectsHasOneable)
+	SetRecoverable(value RecoverableHasOneable)
 }

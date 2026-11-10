@@ -4,283 +4,305 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type GithubAppInstallations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // External ID of the GitHub App this installation belongs to.
-    appExternalId *string
-    // True when GitHub no longer reports this installation.
-    disconnected *bool
-    // The iconUrl property
-    iconUrl *string
-    // The installationId property
-    installationId *int32
-    // The installationType property
-    installationType *string
-    // The installationUrl property
-    installationUrl *string
-    // The name property
-    name *string
-    // True when the installation is suspended on GitHub.
-    suspended *bool
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// External ID of the GitHub App this installation belongs to.
+	appExternalId *string
+	// True when GitHub no longer reports this installation.
+	disconnected *bool
+	// The iconUrl property
+	iconUrl *string
+	// The installationId property
+	installationId *int32
+	// The installationType property
+	installationType *string
+	// The installationUrl property
+	installationUrl *string
+	// The name property
+	name *string
+	// True when the installation is suspended on GitHub.
+	suspended *bool
 }
+
 // NewGithubAppInstallations_attributes instantiates a new GithubAppInstallations_attributes and sets the default values.
-func NewGithubAppInstallations_attributes()(*GithubAppInstallations_attributes) {
-    m := &GithubAppInstallations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewGithubAppInstallations_attributes() *GithubAppInstallations_attributes {
+	m := &GithubAppInstallations_attributes{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateGithubAppInstallations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateGithubAppInstallations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewGithubAppInstallations_attributes(), nil
+func CreateGithubAppInstallations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewGithubAppInstallations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *GithubAppInstallations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *GithubAppInstallations_attributes) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetAppExternalId gets the app-external-id property value. External ID of the GitHub App this installation belongs to.
 // returns a *string when successful
-func (m *GithubAppInstallations_attributes) GetAppExternalId()(*string) {
-    return m.appExternalId
+func (m *GithubAppInstallations_attributes) GetAppExternalId() *string {
+	return m.appExternalId
 }
+
 // GetDisconnected gets the disconnected property value. True when GitHub no longer reports this installation.
 // returns a *bool when successful
-func (m *GithubAppInstallations_attributes) GetDisconnected()(*bool) {
-    return m.disconnected
+func (m *GithubAppInstallations_attributes) GetDisconnected() *bool {
+	return m.disconnected
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *GithubAppInstallations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["app-external-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAppExternalId(val)
-        }
-        return nil
-    }
-    res["disconnected"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDisconnected(val)
-        }
-        return nil
-    }
-    res["icon-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIconUrl(val)
-        }
-        return nil
-    }
-    res["installation-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInstallationId(val)
-        }
-        return nil
-    }
-    res["installation-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInstallationType(val)
-        }
-        return nil
-    }
-    res["installation-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInstallationUrl(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["suspended"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSuspended(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *GithubAppInstallations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["app-external-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAppExternalId(val)
+		}
+		return nil
+	}
+	res["disconnected"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDisconnected(val)
+		}
+		return nil
+	}
+	res["icon-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIconUrl(val)
+		}
+		return nil
+	}
+	res["installation-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInstallationId(val)
+		}
+		return nil
+	}
+	res["installation-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInstallationType(val)
+		}
+		return nil
+	}
+	res["installation-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInstallationUrl(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["suspended"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSuspended(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIconUrl gets the icon-url property value. The iconUrl property
 // returns a *string when successful
-func (m *GithubAppInstallations_attributes) GetIconUrl()(*string) {
-    return m.iconUrl
+func (m *GithubAppInstallations_attributes) GetIconUrl() *string {
+	return m.iconUrl
 }
+
 // GetInstallationId gets the installation-id property value. The installationId property
 // returns a *int32 when successful
-func (m *GithubAppInstallations_attributes) GetInstallationId()(*int32) {
-    return m.installationId
+func (m *GithubAppInstallations_attributes) GetInstallationId() *int32 {
+	return m.installationId
 }
+
 // GetInstallationType gets the installation-type property value. The installationType property
 // returns a *string when successful
-func (m *GithubAppInstallations_attributes) GetInstallationType()(*string) {
-    return m.installationType
+func (m *GithubAppInstallations_attributes) GetInstallationType() *string {
+	return m.installationType
 }
+
 // GetInstallationUrl gets the installation-url property value. The installationUrl property
 // returns a *string when successful
-func (m *GithubAppInstallations_attributes) GetInstallationUrl()(*string) {
-    return m.installationUrl
+func (m *GithubAppInstallations_attributes) GetInstallationUrl() *string {
+	return m.installationUrl
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *GithubAppInstallations_attributes) GetName()(*string) {
-    return m.name
+func (m *GithubAppInstallations_attributes) GetName() *string {
+	return m.name
 }
+
 // GetSuspended gets the suspended property value. True when the installation is suspended on GitHub.
 // returns a *bool when successful
-func (m *GithubAppInstallations_attributes) GetSuspended()(*bool) {
-    return m.suspended
+func (m *GithubAppInstallations_attributes) GetSuspended() *bool {
+	return m.suspended
 }
+
 // Serialize serializes information the current object
-func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("app-external-id", m.GetAppExternalId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("disconnected", m.GetDisconnected())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("icon-url", m.GetIconUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("installation-id", m.GetInstallationId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("installation-type", m.GetInstallationType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("installation-url", m.GetInstallationUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("suspended", m.GetSuspended())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *GithubAppInstallations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("app-external-id", m.GetAppExternalId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("disconnected", m.GetDisconnected())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("icon-url", m.GetIconUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("installation-id", m.GetInstallationId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("installation-type", m.GetInstallationType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("installation-url", m.GetInstallationUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("suspended", m.GetSuspended())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *GithubAppInstallations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *GithubAppInstallations_attributes) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetAppExternalId sets the app-external-id property value. External ID of the GitHub App this installation belongs to.
-func (m *GithubAppInstallations_attributes) SetAppExternalId(value *string)() {
-    m.appExternalId = value
+func (m *GithubAppInstallations_attributes) SetAppExternalId(value *string) {
+	m.appExternalId = value
 }
+
 // SetDisconnected sets the disconnected property value. True when GitHub no longer reports this installation.
-func (m *GithubAppInstallations_attributes) SetDisconnected(value *bool)() {
-    m.disconnected = value
+func (m *GithubAppInstallations_attributes) SetDisconnected(value *bool) {
+	m.disconnected = value
 }
+
 // SetIconUrl sets the icon-url property value. The iconUrl property
-func (m *GithubAppInstallations_attributes) SetIconUrl(value *string)() {
-    m.iconUrl = value
+func (m *GithubAppInstallations_attributes) SetIconUrl(value *string) {
+	m.iconUrl = value
 }
+
 // SetInstallationId sets the installation-id property value. The installationId property
-func (m *GithubAppInstallations_attributes) SetInstallationId(value *int32)() {
-    m.installationId = value
+func (m *GithubAppInstallations_attributes) SetInstallationId(value *int32) {
+	m.installationId = value
 }
+
 // SetInstallationType sets the installation-type property value. The installationType property
-func (m *GithubAppInstallations_attributes) SetInstallationType(value *string)() {
-    m.installationType = value
+func (m *GithubAppInstallations_attributes) SetInstallationType(value *string) {
+	m.installationType = value
 }
+
 // SetInstallationUrl sets the installation-url property value. The installationUrl property
-func (m *GithubAppInstallations_attributes) SetInstallationUrl(value *string)() {
-    m.installationUrl = value
+func (m *GithubAppInstallations_attributes) SetInstallationUrl(value *string) {
+	m.installationUrl = value
 }
+
 // SetName sets the name property value. The name property
-func (m *GithubAppInstallations_attributes) SetName(value *string)() {
-    m.name = value
+func (m *GithubAppInstallations_attributes) SetName(value *string) {
+	m.name = value
 }
+
 // SetSuspended sets the suspended property value. True when the installation is suspended on GitHub.
-func (m *GithubAppInstallations_attributes) SetSuspended(value *bool)() {
-    m.suspended = value
+func (m *GithubAppInstallations_attributes) SetSuspended(value *bool) {
+	m.suspended = value
 }
+
 type GithubAppInstallations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAppExternalId()(*string)
-    GetDisconnected()(*bool)
-    GetIconUrl()(*string)
-    GetInstallationId()(*int32)
-    GetInstallationType()(*string)
-    GetInstallationUrl()(*string)
-    GetName()(*string)
-    GetSuspended()(*bool)
-    SetAppExternalId(value *string)()
-    SetDisconnected(value *bool)()
-    SetIconUrl(value *string)()
-    SetInstallationId(value *int32)()
-    SetInstallationType(value *string)()
-    SetInstallationUrl(value *string)()
-    SetName(value *string)()
-    SetSuspended(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAppExternalId() *string
+	GetDisconnected() *bool
+	GetIconUrl() *string
+	GetInstallationId() *int32
+	GetInstallationType() *string
+	GetInstallationUrl() *string
+	GetName() *string
+	GetSuspended() *bool
+	SetAppExternalId(value *string)
+	SetDisconnected(value *bool)
+	SetIconUrl(value *string)
+	SetInstallationId(value *int32)
+	SetInstallationType(value *string)
+	SetInstallationUrl(value *string)
+	SetName(value *string)
+	SetSuspended(value *bool)
 }

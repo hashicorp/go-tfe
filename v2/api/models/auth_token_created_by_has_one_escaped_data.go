@@ -4,39 +4,44 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type AuthTokenCreatedByHasOne_data struct {
-    AuthTokenCreatedByIdentifier
+	AuthTokenCreatedByIdentifier
 }
+
 // NewAuthTokenCreatedByHasOne_data instantiates a new AuthTokenCreatedByHasOne_data and sets the default values.
-func NewAuthTokenCreatedByHasOne_data()(*AuthTokenCreatedByHasOne_data) {
-    m := &AuthTokenCreatedByHasOne_data{
-        AuthTokenCreatedByIdentifier: *NewAuthTokenCreatedByIdentifier(),
-    }
-    return m
+func NewAuthTokenCreatedByHasOne_data() *AuthTokenCreatedByHasOne_data {
+	m := &AuthTokenCreatedByHasOne_data{
+		AuthTokenCreatedByIdentifier: *NewAuthTokenCreatedByIdentifier(),
+	}
+	return m
 }
+
 // CreateAuthTokenCreatedByHasOne_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAuthTokenCreatedByHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAuthTokenCreatedByHasOne_data(), nil
+func CreateAuthTokenCreatedByHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAuthTokenCreatedByHasOne_data(), nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AuthTokenCreatedByHasOne_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := m.AuthTokenCreatedByIdentifier.GetFieldDeserializers()
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AuthTokenCreatedByHasOne_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := m.AuthTokenCreatedByIdentifier.GetFieldDeserializers()
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *AuthTokenCreatedByHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    err := m.AuthTokenCreatedByIdentifier.Serialize(writer)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *AuthTokenCreatedByHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	err := m.AuthTokenCreatedByIdentifier.Serialize(writer)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 type AuthTokenCreatedByHasOne_dataable interface {
-    AuthTokenCreatedByIdentifierable
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	AuthTokenCreatedByIdentifierable
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
 }

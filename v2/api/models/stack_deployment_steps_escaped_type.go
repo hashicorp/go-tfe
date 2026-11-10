@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackDeploymentSteps_type int
 
 const (
-    STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE StackDeploymentSteps_type = iota
+	STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE StackDeploymentSteps_type = iota
 )
 
 func (i StackDeploymentSteps_type) String() string {
-    return []string{"stack-deployment-steps"}[i]
+	return []string{"stack-deployment-steps"}[i]
 }
+
 func ParseStackDeploymentSteps_type(v string) (any, error) {
-    result := STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE
-    switch v {
-        case "stack-deployment-steps":
-            result = STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE
+	switch v {
+	case "stack-deployment-steps":
+		result = STACKDEPLOYMENTSTEPS_STACKDEPLOYMENTSTEPS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackDeploymentSteps_type(values []StackDeploymentSteps_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackDeploymentSteps_type) isMultiValue() bool {
-    return false
+	return false
 }

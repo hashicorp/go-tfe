@@ -4,109 +4,119 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type NotificationConfigurations_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The subscribable property
-    subscribable SubscribableHasOneable
-    // The users property
-    users UsersHasManyable
+	// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+	additionalData map[string]any
+	// The subscribable property
+	subscribable SubscribableHasOneable
+	// The users property
+	users UsersHasManyable
 }
+
 // NewNotificationConfigurations_relationships instantiates a new NotificationConfigurations_relationships and sets the default values.
-func NewNotificationConfigurations_relationships()(*NotificationConfigurations_relationships) {
-    m := &NotificationConfigurations_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewNotificationConfigurations_relationships() *NotificationConfigurations_relationships {
+	m := &NotificationConfigurations_relationships{}
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateNotificationConfigurations_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateNotificationConfigurations_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewNotificationConfigurations_relationships(), nil
+func CreateNotificationConfigurations_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewNotificationConfigurations_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *NotificationConfigurations_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *NotificationConfigurations_relationships) GetAdditionalData() map[string]any {
+	return m.additionalData
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *NotificationConfigurations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["subscribable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSubscribableHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSubscribable(val.(SubscribableHasOneable))
-        }
-        return nil
-    }
-    res["users"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUsers(val.(UsersHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *NotificationConfigurations_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["subscribable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateSubscribableHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSubscribable(val.(SubscribableHasOneable))
+		}
+		return nil
+	}
+	res["users"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUsers(val.(UsersHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSubscribable gets the subscribable property value. The subscribable property
 // returns a SubscribableHasOneable when successful
-func (m *NotificationConfigurations_relationships) GetSubscribable()(SubscribableHasOneable) {
-    return m.subscribable
+func (m *NotificationConfigurations_relationships) GetSubscribable() SubscribableHasOneable {
+	return m.subscribable
 }
+
 // GetUsers gets the users property value. The users property
 // returns a UsersHasManyable when successful
-func (m *NotificationConfigurations_relationships) GetUsers()(UsersHasManyable) {
-    return m.users
+func (m *NotificationConfigurations_relationships) GetUsers() UsersHasManyable {
+	return m.users
 }
+
 // Serialize serializes information the current object
-func (m *NotificationConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("subscribable", m.GetSubscribable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("users", m.GetUsers())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *NotificationConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("subscribable", m.GetSubscribable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("users", m.GetUsers())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *NotificationConfigurations_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *NotificationConfigurations_relationships) SetAdditionalData(value map[string]any) {
+	m.additionalData = value
 }
+
 // SetSubscribable sets the subscribable property value. The subscribable property
-func (m *NotificationConfigurations_relationships) SetSubscribable(value SubscribableHasOneable)() {
-    m.subscribable = value
+func (m *NotificationConfigurations_relationships) SetSubscribable(value SubscribableHasOneable) {
+	m.subscribable = value
 }
+
 // SetUsers sets the users property value. The users property
-func (m *NotificationConfigurations_relationships) SetUsers(value UsersHasManyable)() {
-    m.users = value
+func (m *NotificationConfigurations_relationships) SetUsers(value UsersHasManyable) {
+	m.users = value
 }
+
 type NotificationConfigurations_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetSubscribable()(SubscribableHasOneable)
-    GetUsers()(UsersHasManyable)
-    SetSubscribable(value SubscribableHasOneable)()
-    SetUsers(value UsersHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetSubscribable() SubscribableHasOneable
+	GetUsers() UsersHasManyable
+	SetSubscribable(value SubscribableHasOneable)
+	SetUsers(value UsersHasManyable)
 }
