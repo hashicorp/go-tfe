@@ -15,6 +15,8 @@ type TaskStages_attributes struct {
     additionalData map[string]any
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // Duration of the task stage in milliseconds, from running to its final status. Null until it finishes.
+    duration *int32
     // The permissions property
     permissions TaskStages_attributes_permissionsable
     // The run stage during which this task stage executes (e.g., post_plan, pre_plan, pre_apply, post_apply).
@@ -53,6 +55,11 @@ func (m *TaskStages_attributes) GetAdditionalData()(map[string]any) {
 func (m *TaskStages_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.createdAt
 }
+// GetDuration gets the duration property value. Duration of the task stage in milliseconds, from running to its final status. Null until it finishes.
+// returns a *int32 when successful
+func (m *TaskStages_attributes) GetDuration()(*int32) {
+    return m.duration
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *TaskStages_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -74,6 +81,16 @@ func (m *TaskStages_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetCreatedAt(val)
+        }
+        return nil
+    }
+    res["duration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDuration(val)
         }
         return nil
     }
@@ -176,6 +193,10 @@ func (m *TaskStages_attributes) SetAdditionalData(value map[string]any)() {
 func (m *TaskStages_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
+// SetDuration sets the duration property value. Duration of the task stage in milliseconds, from running to its final status. Null until it finishes.
+func (m *TaskStages_attributes) SetDuration(value *int32)() {
+    m.duration = value
+}
 // SetPermissions sets the permissions property value. The permissions property
 func (m *TaskStages_attributes) SetPermissions(value TaskStages_attributes_permissionsable)() {
     m.permissions = value
@@ -201,6 +222,7 @@ type TaskStages_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActions()(TaskStages_attributes_actionsable)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetDuration()(*int32)
     GetPermissions()(TaskStages_attributes_permissionsable)
     GetStage()(*string)
     GetStatus()(*TaskStages_attributes_status)
@@ -208,6 +230,7 @@ type TaskStages_attributesable interface {
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetActions(value TaskStages_attributes_actionsable)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetDuration(value *int32)()
     SetPermissions(value TaskStages_attributes_permissionsable)()
     SetStage(value *string)()
     SetStatus(value *TaskStages_attributes_status)()

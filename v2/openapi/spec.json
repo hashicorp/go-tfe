@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "124db3db",
+    "version": "f1bfc647",
     "title": "HCP Terraform/Terraform Enterprise API v2-Beta",
     "description": "OpenAPI Specification for the HCP Terraform/Terraform Enterprise API V2 Public Beta.",
     "license": {
@@ -881,7 +881,7 @@
             }
           },
           "422": {
-            "description": "Validation error.",
+            "description": "Validation error. If a rotated `idp-cert` has the same fingerprint as an existing IdP certificate, the error detail names that certificate's external ID and display name (e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`).\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -1148,7 +1148,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted, display-name is missing or longer than 90 characters, or the maximum of 1000 IdP certificates has been reached (\"Cert limit of 1000 reached; delete expired or unused certificates before adding more\").\n",
+            "description": "Validation error. Possible causes: cert is missing or unparseable, cert has expired, fingerprint is already trusted (the error detail names the existing certificate's external ID and display name, e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`), display-name is missing or longer than 90 characters, or the maximum of 1000 IdP certificates has been reached (\"Cert limit of 1000 reached; delete expired or unused certificates before adding more\").\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -1289,7 +1289,7 @@
             }
           },
           "422": {
-            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, invalid cert content, or a new display-name that is blank or longer than 90 characters.\n",
+            "description": "Validation error. Possible causes: attempting to replace the cert body of a `legacy_primary` or `legacy_old` certificate, invalid cert content, a new cert whose fingerprint matches a different existing certificate (the error detail names that certificate's external ID and display name, e.g. `Fingerprint is already trusted by idpc-xxxxxxxxxxxxxxxx (\"EU cluster\")`), or a new display-name that is blank or longer than 90 characters.\n",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -18123,6 +18123,16 @@
                             "properties": {
                               "name": {
                                 "type": "string"
+                              },
+                              "created-at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "readOnly": true
+                              },
+                              "instance-count": {
+                                "type": "integer",
+                                "readOnly": true,
+                                "description": "The number of resources this tag is applied to."
                               }
                             }
                           }
@@ -18863,6 +18873,22 @@
                               },
                               "project-count": {
                                 "type": "integer"
+                              },
+                              "stack-count": {
+                                "type": "integer",
+                                "readOnly": true
+                              },
+                              "priority": {
+                                "type": "boolean"
+                              },
+                              "permissions": {
+                                "type": "object",
+                                "readOnly": true,
+                                "properties": {
+                                  "can-update": {
+                                    "type": "boolean"
+                                  }
+                                }
                               },
                               "created-at": {
                                 "type": "string",
@@ -37819,7 +37845,213 @@
             ]
           },
           "attributes": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "agents": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "assessments": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "audit-logging": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "can-apply": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "change-requests": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "configuration-designer": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "cost-estimation": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "ephemeral-workspaces": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "global-run-tasks": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "hyok": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "infragraph": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "infragraph-with-nrtu": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "metrics-service-token-management": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "module-deprecations": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "module-revocations": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "module-tests-agent-support": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "no-code-modules": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "operations": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "policy-enforcement": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "policy-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "policy-mandatory-enforcement-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "policy-set-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "private-module-registry": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "private-policy-agents": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "private-vcs": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "recoverable-items": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "registry-artifact-version-tagging": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "run-task-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "run-task-mandatory-enforcement-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "run-task-workspace-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "run-tasks": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "self-serve-billing": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "sentinel": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "sso": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "stacks": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "state-storage": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "task-project-scoping": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "teams": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "terraform-actions": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "tf-policy-enforcement": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "tf-policy-init-enforcement": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "user-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "vcs-integrations": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "versioned-policy-set-limit": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Null means unlimited.",
+                "readOnly": true
+              },
+              "viewable-billing": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "waypoint-actions": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "waypoint-templates-and-addons": {
+                "type": "boolean",
+                "readOnly": true
+              }
+            }
           },
           "links": {
             "type": "object"
@@ -37965,6 +38197,9 @@
             "properties": {
               "organization": {
                 "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "onboarding-tasks": {
+                "$ref": "#/components/schemas/onboarding-tasks-has-many"
               }
             }
           }
@@ -38083,6 +38318,11 @@
               "name": {
                 "type": "string",
                 "description": "Human-readable library name."
+              },
+              "repo-url": {
+                "type": "string",
+                "readOnly": true,
+                "description": "URL of the source repository the OOTB policy library is published from."
               }
             }
           }
@@ -38122,6 +38362,12 @@
                 "type": "string",
                 "readOnly": true,
                 "description": "The username/identity string from the SCIM provider."
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "The time the SCIM identity was last updated."
               }
             }
           }
@@ -38800,7 +39046,7 @@
       },
       "workspace-outputs": {
         "type": "object",
-        "description": "Workspace outputs are Terraform output values associated with a workspace.\nThey include the name of the output and a sensitive boolean. There is an\nadditional attribute, \"value\", that can be any JSON type, including null when\nthe output is sensitive; it is intentionally omitted from this schema (same\npattern as state-version-outputs) because OpenAPI cannot express a nullable\nany-type under the project's nullable-type-sibling lint rule.\n",
+        "description": "Workspace outputs are Terraform output values associated with a workspace.\nThey include the name of the output, its value, and a sensitive boolean.\n",
         "required": [
           "id",
           "type",
@@ -38822,6 +39068,10 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "value": {
+                "description": "The output value, which may be any JSON type. Null when the output is sensitive.",
+                "nullable": true
               },
               "sensitive": {
                 "type": "boolean"
@@ -39586,6 +39836,11 @@
                 "type": "string",
                 "readOnly": true,
                 "nullable": true
+              },
+              "is-ttl-rejected": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the token's expiration violates the organization's token TTL policy. Only present for tokens that belong to an organization."
               }
             }
           },
@@ -40372,6 +40627,19 @@
                 "description": "Deprecated. Use is-admin.",
                 "type": "boolean"
               },
+              "is-site-auditor": {
+                "type": "boolean",
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Whether the current user is a site auditor. Present only for the current user.\n\nThis attribute is only available in Terraform Enterprise."
+              },
+              "impersonator": {
+                "type": "object",
+                "readOnly": true,
+                "description": "Present only while an admin is impersonating this user. Contains the\nimpersonating admin's user attributes (as serialized for the current\nuser, with null values removed).\n",
+                "additionalProperties": true
+              },
               "is-sso-login": {
                 "type": "boolean"
               },
@@ -40572,6 +40840,31 @@
           }
         }
       },
+      "hcp-billing-account-nullable-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "hcp-billing-account"
+                    ]
+                  }
+                }
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "hcp-organization": {
         "type": "object",
         "required": [
@@ -40617,6 +40910,9 @@
             "properties": {
               "connected-plans": {
                 "$ref": "#/components/schemas/feature-sets-has-many"
+              },
+              "default-account": {
+                "$ref": "#/components/schemas/hcp-billing-account-nullable-has-one"
               }
             }
           }
@@ -40877,6 +41173,14 @@
                 "type": "boolean",
                 "description": "Whether the feature set includes Terraform Actions features"
               },
+              "infragraph": {
+                "type": "boolean",
+                "description": "Whether the feature set includes Infragraph"
+              },
+              "infragraph-with-nrtu": {
+                "type": "boolean",
+                "description": "Whether the feature set includes Infragraph with non-resource-under-management (NRTU) billing"
+              },
               "is-current": {
                 "type": "boolean",
                 "description": "Whether this is a current/active feature set"
@@ -40888,6 +41192,10 @@
               "is-managed-resource-plan": {
                 "type": "boolean",
                 "description": "Whether this is a managed resource plan"
+              },
+              "metrics-service-token-management": {
+                "type": "boolean",
+                "description": "Whether the feature set includes metrics service token management"
               },
               "module-deprecations": {
                 "type": "boolean",
@@ -40961,12 +41269,24 @@
                 "nullable": true,
                 "description": "Maximum number of run tasks (null means unlimited)"
               },
+              "project-notifications": {
+                "type": "boolean",
+                "description": "Whether the feature set includes project-level notifications"
+              },
               "recoverable-items": {
                 "type": "boolean",
                 "description": "Whether the feature set allows enabling of recoverable items\n\nThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.",
                 "x-vis": [
                   "public-beta"
                 ]
+              },
+              "registry-artifact-version-tagging": {
+                "type": "boolean",
+                "description": "Whether the feature set includes registry artifact version tagging"
+              },
+              "registry-usage-control": {
+                "type": "boolean",
+                "description": "Whether the feature set includes registry usage control"
               },
               "run-task-mandatory-enforcement-limit": {
                 "type": "number",
@@ -40981,6 +41301,10 @@
               "run-tasks": {
                 "type": "boolean",
                 "description": "Whether the feature set includes run tasks"
+              },
+              "scim": {
+                "type": "boolean",
+                "description": "Whether the feature set includes SCIM provisioning"
               },
               "self-serve-billing": {
                 "type": "boolean",
@@ -40997,6 +41321,16 @@
               "stacks": {
                 "type": "boolean",
                 "description": "Whether the feature set includes stacks"
+              },
+              "supports-concurrency-add-ons": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether this feature set supports concurrency add-ons"
+              },
+              "supports-subscription-concurrency-overrides": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether subscriptions on this feature set support concurrency overrides"
               },
               "task-project-scoping": {
                 "type": "boolean",
@@ -41149,9 +41483,33 @@
                 "type": "integer",
                 "nullable": true
               },
+              "effective-runs-ceiling": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The concurrent runs ceiling in effect, accounting for the feature set, subscription and any add-ons."
+              },
               "agents-ceiling": {
                 "type": "integer",
                 "nullable": true
+              },
+              "effective-agents-ceiling": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The agents ceiling in effect, accounting for the feature set, subscription and any add-ons."
+              },
+              "runs-ceiling-add-on": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Additional concurrent runs purchased via the current concurrency add-on, or null if none."
+              },
+              "agents-ceiling-add-on": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Additional agents purchased via the current concurrency add-on, or null if none."
               },
               "contract-start-at": {
                 "type": "string",
@@ -41344,6 +41702,122 @@
           }
         }
       },
+      "stacks-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stacks"
+            ]
+          }
+        }
+      },
+      "stacks-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/stacks-identifier"
+            }
+          }
+        }
+      },
+      "registry-modules-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry-modules"
+            ]
+          }
+        }
+      },
+      "registry-modules-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/registry-modules-identifier"
+            }
+          }
+        }
+      },
+      "cidr-range-lists-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cidr-range-lists"
+            ]
+          }
+        }
+      },
+      "cidr-range-lists-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/cidr-range-lists-identifier"
+            }
+          }
+        }
+      },
+      "cidr-ranges-identifier": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cidr-ranges"
+            ]
+          }
+        }
+      },
+      "cidr-ranges-has-many": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/cidr-ranges-identifier"
+            }
+          }
+        }
+      },
       "agent-pools": {
         "type": "object",
         "required": [
@@ -41378,6 +41852,22 @@
               "agent-count": {
                 "type": "integer",
                 "readOnly": true
+              },
+              "archs": {
+                "type": "array",
+                "description": "The OS/architecture combinations supported by agents in this pool.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "os": {
+                      "type": "string"
+                    },
+                    "arch": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
@@ -41407,6 +41897,36 @@
               },
               "organization": {
                 "$ref": "#/components/schemas/organizations-has-one"
+              },
+              "oauth-clients": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "projects": {
+                "$ref": "#/components/schemas/projects-has-many"
+              },
+              "stacks": {
+                "$ref": "#/components/schemas/stacks-has-many"
+              },
+              "allowed-stacks": {
+                "$ref": "#/components/schemas/stacks-has-many"
+              },
+              "excluded-stacks": {
+                "$ref": "#/components/schemas/stacks-has-many"
+              },
+              "modules": {
+                "$ref": "#/components/schemas/registry-modules-has-many"
+              },
+              "allowed-modules": {
+                "$ref": "#/components/schemas/registry-modules-has-many"
+              },
+              "excluded-modules": {
+                "$ref": "#/components/schemas/registry-modules-has-many"
+              },
+              "cidr-range-lists": {
+                "$ref": "#/components/schemas/cidr-range-lists-has-many"
+              },
+              "cidr-ranges": {
+                "$ref": "#/components/schemas/cidr-ranges-has-many"
               }
             }
           }
@@ -41493,6 +42013,12 @@
               "status": {
                 "type": "string"
               },
+              "version": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The version of the agent."
+              },
               "ip-address": {
                 "type": "string",
                 "nullable": true
@@ -41506,6 +42032,16 @@
                 "type": "string",
                 "format": "date-time",
                 "readOnly": true
+              },
+              "links": {
+                "type": "object",
+                "readOnly": true,
+                "description": "Links for the agent. Note this is emitted inside attributes rather than at the resource level.",
+                "properties": {
+                  "self": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -41549,24 +42085,6 @@
             "items": {
               "$ref": "#/components/schemas/agent-pools-identifier"
             }
-          }
-        }
-      },
-      "cidr-range-lists-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "cidr-range-lists"
-            ]
           }
         }
       },
@@ -41947,6 +42465,26 @@
                 "type": "string",
                 "format": "date-time",
                 "readOnly": true
+              },
+              "debugging-mode": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether debug logging is enabled for this stack's operations."
+              },
+              "creation-source": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The client that created the stack (e.g. the API client name), prefixed with `migration-` when the stack was created by a migration."
+              },
+              "trigger-patterns": {
+                "type": "array",
+                "readOnly": true,
+                "deprecated": true,
+                "description": "Deprecated. Use the trigger patterns on the stack's version control settings instead.",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -42128,20 +42666,6 @@
                 "$ref": "#/components/schemas/stack-configurations-has-one"
               }
             }
-          }
-        }
-      },
-      "stacks-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "stacks"
-            ]
           }
         }
       },
@@ -42355,6 +42879,37 @@
                 "type": "string",
                 "readOnly": true
               },
+              "components": {
+                "type": "array",
+                "readOnly": true,
+                "description": "The components declared in this configuration (including those in embedded stacks and removed blocks), sorted by name. Empty until the configuration has been prepared.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "correlator": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "expanded": {
+                      "type": "boolean",
+                      "description": "Whether the component is expanded into multiple instances (e.g. via `for_each`)."
+                    },
+                    "removed": {
+                      "type": "boolean",
+                      "description": "Whether the entry comes from a `removed` block."
+                    },
+                    "destroy": {
+                      "type": "boolean",
+                      "nullable": true,
+                      "description": "For removed components, whether the removed block declares `destroy = true`. Only present when `removed` is true."
+                    }
+                  }
+                }
+              },
               "created-at": {
                 "type": "string",
                 "format": "date-time",
@@ -42455,6 +43010,39 @@
           }
         }
       },
+      "stack-deployment-runs-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stack-deployment-runs",
+              "stack-states"
+            ]
+          }
+        }
+      },
+      "stack-deployment-runs-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/stack-deployment-runs-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "stack-deployments": {
         "type": "object",
         "required": [
@@ -42507,6 +43095,10 @@
             "properties": {
               "stack": {
                 "$ref": "#/components/schemas/stacks-has-one"
+              },
+              "latest-deployment-run": {
+                "description": "The most recent deployment run for this deployment.",
+                "$ref": "#/components/schemas/stack-deployment-runs-has-one"
               }
             }
           }
@@ -42598,39 +43190,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/stack-deployment-steps-identifier"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "stack-deployment-runs-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "stack-deployment-runs",
-              "stack-states"
-            ]
-          }
-        }
-      },
-      "stack-deployment-runs-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/stack-deployment-runs-identifier"
               }
             ],
             "nullable": true
@@ -43208,6 +43767,16 @@
               },
               "source-range": {
                 "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
                 "readOnly": true
               }
             }
@@ -44254,6 +44823,10 @@
               },
               "approval-on": {
                 "$ref": "#/components/schemas/approval-on-has-one"
+              },
+              "user": {
+                "description": "The user who submitted the approval. Null if the user has since been deleted.",
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -44482,6 +45055,66 @@
           }
         }
       },
+      "onboarding-task-lists-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "onboarding-task-lists"
+            ]
+          }
+        }
+      },
+      "onboarding-task-lists-nullable-has-one": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/onboarding-task-lists-identifier"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "hcp-organizations-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hcp-organization"
+            ]
+          }
+        }
+      },
+      "hcp-organizations-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/hcp-organizations-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "organizations": {
         "type": "object",
         "required": [
@@ -44501,7 +45134,6 @@
           },
           "attributes": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
               "external-id": {
                 "type": "string",
@@ -44928,6 +45560,24 @@
                   "hcpt"
                 ],
                 "$ref": "#/components/schemas/hyok-configurations-has-one"
+              },
+              "org-wide-cidr-range-list": {
+                "description": "The organization-wide CIDR range list, if one exists.",
+                "$ref": "#/components/schemas/cidr-range-lists-has-one"
+              },
+              "current-onboarding-task-list": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "The organization's current onboarding task list. Only present when the requester can read onboarding task lists.",
+                "$ref": "#/components/schemas/onboarding-task-lists-nullable-has-one"
+              },
+              "hcp-organization": {
+                "x-vis": [
+                  "hcpt"
+                ],
+                "description": "The linked HCP organization. Only present for unified organizations; contains only a related link.",
+                "$ref": "#/components/schemas/hcp-organizations-has-one"
               }
             }
           }
@@ -45088,6 +45738,18 @@
                 "nullable": true,
                 "readOnly": true,
                 "description": "Whether two-factor authentication is required for the organization. Only present for invited users."
+              },
+              "is-scim-managed": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether the user's membership is managed by SCIM provisioning. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise)."
+              },
+              "last-scim-sync-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The timestamp of the last SCIM sync for this member. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise)."
               }
             }
           },
@@ -45262,6 +45924,10 @@
               "recoverable": {
                 "description": "The recoverable resource (can be a workspace or stack.)",
                 "$ref": "#/components/schemas/recoverable-has-one"
+              },
+              "deleted-by": {
+                "description": "The user who deleted the resource.",
+                "$ref": "#/components/schemas/users-has-one"
               }
             }
           }
@@ -45377,6 +46043,38 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/data-retention-policy"
+          }
+        }
+      },
+      "effective-tag-bindings-identifier": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "effective-tag-bindings"
+            ]
+          }
+        }
+      },
+      "effective-tag-bindings-has-many": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/effective-tag-bindings-identifier"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -45513,6 +46211,21 @@
                 "type": "integer",
                 "nullable": true
               },
+              "registry-module-count": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "Number of private registry modules in the project. Only present on the show endpoint."
+              },
+              "registry-provider-count": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "Number of private registry providers in the project. Only present on the show endpoint."
+              },
+              "registry-component-count": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "Number of private registry components in the project. Only present on the show endpoint."
+              },
               "hcp-id": {
                 "type": "string",
                 "nullable": true,
@@ -45550,6 +46263,10 @@
                     }
                   }
                 }
+              },
+              "effective-tag-bindings": {
+                "description": "The project's effective tag bindings, including inherited ones. Only present when the project has effective tag bindings; `data` is only present when side-loaded via `include`.",
+                "$ref": "#/components/schemas/effective-tag-bindings-has-many"
               },
               "default-agent-pool": {
                 "$ref": "#/components/schemas/agent-pools-has-one"
@@ -46219,6 +46936,15 @@
           }
         }
       },
+      "tag-bindings-has-many": {
+        "type": "object",
+        "description": "Links-only relationship; resource identifiers are not included.",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "workspace-links": {
         "type": "object",
         "properties": {
@@ -46248,7 +46974,6 @@
           },
           "attributes": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
               "allow-destroy-plan": {
                 "type": "boolean"
@@ -46644,6 +47369,20 @@
               },
               "tags": {
                 "$ref": "#/components/schemas/tags-has-many"
+              },
+              "tag-bindings": {
+                "description": "Present only when the workspace has its own (non-inherited) tag bindings.",
+                "$ref": "#/components/schemas/tag-bindings-has-many"
+              },
+              "effective-tag-bindings": {
+                "description": "Present only when the workspace has effective tag bindings in its organization.",
+                "$ref": "#/components/schemas/effective-tag-bindings-has-many"
+              },
+              "data-retention-policy": {
+                "x-vis": [
+                  "tfe"
+                ],
+                "$ref": "#/components/schemas/data-retention-policy-has-one"
               }
             }
           },
@@ -46896,6 +47635,59 @@
                 "readOnly": true,
                 "description": "Responses from notification delivery attempts."
               },
+              "excluded-workspace-ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "readOnly": true,
+                "description": "External IDs of workspaces excluded from this notification configuration."
+              },
+              "excluded-workspace-names": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "readOnly": true,
+                "description": "Names of workspaces excluded from this notification configuration."
+              },
+              "excluded-deployment-group-ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "readOnly": true,
+                "description": "External IDs of Stack deployment groups excluded from this notification configuration."
+              },
+              "excluded-deployment-group-names": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "readOnly": true,
+                "description": "Names of Stack deployment groups excluded from this notification configuration."
+              },
+              "email-recipient-statuses": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Verification and unsubscription status of each email recipient. Only present for email destinations.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "unsubscribed": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
               "created-at": {
                 "type": "string",
                 "format": "date-time",
@@ -47112,6 +47904,21 @@
                   "terraform-mcp"
                 ]
               },
+              "variables": {
+                "type": "array",
+                "description": "Run variables supplied for the query.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "generate-config-out": {
                 "type": "boolean"
               },
@@ -47186,6 +47993,25 @@
                   "type": "string"
                 },
                 "nullable": true
+              },
+              "list-completions": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Per-list-block result summaries. Only present on the show endpoint.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "resource-type": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
               }
             }
           },
@@ -47455,6 +48281,31 @@
           }
         }
       },
+      "policy-sets-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy-sets"
+            ]
+          }
+        }
+      },
+      "policy-sets-has-one": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/policy-sets-identifier"
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
       "vars-has-one": {
         "type": "object",
         "properties": {
@@ -47536,6 +48387,10 @@
               },
               "workspace": {
                 "$ref": "#/components/schemas/workspaces-has-one"
+              },
+              "policy-set": {
+                "description": "Present only when the variable belongs to a policy set (policy set parameter).",
+                "$ref": "#/components/schemas/policy-sets-has-one"
               },
               "overwritten": {
                 "$ref": "#/components/schemas/vars-has-many"
@@ -47705,18 +48560,6 @@
                   "type": "string"
                 }
               }
-            }
-          }
-        }
-      },
-      "stacks-has-many": {
-        "type": "object",
-        "nullable": true,
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/stacks-identifier"
             }
           }
         }
@@ -49401,6 +50244,14 @@
                   }
                 }
               },
+              "changed-files": {
+                "type": "array",
+                "readOnly": true,
+                "items": {
+                  "type": "string"
+                },
+                "description": "Paths of files changed in the VCS commit that triggered this configuration version."
+              },
               "provisional": {
                 "type": "boolean"
               },
@@ -49757,6 +50608,11 @@
                 "description": "Number of resources that will be imported",
                 "nullable": true
               },
+              "action-invocations": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
               "structured-run-output-enabled": {
                 "type": "boolean",
                 "nullable": true,
@@ -49833,12 +50689,19 @@
               },
               "permissions": {
                 "type": "object",
-                "description": "Permissions for the current user related to this plan",
+                "description": "Permissions for the current user related to this plan. Included in API responses; omitted when a plan is serialized outside a controller request.",
                 "nullable": true,
                 "properties": {
                   "can-export": {
                     "type": "boolean",
                     "description": "Whether the current user can export the plan"
+                  },
+                  "can-restore-backing-data": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "tfe"
+                    ],
+                    "description": "Whether the current user can restore this plan's backing data. Only present when data retention policies for plans and applies are enabled.\n\nThis attribute is only available in Terraform Enterprise."
                   }
                 }
               }
@@ -49906,20 +50769,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/plans"
-          }
-        }
-      },
-      "policy-sets-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "policy-sets"
-            ]
           }
         }
       },
@@ -51253,17 +52102,6 @@
           }
         }
       },
-      "policy-sets-has-one": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/policy-sets-identifier"
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
       "policy-set-versions": {
         "type": "object",
         "required": [
@@ -51977,6 +52815,26 @@
                 "type": "integer",
                 "nullable": true
               },
+              "structured-run-output-enabled": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Whether structured run output is enabled"
+              },
+              "permissions": {
+                "type": "object",
+                "readOnly": true,
+                "x-vis": [
+                  "tfe"
+                ],
+                "description": "Permissions for the current user related to this apply. Only present when data retention policies for plans and applies are enabled.\n\nThis attribute is only available in Terraform Enterprise.",
+                "additionalProperties": false,
+                "properties": {
+                  "can-restore-backing-data": {
+                    "type": "boolean",
+                    "description": "Whether the current user can restore this apply's backing data"
+                  }
+                }
+              },
               "backing-data-state": {
                 "type": "string",
                 "readOnly": true,
@@ -52621,6 +53479,14 @@
           "attributes": {
             "type": "object",
             "properties": {
+              "type": {
+                "type": "string",
+                "readOnly": true,
+                "description": "The OIDC configuration's internal class name.",
+                "enum": [
+                  "VaultOidcConfiguration"
+                ]
+              },
               "address": {
                 "type": "string"
               },
@@ -53910,6 +54776,11 @@
               "identifier": {
                 "type": "string",
                 "description": "The repository identifier that was checked"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true,
+                "description": "The repository name"
               }
             }
           }
@@ -53966,6 +54837,34 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/registry-module-address-validations"
+          }
+        }
+      },
+      "test-runs-identifier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "test-runs"
+            ]
+          }
+        }
+      },
+      "test-runs-has-one-nullable": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/test-runs-identifier"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -54026,6 +54925,36 @@
                 "readOnly": true,
                 "items": {
                   "type": "object"
+                }
+              },
+              "version-tags": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Tag values bound to module versions, ordered by version descending.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "tag": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "latest-test-run-id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "External ID of the latest test run. Only present for branch-based modules."
+              },
+              "revoked-versions": {
+                "type": "array",
+                "readOnly": true,
+                "description": "Versions that have been revoked. Only present when the requester can revoke module versions.",
+                "items": {
+                  "type": "string"
                 }
               },
               "created-at": {
@@ -54146,6 +55075,12 @@
               },
               "no-code-modules": {
                 "$ref": "#/components/schemas/links_related"
+              },
+              "latest-test-run": {
+                "$ref": "#/components/schemas/test-runs-has-one-nullable"
+              },
+              "tag-bindings": {
+                "$ref": "#/components/schemas/tag-bindings-has-many"
               }
             }
           }
@@ -54183,20 +55118,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "test-runs-identifier": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "test-runs"
-            ]
           }
         }
       },
@@ -55372,6 +56293,12 @@
                 "additionalProperties": true,
                 "description": "A map of status names to timestamps indicating when the task stage entered each status. Keys are formatted as \"{status}-at\"."
               },
+              "duration": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Duration of the task stage in milliseconds, from running to its final status. Null until it finishes."
+              },
               "created-at": {
                 "type": "string",
                 "format": "date-time",
@@ -55522,6 +56449,12 @@
                 "nullable": true,
                 "description": "A URL the run task integration provided with details about the task execution."
               },
+              "duration": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Duration of the task result in milliseconds, from running to its final status. Null until it finishes."
+              },
               "created-at": {
                 "type": "string",
                 "format": "date-time",
@@ -55580,6 +56513,31 @@
                 "nullable": true,
                 "readOnly": true,
                 "description": "The external ID of the agent pool, when private run tasks are enabled."
+              },
+              "task-category": {
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                  "task",
+                  "hook",
+                  "native"
+                ]
+              },
+              "source-id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "External ID of the task configuration or workspace task that produced this result."
+              },
+              "source-enforcement-level": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "enum": [
+                  "advisory",
+                  "mandatory"
+                ],
+                "description": "Enforcement level of the source, falling back to the workspace task enforcement level."
               }
             }
           },
@@ -55734,6 +56692,12 @@
                   }
                 },
                 "description": "An array of tag category objects. Each object has a label (category name) and a value array of tag entries with label and level fields."
+              },
+              "body-uploaded": {
+                "type": "boolean",
+                "nullable": true,
+                "readOnly": true,
+                "description": "Whether a detailed outcome body has been uploaded."
               },
               "url": {
                 "type": "string",
@@ -56730,24 +57694,6 @@
           }
         }
       },
-      "registry-modules-identifier": {
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "registry-modules"
-            ]
-          }
-        }
-      },
       "registry-modules-has-one": {
         "type": "object",
         "properties": {
@@ -56762,6 +57708,28 @@
           },
           "links": {
             "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "onboarding-tasks-has-many": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "onboarding-tasks"
+                  ]
+                }
+              }
+            }
           }
         }
       }
