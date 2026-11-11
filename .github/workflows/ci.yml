@@ -29,9 +29,9 @@ jobs:
 
       - name: install golangci-lint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/6008b81b81c690c046ffc3fd5bce896da715d5fd/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCILINT_VERSION
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/25c5369a93aacb8cccea0d46e1569ca4a194564d/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCILINT_VERSION
         env:
-          GOLANGCILINT_VERSION: v2.11.3
+          GOLANGCILINT_VERSION: v2.15.0
 
       - name: lint
         run: |
