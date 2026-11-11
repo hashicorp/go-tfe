@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PlanExports_type int
 
 const (
-    PLANEXPORTS_PLANEXPORTS_TYPE PlanExports_type = iota
+	PLANEXPORTS_PLANEXPORTS_TYPE PlanExports_type = iota
 )
 
 func (i PlanExports_type) String() string {
-    return []string{"plan-exports"}[i]
+	return []string{"plan-exports"}[i]
 }
+
 func ParsePlanExports_type(v string) (any, error) {
-    result := PLANEXPORTS_PLANEXPORTS_TYPE
-    switch v {
-        case "plan-exports":
-            result = PLANEXPORTS_PLANEXPORTS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PLANEXPORTS_PLANEXPORTS_TYPE
+	switch v {
+	case "plan-exports":
+		result = PLANEXPORTS_PLANEXPORTS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePlanExports_type(values []PlanExports_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PlanExports_type) isMultiValue() bool {
-    return false
+	return false
 }

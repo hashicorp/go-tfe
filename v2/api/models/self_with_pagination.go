@@ -4,196 +4,279 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type SelfWithPagination struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The first property
-    first *string
-    // The last property
-    last *string
-    // The next property
-    next *string
-    // The prev property
-    prev *string
-    // The self property
-    self *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewSelfWithPagination instantiates a new SelfWithPagination and sets the default values.
-func NewSelfWithPagination()(*SelfWithPagination) {
-    m := &SelfWithPagination{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewSelfWithPagination() *SelfWithPagination {
+	m := &SelfWithPagination{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateSelfWithPaginationFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateSelfWithPaginationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewSelfWithPagination(), nil
+func CreateSelfWithPaginationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewSelfWithPagination(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *SelfWithPagination) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *SelfWithPagination) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *SelfWithPagination) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *SelfWithPagination) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["first"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFirst(val)
-        }
-        return nil
-    }
-    res["last"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLast(val)
-        }
-        return nil
-    }
-    res["next"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNext(val)
-        }
-        return nil
-    }
-    res["prev"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrev(val)
-        }
-        return nil
-    }
-    res["self"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSelf(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *SelfWithPagination) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["first"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFirst(val)
+		}
+		return nil
+	}
+	res["last"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLast(val)
+		}
+		return nil
+	}
+	res["next"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNext(val)
+		}
+		return nil
+	}
+	res["prev"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrev(val)
+		}
+		return nil
+	}
+	res["self"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSelf(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFirst gets the first property value. The first property
 // returns a *string when successful
-func (m *SelfWithPagination) GetFirst()(*string) {
-    return m.first
+func (m *SelfWithPagination) GetFirst() *string {
+	val, err := m.GetBackingStore().Get("first")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetLast gets the last property value. The last property
 // returns a *string when successful
-func (m *SelfWithPagination) GetLast()(*string) {
-    return m.last
+func (m *SelfWithPagination) GetLast() *string {
+	val, err := m.GetBackingStore().Get("last")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetNext gets the next property value. The next property
 // returns a *string when successful
-func (m *SelfWithPagination) GetNext()(*string) {
-    return m.next
+func (m *SelfWithPagination) GetNext() *string {
+	val, err := m.GetBackingStore().Get("next")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPrev gets the prev property value. The prev property
 // returns a *string when successful
-func (m *SelfWithPagination) GetPrev()(*string) {
-    return m.prev
+func (m *SelfWithPagination) GetPrev() *string {
+	val, err := m.GetBackingStore().Get("prev")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSelf gets the self property value. The self property
 // returns a *string when successful
-func (m *SelfWithPagination) GetSelf()(*string) {
-    return m.self
+func (m *SelfWithPagination) GetSelf() *string {
+	val, err := m.GetBackingStore().Get("self")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *SelfWithPagination) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("first", m.GetFirst())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("last", m.GetLast())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("next", m.GetNext())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("prev", m.GetPrev())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("self", m.GetSelf())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *SelfWithPagination) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("first", m.GetFirst())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("last", m.GetLast())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("next", m.GetNext())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("prev", m.GetPrev())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("self", m.GetSelf())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *SelfWithPagination) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *SelfWithPagination) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *SelfWithPagination) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetFirst sets the first property value. The first property
-func (m *SelfWithPagination) SetFirst(value *string)() {
-    m.first = value
+func (m *SelfWithPagination) SetFirst(value *string) {
+	err := m.GetBackingStore().Set("first", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLast sets the last property value. The last property
-func (m *SelfWithPagination) SetLast(value *string)() {
-    m.last = value
+func (m *SelfWithPagination) SetLast(value *string) {
+	err := m.GetBackingStore().Set("last", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNext sets the next property value. The next property
-func (m *SelfWithPagination) SetNext(value *string)() {
-    m.next = value
+func (m *SelfWithPagination) SetNext(value *string) {
+	err := m.GetBackingStore().Set("next", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrev sets the prev property value. The prev property
-func (m *SelfWithPagination) SetPrev(value *string)() {
-    m.prev = value
+func (m *SelfWithPagination) SetPrev(value *string) {
+	err := m.GetBackingStore().Set("prev", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSelf sets the self property value. The self property
-func (m *SelfWithPagination) SetSelf(value *string)() {
-    m.self = value
+func (m *SelfWithPagination) SetSelf(value *string) {
+	err := m.GetBackingStore().Set("self", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type SelfWithPaginationable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetFirst()(*string)
-    GetLast()(*string)
-    GetNext()(*string)
-    GetPrev()(*string)
-    GetSelf()(*string)
-    SetFirst(value *string)()
-    SetLast(value *string)()
-    SetNext(value *string)()
-    SetPrev(value *string)()
-    SetSelf(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetFirst() *string
+	GetLast() *string
+	GetNext() *string
+	GetPrev() *string
+	GetSelf() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetFirst(value *string)
+	SetLast(value *string)
+	SetNext(value *string)
+	SetPrev(value *string)
+	SetSelf(value *string)
 }

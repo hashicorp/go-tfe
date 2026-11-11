@@ -4,28 +4,31 @@
 package organization
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // OrganizationRequestBuilder builds and executes requests for operations under \organization
 type OrganizationRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // AuditTrail the auditTrail property
 // returns a *AuditTrailRequestBuilder when successful
-func (m *OrganizationRequestBuilder) AuditTrail()(*AuditTrailRequestBuilder) {
-    return NewAuditTrailRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *OrganizationRequestBuilder) AuditTrail() *AuditTrailRequestBuilder {
+	return NewAuditTrailRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewOrganizationRequestBuilderInternal instantiates a new OrganizationRequestBuilder and sets the default values.
-func NewOrganizationRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*OrganizationRequestBuilder) {
-    m := &OrganizationRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization", pathParameters),
-    }
-    return m
+func NewOrganizationRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *OrganizationRequestBuilder {
+	m := &OrganizationRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organization", pathParameters),
+	}
+	return m
 }
+
 // NewOrganizationRequestBuilder instantiates a new OrganizationRequestBuilder and sets the default values.
-func NewOrganizationRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*OrganizationRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewOrganizationRequestBuilderInternal(urlParams, requestAdapter)
+func NewOrganizationRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *OrganizationRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewOrganizationRequestBuilderInternal(urlParams, requestAdapter)
 }

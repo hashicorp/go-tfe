@@ -4,226 +4,319 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PolicyChecks_attributes struct {
-    // The actions property
-    actions PolicyChecks_attributes_actionsable
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The permissions property
-    permissions PolicyChecks_attributes_permissionsable
-    // The result of the policy evaluation. Null until the policy check completes. The `sentinel` key contains low-level Sentinel details and its structure may change over time.
-    result PolicyChecks_attributes_resultable
-    // The scope of policies evaluated in this check (e.g. "organization").
-    scope *string
-    // The status property
-    status *PolicyChecks_attributes_status
-    // The statusTimestamps property
-    statusTimestamps PolicyChecks_attributes_statusTimestampsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPolicyChecks_attributes instantiates a new PolicyChecks_attributes and sets the default values.
-func NewPolicyChecks_attributes()(*PolicyChecks_attributes) {
-    m := &PolicyChecks_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicyChecks_attributes() *PolicyChecks_attributes {
+	m := &PolicyChecks_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicyChecks_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicyChecks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicyChecks_attributes(), nil
+func CreatePolicyChecks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicyChecks_attributes(), nil
 }
+
 // GetActions gets the actions property value. The actions property
 // returns a PolicyChecks_attributes_actionsable when successful
-func (m *PolicyChecks_attributes) GetActions()(PolicyChecks_attributes_actionsable) {
-    return m.actions
+func (m *PolicyChecks_attributes) GetActions() PolicyChecks_attributes_actionsable {
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecks_attributes_actionsable)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicyChecks_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicyChecks_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyChecks_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicyChecks_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecks_attributes_actionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetActions(val.(PolicyChecks_attributes_actionsable))
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecks_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(PolicyChecks_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["result"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecks_attributes_resultFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResult(val.(PolicyChecks_attributes_resultable))
-        }
-        return nil
-    }
-    res["scope"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetScope(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicyChecks_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*PolicyChecks_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyChecks_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(PolicyChecks_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicyChecks_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecks_attributes_actionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetActions(val.(PolicyChecks_attributes_actionsable))
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecks_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(PolicyChecks_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["result"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecks_attributes_resultFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResult(val.(PolicyChecks_attributes_resultable))
+		}
+		return nil
+	}
+	res["scope"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetScope(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicyChecks_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*PolicyChecks_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyChecks_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(PolicyChecks_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a PolicyChecks_attributes_permissionsable when successful
-func (m *PolicyChecks_attributes) GetPermissions()(PolicyChecks_attributes_permissionsable) {
-    return m.permissions
+func (m *PolicyChecks_attributes) GetPermissions() PolicyChecks_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecks_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetResult gets the result property value. The result of the policy evaluation. Null until the policy check completes. The `sentinel` key contains low-level Sentinel details and its structure may change over time.
 // returns a PolicyChecks_attributes_resultable when successful
-func (m *PolicyChecks_attributes) GetResult()(PolicyChecks_attributes_resultable) {
-    return m.result
+func (m *PolicyChecks_attributes) GetResult() PolicyChecks_attributes_resultable {
+	val, err := m.GetBackingStore().Get("result")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecks_attributes_resultable)
+	}
+	return nil
 }
+
 // GetScope gets the scope property value. The scope of policies evaluated in this check (e.g. "organization").
 // returns a *string when successful
-func (m *PolicyChecks_attributes) GetScope()(*string) {
-    return m.scope
+func (m *PolicyChecks_attributes) GetScope() *string {
+	val, err := m.GetBackingStore().Get("scope")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *PolicyChecks_attributes_status when successful
-func (m *PolicyChecks_attributes) GetStatus()(*PolicyChecks_attributes_status) {
-    return m.status
+func (m *PolicyChecks_attributes) GetStatus() *PolicyChecks_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicyChecks_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a PolicyChecks_attributes_statusTimestampsable when successful
-func (m *PolicyChecks_attributes) GetStatusTimestamps()(PolicyChecks_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *PolicyChecks_attributes) GetStatusTimestamps() PolicyChecks_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyChecks_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicyChecks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("actions", m.GetActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("result", m.GetResult())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("scope", m.GetScope())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicyChecks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("actions", m.GetActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("result", m.GetResult())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("scope", m.GetScope())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetActions sets the actions property value. The actions property
-func (m *PolicyChecks_attributes) SetActions(value PolicyChecks_attributes_actionsable)() {
-    m.actions = value
+func (m *PolicyChecks_attributes) SetActions(value PolicyChecks_attributes_actionsable) {
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicyChecks_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicyChecks_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyChecks_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *PolicyChecks_attributes) SetPermissions(value PolicyChecks_attributes_permissionsable)() {
-    m.permissions = value
+func (m *PolicyChecks_attributes) SetPermissions(value PolicyChecks_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResult sets the result property value. The result of the policy evaluation. Null until the policy check completes. The `sentinel` key contains low-level Sentinel details and its structure may change over time.
-func (m *PolicyChecks_attributes) SetResult(value PolicyChecks_attributes_resultable)() {
-    m.result = value
+func (m *PolicyChecks_attributes) SetResult(value PolicyChecks_attributes_resultable) {
+	err := m.GetBackingStore().Set("result", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetScope sets the scope property value. The scope of policies evaluated in this check (e.g. "organization").
-func (m *PolicyChecks_attributes) SetScope(value *string)() {
-    m.scope = value
+func (m *PolicyChecks_attributes) SetScope(value *string) {
+	err := m.GetBackingStore().Set("scope", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *PolicyChecks_attributes) SetStatus(value *PolicyChecks_attributes_status)() {
-    m.status = value
+func (m *PolicyChecks_attributes) SetStatus(value *PolicyChecks_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
-func (m *PolicyChecks_attributes) SetStatusTimestamps(value PolicyChecks_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *PolicyChecks_attributes) SetStatusTimestamps(value PolicyChecks_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PolicyChecks_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetActions()(PolicyChecks_attributes_actionsable)
-    GetPermissions()(PolicyChecks_attributes_permissionsable)
-    GetResult()(PolicyChecks_attributes_resultable)
-    GetScope()(*string)
-    GetStatus()(*PolicyChecks_attributes_status)
-    GetStatusTimestamps()(PolicyChecks_attributes_statusTimestampsable)
-    SetActions(value PolicyChecks_attributes_actionsable)()
-    SetPermissions(value PolicyChecks_attributes_permissionsable)()
-    SetResult(value PolicyChecks_attributes_resultable)()
-    SetScope(value *string)()
-    SetStatus(value *PolicyChecks_attributes_status)()
-    SetStatusTimestamps(value PolicyChecks_attributes_statusTimestampsable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetActions() PolicyChecks_attributes_actionsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetPermissions() PolicyChecks_attributes_permissionsable
+	GetResult() PolicyChecks_attributes_resultable
+	GetScope() *string
+	GetStatus() *PolicyChecks_attributes_status
+	GetStatusTimestamps() PolicyChecks_attributes_statusTimestampsable
+	SetActions(value PolicyChecks_attributes_actionsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetPermissions(value PolicyChecks_attributes_permissionsable)
+	SetResult(value PolicyChecks_attributes_resultable)
+	SetScope(value *string)
+	SetStatus(value *PolicyChecks_attributes_status)
+	SetStatusTimestamps(value PolicyChecks_attributes_statusTimestampsable)
 }

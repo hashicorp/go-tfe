@@ -4,192 +4,275 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type WorkspaceTasks_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The enforcementLevel property
-    enforcementLevel *WorkspaceTasks_attributes_enforcementLevel
-    // Deprecated. Use `stages` instead. The stage in the run lifecycle when the run task should begin.
-    stage *string
-    // The stages property
-    stages []string
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewWorkspaceTasks_attributes instantiates a new WorkspaceTasks_attributes and sets the default values.
-func NewWorkspaceTasks_attributes()(*WorkspaceTasks_attributes) {
-    m := &WorkspaceTasks_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewWorkspaceTasks_attributes() *WorkspaceTasks_attributes {
+	m := &WorkspaceTasks_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateWorkspaceTasks_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaceTasks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaceTasks_attributes(), nil
+func CreateWorkspaceTasks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaceTasks_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *WorkspaceTasks_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *WorkspaceTasks_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceTasks_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *WorkspaceTasks_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *WorkspaceTasks_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetEnforcementLevel gets the enforcement-level property value. The enforcementLevel property
 // returns a *WorkspaceTasks_attributes_enforcementLevel when successful
-func (m *WorkspaceTasks_attributes) GetEnforcementLevel()(*WorkspaceTasks_attributes_enforcementLevel) {
-    return m.enforcementLevel
+func (m *WorkspaceTasks_attributes) GetEnforcementLevel() *WorkspaceTasks_attributes_enforcementLevel {
+	val, err := m.GetBackingStore().Get("enforcementLevel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*WorkspaceTasks_attributes_enforcementLevel)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *WorkspaceTasks_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseWorkspaceTasks_attributes_enforcementLevel)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val.(*WorkspaceTasks_attributes_enforcementLevel))
-        }
-        return nil
-    }
-    res["stage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStage(val)
-        }
-        return nil
-    }
-    res["stages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetStages(res)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *WorkspaceTasks_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["enforcement-level"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseWorkspaceTasks_attributes_enforcementLevel)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforcementLevel(val.(*WorkspaceTasks_attributes_enforcementLevel))
+		}
+		return nil
+	}
+	res["stage"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStage(val)
+		}
+		return nil
+	}
+	res["stages"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetStages(res)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetStage gets the stage property value. Deprecated. Use `stages` instead. The stage in the run lifecycle when the run task should begin.
 // returns a *string when successful
-func (m *WorkspaceTasks_attributes) GetStage()(*string) {
-    return m.stage
+func (m *WorkspaceTasks_attributes) GetStage() *string {
+	val, err := m.GetBackingStore().Get("stage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStages gets the stages property value. The stages property
 // returns a []string when successful
-func (m *WorkspaceTasks_attributes) GetStages()([]string) {
-    return m.stages
+func (m *WorkspaceTasks_attributes) GetStages() []string {
+	val, err := m.GetBackingStore().Get("stages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *WorkspaceTasks_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *WorkspaceTasks_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *WorkspaceTasks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetEnforcementLevel() != nil {
-        cast := (*m.GetEnforcementLevel()).String()
-        err := writer.WriteStringValue("enforcement-level", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("stage", m.GetStage())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStages() != nil {
-        err := writer.WriteCollectionOfStringValues("stages", m.GetStages())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *WorkspaceTasks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetEnforcementLevel() != nil {
+		cast := (*m.GetEnforcementLevel()).String()
+		err := writer.WriteStringValue("enforcement-level", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("stage", m.GetStage())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStages() != nil {
+		err := writer.WriteCollectionOfStringValues("stages", m.GetStages())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *WorkspaceTasks_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *WorkspaceTasks_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceTasks_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *WorkspaceTasks_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *WorkspaceTasks_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEnforcementLevel sets the enforcement-level property value. The enforcementLevel property
-func (m *WorkspaceTasks_attributes) SetEnforcementLevel(value *WorkspaceTasks_attributes_enforcementLevel)() {
-    m.enforcementLevel = value
+func (m *WorkspaceTasks_attributes) SetEnforcementLevel(value *WorkspaceTasks_attributes_enforcementLevel) {
+	err := m.GetBackingStore().Set("enforcementLevel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStage sets the stage property value. Deprecated. Use `stages` instead. The stage in the run lifecycle when the run task should begin.
-func (m *WorkspaceTasks_attributes) SetStage(value *string)() {
-    m.stage = value
+func (m *WorkspaceTasks_attributes) SetStage(value *string) {
+	err := m.GetBackingStore().Set("stage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStages sets the stages property value. The stages property
-func (m *WorkspaceTasks_attributes) SetStages(value []string)() {
-    m.stages = value
+func (m *WorkspaceTasks_attributes) SetStages(value []string) {
+	err := m.GetBackingStore().Set("stages", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *WorkspaceTasks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *WorkspaceTasks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type WorkspaceTasks_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetEnforcementLevel()(*WorkspaceTasks_attributes_enforcementLevel)
-    GetStage()(*string)
-    GetStages()([]string)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetEnforcementLevel(value *WorkspaceTasks_attributes_enforcementLevel)()
-    SetStage(value *string)()
-    SetStages(value []string)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetEnforcementLevel() *WorkspaceTasks_attributes_enforcementLevel
+	GetStage() *string
+	GetStages() []string
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetEnforcementLevel(value *WorkspaceTasks_attributes_enforcementLevel)
+	SetStage(value *string)
+	SetStages(value []string)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

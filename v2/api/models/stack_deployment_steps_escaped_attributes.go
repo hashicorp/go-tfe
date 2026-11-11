@@ -4,305 +4,448 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackDeploymentSteps_attributes struct {
-    // The abandonedAt property
-    abandonedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The completedAt property
-    completedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The failedAt property
-    failedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The operationType property
-    operationType *StackDeploymentSteps_attributes_operationType
-    // The pendingOperatorAt property
-    pendingOperatorAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The queuedAt property
-    queuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The requiresStateLock property
-    requiresStateLock *bool
-    // The runningAt property
-    runningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The status property
-    status *StackDeploymentSteps_attributes_status
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackDeploymentSteps_attributes instantiates a new StackDeploymentSteps_attributes and sets the default values.
-func NewStackDeploymentSteps_attributes()(*StackDeploymentSteps_attributes) {
-    m := &StackDeploymentSteps_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackDeploymentSteps_attributes() *StackDeploymentSteps_attributes {
+	m := &StackDeploymentSteps_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackDeploymentSteps_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackDeploymentSteps_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackDeploymentSteps_attributes(), nil
+func CreateStackDeploymentSteps_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackDeploymentSteps_attributes(), nil
 }
+
 // GetAbandonedAt gets the abandoned-at property value. The abandonedAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetAbandonedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.abandonedAt
+func (m *StackDeploymentSteps_attributes) GetAbandonedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("abandonedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackDeploymentSteps_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackDeploymentSteps_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentSteps_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCompletedAt gets the completed-at property value. The completedAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetCompletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.completedAt
+func (m *StackDeploymentSteps_attributes) GetCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("completedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *StackDeploymentSteps_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFailedAt gets the failed-at property value. The failedAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.failedAt
+func (m *StackDeploymentSteps_attributes) GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("failedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackDeploymentSteps_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["abandoned-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAbandonedAt(val)
-        }
-        return nil
-    }
-    res["completed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCompletedAt(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["failed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFailedAt(val)
-        }
-        return nil
-    }
-    res["operation-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackDeploymentSteps_attributes_operationType)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOperationType(val.(*StackDeploymentSteps_attributes_operationType))
-        }
-        return nil
-    }
-    res["pending-operator-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPendingOperatorAt(val)
-        }
-        return nil
-    }
-    res["queued-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQueuedAt(val)
-        }
-        return nil
-    }
-    res["requires-state-lock"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRequiresStateLock(val)
-        }
-        return nil
-    }
-    res["running-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunningAt(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackDeploymentSteps_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*StackDeploymentSteps_attributes_status))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackDeploymentSteps_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["abandoned-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAbandonedAt(val)
+		}
+		return nil
+	}
+	res["completed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCompletedAt(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["failed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFailedAt(val)
+		}
+		return nil
+	}
+	res["operation-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackDeploymentSteps_attributes_operationType)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOperationType(val.(*StackDeploymentSteps_attributes_operationType))
+		}
+		return nil
+	}
+	res["pending-operator-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPendingOperatorAt(val)
+		}
+		return nil
+	}
+	res["queued-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQueuedAt(val)
+		}
+		return nil
+	}
+	res["requires-state-lock"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRequiresStateLock(val)
+		}
+		return nil
+	}
+	res["running-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunningAt(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackDeploymentSteps_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*StackDeploymentSteps_attributes_status))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOperationType gets the operation-type property value. The operationType property
 // returns a *StackDeploymentSteps_attributes_operationType when successful
-func (m *StackDeploymentSteps_attributes) GetOperationType()(*StackDeploymentSteps_attributes_operationType) {
-    return m.operationType
+func (m *StackDeploymentSteps_attributes) GetOperationType() *StackDeploymentSteps_attributes_operationType {
+	val, err := m.GetBackingStore().Get("operationType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackDeploymentSteps_attributes_operationType)
+	}
+	return nil
 }
+
 // GetPendingOperatorAt gets the pending-operator-at property value. The pendingOperatorAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetPendingOperatorAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.pendingOperatorAt
+func (m *StackDeploymentSteps_attributes) GetPendingOperatorAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("pendingOperatorAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetQueuedAt gets the queued-at property value. The queuedAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.queuedAt
+func (m *StackDeploymentSteps_attributes) GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("queuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetRequiresStateLock gets the requires-state-lock property value. The requiresStateLock property
 // returns a *bool when successful
-func (m *StackDeploymentSteps_attributes) GetRequiresStateLock()(*bool) {
-    return m.requiresStateLock
+func (m *StackDeploymentSteps_attributes) GetRequiresStateLock() *bool {
+	val, err := m.GetBackingStore().Get("requiresStateLock")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetRunningAt gets the running-at property value. The runningAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.runningAt
+func (m *StackDeploymentSteps_attributes) GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("runningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *StackDeploymentSteps_attributes_status when successful
-func (m *StackDeploymentSteps_attributes) GetStatus()(*StackDeploymentSteps_attributes_status) {
-    return m.status
+func (m *StackDeploymentSteps_attributes) GetStatus() *StackDeploymentSteps_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackDeploymentSteps_attributes_status)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *StackDeploymentSteps_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *StackDeploymentSteps_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackDeploymentSteps_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackDeploymentSteps_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAbandonedAt sets the abandoned-at property value. The abandonedAt property
-func (m *StackDeploymentSteps_attributes) SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.abandonedAt = value
+func (m *StackDeploymentSteps_attributes) SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("abandonedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackDeploymentSteps_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackDeploymentSteps_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentSteps_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCompletedAt sets the completed-at property value. The completedAt property
-func (m *StackDeploymentSteps_attributes) SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.completedAt = value
+func (m *StackDeploymentSteps_attributes) SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("completedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *StackDeploymentSteps_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *StackDeploymentSteps_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFailedAt sets the failed-at property value. The failedAt property
-func (m *StackDeploymentSteps_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.failedAt = value
+func (m *StackDeploymentSteps_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("failedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOperationType sets the operation-type property value. The operationType property
-func (m *StackDeploymentSteps_attributes) SetOperationType(value *StackDeploymentSteps_attributes_operationType)() {
-    m.operationType = value
+func (m *StackDeploymentSteps_attributes) SetOperationType(value *StackDeploymentSteps_attributes_operationType) {
+	err := m.GetBackingStore().Set("operationType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPendingOperatorAt sets the pending-operator-at property value. The pendingOperatorAt property
-func (m *StackDeploymentSteps_attributes) SetPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.pendingOperatorAt = value
+func (m *StackDeploymentSteps_attributes) SetPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("pendingOperatorAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetQueuedAt sets the queued-at property value. The queuedAt property
-func (m *StackDeploymentSteps_attributes) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.queuedAt = value
+func (m *StackDeploymentSteps_attributes) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("queuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRequiresStateLock sets the requires-state-lock property value. The requiresStateLock property
-func (m *StackDeploymentSteps_attributes) SetRequiresStateLock(value *bool)() {
-    m.requiresStateLock = value
+func (m *StackDeploymentSteps_attributes) SetRequiresStateLock(value *bool) {
+	err := m.GetBackingStore().Set("requiresStateLock", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunningAt sets the running-at property value. The runningAt property
-func (m *StackDeploymentSteps_attributes) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.runningAt = value
+func (m *StackDeploymentSteps_attributes) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("runningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *StackDeploymentSteps_attributes) SetStatus(value *StackDeploymentSteps_attributes_status)() {
-    m.status = value
+func (m *StackDeploymentSteps_attributes) SetStatus(value *StackDeploymentSteps_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *StackDeploymentSteps_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *StackDeploymentSteps_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackDeploymentSteps_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAbandonedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetCompletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetOperationType()(*StackDeploymentSteps_attributes_operationType)
-    GetPendingOperatorAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetRequiresStateLock()(*bool)
-    GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetStatus()(*StackDeploymentSteps_attributes_status)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetOperationType(value *StackDeploymentSteps_attributes_operationType)()
-    SetPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetRequiresStateLock(value *bool)()
-    SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetStatus(value *StackDeploymentSteps_attributes_status)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAbandonedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetOperationType() *StackDeploymentSteps_attributes_operationType
+	GetPendingOperatorAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetRequiresStateLock() *bool
+	GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetStatus() *StackDeploymentSteps_attributes_status
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetAbandonedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetOperationType(value *StackDeploymentSteps_attributes_operationType)
+	SetPendingOperatorAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetRequiresStateLock(value *bool)
+	SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetStatus(value *StackDeploymentSteps_attributes_status)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

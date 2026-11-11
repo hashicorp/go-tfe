@@ -4,196 +4,279 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type VaultOidcConfigurations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The address property
-    address *string
-    // The authPath property
-    authPath *string
-    // The encodedCacert property
-    encodedCacert *string
-    // The namespace property
-    namespace *string
-    // The role property
-    role *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewVaultOidcConfigurations_attributes instantiates a new VaultOidcConfigurations_attributes and sets the default values.
-func NewVaultOidcConfigurations_attributes()(*VaultOidcConfigurations_attributes) {
-    m := &VaultOidcConfigurations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewVaultOidcConfigurations_attributes() *VaultOidcConfigurations_attributes {
+	m := &VaultOidcConfigurations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateVaultOidcConfigurations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateVaultOidcConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewVaultOidcConfigurations_attributes(), nil
+func CreateVaultOidcConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewVaultOidcConfigurations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *VaultOidcConfigurations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *VaultOidcConfigurations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAddress gets the address property value. The address property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetAddress()(*string) {
-    return m.address
+func (m *VaultOidcConfigurations_attributes) GetAddress() *string {
+	val, err := m.GetBackingStore().Get("address")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAuthPath gets the auth-path property value. The authPath property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetAuthPath()(*string) {
-    return m.authPath
+func (m *VaultOidcConfigurations_attributes) GetAuthPath() *string {
+	val, err := m.GetBackingStore().Get("authPath")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *VaultOidcConfigurations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetEncodedCacert gets the encoded-cacert property value. The encodedCacert property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetEncodedCacert()(*string) {
-    return m.encodedCacert
+func (m *VaultOidcConfigurations_attributes) GetEncodedCacert() *string {
+	val, err := m.GetBackingStore().Get("encodedCacert")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *VaultOidcConfigurations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAddress(val)
-        }
-        return nil
-    }
-    res["auth-path"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuthPath(val)
-        }
-        return nil
-    }
-    res["encoded-cacert"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEncodedCacert(val)
-        }
-        return nil
-    }
-    res["namespace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNamespace(val)
-        }
-        return nil
-    }
-    res["role"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRole(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *VaultOidcConfigurations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["address"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAddress(val)
+		}
+		return nil
+	}
+	res["auth-path"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuthPath(val)
+		}
+		return nil
+	}
+	res["encoded-cacert"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEncodedCacert(val)
+		}
+		return nil
+	}
+	res["namespace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNamespace(val)
+		}
+		return nil
+	}
+	res["role"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRole(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetNamespace gets the namespace property value. The namespace property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetNamespace()(*string) {
-    return m.namespace
+func (m *VaultOidcConfigurations_attributes) GetNamespace() *string {
+	val, err := m.GetBackingStore().Get("namespace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetRole gets the role property value. The role property
 // returns a *string when successful
-func (m *VaultOidcConfigurations_attributes) GetRole()(*string) {
-    return m.role
+func (m *VaultOidcConfigurations_attributes) GetRole() *string {
+	val, err := m.GetBackingStore().Get("role")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *VaultOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("address", m.GetAddress())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("auth-path", m.GetAuthPath())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("encoded-cacert", m.GetEncodedCacert())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("namespace", m.GetNamespace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("role", m.GetRole())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *VaultOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("address", m.GetAddress())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("auth-path", m.GetAuthPath())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("encoded-cacert", m.GetEncodedCacert())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("namespace", m.GetNamespace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("role", m.GetRole())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *VaultOidcConfigurations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *VaultOidcConfigurations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAddress sets the address property value. The address property
-func (m *VaultOidcConfigurations_attributes) SetAddress(value *string)() {
-    m.address = value
+func (m *VaultOidcConfigurations_attributes) SetAddress(value *string) {
+	err := m.GetBackingStore().Set("address", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAuthPath sets the auth-path property value. The authPath property
-func (m *VaultOidcConfigurations_attributes) SetAuthPath(value *string)() {
-    m.authPath = value
+func (m *VaultOidcConfigurations_attributes) SetAuthPath(value *string) {
+	err := m.GetBackingStore().Set("authPath", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *VaultOidcConfigurations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetEncodedCacert sets the encoded-cacert property value. The encodedCacert property
-func (m *VaultOidcConfigurations_attributes) SetEncodedCacert(value *string)() {
-    m.encodedCacert = value
+func (m *VaultOidcConfigurations_attributes) SetEncodedCacert(value *string) {
+	err := m.GetBackingStore().Set("encodedCacert", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNamespace sets the namespace property value. The namespace property
-func (m *VaultOidcConfigurations_attributes) SetNamespace(value *string)() {
-    m.namespace = value
+func (m *VaultOidcConfigurations_attributes) SetNamespace(value *string) {
+	err := m.GetBackingStore().Set("namespace", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRole sets the role property value. The role property
-func (m *VaultOidcConfigurations_attributes) SetRole(value *string)() {
-    m.role = value
+func (m *VaultOidcConfigurations_attributes) SetRole(value *string) {
+	err := m.GetBackingStore().Set("role", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type VaultOidcConfigurations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAddress()(*string)
-    GetAuthPath()(*string)
-    GetEncodedCacert()(*string)
-    GetNamespace()(*string)
-    GetRole()(*string)
-    SetAddress(value *string)()
-    SetAuthPath(value *string)()
-    SetEncodedCacert(value *string)()
-    SetNamespace(value *string)()
-    SetRole(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAddress() *string
+	GetAuthPath() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEncodedCacert() *string
+	GetNamespace() *string
+	GetRole() *string
+	SetAddress(value *string)
+	SetAuthPath(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEncodedCacert(value *string)
+	SetNamespace(value *string)
+	SetRole(value *string)
 }

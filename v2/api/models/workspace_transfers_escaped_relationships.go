@@ -4,80 +4,123 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type WorkspaceTransfers_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The events property
-    events WorkspaceTransferEventsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewWorkspaceTransfers_relationships instantiates a new WorkspaceTransfers_relationships and sets the default values.
-func NewWorkspaceTransfers_relationships()(*WorkspaceTransfers_relationships) {
-    m := &WorkspaceTransfers_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewWorkspaceTransfers_relationships() *WorkspaceTransfers_relationships {
+	m := &WorkspaceTransfers_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateWorkspaceTransfers_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaceTransfers_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaceTransfers_relationships(), nil
+func CreateWorkspaceTransfers_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaceTransfers_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *WorkspaceTransfers_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *WorkspaceTransfers_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceTransfers_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetEvents gets the events property value. The events property
 // returns a WorkspaceTransferEventsHasManyable when successful
-func (m *WorkspaceTransfers_relationships) GetEvents()(WorkspaceTransferEventsHasManyable) {
-    return m.events
+func (m *WorkspaceTransfers_relationships) GetEvents() WorkspaceTransferEventsHasManyable {
+	val, err := m.GetBackingStore().Get("events")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceTransferEventsHasManyable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *WorkspaceTransfers_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["events"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceTransferEventsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEvents(val.(WorkspaceTransferEventsHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *WorkspaceTransfers_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["events"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceTransferEventsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEvents(val.(WorkspaceTransferEventsHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *WorkspaceTransfers_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("events", m.GetEvents())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *WorkspaceTransfers_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("events", m.GetEvents())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *WorkspaceTransfers_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *WorkspaceTransfers_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceTransfers_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetEvents sets the events property value. The events property
-func (m *WorkspaceTransfers_relationships) SetEvents(value WorkspaceTransferEventsHasManyable)() {
-    m.events = value
+func (m *WorkspaceTransfers_relationships) SetEvents(value WorkspaceTransferEventsHasManyable) {
+	err := m.GetBackingStore().Set("events", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type WorkspaceTransfers_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEvents()(WorkspaceTransferEventsHasManyable)
-    SetEvents(value WorkspaceTransferEventsHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEvents() WorkspaceTransferEventsHasManyable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEvents(value WorkspaceTransferEventsHasManyable)
 }

@@ -4,255 +4,358 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type PolicyChecks_attributes_statusTimestamps struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The canceledAt property
-    canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The erroredAt property
-    erroredAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The hardFailedAt property
-    hardFailedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The overriddenAt property
-    overriddenAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The passedAt property
-    passedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The queuedAt property
-    queuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The softFailedAt property
-    softFailedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPolicyChecks_attributes_statusTimestamps instantiates a new PolicyChecks_attributes_statusTimestamps and sets the default values.
-func NewPolicyChecks_attributes_statusTimestamps()(*PolicyChecks_attributes_statusTimestamps) {
-    m := &PolicyChecks_attributes_statusTimestamps{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicyChecks_attributes_statusTimestamps() *PolicyChecks_attributes_statusTimestamps {
+	m := &PolicyChecks_attributes_statusTimestamps{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicyChecks_attributes_statusTimestampsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicyChecks_attributes_statusTimestampsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicyChecks_attributes_statusTimestamps(), nil
+func CreatePolicyChecks_attributes_statusTimestampsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicyChecks_attributes_statusTimestamps(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicyChecks_attributes_statusTimestamps) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyChecks_attributes_statusTimestamps) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanceledAt gets the canceled-at property value. The canceledAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.canceledAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetErroredAt gets the errored-at property value. The erroredAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetErroredAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.erroredAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("erroredAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["canceled-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledAt(val)
-        }
-        return nil
-    }
-    res["errored-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErroredAt(val)
-        }
-        return nil
-    }
-    res["hard-failed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHardFailedAt(val)
-        }
-        return nil
-    }
-    res["overridden-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOverriddenAt(val)
-        }
-        return nil
-    }
-    res["passed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPassedAt(val)
-        }
-        return nil
-    }
-    res["queued-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQueuedAt(val)
-        }
-        return nil
-    }
-    res["soft-failed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSoftFailedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicyChecks_attributes_statusTimestamps) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["canceled-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledAt(val)
+		}
+		return nil
+	}
+	res["errored-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErroredAt(val)
+		}
+		return nil
+	}
+	res["hard-failed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHardFailedAt(val)
+		}
+		return nil
+	}
+	res["overridden-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOverriddenAt(val)
+		}
+		return nil
+	}
+	res["passed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPassedAt(val)
+		}
+		return nil
+	}
+	res["queued-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQueuedAt(val)
+		}
+		return nil
+	}
+	res["soft-failed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSoftFailedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHardFailedAt gets the hard-failed-at property value. The hardFailedAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetHardFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.hardFailedAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetHardFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("hardFailedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetOverriddenAt gets the overridden-at property value. The overriddenAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetOverriddenAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.overriddenAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetOverriddenAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("overriddenAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetPassedAt gets the passed-at property value. The passedAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetPassedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.passedAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetPassedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("passedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetQueuedAt gets the queued-at property value. The queuedAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.queuedAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("queuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetSoftFailedAt gets the soft-failed-at property value. The softFailedAt property
 // returns a *Time when successful
-func (m *PolicyChecks_attributes_statusTimestamps) GetSoftFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.softFailedAt
+func (m *PolicyChecks_attributes_statusTimestamps) GetSoftFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("softFailedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicyChecks_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteTimeValue("canceled-at", m.GetCanceledAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("errored-at", m.GetErroredAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("hard-failed-at", m.GetHardFailedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("overridden-at", m.GetOverriddenAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("passed-at", m.GetPassedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("queued-at", m.GetQueuedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("soft-failed-at", m.GetSoftFailedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicyChecks_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteTimeValue("canceled-at", m.GetCanceledAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("errored-at", m.GetErroredAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("hard-failed-at", m.GetHardFailedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("overridden-at", m.GetOverriddenAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("passed-at", m.GetPassedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("queued-at", m.GetQueuedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("soft-failed-at", m.GetSoftFailedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicyChecks_attributes_statusTimestamps) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyChecks_attributes_statusTimestamps) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanceledAt sets the canceled-at property value. The canceledAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.canceledAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErroredAt sets the errored-at property value. The erroredAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.erroredAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("erroredAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHardFailedAt sets the hard-failed-at property value. The hardFailedAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetHardFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.hardFailedAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetHardFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("hardFailedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOverriddenAt sets the overridden-at property value. The overriddenAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.overriddenAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("overriddenAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPassedAt sets the passed-at property value. The passedAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.passedAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("passedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetQueuedAt sets the queued-at property value. The queuedAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.queuedAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("queuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSoftFailedAt sets the soft-failed-at property value. The softFailedAt property
-func (m *PolicyChecks_attributes_statusTimestamps) SetSoftFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.softFailedAt = value
+func (m *PolicyChecks_attributes_statusTimestamps) SetSoftFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("softFailedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PolicyChecks_attributes_statusTimestampsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetErroredAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetHardFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetOverriddenAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPassedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetSoftFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetHardFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetSoftFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetHardFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetOverriddenAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPassedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetSoftFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetHardFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetSoftFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

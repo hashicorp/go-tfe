@@ -4,225 +4,328 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type SamlIdpCertificates_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // PEM-encoded X.509 certificate body.
-    cert *string
-    // Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.
-    certRole *SamlIdpCertificates_attributes_certRole
-    // ISO 8601 datetime (UTC) when this record was created.
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
-    displayName *string
-    // ISO 8601 datetime (UTC) when the certificate expires.
-    expiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Colon-separated uppercase SHA-256 fingerprint of the certificate.
-    fingerprint *string
-    // Human-readable issuer string derived from the O and CN fields of the certificate.
-    issuer *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewSamlIdpCertificates_attributes instantiates a new SamlIdpCertificates_attributes and sets the default values.
-func NewSamlIdpCertificates_attributes()(*SamlIdpCertificates_attributes) {
-    m := &SamlIdpCertificates_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewSamlIdpCertificates_attributes() *SamlIdpCertificates_attributes {
+	m := &SamlIdpCertificates_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateSamlIdpCertificates_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateSamlIdpCertificates_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewSamlIdpCertificates_attributes(), nil
+func CreateSamlIdpCertificates_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewSamlIdpCertificates_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *SamlIdpCertificates_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *SamlIdpCertificates_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *SamlIdpCertificates_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCert gets the cert property value. PEM-encoded X.509 certificate body.
 // returns a *string when successful
-func (m *SamlIdpCertificates_attributes) GetCert()(*string) {
-    return m.cert
+func (m *SamlIdpCertificates_attributes) GetCert() *string {
+	val, err := m.GetBackingStore().Get("cert")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCertRole gets the cert-role property value. Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.
 // returns a *SamlIdpCertificates_attributes_certRole when successful
-func (m *SamlIdpCertificates_attributes) GetCertRole()(*SamlIdpCertificates_attributes_certRole) {
-    return m.certRole
+func (m *SamlIdpCertificates_attributes) GetCertRole() *SamlIdpCertificates_attributes_certRole {
+	val, err := m.GetBackingStore().Get("certRole")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*SamlIdpCertificates_attributes_certRole)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. ISO 8601 datetime (UTC) when this record was created.
 // returns a *Time when successful
-func (m *SamlIdpCertificates_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *SamlIdpCertificates_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDisplayName gets the display-name property value. A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
 // returns a *string when successful
-func (m *SamlIdpCertificates_attributes) GetDisplayName()(*string) {
-    return m.displayName
+func (m *SamlIdpCertificates_attributes) GetDisplayName() *string {
+	val, err := m.GetBackingStore().Get("displayName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetExpiresAt gets the expires-at property value. ISO 8601 datetime (UTC) when the certificate expires.
 // returns a *Time when successful
-func (m *SamlIdpCertificates_attributes) GetExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.expiresAt
+func (m *SamlIdpCertificates_attributes) GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("expiresAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *SamlIdpCertificates_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["cert"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCert(val)
-        }
-        return nil
-    }
-    res["cert-role"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseSamlIdpCertificates_attributes_certRole)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCertRole(val.(*SamlIdpCertificates_attributes_certRole))
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDisplayName(val)
-        }
-        return nil
-    }
-    res["expires-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExpiresAt(val)
-        }
-        return nil
-    }
-    res["fingerprint"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFingerprint(val)
-        }
-        return nil
-    }
-    res["issuer"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIssuer(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *SamlIdpCertificates_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["cert"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCert(val)
+		}
+		return nil
+	}
+	res["cert-role"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseSamlIdpCertificates_attributes_certRole)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCertRole(val.(*SamlIdpCertificates_attributes_certRole))
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["display-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDisplayName(val)
+		}
+		return nil
+	}
+	res["expires-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExpiresAt(val)
+		}
+		return nil
+	}
+	res["fingerprint"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFingerprint(val)
+		}
+		return nil
+	}
+	res["issuer"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIssuer(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFingerprint gets the fingerprint property value. Colon-separated uppercase SHA-256 fingerprint of the certificate.
 // returns a *string when successful
-func (m *SamlIdpCertificates_attributes) GetFingerprint()(*string) {
-    return m.fingerprint
+func (m *SamlIdpCertificates_attributes) GetFingerprint() *string {
+	val, err := m.GetBackingStore().Get("fingerprint")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIssuer gets the issuer property value. Human-readable issuer string derived from the O and CN fields of the certificate.
 // returns a *string when successful
-func (m *SamlIdpCertificates_attributes) GetIssuer()(*string) {
-    return m.issuer
+func (m *SamlIdpCertificates_attributes) GetIssuer() *string {
+	val, err := m.GetBackingStore().Get("issuer")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *SamlIdpCertificates_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("cert", m.GetCert())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("display-name", m.GetDisplayName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *SamlIdpCertificates_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("cert", m.GetCert())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("display-name", m.GetDisplayName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *SamlIdpCertificates_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *SamlIdpCertificates_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *SamlIdpCertificates_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCert sets the cert property value. PEM-encoded X.509 certificate body.
-func (m *SamlIdpCertificates_attributes) SetCert(value *string)() {
-    m.cert = value
+func (m *SamlIdpCertificates_attributes) SetCert(value *string) {
+	err := m.GetBackingStore().Set("cert", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCertRole sets the cert-role property value. Internal role of this certificate. `managed` certificates are created and deleted through the idp-certificates API. `legacy_primary` and `legacy_old` certificates are managed via the deprecated `idp-cert` / `old-idp-cert` attributes on the SAML settings resource and cannot have their cert body replaced through this API.
-func (m *SamlIdpCertificates_attributes) SetCertRole(value *SamlIdpCertificates_attributes_certRole)() {
-    m.certRole = value
+func (m *SamlIdpCertificates_attributes) SetCertRole(value *SamlIdpCertificates_attributes_certRole) {
+	err := m.GetBackingStore().Set("certRole", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. ISO 8601 datetime (UTC) when this record was created.
-func (m *SamlIdpCertificates_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *SamlIdpCertificates_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDisplayName sets the display-name property value. A human-readable label for this certificate. Leading and trailing whitespace is removed. When set or changed, must be at most 90 characters; existing longer names are preserved.
-func (m *SamlIdpCertificates_attributes) SetDisplayName(value *string)() {
-    m.displayName = value
+func (m *SamlIdpCertificates_attributes) SetDisplayName(value *string) {
+	err := m.GetBackingStore().Set("displayName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetExpiresAt sets the expires-at property value. ISO 8601 datetime (UTC) when the certificate expires.
-func (m *SamlIdpCertificates_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.expiresAt = value
+func (m *SamlIdpCertificates_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("expiresAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFingerprint sets the fingerprint property value. Colon-separated uppercase SHA-256 fingerprint of the certificate.
-func (m *SamlIdpCertificates_attributes) SetFingerprint(value *string)() {
-    m.fingerprint = value
+func (m *SamlIdpCertificates_attributes) SetFingerprint(value *string) {
+	err := m.GetBackingStore().Set("fingerprint", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIssuer sets the issuer property value. Human-readable issuer string derived from the O and CN fields of the certificate.
-func (m *SamlIdpCertificates_attributes) SetIssuer(value *string)() {
-    m.issuer = value
+func (m *SamlIdpCertificates_attributes) SetIssuer(value *string) {
+	err := m.GetBackingStore().Set("issuer", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type SamlIdpCertificates_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCert()(*string)
-    GetCertRole()(*SamlIdpCertificates_attributes_certRole)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDisplayName()(*string)
-    GetExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetFingerprint()(*string)
-    GetIssuer()(*string)
-    SetCert(value *string)()
-    SetCertRole(value *SamlIdpCertificates_attributes_certRole)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDisplayName(value *string)()
-    SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetFingerprint(value *string)()
-    SetIssuer(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCert() *string
+	GetCertRole() *SamlIdpCertificates_attributes_certRole
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDisplayName() *string
+	GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetFingerprint() *string
+	GetIssuer() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCert(value *string)
+	SetCertRole(value *SamlIdpCertificates_attributes_certRole)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDisplayName(value *string)
+	SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetFingerprint(value *string)
+	SetIssuer(value *string)
 }

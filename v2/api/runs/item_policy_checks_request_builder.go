@@ -4,70 +4,76 @@
 package runs
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6 "github.com/hashicorp/go-tfe/v2/api/runs/item/policychecks"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6 "github.com/hashicorp/go-tfe/v2/api/runs/item/policychecks"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemPolicyChecksRequestBuilder builds and executes requests for operations under \runs\{-id}\policy-checks
 type ItemPolicyChecksRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemPolicyChecksRequestBuilderGetQueryParameters list the policy checks associated with a run.
 type ItemPolicyChecksRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldspolicyChecks []string "uriparametername:\"fields%5Bpolicy%2Dchecks%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6.GetIncludeQueryParameterType "uriparametername:\"include\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for policy-checks resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldspolicyChecks []string "uriparametername:\"fields%5Bpolicy%2Dchecks%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i4db4cf7b5a07810edb2a5fa006b808d202c22af20e9a6995c619346cc628aaa6.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // NewItemPolicyChecksRequestBuilderInternal instantiates a new ItemPolicyChecksRequestBuilder and sets the default values.
-func NewItemPolicyChecksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicyChecksRequestBuilder) {
-    m := &ItemPolicyChecksRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/policy-checks{?fields%5Bpolicy%2Dchecks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewItemPolicyChecksRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicyChecksRequestBuilder {
+	m := &ItemPolicyChecksRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/policy-checks{?fields%5Bpolicy%2Dchecks%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemPolicyChecksRequestBuilder instantiates a new ItemPolicyChecksRequestBuilder and sets the default values.
-func NewItemPolicyChecksRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicyChecksRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemPolicyChecksRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemPolicyChecksRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicyChecksRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemPolicyChecksRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list the policy checks associated with a run.
 // returns a ItemPolicyChecksGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicyChecksRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicyChecksRequestBuilderGetQueryParameters])(ItemPolicyChecksGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicyChecksGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPolicyChecksGetResponseable), nil
+func (m *ItemPolicyChecksRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicyChecksRequestBuilderGetQueryParameters]) (ItemPolicyChecksGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicyChecksGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemPolicyChecksGetResponseable), nil
 }
+
 // ToGetRequestInformation list the policy checks associated with a run.
 // returns a *RequestInformation when successful
-func (m *ItemPolicyChecksRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicyChecksRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemPolicyChecksRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicyChecksRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemPolicyChecksRequestBuilder when successful
-func (m *ItemPolicyChecksRequestBuilder) WithUrl(rawUrl string)(*ItemPolicyChecksRequestBuilder) {
-    return NewItemPolicyChecksRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemPolicyChecksRequestBuilder) WithUrl(rawUrl string) *ItemPolicyChecksRequestBuilder {
+	return NewItemPolicyChecksRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

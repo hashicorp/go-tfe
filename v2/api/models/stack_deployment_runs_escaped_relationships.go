@@ -4,341 +4,474 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeploymentRuns_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The blockedByDeploymentGroup property
-    blockedByDeploymentGroup StackDeploymentGroupsHasOneable
-    // The canceledBy property
-    canceledBy UsersHasOneable
-    // The currentStep property
-    currentStep StackDeploymentStepsHasOneable
-    // The destroyStackConfiguration property
-    destroyStackConfiguration StackConfigurationsHasOneable
-    // The latestDeploymentRunForDeployment property
-    latestDeploymentRunForDeployment StackDeploymentRunsHasOneable
-    // The rollbackedState property
-    rollbackedState StackDeploymentRunsHasOneable
-    // The stackApproval property
-    stackApproval StackApprovalsHasOneable
-    // The stackConfiguration property
-    stackConfiguration StackConfigurationsHasOneable
-    // The stackDeploymentGroup property
-    stackDeploymentGroup StackDeploymentGroupsHasOneable
-    // The stackDeploymentSteps property
-    stackDeploymentSteps Links_relatedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackDeploymentRuns_relationships instantiates a new StackDeploymentRuns_relationships and sets the default values.
-func NewStackDeploymentRuns_relationships()(*StackDeploymentRuns_relationships) {
-    m := &StackDeploymentRuns_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackDeploymentRuns_relationships() *StackDeploymentRuns_relationships {
+	m := &StackDeploymentRuns_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackDeploymentRuns_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackDeploymentRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackDeploymentRuns_relationships(), nil
+func CreateStackDeploymentRuns_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackDeploymentRuns_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackDeploymentRuns_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackDeploymentRuns_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentRuns_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBlockedByDeploymentGroup gets the blocked-by-deployment-group property value. The blockedByDeploymentGroup property
 // returns a StackDeploymentGroupsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetBlockedByDeploymentGroup()(StackDeploymentGroupsHasOneable) {
-    return m.blockedByDeploymentGroup
+func (m *StackDeploymentRuns_relationships) GetBlockedByDeploymentGroup() StackDeploymentGroupsHasOneable {
+	val, err := m.GetBackingStore().Get("blockedByDeploymentGroup")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentGroupsHasOneable)
+	}
+	return nil
 }
+
 // GetCanceledBy gets the canceled-by property value. The canceledBy property
 // returns a UsersHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetCanceledBy()(UsersHasOneable) {
-    return m.canceledBy
+func (m *StackDeploymentRuns_relationships) GetCanceledBy() UsersHasOneable {
+	val, err := m.GetBackingStore().Get("canceledBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
+
 // GetCurrentStep gets the current-step property value. The currentStep property
 // returns a StackDeploymentStepsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetCurrentStep()(StackDeploymentStepsHasOneable) {
-    return m.currentStep
+func (m *StackDeploymentRuns_relationships) GetCurrentStep() StackDeploymentStepsHasOneable {
+	val, err := m.GetBackingStore().Get("currentStep")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentStepsHasOneable)
+	}
+	return nil
 }
+
 // GetDestroyStackConfiguration gets the destroy-stack-configuration property value. The destroyStackConfiguration property
 // returns a StackConfigurationsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetDestroyStackConfiguration()(StackConfigurationsHasOneable) {
-    return m.destroyStackConfiguration
+func (m *StackDeploymentRuns_relationships) GetDestroyStackConfiguration() StackConfigurationsHasOneable {
+	val, err := m.GetBackingStore().Get("destroyStackConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsHasOneable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackDeploymentRuns_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["blocked-by-deployment-group"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackDeploymentGroupsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBlockedByDeploymentGroup(val.(StackDeploymentGroupsHasOneable))
-        }
-        return nil
-    }
-    res["canceled-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["current-step"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackDeploymentStepsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentStep(val.(StackDeploymentStepsHasOneable))
-        }
-        return nil
-    }
-    res["destroy-stack-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDestroyStackConfiguration(val.(StackConfigurationsHasOneable))
-        }
-        return nil
-    }
-    res["latest-deployment-run-for-deployment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLatestDeploymentRunForDeployment(val.(StackDeploymentRunsHasOneable))
-        }
-        return nil
-    }
-    res["rollbacked-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRollbackedState(val.(StackDeploymentRunsHasOneable))
-        }
-        return nil
-    }
-    res["stack-approval"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackApprovalsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackApproval(val.(StackApprovalsHasOneable))
-        }
-        return nil
-    }
-    res["stack-configuration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackConfiguration(val.(StackConfigurationsHasOneable))
-        }
-        return nil
-    }
-    res["stack-deployment-group"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackDeploymentGroupsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackDeploymentGroup(val.(StackDeploymentGroupsHasOneable))
-        }
-        return nil
-    }
-    res["stack-deployment-steps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackDeploymentSteps(val.(Links_relatedable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackDeploymentRuns_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["blocked-by-deployment-group"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackDeploymentGroupsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBlockedByDeploymentGroup(val.(StackDeploymentGroupsHasOneable))
+		}
+		return nil
+	}
+	res["canceled-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["current-step"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackDeploymentStepsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentStep(val.(StackDeploymentStepsHasOneable))
+		}
+		return nil
+	}
+	res["destroy-stack-configuration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDestroyStackConfiguration(val.(StackConfigurationsHasOneable))
+		}
+		return nil
+	}
+	res["latest-deployment-run-for-deployment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLatestDeploymentRunForDeployment(val.(StackDeploymentRunsHasOneable))
+		}
+		return nil
+	}
+	res["rollbacked-state"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRollbackedState(val.(StackDeploymentRunsHasOneable))
+		}
+		return nil
+	}
+	res["stack-approval"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackApprovalsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackApproval(val.(StackApprovalsHasOneable))
+		}
+		return nil
+	}
+	res["stack-configuration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackConfiguration(val.(StackConfigurationsHasOneable))
+		}
+		return nil
+	}
+	res["stack-deployment-group"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackDeploymentGroupsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackDeploymentGroup(val.(StackDeploymentGroupsHasOneable))
+		}
+		return nil
+	}
+	res["stack-deployment-steps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackDeploymentSteps(val.(Links_relatedable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLatestDeploymentRunForDeployment gets the latest-deployment-run-for-deployment property value. The latestDeploymentRunForDeployment property
 // returns a StackDeploymentRunsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetLatestDeploymentRunForDeployment()(StackDeploymentRunsHasOneable) {
-    return m.latestDeploymentRunForDeployment
+func (m *StackDeploymentRuns_relationships) GetLatestDeploymentRunForDeployment() StackDeploymentRunsHasOneable {
+	val, err := m.GetBackingStore().Get("latestDeploymentRunForDeployment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentRunsHasOneable)
+	}
+	return nil
 }
+
 // GetRollbackedState gets the rollbacked-state property value. The rollbackedState property
 // returns a StackDeploymentRunsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetRollbackedState()(StackDeploymentRunsHasOneable) {
-    return m.rollbackedState
+func (m *StackDeploymentRuns_relationships) GetRollbackedState() StackDeploymentRunsHasOneable {
+	val, err := m.GetBackingStore().Get("rollbackedState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentRunsHasOneable)
+	}
+	return nil
 }
+
 // GetStackApproval gets the stack-approval property value. The stackApproval property
 // returns a StackApprovalsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetStackApproval()(StackApprovalsHasOneable) {
-    return m.stackApproval
+func (m *StackDeploymentRuns_relationships) GetStackApproval() StackApprovalsHasOneable {
+	val, err := m.GetBackingStore().Get("stackApproval")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackApprovalsHasOneable)
+	}
+	return nil
 }
+
 // GetStackConfiguration gets the stack-configuration property value. The stackConfiguration property
 // returns a StackConfigurationsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetStackConfiguration()(StackConfigurationsHasOneable) {
-    return m.stackConfiguration
+func (m *StackDeploymentRuns_relationships) GetStackConfiguration() StackConfigurationsHasOneable {
+	val, err := m.GetBackingStore().Get("stackConfiguration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsHasOneable)
+	}
+	return nil
 }
+
 // GetStackDeploymentGroup gets the stack-deployment-group property value. The stackDeploymentGroup property
 // returns a StackDeploymentGroupsHasOneable when successful
-func (m *StackDeploymentRuns_relationships) GetStackDeploymentGroup()(StackDeploymentGroupsHasOneable) {
-    return m.stackDeploymentGroup
+func (m *StackDeploymentRuns_relationships) GetStackDeploymentGroup() StackDeploymentGroupsHasOneable {
+	val, err := m.GetBackingStore().Get("stackDeploymentGroup")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDeploymentGroupsHasOneable)
+	}
+	return nil
 }
+
 // GetStackDeploymentSteps gets the stack-deployment-steps property value. The stackDeploymentSteps property
 // returns a Links_relatedable when successful
-func (m *StackDeploymentRuns_relationships) GetStackDeploymentSteps()(Links_relatedable) {
-    return m.stackDeploymentSteps
+func (m *StackDeploymentRuns_relationships) GetStackDeploymentSteps() Links_relatedable {
+	val, err := m.GetBackingStore().Get("stackDeploymentSteps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackDeploymentRuns_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("blocked-by-deployment-group", m.GetBlockedByDeploymentGroup())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("current-step", m.GetCurrentStep())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("destroy-stack-configuration", m.GetDestroyStackConfiguration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("latest-deployment-run-for-deployment", m.GetLatestDeploymentRunForDeployment())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("rollbacked-state", m.GetRollbackedState())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-approval", m.GetStackApproval())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-configuration", m.GetStackConfiguration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-deployment-group", m.GetStackDeploymentGroup())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-deployment-steps", m.GetStackDeploymentSteps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackDeploymentRuns_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("blocked-by-deployment-group", m.GetBlockedByDeploymentGroup())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("canceled-by", m.GetCanceledBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("current-step", m.GetCurrentStep())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("destroy-stack-configuration", m.GetDestroyStackConfiguration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("latest-deployment-run-for-deployment", m.GetLatestDeploymentRunForDeployment())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("rollbacked-state", m.GetRollbackedState())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-approval", m.GetStackApproval())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-configuration", m.GetStackConfiguration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-deployment-group", m.GetStackDeploymentGroup())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-deployment-steps", m.GetStackDeploymentSteps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackDeploymentRuns_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackDeploymentRuns_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentRuns_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBlockedByDeploymentGroup sets the blocked-by-deployment-group property value. The blockedByDeploymentGroup property
-func (m *StackDeploymentRuns_relationships) SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable)() {
-    m.blockedByDeploymentGroup = value
+func (m *StackDeploymentRuns_relationships) SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable) {
+	err := m.GetBackingStore().Set("blockedByDeploymentGroup", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanceledBy sets the canceled-by property value. The canceledBy property
-func (m *StackDeploymentRuns_relationships) SetCanceledBy(value UsersHasOneable)() {
-    m.canceledBy = value
+func (m *StackDeploymentRuns_relationships) SetCanceledBy(value UsersHasOneable) {
+	err := m.GetBackingStore().Set("canceledBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCurrentStep sets the current-step property value. The currentStep property
-func (m *StackDeploymentRuns_relationships) SetCurrentStep(value StackDeploymentStepsHasOneable)() {
-    m.currentStep = value
+func (m *StackDeploymentRuns_relationships) SetCurrentStep(value StackDeploymentStepsHasOneable) {
+	err := m.GetBackingStore().Set("currentStep", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDestroyStackConfiguration sets the destroy-stack-configuration property value. The destroyStackConfiguration property
-func (m *StackDeploymentRuns_relationships) SetDestroyStackConfiguration(value StackConfigurationsHasOneable)() {
-    m.destroyStackConfiguration = value
+func (m *StackDeploymentRuns_relationships) SetDestroyStackConfiguration(value StackConfigurationsHasOneable) {
+	err := m.GetBackingStore().Set("destroyStackConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLatestDeploymentRunForDeployment sets the latest-deployment-run-for-deployment property value. The latestDeploymentRunForDeployment property
-func (m *StackDeploymentRuns_relationships) SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)() {
-    m.latestDeploymentRunForDeployment = value
+func (m *StackDeploymentRuns_relationships) SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable) {
+	err := m.GetBackingStore().Set("latestDeploymentRunForDeployment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRollbackedState sets the rollbacked-state property value. The rollbackedState property
-func (m *StackDeploymentRuns_relationships) SetRollbackedState(value StackDeploymentRunsHasOneable)() {
-    m.rollbackedState = value
+func (m *StackDeploymentRuns_relationships) SetRollbackedState(value StackDeploymentRunsHasOneable) {
+	err := m.GetBackingStore().Set("rollbackedState", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackApproval sets the stack-approval property value. The stackApproval property
-func (m *StackDeploymentRuns_relationships) SetStackApproval(value StackApprovalsHasOneable)() {
-    m.stackApproval = value
+func (m *StackDeploymentRuns_relationships) SetStackApproval(value StackApprovalsHasOneable) {
+	err := m.GetBackingStore().Set("stackApproval", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackConfiguration sets the stack-configuration property value. The stackConfiguration property
-func (m *StackDeploymentRuns_relationships) SetStackConfiguration(value StackConfigurationsHasOneable)() {
-    m.stackConfiguration = value
+func (m *StackDeploymentRuns_relationships) SetStackConfiguration(value StackConfigurationsHasOneable) {
+	err := m.GetBackingStore().Set("stackConfiguration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackDeploymentGroup sets the stack-deployment-group property value. The stackDeploymentGroup property
-func (m *StackDeploymentRuns_relationships) SetStackDeploymentGroup(value StackDeploymentGroupsHasOneable)() {
-    m.stackDeploymentGroup = value
+func (m *StackDeploymentRuns_relationships) SetStackDeploymentGroup(value StackDeploymentGroupsHasOneable) {
+	err := m.GetBackingStore().Set("stackDeploymentGroup", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackDeploymentSteps sets the stack-deployment-steps property value. The stackDeploymentSteps property
-func (m *StackDeploymentRuns_relationships) SetStackDeploymentSteps(value Links_relatedable)() {
-    m.stackDeploymentSteps = value
+func (m *StackDeploymentRuns_relationships) SetStackDeploymentSteps(value Links_relatedable) {
+	err := m.GetBackingStore().Set("stackDeploymentSteps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackDeploymentRuns_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetBlockedByDeploymentGroup()(StackDeploymentGroupsHasOneable)
-    GetCanceledBy()(UsersHasOneable)
-    GetCurrentStep()(StackDeploymentStepsHasOneable)
-    GetDestroyStackConfiguration()(StackConfigurationsHasOneable)
-    GetLatestDeploymentRunForDeployment()(StackDeploymentRunsHasOneable)
-    GetRollbackedState()(StackDeploymentRunsHasOneable)
-    GetStackApproval()(StackApprovalsHasOneable)
-    GetStackConfiguration()(StackConfigurationsHasOneable)
-    GetStackDeploymentGroup()(StackDeploymentGroupsHasOneable)
-    GetStackDeploymentSteps()(Links_relatedable)
-    SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable)()
-    SetCanceledBy(value UsersHasOneable)()
-    SetCurrentStep(value StackDeploymentStepsHasOneable)()
-    SetDestroyStackConfiguration(value StackConfigurationsHasOneable)()
-    SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)()
-    SetRollbackedState(value StackDeploymentRunsHasOneable)()
-    SetStackApproval(value StackApprovalsHasOneable)()
-    SetStackConfiguration(value StackConfigurationsHasOneable)()
-    SetStackDeploymentGroup(value StackDeploymentGroupsHasOneable)()
-    SetStackDeploymentSteps(value Links_relatedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBlockedByDeploymentGroup() StackDeploymentGroupsHasOneable
+	GetCanceledBy() UsersHasOneable
+	GetCurrentStep() StackDeploymentStepsHasOneable
+	GetDestroyStackConfiguration() StackConfigurationsHasOneable
+	GetLatestDeploymentRunForDeployment() StackDeploymentRunsHasOneable
+	GetRollbackedState() StackDeploymentRunsHasOneable
+	GetStackApproval() StackApprovalsHasOneable
+	GetStackConfiguration() StackConfigurationsHasOneable
+	GetStackDeploymentGroup() StackDeploymentGroupsHasOneable
+	GetStackDeploymentSteps() Links_relatedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBlockedByDeploymentGroup(value StackDeploymentGroupsHasOneable)
+	SetCanceledBy(value UsersHasOneable)
+	SetCurrentStep(value StackDeploymentStepsHasOneable)
+	SetDestroyStackConfiguration(value StackConfigurationsHasOneable)
+	SetLatestDeploymentRunForDeployment(value StackDeploymentRunsHasOneable)
+	SetRollbackedState(value StackDeploymentRunsHasOneable)
+	SetStackApproval(value StackApprovalsHasOneable)
+	SetStackConfiguration(value StackConfigurationsHasOneable)
+	SetStackDeploymentGroup(value StackDeploymentGroupsHasOneable)
+	SetStackDeploymentSteps(value Links_relatedable)
 }

@@ -26,7 +26,8 @@ api: spec
 		--user "$$(id -u):$$(id -g)" \
 		-v "$$(pwd)/v2/api:/app/output" \
 		-v "$$(pwd)/v2/openapi:/app/openapi:ro" \
-		mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
+		mcr.microsoft.com/openapi/kiota:1.38.0 generate --exclude-backward-compatible --backing-store --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
+	go run ./scripts/fix_kiota_backing_store.go v2/api
 
 spec_internal:
 	./scripts/spec_internal.sh
@@ -36,4 +37,5 @@ api_internal: spec_internal
 		--user "$$(id -u):$$(id -g)" \
 		-v "$$(pwd)/v2/api:/app/output" \
 		-v "$$(pwd)/v2/openapi:/app/openapi:ro" \
-		mcr.microsoft.com/openapi/kiota:1.31.1 generate --exclude-backward-compatible --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
+		mcr.microsoft.com/openapi/kiota:1.38.0 generate --exclude-backward-compatible --backing-store --language go --openapi /app/openapi/spec.json --namespace-name github.com/hashicorp/go-tfe/v2/api
+	go run ./scripts/fix_kiota_backing_store.go v2/api

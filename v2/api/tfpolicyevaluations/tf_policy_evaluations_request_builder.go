@@ -4,35 +4,38 @@
 package tfpolicyevaluations
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // TfPolicyEvaluationsRequestBuilder builds and executes requests for operations under \tf-policy-evaluations
 type TfPolicyEvaluationsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.tfPolicyEvaluations.item collection
 // returns a *ItemRequestBuilder when successful
-func (m *TfPolicyEvaluationsRequestBuilder) ById(id string)(*ItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if id != "" {
-        urlTplParams["%2Did"] = id
-    }
-    return NewItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *TfPolicyEvaluationsRequestBuilder) ById(id string) *ItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if id != "" {
+		urlTplParams["%2Did"] = id
+	}
+	return NewItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewTfPolicyEvaluationsRequestBuilderInternal instantiates a new TfPolicyEvaluationsRequestBuilder and sets the default values.
-func NewTfPolicyEvaluationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TfPolicyEvaluationsRequestBuilder) {
-    m := &TfPolicyEvaluationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations", pathParameters),
-    }
-    return m
+func NewTfPolicyEvaluationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *TfPolicyEvaluationsRequestBuilder {
+	m := &TfPolicyEvaluationsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations", pathParameters),
+	}
+	return m
 }
+
 // NewTfPolicyEvaluationsRequestBuilder instantiates a new TfPolicyEvaluationsRequestBuilder and sets the default values.
-func NewTfPolicyEvaluationsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TfPolicyEvaluationsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewTfPolicyEvaluationsRequestBuilderInternal(urlParams, requestAdapter)
+func NewTfPolicyEvaluationsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *TfPolicyEvaluationsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewTfPolicyEvaluationsRequestBuilderInternal(urlParams, requestAdapter)
 }

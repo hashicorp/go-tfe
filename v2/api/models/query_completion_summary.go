@@ -4,166 +4,249 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type QueryCompletionSummary struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The resource address as it appeared in the query list completion.
-    address *string
-    // The number of policies that failed for this resource address. Omitted when the query-policy feature is disabled for the organization.
-    policiesFailed *int32
-    // The number of policies that passed for this resource address. Omitted when the query-policy feature is disabled for the organization.
-    policiesPassed *int32
-    // The Terraform resource type for this list completion.
-    resourceType *string
-    // The total number of resources discovered for this address.
-    total *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewQueryCompletionSummary instantiates a new QueryCompletionSummary and sets the default values.
-func NewQueryCompletionSummary()(*QueryCompletionSummary) {
-    m := &QueryCompletionSummary{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewQueryCompletionSummary() *QueryCompletionSummary {
+	m := &QueryCompletionSummary{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateQueryCompletionSummaryFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateQueryCompletionSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewQueryCompletionSummary(), nil
+func CreateQueryCompletionSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewQueryCompletionSummary(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *QueryCompletionSummary) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *QueryCompletionSummary) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAddress gets the address property value. The resource address as it appeared in the query list completion.
 // returns a *string when successful
-func (m *QueryCompletionSummary) GetAddress()(*string) {
-    return m.address
+func (m *QueryCompletionSummary) GetAddress() *string {
+	val, err := m.GetBackingStore().Get("address")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *QueryCompletionSummary) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *QueryCompletionSummary) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAddress(val)
-        }
-        return nil
-    }
-    res["policies-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPoliciesFailed(val)
-        }
-        return nil
-    }
-    res["policies-passed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPoliciesPassed(val)
-        }
-        return nil
-    }
-    res["resource-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourceType(val)
-        }
-        return nil
-    }
-    res["total"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTotal(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *QueryCompletionSummary) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["address"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAddress(val)
+		}
+		return nil
+	}
+	res["policies-failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPoliciesFailed(val)
+		}
+		return nil
+	}
+	res["policies-passed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPoliciesPassed(val)
+		}
+		return nil
+	}
+	res["resource-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourceType(val)
+		}
+		return nil
+	}
+	res["total"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTotal(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPoliciesFailed gets the policies-failed property value. The number of policies that failed for this resource address. Omitted when the query-policy feature is disabled for the organization.
 // returns a *int32 when successful
-func (m *QueryCompletionSummary) GetPoliciesFailed()(*int32) {
-    return m.policiesFailed
+func (m *QueryCompletionSummary) GetPoliciesFailed() *int32 {
+	val, err := m.GetBackingStore().Get("policiesFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPoliciesPassed gets the policies-passed property value. The number of policies that passed for this resource address. Omitted when the query-policy feature is disabled for the organization.
 // returns a *int32 when successful
-func (m *QueryCompletionSummary) GetPoliciesPassed()(*int32) {
-    return m.policiesPassed
+func (m *QueryCompletionSummary) GetPoliciesPassed() *int32 {
+	val, err := m.GetBackingStore().Get("policiesPassed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetResourceType gets the resource-type property value. The Terraform resource type for this list completion.
 // returns a *string when successful
-func (m *QueryCompletionSummary) GetResourceType()(*string) {
-    return m.resourceType
+func (m *QueryCompletionSummary) GetResourceType() *string {
+	val, err := m.GetBackingStore().Get("resourceType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTotal gets the total property value. The total number of resources discovered for this address.
 // returns a *int32 when successful
-func (m *QueryCompletionSummary) GetTotal()(*int32) {
-    return m.total
+func (m *QueryCompletionSummary) GetTotal() *int32 {
+	val, err := m.GetBackingStore().Get("total")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *QueryCompletionSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *QueryCompletionSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *QueryCompletionSummary) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *QueryCompletionSummary) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAddress sets the address property value. The resource address as it appeared in the query list completion.
-func (m *QueryCompletionSummary) SetAddress(value *string)() {
-    m.address = value
+func (m *QueryCompletionSummary) SetAddress(value *string) {
+	err := m.GetBackingStore().Set("address", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *QueryCompletionSummary) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetPoliciesFailed sets the policies-failed property value. The number of policies that failed for this resource address. Omitted when the query-policy feature is disabled for the organization.
-func (m *QueryCompletionSummary) SetPoliciesFailed(value *int32)() {
-    m.policiesFailed = value
+func (m *QueryCompletionSummary) SetPoliciesFailed(value *int32) {
+	err := m.GetBackingStore().Set("policiesFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPoliciesPassed sets the policies-passed property value. The number of policies that passed for this resource address. Omitted when the query-policy feature is disabled for the organization.
-func (m *QueryCompletionSummary) SetPoliciesPassed(value *int32)() {
-    m.policiesPassed = value
+func (m *QueryCompletionSummary) SetPoliciesPassed(value *int32) {
+	err := m.GetBackingStore().Set("policiesPassed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourceType sets the resource-type property value. The Terraform resource type for this list completion.
-func (m *QueryCompletionSummary) SetResourceType(value *string)() {
-    m.resourceType = value
+func (m *QueryCompletionSummary) SetResourceType(value *string) {
+	err := m.GetBackingStore().Set("resourceType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTotal sets the total property value. The total number of resources discovered for this address.
-func (m *QueryCompletionSummary) SetTotal(value *int32)() {
-    m.total = value
+func (m *QueryCompletionSummary) SetTotal(value *int32) {
+	err := m.GetBackingStore().Set("total", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type QueryCompletionSummaryable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAddress()(*string)
-    GetPoliciesFailed()(*int32)
-    GetPoliciesPassed()(*int32)
-    GetResourceType()(*string)
-    GetTotal()(*int32)
-    SetAddress(value *string)()
-    SetPoliciesFailed(value *int32)()
-    SetPoliciesPassed(value *int32)()
-    SetResourceType(value *string)()
-    SetTotal(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAddress() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetPoliciesFailed() *int32
+	GetPoliciesPassed() *int32
+	GetResourceType() *string
+	GetTotal() *int32
+	SetAddress(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetPoliciesFailed(value *int32)
+	SetPoliciesPassed(value *int32)
+	SetResourceType(value *string)
+	SetTotal(value *int32)
 }

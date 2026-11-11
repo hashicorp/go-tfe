@@ -4,73 +4,80 @@
 package workspacetransfers
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7 "github.com/hashicorp/go-tfe/v2/api/workspacetransfers/item"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7 "github.com/hashicorp/go-tfe/v2/api/workspacetransfers/item"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // WithWorkspace_transfer_ItemRequestBuilder builds and executes requests for operations under \workspace-transfers\{workspace_transfer_id}
 type WithWorkspace_transfer_ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters get details about a workspace transfer.
 type WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i815f93c8ea51613f4e4111c574d4de5e520b0c9c063ada61dbdc7b008ab9e3e7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
-func (m *WithWorkspace_transfer_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
-    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *WithWorkspace_transfer_ItemRequestBuilder) Actions() *ItemActionsRequestBuilder {
+	return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewWithWorkspace_transfer_ItemRequestBuilderInternal instantiates a new WithWorkspace_transfer_ItemRequestBuilder and sets the default values.
-func NewWithWorkspace_transfer_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_transfer_ItemRequestBuilder) {
-    m := &WithWorkspace_transfer_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?fields%5Bworkspace%2Dtransfers%5D,include}", pathParameters),
-    }
-    return m
+func NewWithWorkspace_transfer_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithWorkspace_transfer_ItemRequestBuilder {
+	m := &WithWorkspace_transfer_ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers/{workspace_transfer_id}{?fields%5Bworkspace%2Dtransfers%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewWithWorkspace_transfer_ItemRequestBuilder instantiates a new WithWorkspace_transfer_ItemRequestBuilder and sets the default values.
-func NewWithWorkspace_transfer_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_transfer_ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewWithWorkspace_transfer_ItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewWithWorkspace_transfer_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithWorkspace_transfer_ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewWithWorkspace_transfer_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get details about a workspace transfer.
 // returns a WorkspaceTransfersEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithWorkspace_transfer_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceTransfersEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable), nil
+func (m *WithWorkspace_transfer_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"404": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceTransfersEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable), nil
 }
+
 // ToGetRequestInformation get details about a workspace transfer.
 // returns a *RequestInformation when successful
-func (m *WithWorkspace_transfer_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *WithWorkspace_transfer_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithWorkspace_transfer_ItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WithWorkspace_transfer_ItemRequestBuilder when successful
-func (m *WithWorkspace_transfer_ItemRequestBuilder) WithUrl(rawUrl string)(*WithWorkspace_transfer_ItemRequestBuilder) {
-    return NewWithWorkspace_transfer_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *WithWorkspace_transfer_ItemRequestBuilder) WithUrl(rawUrl string) *WithWorkspace_transfer_ItemRequestBuilder {
+	return NewWithWorkspace_transfer_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

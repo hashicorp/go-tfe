@@ -4,378 +4,511 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TdpApplications_attributes_applicationTemplate the template this application was created from, including its configuration.
 type TdpApplications_attributes_applicationTemplate struct {
-    // The actionCfgRefs property
-    actionCfgRefs []TdpApplications_attributes_applicationTemplate_actionCfgRefsable
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // A longer description of this template.
-    description *string
-    // The labels property
-    labels []string
-    // The internal ID of the Terraform module version backing this template.
-    moduleId *string
-    // The Terraform registry source address of the module backing this template.
-    moduleSource *string
-    // The name of the template.
-    name *string
-    // A Markdown template used to generate the readme for applications created from this template.
-    readmeTemplate *string
-    // A short one-line summary of what this template provisions.
-    summary *string
-    // The tags property
-    tags []string
-    // The input variable definitions exposed to users when creating an application from this template.
-    variableOptions []TdpApplications_attributes_applicationTemplate_variableOptionsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTdpApplications_attributes_applicationTemplate instantiates a new TdpApplications_attributes_applicationTemplate and sets the default values.
-func NewTdpApplications_attributes_applicationTemplate()(*TdpApplications_attributes_applicationTemplate) {
-    m := &TdpApplications_attributes_applicationTemplate{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTdpApplications_attributes_applicationTemplate() *TdpApplications_attributes_applicationTemplate {
+	m := &TdpApplications_attributes_applicationTemplate{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTdpApplications_attributes_applicationTemplateFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTdpApplications_attributes_applicationTemplateFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTdpApplications_attributes_applicationTemplate(), nil
+func CreateTdpApplications_attributes_applicationTemplateFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTdpApplications_attributes_applicationTemplate(), nil
 }
+
 // GetActionCfgRefs gets the action-cfg-refs property value. The actionCfgRefs property
 // returns a []TdpApplications_attributes_applicationTemplate_actionCfgRefsable when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetActionCfgRefs()([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable) {
-    return m.actionCfgRefs
+func (m *TdpApplications_attributes_applicationTemplate) GetActionCfgRefs() []TdpApplications_attributes_applicationTemplate_actionCfgRefsable {
+	val, err := m.GetBackingStore().Get("actionCfgRefs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TdpApplications_attributes_applicationTemplate) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpApplications_attributes_applicationTemplate) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDescription gets the description property value. A longer description of this template.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetDescription()(*string) {
-    return m.description
+func (m *TdpApplications_attributes_applicationTemplate) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["action-cfg-refs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTdpApplications_attributes_applicationTemplate_actionCfgRefsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
-                }
-            }
-            m.SetActionCfgRefs(res)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["labels"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetLabels(res)
-        }
-        return nil
-    }
-    res["module-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleId(val)
-        }
-        return nil
-    }
-    res["module-source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleSource(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["readme-template"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetReadmeTemplate(val)
-        }
-        return nil
-    }
-    res["summary"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSummary(val)
-        }
-        return nil
-    }
-    res["tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetTags(res)
-        }
-        return nil
-    }
-    res["variable-options"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTdpApplications_attributes_applicationTemplate_variableOptionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TdpApplications_attributes_applicationTemplate_variableOptionsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TdpApplications_attributes_applicationTemplate_variableOptionsable)
-                }
-            }
-            m.SetVariableOptions(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TdpApplications_attributes_applicationTemplate) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["action-cfg-refs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTdpApplications_attributes_applicationTemplate_actionCfgRefsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
+				}
+			}
+			m.SetActionCfgRefs(res)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["labels"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetLabels(res)
+		}
+		return nil
+	}
+	res["module-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleId(val)
+		}
+		return nil
+	}
+	res["module-source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleSource(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["readme-template"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetReadmeTemplate(val)
+		}
+		return nil
+	}
+	res["summary"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSummary(val)
+		}
+		return nil
+	}
+	res["tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetTags(res)
+		}
+		return nil
+	}
+	res["variable-options"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTdpApplications_attributes_applicationTemplate_variableOptionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TdpApplications_attributes_applicationTemplate_variableOptionsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TdpApplications_attributes_applicationTemplate_variableOptionsable)
+				}
+			}
+			m.SetVariableOptions(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLabels gets the labels property value. The labels property
 // returns a []string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetLabels()([]string) {
-    return m.labels
+func (m *TdpApplications_attributes_applicationTemplate) GetLabels() []string {
+	val, err := m.GetBackingStore().Get("labels")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetModuleId gets the module-id property value. The internal ID of the Terraform module version backing this template.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetModuleId()(*string) {
-    return m.moduleId
+func (m *TdpApplications_attributes_applicationTemplate) GetModuleId() *string {
+	val, err := m.GetBackingStore().Get("moduleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetModuleSource gets the module-source property value. The Terraform registry source address of the module backing this template.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetModuleSource()(*string) {
-    return m.moduleSource
+func (m *TdpApplications_attributes_applicationTemplate) GetModuleSource() *string {
+	val, err := m.GetBackingStore().Get("moduleSource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name of the template.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetName()(*string) {
-    return m.name
+func (m *TdpApplications_attributes_applicationTemplate) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetReadmeTemplate gets the readme-template property value. A Markdown template used to generate the readme for applications created from this template.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetReadmeTemplate()(*string) {
-    return m.readmeTemplate
+func (m *TdpApplications_attributes_applicationTemplate) GetReadmeTemplate() *string {
+	val, err := m.GetBackingStore().Get("readmeTemplate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSummary gets the summary property value. A short one-line summary of what this template provisions.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetSummary()(*string) {
-    return m.summary
+func (m *TdpApplications_attributes_applicationTemplate) GetSummary() *string {
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTags gets the tags property value. The tags property
 // returns a []string when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetTags()([]string) {
-    return m.tags
+func (m *TdpApplications_attributes_applicationTemplate) GetTags() []string {
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetVariableOptions gets the variable-options property value. The input variable definitions exposed to users when creating an application from this template.
 // returns a []TdpApplications_attributes_applicationTemplate_variableOptionsable when successful
-func (m *TdpApplications_attributes_applicationTemplate) GetVariableOptions()([]TdpApplications_attributes_applicationTemplate_variableOptionsable) {
-    return m.variableOptions
+func (m *TdpApplications_attributes_applicationTemplate) GetVariableOptions() []TdpApplications_attributes_applicationTemplate_variableOptionsable {
+	val, err := m.GetBackingStore().Get("variableOptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TdpApplications_attributes_applicationTemplate_variableOptionsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TdpApplications_attributes_applicationTemplate) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetActionCfgRefs() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetActionCfgRefs()))
-        for i, v := range m.GetActionCfgRefs() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("action-cfg-refs", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetLabels() != nil {
-        err := writer.WriteCollectionOfStringValues("labels", m.GetLabels())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("module-id", m.GetModuleId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("module-source", m.GetModuleSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("readme-template", m.GetReadmeTemplate())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("summary", m.GetSummary())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTags() != nil {
-        err := writer.WriteCollectionOfStringValues("tags", m.GetTags())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetVariableOptions() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetVariableOptions()))
-        for i, v := range m.GetVariableOptions() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("variable-options", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TdpApplications_attributes_applicationTemplate) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetActionCfgRefs() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetActionCfgRefs()))
+		for i, v := range m.GetActionCfgRefs() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("action-cfg-refs", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetLabels() != nil {
+		err := writer.WriteCollectionOfStringValues("labels", m.GetLabels())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("module-id", m.GetModuleId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("module-source", m.GetModuleSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("readme-template", m.GetReadmeTemplate())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("summary", m.GetSummary())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTags() != nil {
+		err := writer.WriteCollectionOfStringValues("tags", m.GetTags())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetVariableOptions() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetVariableOptions()))
+		for i, v := range m.GetVariableOptions() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("variable-options", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetActionCfgRefs sets the action-cfg-refs property value. The actionCfgRefs property
-func (m *TdpApplications_attributes_applicationTemplate) SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable)() {
-    m.actionCfgRefs = value
+func (m *TdpApplications_attributes_applicationTemplate) SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable) {
+	err := m.GetBackingStore().Set("actionCfgRefs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TdpApplications_attributes_applicationTemplate) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TdpApplications_attributes_applicationTemplate) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpApplications_attributes_applicationTemplate) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDescription sets the description property value. A longer description of this template.
-func (m *TdpApplications_attributes_applicationTemplate) SetDescription(value *string)() {
-    m.description = value
+func (m *TdpApplications_attributes_applicationTemplate) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLabels sets the labels property value. The labels property
-func (m *TdpApplications_attributes_applicationTemplate) SetLabels(value []string)() {
-    m.labels = value
+func (m *TdpApplications_attributes_applicationTemplate) SetLabels(value []string) {
+	err := m.GetBackingStore().Set("labels", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleId sets the module-id property value. The internal ID of the Terraform module version backing this template.
-func (m *TdpApplications_attributes_applicationTemplate) SetModuleId(value *string)() {
-    m.moduleId = value
+func (m *TdpApplications_attributes_applicationTemplate) SetModuleId(value *string) {
+	err := m.GetBackingStore().Set("moduleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleSource sets the module-source property value. The Terraform registry source address of the module backing this template.
-func (m *TdpApplications_attributes_applicationTemplate) SetModuleSource(value *string)() {
-    m.moduleSource = value
+func (m *TdpApplications_attributes_applicationTemplate) SetModuleSource(value *string) {
+	err := m.GetBackingStore().Set("moduleSource", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name of the template.
-func (m *TdpApplications_attributes_applicationTemplate) SetName(value *string)() {
-    m.name = value
+func (m *TdpApplications_attributes_applicationTemplate) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetReadmeTemplate sets the readme-template property value. A Markdown template used to generate the readme for applications created from this template.
-func (m *TdpApplications_attributes_applicationTemplate) SetReadmeTemplate(value *string)() {
-    m.readmeTemplate = value
+func (m *TdpApplications_attributes_applicationTemplate) SetReadmeTemplate(value *string) {
+	err := m.GetBackingStore().Set("readmeTemplate", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSummary sets the summary property value. A short one-line summary of what this template provisions.
-func (m *TdpApplications_attributes_applicationTemplate) SetSummary(value *string)() {
-    m.summary = value
+func (m *TdpApplications_attributes_applicationTemplate) SetSummary(value *string) {
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTags sets the tags property value. The tags property
-func (m *TdpApplications_attributes_applicationTemplate) SetTags(value []string)() {
-    m.tags = value
+func (m *TdpApplications_attributes_applicationTemplate) SetTags(value []string) {
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariableOptions sets the variable-options property value. The input variable definitions exposed to users when creating an application from this template.
-func (m *TdpApplications_attributes_applicationTemplate) SetVariableOptions(value []TdpApplications_attributes_applicationTemplate_variableOptionsable)() {
-    m.variableOptions = value
+func (m *TdpApplications_attributes_applicationTemplate) SetVariableOptions(value []TdpApplications_attributes_applicationTemplate_variableOptionsable) {
+	err := m.GetBackingStore().Set("variableOptions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TdpApplications_attributes_applicationTemplateable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetActionCfgRefs()([]TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
-    GetDescription()(*string)
-    GetLabels()([]string)
-    GetModuleId()(*string)
-    GetModuleSource()(*string)
-    GetName()(*string)
-    GetReadmeTemplate()(*string)
-    GetSummary()(*string)
-    GetTags()([]string)
-    GetVariableOptions()([]TdpApplications_attributes_applicationTemplate_variableOptionsable)
-    SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable)()
-    SetDescription(value *string)()
-    SetLabels(value []string)()
-    SetModuleId(value *string)()
-    SetModuleSource(value *string)()
-    SetName(value *string)()
-    SetReadmeTemplate(value *string)()
-    SetSummary(value *string)()
-    SetTags(value []string)()
-    SetVariableOptions(value []TdpApplications_attributes_applicationTemplate_variableOptionsable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetActionCfgRefs() []TdpApplications_attributes_applicationTemplate_actionCfgRefsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDescription() *string
+	GetLabels() []string
+	GetModuleId() *string
+	GetModuleSource() *string
+	GetName() *string
+	GetReadmeTemplate() *string
+	GetSummary() *string
+	GetTags() []string
+	GetVariableOptions() []TdpApplications_attributes_applicationTemplate_variableOptionsable
+	SetActionCfgRefs(value []TdpApplications_attributes_applicationTemplate_actionCfgRefsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDescription(value *string)
+	SetLabels(value []string)
+	SetModuleId(value *string)
+	SetModuleSource(value *string)
+	SetName(value *string)
+	SetReadmeTemplate(value *string)
+	SetSummary(value *string)
+	SetTags(value []string)
+	SetVariableOptions(value []TdpApplications_attributes_applicationTemplate_variableOptionsable)
 }

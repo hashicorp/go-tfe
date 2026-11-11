@@ -4,33 +4,37 @@
 package notificationconfigurations
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemActionsRequestBuilder builds and executes requests for operations under \notification-configurations\{notification_configuration_id}\actions
 type ItemActionsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemActionsRequestBuilderInternal instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    m := &ItemActionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/notification-configurations/{notification_configuration_id}/actions", pathParameters),
-    }
-    return m
+func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	m := &ItemActionsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/notification-configurations/{notification_configuration_id}/actions", pathParameters),
+	}
+	return m
 }
+
 // NewItemActionsRequestBuilder instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Enable the enable property
 // returns a *ItemActionsEnableRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Enable()(*ItemActionsEnableRequestBuilder) {
-    return NewItemActionsEnableRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Enable() *ItemActionsEnableRequestBuilder {
+	return NewItemActionsEnableRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Verify the verify property
 // returns a *ItemActionsVerifyRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Verify()(*ItemActionsVerifyRequestBuilder) {
-    return NewItemActionsVerifyRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Verify() *ItemActionsVerifyRequestBuilder {
+	return NewItemActionsVerifyRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

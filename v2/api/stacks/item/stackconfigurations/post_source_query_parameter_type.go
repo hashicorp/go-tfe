@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackconfigurations
+
 type PostSourceQueryParameterType int
 
 const (
-    MANUAL_POSTSOURCEQUERYPARAMETERTYPE PostSourceQueryParameterType = iota
-    FETCH_POSTSOURCEQUERYPARAMETERTYPE
-    REUSE_POSTSOURCEQUERYPARAMETERTYPE
+	MANUAL_POSTSOURCEQUERYPARAMETERTYPE PostSourceQueryParameterType = iota
+	FETCH_POSTSOURCEQUERYPARAMETERTYPE
+	REUSE_POSTSOURCEQUERYPARAMETERTYPE
 )
 
 func (i PostSourceQueryParameterType) String() string {
-    return []string{"manual", "fetch", "reuse"}[i]
+	return []string{"manual", "fetch", "reuse"}[i]
 }
+
 func ParsePostSourceQueryParameterType(v string) (any, error) {
-    result := MANUAL_POSTSOURCEQUERYPARAMETERTYPE
-    switch v {
-        case "manual":
-            result = MANUAL_POSTSOURCEQUERYPARAMETERTYPE
-        case "fetch":
-            result = FETCH_POSTSOURCEQUERYPARAMETERTYPE
-        case "reuse":
-            result = REUSE_POSTSOURCEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := MANUAL_POSTSOURCEQUERYPARAMETERTYPE
+	switch v {
+	case "manual":
+		result = MANUAL_POSTSOURCEQUERYPARAMETERTYPE
+	case "fetch":
+		result = FETCH_POSTSOURCEQUERYPARAMETERTYPE
+	case "reuse":
+		result = REUSE_POSTSOURCEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePostSourceQueryParameterType(values []PostSourceQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PostSourceQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

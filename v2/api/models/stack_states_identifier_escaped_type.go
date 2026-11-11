@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackStatesIdentifier_type int
 
 const (
-    STACKSTATES_STACKSTATESIDENTIFIER_TYPE StackStatesIdentifier_type = iota
+	STACKSTATES_STACKSTATESIDENTIFIER_TYPE StackStatesIdentifier_type = iota
 )
 
 func (i StackStatesIdentifier_type) String() string {
-    return []string{"stack-states"}[i]
+	return []string{"stack-states"}[i]
 }
+
 func ParseStackStatesIdentifier_type(v string) (any, error) {
-    result := STACKSTATES_STACKSTATESIDENTIFIER_TYPE
-    switch v {
-        case "stack-states":
-            result = STACKSTATES_STACKSTATESIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKSTATES_STACKSTATESIDENTIFIER_TYPE
+	switch v {
+	case "stack-states":
+		result = STACKSTATES_STACKSTATESIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackStatesIdentifier_type(values []StackStatesIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackStatesIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

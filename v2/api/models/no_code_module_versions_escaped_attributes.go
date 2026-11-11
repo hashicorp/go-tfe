@@ -4,97 +4,150 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type NoCodeModuleVersions_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Registry module version string this no-code module version pins(for example, 1.0.0).
-    moduleVersion *string
-    // Monotonic version number for this no-code module version record.
-    versionNumber *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewNoCodeModuleVersions_attributes instantiates a new NoCodeModuleVersions_attributes and sets the default values.
-func NewNoCodeModuleVersions_attributes()(*NoCodeModuleVersions_attributes) {
-    m := &NoCodeModuleVersions_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewNoCodeModuleVersions_attributes() *NoCodeModuleVersions_attributes {
+	m := &NoCodeModuleVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateNoCodeModuleVersions_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateNoCodeModuleVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewNoCodeModuleVersions_attributes(), nil
+func CreateNoCodeModuleVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewNoCodeModuleVersions_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *NoCodeModuleVersions_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *NoCodeModuleVersions_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *NoCodeModuleVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *NoCodeModuleVersions_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["module-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleVersion(val)
-        }
-        return nil
-    }
-    res["version-number"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVersionNumber(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *NoCodeModuleVersions_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["module-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleVersion(val)
+		}
+		return nil
+	}
+	res["version-number"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVersionNumber(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetModuleVersion gets the module-version property value. Registry module version string this no-code module version pins(for example, 1.0.0).
 // returns a *string when successful
-func (m *NoCodeModuleVersions_attributes) GetModuleVersion()(*string) {
-    return m.moduleVersion
+func (m *NoCodeModuleVersions_attributes) GetModuleVersion() *string {
+	val, err := m.GetBackingStore().Get("moduleVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVersionNumber gets the version-number property value. Monotonic version number for this no-code module version record.
 // returns a *int32 when successful
-func (m *NoCodeModuleVersions_attributes) GetVersionNumber()(*int32) {
-    return m.versionNumber
+func (m *NoCodeModuleVersions_attributes) GetVersionNumber() *int32 {
+	val, err := m.GetBackingStore().Get("versionNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *NoCodeModuleVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *NoCodeModuleVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *NoCodeModuleVersions_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *NoCodeModuleVersions_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *NoCodeModuleVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetModuleVersion sets the module-version property value. Registry module version string this no-code module version pins(for example, 1.0.0).
-func (m *NoCodeModuleVersions_attributes) SetModuleVersion(value *string)() {
-    m.moduleVersion = value
+func (m *NoCodeModuleVersions_attributes) SetModuleVersion(value *string) {
+	err := m.GetBackingStore().Set("moduleVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVersionNumber sets the version-number property value. Monotonic version number for this no-code module version record.
-func (m *NoCodeModuleVersions_attributes) SetVersionNumber(value *int32)() {
-    m.versionNumber = value
+func (m *NoCodeModuleVersions_attributes) SetVersionNumber(value *int32) {
+	err := m.GetBackingStore().Set("versionNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type NoCodeModuleVersions_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetModuleVersion()(*string)
-    GetVersionNumber()(*int32)
-    SetModuleVersion(value *string)()
-    SetVersionNumber(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetModuleVersion() *string
+	GetVersionNumber() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetModuleVersion(value *string)
+	SetVersionNumber(value *int32)
 }

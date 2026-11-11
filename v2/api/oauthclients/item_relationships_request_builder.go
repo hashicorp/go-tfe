@@ -4,28 +4,31 @@
 package oauthclients
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemRelationshipsRequestBuilder builds and executes requests for operations under \oauth-clients\{oauth_client_id}\relationships
 type ItemRelationshipsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemRelationshipsRequestBuilderInternal instantiates a new ItemRelationshipsRequestBuilder and sets the default values.
-func NewItemRelationshipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRequestBuilder) {
-    m := &ItemRelationshipsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-clients/{oauth_client_id}/relationships", pathParameters),
-    }
-    return m
+func NewItemRelationshipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRelationshipsRequestBuilder {
+	m := &ItemRelationshipsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/oauth-clients/{oauth_client_id}/relationships", pathParameters),
+	}
+	return m
 }
+
 // NewItemRelationshipsRequestBuilder instantiates a new ItemRelationshipsRequestBuilder and sets the default values.
-func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemRelationshipsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRelationshipsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemRelationshipsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Projects the projects property
 // returns a *ItemRelationshipsProjectsRequestBuilder when successful
-func (m *ItemRelationshipsRequestBuilder) Projects()(*ItemRelationshipsProjectsRequestBuilder) {
-    return NewItemRelationshipsProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRelationshipsRequestBuilder) Projects() *ItemRelationshipsProjectsRequestBuilder {
+	return NewItemRelationshipsProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

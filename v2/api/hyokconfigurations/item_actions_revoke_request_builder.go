@@ -4,63 +4,68 @@
 package hyokconfigurations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item/actions/revoke"
+	"context"
+	i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item/actions/revoke"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemActionsRevokeRequestBuilder builds and executes requests for operations under \hyok-configurations\{hyok_configuration_id}\actions\revoke
 type ItemActionsRevokeRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemActionsRevokeRequestBuilderInternal instantiates a new ItemActionsRevokeRequestBuilder and sets the default values.
-func NewItemActionsRevokeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRevokeRequestBuilder) {
-    m := &ItemActionsRevokeRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}/actions/revoke", pathParameters),
-    }
-    return m
+func NewItemActionsRevokeRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRevokeRequestBuilder {
+	m := &ItemActionsRevokeRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}/actions/revoke", pathParameters),
+	}
+	return m
 }
+
 // NewItemActionsRevokeRequestBuilder instantiates a new ItemActionsRevokeRequestBuilder and sets the default values.
-func NewItemActionsRevokeRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRevokeRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemActionsRevokeRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemActionsRevokeRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRevokeRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemActionsRevokeRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Post revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.This operation is only available in HCP Terraform.
 // returns a *RevokePostResponse when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.SendEnum(ctx, requestInfo, i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.ParseRevokePostResponse, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse), nil
+func (m *ItemActionsRevokeRequestBuilder) Post(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse, error) {
+	requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.SendEnum(ctx, requestInfo, i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.ParseRevokePostResponse, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(*i3ebc38174ae1b028be4cec05981255fef25b6fb4b2d352a522b584134b7099b8.RevokePostResponse), nil
 }
+
 // ToPostRequestInformation revoke an HYOK configuration, instructing HCP Terraform to migrate off of the described key.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *ItemActionsRevokeRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
-    if err != nil {
-        return nil, err
-    }
-    return requestInfo, nil
+func (m *ItemActionsRevokeRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsRevokePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+	if err != nil {
+		return nil, err
+	}
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemActionsRevokeRequestBuilder when successful
-func (m *ItemActionsRevokeRequestBuilder) WithUrl(rawUrl string)(*ItemActionsRevokeRequestBuilder) {
-    return NewItemActionsRevokeRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemActionsRevokeRequestBuilder) WithUrl(rawUrl string) *ItemActionsRevokeRequestBuilder {
+	return NewItemActionsRevokeRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

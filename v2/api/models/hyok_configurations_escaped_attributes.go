@@ -4,213 +4,306 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type HyokConfigurations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The error property
-    error *string
-    // The kekId property
-    kekId *string
-    // The kmsOptions property
-    kmsOptions HyokConfigurations_attributes_kmsOptionsable
-    // The name property
-    name *string
-    // The primary property
-    primary *bool
-    // The status property
-    status *HyokConfigurations_attributes_status
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewHyokConfigurations_attributes instantiates a new HyokConfigurations_attributes and sets the default values.
-func NewHyokConfigurations_attributes()(*HyokConfigurations_attributes) {
-    m := &HyokConfigurations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHyokConfigurations_attributes() *HyokConfigurations_attributes {
+	m := &HyokConfigurations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHyokConfigurations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHyokConfigurations_attributes(), nil
+func CreateHyokConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHyokConfigurations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HyokConfigurations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HyokConfigurations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokConfigurations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetError gets the error property value. The error property
 // returns a *string when successful
-func (m *HyokConfigurations_attributes) GetError()(*string) {
-    return m.error
+func (m *HyokConfigurations_attributes) GetError() *string {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokConfigurations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val)
-        }
-        return nil
-    }
-    res["kek-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKekId(val)
-        }
-        return nil
-    }
-    res["kms-options"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurations_attributes_kmsOptionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKmsOptions(val.(HyokConfigurations_attributes_kmsOptionsable))
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["primary"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrimary(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseHyokConfigurations_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*HyokConfigurations_attributes_status))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokConfigurations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val)
+		}
+		return nil
+	}
+	res["kek-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKekId(val)
+		}
+		return nil
+	}
+	res["kms-options"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokConfigurations_attributes_kmsOptionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKmsOptions(val.(HyokConfigurations_attributes_kmsOptionsable))
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["primary"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrimary(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseHyokConfigurations_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*HyokConfigurations_attributes_status))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetKekId gets the kek-id property value. The kekId property
 // returns a *string when successful
-func (m *HyokConfigurations_attributes) GetKekId()(*string) {
-    return m.kekId
+func (m *HyokConfigurations_attributes) GetKekId() *string {
+	val, err := m.GetBackingStore().Get("kekId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetKmsOptions gets the kms-options property value. The kmsOptions property
 // returns a HyokConfigurations_attributes_kmsOptionsable when successful
-func (m *HyokConfigurations_attributes) GetKmsOptions()(HyokConfigurations_attributes_kmsOptionsable) {
-    return m.kmsOptions
+func (m *HyokConfigurations_attributes) GetKmsOptions() HyokConfigurations_attributes_kmsOptionsable {
+	val, err := m.GetBackingStore().Get("kmsOptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurations_attributes_kmsOptionsable)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *HyokConfigurations_attributes) GetName()(*string) {
-    return m.name
+func (m *HyokConfigurations_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPrimary gets the primary property value. The primary property
 // returns a *bool when successful
-func (m *HyokConfigurations_attributes) GetPrimary()(*bool) {
-    return m.primary
+func (m *HyokConfigurations_attributes) GetPrimary() *bool {
+	val, err := m.GetBackingStore().Get("primary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *HyokConfigurations_attributes_status when successful
-func (m *HyokConfigurations_attributes) GetStatus()(*HyokConfigurations_attributes_status) {
-    return m.status
+func (m *HyokConfigurations_attributes) GetStatus() *HyokConfigurations_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*HyokConfigurations_attributes_status)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HyokConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("kek-id", m.GetKekId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("kms-options", m.GetKmsOptions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("primary", m.GetPrimary())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("kek-id", m.GetKekId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("kms-options", m.GetKmsOptions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("primary", m.GetPrimary())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HyokConfigurations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HyokConfigurations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokConfigurations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetError sets the error property value. The error property
-func (m *HyokConfigurations_attributes) SetError(value *string)() {
-    m.error = value
+func (m *HyokConfigurations_attributes) SetError(value *string) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetKekId sets the kek-id property value. The kekId property
-func (m *HyokConfigurations_attributes) SetKekId(value *string)() {
-    m.kekId = value
+func (m *HyokConfigurations_attributes) SetKekId(value *string) {
+	err := m.GetBackingStore().Set("kekId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetKmsOptions sets the kms-options property value. The kmsOptions property
-func (m *HyokConfigurations_attributes) SetKmsOptions(value HyokConfigurations_attributes_kmsOptionsable)() {
-    m.kmsOptions = value
+func (m *HyokConfigurations_attributes) SetKmsOptions(value HyokConfigurations_attributes_kmsOptionsable) {
+	err := m.GetBackingStore().Set("kmsOptions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *HyokConfigurations_attributes) SetName(value *string)() {
-    m.name = value
+func (m *HyokConfigurations_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrimary sets the primary property value. The primary property
-func (m *HyokConfigurations_attributes) SetPrimary(value *bool)() {
-    m.primary = value
+func (m *HyokConfigurations_attributes) SetPrimary(value *bool) {
+	err := m.GetBackingStore().Set("primary", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *HyokConfigurations_attributes) SetStatus(value *HyokConfigurations_attributes_status)() {
-    m.status = value
+func (m *HyokConfigurations_attributes) SetStatus(value *HyokConfigurations_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type HyokConfigurations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetError()(*string)
-    GetKekId()(*string)
-    GetKmsOptions()(HyokConfigurations_attributes_kmsOptionsable)
-    GetName()(*string)
-    GetPrimary()(*bool)
-    GetStatus()(*HyokConfigurations_attributes_status)
-    SetError(value *string)()
-    SetKekId(value *string)()
-    SetKmsOptions(value HyokConfigurations_attributes_kmsOptionsable)()
-    SetName(value *string)()
-    SetPrimary(value *bool)()
-    SetStatus(value *HyokConfigurations_attributes_status)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetError() *string
+	GetKekId() *string
+	GetKmsOptions() HyokConfigurations_attributes_kmsOptionsable
+	GetName() *string
+	GetPrimary() *bool
+	GetStatus() *HyokConfigurations_attributes_status
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetError(value *string)
+	SetKekId(value *string)
+	SetKmsOptions(value HyokConfigurations_attributes_kmsOptionsable)
+	SetName(value *string)
+	SetPrimary(value *bool)
+	SetStatus(value *HyokConfigurations_attributes_status)
 }

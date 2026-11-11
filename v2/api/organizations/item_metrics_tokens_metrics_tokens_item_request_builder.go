@@ -4,54 +4,59 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemMetricsTokensMetricsTokensItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\metrics-tokens\{id}
 type ItemMetricsTokensMetricsTokensItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal instantiates a new ItemMetricsTokensMetricsTokensItemRequestBuilder and sets the default values.
-func NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemMetricsTokensMetricsTokensItemRequestBuilder) {
-    m := &ItemMetricsTokensMetricsTokensItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/metrics-tokens/{id}", pathParameters),
-    }
-    return m
+func NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemMetricsTokensMetricsTokensItemRequestBuilder {
+	m := &ItemMetricsTokensMetricsTokensItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/metrics-tokens/{id}", pathParameters),
+	}
+	return m
 }
+
 // NewItemMetricsTokensMetricsTokensItemRequestBuilder instantiates a new ItemMetricsTokensMetricsTokensItemRequestBuilder and sets the default values.
-func NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemMetricsTokensMetricsTokensItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemMetricsTokensMetricsTokensItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Delete deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
-    requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) error {
+	requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 // ToDeleteRequestInformation deletes a Metrics Service token.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemMetricsTokensMetricsTokensItemRequestBuilder when successful
-func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) WithUrl(rawUrl string)(*ItemMetricsTokensMetricsTokensItemRequestBuilder) {
-    return NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemMetricsTokensMetricsTokensItemRequestBuilder) WithUrl(rawUrl string) *ItemMetricsTokensMetricsTokensItemRequestBuilder {
+	return NewItemMetricsTokensMetricsTokensItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

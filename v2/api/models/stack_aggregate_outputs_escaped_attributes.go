@@ -4,236 +4,349 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackAggregateOutputs_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The completedAt property
-    completedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The failedAt property
-    failedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The publishedOutputCount property
-    publishedOutputCount *int32
-    // The queuedAt property
-    queuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The runningAt property
-    runningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The status property
-    status *StackAggregateOutputs_attributes_status
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackAggregateOutputs_attributes instantiates a new StackAggregateOutputs_attributes and sets the default values.
-func NewStackAggregateOutputs_attributes()(*StackAggregateOutputs_attributes) {
-    m := &StackAggregateOutputs_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackAggregateOutputs_attributes() *StackAggregateOutputs_attributes {
+	m := &StackAggregateOutputs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackAggregateOutputs_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackAggregateOutputs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackAggregateOutputs_attributes(), nil
+func CreateStackAggregateOutputs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackAggregateOutputs_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackAggregateOutputs_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackAggregateOutputs_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackAggregateOutputs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCompletedAt gets the completed-at property value. The completedAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetCompletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.completedAt
+func (m *StackAggregateOutputs_attributes) GetCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("completedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *StackAggregateOutputs_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFailedAt gets the failed-at property value. The failedAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.failedAt
+func (m *StackAggregateOutputs_attributes) GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("failedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackAggregateOutputs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["completed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCompletedAt(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["failed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFailedAt(val)
-        }
-        return nil
-    }
-    res["published-output-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPublishedOutputCount(val)
-        }
-        return nil
-    }
-    res["queued-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQueuedAt(val)
-        }
-        return nil
-    }
-    res["running-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunningAt(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackAggregateOutputs_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*StackAggregateOutputs_attributes_status))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackAggregateOutputs_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["completed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCompletedAt(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["failed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFailedAt(val)
+		}
+		return nil
+	}
+	res["published-output-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPublishedOutputCount(val)
+		}
+		return nil
+	}
+	res["queued-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQueuedAt(val)
+		}
+		return nil
+	}
+	res["running-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunningAt(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackAggregateOutputs_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*StackAggregateOutputs_attributes_status))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPublishedOutputCount gets the published-output-count property value. The publishedOutputCount property
 // returns a *int32 when successful
-func (m *StackAggregateOutputs_attributes) GetPublishedOutputCount()(*int32) {
-    return m.publishedOutputCount
+func (m *StackAggregateOutputs_attributes) GetPublishedOutputCount() *int32 {
+	val, err := m.GetBackingStore().Get("publishedOutputCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetQueuedAt gets the queued-at property value. The queuedAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.queuedAt
+func (m *StackAggregateOutputs_attributes) GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("queuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetRunningAt gets the running-at property value. The runningAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.runningAt
+func (m *StackAggregateOutputs_attributes) GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("runningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *StackAggregateOutputs_attributes_status when successful
-func (m *StackAggregateOutputs_attributes) GetStatus()(*StackAggregateOutputs_attributes_status) {
-    return m.status
+func (m *StackAggregateOutputs_attributes) GetStatus() *StackAggregateOutputs_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackAggregateOutputs_attributes_status)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *StackAggregateOutputs_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *StackAggregateOutputs_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackAggregateOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackAggregateOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackAggregateOutputs_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackAggregateOutputs_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackAggregateOutputs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCompletedAt sets the completed-at property value. The completedAt property
-func (m *StackAggregateOutputs_attributes) SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.completedAt = value
+func (m *StackAggregateOutputs_attributes) SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("completedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *StackAggregateOutputs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *StackAggregateOutputs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFailedAt sets the failed-at property value. The failedAt property
-func (m *StackAggregateOutputs_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.failedAt = value
+func (m *StackAggregateOutputs_attributes) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("failedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPublishedOutputCount sets the published-output-count property value. The publishedOutputCount property
-func (m *StackAggregateOutputs_attributes) SetPublishedOutputCount(value *int32)() {
-    m.publishedOutputCount = value
+func (m *StackAggregateOutputs_attributes) SetPublishedOutputCount(value *int32) {
+	err := m.GetBackingStore().Set("publishedOutputCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetQueuedAt sets the queued-at property value. The queuedAt property
-func (m *StackAggregateOutputs_attributes) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.queuedAt = value
+func (m *StackAggregateOutputs_attributes) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("queuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunningAt sets the running-at property value. The runningAt property
-func (m *StackAggregateOutputs_attributes) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.runningAt = value
+func (m *StackAggregateOutputs_attributes) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("runningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *StackAggregateOutputs_attributes) SetStatus(value *StackAggregateOutputs_attributes_status)() {
-    m.status = value
+func (m *StackAggregateOutputs_attributes) SetStatus(value *StackAggregateOutputs_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *StackAggregateOutputs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *StackAggregateOutputs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackAggregateOutputs_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCompletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPublishedOutputCount()(*int32)
-    GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetStatus()(*StackAggregateOutputs_attributes_status)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPublishedOutputCount(value *int32)()
-    SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetStatus(value *StackAggregateOutputs_attributes_status)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCompletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPublishedOutputCount() *int32
+	GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetStatus() *StackAggregateOutputs_attributes_status
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCompletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPublishedOutputCount(value *int32)
+	SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetStatus(value *StackAggregateOutputs_attributes_status)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

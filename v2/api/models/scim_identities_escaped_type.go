@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type ScimIdentities_type int
 
 const (
-    SCIMIDENTITIES_SCIMIDENTITIES_TYPE ScimIdentities_type = iota
+	SCIMIDENTITIES_SCIMIDENTITIES_TYPE ScimIdentities_type = iota
 )
 
 func (i ScimIdentities_type) String() string {
-    return []string{"scim-identities"}[i]
+	return []string{"scim-identities"}[i]
 }
+
 func ParseScimIdentities_type(v string) (any, error) {
-    result := SCIMIDENTITIES_SCIMIDENTITIES_TYPE
-    switch v {
-        case "scim-identities":
-            result = SCIMIDENTITIES_SCIMIDENTITIES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SCIMIDENTITIES_SCIMIDENTITIES_TYPE
+	switch v {
+	case "scim-identities":
+		result = SCIMIDENTITIES_SCIMIDENTITIES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeScimIdentities_type(values []ScimIdentities_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ScimIdentities_type) isMultiValue() bool {
-    return false
+	return false
 }

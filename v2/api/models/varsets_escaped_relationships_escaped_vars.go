@@ -4,92 +4,135 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Varsets_relationships_vars struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data []Varsets_relationships_vars_dataable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewVarsets_relationships_vars instantiates a new Varsets_relationships_vars and sets the default values.
-func NewVarsets_relationships_vars()(*Varsets_relationships_vars) {
-    m := &Varsets_relationships_vars{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewVarsets_relationships_vars() *Varsets_relationships_vars {
+	m := &Varsets_relationships_vars{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateVarsets_relationships_varsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateVarsets_relationships_varsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewVarsets_relationships_vars(), nil
+func CreateVarsets_relationships_varsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewVarsets_relationships_vars(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Varsets_relationships_vars) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Varsets_relationships_vars) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Varsets_relationships_vars) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a []Varsets_relationships_vars_dataable when successful
-func (m *Varsets_relationships_vars) GetData()([]Varsets_relationships_vars_dataable) {
-    return m.data
+func (m *Varsets_relationships_vars) GetData() []Varsets_relationships_vars_dataable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Varsets_relationships_vars_dataable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Varsets_relationships_vars) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateVarsets_relationships_vars_dataFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]Varsets_relationships_vars_dataable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(Varsets_relationships_vars_dataable)
-                }
-            }
-            m.SetData(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Varsets_relationships_vars) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateVarsets_relationships_vars_dataFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]Varsets_relationships_vars_dataable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(Varsets_relationships_vars_dataable)
+				}
+			}
+			m.SetData(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *Varsets_relationships_vars) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Varsets_relationships_vars) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetData() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+		for i, v := range m.GetData() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("data", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Varsets_relationships_vars) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Varsets_relationships_vars) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Varsets_relationships_vars) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *Varsets_relationships_vars) SetData(value []Varsets_relationships_vars_dataable)() {
-    m.data = value
+func (m *Varsets_relationships_vars) SetData(value []Varsets_relationships_vars_dataable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Varsets_relationships_varsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]Varsets_relationships_vars_dataable)
-    SetData(value []Varsets_relationships_vars_dataable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() []Varsets_relationships_vars_dataable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value []Varsets_relationships_vars_dataable)
 }

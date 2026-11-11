@@ -4,243 +4,336 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Integrations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // A description of what the integration does.
-    description *string
-    // The homepage URL for the integration.
-    homepage *string
-    // The name of the integration.
-    name *string
-    // Ordered list of configuration parameters required by the integration.
-    params []Integrations_attributes_paramsable
-    // The provider identifier for the integration.
-    provider *string
-    // The run stages where this integration can be used.
-    stages []string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewIntegrations_attributes instantiates a new Integrations_attributes and sets the default values.
-func NewIntegrations_attributes()(*Integrations_attributes) {
-    m := &Integrations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewIntegrations_attributes() *Integrations_attributes {
+	m := &Integrations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateIntegrations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateIntegrations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewIntegrations_attributes(), nil
+func CreateIntegrations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewIntegrations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Integrations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Integrations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Integrations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDescription gets the description property value. A description of what the integration does.
 // returns a *string when successful
-func (m *Integrations_attributes) GetDescription()(*string) {
-    return m.description
+func (m *Integrations_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Integrations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["homepage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHomepage(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["params"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateIntegrations_attributes_paramsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]Integrations_attributes_paramsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(Integrations_attributes_paramsable)
-                }
-            }
-            m.SetParams(res)
-        }
-        return nil
-    }
-    res["provider"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProvider(val)
-        }
-        return nil
-    }
-    res["stages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetStages(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Integrations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["homepage"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHomepage(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["params"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateIntegrations_attributes_paramsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]Integrations_attributes_paramsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(Integrations_attributes_paramsable)
+				}
+			}
+			m.SetParams(res)
+		}
+		return nil
+	}
+	res["provider"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProvider(val)
+		}
+		return nil
+	}
+	res["stages"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetStages(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHomepage gets the homepage property value. The homepage URL for the integration.
 // returns a *string when successful
-func (m *Integrations_attributes) GetHomepage()(*string) {
-    return m.homepage
+func (m *Integrations_attributes) GetHomepage() *string {
+	val, err := m.GetBackingStore().Get("homepage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name of the integration.
 // returns a *string when successful
-func (m *Integrations_attributes) GetName()(*string) {
-    return m.name
+func (m *Integrations_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetParams gets the params property value. Ordered list of configuration parameters required by the integration.
 // returns a []Integrations_attributes_paramsable when successful
-func (m *Integrations_attributes) GetParams()([]Integrations_attributes_paramsable) {
-    return m.params
+func (m *Integrations_attributes) GetParams() []Integrations_attributes_paramsable {
+	val, err := m.GetBackingStore().Get("params")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Integrations_attributes_paramsable)
+	}
+	return nil
 }
+
 // GetProvider gets the provider property value. The provider identifier for the integration.
 // returns a *string when successful
-func (m *Integrations_attributes) GetProvider()(*string) {
-    return m.provider
+func (m *Integrations_attributes) GetProvider() *string {
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStages gets the stages property value. The run stages where this integration can be used.
 // returns a []string when successful
-func (m *Integrations_attributes) GetStages()([]string) {
-    return m.stages
+func (m *Integrations_attributes) GetStages() []string {
+	val, err := m.GetBackingStore().Get("stages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Integrations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("homepage", m.GetHomepage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetParams() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetParams()))
-        for i, v := range m.GetParams() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("params", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("provider", m.GetProvider())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStages() != nil {
-        err := writer.WriteCollectionOfStringValues("stages", m.GetStages())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Integrations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("homepage", m.GetHomepage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetParams() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetParams()))
+		for i, v := range m.GetParams() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("params", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("provider", m.GetProvider())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStages() != nil {
+		err := writer.WriteCollectionOfStringValues("stages", m.GetStages())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Integrations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Integrations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Integrations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDescription sets the description property value. A description of what the integration does.
-func (m *Integrations_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *Integrations_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHomepage sets the homepage property value. The homepage URL for the integration.
-func (m *Integrations_attributes) SetHomepage(value *string)() {
-    m.homepage = value
+func (m *Integrations_attributes) SetHomepage(value *string) {
+	err := m.GetBackingStore().Set("homepage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name of the integration.
-func (m *Integrations_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Integrations_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetParams sets the params property value. Ordered list of configuration parameters required by the integration.
-func (m *Integrations_attributes) SetParams(value []Integrations_attributes_paramsable)() {
-    m.params = value
+func (m *Integrations_attributes) SetParams(value []Integrations_attributes_paramsable) {
+	err := m.GetBackingStore().Set("params", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProvider sets the provider property value. The provider identifier for the integration.
-func (m *Integrations_attributes) SetProvider(value *string)() {
-    m.provider = value
+func (m *Integrations_attributes) SetProvider(value *string) {
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStages sets the stages property value. The run stages where this integration can be used.
-func (m *Integrations_attributes) SetStages(value []string)() {
-    m.stages = value
+func (m *Integrations_attributes) SetStages(value []string) {
+	err := m.GetBackingStore().Set("stages", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Integrations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDescription()(*string)
-    GetHomepage()(*string)
-    GetName()(*string)
-    GetParams()([]Integrations_attributes_paramsable)
-    GetProvider()(*string)
-    GetStages()([]string)
-    SetDescription(value *string)()
-    SetHomepage(value *string)()
-    SetName(value *string)()
-    SetParams(value []Integrations_attributes_paramsable)()
-    SetProvider(value *string)()
-    SetStages(value []string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDescription() *string
+	GetHomepage() *string
+	GetName() *string
+	GetParams() []Integrations_attributes_paramsable
+	GetProvider() *string
+	GetStages() []string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDescription(value *string)
+	SetHomepage(value *string)
+	SetName(value *string)
+	SetParams(value []Integrations_attributes_paramsable)
+	SetProvider(value *string)
+	SetStages(value []string)
 }

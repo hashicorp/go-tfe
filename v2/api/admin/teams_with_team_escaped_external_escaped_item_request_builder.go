@@ -4,28 +4,31 @@
 package admin
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // TeamsWithTeam_external_ItemRequestBuilder builds and executes requests for operations under \admin\teams\{team_external_id}
 type TeamsWithTeam_external_ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewTeamsWithTeam_external_ItemRequestBuilderInternal instantiates a new TeamsWithTeam_external_ItemRequestBuilder and sets the default values.
-func NewTeamsWithTeam_external_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TeamsWithTeam_external_ItemRequestBuilder) {
-    m := &TeamsWithTeam_external_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/teams/{team_external_id}", pathParameters),
-    }
-    return m
+func NewTeamsWithTeam_external_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *TeamsWithTeam_external_ItemRequestBuilder {
+	m := &TeamsWithTeam_external_ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/admin/teams/{team_external_id}", pathParameters),
+	}
+	return m
 }
+
 // NewTeamsWithTeam_external_ItemRequestBuilder instantiates a new TeamsWithTeam_external_ItemRequestBuilder and sets the default values.
-func NewTeamsWithTeam_external_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TeamsWithTeam_external_ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewTeamsWithTeam_external_ItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewTeamsWithTeam_external_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *TeamsWithTeam_external_ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewTeamsWithTeam_external_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // ScimGroupMapping the scimGroupMapping property
 // returns a *TeamsItemScimGroupMappingRequestBuilder when successful
-func (m *TeamsWithTeam_external_ItemRequestBuilder) ScimGroupMapping()(*TeamsItemScimGroupMappingRequestBuilder) {
-    return NewTeamsItemScimGroupMappingRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *TeamsWithTeam_external_ItemRequestBuilder) ScimGroupMapping() *TeamsItemScimGroupMappingRequestBuilder {
+	return NewTeamsItemScimGroupMappingRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

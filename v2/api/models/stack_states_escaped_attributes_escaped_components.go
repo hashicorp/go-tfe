@@ -4,196 +4,279 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackStates_attributes_components struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The address property
-    address *string
-    // The componentAddress property
-    componentAddress *string
-    // The componentCorrelator property
-    componentCorrelator *string
-    // The instanceCorrelator property
-    instanceCorrelator *string
-    // The resourceInstanceCount property
-    resourceInstanceCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackStates_attributes_components instantiates a new StackStates_attributes_components and sets the default values.
-func NewStackStates_attributes_components()(*StackStates_attributes_components) {
-    m := &StackStates_attributes_components{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackStates_attributes_components() *StackStates_attributes_components {
+	m := &StackStates_attributes_components{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackStates_attributes_componentsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackStates_attributes_componentsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackStates_attributes_components(), nil
+func CreateStackStates_attributes_componentsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackStates_attributes_components(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackStates_attributes_components) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackStates_attributes_components) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAddress gets the address property value. The address property
 // returns a *string when successful
-func (m *StackStates_attributes_components) GetAddress()(*string) {
-    return m.address
+func (m *StackStates_attributes_components) GetAddress() *string {
+	val, err := m.GetBackingStore().Get("address")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStates_attributes_components) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetComponentAddress gets the component-address property value. The componentAddress property
 // returns a *string when successful
-func (m *StackStates_attributes_components) GetComponentAddress()(*string) {
-    return m.componentAddress
+func (m *StackStates_attributes_components) GetComponentAddress() *string {
+	val, err := m.GetBackingStore().Get("componentAddress")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetComponentCorrelator gets the component-correlator property value. The componentCorrelator property
 // returns a *string when successful
-func (m *StackStates_attributes_components) GetComponentCorrelator()(*string) {
-    return m.componentCorrelator
+func (m *StackStates_attributes_components) GetComponentCorrelator() *string {
+	val, err := m.GetBackingStore().Get("componentCorrelator")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackStates_attributes_components) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAddress(val)
-        }
-        return nil
-    }
-    res["component-address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetComponentAddress(val)
-        }
-        return nil
-    }
-    res["component-correlator"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetComponentCorrelator(val)
-        }
-        return nil
-    }
-    res["instance-correlator"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInstanceCorrelator(val)
-        }
-        return nil
-    }
-    res["resource-instance-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourceInstanceCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackStates_attributes_components) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["address"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAddress(val)
+		}
+		return nil
+	}
+	res["component-address"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetComponentAddress(val)
+		}
+		return nil
+	}
+	res["component-correlator"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetComponentCorrelator(val)
+		}
+		return nil
+	}
+	res["instance-correlator"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInstanceCorrelator(val)
+		}
+		return nil
+	}
+	res["resource-instance-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourceInstanceCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetInstanceCorrelator gets the instance-correlator property value. The instanceCorrelator property
 // returns a *string when successful
-func (m *StackStates_attributes_components) GetInstanceCorrelator()(*string) {
-    return m.instanceCorrelator
+func (m *StackStates_attributes_components) GetInstanceCorrelator() *string {
+	val, err := m.GetBackingStore().Get("instanceCorrelator")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetResourceInstanceCount gets the resource-instance-count property value. The resourceInstanceCount property
 // returns a *int32 when successful
-func (m *StackStates_attributes_components) GetResourceInstanceCount()(*int32) {
-    return m.resourceInstanceCount
+func (m *StackStates_attributes_components) GetResourceInstanceCount() *int32 {
+	val, err := m.GetBackingStore().Get("resourceInstanceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackStates_attributes_components) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("address", m.GetAddress())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("component-address", m.GetComponentAddress())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("component-correlator", m.GetComponentCorrelator())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("instance-correlator", m.GetInstanceCorrelator())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("resource-instance-count", m.GetResourceInstanceCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackStates_attributes_components) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("address", m.GetAddress())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("component-address", m.GetComponentAddress())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("component-correlator", m.GetComponentCorrelator())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("instance-correlator", m.GetInstanceCorrelator())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("resource-instance-count", m.GetResourceInstanceCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackStates_attributes_components) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackStates_attributes_components) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAddress sets the address property value. The address property
-func (m *StackStates_attributes_components) SetAddress(value *string)() {
-    m.address = value
+func (m *StackStates_attributes_components) SetAddress(value *string) {
+	err := m.GetBackingStore().Set("address", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStates_attributes_components) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetComponentAddress sets the component-address property value. The componentAddress property
-func (m *StackStates_attributes_components) SetComponentAddress(value *string)() {
-    m.componentAddress = value
+func (m *StackStates_attributes_components) SetComponentAddress(value *string) {
+	err := m.GetBackingStore().Set("componentAddress", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetComponentCorrelator sets the component-correlator property value. The componentCorrelator property
-func (m *StackStates_attributes_components) SetComponentCorrelator(value *string)() {
-    m.componentCorrelator = value
+func (m *StackStates_attributes_components) SetComponentCorrelator(value *string) {
+	err := m.GetBackingStore().Set("componentCorrelator", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetInstanceCorrelator sets the instance-correlator property value. The instanceCorrelator property
-func (m *StackStates_attributes_components) SetInstanceCorrelator(value *string)() {
-    m.instanceCorrelator = value
+func (m *StackStates_attributes_components) SetInstanceCorrelator(value *string) {
+	err := m.GetBackingStore().Set("instanceCorrelator", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourceInstanceCount sets the resource-instance-count property value. The resourceInstanceCount property
-func (m *StackStates_attributes_components) SetResourceInstanceCount(value *int32)() {
-    m.resourceInstanceCount = value
+func (m *StackStates_attributes_components) SetResourceInstanceCount(value *int32) {
+	err := m.GetBackingStore().Set("resourceInstanceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackStates_attributes_componentsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAddress()(*string)
-    GetComponentAddress()(*string)
-    GetComponentCorrelator()(*string)
-    GetInstanceCorrelator()(*string)
-    GetResourceInstanceCount()(*int32)
-    SetAddress(value *string)()
-    SetComponentAddress(value *string)()
-    SetComponentCorrelator(value *string)()
-    SetInstanceCorrelator(value *string)()
-    SetResourceInstanceCount(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAddress() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetComponentAddress() *string
+	GetComponentCorrelator() *string
+	GetInstanceCorrelator() *string
+	GetResourceInstanceCount() *int32
+	SetAddress(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetComponentAddress(value *string)
+	SetComponentCorrelator(value *string)
+	SetInstanceCorrelator(value *string)
+	SetResourceInstanceCount(value *int32)
 }

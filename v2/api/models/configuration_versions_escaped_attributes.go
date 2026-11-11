@@ -4,307 +4,430 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ConfigurationVersions_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The autoQueueRuns property
-    autoQueueRuns *bool
-    // The error property
-    error *string
-    // The errorMessage property
-    errorMessage *string
-    // The provisional property
-    provisional *bool
-    // The source property
-    source *string
-    // The speculative property
-    speculative *bool
-    // The status property
-    status *ConfigurationVersions_attributes_status
-    // The statusTimestamps property
-    statusTimestamps ConfigurationVersions_attributes_statusTimestampsable
-    // The uploadUrl property
-    uploadUrl *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewConfigurationVersions_attributes instantiates a new ConfigurationVersions_attributes and sets the default values.
-func NewConfigurationVersions_attributes()(*ConfigurationVersions_attributes) {
-    m := &ConfigurationVersions_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewConfigurationVersions_attributes() *ConfigurationVersions_attributes {
+	m := &ConfigurationVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateConfigurationVersions_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateConfigurationVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewConfigurationVersions_attributes(), nil
+func CreateConfigurationVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewConfigurationVersions_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ConfigurationVersions_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ConfigurationVersions_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAutoQueueRuns gets the auto-queue-runs property value. The autoQueueRuns property
 // returns a *bool when successful
-func (m *ConfigurationVersions_attributes) GetAutoQueueRuns()(*bool) {
-    return m.autoQueueRuns
+func (m *ConfigurationVersions_attributes) GetAutoQueueRuns() *bool {
+	val, err := m.GetBackingStore().Get("autoQueueRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ConfigurationVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetError gets the error property value. The error property
 // returns a *string when successful
-func (m *ConfigurationVersions_attributes) GetError()(*string) {
-    return m.error
+func (m *ConfigurationVersions_attributes) GetError() *string {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetErrorMessage gets the error-message property value. The errorMessage property
 // returns a *string when successful
-func (m *ConfigurationVersions_attributes) GetErrorMessage()(*string) {
-    return m.errorMessage
+func (m *ConfigurationVersions_attributes) GetErrorMessage() *string {
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ConfigurationVersions_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["auto-queue-runs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoQueueRuns(val)
-        }
-        return nil
-    }
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val)
-        }
-        return nil
-    }
-    res["error-message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErrorMessage(val)
-        }
-        return nil
-    }
-    res["provisional"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProvisional(val)
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val)
-        }
-        return nil
-    }
-    res["speculative"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSpeculative(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseConfigurationVersions_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*ConfigurationVersions_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateConfigurationVersions_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(ConfigurationVersions_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    res["upload-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUploadUrl(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ConfigurationVersions_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["auto-queue-runs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoQueueRuns(val)
+		}
+		return nil
+	}
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val)
+		}
+		return nil
+	}
+	res["error-message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErrorMessage(val)
+		}
+		return nil
+	}
+	res["provisional"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProvisional(val)
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val)
+		}
+		return nil
+	}
+	res["speculative"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSpeculative(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseConfigurationVersions_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*ConfigurationVersions_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateConfigurationVersions_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(ConfigurationVersions_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	res["upload-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUploadUrl(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetProvisional gets the provisional property value. The provisional property
 // returns a *bool when successful
-func (m *ConfigurationVersions_attributes) GetProvisional()(*bool) {
-    return m.provisional
+func (m *ConfigurationVersions_attributes) GetProvisional() *bool {
+	val, err := m.GetBackingStore().Get("provisional")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetSource gets the source property value. The source property
 // returns a *string when successful
-func (m *ConfigurationVersions_attributes) GetSource()(*string) {
-    return m.source
+func (m *ConfigurationVersions_attributes) GetSource() *string {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSpeculative gets the speculative property value. The speculative property
 // returns a *bool when successful
-func (m *ConfigurationVersions_attributes) GetSpeculative()(*bool) {
-    return m.speculative
+func (m *ConfigurationVersions_attributes) GetSpeculative() *bool {
+	val, err := m.GetBackingStore().Get("speculative")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *ConfigurationVersions_attributes_status when successful
-func (m *ConfigurationVersions_attributes) GetStatus()(*ConfigurationVersions_attributes_status) {
-    return m.status
+func (m *ConfigurationVersions_attributes) GetStatus() *ConfigurationVersions_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*ConfigurationVersions_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a ConfigurationVersions_attributes_statusTimestampsable when successful
-func (m *ConfigurationVersions_attributes) GetStatusTimestamps()(ConfigurationVersions_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *ConfigurationVersions_attributes) GetStatusTimestamps() ConfigurationVersions_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersions_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // GetUploadUrl gets the upload-url property value. The uploadUrl property
 // returns a *string when successful
-func (m *ConfigurationVersions_attributes) GetUploadUrl()(*string) {
-    return m.uploadUrl
+func (m *ConfigurationVersions_attributes) GetUploadUrl() *string {
+	val, err := m.GetBackingStore().Get("uploadUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *ConfigurationVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("auto-queue-runs", m.GetAutoQueueRuns())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("error", m.GetError())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("error-message", m.GetErrorMessage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("provisional", m.GetProvisional())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source", m.GetSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("speculative", m.GetSpeculative())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ConfigurationVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("auto-queue-runs", m.GetAutoQueueRuns())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("error", m.GetError())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("error-message", m.GetErrorMessage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("provisional", m.GetProvisional())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source", m.GetSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("speculative", m.GetSpeculative())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ConfigurationVersions_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ConfigurationVersions_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoQueueRuns sets the auto-queue-runs property value. The autoQueueRuns property
-func (m *ConfigurationVersions_attributes) SetAutoQueueRuns(value *bool)() {
-    m.autoQueueRuns = value
+func (m *ConfigurationVersions_attributes) SetAutoQueueRuns(value *bool) {
+	err := m.GetBackingStore().Set("autoQueueRuns", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ConfigurationVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetError sets the error property value. The error property
-func (m *ConfigurationVersions_attributes) SetError(value *string)() {
-    m.error = value
+func (m *ConfigurationVersions_attributes) SetError(value *string) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErrorMessage sets the error-message property value. The errorMessage property
-func (m *ConfigurationVersions_attributes) SetErrorMessage(value *string)() {
-    m.errorMessage = value
+func (m *ConfigurationVersions_attributes) SetErrorMessage(value *string) {
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProvisional sets the provisional property value. The provisional property
-func (m *ConfigurationVersions_attributes) SetProvisional(value *bool)() {
-    m.provisional = value
+func (m *ConfigurationVersions_attributes) SetProvisional(value *bool) {
+	err := m.GetBackingStore().Set("provisional", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The source property
-func (m *ConfigurationVersions_attributes) SetSource(value *string)() {
-    m.source = value
+func (m *ConfigurationVersions_attributes) SetSource(value *string) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSpeculative sets the speculative property value. The speculative property
-func (m *ConfigurationVersions_attributes) SetSpeculative(value *bool)() {
-    m.speculative = value
+func (m *ConfigurationVersions_attributes) SetSpeculative(value *bool) {
+	err := m.GetBackingStore().Set("speculative", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *ConfigurationVersions_attributes) SetStatus(value *ConfigurationVersions_attributes_status)() {
-    m.status = value
+func (m *ConfigurationVersions_attributes) SetStatus(value *ConfigurationVersions_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
-func (m *ConfigurationVersions_attributes) SetStatusTimestamps(value ConfigurationVersions_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *ConfigurationVersions_attributes) SetStatusTimestamps(value ConfigurationVersions_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUploadUrl sets the upload-url property value. The uploadUrl property
-func (m *ConfigurationVersions_attributes) SetUploadUrl(value *string)() {
-    m.uploadUrl = value
+func (m *ConfigurationVersions_attributes) SetUploadUrl(value *string) {
+	err := m.GetBackingStore().Set("uploadUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type ConfigurationVersions_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAutoQueueRuns()(*bool)
-    GetError()(*string)
-    GetErrorMessage()(*string)
-    GetProvisional()(*bool)
-    GetSource()(*string)
-    GetSpeculative()(*bool)
-    GetStatus()(*ConfigurationVersions_attributes_status)
-    GetStatusTimestamps()(ConfigurationVersions_attributes_statusTimestampsable)
-    GetUploadUrl()(*string)
-    SetAutoQueueRuns(value *bool)()
-    SetError(value *string)()
-    SetErrorMessage(value *string)()
-    SetProvisional(value *bool)()
-    SetSource(value *string)()
-    SetSpeculative(value *bool)()
-    SetStatus(value *ConfigurationVersions_attributes_status)()
-    SetStatusTimestamps(value ConfigurationVersions_attributes_statusTimestampsable)()
-    SetUploadUrl(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAutoQueueRuns() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetError() *string
+	GetErrorMessage() *string
+	GetProvisional() *bool
+	GetSource() *string
+	GetSpeculative() *bool
+	GetStatus() *ConfigurationVersions_attributes_status
+	GetStatusTimestamps() ConfigurationVersions_attributes_statusTimestampsable
+	GetUploadUrl() *string
+	SetAutoQueueRuns(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetError(value *string)
+	SetErrorMessage(value *string)
+	SetProvisional(value *bool)
+	SetSource(value *string)
+	SetSpeculative(value *bool)
+	SetStatus(value *ConfigurationVersions_attributes_status)
+	SetStatusTimestamps(value ConfigurationVersions_attributes_statusTimestampsable)
+	SetUploadUrl(value *string)
 }

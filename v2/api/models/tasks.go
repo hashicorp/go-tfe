@@ -4,191 +4,274 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Tasks struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes Tasks_attributesable
-    // The id property
-    id *string
-    // The links property
-    links Selfable
-    // The relationships property
-    relationships Tasks_relationshipsable
-    // The type property
-    typeEscaped *Tasks_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTasks instantiates a new Tasks and sets the default values.
-func NewTasks()(*Tasks) {
-    m := &Tasks{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTasks() *Tasks {
+	m := &Tasks{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTasksFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTasksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTasks(), nil
+func CreateTasksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTasks(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Tasks) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Tasks) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a Tasks_attributesable when successful
-func (m *Tasks) GetAttributes()(Tasks_attributesable) {
-    return m.attributes
+func (m *Tasks) GetAttributes() Tasks_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Tasks_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Tasks) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Tasks) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasks_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(Tasks_attributesable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSelfFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(Selfable))
-        }
-        return nil
-    }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTasks_relationshipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRelationships(val.(Tasks_relationshipsable))
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTasks_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*Tasks_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Tasks) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTasks_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(Tasks_attributesable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateSelfFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(Selfable))
+		}
+		return nil
+	}
+	res["relationships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTasks_relationshipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRelationships(val.(Tasks_relationshipsable))
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTasks_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*Tasks_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *Tasks) GetId()(*string) {
-    return m.id
+func (m *Tasks) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetLinks gets the links property value. The links property
 // returns a Selfable when successful
-func (m *Tasks) GetLinks()(Selfable) {
-    return m.links
+func (m *Tasks) GetLinks() Selfable {
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Selfable)
+	}
+	return nil
 }
+
 // GetRelationships gets the relationships property value. The relationships property
 // returns a Tasks_relationshipsable when successful
-func (m *Tasks) GetRelationships()(Tasks_relationshipsable) {
-    return m.relationships
+func (m *Tasks) GetRelationships() Tasks_relationshipsable {
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Tasks_relationshipsable)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *Tasks_type when successful
-func (m *Tasks) GetTypeEscaped()(*Tasks_type) {
-    return m.typeEscaped
+func (m *Tasks) GetTypeEscaped() *Tasks_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Tasks_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Tasks) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("relationships", m.GetRelationships())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Tasks) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("relationships", m.GetRelationships())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTypeEscaped() != nil {
+		cast := (*m.GetTypeEscaped()).String()
+		err := writer.WriteStringValue("type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Tasks) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Tasks) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *Tasks) SetAttributes(value Tasks_attributesable)() {
-    m.attributes = value
+func (m *Tasks) SetAttributes(value Tasks_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Tasks) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The id property
-func (m *Tasks) SetId(value *string)() {
-    m.id = value
+func (m *Tasks) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLinks sets the links property value. The links property
-func (m *Tasks) SetLinks(value Selfable)() {
-    m.links = value
+func (m *Tasks) SetLinks(value Selfable) {
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRelationships sets the relationships property value. The relationships property
-func (m *Tasks) SetRelationships(value Tasks_relationshipsable)() {
-    m.relationships = value
+func (m *Tasks) SetRelationships(value Tasks_relationshipsable) {
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *Tasks) SetTypeEscaped(value *Tasks_type)() {
-    m.typeEscaped = value
+func (m *Tasks) SetTypeEscaped(value *Tasks_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Tasksable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(Tasks_attributesable)
-    GetId()(*string)
-    GetLinks()(Selfable)
-    GetRelationships()(Tasks_relationshipsable)
-    GetTypeEscaped()(*Tasks_type)
-    SetAttributes(value Tasks_attributesable)()
-    SetId(value *string)()
-    SetLinks(value Selfable)()
-    SetRelationships(value Tasks_relationshipsable)()
-    SetTypeEscaped(value *Tasks_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() Tasks_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	GetLinks() Selfable
+	GetRelationships() Tasks_relationshipsable
+	GetTypeEscaped() *Tasks_type
+	SetAttributes(value Tasks_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
+	SetLinks(value Selfable)
+	SetRelationships(value Tasks_relationshipsable)
+	SetTypeEscaped(value *Tasks_type)
 }

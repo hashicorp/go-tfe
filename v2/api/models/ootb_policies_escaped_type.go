@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type OotbPolicies_type int
 
 const (
-    OOTBPOLICIES_OOTBPOLICIES_TYPE OotbPolicies_type = iota
+	OOTBPOLICIES_OOTBPOLICIES_TYPE OotbPolicies_type = iota
 )
 
 func (i OotbPolicies_type) String() string {
-    return []string{"ootb-policies"}[i]
+	return []string{"ootb-policies"}[i]
 }
+
 func ParseOotbPolicies_type(v string) (any, error) {
-    result := OOTBPOLICIES_OOTBPOLICIES_TYPE
-    switch v {
-        case "ootb-policies":
-            result = OOTBPOLICIES_OOTBPOLICIES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := OOTBPOLICIES_OOTBPOLICIES_TYPE
+	switch v {
+	case "ootb-policies":
+		result = OOTBPOLICIES_OOTBPOLICIES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOotbPolicies_type(values []OotbPolicies_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OotbPolicies_type) isMultiValue() bool {
-    return false
+	return false
 }

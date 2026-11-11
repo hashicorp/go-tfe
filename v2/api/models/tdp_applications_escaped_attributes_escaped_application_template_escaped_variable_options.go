@@ -4,202 +4,285 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TdpApplications_attributes_applicationTemplate_variableOptions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // A human-readable description of the variable.
-    description *string
-    // Allowed values for this variable.
-    options []string
-    // Whether the user can edit this variable when creating an application.
-    userEditable *bool
-    // The name of the variable.
-    variableName *string
-    // The type of the variable.
-    variableType *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTdpApplications_attributes_applicationTemplate_variableOptions instantiates a new TdpApplications_attributes_applicationTemplate_variableOptions and sets the default values.
-func NewTdpApplications_attributes_applicationTemplate_variableOptions()(*TdpApplications_attributes_applicationTemplate_variableOptions) {
-    m := &TdpApplications_attributes_applicationTemplate_variableOptions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTdpApplications_attributes_applicationTemplate_variableOptions() *TdpApplications_attributes_applicationTemplate_variableOptions {
+	m := &TdpApplications_attributes_applicationTemplate_variableOptions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTdpApplications_attributes_applicationTemplate_variableOptionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTdpApplications_attributes_applicationTemplate_variableOptionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTdpApplications_attributes_applicationTemplate_variableOptions(), nil
+func CreateTdpApplications_attributes_applicationTemplate_variableOptionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTdpApplications_attributes_applicationTemplate_variableOptions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDescription gets the description property value. A human-readable description of the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetDescription()(*string) {
-    return m.description
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["options"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetOptions(res)
-        }
-        return nil
-    }
-    res["user-editable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUserEditable(val)
-        }
-        return nil
-    }
-    res["variable-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVariableName(val)
-        }
-        return nil
-    }
-    res["variable-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVariableType(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["options"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetOptions(res)
+		}
+		return nil
+	}
+	res["user-editable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUserEditable(val)
+		}
+		return nil
+	}
+	res["variable-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVariableName(val)
+		}
+		return nil
+	}
+	res["variable-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVariableType(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOptions gets the options property value. Allowed values for this variable.
 // returns a []string when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetOptions()([]string) {
-    return m.options
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetOptions() []string {
+	val, err := m.GetBackingStore().Get("options")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetUserEditable gets the user-editable property value. Whether the user can edit this variable when creating an application.
 // returns a *bool when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetUserEditable()(*bool) {
-    return m.userEditable
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetUserEditable() *bool {
+	val, err := m.GetBackingStore().Get("userEditable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetVariableName gets the variable-name property value. The name of the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetVariableName()(*string) {
-    return m.variableName
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetVariableName() *string {
+	val, err := m.GetBackingStore().Get("variableName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVariableType gets the variable-type property value. The type of the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetVariableType()(*string) {
-    return m.variableType
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) GetVariableType() *string {
+	val, err := m.GetBackingStore().Get("variableType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetOptions() != nil {
-        err := writer.WriteCollectionOfStringValues("options", m.GetOptions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("user-editable", m.GetUserEditable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("variable-name", m.GetVariableName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("variable-type", m.GetVariableType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetOptions() != nil {
+		err := writer.WriteCollectionOfStringValues("options", m.GetOptions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("user-editable", m.GetUserEditable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("variable-name", m.GetVariableName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("variable-type", m.GetVariableType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDescription sets the description property value. A human-readable description of the variable.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetDescription(value *string)() {
-    m.description = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOptions sets the options property value. Allowed values for this variable.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetOptions(value []string)() {
-    m.options = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetOptions(value []string) {
+	err := m.GetBackingStore().Set("options", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUserEditable sets the user-editable property value. Whether the user can edit this variable when creating an application.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetUserEditable(value *bool)() {
-    m.userEditable = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetUserEditable(value *bool) {
+	err := m.GetBackingStore().Set("userEditable", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariableName sets the variable-name property value. The name of the variable.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetVariableName(value *string)() {
-    m.variableName = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetVariableName(value *string) {
+	err := m.GetBackingStore().Set("variableName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariableType sets the variable-type property value. The type of the variable.
-func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetVariableType(value *string)() {
-    m.variableType = value
+func (m *TdpApplications_attributes_applicationTemplate_variableOptions) SetVariableType(value *string) {
+	err := m.GetBackingStore().Set("variableType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TdpApplications_attributes_applicationTemplate_variableOptionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDescription()(*string)
-    GetOptions()([]string)
-    GetUserEditable()(*bool)
-    GetVariableName()(*string)
-    GetVariableType()(*string)
-    SetDescription(value *string)()
-    SetOptions(value []string)()
-    SetUserEditable(value *bool)()
-    SetVariableName(value *string)()
-    SetVariableType(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDescription() *string
+	GetOptions() []string
+	GetUserEditable() *bool
+	GetVariableName() *string
+	GetVariableType() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDescription(value *string)
+	SetOptions(value []string)
+	SetUserEditable(value *bool)
+	SetVariableName(value *string)
+	SetVariableType(value *string)
 }

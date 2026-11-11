@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackDeploymentRunsIdentifier_type int
 
 const (
-    STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE StackDeploymentRunsIdentifier_type = iota
-    STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
+	STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE StackDeploymentRunsIdentifier_type = iota
+	STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
 )
 
 func (i StackDeploymentRunsIdentifier_type) String() string {
-    return []string{"stack-deployment-runs", "stack-states"}[i]
+	return []string{"stack-deployment-runs", "stack-states"}[i]
 }
+
 func ParseStackDeploymentRunsIdentifier_type(v string) (any, error) {
-    result := STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
-    switch v {
-        case "stack-deployment-runs":
-            result = STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
-        case "stack-states":
-            result = STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
+	switch v {
+	case "stack-deployment-runs":
+		result = STACKDEPLOYMENTRUNS_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
+	case "stack-states":
+		result = STACKSTATES_STACKDEPLOYMENTRUNSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackDeploymentRunsIdentifier_type(values []StackDeploymentRunsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackDeploymentRunsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

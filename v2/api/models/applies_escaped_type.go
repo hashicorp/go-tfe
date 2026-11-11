@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Applies_type int
 
 const (
-    APPLIES_APPLIES_TYPE Applies_type = iota
+	APPLIES_APPLIES_TYPE Applies_type = iota
 )
 
 func (i Applies_type) String() string {
-    return []string{"applies"}[i]
+	return []string{"applies"}[i]
 }
+
 func ParseApplies_type(v string) (any, error) {
-    result := APPLIES_APPLIES_TYPE
-    switch v {
-        case "applies":
-            result = APPLIES_APPLIES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := APPLIES_APPLIES_TYPE
+	switch v {
+	case "applies":
+		result = APPLIES_APPLIES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeApplies_type(values []Applies_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Applies_type) isMultiValue() bool {
-    return false
+	return false
 }

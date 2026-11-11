@@ -2,36 +2,40 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The name of the avatar source.
 type AdminCustomizationSettings_attributes_avatarSources_source int
 
 const (
-    SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE AdminCustomizationSettings_attributes_avatarSources_source = iota
-    GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
+	SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE AdminCustomizationSettings_attributes_avatarSources_source = iota
+	GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
 )
 
 func (i AdminCustomizationSettings_attributes_avatarSources_source) String() string {
-    return []string{"saml", "gravatar"}[i]
+	return []string{"saml", "gravatar"}[i]
 }
+
 func ParseAdminCustomizationSettings_attributes_avatarSources_source(v string) (any, error) {
-    result := SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
-    switch v {
-        case "saml":
-            result = SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
-        case "gravatar":
-            result = GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
+	switch v {
+	case "saml":
+		result = SAML_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
+	case "gravatar":
+		result = GRAVATAR_ADMINCUSTOMIZATIONSETTINGS_ATTRIBUTES_AVATARSOURCES_SOURCE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminCustomizationSettings_attributes_avatarSources_source(values []AdminCustomizationSettings_attributes_avatarSources_source) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminCustomizationSettings_attributes_avatarSources_source) isMultiValue() bool {
-    return false
+	return false
 }

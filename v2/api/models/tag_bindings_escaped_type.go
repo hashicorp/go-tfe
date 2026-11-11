@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TagBindings_type int
 
 const (
-    TAGBINDINGS_TAGBINDINGS_TYPE TagBindings_type = iota
+	TAGBINDINGS_TAGBINDINGS_TYPE TagBindings_type = iota
 )
 
 func (i TagBindings_type) String() string {
-    return []string{"tag-bindings"}[i]
+	return []string{"tag-bindings"}[i]
 }
+
 func ParseTagBindings_type(v string) (any, error) {
-    result := TAGBINDINGS_TAGBINDINGS_TYPE
-    switch v {
-        case "tag-bindings":
-            result = TAGBINDINGS_TAGBINDINGS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TAGBINDINGS_TAGBINDINGS_TYPE
+	switch v {
+	case "tag-bindings":
+		result = TAGBINDINGS_TAGBINDINGS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTagBindings_type(values []TagBindings_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TagBindings_type) isMultiValue() bool {
-    return false
+	return false
 }

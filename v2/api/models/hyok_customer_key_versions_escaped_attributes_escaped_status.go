@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type HyokCustomerKeyVersions_attributes_status int
 
 const (
-    AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS HyokCustomerKeyVersions_attributes_status = iota
-    REVOKING_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-    REVOKED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-    REVOCATION_FAILED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS HyokCustomerKeyVersions_attributes_status = iota
+	REVOKING_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	REVOKED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	REVOCATION_FAILED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
 )
 
 func (i HyokCustomerKeyVersions_attributes_status) String() string {
-    return []string{"available", "revoking", "revoked", "revocation_failed"}[i]
+	return []string{"available", "revoking", "revoked", "revocation_failed"}[i]
 }
+
 func ParseHyokCustomerKeyVersions_attributes_status(v string) (any, error) {
-    result := AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-    switch v {
-        case "available":
-            result = AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-        case "revoking":
-            result = REVOKING_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-        case "revoked":
-            result = REVOKED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-        case "revocation_failed":
-            result = REVOCATION_FAILED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	switch v {
+	case "available":
+		result = AVAILABLE_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	case "revoking":
+		result = REVOKING_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	case "revoked":
+		result = REVOKED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	case "revocation_failed":
+		result = REVOCATION_FAILED_HYOKCUSTOMERKEYVERSIONS_ATTRIBUTES_STATUS
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeHyokCustomerKeyVersions_attributes_status(values []HyokCustomerKeyVersions_attributes_status) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i HyokCustomerKeyVersions_attributes_status) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,110 +4,163 @@
 package organizations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemWorkspacesGetResponse_meta struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The pagination property
-    pagination i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
-    // The statusCounts property
-    statusCounts ItemWorkspacesGetResponse_meta_statusCountsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemWorkspacesGetResponse_meta instantiates a new ItemWorkspacesGetResponse_meta and sets the default values.
-func NewItemWorkspacesGetResponse_meta()(*ItemWorkspacesGetResponse_meta) {
-    m := &ItemWorkspacesGetResponse_meta{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemWorkspacesGetResponse_meta() *ItemWorkspacesGetResponse_meta {
+	m := &ItemWorkspacesGetResponse_meta{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemWorkspacesGetResponse_metaFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemWorkspacesGetResponse_metaFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemWorkspacesGetResponse_meta(), nil
+func CreateItemWorkspacesGetResponse_metaFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemWorkspacesGetResponse_meta(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemWorkspacesGetResponse_meta) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemWorkspacesGetResponse_meta) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemWorkspacesGetResponse_meta) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemWorkspacesGetResponse_meta) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["pagination"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPagination(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
-        }
-        return nil
-    }
-    res["status-counts"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemWorkspacesGetResponse_meta_statusCountsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusCounts(val.(ItemWorkspacesGetResponse_meta_statusCountsable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemWorkspacesGetResponse_meta) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["pagination"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePaginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPagination(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable))
+		}
+		return nil
+	}
+	res["status-counts"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemWorkspacesGetResponse_meta_statusCountsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusCounts(val.(ItemWorkspacesGetResponse_meta_statusCountsable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPagination gets the pagination property value. The pagination property
 // returns a Paginationable when successful
-func (m *ItemWorkspacesGetResponse_meta) GetPagination()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
-    return m.pagination
+func (m *ItemWorkspacesGetResponse_meta) GetPagination() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable {
+	val, err := m.GetBackingStore().Get("pagination")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
+	}
+	return nil
 }
+
 // GetStatusCounts gets the status-counts property value. The statusCounts property
 // returns a ItemWorkspacesGetResponse_meta_statusCountsable when successful
-func (m *ItemWorkspacesGetResponse_meta) GetStatusCounts()(ItemWorkspacesGetResponse_meta_statusCountsable) {
-    return m.statusCounts
+func (m *ItemWorkspacesGetResponse_meta) GetStatusCounts() ItemWorkspacesGetResponse_meta_statusCountsable {
+	val, err := m.GetBackingStore().Get("statusCounts")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemWorkspacesGetResponse_meta_statusCountsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *ItemWorkspacesGetResponse_meta) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("pagination", m.GetPagination())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-counts", m.GetStatusCounts())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemWorkspacesGetResponse_meta) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("pagination", m.GetPagination())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-counts", m.GetStatusCounts())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemWorkspacesGetResponse_meta) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemWorkspacesGetResponse_meta) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemWorkspacesGetResponse_meta) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetPagination sets the pagination property value. The pagination property
-func (m *ItemWorkspacesGetResponse_meta) SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)() {
-    m.pagination = value
+func (m *ItemWorkspacesGetResponse_meta) SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable) {
+	err := m.GetBackingStore().Set("pagination", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusCounts sets the status-counts property value. The statusCounts property
-func (m *ItemWorkspacesGetResponse_meta) SetStatusCounts(value ItemWorkspacesGetResponse_meta_statusCountsable)() {
-    m.statusCounts = value
+func (m *ItemWorkspacesGetResponse_meta) SetStatusCounts(value ItemWorkspacesGetResponse_meta_statusCountsable) {
+	err := m.GetBackingStore().Set("statusCounts", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type ItemWorkspacesGetResponse_metaable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetPagination()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
-    GetStatusCounts()(ItemWorkspacesGetResponse_meta_statusCountsable)
-    SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)()
-    SetStatusCounts(value ItemWorkspacesGetResponse_meta_statusCountsable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetPagination() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable
+	GetStatusCounts() ItemWorkspacesGetResponse_meta_statusCountsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetPagination(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Paginationable)
+	SetStatusCounts(value ItemWorkspacesGetResponse_meta_statusCountsable)
 }

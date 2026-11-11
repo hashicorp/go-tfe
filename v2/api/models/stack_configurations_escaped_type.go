@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackConfigurations_type int
 
 const (
-    STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE StackConfigurations_type = iota
+	STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE StackConfigurations_type = iota
 )
 
 func (i StackConfigurations_type) String() string {
-    return []string{"stack-configurations"}[i]
+	return []string{"stack-configurations"}[i]
 }
+
 func ParseStackConfigurations_type(v string) (any, error) {
-    result := STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE
-    switch v {
-        case "stack-configurations":
-            result = STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE
+	switch v {
+	case "stack-configurations":
+		result = STACKCONFIGURATIONS_STACKCONFIGURATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackConfigurations_type(values []StackConfigurations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackConfigurations_type) isMultiValue() bool {
-    return false
+	return false
 }

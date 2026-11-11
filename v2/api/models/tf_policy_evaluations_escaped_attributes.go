@@ -4,326 +4,459 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TfPolicyEvaluations_attributes struct {
-    // Available actions for this evaluation
-    actions TfPolicyEvaluations_attributes_actionsable
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
-    archivistSupported *bool
-    // When the evaluation was created
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Error information if the entire evaluation failed (not policy-specific errors)
-    error TfPolicyEvaluations_attributes_errorable
-    // User permissions for this evaluation
-    permissions TfPolicyEvaluations_attributes_permissionsable
-    // Aggregated counts of policy results across all policy sets in this evaluation
-    resultCount TfPolicyEvaluations_attributes_resultCountable
-    // The type of stage this evaluation is associated with.
-    stageType *TfPolicyEvaluations_attributes_stageType
-    // Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
-    status *TfPolicyEvaluations_attributes_status
-    // Timestamps for each status transition during the evaluation lifecycle
-    statusTimestamps TfPolicyEvaluations_attributes_statusTimestampsable
-    // When the evaluation was last updated
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTfPolicyEvaluations_attributes instantiates a new TfPolicyEvaluations_attributes and sets the default values.
-func NewTfPolicyEvaluations_attributes()(*TfPolicyEvaluations_attributes) {
-    m := &TfPolicyEvaluations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTfPolicyEvaluations_attributes() *TfPolicyEvaluations_attributes {
+	m := &TfPolicyEvaluations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTfPolicyEvaluations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTfPolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTfPolicyEvaluations_attributes(), nil
+func CreateTfPolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTfPolicyEvaluations_attributes(), nil
 }
+
 // GetActions gets the actions property value. Available actions for this evaluation
 // returns a TfPolicyEvaluations_attributes_actionsable when successful
-func (m *TfPolicyEvaluations_attributes) GetActions()(TfPolicyEvaluations_attributes_actionsable) {
-    return m.actions
+func (m *TfPolicyEvaluations_attributes) GetActions() TfPolicyEvaluations_attributes_actionsable {
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluations_attributes_actionsable)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TfPolicyEvaluations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TfPolicyEvaluations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetArchivistSupported gets the archivist-supported property value. Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
 // returns a *bool when successful
-func (m *TfPolicyEvaluations_attributes) GetArchivistSupported()(*bool) {
-    return m.archivistSupported
+func (m *TfPolicyEvaluations_attributes) GetArchivistSupported() *bool {
+	val, err := m.GetBackingStore().Get("archivistSupported")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. When the evaluation was created
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *TfPolicyEvaluations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetError gets the error property value. Error information if the entire evaluation failed (not policy-specific errors)
 // returns a TfPolicyEvaluations_attributes_errorable when successful
-func (m *TfPolicyEvaluations_attributes) GetError()(TfPolicyEvaluations_attributes_errorable) {
-    return m.error
+func (m *TfPolicyEvaluations_attributes) GetError() TfPolicyEvaluations_attributes_errorable {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluations_attributes_errorable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TfPolicyEvaluations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_actionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetActions(val.(TfPolicyEvaluations_attributes_actionsable))
-        }
-        return nil
-    }
-    res["archivist-supported"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetArchivistSupported(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_errorFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val.(TfPolicyEvaluations_attributes_errorable))
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(TfPolicyEvaluations_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["result-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResultCount(val.(TfPolicyEvaluations_attributes_resultCountable))
-        }
-        return nil
-    }
-    res["stage-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_stageType)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStageType(val.(*TfPolicyEvaluations_attributes_stageType))
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*TfPolicyEvaluations_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(TfPolicyEvaluations_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TfPolicyEvaluations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_actionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetActions(val.(TfPolicyEvaluations_attributes_actionsable))
+		}
+		return nil
+	}
+	res["archivist-supported"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetArchivistSupported(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_errorFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val.(TfPolicyEvaluations_attributes_errorable))
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(TfPolicyEvaluations_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["result-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResultCount(val.(TfPolicyEvaluations_attributes_resultCountable))
+		}
+		return nil
+	}
+	res["stage-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_stageType)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStageType(val.(*TfPolicyEvaluations_attributes_stageType))
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*TfPolicyEvaluations_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTfPolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(TfPolicyEvaluations_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPermissions gets the permissions property value. User permissions for this evaluation
 // returns a TfPolicyEvaluations_attributes_permissionsable when successful
-func (m *TfPolicyEvaluations_attributes) GetPermissions()(TfPolicyEvaluations_attributes_permissionsable) {
-    return m.permissions
+func (m *TfPolicyEvaluations_attributes) GetPermissions() TfPolicyEvaluations_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluations_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetResultCount gets the result-count property value. Aggregated counts of policy results across all policy sets in this evaluation
 // returns a TfPolicyEvaluations_attributes_resultCountable when successful
-func (m *TfPolicyEvaluations_attributes) GetResultCount()(TfPolicyEvaluations_attributes_resultCountable) {
-    return m.resultCount
+func (m *TfPolicyEvaluations_attributes) GetResultCount() TfPolicyEvaluations_attributes_resultCountable {
+	val, err := m.GetBackingStore().Get("resultCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluations_attributes_resultCountable)
+	}
+	return nil
 }
+
 // GetStageType gets the stage-type property value. The type of stage this evaluation is associated with.
 // returns a *TfPolicyEvaluations_attributes_stageType when successful
-func (m *TfPolicyEvaluations_attributes) GetStageType()(*TfPolicyEvaluations_attributes_stageType) {
-    return m.stageType
+func (m *TfPolicyEvaluations_attributes) GetStageType() *TfPolicyEvaluations_attributes_stageType {
+	val, err := m.GetBackingStore().Get("stageType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TfPolicyEvaluations_attributes_stageType)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
 // returns a *TfPolicyEvaluations_attributes_status when successful
-func (m *TfPolicyEvaluations_attributes) GetStatus()(*TfPolicyEvaluations_attributes_status) {
-    return m.status
+func (m *TfPolicyEvaluations_attributes) GetStatus() *TfPolicyEvaluations_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TfPolicyEvaluations_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. Timestamps for each status transition during the evaluation lifecycle
 // returns a TfPolicyEvaluations_attributes_statusTimestampsable when successful
-func (m *TfPolicyEvaluations_attributes) GetStatusTimestamps()(TfPolicyEvaluations_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *TfPolicyEvaluations_attributes) GetStatusTimestamps() TfPolicyEvaluations_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TfPolicyEvaluations_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. When the evaluation was last updated
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *TfPolicyEvaluations_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TfPolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("actions", m.GetActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("error", m.GetError())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("result-count", m.GetResultCount())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStageType() != nil {
-        cast := (*m.GetStageType()).String()
-        err := writer.WriteStringValue("stage-type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TfPolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("actions", m.GetActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("error", m.GetError())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("result-count", m.GetResultCount())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStageType() != nil {
+		cast := (*m.GetStageType()).String()
+		err := writer.WriteStringValue("stage-type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetActions sets the actions property value. Available actions for this evaluation
-func (m *TfPolicyEvaluations_attributes) SetActions(value TfPolicyEvaluations_attributes_actionsable)() {
-    m.actions = value
+func (m *TfPolicyEvaluations_attributes) SetActions(value TfPolicyEvaluations_attributes_actionsable) {
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TfPolicyEvaluations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TfPolicyEvaluations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetArchivistSupported sets the archivist-supported property value. Whether this evaluation supports archivist-backed outcome storage. When `true`,full policy results are available via `policy-set-result-url` on each`tf-policy-set-outcome`. When `false`, use the `outcomes` array instead.
-func (m *TfPolicyEvaluations_attributes) SetArchivistSupported(value *bool)() {
-    m.archivistSupported = value
+func (m *TfPolicyEvaluations_attributes) SetArchivistSupported(value *bool) {
+	err := m.GetBackingStore().Set("archivistSupported", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. When the evaluation was created
-func (m *TfPolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *TfPolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetError sets the error property value. Error information if the entire evaluation failed (not policy-specific errors)
-func (m *TfPolicyEvaluations_attributes) SetError(value TfPolicyEvaluations_attributes_errorable)() {
-    m.error = value
+func (m *TfPolicyEvaluations_attributes) SetError(value TfPolicyEvaluations_attributes_errorable) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. User permissions for this evaluation
-func (m *TfPolicyEvaluations_attributes) SetPermissions(value TfPolicyEvaluations_attributes_permissionsable)() {
-    m.permissions = value
+func (m *TfPolicyEvaluations_attributes) SetPermissions(value TfPolicyEvaluations_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResultCount sets the result-count property value. Aggregated counts of policy results across all policy sets in this evaluation
-func (m *TfPolicyEvaluations_attributes) SetResultCount(value TfPolicyEvaluations_attributes_resultCountable)() {
-    m.resultCount = value
+func (m *TfPolicyEvaluations_attributes) SetResultCount(value TfPolicyEvaluations_attributes_resultCountable) {
+	err := m.GetBackingStore().Set("resultCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStageType sets the stage-type property value. The type of stage this evaluation is associated with.
-func (m *TfPolicyEvaluations_attributes) SetStageType(value *TfPolicyEvaluations_attributes_stageType)() {
-    m.stageType = value
+func (m *TfPolicyEvaluations_attributes) SetStageType(value *TfPolicyEvaluations_attributes_stageType) {
+	err := m.GetBackingStore().Set("stageType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. Current status of the Terraform policy evaluation. Status values:- `pending`: Initial state, not yet queued for evaluation- `queued`: Queued and waiting to be evaluated- `running`: Actively being evaluated- `awaiting_override`: Failed with overridable policies, awaiting manual override- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `overridden`: Failed evaluation manually overridden (final state)- `errored`: System error during processing (final state)- `canceled`: Canceled before completion (final state)- `unreachable`: Pseudo-state derived from run state
-func (m *TfPolicyEvaluations_attributes) SetStatus(value *TfPolicyEvaluations_attributes_status)() {
-    m.status = value
+func (m *TfPolicyEvaluations_attributes) SetStatus(value *TfPolicyEvaluations_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. Timestamps for each status transition during the evaluation lifecycle
-func (m *TfPolicyEvaluations_attributes) SetStatusTimestamps(value TfPolicyEvaluations_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *TfPolicyEvaluations_attributes) SetStatusTimestamps(value TfPolicyEvaluations_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. When the evaluation was last updated
-func (m *TfPolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *TfPolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TfPolicyEvaluations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetActions()(TfPolicyEvaluations_attributes_actionsable)
-    GetArchivistSupported()(*bool)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetError()(TfPolicyEvaluations_attributes_errorable)
-    GetPermissions()(TfPolicyEvaluations_attributes_permissionsable)
-    GetResultCount()(TfPolicyEvaluations_attributes_resultCountable)
-    GetStageType()(*TfPolicyEvaluations_attributes_stageType)
-    GetStatus()(*TfPolicyEvaluations_attributes_status)
-    GetStatusTimestamps()(TfPolicyEvaluations_attributes_statusTimestampsable)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetActions(value TfPolicyEvaluations_attributes_actionsable)()
-    SetArchivistSupported(value *bool)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetError(value TfPolicyEvaluations_attributes_errorable)()
-    SetPermissions(value TfPolicyEvaluations_attributes_permissionsable)()
-    SetResultCount(value TfPolicyEvaluations_attributes_resultCountable)()
-    SetStageType(value *TfPolicyEvaluations_attributes_stageType)()
-    SetStatus(value *TfPolicyEvaluations_attributes_status)()
-    SetStatusTimestamps(value TfPolicyEvaluations_attributes_statusTimestampsable)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetActions() TfPolicyEvaluations_attributes_actionsable
+	GetArchivistSupported() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetError() TfPolicyEvaluations_attributes_errorable
+	GetPermissions() TfPolicyEvaluations_attributes_permissionsable
+	GetResultCount() TfPolicyEvaluations_attributes_resultCountable
+	GetStageType() *TfPolicyEvaluations_attributes_stageType
+	GetStatus() *TfPolicyEvaluations_attributes_status
+	GetStatusTimestamps() TfPolicyEvaluations_attributes_statusTimestampsable
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetActions(value TfPolicyEvaluations_attributes_actionsable)
+	SetArchivistSupported(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetError(value TfPolicyEvaluations_attributes_errorable)
+	SetPermissions(value TfPolicyEvaluations_attributes_permissionsable)
+	SetResultCount(value TfPolicyEvaluations_attributes_resultCountable)
+	SetStageType(value *TfPolicyEvaluations_attributes_stageType)
+	SetStatus(value *TfPolicyEvaluations_attributes_status)
+	SetStatusTimestamps(value TfPolicyEvaluations_attributes_statusTimestampsable)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

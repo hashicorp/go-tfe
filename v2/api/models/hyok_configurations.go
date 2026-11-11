@@ -4,162 +4,235 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type HyokConfigurations struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes HyokConfigurations_attributesable
-    // The id property
-    id *string
-    // The relationships property
-    relationships HyokConfigurations_relationshipsable
-    // The type property
-    typeEscaped *HyokConfigurations_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewHyokConfigurations instantiates a new HyokConfigurations and sets the default values.
-func NewHyokConfigurations()(*HyokConfigurations) {
-    m := &HyokConfigurations{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHyokConfigurations() *HyokConfigurations {
+	m := &HyokConfigurations{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHyokConfigurationsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokConfigurationsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHyokConfigurations(), nil
+func CreateHyokConfigurationsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHyokConfigurations(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HyokConfigurations) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HyokConfigurations) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a HyokConfigurations_attributesable when successful
-func (m *HyokConfigurations) GetAttributes()(HyokConfigurations_attributesable) {
-    return m.attributes
+func (m *HyokConfigurations) GetAttributes() HyokConfigurations_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurations_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokConfigurations) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokConfigurations) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurations_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(HyokConfigurations_attributesable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurations_relationshipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRelationships(val.(HyokConfigurations_relationshipsable))
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseHyokConfigurations_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*HyokConfigurations_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokConfigurations) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokConfigurations_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(HyokConfigurations_attributesable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["relationships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokConfigurations_relationshipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRelationships(val.(HyokConfigurations_relationshipsable))
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseHyokConfigurations_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*HyokConfigurations_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *HyokConfigurations) GetId()(*string) {
-    return m.id
+func (m *HyokConfigurations) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetRelationships gets the relationships property value. The relationships property
 // returns a HyokConfigurations_relationshipsable when successful
-func (m *HyokConfigurations) GetRelationships()(HyokConfigurations_relationshipsable) {
-    return m.relationships
+func (m *HyokConfigurations) GetRelationships() HyokConfigurations_relationshipsable {
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurations_relationshipsable)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *HyokConfigurations_type when successful
-func (m *HyokConfigurations) GetTypeEscaped()(*HyokConfigurations_type) {
-    return m.typeEscaped
+func (m *HyokConfigurations) GetTypeEscaped() *HyokConfigurations_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*HyokConfigurations_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HyokConfigurations) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("relationships", m.GetRelationships())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokConfigurations) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("relationships", m.GetRelationships())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTypeEscaped() != nil {
+		cast := (*m.GetTypeEscaped()).String()
+		err := writer.WriteStringValue("type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HyokConfigurations) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HyokConfigurations) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *HyokConfigurations) SetAttributes(value HyokConfigurations_attributesable)() {
-    m.attributes = value
+func (m *HyokConfigurations) SetAttributes(value HyokConfigurations_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokConfigurations) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The id property
-func (m *HyokConfigurations) SetId(value *string)() {
-    m.id = value
+func (m *HyokConfigurations) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRelationships sets the relationships property value. The relationships property
-func (m *HyokConfigurations) SetRelationships(value HyokConfigurations_relationshipsable)() {
-    m.relationships = value
+func (m *HyokConfigurations) SetRelationships(value HyokConfigurations_relationshipsable) {
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *HyokConfigurations) SetTypeEscaped(value *HyokConfigurations_type)() {
-    m.typeEscaped = value
+func (m *HyokConfigurations) SetTypeEscaped(value *HyokConfigurations_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type HyokConfigurationsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(HyokConfigurations_attributesable)
-    GetId()(*string)
-    GetRelationships()(HyokConfigurations_relationshipsable)
-    GetTypeEscaped()(*HyokConfigurations_type)
-    SetAttributes(value HyokConfigurations_attributesable)()
-    SetId(value *string)()
-    SetRelationships(value HyokConfigurations_relationshipsable)()
-    SetTypeEscaped(value *HyokConfigurations_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() HyokConfigurations_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	GetRelationships() HyokConfigurations_relationshipsable
+	GetTypeEscaped() *HyokConfigurations_type
+	SetAttributes(value HyokConfigurations_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
+	SetRelationships(value HyokConfigurations_relationshipsable)
+	SetTypeEscaped(value *HyokConfigurations_type)
 }

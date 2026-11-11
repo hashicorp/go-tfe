@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackPolicySetOutcomes_type int
 
 const (
-    STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE StackPolicySetOutcomes_type = iota
+	STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE StackPolicySetOutcomes_type = iota
 )
 
 func (i StackPolicySetOutcomes_type) String() string {
-    return []string{"stack-policy-set-outcomes"}[i]
+	return []string{"stack-policy-set-outcomes"}[i]
 }
+
 func ParseStackPolicySetOutcomes_type(v string) (any, error) {
-    result := STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE
-    switch v {
-        case "stack-policy-set-outcomes":
-            result = STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE
+	switch v {
+	case "stack-policy-set-outcomes":
+		result = STACKPOLICYSETOUTCOMES_STACKPOLICYSETOUTCOMES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackPolicySetOutcomes_type(values []StackPolicySetOutcomes_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackPolicySetOutcomes_type) isMultiValue() bool {
-    return false
+	return false
 }

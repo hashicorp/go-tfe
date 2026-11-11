@@ -4,138 +4,201 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TdpApplications_attributes_inputVariables struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The value to assign to the variable.
-    value *string
-    // The name of the variable.
-    variableName *string
-    // The type of the variable.
-    variableType *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTdpApplications_attributes_inputVariables instantiates a new TdpApplications_attributes_inputVariables and sets the default values.
-func NewTdpApplications_attributes_inputVariables()(*TdpApplications_attributes_inputVariables) {
-    m := &TdpApplications_attributes_inputVariables{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTdpApplications_attributes_inputVariables() *TdpApplications_attributes_inputVariables {
+	m := &TdpApplications_attributes_inputVariables{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTdpApplications_attributes_inputVariablesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTdpApplications_attributes_inputVariablesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTdpApplications_attributes_inputVariables(), nil
+func CreateTdpApplications_attributes_inputVariablesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTdpApplications_attributes_inputVariables(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TdpApplications_attributes_inputVariables) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TdpApplications_attributes_inputVariables) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpApplications_attributes_inputVariables) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TdpApplications_attributes_inputVariables) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["value"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetValue(val)
-        }
-        return nil
-    }
-    res["variable-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVariableName(val)
-        }
-        return nil
-    }
-    res["variable-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVariableType(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TdpApplications_attributes_inputVariables) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["value"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetValue(val)
+		}
+		return nil
+	}
+	res["variable-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVariableName(val)
+		}
+		return nil
+	}
+	res["variable-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVariableType(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetValue gets the value property value. The value to assign to the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_inputVariables) GetValue()(*string) {
-    return m.value
+func (m *TdpApplications_attributes_inputVariables) GetValue() *string {
+	val, err := m.GetBackingStore().Get("value")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVariableName gets the variable-name property value. The name of the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_inputVariables) GetVariableName()(*string) {
-    return m.variableName
+func (m *TdpApplications_attributes_inputVariables) GetVariableName() *string {
+	val, err := m.GetBackingStore().Get("variableName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVariableType gets the variable-type property value. The type of the variable.
 // returns a *string when successful
-func (m *TdpApplications_attributes_inputVariables) GetVariableType()(*string) {
-    return m.variableType
+func (m *TdpApplications_attributes_inputVariables) GetVariableType() *string {
+	val, err := m.GetBackingStore().Get("variableType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TdpApplications_attributes_inputVariables) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("value", m.GetValue())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("variable-name", m.GetVariableName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("variable-type", m.GetVariableType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TdpApplications_attributes_inputVariables) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("value", m.GetValue())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("variable-name", m.GetVariableName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("variable-type", m.GetVariableType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TdpApplications_attributes_inputVariables) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TdpApplications_attributes_inputVariables) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpApplications_attributes_inputVariables) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetValue sets the value property value. The value to assign to the variable.
-func (m *TdpApplications_attributes_inputVariables) SetValue(value *string)() {
-    m.value = value
+func (m *TdpApplications_attributes_inputVariables) SetValue(value *string) {
+	err := m.GetBackingStore().Set("value", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariableName sets the variable-name property value. The name of the variable.
-func (m *TdpApplications_attributes_inputVariables) SetVariableName(value *string)() {
-    m.variableName = value
+func (m *TdpApplications_attributes_inputVariables) SetVariableName(value *string) {
+	err := m.GetBackingStore().Set("variableName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariableType sets the variable-type property value. The type of the variable.
-func (m *TdpApplications_attributes_inputVariables) SetVariableType(value *string)() {
-    m.variableType = value
+func (m *TdpApplications_attributes_inputVariables) SetVariableType(value *string) {
+	err := m.GetBackingStore().Set("variableType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TdpApplications_attributes_inputVariablesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetValue()(*string)
-    GetVariableName()(*string)
-    GetVariableType()(*string)
-    SetValue(value *string)()
-    SetVariableName(value *string)()
-    SetVariableType(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetValue() *string
+	GetVariableName() *string
+	GetVariableType() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetValue(value *string)
+	SetVariableName(value *string)
+	SetVariableType(value *string)
 }

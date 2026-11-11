@@ -4,197 +4,280 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type RecoverableItems_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The timestamp when the resource was deleted (soft-deleted)
-    deletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The timestamp when the recoverable item will be permanently deleted
-    expiresAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The timestamp when the resource was permanently deleted, if applicable
-    permanentlyDeletedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The name of the recoverable resource
-    recoverableName *string
-    // The number of unmanaged resources (RUM) associated with the recoverable item
-    unmanagedResources *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewRecoverableItems_attributes instantiates a new RecoverableItems_attributes and sets the default values.
-func NewRecoverableItems_attributes()(*RecoverableItems_attributes) {
-    m := &RecoverableItems_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRecoverableItems_attributes() *RecoverableItems_attributes {
+	m := &RecoverableItems_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRecoverableItems_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRecoverableItems_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRecoverableItems_attributes(), nil
+func CreateRecoverableItems_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRecoverableItems_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *RecoverableItems_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *RecoverableItems_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RecoverableItems_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDeletedAt gets the deleted-at property value. The timestamp when the resource was deleted (soft-deleted)
 // returns a *Time when successful
-func (m *RecoverableItems_attributes) GetDeletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.deletedAt
+func (m *RecoverableItems_attributes) GetDeletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("deletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetExpiresAt gets the expires-at property value. The timestamp when the recoverable item will be permanently deleted
 // returns a *Time when successful
-func (m *RecoverableItems_attributes) GetExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.expiresAt
+func (m *RecoverableItems_attributes) GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("expiresAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *RecoverableItems_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["deleted-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeletedAt(val)
-        }
-        return nil
-    }
-    res["expires-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExpiresAt(val)
-        }
-        return nil
-    }
-    res["permanently-deleted-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermanentlyDeletedAt(val)
-        }
-        return nil
-    }
-    res["recoverable-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRecoverableName(val)
-        }
-        return nil
-    }
-    res["unmanaged-resources"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUnmanagedResources(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *RecoverableItems_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["deleted-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeletedAt(val)
+		}
+		return nil
+	}
+	res["expires-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExpiresAt(val)
+		}
+		return nil
+	}
+	res["permanently-deleted-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermanentlyDeletedAt(val)
+		}
+		return nil
+	}
+	res["recoverable-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRecoverableName(val)
+		}
+		return nil
+	}
+	res["unmanaged-resources"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUnmanagedResources(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPermanentlyDeletedAt gets the permanently-deleted-at property value. The timestamp when the resource was permanently deleted, if applicable
 // returns a *Time when successful
-func (m *RecoverableItems_attributes) GetPermanentlyDeletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.permanentlyDeletedAt
+func (m *RecoverableItems_attributes) GetPermanentlyDeletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("permanentlyDeletedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetRecoverableName gets the recoverable-name property value. The name of the recoverable resource
 // returns a *string when successful
-func (m *RecoverableItems_attributes) GetRecoverableName()(*string) {
-    return m.recoverableName
+func (m *RecoverableItems_attributes) GetRecoverableName() *string {
+	val, err := m.GetBackingStore().Get("recoverableName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetUnmanagedResources gets the unmanaged-resources property value. The number of unmanaged resources (RUM) associated with the recoverable item
 // returns a *int32 when successful
-func (m *RecoverableItems_attributes) GetUnmanagedResources()(*int32) {
-    return m.unmanagedResources
+func (m *RecoverableItems_attributes) GetUnmanagedResources() *int32 {
+	val, err := m.GetBackingStore().Get("unmanagedResources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *RecoverableItems_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteTimeValue("deleted-at", m.GetDeletedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("expires-at", m.GetExpiresAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("permanently-deleted-at", m.GetPermanentlyDeletedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("recoverable-name", m.GetRecoverableName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("unmanaged-resources", m.GetUnmanagedResources())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *RecoverableItems_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteTimeValue("deleted-at", m.GetDeletedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("expires-at", m.GetExpiresAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("permanently-deleted-at", m.GetPermanentlyDeletedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("recoverable-name", m.GetRecoverableName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("unmanaged-resources", m.GetUnmanagedResources())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *RecoverableItems_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *RecoverableItems_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RecoverableItems_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDeletedAt sets the deleted-at property value. The timestamp when the resource was deleted (soft-deleted)
-func (m *RecoverableItems_attributes) SetDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.deletedAt = value
+func (m *RecoverableItems_attributes) SetDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("deletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetExpiresAt sets the expires-at property value. The timestamp when the recoverable item will be permanently deleted
-func (m *RecoverableItems_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.expiresAt = value
+func (m *RecoverableItems_attributes) SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("expiresAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermanentlyDeletedAt sets the permanently-deleted-at property value. The timestamp when the resource was permanently deleted, if applicable
-func (m *RecoverableItems_attributes) SetPermanentlyDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.permanentlyDeletedAt = value
+func (m *RecoverableItems_attributes) SetPermanentlyDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("permanentlyDeletedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRecoverableName sets the recoverable-name property value. The name of the recoverable resource
-func (m *RecoverableItems_attributes) SetRecoverableName(value *string)() {
-    m.recoverableName = value
+func (m *RecoverableItems_attributes) SetRecoverableName(value *string) {
+	err := m.GetBackingStore().Set("recoverableName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUnmanagedResources sets the unmanaged-resources property value. The number of unmanaged resources (RUM) associated with the recoverable item
-func (m *RecoverableItems_attributes) SetUnmanagedResources(value *int32)() {
-    m.unmanagedResources = value
+func (m *RecoverableItems_attributes) SetUnmanagedResources(value *int32) {
+	err := m.GetBackingStore().Set("unmanagedResources", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type RecoverableItems_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDeletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetExpiresAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPermanentlyDeletedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetRecoverableName()(*string)
-    GetUnmanagedResources()(*int32)
-    SetDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPermanentlyDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetRecoverableName(value *string)()
-    SetUnmanagedResources(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDeletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetExpiresAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPermanentlyDeletedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetRecoverableName() *string
+	GetUnmanagedResources() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetExpiresAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPermanentlyDeletedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetRecoverableName(value *string)
+	SetUnmanagedResources(value *int32)
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type ProjectsIdentifier_type int
 
 const (
-    PROJECTS_PROJECTSIDENTIFIER_TYPE ProjectsIdentifier_type = iota
+	PROJECTS_PROJECTSIDENTIFIER_TYPE ProjectsIdentifier_type = iota
 )
 
 func (i ProjectsIdentifier_type) String() string {
-    return []string{"projects"}[i]
+	return []string{"projects"}[i]
 }
+
 func ParseProjectsIdentifier_type(v string) (any, error) {
-    result := PROJECTS_PROJECTSIDENTIFIER_TYPE
-    switch v {
-        case "projects":
-            result = PROJECTS_PROJECTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PROJECTS_PROJECTSIDENTIFIER_TYPE
+	switch v {
+	case "projects":
+		result = PROJECTS_PROJECTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeProjectsIdentifier_type(values []ProjectsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ProjectsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

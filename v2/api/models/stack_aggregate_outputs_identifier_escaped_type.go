@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackAggregateOutputsIdentifier_type int
 
 const (
-    STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE StackAggregateOutputsIdentifier_type = iota
+	STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE StackAggregateOutputsIdentifier_type = iota
 )
 
 func (i StackAggregateOutputsIdentifier_type) String() string {
-    return []string{"stack-aggregate-outputs"}[i]
+	return []string{"stack-aggregate-outputs"}[i]
 }
+
 func ParseStackAggregateOutputsIdentifier_type(v string) (any, error) {
-    result := STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE
-    switch v {
-        case "stack-aggregate-outputs":
-            result = STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE
+	switch v {
+	case "stack-aggregate-outputs":
+		result = STACKAGGREGATEOUTPUTS_STACKAGGREGATEOUTPUTSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackAggregateOutputsIdentifier_type(values []StackAggregateOutputsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackAggregateOutputsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

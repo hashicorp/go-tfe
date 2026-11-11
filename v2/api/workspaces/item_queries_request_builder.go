@@ -4,70 +4,76 @@
 package workspaces
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    ida3883442216d45bd76f5fa2fa3ac592a5fb381a6af6b1b5fc2da437600cb717 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/queries"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	ida3883442216d45bd76f5fa2fa3ac592a5fb381a6af6b1b5fc2da437600cb717 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/queries"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemQueriesRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\queries
 type ItemQueriesRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemQueriesRequestBuilderGetQueryParameters get list of queries for a particular workspace.
 type ItemQueriesRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    Fieldsqueries []string "uriparametername:\"fields%5Bqueries%5D\""
-    // Optionally side-load the specified relationships.
-    Include []ida3883442216d45bd76f5fa2fa3ac592a5fb381a6af6b1b5fc2da437600cb717.GetIncludeQueryParameterType "uriparametername:\"include\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for queries resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	Fieldsqueries []string "uriparametername:\"fields%5Bqueries%5D\""
+	// Optionally side-load the specified relationships.
+	Include []ida3883442216d45bd76f5fa2fa3ac592a5fb381a6af6b1b5fc2da437600cb717.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // NewItemQueriesRequestBuilderInternal instantiates a new ItemQueriesRequestBuilder and sets the default values.
-func NewItemQueriesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemQueriesRequestBuilder) {
-    m := &ItemQueriesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/queries{?fields%5Bqueries%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewItemQueriesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemQueriesRequestBuilder {
+	m := &ItemQueriesRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/queries{?fields%5Bqueries%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemQueriesRequestBuilder instantiates a new ItemQueriesRequestBuilder and sets the default values.
-func NewItemQueriesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemQueriesRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemQueriesRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemQueriesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemQueriesRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemQueriesRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get list of queries for a particular workspace.
 // returns a ItemQueriesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemQueriesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters])(ItemQueriesGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemQueriesGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemQueriesGetResponseable), nil
+func (m *ItemQueriesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters]) (ItemQueriesGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemQueriesGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemQueriesGetResponseable), nil
 }
+
 // ToGetRequestInformation get list of queries for a particular workspace.
 // returns a *RequestInformation when successful
-func (m *ItemQueriesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemQueriesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemQueriesRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemQueriesRequestBuilder when successful
-func (m *ItemQueriesRequestBuilder) WithUrl(rawUrl string)(*ItemQueriesRequestBuilder) {
-    return NewItemQueriesRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemQueriesRequestBuilder) WithUrl(rawUrl string) *ItemQueriesRequestBuilder {
+	return NewItemQueriesRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

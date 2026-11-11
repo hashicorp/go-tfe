@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PoliciesIdentifierArrayDocument_dataMember2_type int
 
 const (
-    POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE PoliciesIdentifierArrayDocument_dataMember2_type = iota
+	POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE PoliciesIdentifierArrayDocument_dataMember2_type = iota
 )
 
 func (i PoliciesIdentifierArrayDocument_dataMember2_type) String() string {
-    return []string{"policies"}[i]
+	return []string{"policies"}[i]
 }
+
 func ParsePoliciesIdentifierArrayDocument_dataMember2_type(v string) (any, error) {
-    result := POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE
-    switch v {
-        case "policies":
-            result = POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE
+	switch v {
+	case "policies":
+		result = POLICIES_POLICIESIDENTIFIERARRAYDOCUMENT_DATAMEMBER2_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePoliciesIdentifierArrayDocument_dataMember2_type(values []PoliciesIdentifierArrayDocument_dataMember2_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PoliciesIdentifierArrayDocument_dataMember2_type) isMultiValue() bool {
-    return false
+	return false
 }

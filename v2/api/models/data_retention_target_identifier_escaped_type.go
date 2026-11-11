@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type DataRetentionTargetIdentifier_type int
 
 const (
-    ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE DataRetentionTargetIdentifier_type = iota
-    WORKSPACES_DATARETENTIONTARGETIDENTIFIER_TYPE
+	ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE DataRetentionTargetIdentifier_type = iota
+	WORKSPACES_DATARETENTIONTARGETIDENTIFIER_TYPE
 )
 
 func (i DataRetentionTargetIdentifier_type) String() string {
-    return []string{"organizations", "workspaces"}[i]
+	return []string{"organizations", "workspaces"}[i]
 }
+
 func ParseDataRetentionTargetIdentifier_type(v string) (any, error) {
-    result := ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE
-    switch v {
-        case "organizations":
-            result = ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE
-        case "workspaces":
-            result = WORKSPACES_DATARETENTIONTARGETIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE
+	switch v {
+	case "organizations":
+		result = ORGANIZATIONS_DATARETENTIONTARGETIDENTIFIER_TYPE
+	case "workspaces":
+		result = WORKSPACES_DATARETENTIONTARGETIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeDataRetentionTargetIdentifier_type(values []DataRetentionTargetIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i DataRetentionTargetIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,80 +4,123 @@
 package organizations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemSubscriptionPatchRequestBody_data struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes ItemSubscriptionPatchRequestBody_data_attributesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemSubscriptionPatchRequestBody_data instantiates a new ItemSubscriptionPatchRequestBody_data and sets the default values.
-func NewItemSubscriptionPatchRequestBody_data()(*ItemSubscriptionPatchRequestBody_data) {
-    m := &ItemSubscriptionPatchRequestBody_data{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemSubscriptionPatchRequestBody_data() *ItemSubscriptionPatchRequestBody_data {
+	m := &ItemSubscriptionPatchRequestBody_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemSubscriptionPatchRequestBody_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemSubscriptionPatchRequestBody_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemSubscriptionPatchRequestBody_data(), nil
+func CreateItemSubscriptionPatchRequestBody_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemSubscriptionPatchRequestBody_data(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemSubscriptionPatchRequestBody_data) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemSubscriptionPatchRequestBody_data) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a ItemSubscriptionPatchRequestBody_data_attributesable when successful
-func (m *ItemSubscriptionPatchRequestBody_data) GetAttributes()(ItemSubscriptionPatchRequestBody_data_attributesable) {
-    return m.attributes
+func (m *ItemSubscriptionPatchRequestBody_data) GetAttributes() ItemSubscriptionPatchRequestBody_data_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemSubscriptionPatchRequestBody_data_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemSubscriptionPatchRequestBody_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemSubscriptionPatchRequestBody_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemSubscriptionPatchRequestBody_data_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(ItemSubscriptionPatchRequestBody_data_attributesable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemSubscriptionPatchRequestBody_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemSubscriptionPatchRequestBody_data_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(ItemSubscriptionPatchRequestBody_data_attributesable))
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *ItemSubscriptionPatchRequestBody_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemSubscriptionPatchRequestBody_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemSubscriptionPatchRequestBody_data) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemSubscriptionPatchRequestBody_data) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *ItemSubscriptionPatchRequestBody_data) SetAttributes(value ItemSubscriptionPatchRequestBody_data_attributesable)() {
-    m.attributes = value
+func (m *ItemSubscriptionPatchRequestBody_data) SetAttributes(value ItemSubscriptionPatchRequestBody_data_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemSubscriptionPatchRequestBody_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 type ItemSubscriptionPatchRequestBody_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(ItemSubscriptionPatchRequestBody_data_attributesable)
-    SetAttributes(value ItemSubscriptionPatchRequestBody_data_attributesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() ItemSubscriptionPatchRequestBody_data_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	SetAttributes(value ItemSubscriptionPatchRequestBody_data_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 }

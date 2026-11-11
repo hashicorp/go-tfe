@@ -4,1536 +4,2078 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Workspaces_attributes struct {
-    // The actions property
-    actions Workspaces_attributes_actionsable
-    // The allowDestroyPlan property
-    allowDestroyPlan *bool
-    // The applyDurationAverage property
-    applyDurationAverage *int32
-    // The assessmentsEnabled property
-    assessmentsEnabled *bool
-    // The autoApply property
-    autoApply *bool
-    // The autoApplyRunTrigger property
-    autoApplyRunTrigger *bool
-    // The autoDestroyActivityDuration property
-    autoDestroyActivityDuration *string
-    // The autoDestroyAt property
-    autoDestroyAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The autoDestroyStatus property
-    autoDestroyStatus *string
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The description property
-    description *string
-    // A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-    effectiveRunDataRetentionDesc *string
-    // A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-    effectiveStateVersionRetentionDesc *string
-    // The environment property
-    environment *string
-    // The executionMode property
-    executionMode *Workspaces_attributes_executionMode
-    // The fileTriggersEnabled property
-    fileTriggersEnabled *bool
-    // The globalRemoteState property
-    globalRemoteState *bool
-    // HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
-    hyokEnabled *bool
-    // The inheritsProjectAutoDestroy property
-    inheritsProjectAutoDestroy *bool
-    // The lastAssessmentResultAt property
-    lastAssessmentResultAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The latestChangeAt property
-    latestChangeAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The locked property
-    locked *bool
-    // The lockedReason property
-    lockedReason *string
-    // The name property
-    name *string
-    // Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
-    noCodeUpgradeAvailable *bool
-    // The display name of the OAuth client associated with this workspace, if any.
-    oauthClientName *string
-    // Deprecated. Use execution-mode instead.
-    operations *bool
-    // This attribute is only available in Terraform Enterprise.
-    parentDataRetentionPolicyInfo *string
-    // The permissions property
-    permissions Workspaces_attributes_permissionsable
-    // The planDurationAverage property
-    planDurationAverage *int32
-    // The policyCheckFailures property
-    policyCheckFailures *int32
-    // The projectRemoteState property
-    projectRemoteState *bool
-    // The queueAllRuns property
-    queueAllRuns *bool
-    // The resourceCount property
-    resourceCount *int32
-    // The runFailures property
-    runFailures *int32
-    // The settingOverwrites property
-    settingOverwrites Workspaces_attributes_settingOverwritesable
-    // The source property
-    source *string
-    // Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
-    sourceModuleId *string
-    // The sourceName property
-    sourceName *string
-    // The sourceUrl property
-    sourceUrl *string
-    // The speculativeEnabled property
-    speculativeEnabled *bool
-    // The structuredRunOutputEnabled property
-    structuredRunOutputEnabled *bool
-    // The tagNames property
-    tagNames []string
-    // The terraformVersion property
-    terraformVersion *string
-    // The triggerPatterns property
-    triggerPatterns []string
-    // The triggerPrefixes property
-    triggerPrefixes []string
-    // This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    unarchivedWorkspaceChangeRequestsCount *int32
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The vcsRepo property
-    vcsRepo Workspaces_attributes_vcsRepoable
-    // The vcsRepoIdentifier property
-    vcsRepoIdentifier *string
-    // The workingDirectory property
-    workingDirectory *string
-    // The workspaceKpisRunsCount property
-    workspaceKpisRunsCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewWorkspaces_attributes instantiates a new Workspaces_attributes and sets the default values.
-func NewWorkspaces_attributes()(*Workspaces_attributes) {
-    m := &Workspaces_attributes{
-    }
-    return m
+func NewWorkspaces_attributes() *Workspaces_attributes {
+	m := &Workspaces_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateWorkspaces_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaces_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaces_attributes(), nil
+func CreateWorkspaces_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaces_attributes(), nil
 }
+
 // GetActions gets the actions property value. The actions property
 // returns a Workspaces_attributes_actionsable when successful
-func (m *Workspaces_attributes) GetActions()(Workspaces_attributes_actionsable) {
-    return m.actions
+func (m *Workspaces_attributes) GetActions() Workspaces_attributes_actionsable {
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_actionsable)
+	}
+	return nil
 }
+
 // GetAllowDestroyPlan gets the allow-destroy-plan property value. The allowDestroyPlan property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetAllowDestroyPlan()(*bool) {
-    return m.allowDestroyPlan
+func (m *Workspaces_attributes) GetAllowDestroyPlan() *bool {
+	val, err := m.GetBackingStore().Get("allowDestroyPlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetApplyDurationAverage gets the apply-duration-average property value. The applyDurationAverage property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetApplyDurationAverage()(*int32) {
-    return m.applyDurationAverage
+func (m *Workspaces_attributes) GetApplyDurationAverage() *int32 {
+	val, err := m.GetBackingStore().Get("applyDurationAverage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetAssessmentsEnabled gets the assessments-enabled property value. The assessmentsEnabled property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetAssessmentsEnabled()(*bool) {
-    return m.assessmentsEnabled
+func (m *Workspaces_attributes) GetAssessmentsEnabled() *bool {
+	val, err := m.GetBackingStore().Get("assessmentsEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAutoApply gets the auto-apply property value. The autoApply property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetAutoApply()(*bool) {
-    return m.autoApply
+func (m *Workspaces_attributes) GetAutoApply() *bool {
+	val, err := m.GetBackingStore().Get("autoApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAutoApplyRunTrigger gets the auto-apply-run-trigger property value. The autoApplyRunTrigger property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetAutoApplyRunTrigger()(*bool) {
-    return m.autoApplyRunTrigger
+func (m *Workspaces_attributes) GetAutoApplyRunTrigger() *bool {
+	val, err := m.GetBackingStore().Get("autoApplyRunTrigger")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAutoDestroyActivityDuration gets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetAutoDestroyActivityDuration()(*string) {
-    return m.autoDestroyActivityDuration
+func (m *Workspaces_attributes) GetAutoDestroyActivityDuration() *string {
+	val, err := m.GetBackingStore().Get("autoDestroyActivityDuration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAutoDestroyAt gets the auto-destroy-at property value. The autoDestroyAt property
 // returns a *Time when successful
-func (m *Workspaces_attributes) GetAutoDestroyAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.autoDestroyAt
+func (m *Workspaces_attributes) GetAutoDestroyAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("autoDestroyAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetAutoDestroyStatus gets the auto-destroy-status property value. The autoDestroyStatus property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetAutoDestroyStatus()(*string) {
-    return m.autoDestroyStatus
+func (m *Workspaces_attributes) GetAutoDestroyStatus() *string {
+	val, err := m.GetBackingStore().Get("autoDestroyStatus")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Workspaces_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *Workspaces_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *Workspaces_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetDescription()(*string) {
-    return m.description
+func (m *Workspaces_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetEffectiveRunDataRetentionDesc gets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
-func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc()(*string) {
-    return m.effectiveRunDataRetentionDesc
+func (m *Workspaces_attributes) GetEffectiveRunDataRetentionDesc() *string {
+	val, err := m.GetBackingStore().Get("effectiveRunDataRetentionDesc")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetEffectiveStateVersionRetentionDesc gets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
-func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc()(*string) {
-    return m.effectiveStateVersionRetentionDesc
+func (m *Workspaces_attributes) GetEffectiveStateVersionRetentionDesc() *string {
+	val, err := m.GetBackingStore().Get("effectiveStateVersionRetentionDesc")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetEnvironment gets the environment property value. The environment property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetEnvironment()(*string) {
-    return m.environment
+func (m *Workspaces_attributes) GetEnvironment() *string {
+	val, err := m.GetBackingStore().Get("environment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetExecutionMode gets the execution-mode property value. The executionMode property
 // returns a *Workspaces_attributes_executionMode when successful
-func (m *Workspaces_attributes) GetExecutionMode()(*Workspaces_attributes_executionMode) {
-    return m.executionMode
+func (m *Workspaces_attributes) GetExecutionMode() *Workspaces_attributes_executionMode {
+	val, err := m.GetBackingStore().Get("executionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Workspaces_attributes_executionMode)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Workspaces_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_attributes_actionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetActions(val.(Workspaces_attributes_actionsable))
-        }
-        return nil
-    }
-    res["allow-destroy-plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAllowDestroyPlan(val)
-        }
-        return nil
-    }
-    res["apply-duration-average"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetApplyDurationAverage(val)
-        }
-        return nil
-    }
-    res["assessments-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAssessmentsEnabled(val)
-        }
-        return nil
-    }
-    res["auto-apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoApply(val)
-        }
-        return nil
-    }
-    res["auto-apply-run-trigger"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoApplyRunTrigger(val)
-        }
-        return nil
-    }
-    res["auto-destroy-activity-duration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoDestroyActivityDuration(val)
-        }
-        return nil
-    }
-    res["auto-destroy-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoDestroyAt(val)
-        }
-        return nil
-    }
-    res["auto-destroy-status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoDestroyStatus(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["effective-run-data-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEffectiveRunDataRetentionDesc(val)
-        }
-        return nil
-    }
-    res["effective-state-version-retention-desc"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEffectiveStateVersionRetentionDesc(val)
-        }
-        return nil
-    }
-    res["environment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnvironment(val)
-        }
-        return nil
-    }
-    res["execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseWorkspaces_attributes_executionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExecutionMode(val.(*Workspaces_attributes_executionMode))
-        }
-        return nil
-    }
-    res["file-triggers-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFileTriggersEnabled(val)
-        }
-        return nil
-    }
-    res["global-remote-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobalRemoteState(val)
-        }
-        return nil
-    }
-    res["hyok-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHyokEnabled(val)
-        }
-        return nil
-    }
-    res["inherits-project-auto-destroy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInheritsProjectAutoDestroy(val)
-        }
-        return nil
-    }
-    res["last-assessment-result-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLastAssessmentResultAt(val)
-        }
-        return nil
-    }
-    res["latest-change-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLatestChangeAt(val)
-        }
-        return nil
-    }
-    res["locked"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLocked(val)
-        }
-        return nil
-    }
-    res["locked-reason"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLockedReason(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["no-code-upgrade-available"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNoCodeUpgradeAvailable(val)
-        }
-        return nil
-    }
-    res["oauth-client-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOauthClientName(val)
-        }
-        return nil
-    }
-    res["operations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOperations(val)
-        }
-        return nil
-    }
-    res["parent-data-retention-policy-info"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetParentDataRetentionPolicyInfo(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(Workspaces_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["plan-duration-average"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanDurationAverage(val)
-        }
-        return nil
-    }
-    res["policy-check-failures"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyCheckFailures(val)
-        }
-        return nil
-    }
-    res["project-remote-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjectRemoteState(val)
-        }
-        return nil
-    }
-    res["queue-all-runs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQueueAllRuns(val)
-        }
-        return nil
-    }
-    res["resource-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourceCount(val)
-        }
-        return nil
-    }
-    res["run-failures"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunFailures(val)
-        }
-        return nil
-    }
-    res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_attributes_settingOverwritesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSettingOverwrites(val.(Workspaces_attributes_settingOverwritesable))
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val)
-        }
-        return nil
-    }
-    res["source-module-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSourceModuleId(val)
-        }
-        return nil
-    }
-    res["source-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSourceName(val)
-        }
-        return nil
-    }
-    res["source-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSourceUrl(val)
-        }
-        return nil
-    }
-    res["speculative-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSpeculativeEnabled(val)
-        }
-        return nil
-    }
-    res["structured-run-output-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStructuredRunOutputEnabled(val)
-        }
-        return nil
-    }
-    res["tag-names"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetTagNames(res)
-        }
-        return nil
-    }
-    res["terraform-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTerraformVersion(val)
-        }
-        return nil
-    }
-    res["trigger-patterns"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetTriggerPatterns(res)
-        }
-        return nil
-    }
-    res["trigger-prefixes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetTriggerPrefixes(res)
-        }
-        return nil
-    }
-    res["unarchived-workspace-change-requests-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUnarchivedWorkspaceChangeRequestsCount(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    res["vcs-repo"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_attributes_vcsRepoFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVcsRepo(val.(Workspaces_attributes_vcsRepoable))
-        }
-        return nil
-    }
-    res["vcs-repo-identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVcsRepoIdentifier(val)
-        }
-        return nil
-    }
-    res["working-directory"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkingDirectory(val)
-        }
-        return nil
-    }
-    res["workspace-kpis-runs-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceKpisRunsCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Workspaces_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaces_attributes_actionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetActions(val.(Workspaces_attributes_actionsable))
+		}
+		return nil
+	}
+	res["allow-destroy-plan"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAllowDestroyPlan(val)
+		}
+		return nil
+	}
+	res["apply-duration-average"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetApplyDurationAverage(val)
+		}
+		return nil
+	}
+	res["assessments-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAssessmentsEnabled(val)
+		}
+		return nil
+	}
+	res["auto-apply"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoApply(val)
+		}
+		return nil
+	}
+	res["auto-apply-run-trigger"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoApplyRunTrigger(val)
+		}
+		return nil
+	}
+	res["auto-destroy-activity-duration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoDestroyActivityDuration(val)
+		}
+		return nil
+	}
+	res["auto-destroy-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoDestroyAt(val)
+		}
+		return nil
+	}
+	res["auto-destroy-status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoDestroyStatus(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["effective-run-data-retention-desc"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEffectiveRunDataRetentionDesc(val)
+		}
+		return nil
+	}
+	res["effective-state-version-retention-desc"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEffectiveStateVersionRetentionDesc(val)
+		}
+		return nil
+	}
+	res["environment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnvironment(val)
+		}
+		return nil
+	}
+	res["execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseWorkspaces_attributes_executionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExecutionMode(val.(*Workspaces_attributes_executionMode))
+		}
+		return nil
+	}
+	res["file-triggers-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFileTriggersEnabled(val)
+		}
+		return nil
+	}
+	res["global-remote-state"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobalRemoteState(val)
+		}
+		return nil
+	}
+	res["hyok-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHyokEnabled(val)
+		}
+		return nil
+	}
+	res["inherits-project-auto-destroy"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInheritsProjectAutoDestroy(val)
+		}
+		return nil
+	}
+	res["last-assessment-result-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLastAssessmentResultAt(val)
+		}
+		return nil
+	}
+	res["latest-change-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLatestChangeAt(val)
+		}
+		return nil
+	}
+	res["locked"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLocked(val)
+		}
+		return nil
+	}
+	res["locked-reason"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLockedReason(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["no-code-upgrade-available"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNoCodeUpgradeAvailable(val)
+		}
+		return nil
+	}
+	res["oauth-client-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOauthClientName(val)
+		}
+		return nil
+	}
+	res["operations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOperations(val)
+		}
+		return nil
+	}
+	res["parent-data-retention-policy-info"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetParentDataRetentionPolicyInfo(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaces_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(Workspaces_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["plan-duration-average"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanDurationAverage(val)
+		}
+		return nil
+	}
+	res["policy-check-failures"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyCheckFailures(val)
+		}
+		return nil
+	}
+	res["project-remote-state"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjectRemoteState(val)
+		}
+		return nil
+	}
+	res["queue-all-runs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQueueAllRuns(val)
+		}
+		return nil
+	}
+	res["resource-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourceCount(val)
+		}
+		return nil
+	}
+	res["run-failures"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunFailures(val)
+		}
+		return nil
+	}
+	res["setting-overwrites"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaces_attributes_settingOverwritesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSettingOverwrites(val.(Workspaces_attributes_settingOverwritesable))
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val)
+		}
+		return nil
+	}
+	res["source-module-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSourceModuleId(val)
+		}
+		return nil
+	}
+	res["source-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSourceName(val)
+		}
+		return nil
+	}
+	res["source-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSourceUrl(val)
+		}
+		return nil
+	}
+	res["speculative-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSpeculativeEnabled(val)
+		}
+		return nil
+	}
+	res["structured-run-output-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStructuredRunOutputEnabled(val)
+		}
+		return nil
+	}
+	res["tag-names"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetTagNames(res)
+		}
+		return nil
+	}
+	res["terraform-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTerraformVersion(val)
+		}
+		return nil
+	}
+	res["trigger-patterns"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetTriggerPatterns(res)
+		}
+		return nil
+	}
+	res["trigger-prefixes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetTriggerPrefixes(res)
+		}
+		return nil
+	}
+	res["unarchived-workspace-change-requests-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUnarchivedWorkspaceChangeRequestsCount(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	res["vcs-repo"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaces_attributes_vcsRepoFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVcsRepo(val.(Workspaces_attributes_vcsRepoable))
+		}
+		return nil
+	}
+	res["vcs-repo-identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVcsRepoIdentifier(val)
+		}
+		return nil
+	}
+	res["working-directory"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkingDirectory(val)
+		}
+		return nil
+	}
+	res["workspace-kpis-runs-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceKpisRunsCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFileTriggersEnabled gets the file-triggers-enabled property value. The fileTriggersEnabled property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetFileTriggersEnabled()(*bool) {
-    return m.fileTriggersEnabled
+func (m *Workspaces_attributes) GetFileTriggersEnabled() *bool {
+	val, err := m.GetBackingStore().Get("fileTriggersEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetGlobalRemoteState gets the global-remote-state property value. The globalRemoteState property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetGlobalRemoteState()(*bool) {
-    return m.globalRemoteState
+func (m *Workspaces_attributes) GetGlobalRemoteState() *bool {
+	val, err := m.GetBackingStore().Get("globalRemoteState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetHyokEnabled gets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetHyokEnabled()(*bool) {
-    return m.hyokEnabled
+func (m *Workspaces_attributes) GetHyokEnabled() *bool {
+	val, err := m.GetBackingStore().Get("hyokEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetInheritsProjectAutoDestroy gets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetInheritsProjectAutoDestroy()(*bool) {
-    return m.inheritsProjectAutoDestroy
+func (m *Workspaces_attributes) GetInheritsProjectAutoDestroy() *bool {
+	val, err := m.GetBackingStore().Get("inheritsProjectAutoDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetLastAssessmentResultAt gets the last-assessment-result-at property value. The lastAssessmentResultAt property
 // returns a *Time when successful
-func (m *Workspaces_attributes) GetLastAssessmentResultAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.lastAssessmentResultAt
+func (m *Workspaces_attributes) GetLastAssessmentResultAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("lastAssessmentResultAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetLatestChangeAt gets the latest-change-at property value. The latestChangeAt property
 // returns a *Time when successful
-func (m *Workspaces_attributes) GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.latestChangeAt
+func (m *Workspaces_attributes) GetLatestChangeAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("latestChangeAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetLocked gets the locked property value. The locked property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetLocked()(*bool) {
-    return m.locked
+func (m *Workspaces_attributes) GetLocked() *bool {
+	val, err := m.GetBackingStore().Get("locked")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetLockedReason gets the locked-reason property value. The lockedReason property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetLockedReason()(*string) {
-    return m.lockedReason
+func (m *Workspaces_attributes) GetLockedReason() *string {
+	val, err := m.GetBackingStore().Get("lockedReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetName()(*string) {
-    return m.name
+func (m *Workspaces_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetNoCodeUpgradeAvailable gets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetNoCodeUpgradeAvailable()(*bool) {
-    return m.noCodeUpgradeAvailable
+func (m *Workspaces_attributes) GetNoCodeUpgradeAvailable() *bool {
+	val, err := m.GetBackingStore().Get("noCodeUpgradeAvailable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetOauthClientName gets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
 // returns a *string when successful
-func (m *Workspaces_attributes) GetOauthClientName()(*string) {
-    return m.oauthClientName
+func (m *Workspaces_attributes) GetOauthClientName() *string {
+	val, err := m.GetBackingStore().Get("oauthClientName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetOperations gets the operations property value. Deprecated. Use execution-mode instead.
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetOperations()(*bool) {
-    return m.operations
+func (m *Workspaces_attributes) GetOperations() *bool {
+	val, err := m.GetBackingStore().Get("operations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetParentDataRetentionPolicyInfo gets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
 // returns a *string when successful
-func (m *Workspaces_attributes) GetParentDataRetentionPolicyInfo()(*string) {
-    return m.parentDataRetentionPolicyInfo
+func (m *Workspaces_attributes) GetParentDataRetentionPolicyInfo() *string {
+	val, err := m.GetBackingStore().Get("parentDataRetentionPolicyInfo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Workspaces_attributes_permissionsable when successful
-func (m *Workspaces_attributes) GetPermissions()(Workspaces_attributes_permissionsable) {
-    return m.permissions
+func (m *Workspaces_attributes) GetPermissions() Workspaces_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetPlanDurationAverage gets the plan-duration-average property value. The planDurationAverage property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetPlanDurationAverage()(*int32) {
-    return m.planDurationAverage
+func (m *Workspaces_attributes) GetPlanDurationAverage() *int32 {
+	val, err := m.GetBackingStore().Get("planDurationAverage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPolicyCheckFailures gets the policy-check-failures property value. The policyCheckFailures property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetPolicyCheckFailures()(*int32) {
-    return m.policyCheckFailures
+func (m *Workspaces_attributes) GetPolicyCheckFailures() *int32 {
+	val, err := m.GetBackingStore().Get("policyCheckFailures")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetProjectRemoteState gets the project-remote-state property value. The projectRemoteState property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetProjectRemoteState()(*bool) {
-    return m.projectRemoteState
+func (m *Workspaces_attributes) GetProjectRemoteState() *bool {
+	val, err := m.GetBackingStore().Get("projectRemoteState")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetQueueAllRuns gets the queue-all-runs property value. The queueAllRuns property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetQueueAllRuns()(*bool) {
-    return m.queueAllRuns
+func (m *Workspaces_attributes) GetQueueAllRuns() *bool {
+	val, err := m.GetBackingStore().Get("queueAllRuns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetResourceCount gets the resource-count property value. The resourceCount property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetResourceCount()(*int32) {
-    return m.resourceCount
+func (m *Workspaces_attributes) GetResourceCount() *int32 {
+	val, err := m.GetBackingStore().Get("resourceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetRunFailures gets the run-failures property value. The runFailures property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetRunFailures()(*int32) {
-    return m.runFailures
+func (m *Workspaces_attributes) GetRunFailures() *int32 {
+	val, err := m.GetBackingStore().Get("runFailures")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Workspaces_attributes_settingOverwritesable when successful
-func (m *Workspaces_attributes) GetSettingOverwrites()(Workspaces_attributes_settingOverwritesable) {
-    return m.settingOverwrites
+func (m *Workspaces_attributes) GetSettingOverwrites() Workspaces_attributes_settingOverwritesable {
+	val, err := m.GetBackingStore().Get("settingOverwrites")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_settingOverwritesable)
+	}
+	return nil
 }
+
 // GetSource gets the source property value. The source property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetSource()(*string) {
-    return m.source
+func (m *Workspaces_attributes) GetSource() *string {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSourceModuleId gets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
 // returns a *string when successful
-func (m *Workspaces_attributes) GetSourceModuleId()(*string) {
-    return m.sourceModuleId
+func (m *Workspaces_attributes) GetSourceModuleId() *string {
+	val, err := m.GetBackingStore().Get("sourceModuleId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSourceName gets the source-name property value. The sourceName property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetSourceName()(*string) {
-    return m.sourceName
+func (m *Workspaces_attributes) GetSourceName() *string {
+	val, err := m.GetBackingStore().Get("sourceName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSourceUrl gets the source-url property value. The sourceUrl property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetSourceUrl()(*string) {
-    return m.sourceUrl
+func (m *Workspaces_attributes) GetSourceUrl() *string {
+	val, err := m.GetBackingStore().Get("sourceUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSpeculativeEnabled gets the speculative-enabled property value. The speculativeEnabled property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetSpeculativeEnabled()(*bool) {
-    return m.speculativeEnabled
+func (m *Workspaces_attributes) GetSpeculativeEnabled() *bool {
+	val, err := m.GetBackingStore().Get("speculativeEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStructuredRunOutputEnabled gets the structured-run-output-enabled property value. The structuredRunOutputEnabled property
 // returns a *bool when successful
-func (m *Workspaces_attributes) GetStructuredRunOutputEnabled()(*bool) {
-    return m.structuredRunOutputEnabled
+func (m *Workspaces_attributes) GetStructuredRunOutputEnabled() *bool {
+	val, err := m.GetBackingStore().Get("structuredRunOutputEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetTagNames gets the tag-names property value. The tagNames property
 // returns a []string when successful
-func (m *Workspaces_attributes) GetTagNames()([]string) {
-    return m.tagNames
+func (m *Workspaces_attributes) GetTagNames() []string {
+	val, err := m.GetBackingStore().Get("tagNames")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetTerraformVersion()(*string) {
-    return m.terraformVersion
+func (m *Workspaces_attributes) GetTerraformVersion() *string {
+	val, err := m.GetBackingStore().Get("terraformVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTriggerPatterns gets the trigger-patterns property value. The triggerPatterns property
 // returns a []string when successful
-func (m *Workspaces_attributes) GetTriggerPatterns()([]string) {
-    return m.triggerPatterns
+func (m *Workspaces_attributes) GetTriggerPatterns() []string {
+	val, err := m.GetBackingStore().Get("triggerPatterns")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetTriggerPrefixes gets the trigger-prefixes property value. The triggerPrefixes property
 // returns a []string when successful
-func (m *Workspaces_attributes) GetTriggerPrefixes()([]string) {
-    return m.triggerPrefixes
+func (m *Workspaces_attributes) GetTriggerPrefixes() []string {
+	val, err := m.GetBackingStore().Get("triggerPrefixes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetUnarchivedWorkspaceChangeRequestsCount gets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetUnarchivedWorkspaceChangeRequestsCount()(*int32) {
-    return m.unarchivedWorkspaceChangeRequestsCount
+func (m *Workspaces_attributes) GetUnarchivedWorkspaceChangeRequestsCount() *int32 {
+	val, err := m.GetBackingStore().Get("unarchivedWorkspaceChangeRequestsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *Workspaces_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *Workspaces_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a Workspaces_attributes_vcsRepoable when successful
-func (m *Workspaces_attributes) GetVcsRepo()(Workspaces_attributes_vcsRepoable) {
-    return m.vcsRepo
+func (m *Workspaces_attributes) GetVcsRepo() Workspaces_attributes_vcsRepoable {
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_attributes_vcsRepoable)
+	}
+	return nil
 }
+
 // GetVcsRepoIdentifier gets the vcs-repo-identifier property value. The vcsRepoIdentifier property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetVcsRepoIdentifier()(*string) {
-    return m.vcsRepoIdentifier
+func (m *Workspaces_attributes) GetVcsRepoIdentifier() *string {
+	val, err := m.GetBackingStore().Get("vcsRepoIdentifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetWorkingDirectory gets the working-directory property value. The workingDirectory property
 // returns a *string when successful
-func (m *Workspaces_attributes) GetWorkingDirectory()(*string) {
-    return m.workingDirectory
+func (m *Workspaces_attributes) GetWorkingDirectory() *string {
+	val, err := m.GetBackingStore().Get("workingDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetWorkspaceKpisRunsCount gets the workspace-kpis-runs-count property value. The workspaceKpisRunsCount property
 // returns a *int32 when successful
-func (m *Workspaces_attributes) GetWorkspaceKpisRunsCount()(*int32) {
-    return m.workspaceKpisRunsCount
+func (m *Workspaces_attributes) GetWorkspaceKpisRunsCount() *int32 {
+	val, err := m.GetBackingStore().Get("workspaceKpisRunsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("actions", m.GetActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("allow-destroy-plan", m.GetAllowDestroyPlan())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("apply-duration-average", m.GetApplyDurationAverage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("assessments-enabled", m.GetAssessmentsEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("auto-apply", m.GetAutoApply())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("auto-apply-run-trigger", m.GetAutoApplyRunTrigger())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("auto-destroy-activity-duration", m.GetAutoDestroyActivityDuration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("auto-destroy-at", m.GetAutoDestroyAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("auto-destroy-status", m.GetAutoDestroyStatus())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("effective-run-data-retention-desc", m.GetEffectiveRunDataRetentionDesc())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("effective-state-version-retention-desc", m.GetEffectiveStateVersionRetentionDesc())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("environment", m.GetEnvironment())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetExecutionMode() != nil {
-        cast := (*m.GetExecutionMode()).String()
-        err := writer.WriteStringValue("execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("file-triggers-enabled", m.GetFileTriggersEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global-remote-state", m.GetGlobalRemoteState())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("hyok-enabled", m.GetHyokEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("inherits-project-auto-destroy", m.GetInheritsProjectAutoDestroy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("last-assessment-result-at", m.GetLastAssessmentResultAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("latest-change-at", m.GetLatestChangeAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("locked", m.GetLocked())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("locked-reason", m.GetLockedReason())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("oauth-client-name", m.GetOauthClientName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("operations", m.GetOperations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("parent-data-retention-policy-info", m.GetParentDataRetentionPolicyInfo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("plan-duration-average", m.GetPlanDurationAverage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("policy-check-failures", m.GetPolicyCheckFailures())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("project-remote-state", m.GetProjectRemoteState())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("queue-all-runs", m.GetQueueAllRuns())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("resource-count", m.GetResourceCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("run-failures", m.GetRunFailures())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source", m.GetSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source-name", m.GetSourceName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source-url", m.GetSourceUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("speculative-enabled", m.GetSpeculativeEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("structured-run-output-enabled", m.GetStructuredRunOutputEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTagNames() != nil {
-        err := writer.WriteCollectionOfStringValues("tag-names", m.GetTagNames())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("terraform-version", m.GetTerraformVersion())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTriggerPatterns() != nil {
-        err := writer.WriteCollectionOfStringValues("trigger-patterns", m.GetTriggerPatterns())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTriggerPrefixes() != nil {
-        err := writer.WriteCollectionOfStringValues("trigger-prefixes", m.GetTriggerPrefixes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("unarchived-workspace-change-requests-count", m.GetUnarchivedWorkspaceChangeRequestsCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("vcs-repo-identifier", m.GetVcsRepoIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("working-directory", m.GetWorkingDirectory())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("workspace-kpis-runs-count", m.GetWorkspaceKpisRunsCount())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("actions", m.GetActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("allow-destroy-plan", m.GetAllowDestroyPlan())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("apply-duration-average", m.GetApplyDurationAverage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("assessments-enabled", m.GetAssessmentsEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("auto-apply", m.GetAutoApply())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("auto-apply-run-trigger", m.GetAutoApplyRunTrigger())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("auto-destroy-activity-duration", m.GetAutoDestroyActivityDuration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("auto-destroy-at", m.GetAutoDestroyAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("auto-destroy-status", m.GetAutoDestroyStatus())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("effective-run-data-retention-desc", m.GetEffectiveRunDataRetentionDesc())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("effective-state-version-retention-desc", m.GetEffectiveStateVersionRetentionDesc())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("environment", m.GetEnvironment())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetExecutionMode() != nil {
+		cast := (*m.GetExecutionMode()).String()
+		err := writer.WriteStringValue("execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("file-triggers-enabled", m.GetFileTriggersEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global-remote-state", m.GetGlobalRemoteState())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("hyok-enabled", m.GetHyokEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("inherits-project-auto-destroy", m.GetInheritsProjectAutoDestroy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("last-assessment-result-at", m.GetLastAssessmentResultAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("latest-change-at", m.GetLatestChangeAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("locked", m.GetLocked())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("locked-reason", m.GetLockedReason())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("oauth-client-name", m.GetOauthClientName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("operations", m.GetOperations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("parent-data-retention-policy-info", m.GetParentDataRetentionPolicyInfo())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("plan-duration-average", m.GetPlanDurationAverage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("policy-check-failures", m.GetPolicyCheckFailures())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("project-remote-state", m.GetProjectRemoteState())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("queue-all-runs", m.GetQueueAllRuns())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("resource-count", m.GetResourceCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("run-failures", m.GetRunFailures())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source", m.GetSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source-name", m.GetSourceName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source-url", m.GetSourceUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("speculative-enabled", m.GetSpeculativeEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("structured-run-output-enabled", m.GetStructuredRunOutputEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTagNames() != nil {
+		err := writer.WriteCollectionOfStringValues("tag-names", m.GetTagNames())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("terraform-version", m.GetTerraformVersion())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTriggerPatterns() != nil {
+		err := writer.WriteCollectionOfStringValues("trigger-patterns", m.GetTriggerPatterns())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTriggerPrefixes() != nil {
+		err := writer.WriteCollectionOfStringValues("trigger-prefixes", m.GetTriggerPrefixes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("unarchived-workspace-change-requests-count", m.GetUnarchivedWorkspaceChangeRequestsCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("vcs-repo-identifier", m.GetVcsRepoIdentifier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("working-directory", m.GetWorkingDirectory())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("workspace-kpis-runs-count", m.GetWorkspaceKpisRunsCount())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetActions sets the actions property value. The actions property
-func (m *Workspaces_attributes) SetActions(value Workspaces_attributes_actionsable)() {
-    m.actions = value
+func (m *Workspaces_attributes) SetActions(value Workspaces_attributes_actionsable) {
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAllowDestroyPlan sets the allow-destroy-plan property value. The allowDestroyPlan property
-func (m *Workspaces_attributes) SetAllowDestroyPlan(value *bool)() {
-    m.allowDestroyPlan = value
+func (m *Workspaces_attributes) SetAllowDestroyPlan(value *bool) {
+	err := m.GetBackingStore().Set("allowDestroyPlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetApplyDurationAverage sets the apply-duration-average property value. The applyDurationAverage property
-func (m *Workspaces_attributes) SetApplyDurationAverage(value *int32)() {
-    m.applyDurationAverage = value
+func (m *Workspaces_attributes) SetApplyDurationAverage(value *int32) {
+	err := m.GetBackingStore().Set("applyDurationAverage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAssessmentsEnabled sets the assessments-enabled property value. The assessmentsEnabled property
-func (m *Workspaces_attributes) SetAssessmentsEnabled(value *bool)() {
-    m.assessmentsEnabled = value
+func (m *Workspaces_attributes) SetAssessmentsEnabled(value *bool) {
+	err := m.GetBackingStore().Set("assessmentsEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoApply sets the auto-apply property value. The autoApply property
-func (m *Workspaces_attributes) SetAutoApply(value *bool)() {
-    m.autoApply = value
+func (m *Workspaces_attributes) SetAutoApply(value *bool) {
+	err := m.GetBackingStore().Set("autoApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoApplyRunTrigger sets the auto-apply-run-trigger property value. The autoApplyRunTrigger property
-func (m *Workspaces_attributes) SetAutoApplyRunTrigger(value *bool)() {
-    m.autoApplyRunTrigger = value
+func (m *Workspaces_attributes) SetAutoApplyRunTrigger(value *bool) {
+	err := m.GetBackingStore().Set("autoApplyRunTrigger", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoDestroyActivityDuration sets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
-func (m *Workspaces_attributes) SetAutoDestroyActivityDuration(value *string)() {
-    m.autoDestroyActivityDuration = value
+func (m *Workspaces_attributes) SetAutoDestroyActivityDuration(value *string) {
+	err := m.GetBackingStore().Set("autoDestroyActivityDuration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoDestroyAt sets the auto-destroy-at property value. The autoDestroyAt property
-func (m *Workspaces_attributes) SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.autoDestroyAt = value
+func (m *Workspaces_attributes) SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("autoDestroyAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoDestroyStatus sets the auto-destroy-status property value. The autoDestroyStatus property
-func (m *Workspaces_attributes) SetAutoDestroyStatus(value *string)() {
-    m.autoDestroyStatus = value
+func (m *Workspaces_attributes) SetAutoDestroyStatus(value *string) {
+	err := m.GetBackingStore().Set("autoDestroyStatus", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Workspaces_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *Workspaces_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. The description property
-func (m *Workspaces_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *Workspaces_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEffectiveRunDataRetentionDesc sets the effective-run-data-retention-desc property value. A human-readable description of the effective run data and logsretention window for this workspace. Returns null when no run data retention policy is in effect for theworkspace, or when the policy does not delete run data and logs.This attribute is only available in Terraform Enterprise.
-func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string)() {
-    m.effectiveRunDataRetentionDesc = value
+func (m *Workspaces_attributes) SetEffectiveRunDataRetentionDesc(value *string) {
+	err := m.GetBackingStore().Set("effectiveRunDataRetentionDesc", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEffectiveStateVersionRetentionDesc sets the effective-state-version-retention-desc property value. A human-readable description of the effective state-versionretention window for this workspace. Returns null when no state-version retention policy is in effect for theworkspace, or when the policy does not delete state versions.This attribute is only available in Terraform Enterprise.
-func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string)() {
-    m.effectiveStateVersionRetentionDesc = value
+func (m *Workspaces_attributes) SetEffectiveStateVersionRetentionDesc(value *string) {
+	err := m.GetBackingStore().Set("effectiveStateVersionRetentionDesc", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEnvironment sets the environment property value. The environment property
-func (m *Workspaces_attributes) SetEnvironment(value *string)() {
-    m.environment = value
+func (m *Workspaces_attributes) SetEnvironment(value *string) {
+	err := m.GetBackingStore().Set("environment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetExecutionMode sets the execution-mode property value. The executionMode property
-func (m *Workspaces_attributes) SetExecutionMode(value *Workspaces_attributes_executionMode)() {
-    m.executionMode = value
+func (m *Workspaces_attributes) SetExecutionMode(value *Workspaces_attributes_executionMode) {
+	err := m.GetBackingStore().Set("executionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFileTriggersEnabled sets the file-triggers-enabled property value. The fileTriggersEnabled property
-func (m *Workspaces_attributes) SetFileTriggersEnabled(value *bool)() {
-    m.fileTriggersEnabled = value
+func (m *Workspaces_attributes) SetFileTriggersEnabled(value *bool) {
+	err := m.GetBackingStore().Set("fileTriggersEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetGlobalRemoteState sets the global-remote-state property value. The globalRemoteState property
-func (m *Workspaces_attributes) SetGlobalRemoteState(value *bool)() {
-    m.globalRemoteState = value
+func (m *Workspaces_attributes) SetGlobalRemoteState(value *bool) {
+	err := m.GetBackingStore().Set("globalRemoteState", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHyokEnabled sets the hyok-enabled property value. HCP Terraform Premium Tier only. Enabled Hold Your Own Key for the workspace. Once this has been set to true,it can no longer be disabled.This attribute is only available in HCP Terraform.
-func (m *Workspaces_attributes) SetHyokEnabled(value *bool)() {
-    m.hyokEnabled = value
+func (m *Workspaces_attributes) SetHyokEnabled(value *bool) {
+	err := m.GetBackingStore().Set("hyokEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetInheritsProjectAutoDestroy sets the inherits-project-auto-destroy property value. The inheritsProjectAutoDestroy property
-func (m *Workspaces_attributes) SetInheritsProjectAutoDestroy(value *bool)() {
-    m.inheritsProjectAutoDestroy = value
+func (m *Workspaces_attributes) SetInheritsProjectAutoDestroy(value *bool) {
+	err := m.GetBackingStore().Set("inheritsProjectAutoDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLastAssessmentResultAt sets the last-assessment-result-at property value. The lastAssessmentResultAt property
-func (m *Workspaces_attributes) SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.lastAssessmentResultAt = value
+func (m *Workspaces_attributes) SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("lastAssessmentResultAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLatestChangeAt sets the latest-change-at property value. The latestChangeAt property
-func (m *Workspaces_attributes) SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.latestChangeAt = value
+func (m *Workspaces_attributes) SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("latestChangeAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLocked sets the locked property value. The locked property
-func (m *Workspaces_attributes) SetLocked(value *bool)() {
-    m.locked = value
+func (m *Workspaces_attributes) SetLocked(value *bool) {
+	err := m.GetBackingStore().Set("locked", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLockedReason sets the locked-reason property value. The lockedReason property
-func (m *Workspaces_attributes) SetLockedReason(value *string)() {
-    m.lockedReason = value
+func (m *Workspaces_attributes) SetLockedReason(value *string) {
+	err := m.GetBackingStore().Set("lockedReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *Workspaces_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Workspaces_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNoCodeUpgradeAvailable sets the no-code-upgrade-available property value. Whether a newer no-code module version is available for this workspace.Present only for no-code workspaces; omitted otherwise.
-func (m *Workspaces_attributes) SetNoCodeUpgradeAvailable(value *bool)() {
-    m.noCodeUpgradeAvailable = value
+func (m *Workspaces_attributes) SetNoCodeUpgradeAvailable(value *bool) {
+	err := m.GetBackingStore().Set("noCodeUpgradeAvailable", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOauthClientName sets the oauth-client-name property value. The display name of the OAuth client associated with this workspace, if any.
-func (m *Workspaces_attributes) SetOauthClientName(value *string)() {
-    m.oauthClientName = value
+func (m *Workspaces_attributes) SetOauthClientName(value *string) {
+	err := m.GetBackingStore().Set("oauthClientName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOperations sets the operations property value. Deprecated. Use execution-mode instead.
-func (m *Workspaces_attributes) SetOperations(value *bool)() {
-    m.operations = value
+func (m *Workspaces_attributes) SetOperations(value *bool) {
+	err := m.GetBackingStore().Set("operations", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetParentDataRetentionPolicyInfo sets the parent-data-retention-policy-info property value. This attribute is only available in Terraform Enterprise.
-func (m *Workspaces_attributes) SetParentDataRetentionPolicyInfo(value *string)() {
-    m.parentDataRetentionPolicyInfo = value
+func (m *Workspaces_attributes) SetParentDataRetentionPolicyInfo(value *string) {
+	err := m.GetBackingStore().Set("parentDataRetentionPolicyInfo", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *Workspaces_attributes) SetPermissions(value Workspaces_attributes_permissionsable)() {
-    m.permissions = value
+func (m *Workspaces_attributes) SetPermissions(value Workspaces_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPlanDurationAverage sets the plan-duration-average property value. The planDurationAverage property
-func (m *Workspaces_attributes) SetPlanDurationAverage(value *int32)() {
-    m.planDurationAverage = value
+func (m *Workspaces_attributes) SetPlanDurationAverage(value *int32) {
+	err := m.GetBackingStore().Set("planDurationAverage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyCheckFailures sets the policy-check-failures property value. The policyCheckFailures property
-func (m *Workspaces_attributes) SetPolicyCheckFailures(value *int32)() {
-    m.policyCheckFailures = value
+func (m *Workspaces_attributes) SetPolicyCheckFailures(value *int32) {
+	err := m.GetBackingStore().Set("policyCheckFailures", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProjectRemoteState sets the project-remote-state property value. The projectRemoteState property
-func (m *Workspaces_attributes) SetProjectRemoteState(value *bool)() {
-    m.projectRemoteState = value
+func (m *Workspaces_attributes) SetProjectRemoteState(value *bool) {
+	err := m.GetBackingStore().Set("projectRemoteState", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetQueueAllRuns sets the queue-all-runs property value. The queueAllRuns property
-func (m *Workspaces_attributes) SetQueueAllRuns(value *bool)() {
-    m.queueAllRuns = value
+func (m *Workspaces_attributes) SetQueueAllRuns(value *bool) {
+	err := m.GetBackingStore().Set("queueAllRuns", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourceCount sets the resource-count property value. The resourceCount property
-func (m *Workspaces_attributes) SetResourceCount(value *int32)() {
-    m.resourceCount = value
+func (m *Workspaces_attributes) SetResourceCount(value *int32) {
+	err := m.GetBackingStore().Set("resourceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunFailures sets the run-failures property value. The runFailures property
-func (m *Workspaces_attributes) SetRunFailures(value *int32)() {
-    m.runFailures = value
+func (m *Workspaces_attributes) SetRunFailures(value *int32) {
+	err := m.GetBackingStore().Set("runFailures", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
-func (m *Workspaces_attributes) SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable)() {
-    m.settingOverwrites = value
+func (m *Workspaces_attributes) SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable) {
+	err := m.GetBackingStore().Set("settingOverwrites", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The source property
-func (m *Workspaces_attributes) SetSource(value *string)() {
-    m.source = value
+func (m *Workspaces_attributes) SetSource(value *string) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSourceModuleId sets the source-module-id property value. Identifier of the no-code module and version this workspace was created from(for example, private/<org>/<name>/<provider>/<version>). Present only forno-code workspaces; omitted otherwise. Prefer the no-code-module-versionrelationship for a typed link to the current no-code module version.
-func (m *Workspaces_attributes) SetSourceModuleId(value *string)() {
-    m.sourceModuleId = value
+func (m *Workspaces_attributes) SetSourceModuleId(value *string) {
+	err := m.GetBackingStore().Set("sourceModuleId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSourceName sets the source-name property value. The sourceName property
-func (m *Workspaces_attributes) SetSourceName(value *string)() {
-    m.sourceName = value
+func (m *Workspaces_attributes) SetSourceName(value *string) {
+	err := m.GetBackingStore().Set("sourceName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSourceUrl sets the source-url property value. The sourceUrl property
-func (m *Workspaces_attributes) SetSourceUrl(value *string)() {
-    m.sourceUrl = value
+func (m *Workspaces_attributes) SetSourceUrl(value *string) {
+	err := m.GetBackingStore().Set("sourceUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSpeculativeEnabled sets the speculative-enabled property value. The speculativeEnabled property
-func (m *Workspaces_attributes) SetSpeculativeEnabled(value *bool)() {
-    m.speculativeEnabled = value
+func (m *Workspaces_attributes) SetSpeculativeEnabled(value *bool) {
+	err := m.GetBackingStore().Set("speculativeEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStructuredRunOutputEnabled sets the structured-run-output-enabled property value. The structuredRunOutputEnabled property
-func (m *Workspaces_attributes) SetStructuredRunOutputEnabled(value *bool)() {
-    m.structuredRunOutputEnabled = value
+func (m *Workspaces_attributes) SetStructuredRunOutputEnabled(value *bool) {
+	err := m.GetBackingStore().Set("structuredRunOutputEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTagNames sets the tag-names property value. The tagNames property
-func (m *Workspaces_attributes) SetTagNames(value []string)() {
-    m.tagNames = value
+func (m *Workspaces_attributes) SetTagNames(value []string) {
+	err := m.GetBackingStore().Set("tagNames", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
-func (m *Workspaces_attributes) SetTerraformVersion(value *string)() {
-    m.terraformVersion = value
+func (m *Workspaces_attributes) SetTerraformVersion(value *string) {
+	err := m.GetBackingStore().Set("terraformVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTriggerPatterns sets the trigger-patterns property value. The triggerPatterns property
-func (m *Workspaces_attributes) SetTriggerPatterns(value []string)() {
-    m.triggerPatterns = value
+func (m *Workspaces_attributes) SetTriggerPatterns(value []string) {
+	err := m.GetBackingStore().Set("triggerPatterns", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTriggerPrefixes sets the trigger-prefixes property value. The triggerPrefixes property
-func (m *Workspaces_attributes) SetTriggerPrefixes(value []string)() {
-    m.triggerPrefixes = value
+func (m *Workspaces_attributes) SetTriggerPrefixes(value []string) {
+	err := m.GetBackingStore().Set("triggerPrefixes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUnarchivedWorkspaceChangeRequestsCount sets the unarchived-workspace-change-requests-count property value. This attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *Workspaces_attributes) SetUnarchivedWorkspaceChangeRequestsCount(value *int32)() {
-    m.unarchivedWorkspaceChangeRequestsCount = value
+func (m *Workspaces_attributes) SetUnarchivedWorkspaceChangeRequestsCount(value *int32) {
+	err := m.GetBackingStore().Set("unarchivedWorkspaceChangeRequestsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *Workspaces_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *Workspaces_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
-func (m *Workspaces_attributes) SetVcsRepo(value Workspaces_attributes_vcsRepoable)() {
-    m.vcsRepo = value
+func (m *Workspaces_attributes) SetVcsRepo(value Workspaces_attributes_vcsRepoable) {
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVcsRepoIdentifier sets the vcs-repo-identifier property value. The vcsRepoIdentifier property
-func (m *Workspaces_attributes) SetVcsRepoIdentifier(value *string)() {
-    m.vcsRepoIdentifier = value
+func (m *Workspaces_attributes) SetVcsRepoIdentifier(value *string) {
+	err := m.GetBackingStore().Set("vcsRepoIdentifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkingDirectory sets the working-directory property value. The workingDirectory property
-func (m *Workspaces_attributes) SetWorkingDirectory(value *string)() {
-    m.workingDirectory = value
+func (m *Workspaces_attributes) SetWorkingDirectory(value *string) {
+	err := m.GetBackingStore().Set("workingDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspaceKpisRunsCount sets the workspace-kpis-runs-count property value. The workspaceKpisRunsCount property
-func (m *Workspaces_attributes) SetWorkspaceKpisRunsCount(value *int32)() {
-    m.workspaceKpisRunsCount = value
+func (m *Workspaces_attributes) SetWorkspaceKpisRunsCount(value *int32) {
+	err := m.GetBackingStore().Set("workspaceKpisRunsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Workspaces_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetActions()(Workspaces_attributes_actionsable)
-    GetAllowDestroyPlan()(*bool)
-    GetApplyDurationAverage()(*int32)
-    GetAssessmentsEnabled()(*bool)
-    GetAutoApply()(*bool)
-    GetAutoApplyRunTrigger()(*bool)
-    GetAutoDestroyActivityDuration()(*string)
-    GetAutoDestroyAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetAutoDestroyStatus()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDescription()(*string)
-    GetEffectiveRunDataRetentionDesc()(*string)
-    GetEffectiveStateVersionRetentionDesc()(*string)
-    GetEnvironment()(*string)
-    GetExecutionMode()(*Workspaces_attributes_executionMode)
-    GetFileTriggersEnabled()(*bool)
-    GetGlobalRemoteState()(*bool)
-    GetHyokEnabled()(*bool)
-    GetInheritsProjectAutoDestroy()(*bool)
-    GetLastAssessmentResultAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetLatestChangeAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetLocked()(*bool)
-    GetLockedReason()(*string)
-    GetName()(*string)
-    GetNoCodeUpgradeAvailable()(*bool)
-    GetOauthClientName()(*string)
-    GetOperations()(*bool)
-    GetParentDataRetentionPolicyInfo()(*string)
-    GetPermissions()(Workspaces_attributes_permissionsable)
-    GetPlanDurationAverage()(*int32)
-    GetPolicyCheckFailures()(*int32)
-    GetProjectRemoteState()(*bool)
-    GetQueueAllRuns()(*bool)
-    GetResourceCount()(*int32)
-    GetRunFailures()(*int32)
-    GetSettingOverwrites()(Workspaces_attributes_settingOverwritesable)
-    GetSource()(*string)
-    GetSourceModuleId()(*string)
-    GetSourceName()(*string)
-    GetSourceUrl()(*string)
-    GetSpeculativeEnabled()(*bool)
-    GetStructuredRunOutputEnabled()(*bool)
-    GetTagNames()([]string)
-    GetTerraformVersion()(*string)
-    GetTriggerPatterns()([]string)
-    GetTriggerPrefixes()([]string)
-    GetUnarchivedWorkspaceChangeRequestsCount()(*int32)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetVcsRepo()(Workspaces_attributes_vcsRepoable)
-    GetVcsRepoIdentifier()(*string)
-    GetWorkingDirectory()(*string)
-    GetWorkspaceKpisRunsCount()(*int32)
-    SetActions(value Workspaces_attributes_actionsable)()
-    SetAllowDestroyPlan(value *bool)()
-    SetApplyDurationAverage(value *int32)()
-    SetAssessmentsEnabled(value *bool)()
-    SetAutoApply(value *bool)()
-    SetAutoApplyRunTrigger(value *bool)()
-    SetAutoDestroyActivityDuration(value *string)()
-    SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetAutoDestroyStatus(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDescription(value *string)()
-    SetEffectiveRunDataRetentionDesc(value *string)()
-    SetEffectiveStateVersionRetentionDesc(value *string)()
-    SetEnvironment(value *string)()
-    SetExecutionMode(value *Workspaces_attributes_executionMode)()
-    SetFileTriggersEnabled(value *bool)()
-    SetGlobalRemoteState(value *bool)()
-    SetHyokEnabled(value *bool)()
-    SetInheritsProjectAutoDestroy(value *bool)()
-    SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetLocked(value *bool)()
-    SetLockedReason(value *string)()
-    SetName(value *string)()
-    SetNoCodeUpgradeAvailable(value *bool)()
-    SetOauthClientName(value *string)()
-    SetOperations(value *bool)()
-    SetParentDataRetentionPolicyInfo(value *string)()
-    SetPermissions(value Workspaces_attributes_permissionsable)()
-    SetPlanDurationAverage(value *int32)()
-    SetPolicyCheckFailures(value *int32)()
-    SetProjectRemoteState(value *bool)()
-    SetQueueAllRuns(value *bool)()
-    SetResourceCount(value *int32)()
-    SetRunFailures(value *int32)()
-    SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable)()
-    SetSource(value *string)()
-    SetSourceModuleId(value *string)()
-    SetSourceName(value *string)()
-    SetSourceUrl(value *string)()
-    SetSpeculativeEnabled(value *bool)()
-    SetStructuredRunOutputEnabled(value *bool)()
-    SetTagNames(value []string)()
-    SetTerraformVersion(value *string)()
-    SetTriggerPatterns(value []string)()
-    SetTriggerPrefixes(value []string)()
-    SetUnarchivedWorkspaceChangeRequestsCount(value *int32)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetVcsRepo(value Workspaces_attributes_vcsRepoable)()
-    SetVcsRepoIdentifier(value *string)()
-    SetWorkingDirectory(value *string)()
-    SetWorkspaceKpisRunsCount(value *int32)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetActions() Workspaces_attributes_actionsable
+	GetAllowDestroyPlan() *bool
+	GetApplyDurationAverage() *int32
+	GetAssessmentsEnabled() *bool
+	GetAutoApply() *bool
+	GetAutoApplyRunTrigger() *bool
+	GetAutoDestroyActivityDuration() *string
+	GetAutoDestroyAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetAutoDestroyStatus() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDescription() *string
+	GetEffectiveRunDataRetentionDesc() *string
+	GetEffectiveStateVersionRetentionDesc() *string
+	GetEnvironment() *string
+	GetExecutionMode() *Workspaces_attributes_executionMode
+	GetFileTriggersEnabled() *bool
+	GetGlobalRemoteState() *bool
+	GetHyokEnabled() *bool
+	GetInheritsProjectAutoDestroy() *bool
+	GetLastAssessmentResultAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetLatestChangeAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetLocked() *bool
+	GetLockedReason() *string
+	GetName() *string
+	GetNoCodeUpgradeAvailable() *bool
+	GetOauthClientName() *string
+	GetOperations() *bool
+	GetParentDataRetentionPolicyInfo() *string
+	GetPermissions() Workspaces_attributes_permissionsable
+	GetPlanDurationAverage() *int32
+	GetPolicyCheckFailures() *int32
+	GetProjectRemoteState() *bool
+	GetQueueAllRuns() *bool
+	GetResourceCount() *int32
+	GetRunFailures() *int32
+	GetSettingOverwrites() Workspaces_attributes_settingOverwritesable
+	GetSource() *string
+	GetSourceModuleId() *string
+	GetSourceName() *string
+	GetSourceUrl() *string
+	GetSpeculativeEnabled() *bool
+	GetStructuredRunOutputEnabled() *bool
+	GetTagNames() []string
+	GetTerraformVersion() *string
+	GetTriggerPatterns() []string
+	GetTriggerPrefixes() []string
+	GetUnarchivedWorkspaceChangeRequestsCount() *int32
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetVcsRepo() Workspaces_attributes_vcsRepoable
+	GetVcsRepoIdentifier() *string
+	GetWorkingDirectory() *string
+	GetWorkspaceKpisRunsCount() *int32
+	SetActions(value Workspaces_attributes_actionsable)
+	SetAllowDestroyPlan(value *bool)
+	SetApplyDurationAverage(value *int32)
+	SetAssessmentsEnabled(value *bool)
+	SetAutoApply(value *bool)
+	SetAutoApplyRunTrigger(value *bool)
+	SetAutoDestroyActivityDuration(value *string)
+	SetAutoDestroyAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetAutoDestroyStatus(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDescription(value *string)
+	SetEffectiveRunDataRetentionDesc(value *string)
+	SetEffectiveStateVersionRetentionDesc(value *string)
+	SetEnvironment(value *string)
+	SetExecutionMode(value *Workspaces_attributes_executionMode)
+	SetFileTriggersEnabled(value *bool)
+	SetGlobalRemoteState(value *bool)
+	SetHyokEnabled(value *bool)
+	SetInheritsProjectAutoDestroy(value *bool)
+	SetLastAssessmentResultAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetLatestChangeAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetLocked(value *bool)
+	SetLockedReason(value *string)
+	SetName(value *string)
+	SetNoCodeUpgradeAvailable(value *bool)
+	SetOauthClientName(value *string)
+	SetOperations(value *bool)
+	SetParentDataRetentionPolicyInfo(value *string)
+	SetPermissions(value Workspaces_attributes_permissionsable)
+	SetPlanDurationAverage(value *int32)
+	SetPolicyCheckFailures(value *int32)
+	SetProjectRemoteState(value *bool)
+	SetQueueAllRuns(value *bool)
+	SetResourceCount(value *int32)
+	SetRunFailures(value *int32)
+	SetSettingOverwrites(value Workspaces_attributes_settingOverwritesable)
+	SetSource(value *string)
+	SetSourceModuleId(value *string)
+	SetSourceName(value *string)
+	SetSourceUrl(value *string)
+	SetSpeculativeEnabled(value *bool)
+	SetStructuredRunOutputEnabled(value *bool)
+	SetTagNames(value []string)
+	SetTerraformVersion(value *string)
+	SetTriggerPatterns(value []string)
+	SetTriggerPrefixes(value []string)
+	SetUnarchivedWorkspaceChangeRequestsCount(value *int32)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetVcsRepo(value Workspaces_attributes_vcsRepoable)
+	SetVcsRepoIdentifier(value *string)
+	SetWorkingDirectory(value *string)
+	SetWorkspaceKpisRunsCount(value *int32)
 }

@@ -4,237 +4,343 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type OrganizationMembershipsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data OrganizationMembershipsable
-    // The included property
-    included []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included composed type wrapper for classes Organizationsable, Teamsable, Usersable
+
+// OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included composed type wrapper for classes Organizations, Teams, Users
 type OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included struct {
-    // Composed type representation for type Organizationsable
-    organizations Organizationsable
-    // Composed type representation for type Teamsable
-    teams Teamsable
-    // Composed type representation for type Usersable
-    users Usersable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included instantiates a new OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included and sets the default values.
-func NewOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included()(*OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) {
-    m := &OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included{
-    }
-    return m
+func NewOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included() *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included {
+	m := &OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
-                    result.SetOrganizations(NewOrganizations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "teams") {
-                    result.SetTeams(NewTeams())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
-                    result.SetUsers(NewUsers())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "organizations") {
+					result.SetOrganizations(NewOrganizations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "teams") {
+					result.SetTeams(NewTeams())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+					result.SetUsers(NewUsers())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetOrganizations() != nil {
-        return m.GetOrganizations().GetFieldDeserializers()
-    } else if m.GetTeams() != nil {
-        return m.GetTeams().GetFieldDeserializers()
-    } else if m.GetUsers() != nil {
-        return m.GetUsers().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetOrganizations() != nil {
+		return m.GetOrganizations().GetFieldDeserializers()
+	} else if m.GetTeams() != nil {
+		return m.GetTeams().GetFieldDeserializers()
+	} else if m.GetUsers() != nil {
+		return m.GetUsers().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetOrganizations gets the organizations property value. Composed type representation for type Organizationsable
+
+// GetOrganizations gets the organizations property value. Composed type representation for type Organizations
 // returns a Organizationsable when successful
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetOrganizations()(Organizationsable) {
-    return m.organizations
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetOrganizations() Organizationsable {
+	val, err := m.GetBackingStore().Get("organizations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Organizationsable)
+	}
+	return nil
 }
-// GetTeams gets the teams property value. Composed type representation for type Teamsable
+
+// GetTeams gets the teams property value. Composed type representation for type Teams
 // returns a Teamsable when successful
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetTeams()(Teamsable) {
-    return m.teams
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetTeams() Teamsable {
+	val, err := m.GetBackingStore().Get("teams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Teamsable)
+	}
+	return nil
 }
-// GetUsers gets the users property value. Composed type representation for type Usersable
+
+// GetUsers gets the users property value. Composed type representation for type Users
 // returns a Usersable when successful
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetUsers()(Usersable) {
-    return m.users
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) GetUsers() Usersable {
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Usersable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetOrganizations() != nil {
-        err := writer.WriteObjectValue("", m.GetOrganizations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetTeams() != nil {
-        err := writer.WriteObjectValue("", m.GetTeams())
-        if err != nil {
-            return err
-        }
-    } else if m.GetUsers() != nil {
-        err := writer.WriteObjectValue("", m.GetUsers())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetOrganizations() != nil {
+		err := writer.WriteObjectValue("", m.GetOrganizations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetTeams() != nil {
+		err := writer.WriteObjectValue("", m.GetTeams())
+		if err != nil {
+			return err
+		}
+	} else if m.GetUsers() != nil {
+		err := writer.WriteObjectValue("", m.GetUsers())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetOrganizations sets the organizations property value. Composed type representation for type Organizationsable
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetOrganizations(value Organizationsable)() {
-    m.organizations = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetTeams sets the teams property value. Composed type representation for type Teamsable
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetTeams(value Teamsable)() {
-    m.teams = value
+
+// SetOrganizations sets the organizations property value. Composed type representation for type Organizations
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetOrganizations(value Organizationsable) {
+	err := m.GetBackingStore().Set("organizations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetUsers sets the users property value. Composed type representation for type Usersable
-func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetUsers(value Usersable)() {
-    m.users = value
+
+// SetTeams sets the teams property value. Composed type representation for type Teams
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetTeams(value Teamsable) {
+	err := m.GetBackingStore().Set("teams", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetUsers sets the users property value. Composed type representation for type Users
+func (m *OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_included) SetUsers(value Usersable) {
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOrganizations()(Organizationsable)
-    GetTeams()(Teamsable)
-    GetUsers()(Usersable)
-    SetOrganizations(value Organizationsable)()
-    SetTeams(value Teamsable)()
-    SetUsers(value Usersable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetOrganizations() Organizationsable
+	GetTeams() Teamsable
+	GetUsers() Usersable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetOrganizations(value Organizationsable)
+	SetTeams(value Teamsable)
+	SetUsers(value Usersable)
 }
+
 // NewOrganizationMembershipsEnvelope instantiates a new OrganizationMembershipsEnvelope and sets the default values.
-func NewOrganizationMembershipsEnvelope()(*OrganizationMembershipsEnvelope) {
-    m := &OrganizationMembershipsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOrganizationMembershipsEnvelope() *OrganizationMembershipsEnvelope {
+	m := &OrganizationMembershipsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOrganizationMembershipsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationMembershipsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOrganizationMembershipsEnvelope(), nil
+func CreateOrganizationMembershipsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOrganizationMembershipsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OrganizationMembershipsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OrganizationMembershipsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationMembershipsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a OrganizationMembershipsable when successful
-func (m *OrganizationMembershipsEnvelope) GetData()(OrganizationMembershipsable) {
-    return m.data
+func (m *OrganizationMembershipsEnvelope) GetData() OrganizationMembershipsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationMembershipsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationMembershipsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMembershipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(OrganizationMembershipsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationMembershipsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationMembershipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(OrganizationMembershipsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateOrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable when successful
-func (m *OrganizationMembershipsEnvelope) GetIncluded()([]OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable) {
-    return m.included
+func (m *OrganizationMembershipsEnvelope) GetIncluded() []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationMembershipsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationMembershipsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OrganizationMembershipsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OrganizationMembershipsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationMembershipsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *OrganizationMembershipsEnvelope) SetData(value OrganizationMembershipsable)() {
-    m.data = value
+func (m *OrganizationMembershipsEnvelope) SetData(value OrganizationMembershipsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *OrganizationMembershipsEnvelope) SetIncluded(value []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)() {
-    m.included = value
+func (m *OrganizationMembershipsEnvelope) SetIncluded(value []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type OrganizationMembershipsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(OrganizationMembershipsable)
-    GetIncluded()([]OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)
-    SetData(value OrganizationMembershipsable)()
-    SetIncluded(value []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() OrganizationMembershipsable
+	GetIncluded() []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value OrganizationMembershipsable)
+	SetIncluded(value []OrganizationMembershipsEnvelope_OrganizationMembershipsEnvelope_includedable)
 }

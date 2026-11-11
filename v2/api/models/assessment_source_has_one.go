@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AssessmentSourceHasOne struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data AssessmentSourceIdentifierable
-    // The links property
-    links Relatedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAssessmentSourceHasOne instantiates a new AssessmentSourceHasOne and sets the default values.
-func NewAssessmentSourceHasOne()(*AssessmentSourceHasOne) {
-    m := &AssessmentSourceHasOne{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAssessmentSourceHasOne() *AssessmentSourceHasOne {
+	m := &AssessmentSourceHasOne{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAssessmentSourceHasOneFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAssessmentSourceHasOneFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAssessmentSourceHasOne(), nil
+func CreateAssessmentSourceHasOneFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAssessmentSourceHasOne(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AssessmentSourceHasOne) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AssessmentSourceHasOne) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AssessmentSourceHasOne) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a AssessmentSourceIdentifierable when successful
-func (m *AssessmentSourceHasOne) GetData()(AssessmentSourceIdentifierable) {
-    return m.data
+func (m *AssessmentSourceHasOne) GetData() AssessmentSourceIdentifierable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AssessmentSourceIdentifierable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AssessmentSourceHasOne) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAssessmentSourceIdentifierFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(AssessmentSourceIdentifierable))
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRelatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(Relatedable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AssessmentSourceHasOne) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAssessmentSourceIdentifierFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(AssessmentSourceIdentifierable))
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRelatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(Relatedable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLinks gets the links property value. The links property
 // returns a Relatedable when successful
-func (m *AssessmentSourceHasOne) GetLinks()(Relatedable) {
-    return m.links
+func (m *AssessmentSourceHasOne) GetLinks() Relatedable {
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Relatedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AssessmentSourceHasOne) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AssessmentSourceHasOne) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AssessmentSourceHasOne) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AssessmentSourceHasOne) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AssessmentSourceHasOne) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *AssessmentSourceHasOne) SetData(value AssessmentSourceIdentifierable)() {
-    m.data = value
+func (m *AssessmentSourceHasOne) SetData(value AssessmentSourceIdentifierable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLinks sets the links property value. The links property
-func (m *AssessmentSourceHasOne) SetLinks(value Relatedable)() {
-    m.links = value
+func (m *AssessmentSourceHasOne) SetLinks(value Relatedable) {
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AssessmentSourceHasOneable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(AssessmentSourceIdentifierable)
-    GetLinks()(Relatedable)
-    SetData(value AssessmentSourceIdentifierable)()
-    SetLinks(value Relatedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() AssessmentSourceIdentifierable
+	GetLinks() Relatedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value AssessmentSourceIdentifierable)
+	SetLinks(value Relatedable)
 }

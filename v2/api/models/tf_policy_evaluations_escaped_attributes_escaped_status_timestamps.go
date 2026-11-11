@@ -4,314 +4,437 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 // TfPolicyEvaluations_attributes_statusTimestamps timestamps for each status transition during the evaluation lifecycle
 type TfPolicyEvaluations_attributes_statusTimestamps struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // When the evaluation entered awaiting override status (for failed mandatory policies)
-    awaitingOverrideAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation was canceled
-    canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation encountered an error
-    erroredAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation failed
-    failedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When a failed evaluation was overridden
-    overriddenAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation passed successfully
-    passedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation entered pending status
-    pendingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation was queued for processing
-    queuedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // When the evaluation started running
-    runningAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTfPolicyEvaluations_attributes_statusTimestamps instantiates a new TfPolicyEvaluations_attributes_statusTimestamps and sets the default values.
-func NewTfPolicyEvaluations_attributes_statusTimestamps()(*TfPolicyEvaluations_attributes_statusTimestamps) {
-    m := &TfPolicyEvaluations_attributes_statusTimestamps{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTfPolicyEvaluations_attributes_statusTimestamps() *TfPolicyEvaluations_attributes_statusTimestamps {
+	m := &TfPolicyEvaluations_attributes_statusTimestamps{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTfPolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTfPolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTfPolicyEvaluations_attributes_statusTimestamps(), nil
+func CreateTfPolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTfPolicyEvaluations_attributes_statusTimestamps(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAwaitingOverrideAt gets the awaiting-override-at property value. When the evaluation entered awaiting override status (for failed mandatory policies)
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetAwaitingOverrideAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.awaitingOverrideAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetAwaitingOverrideAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("awaitingOverrideAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanceledAt gets the canceled-at property value. When the evaluation was canceled
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.canceledAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetErroredAt gets the errored-at property value. When the evaluation encountered an error
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetErroredAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.erroredAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("erroredAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFailedAt gets the failed-at property value. When the evaluation failed
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.failedAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("failedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["awaiting-override-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAwaitingOverrideAt(val)
-        }
-        return nil
-    }
-    res["canceled-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledAt(val)
-        }
-        return nil
-    }
-    res["errored-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErroredAt(val)
-        }
-        return nil
-    }
-    res["failed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFailedAt(val)
-        }
-        return nil
-    }
-    res["overridden-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOverriddenAt(val)
-        }
-        return nil
-    }
-    res["passed-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPassedAt(val)
-        }
-        return nil
-    }
-    res["pending-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPendingAt(val)
-        }
-        return nil
-    }
-    res["queued-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetQueuedAt(val)
-        }
-        return nil
-    }
-    res["running-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunningAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["awaiting-override-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAwaitingOverrideAt(val)
+		}
+		return nil
+	}
+	res["canceled-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledAt(val)
+		}
+		return nil
+	}
+	res["errored-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErroredAt(val)
+		}
+		return nil
+	}
+	res["failed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFailedAt(val)
+		}
+		return nil
+	}
+	res["overridden-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOverriddenAt(val)
+		}
+		return nil
+	}
+	res["passed-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPassedAt(val)
+		}
+		return nil
+	}
+	res["pending-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPendingAt(val)
+		}
+		return nil
+	}
+	res["queued-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetQueuedAt(val)
+		}
+		return nil
+	}
+	res["running-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunningAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOverriddenAt gets the overridden-at property value. When a failed evaluation was overridden
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetOverriddenAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.overriddenAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetOverriddenAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("overriddenAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetPassedAt gets the passed-at property value. When the evaluation passed successfully
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetPassedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.passedAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetPassedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("passedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetPendingAt gets the pending-at property value. When the evaluation entered pending status
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetPendingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.pendingAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetPendingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("pendingAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetQueuedAt gets the queued-at property value. When the evaluation was queued for processing
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.queuedAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("queuedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetRunningAt gets the running-at property value. When the evaluation started running
 // returns a *Time when successful
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.runningAt
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("runningAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteTimeValue("awaiting-override-at", m.GetAwaitingOverrideAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("canceled-at", m.GetCanceledAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("errored-at", m.GetErroredAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("failed-at", m.GetFailedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("overridden-at", m.GetOverriddenAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("passed-at", m.GetPassedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("pending-at", m.GetPendingAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("queued-at", m.GetQueuedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("running-at", m.GetRunningAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteTimeValue("awaiting-override-at", m.GetAwaitingOverrideAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("canceled-at", m.GetCanceledAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("errored-at", m.GetErroredAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("failed-at", m.GetFailedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("overridden-at", m.GetOverriddenAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("passed-at", m.GetPassedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("pending-at", m.GetPendingAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("queued-at", m.GetQueuedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("running-at", m.GetRunningAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAwaitingOverrideAt sets the awaiting-override-at property value. When the evaluation entered awaiting override status (for failed mandatory policies)
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetAwaitingOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.awaitingOverrideAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetAwaitingOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("awaitingOverrideAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanceledAt sets the canceled-at property value. When the evaluation was canceled
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.canceledAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErroredAt sets the errored-at property value. When the evaluation encountered an error
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.erroredAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("erroredAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFailedAt sets the failed-at property value. When the evaluation failed
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.failedAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("failedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOverriddenAt sets the overridden-at property value. When a failed evaluation was overridden
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.overriddenAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("overriddenAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPassedAt sets the passed-at property value. When the evaluation passed successfully
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.passedAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("passedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPendingAt sets the pending-at property value. When the evaluation entered pending status
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetPendingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.pendingAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetPendingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("pendingAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetQueuedAt sets the queued-at property value. When the evaluation was queued for processing
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.queuedAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("queuedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunningAt sets the running-at property value. When the evaluation started running
-func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.runningAt = value
+func (m *TfPolicyEvaluations_attributes_statusTimestamps) SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("runningAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TfPolicyEvaluations_attributes_statusTimestampsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAwaitingOverrideAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetErroredAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetFailedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetOverriddenAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPassedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPendingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetQueuedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetRunningAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetAwaitingOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPendingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAwaitingOverrideAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetErroredAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetFailedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetOverriddenAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPassedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPendingAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetQueuedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetRunningAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetAwaitingOverrideAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetErroredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetFailedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetOverriddenAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPassedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPendingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetQueuedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetRunningAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

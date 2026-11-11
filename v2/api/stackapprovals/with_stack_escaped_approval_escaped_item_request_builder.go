@@ -4,66 +4,72 @@
 package stackapprovals
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70 "github.com/hashicorp/go-tfe/v2/api/stackapprovals/item"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70 "github.com/hashicorp/go-tfe/v2/api/stackapprovals/item"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // WithStack_approval_ItemRequestBuilder builds and executes requests for operations under \stack-approvals\{stack_approval_id}
 type WithStack_approval_ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // WithStack_approval_ItemRequestBuilderGetQueryParameters get details about a stack approval
 type WithStack_approval_ItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for stack-approvals resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsstackApprovals []string "uriparametername:\"fields%5Bstack%2Dapprovals%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for stack-approvals resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsstackApprovals []string "uriparametername:\"fields%5Bstack%2Dapprovals%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i2263dd689a4779d3f681a64fd5bc86fd03e09b38ad342eb5cef72849bf1b4e70.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // NewWithStack_approval_ItemRequestBuilderInternal instantiates a new WithStack_approval_ItemRequestBuilder and sets the default values.
-func NewWithStack_approval_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_approval_ItemRequestBuilder) {
-    m := &WithStack_approval_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-approvals/{stack_approval_id}{?fields%5Bstack%2Dapprovals%5D,include}", pathParameters),
-    }
-    return m
+func NewWithStack_approval_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithStack_approval_ItemRequestBuilder {
+	m := &WithStack_approval_ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/stack-approvals/{stack_approval_id}{?fields%5Bstack%2Dapprovals%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewWithStack_approval_ItemRequestBuilder instantiates a new WithStack_approval_ItemRequestBuilder and sets the default values.
-func NewWithStack_approval_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithStack_approval_ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewWithStack_approval_ItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewWithStack_approval_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithStack_approval_ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewWithStack_approval_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get details about a stack approval
 // returns a StackApprovalsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithStack_approval_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_approval_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackApprovalsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStackApprovalsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackApprovalsEnvelopeable), nil
+func (m *WithStack_approval_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_approval_ItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackApprovalsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStackApprovalsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StackApprovalsEnvelopeable), nil
 }
+
 // ToGetRequestInformation get details about a stack approval
 // returns a *RequestInformation when successful
-func (m *WithStack_approval_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_approval_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *WithStack_approval_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithStack_approval_ItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WithStack_approval_ItemRequestBuilder when successful
-func (m *WithStack_approval_ItemRequestBuilder) WithUrl(rawUrl string)(*WithStack_approval_ItemRequestBuilder) {
-    return NewWithStack_approval_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *WithStack_approval_ItemRequestBuilder) WithUrl(rawUrl string) *WithStack_approval_ItemRequestBuilder {
+	return NewWithStack_approval_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

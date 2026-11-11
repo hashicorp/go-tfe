@@ -4,121 +4,174 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TeamWorkspacesEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data TeamWorkspacesable
-    // The included property
-    included []Teamsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTeamWorkspacesEnvelope instantiates a new TeamWorkspacesEnvelope and sets the default values.
-func NewTeamWorkspacesEnvelope()(*TeamWorkspacesEnvelope) {
-    m := &TeamWorkspacesEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTeamWorkspacesEnvelope() *TeamWorkspacesEnvelope {
+	m := &TeamWorkspacesEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTeamWorkspacesEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTeamWorkspacesEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTeamWorkspacesEnvelope(), nil
+func CreateTeamWorkspacesEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTeamWorkspacesEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TeamWorkspacesEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TeamWorkspacesEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamWorkspacesEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a TeamWorkspacesable when successful
-func (m *TeamWorkspacesEnvelope) GetData()(TeamWorkspacesable) {
-    return m.data
+func (m *TeamWorkspacesEnvelope) GetData() TeamWorkspacesable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TeamWorkspacesable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TeamWorkspacesEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamWorkspacesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(TeamWorkspacesable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTeamsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]Teamsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(Teamsable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TeamWorkspacesEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTeamWorkspacesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(TeamWorkspacesable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTeamsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]Teamsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(Teamsable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []Teamsable when successful
-func (m *TeamWorkspacesEnvelope) GetIncluded()([]Teamsable) {
-    return m.included
+func (m *TeamWorkspacesEnvelope) GetIncluded() []Teamsable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Teamsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TeamWorkspacesEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TeamWorkspacesEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TeamWorkspacesEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TeamWorkspacesEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamWorkspacesEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *TeamWorkspacesEnvelope) SetData(value TeamWorkspacesable)() {
-    m.data = value
+func (m *TeamWorkspacesEnvelope) SetData(value TeamWorkspacesable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *TeamWorkspacesEnvelope) SetIncluded(value []Teamsable)() {
-    m.included = value
+func (m *TeamWorkspacesEnvelope) SetIncluded(value []Teamsable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TeamWorkspacesEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(TeamWorkspacesable)
-    GetIncluded()([]Teamsable)
-    SetData(value TeamWorkspacesable)()
-    SetIncluded(value []Teamsable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() TeamWorkspacesable
+	GetIncluded() []Teamsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value TeamWorkspacesable)
+	SetIncluded(value []Teamsable)
 }

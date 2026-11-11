@@ -4,132 +4,144 @@
 package hyokconfigurations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item"
+	"context"
+	i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88 "github.com/hashicorp/go-tfe/v2/api/hyokconfigurations/item"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // WithHyok_configuration_ItemRequestBuilder builds and executes requests for operations under \hyok-configurations\{hyok_configuration_id}
 type WithHyok_configuration_ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // WithHyok_configuration_ItemRequestBuilderGetQueryParameters get details about an HYOK configurationThis operation is only available in HCP Terraform.
 type WithHyok_configuration_ItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldshyokConfigurations []string "uriparametername:\"fields%5Bhyok%2Dconfigurations%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for hyok-configurations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldshyokConfigurations []string "uriparametername:\"fields%5Bhyok%2Dconfigurations%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i4aee24525e266de214f653c27191a780652208ec30ae4820f9f4abfd16b13d88.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
-    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *WithHyok_configuration_ItemRequestBuilder) Actions() *ItemActionsRequestBuilder {
+	return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewWithHyok_configuration_ItemRequestBuilderInternal instantiates a new WithHyok_configuration_ItemRequestBuilder and sets the default values.
-func NewWithHyok_configuration_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithHyok_configuration_ItemRequestBuilder) {
-    m := &WithHyok_configuration_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}{?fields%5Bhyok%2Dconfigurations%5D,include}", pathParameters),
-    }
-    return m
+func NewWithHyok_configuration_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithHyok_configuration_ItemRequestBuilder {
+	m := &WithHyok_configuration_ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-configurations/{hyok_configuration_id}{?fields%5Bhyok%2Dconfigurations%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewWithHyok_configuration_ItemRequestBuilder instantiates a new WithHyok_configuration_ItemRequestBuilder and sets the default values.
-func NewWithHyok_configuration_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithHyok_configuration_ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewWithHyok_configuration_ItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewWithHyok_configuration_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WithHyok_configuration_ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewWithHyok_configuration_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Delete delete an HYOK configuration. Can only be performed on unused configurations.This operation is only available in HCP Terraform.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithHyok_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
-    requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *WithHyok_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) error {
+	requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 // Get get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateHyokConfigurationsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable), nil
+func (m *WithHyok_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateHyokConfigurationsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable), nil
 }
+
 // HyokCustomerKeyVersions the hyokCustomerKeyVersions property
 // returns a *ItemHyokCustomerKeyVersionsRequestBuilder when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) HyokCustomerKeyVersions()(*ItemHyokCustomerKeyVersionsRequestBuilder) {
-    return NewItemHyokCustomerKeyVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *WithHyok_configuration_ItemRequestBuilder) HyokCustomerKeyVersions() *ItemHyokCustomerKeyVersionsRequestBuilder {
+	return NewItemHyokCustomerKeyVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Patch update an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a HyokConfigurationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithHyok_configuration_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateHyokConfigurationsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable), nil
+func (m *WithHyok_configuration_ItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, error) {
+	requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateHyokConfigurationsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable), nil
 }
+
 // ToDeleteRequestInformation delete an HYOK configuration. Can only be performed on unused configurations.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *WithHyok_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToGetRequestInformation get details about an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *WithHyok_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithHyok_configuration_ItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToPatchRequestInformation update an HYOK configurationThis operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
-    if err != nil {
-        return nil, err
-    }
-    return requestInfo, nil
+func (m *WithHyok_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokConfigurationsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+	if err != nil {
+		return nil, err
+	}
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WithHyok_configuration_ItemRequestBuilder when successful
-func (m *WithHyok_configuration_ItemRequestBuilder) WithUrl(rawUrl string)(*WithHyok_configuration_ItemRequestBuilder) {
-    return NewWithHyok_configuration_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *WithHyok_configuration_ItemRequestBuilder) WithUrl(rawUrl string) *WithHyok_configuration_ItemRequestBuilder {
+	return NewWithHyok_configuration_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

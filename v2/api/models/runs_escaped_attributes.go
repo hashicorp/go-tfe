@@ -4,909 +4,1231 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Runs_attributes struct {
-    // The actions property
-    actions Runs_attributes_actionsable
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The allowConfigGeneration property
-    allowConfigGeneration *bool
-    // The allowEmptyApply property
-    allowEmptyApply *bool
-    // The autoApply property
-    autoApply *bool
-    // The canceledAt property
-    canceledAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The comment property
-    comment *string
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The debuggingMode property
-    debuggingMode *bool
-    // The forceCancelAvailableAt property
-    forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The hasChanges property
-    hasChanges *bool
-    // The invokeActionAddrs property
-    invokeActionAddrs []string
-    // The isDestroy property
-    isDestroy *bool
-    // The message property
-    message *string
-    // The permissions property
-    permissions Runs_attributes_permissionsable
-    // The planOnly property
-    planOnly *bool
-    // The policyPaths property
-    // Deprecated: 
-    policyPaths []string
-    // The refresh property
-    refresh *bool
-    // The refreshOnly property
-    refreshOnly *bool
-    // The replaceAddrs property
-    replaceAddrs []string
-    // The savePlan property
-    savePlan *bool
-    // The source property
-    source *string
-    // The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
-    status *Runs_attributes_status
-    // The statusTimestamps property
-    statusTimestamps Runs_attributes_statusTimestampsable
-    // The targetAddrs property
-    targetAddrs []string
-    // The terraformVersion property
-    terraformVersion *string
-    // The triggeringSourceName property
-    triggeringSourceName *string
-    // The triggerReason property
-    triggerReason *string
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The variables property
-    variables []Runs_attributes_variablesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewRuns_attributes instantiates a new Runs_attributes and sets the default values.
-func NewRuns_attributes()(*Runs_attributes) {
-    m := &Runs_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRuns_attributes() *Runs_attributes {
+	m := &Runs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRuns_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRuns_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRuns_attributes(), nil
+func CreateRuns_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRuns_attributes(), nil
 }
+
 // GetActions gets the actions property value. The actions property
 // returns a Runs_attributes_actionsable when successful
-func (m *Runs_attributes) GetActions()(Runs_attributes_actionsable) {
-    return m.actions
+func (m *Runs_attributes) GetActions() Runs_attributes_actionsable {
+	val, err := m.GetBackingStore().Get("actions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_actionsable)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Runs_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Runs_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAllowConfigGeneration gets the allow-config-generation property value. The allowConfigGeneration property
 // returns a *bool when successful
-func (m *Runs_attributes) GetAllowConfigGeneration()(*bool) {
-    return m.allowConfigGeneration
+func (m *Runs_attributes) GetAllowConfigGeneration() *bool {
+	val, err := m.GetBackingStore().Get("allowConfigGeneration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAllowEmptyApply gets the allow-empty-apply property value. The allowEmptyApply property
 // returns a *bool when successful
-func (m *Runs_attributes) GetAllowEmptyApply()(*bool) {
-    return m.allowEmptyApply
+func (m *Runs_attributes) GetAllowEmptyApply() *bool {
+	val, err := m.GetBackingStore().Get("allowEmptyApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAutoApply gets the auto-apply property value. The autoApply property
 // returns a *bool when successful
-func (m *Runs_attributes) GetAutoApply()(*bool) {
-    return m.autoApply
+func (m *Runs_attributes) GetAutoApply() *bool {
+	val, err := m.GetBackingStore().Get("autoApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Runs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanceledAt gets the canceled-at property value. The canceledAt property
 // returns a *Time when successful
-func (m *Runs_attributes) GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.canceledAt
+func (m *Runs_attributes) GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("canceledAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetComment gets the comment property value. The comment property
 // returns a *string when successful
-func (m *Runs_attributes) GetComment()(*string) {
-    return m.comment
+func (m *Runs_attributes) GetComment() *string {
+	val, err := m.GetBackingStore().Get("comment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *Runs_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *Runs_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDebuggingMode gets the debugging-mode property value. The debuggingMode property
 // returns a *bool when successful
-func (m *Runs_attributes) GetDebuggingMode()(*bool) {
-    return m.debuggingMode
+func (m *Runs_attributes) GetDebuggingMode() *bool {
+	val, err := m.GetBackingStore().Get("debuggingMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Runs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRuns_attributes_actionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetActions(val.(Runs_attributes_actionsable))
-        }
-        return nil
-    }
-    res["allow-config-generation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAllowConfigGeneration(val)
-        }
-        return nil
-    }
-    res["allow-empty-apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAllowEmptyApply(val)
-        }
-        return nil
-    }
-    res["auto-apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoApply(val)
-        }
-        return nil
-    }
-    res["canceled-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanceledAt(val)
-        }
-        return nil
-    }
-    res["comment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetComment(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["debugging-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDebuggingMode(val)
-        }
-        return nil
-    }
-    res["force-cancel-available-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetForceCancelAvailableAt(val)
-        }
-        return nil
-    }
-    res["has-changes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHasChanges(val)
-        }
-        return nil
-    }
-    res["invoke-action-addrs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetInvokeActionAddrs(res)
-        }
-        return nil
-    }
-    res["is-destroy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsDestroy(val)
-        }
-        return nil
-    }
-    res["message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMessage(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRuns_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(Runs_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["plan-only"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlanOnly(val)
-        }
-        return nil
-    }
-    res["policy-paths"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetPolicyPaths(res)
-        }
-        return nil
-    }
-    res["refresh"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRefresh(val)
-        }
-        return nil
-    }
-    res["refresh-only"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRefreshOnly(val)
-        }
-        return nil
-    }
-    res["replace-addrs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetReplaceAddrs(res)
-        }
-        return nil
-    }
-    res["save-plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSavePlan(val)
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseRuns_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*Runs_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRuns_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(Runs_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    res["target-addrs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetTargetAddrs(res)
-        }
-        return nil
-    }
-    res["terraform-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTerraformVersion(val)
-        }
-        return nil
-    }
-    res["triggering-source-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTriggeringSourceName(val)
-        }
-        return nil
-    }
-    res["trigger-reason"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTriggerReason(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    res["variables"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateRuns_attributes_variablesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]Runs_attributes_variablesable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(Runs_attributes_variablesable)
-                }
-            }
-            m.SetVariables(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Runs_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRuns_attributes_actionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetActions(val.(Runs_attributes_actionsable))
+		}
+		return nil
+	}
+	res["allow-config-generation"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAllowConfigGeneration(val)
+		}
+		return nil
+	}
+	res["allow-empty-apply"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAllowEmptyApply(val)
+		}
+		return nil
+	}
+	res["auto-apply"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoApply(val)
+		}
+		return nil
+	}
+	res["canceled-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanceledAt(val)
+		}
+		return nil
+	}
+	res["comment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetComment(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["debugging-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDebuggingMode(val)
+		}
+		return nil
+	}
+	res["force-cancel-available-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetForceCancelAvailableAt(val)
+		}
+		return nil
+	}
+	res["has-changes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHasChanges(val)
+		}
+		return nil
+	}
+	res["invoke-action-addrs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetInvokeActionAddrs(res)
+		}
+		return nil
+	}
+	res["is-destroy"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsDestroy(val)
+		}
+		return nil
+	}
+	res["message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMessage(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRuns_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(Runs_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["plan-only"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlanOnly(val)
+		}
+		return nil
+	}
+	res["policy-paths"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetPolicyPaths(res)
+		}
+		return nil
+	}
+	res["refresh"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRefresh(val)
+		}
+		return nil
+	}
+	res["refresh-only"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRefreshOnly(val)
+		}
+		return nil
+	}
+	res["replace-addrs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetReplaceAddrs(res)
+		}
+		return nil
+	}
+	res["save-plan"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSavePlan(val)
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseRuns_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*Runs_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRuns_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(Runs_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	res["target-addrs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetTargetAddrs(res)
+		}
+		return nil
+	}
+	res["terraform-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTerraformVersion(val)
+		}
+		return nil
+	}
+	res["triggering-source-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTriggeringSourceName(val)
+		}
+		return nil
+	}
+	res["trigger-reason"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTriggerReason(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	res["variables"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateRuns_attributes_variablesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]Runs_attributes_variablesable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(Runs_attributes_variablesable)
+				}
+			}
+			m.SetVariables(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetForceCancelAvailableAt gets the force-cancel-available-at property value. The forceCancelAvailableAt property
 // returns a *Time when successful
-func (m *Runs_attributes) GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.forceCancelAvailableAt
+func (m *Runs_attributes) GetForceCancelAvailableAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("forceCancelAvailableAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetHasChanges gets the has-changes property value. The hasChanges property
 // returns a *bool when successful
-func (m *Runs_attributes) GetHasChanges()(*bool) {
-    return m.hasChanges
+func (m *Runs_attributes) GetHasChanges() *bool {
+	val, err := m.GetBackingStore().Get("hasChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetInvokeActionAddrs gets the invoke-action-addrs property value. The invokeActionAddrs property
 // returns a []string when successful
-func (m *Runs_attributes) GetInvokeActionAddrs()([]string) {
-    return m.invokeActionAddrs
+func (m *Runs_attributes) GetInvokeActionAddrs() []string {
+	val, err := m.GetBackingStore().Get("invokeActionAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetIsDestroy gets the is-destroy property value. The isDestroy property
 // returns a *bool when successful
-func (m *Runs_attributes) GetIsDestroy()(*bool) {
-    return m.isDestroy
+func (m *Runs_attributes) GetIsDestroy() *bool {
+	val, err := m.GetBackingStore().Get("isDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetMessage gets the message property value. The message property
 // returns a *string when successful
-func (m *Runs_attributes) GetMessage()(*string) {
-    return m.message
+func (m *Runs_attributes) GetMessage() *string {
+	val, err := m.GetBackingStore().Get("message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Runs_attributes_permissionsable when successful
-func (m *Runs_attributes) GetPermissions()(Runs_attributes_permissionsable) {
-    return m.permissions
+func (m *Runs_attributes) GetPermissions() Runs_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetPlanOnly gets the plan-only property value. The planOnly property
 // returns a *bool when successful
-func (m *Runs_attributes) GetPlanOnly()(*bool) {
-    return m.planOnly
+func (m *Runs_attributes) GetPlanOnly() *bool {
+	val, err := m.GetBackingStore().Get("planOnly")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPolicyPaths gets the policy-paths property value. The policyPaths property
-// Deprecated: 
+// Deprecated:
 // returns a []string when successful
-func (m *Runs_attributes) GetPolicyPaths()([]string) {
-    return m.policyPaths
+func (m *Runs_attributes) GetPolicyPaths() []string {
+	val, err := m.GetBackingStore().Get("policyPaths")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetRefresh gets the refresh property value. The refresh property
 // returns a *bool when successful
-func (m *Runs_attributes) GetRefresh()(*bool) {
-    return m.refresh
+func (m *Runs_attributes) GetRefresh() *bool {
+	val, err := m.GetBackingStore().Get("refresh")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetRefreshOnly gets the refresh-only property value. The refreshOnly property
 // returns a *bool when successful
-func (m *Runs_attributes) GetRefreshOnly()(*bool) {
-    return m.refreshOnly
+func (m *Runs_attributes) GetRefreshOnly() *bool {
+	val, err := m.GetBackingStore().Get("refreshOnly")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetReplaceAddrs gets the replace-addrs property value. The replaceAddrs property
 // returns a []string when successful
-func (m *Runs_attributes) GetReplaceAddrs()([]string) {
-    return m.replaceAddrs
+func (m *Runs_attributes) GetReplaceAddrs() []string {
+	val, err := m.GetBackingStore().Get("replaceAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetSavePlan gets the save-plan property value. The savePlan property
 // returns a *bool when successful
-func (m *Runs_attributes) GetSavePlan()(*bool) {
-    return m.savePlan
+func (m *Runs_attributes) GetSavePlan() *bool {
+	val, err := m.GetBackingStore().Get("savePlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetSource gets the source property value. The source property
 // returns a *string when successful
-func (m *Runs_attributes) GetSource()(*string) {
-    return m.source
+func (m *Runs_attributes) GetSource() *string {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
 // returns a *Runs_attributes_status when successful
-func (m *Runs_attributes) GetStatus()(*Runs_attributes_status) {
-    return m.status
+func (m *Runs_attributes) GetStatus() *Runs_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Runs_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a Runs_attributes_statusTimestampsable when successful
-func (m *Runs_attributes) GetStatusTimestamps()(Runs_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *Runs_attributes) GetStatusTimestamps() Runs_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Runs_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // GetTargetAddrs gets the target-addrs property value. The targetAddrs property
 // returns a []string when successful
-func (m *Runs_attributes) GetTargetAddrs()([]string) {
-    return m.targetAddrs
+func (m *Runs_attributes) GetTargetAddrs() []string {
+	val, err := m.GetBackingStore().Get("targetAddrs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetTerraformVersion gets the terraform-version property value. The terraformVersion property
 // returns a *string when successful
-func (m *Runs_attributes) GetTerraformVersion()(*string) {
-    return m.terraformVersion
+func (m *Runs_attributes) GetTerraformVersion() *string {
+	val, err := m.GetBackingStore().Get("terraformVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTriggeringSourceName gets the triggering-source-name property value. The triggeringSourceName property
 // returns a *string when successful
-func (m *Runs_attributes) GetTriggeringSourceName()(*string) {
-    return m.triggeringSourceName
+func (m *Runs_attributes) GetTriggeringSourceName() *string {
+	val, err := m.GetBackingStore().Get("triggeringSourceName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTriggerReason gets the trigger-reason property value. The triggerReason property
 // returns a *string when successful
-func (m *Runs_attributes) GetTriggerReason()(*string) {
-    return m.triggerReason
+func (m *Runs_attributes) GetTriggerReason() *string {
+	val, err := m.GetBackingStore().Get("triggerReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *Runs_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *Runs_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetVariables gets the variables property value. The variables property
 // returns a []Runs_attributes_variablesable when successful
-func (m *Runs_attributes) GetVariables()([]Runs_attributes_variablesable) {
-    return m.variables
+func (m *Runs_attributes) GetVariables() []Runs_attributes_variablesable {
+	val, err := m.GetBackingStore().Get("variables")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]Runs_attributes_variablesable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Runs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("actions", m.GetActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("allow-config-generation", m.GetAllowConfigGeneration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("allow-empty-apply", m.GetAllowEmptyApply())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("auto-apply", m.GetAutoApply())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("comment", m.GetComment())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("debugging-mode", m.GetDebuggingMode())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("has-changes", m.GetHasChanges())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetInvokeActionAddrs() != nil {
-        err := writer.WriteCollectionOfStringValues("invoke-action-addrs", m.GetInvokeActionAddrs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-destroy", m.GetIsDestroy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("message", m.GetMessage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("plan-only", m.GetPlanOnly())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetPolicyPaths() != nil {
-        err := writer.WriteCollectionOfStringValues("policy-paths", m.GetPolicyPaths())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("refresh", m.GetRefresh())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("refresh-only", m.GetRefreshOnly())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetReplaceAddrs() != nil {
-        err := writer.WriteCollectionOfStringValues("replace-addrs", m.GetReplaceAddrs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("save-plan", m.GetSavePlan())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source", m.GetSource())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTargetAddrs() != nil {
-        err := writer.WriteCollectionOfStringValues("target-addrs", m.GetTargetAddrs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("terraform-version", m.GetTerraformVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("triggering-source-name", m.GetTriggeringSourceName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("trigger-reason", m.GetTriggerReason())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetVariables() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetVariables()))
-        for i, v := range m.GetVariables() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("variables", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Runs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("actions", m.GetActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("allow-config-generation", m.GetAllowConfigGeneration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("allow-empty-apply", m.GetAllowEmptyApply())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("auto-apply", m.GetAutoApply())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("comment", m.GetComment())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("debugging-mode", m.GetDebuggingMode())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("has-changes", m.GetHasChanges())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetInvokeActionAddrs() != nil {
+		err := writer.WriteCollectionOfStringValues("invoke-action-addrs", m.GetInvokeActionAddrs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-destroy", m.GetIsDestroy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("message", m.GetMessage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("plan-only", m.GetPlanOnly())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetPolicyPaths() != nil {
+		err := writer.WriteCollectionOfStringValues("policy-paths", m.GetPolicyPaths())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("refresh", m.GetRefresh())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("refresh-only", m.GetRefreshOnly())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetReplaceAddrs() != nil {
+		err := writer.WriteCollectionOfStringValues("replace-addrs", m.GetReplaceAddrs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("save-plan", m.GetSavePlan())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source", m.GetSource())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTargetAddrs() != nil {
+		err := writer.WriteCollectionOfStringValues("target-addrs", m.GetTargetAddrs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("terraform-version", m.GetTerraformVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("triggering-source-name", m.GetTriggeringSourceName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("trigger-reason", m.GetTriggerReason())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetVariables() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetVariables()))
+		for i, v := range m.GetVariables() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("variables", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetActions sets the actions property value. The actions property
-func (m *Runs_attributes) SetActions(value Runs_attributes_actionsable)() {
-    m.actions = value
+func (m *Runs_attributes) SetActions(value Runs_attributes_actionsable) {
+	err := m.GetBackingStore().Set("actions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Runs_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Runs_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAllowConfigGeneration sets the allow-config-generation property value. The allowConfigGeneration property
-func (m *Runs_attributes) SetAllowConfigGeneration(value *bool)() {
-    m.allowConfigGeneration = value
+func (m *Runs_attributes) SetAllowConfigGeneration(value *bool) {
+	err := m.GetBackingStore().Set("allowConfigGeneration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAllowEmptyApply sets the allow-empty-apply property value. The allowEmptyApply property
-func (m *Runs_attributes) SetAllowEmptyApply(value *bool)() {
-    m.allowEmptyApply = value
+func (m *Runs_attributes) SetAllowEmptyApply(value *bool) {
+	err := m.GetBackingStore().Set("allowEmptyApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoApply sets the auto-apply property value. The autoApply property
-func (m *Runs_attributes) SetAutoApply(value *bool)() {
-    m.autoApply = value
+func (m *Runs_attributes) SetAutoApply(value *bool) {
+	err := m.GetBackingStore().Set("autoApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Runs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanceledAt sets the canceled-at property value. The canceledAt property
-func (m *Runs_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.canceledAt = value
+func (m *Runs_attributes) SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("canceledAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetComment sets the comment property value. The comment property
-func (m *Runs_attributes) SetComment(value *string)() {
-    m.comment = value
+func (m *Runs_attributes) SetComment(value *string) {
+	err := m.GetBackingStore().Set("comment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *Runs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *Runs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDebuggingMode sets the debugging-mode property value. The debuggingMode property
-func (m *Runs_attributes) SetDebuggingMode(value *bool)() {
-    m.debuggingMode = value
+func (m *Runs_attributes) SetDebuggingMode(value *bool) {
+	err := m.GetBackingStore().Set("debuggingMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetForceCancelAvailableAt sets the force-cancel-available-at property value. The forceCancelAvailableAt property
-func (m *Runs_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.forceCancelAvailableAt = value
+func (m *Runs_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("forceCancelAvailableAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHasChanges sets the has-changes property value. The hasChanges property
-func (m *Runs_attributes) SetHasChanges(value *bool)() {
-    m.hasChanges = value
+func (m *Runs_attributes) SetHasChanges(value *bool) {
+	err := m.GetBackingStore().Set("hasChanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetInvokeActionAddrs sets the invoke-action-addrs property value. The invokeActionAddrs property
-func (m *Runs_attributes) SetInvokeActionAddrs(value []string)() {
-    m.invokeActionAddrs = value
+func (m *Runs_attributes) SetInvokeActionAddrs(value []string) {
+	err := m.GetBackingStore().Set("invokeActionAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsDestroy sets the is-destroy property value. The isDestroy property
-func (m *Runs_attributes) SetIsDestroy(value *bool)() {
-    m.isDestroy = value
+func (m *Runs_attributes) SetIsDestroy(value *bool) {
+	err := m.GetBackingStore().Set("isDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMessage sets the message property value. The message property
-func (m *Runs_attributes) SetMessage(value *string)() {
-    m.message = value
+func (m *Runs_attributes) SetMessage(value *string) {
+	err := m.GetBackingStore().Set("message", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *Runs_attributes) SetPermissions(value Runs_attributes_permissionsable)() {
-    m.permissions = value
+func (m *Runs_attributes) SetPermissions(value Runs_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPlanOnly sets the plan-only property value. The planOnly property
-func (m *Runs_attributes) SetPlanOnly(value *bool)() {
-    m.planOnly = value
+func (m *Runs_attributes) SetPlanOnly(value *bool) {
+	err := m.GetBackingStore().Set("planOnly", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyPaths sets the policy-paths property value. The policyPaths property
-// Deprecated: 
-func (m *Runs_attributes) SetPolicyPaths(value []string)() {
-    m.policyPaths = value
+// Deprecated:
+func (m *Runs_attributes) SetPolicyPaths(value []string) {
+	err := m.GetBackingStore().Set("policyPaths", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRefresh sets the refresh property value. The refresh property
-func (m *Runs_attributes) SetRefresh(value *bool)() {
-    m.refresh = value
+func (m *Runs_attributes) SetRefresh(value *bool) {
+	err := m.GetBackingStore().Set("refresh", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRefreshOnly sets the refresh-only property value. The refreshOnly property
-func (m *Runs_attributes) SetRefreshOnly(value *bool)() {
-    m.refreshOnly = value
+func (m *Runs_attributes) SetRefreshOnly(value *bool) {
+	err := m.GetBackingStore().Set("refreshOnly", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetReplaceAddrs sets the replace-addrs property value. The replaceAddrs property
-func (m *Runs_attributes) SetReplaceAddrs(value []string)() {
-    m.replaceAddrs = value
+func (m *Runs_attributes) SetReplaceAddrs(value []string) {
+	err := m.GetBackingStore().Set("replaceAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSavePlan sets the save-plan property value. The savePlan property
-func (m *Runs_attributes) SetSavePlan(value *bool)() {
-    m.savePlan = value
+func (m *Runs_attributes) SetSavePlan(value *bool) {
+	err := m.GetBackingStore().Set("savePlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The source property
-func (m *Runs_attributes) SetSource(value *string)() {
-    m.source = value
+func (m *Runs_attributes) SetSource(value *string) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The current status of the run.Terraform Policy evaluation status values at plan stage:- `tf_policy_checked` - Terraform Policy evaluation completed- `tf_policy_override` - Terraform Policy evaluation was overridden
-func (m *Runs_attributes) SetStatus(value *Runs_attributes_status)() {
-    m.status = value
+func (m *Runs_attributes) SetStatus(value *Runs_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
-func (m *Runs_attributes) SetStatusTimestamps(value Runs_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *Runs_attributes) SetStatusTimestamps(value Runs_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTargetAddrs sets the target-addrs property value. The targetAddrs property
-func (m *Runs_attributes) SetTargetAddrs(value []string)() {
-    m.targetAddrs = value
+func (m *Runs_attributes) SetTargetAddrs(value []string) {
+	err := m.GetBackingStore().Set("targetAddrs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTerraformVersion sets the terraform-version property value. The terraformVersion property
-func (m *Runs_attributes) SetTerraformVersion(value *string)() {
-    m.terraformVersion = value
+func (m *Runs_attributes) SetTerraformVersion(value *string) {
+	err := m.GetBackingStore().Set("terraformVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTriggeringSourceName sets the triggering-source-name property value. The triggeringSourceName property
-func (m *Runs_attributes) SetTriggeringSourceName(value *string)() {
-    m.triggeringSourceName = value
+func (m *Runs_attributes) SetTriggeringSourceName(value *string) {
+	err := m.GetBackingStore().Set("triggeringSourceName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTriggerReason sets the trigger-reason property value. The triggerReason property
-func (m *Runs_attributes) SetTriggerReason(value *string)() {
-    m.triggerReason = value
+func (m *Runs_attributes) SetTriggerReason(value *string) {
+	err := m.GetBackingStore().Set("triggerReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *Runs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *Runs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVariables sets the variables property value. The variables property
-func (m *Runs_attributes) SetVariables(value []Runs_attributes_variablesable)() {
-    m.variables = value
+func (m *Runs_attributes) SetVariables(value []Runs_attributes_variablesable) {
+	err := m.GetBackingStore().Set("variables", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Runs_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetActions()(Runs_attributes_actionsable)
-    GetAllowConfigGeneration()(*bool)
-    GetAllowEmptyApply()(*bool)
-    GetAutoApply()(*bool)
-    GetCanceledAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetComment()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDebuggingMode()(*bool)
-    GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetHasChanges()(*bool)
-    GetInvokeActionAddrs()([]string)
-    GetIsDestroy()(*bool)
-    GetMessage()(*string)
-    GetPermissions()(Runs_attributes_permissionsable)
-    GetPlanOnly()(*bool)
-    GetPolicyPaths()([]string)
-    GetRefresh()(*bool)
-    GetRefreshOnly()(*bool)
-    GetReplaceAddrs()([]string)
-    GetSavePlan()(*bool)
-    GetSource()(*string)
-    GetStatus()(*Runs_attributes_status)
-    GetStatusTimestamps()(Runs_attributes_statusTimestampsable)
-    GetTargetAddrs()([]string)
-    GetTerraformVersion()(*string)
-    GetTriggeringSourceName()(*string)
-    GetTriggerReason()(*string)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetVariables()([]Runs_attributes_variablesable)
-    SetActions(value Runs_attributes_actionsable)()
-    SetAllowConfigGeneration(value *bool)()
-    SetAllowEmptyApply(value *bool)()
-    SetAutoApply(value *bool)()
-    SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetComment(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDebuggingMode(value *bool)()
-    SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetHasChanges(value *bool)()
-    SetInvokeActionAddrs(value []string)()
-    SetIsDestroy(value *bool)()
-    SetMessage(value *string)()
-    SetPermissions(value Runs_attributes_permissionsable)()
-    SetPlanOnly(value *bool)()
-    SetPolicyPaths(value []string)()
-    SetRefresh(value *bool)()
-    SetRefreshOnly(value *bool)()
-    SetReplaceAddrs(value []string)()
-    SetSavePlan(value *bool)()
-    SetSource(value *string)()
-    SetStatus(value *Runs_attributes_status)()
-    SetStatusTimestamps(value Runs_attributes_statusTimestampsable)()
-    SetTargetAddrs(value []string)()
-    SetTerraformVersion(value *string)()
-    SetTriggeringSourceName(value *string)()
-    SetTriggerReason(value *string)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetVariables(value []Runs_attributes_variablesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetActions() Runs_attributes_actionsable
+	GetAllowConfigGeneration() *bool
+	GetAllowEmptyApply() *bool
+	GetAutoApply() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanceledAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetComment() *string
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDebuggingMode() *bool
+	GetForceCancelAvailableAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetHasChanges() *bool
+	GetInvokeActionAddrs() []string
+	GetIsDestroy() *bool
+	GetMessage() *string
+	GetPermissions() Runs_attributes_permissionsable
+	GetPlanOnly() *bool
+	GetPolicyPaths() []string
+	GetRefresh() *bool
+	GetRefreshOnly() *bool
+	GetReplaceAddrs() []string
+	GetSavePlan() *bool
+	GetSource() *string
+	GetStatus() *Runs_attributes_status
+	GetStatusTimestamps() Runs_attributes_statusTimestampsable
+	GetTargetAddrs() []string
+	GetTerraformVersion() *string
+	GetTriggeringSourceName() *string
+	GetTriggerReason() *string
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetVariables() []Runs_attributes_variablesable
+	SetActions(value Runs_attributes_actionsable)
+	SetAllowConfigGeneration(value *bool)
+	SetAllowEmptyApply(value *bool)
+	SetAutoApply(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetComment(value *string)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDebuggingMode(value *bool)
+	SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetHasChanges(value *bool)
+	SetInvokeActionAddrs(value []string)
+	SetIsDestroy(value *bool)
+	SetMessage(value *string)
+	SetPermissions(value Runs_attributes_permissionsable)
+	SetPlanOnly(value *bool)
+	SetPolicyPaths(value []string)
+	SetRefresh(value *bool)
+	SetRefreshOnly(value *bool)
+	SetReplaceAddrs(value []string)
+	SetSavePlan(value *bool)
+	SetSource(value *string)
+	SetStatus(value *Runs_attributes_status)
+	SetStatusTimestamps(value Runs_attributes_statusTimestampsable)
+	SetTargetAddrs(value []string)
+	SetTerraformVersion(value *string)
+	SetTriggeringSourceName(value *string)
+	SetTriggerReason(value *string)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetVariables(value []Runs_attributes_variablesable)
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type VcsEvents_type int
 
 const (
-    VCSEVENTS_VCSEVENTS_TYPE VcsEvents_type = iota
+	VCSEVENTS_VCSEVENTS_TYPE VcsEvents_type = iota
 )
 
 func (i VcsEvents_type) String() string {
-    return []string{"vcs-events"}[i]
+	return []string{"vcs-events"}[i]
 }
+
 func ParseVcsEvents_type(v string) (any, error) {
-    result := VCSEVENTS_VCSEVENTS_TYPE
-    switch v {
-        case "vcs-events":
-            result = VCSEVENTS_VCSEVENTS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := VCSEVENTS_VCSEVENTS_TYPE
+	switch v {
+	case "vcs-events":
+		result = VCSEVENTS_VCSEVENTS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeVcsEvents_type(values []VcsEvents_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i VcsEvents_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type HyokCustomerKeyVersionsIdentifier_type int
 
 const (
-    HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE HyokCustomerKeyVersionsIdentifier_type = iota
+	HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE HyokCustomerKeyVersionsIdentifier_type = iota
 )
 
 func (i HyokCustomerKeyVersionsIdentifier_type) String() string {
-    return []string{"hyok-customer-key-versions"}[i]
+	return []string{"hyok-customer-key-versions"}[i]
 }
+
 func ParseHyokCustomerKeyVersionsIdentifier_type(v string) (any, error) {
-    result := HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE
-    switch v {
-        case "hyok-customer-key-versions":
-            result = HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE
+	switch v {
+	case "hyok-customer-key-versions":
+		result = HYOKCUSTOMERKEYVERSIONS_HYOKCUSTOMERKEYVERSIONSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeHyokCustomerKeyVersionsIdentifier_type(values []HyokCustomerKeyVersionsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i HyokCustomerKeyVersionsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

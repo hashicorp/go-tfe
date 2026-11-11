@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TestRuns_type int
 
 const (
-    TESTRUNS_TESTRUNS_TYPE TestRuns_type = iota
+	TESTRUNS_TESTRUNS_TYPE TestRuns_type = iota
 )
 
 func (i TestRuns_type) String() string {
-    return []string{"test-runs"}[i]
+	return []string{"test-runs"}[i]
 }
+
 func ParseTestRuns_type(v string) (any, error) {
-    result := TESTRUNS_TESTRUNS_TYPE
-    switch v {
-        case "test-runs":
-            result = TESTRUNS_TESTRUNS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TESTRUNS_TESTRUNS_TYPE
+	switch v {
+	case "test-runs":
+		result = TESTRUNS_TESTRUNS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTestRuns_type(values []TestRuns_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TestRuns_type) isMultiValue() bool {
-    return false
+	return false
 }

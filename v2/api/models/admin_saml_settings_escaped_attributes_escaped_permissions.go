@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminSamlSettings_attributes_permissions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The canRead property
-    canRead *bool
-    // The canUpdate property
-    canUpdate *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAdminSamlSettings_attributes_permissions instantiates a new AdminSamlSettings_attributes_permissions and sets the default values.
-func NewAdminSamlSettings_attributes_permissions()(*AdminSamlSettings_attributes_permissions) {
-    m := &AdminSamlSettings_attributes_permissions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAdminSamlSettings_attributes_permissions() *AdminSamlSettings_attributes_permissions {
+	m := &AdminSamlSettings_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAdminSamlSettings_attributes_permissionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAdminSamlSettings_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAdminSamlSettings_attributes_permissions(), nil
+func CreateAdminSamlSettings_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAdminSamlSettings_attributes_permissions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AdminSamlSettings_attributes_permissions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AdminSamlSettings_attributes_permissions) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminSamlSettings_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanRead gets the can-read property value. The canRead property
 // returns a *bool when successful
-func (m *AdminSamlSettings_attributes_permissions) GetCanRead()(*bool) {
-    return m.canRead
+func (m *AdminSamlSettings_attributes_permissions) GetCanRead() *bool {
+	val, err := m.GetBackingStore().Get("canRead")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdate gets the can-update property value. The canUpdate property
 // returns a *bool when successful
-func (m *AdminSamlSettings_attributes_permissions) GetCanUpdate()(*bool) {
-    return m.canUpdate
+func (m *AdminSamlSettings_attributes_permissions) GetCanUpdate() *bool {
+	val, err := m.GetBackingStore().Get("canUpdate")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AdminSamlSettings_attributes_permissions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["can-read"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanRead(val)
-        }
-        return nil
-    }
-    res["can-update"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdate(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AdminSamlSettings_attributes_permissions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["can-read"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanRead(val)
+		}
+		return nil
+	}
+	res["can-update"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdate(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *AdminSamlSettings_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("can-read", m.GetCanRead())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update", m.GetCanUpdate())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AdminSamlSettings_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("can-read", m.GetCanRead())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update", m.GetCanUpdate())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AdminSamlSettings_attributes_permissions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AdminSamlSettings_attributes_permissions) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminSamlSettings_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanRead sets the can-read property value. The canRead property
-func (m *AdminSamlSettings_attributes_permissions) SetCanRead(value *bool)() {
-    m.canRead = value
+func (m *AdminSamlSettings_attributes_permissions) SetCanRead(value *bool) {
+	err := m.GetBackingStore().Set("canRead", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdate sets the can-update property value. The canUpdate property
-func (m *AdminSamlSettings_attributes_permissions) SetCanUpdate(value *bool)() {
-    m.canUpdate = value
+func (m *AdminSamlSettings_attributes_permissions) SetCanUpdate(value *bool) {
+	err := m.GetBackingStore().Set("canUpdate", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AdminSamlSettings_attributes_permissionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCanRead()(*bool)
-    GetCanUpdate()(*bool)
-    SetCanRead(value *bool)()
-    SetCanUpdate(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanRead() *bool
+	GetCanUpdate() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanRead(value *bool)
+	SetCanUpdate(value *bool)
 }

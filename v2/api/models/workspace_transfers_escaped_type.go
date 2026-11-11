@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceTransfers_type int
 
 const (
-    WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE WorkspaceTransfers_type = iota
+	WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE WorkspaceTransfers_type = iota
 )
 
 func (i WorkspaceTransfers_type) String() string {
-    return []string{"workspace-transfers"}[i]
+	return []string{"workspace-transfers"}[i]
 }
+
 func ParseWorkspaceTransfers_type(v string) (any, error) {
-    result := WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE
-    switch v {
-        case "workspace-transfers":
-            result = WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE
+	switch v {
+	case "workspace-transfers":
+		result = WORKSPACETRANSFERS_WORKSPACETRANSFERS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceTransfers_type(values []WorkspaceTransfers_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceTransfers_type) isMultiValue() bool {
-    return false
+	return false
 }

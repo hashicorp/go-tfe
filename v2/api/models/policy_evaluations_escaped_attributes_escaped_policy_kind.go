@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PolicyEvaluations_attributes_policyKind int
 
 const (
-    SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND PolicyEvaluations_attributes_policyKind = iota
-    OPA_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
+	SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND PolicyEvaluations_attributes_policyKind = iota
+	OPA_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
 )
 
 func (i PolicyEvaluations_attributes_policyKind) String() string {
-    return []string{"sentinel", "opa"}[i]
+	return []string{"sentinel", "opa"}[i]
 }
+
 func ParsePolicyEvaluations_attributes_policyKind(v string) (any, error) {
-    result := SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
-    switch v {
-        case "sentinel":
-            result = SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
-        case "opa":
-            result = OPA_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
+	switch v {
+	case "sentinel":
+		result = SENTINEL_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
+	case "opa":
+		result = OPA_POLICYEVALUATIONS_ATTRIBUTES_POLICYKIND
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicyEvaluations_attributes_policyKind(values []PolicyEvaluations_attributes_policyKind) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PolicyEvaluations_attributes_policyKind) isMultiValue() bool {
-    return false
+	return false
 }

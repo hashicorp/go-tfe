@@ -4,196 +4,279 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StateVersions_attributes_resources struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The count property
-    count *int32
-    // The module property
-    module *string
-    // The name property
-    name *string
-    // The provider property
-    provider *string
-    // The type property
-    typeEscaped *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStateVersions_attributes_resources instantiates a new StateVersions_attributes_resources and sets the default values.
-func NewStateVersions_attributes_resources()(*StateVersions_attributes_resources) {
-    m := &StateVersions_attributes_resources{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStateVersions_attributes_resources() *StateVersions_attributes_resources {
+	m := &StateVersions_attributes_resources{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStateVersions_attributes_resourcesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStateVersions_attributes_resourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStateVersions_attributes_resources(), nil
+func CreateStateVersions_attributes_resourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStateVersions_attributes_resources(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StateVersions_attributes_resources) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StateVersions_attributes_resources) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersions_attributes_resources) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCount gets the count property value. The count property
 // returns a *int32 when successful
-func (m *StateVersions_attributes_resources) GetCount()(*int32) {
-    return m.count
+func (m *StateVersions_attributes_resources) GetCount() *int32 {
+	val, err := m.GetBackingStore().Get("count")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StateVersions_attributes_resources) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCount(val)
-        }
-        return nil
-    }
-    res["module"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModule(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["provider"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProvider(val)
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StateVersions_attributes_resources) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCount(val)
+		}
+		return nil
+	}
+	res["module"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModule(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["provider"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProvider(val)
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetModule gets the module property value. The module property
 // returns a *string when successful
-func (m *StateVersions_attributes_resources) GetModule()(*string) {
-    return m.module
+func (m *StateVersions_attributes_resources) GetModule() *string {
+	val, err := m.GetBackingStore().Get("module")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *StateVersions_attributes_resources) GetName()(*string) {
-    return m.name
+func (m *StateVersions_attributes_resources) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetProvider gets the provider property value. The provider property
 // returns a *string when successful
-func (m *StateVersions_attributes_resources) GetProvider()(*string) {
-    return m.provider
+func (m *StateVersions_attributes_resources) GetProvider() *string {
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *string when successful
-func (m *StateVersions_attributes_resources) GetTypeEscaped()(*string) {
-    return m.typeEscaped
+func (m *StateVersions_attributes_resources) GetTypeEscaped() *string {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StateVersions_attributes_resources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("count", m.GetCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("module", m.GetModule())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("provider", m.GetProvider())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("type", m.GetTypeEscaped())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StateVersions_attributes_resources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("count", m.GetCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("module", m.GetModule())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("provider", m.GetProvider())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("type", m.GetTypeEscaped())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StateVersions_attributes_resources) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StateVersions_attributes_resources) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersions_attributes_resources) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCount sets the count property value. The count property
-func (m *StateVersions_attributes_resources) SetCount(value *int32)() {
-    m.count = value
+func (m *StateVersions_attributes_resources) SetCount(value *int32) {
+	err := m.GetBackingStore().Set("count", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModule sets the module property value. The module property
-func (m *StateVersions_attributes_resources) SetModule(value *string)() {
-    m.module = value
+func (m *StateVersions_attributes_resources) SetModule(value *string) {
+	err := m.GetBackingStore().Set("module", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *StateVersions_attributes_resources) SetName(value *string)() {
-    m.name = value
+func (m *StateVersions_attributes_resources) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProvider sets the provider property value. The provider property
-func (m *StateVersions_attributes_resources) SetProvider(value *string)() {
-    m.provider = value
+func (m *StateVersions_attributes_resources) SetProvider(value *string) {
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *StateVersions_attributes_resources) SetTypeEscaped(value *string)() {
-    m.typeEscaped = value
+func (m *StateVersions_attributes_resources) SetTypeEscaped(value *string) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StateVersions_attributes_resourcesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCount()(*int32)
-    GetModule()(*string)
-    GetName()(*string)
-    GetProvider()(*string)
-    GetTypeEscaped()(*string)
-    SetCount(value *int32)()
-    SetModule(value *string)()
-    SetName(value *string)()
-    SetProvider(value *string)()
-    SetTypeEscaped(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCount() *int32
+	GetModule() *string
+	GetName() *string
+	GetProvider() *string
+	GetTypeEscaped() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCount(value *int32)
+	SetModule(value *string)
+	SetName(value *string)
+	SetProvider(value *string)
+	SetTypeEscaped(value *string)
 }

@@ -4,209 +4,303 @@
 package organizations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+
+// ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
 type ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data struct {
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
-    awsOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
-    azureOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
-    gcpOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
-    vaultOidcConfigurations i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data instantiates a new ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data and sets the default values.
-func NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data()(*ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) {
-    m := &ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data{
-    }
-    return m
+func NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data() *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data {
+	m := &ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-            }
-        }
-    }
-    return result, nil
+func CreateItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data()
+	if parseNode != nil {
+	}
+	return result, nil
 }
-// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+
+// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations
 // returns a AwsOidcConfigurationsable when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetAwsOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable) {
-    return m.awsOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetAwsOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("awsOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
+	}
+	return nil
 }
-// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+
+// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations
 // returns a AzureOidcConfigurationsable when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetAzureOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable) {
-    return m.azureOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetAzureOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("azureOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetAwsOidcConfigurations() != nil {
-        return m.GetAwsOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetAzureOidcConfigurations() != nil {
-        return m.GetAzureOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetGcpOidcConfigurations() != nil {
-        return m.GetGcpOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetVaultOidcConfigurations() != nil {
-        return m.GetVaultOidcConfigurations().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetAwsOidcConfigurations() != nil {
+		return m.GetAwsOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetAzureOidcConfigurations() != nil {
+		return m.GetAzureOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetGcpOidcConfigurations() != nil {
+		return m.GetGcpOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetVaultOidcConfigurations() != nil {
+		return m.GetVaultOidcConfigurations().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
-// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+
+// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations
 // returns a GcpOidcConfigurationsable when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetGcpOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable) {
-    return m.gcpOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetGcpOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("gcpOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
+	}
+	return nil
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetIsComposedType()(bool) {
-    return true
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetIsComposedType() bool {
+	return true
 }
-// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+
+// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
 // returns a VaultOidcConfigurationsable when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetVaultOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable) {
-    return m.vaultOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) GetVaultOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("vaultOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAwsOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetAwsOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetAzureOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetAzureOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetGcpOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetGcpOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetVaultOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetVaultOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAwsOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetAwsOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetAzureOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetAzureOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetGcpOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetGcpOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetVaultOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetVaultOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)() {
-    m.awsOidcConfigurations = value
+
+// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("awsOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)() {
-    m.azureOidcConfigurations = value
+
+// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("azureOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)() {
-    m.gcpOidcConfigurations = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)() {
-    m.vaultOidcConfigurations = value
+
+// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("gcpOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurations
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data) SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("vaultOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAwsOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
-    GetAzureOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
-    GetGcpOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
-    GetVaultOidcConfigurations()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
-    SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)()
-    SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)()
-    SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)()
-    SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAwsOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable
+	GetAzureOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetGcpOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable
+	GetVaultOidcConfigurations() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable
+	SetAwsOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AwsOidcConfigurationsable)
+	SetAzureOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AzureOidcConfigurationsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetGcpOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GcpOidcConfigurationsable)
+	SetVaultOidcConfigurations(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VaultOidcConfigurationsable)
 }
+
 // NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration instantiates a new ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration and sets the default values.
-func NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration()(*ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) {
-    m := &ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration() *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration {
+	m := &ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemHyokConfigurationsTestPostRequestBody_oidcConfigurationFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemHyokConfigurationsTestPostRequestBody_oidcConfigurationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration(), nil
+func CreateItemHyokConfigurationsTestPostRequestBody_oidcConfigurationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemHyokConfigurationsTestPostRequestBody_oidcConfiguration(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetData()(ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable) {
-    return m.data
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetData() ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(*ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_data))
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) SetData(value ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable)() {
-    m.data = value
+func (m *ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration) SetData(value ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type ItemHyokConfigurationsTestPostRequestBody_oidcConfigurationable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable)
-    SetData(value ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value ItemHyokConfigurationsTestPostRequestBody_oidcConfiguration_TestPostRequestBody_oidcConfiguration_dataable)
 }

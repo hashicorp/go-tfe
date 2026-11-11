@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AdminGeneralSettings_type int
 
 const (
-    GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE AdminGeneralSettings_type = iota
+	GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE AdminGeneralSettings_type = iota
 )
 
 func (i AdminGeneralSettings_type) String() string {
-    return []string{"general-settings"}[i]
+	return []string{"general-settings"}[i]
 }
+
 func ParseAdminGeneralSettings_type(v string) (any, error) {
-    result := GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE
-    switch v {
-        case "general-settings":
-            result = GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE
+	switch v {
+	case "general-settings":
+		result = GENERALSETTINGS_ADMINGENERALSETTINGS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminGeneralSettings_type(values []AdminGeneralSettings_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminGeneralSettings_type) isMultiValue() bool {
-    return false
+	return false
 }

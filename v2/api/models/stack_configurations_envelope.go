@@ -4,281 +4,407 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type StackConfigurationsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data StackConfigurationsable
-    // The included property
-    included []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// StackConfigurationsEnvelope_StackConfigurationsEnvelope_included composed type wrapper for classes IngressAttributesable, StackAggregateOutputsable, StackConfigurationSummariesable, StackDiagnosticsable, StackStructuralChangesable
+
+// StackConfigurationsEnvelope_StackConfigurationsEnvelope_included composed type wrapper for classes IngressAttributes, StackAggregateOutputs, StackConfigurationSummaries, StackDiagnostics, StackStructuralChanges
 type StackConfigurationsEnvelope_StackConfigurationsEnvelope_included struct {
-    // Composed type representation for type IngressAttributesable
-    ingressAttributes IngressAttributesable
-    // Composed type representation for type StackAggregateOutputsable
-    stackAggregateOutputs StackAggregateOutputsable
-    // Composed type representation for type StackConfigurationSummariesable
-    stackConfigurationSummaries StackConfigurationSummariesable
-    // Composed type representation for type StackDiagnosticsable
-    stackDiagnostics StackDiagnosticsable
-    // Composed type representation for type StackStructuralChangesable
-    stackStructuralChanges StackStructuralChangesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included instantiates a new StackConfigurationsEnvelope_StackConfigurationsEnvelope_included and sets the default values.
-func NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included()(*StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) {
-    m := &StackConfigurationsEnvelope_StackConfigurationsEnvelope_included{
-    }
-    return m
+func NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included() *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included {
+	m := &StackConfigurationsEnvelope_StackConfigurationsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
-                    result.SetIngressAttributes(NewIngressAttributes())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-aggregate-outputs") {
-                    result.SetStackAggregateOutputs(NewStackAggregateOutputs())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configuration-summaries") {
-                    result.SetStackConfigurationSummaries(NewStackConfigurationSummaries())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-diagnostics") {
-                    result.SetStackDiagnostics(NewStackDiagnostics())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-structural-changes") {
-                    result.SetStackStructuralChanges(NewStackStructuralChanges())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewStackConfigurationsEnvelope_StackConfigurationsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ingress-attributes") {
+					result.SetIngressAttributes(NewIngressAttributes())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-aggregate-outputs") {
+					result.SetStackAggregateOutputs(NewStackAggregateOutputs())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-configuration-summaries") {
+					result.SetStackConfigurationSummaries(NewStackConfigurationSummaries())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-diagnostics") {
+					result.SetStackDiagnostics(NewStackDiagnostics())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stack-structural-changes") {
+					result.SetStackStructuralChanges(NewStackStructuralChanges())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetIngressAttributes() != nil {
-        return m.GetIngressAttributes().GetFieldDeserializers()
-    } else if m.GetStackAggregateOutputs() != nil {
-        return m.GetStackAggregateOutputs().GetFieldDeserializers()
-    } else if m.GetStackConfigurationSummaries() != nil {
-        return m.GetStackConfigurationSummaries().GetFieldDeserializers()
-    } else if m.GetStackDiagnostics() != nil {
-        return m.GetStackDiagnostics().GetFieldDeserializers()
-    } else if m.GetStackStructuralChanges() != nil {
-        return m.GetStackStructuralChanges().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetIngressAttributes() != nil {
+		return m.GetIngressAttributes().GetFieldDeserializers()
+	} else if m.GetStackAggregateOutputs() != nil {
+		return m.GetStackAggregateOutputs().GetFieldDeserializers()
+	} else if m.GetStackConfigurationSummaries() != nil {
+		return m.GetStackConfigurationSummaries().GetFieldDeserializers()
+	} else if m.GetStackDiagnostics() != nil {
+		return m.GetStackDiagnostics().GetFieldDeserializers()
+	} else if m.GetStackStructuralChanges() != nil {
+		return m.GetStackStructuralChanges().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
-// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributesable
+
+// GetIngressAttributes gets the ingressAttributes property value. Composed type representation for type IngressAttributes
 // returns a IngressAttributesable when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetIngressAttributes()(IngressAttributesable) {
-    return m.ingressAttributes
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetIngressAttributes() IngressAttributesable {
+	val, err := m.GetBackingStore().Get("ingressAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(IngressAttributesable)
+	}
+	return nil
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetStackAggregateOutputs gets the stackAggregateOutputs property value. Composed type representation for type StackAggregateOutputsable
+
+// GetStackAggregateOutputs gets the stackAggregateOutputs property value. Composed type representation for type StackAggregateOutputs
 // returns a StackAggregateOutputsable when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackAggregateOutputs()(StackAggregateOutputsable) {
-    return m.stackAggregateOutputs
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackAggregateOutputs() StackAggregateOutputsable {
+	val, err := m.GetBackingStore().Get("stackAggregateOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackAggregateOutputsable)
+	}
+	return nil
 }
-// GetStackConfigurationSummaries gets the stackConfigurationSummaries property value. Composed type representation for type StackConfigurationSummariesable
+
+// GetStackConfigurationSummaries gets the stackConfigurationSummaries property value. Composed type representation for type StackConfigurationSummaries
 // returns a StackConfigurationSummariesable when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackConfigurationSummaries()(StackConfigurationSummariesable) {
-    return m.stackConfigurationSummaries
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackConfigurationSummaries() StackConfigurationSummariesable {
+	val, err := m.GetBackingStore().Get("stackConfigurationSummaries")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationSummariesable)
+	}
+	return nil
 }
-// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
+
+// GetStackDiagnostics gets the stackDiagnostics property value. Composed type representation for type StackDiagnostics
 // returns a StackDiagnosticsable when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackDiagnostics()(StackDiagnosticsable) {
-    return m.stackDiagnostics
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackDiagnostics() StackDiagnosticsable {
+	val, err := m.GetBackingStore().Get("stackDiagnostics")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackDiagnosticsable)
+	}
+	return nil
 }
-// GetStackStructuralChanges gets the stackStructuralChanges property value. Composed type representation for type StackStructuralChangesable
+
+// GetStackStructuralChanges gets the stackStructuralChanges property value. Composed type representation for type StackStructuralChanges
 // returns a StackStructuralChangesable when successful
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackStructuralChanges()(StackStructuralChangesable) {
-    return m.stackStructuralChanges
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) GetStackStructuralChanges() StackStructuralChangesable {
+	val, err := m.GetBackingStore().Get("stackStructuralChanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStructuralChangesable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetIngressAttributes() != nil {
-        err := writer.WriteObjectValue("", m.GetIngressAttributes())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStackAggregateOutputs() != nil {
-        err := writer.WriteObjectValue("", m.GetStackAggregateOutputs())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStackConfigurationSummaries() != nil {
-        err := writer.WriteObjectValue("", m.GetStackConfigurationSummaries())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStackDiagnostics() != nil {
-        err := writer.WriteObjectValue("", m.GetStackDiagnostics())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStackStructuralChanges() != nil {
-        err := writer.WriteObjectValue("", m.GetStackStructuralChanges())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetIngressAttributes() != nil {
+		err := writer.WriteObjectValue("", m.GetIngressAttributes())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStackAggregateOutputs() != nil {
+		err := writer.WriteObjectValue("", m.GetStackAggregateOutputs())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStackConfigurationSummaries() != nil {
+		err := writer.WriteObjectValue("", m.GetStackConfigurationSummaries())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStackDiagnostics() != nil {
+		err := writer.WriteObjectValue("", m.GetStackDiagnostics())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStackStructuralChanges() != nil {
+		err := writer.WriteObjectValue("", m.GetStackStructuralChanges())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributesable
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetIngressAttributes(value IngressAttributesable)() {
-    m.ingressAttributes = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetStackAggregateOutputs sets the stackAggregateOutputs property value. Composed type representation for type StackAggregateOutputsable
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackAggregateOutputs(value StackAggregateOutputsable)() {
-    m.stackAggregateOutputs = value
+
+// SetIngressAttributes sets the ingressAttributes property value. Composed type representation for type IngressAttributes
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetIngressAttributes(value IngressAttributesable) {
+	err := m.GetBackingStore().Set("ingressAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStackConfigurationSummaries sets the stackConfigurationSummaries property value. Composed type representation for type StackConfigurationSummariesable
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackConfigurationSummaries(value StackConfigurationSummariesable)() {
-    m.stackConfigurationSummaries = value
+
+// SetStackAggregateOutputs sets the stackAggregateOutputs property value. Composed type representation for type StackAggregateOutputs
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackAggregateOutputs(value StackAggregateOutputsable) {
+	err := m.GetBackingStore().Set("stackAggregateOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type StackDiagnosticsable
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackDiagnostics(value StackDiagnosticsable)() {
-    m.stackDiagnostics = value
+
+// SetStackConfigurationSummaries sets the stackConfigurationSummaries property value. Composed type representation for type StackConfigurationSummaries
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackConfigurationSummaries(value StackConfigurationSummariesable) {
+	err := m.GetBackingStore().Set("stackConfigurationSummaries", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStackStructuralChanges sets the stackStructuralChanges property value. Composed type representation for type StackStructuralChangesable
-func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackStructuralChanges(value StackStructuralChangesable)() {
-    m.stackStructuralChanges = value
+
+// SetStackDiagnostics sets the stackDiagnostics property value. Composed type representation for type StackDiagnostics
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackDiagnostics(value StackDiagnosticsable) {
+	err := m.GetBackingStore().Set("stackDiagnostics", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetStackStructuralChanges sets the stackStructuralChanges property value. Composed type representation for type StackStructuralChanges
+func (m *StackConfigurationsEnvelope_StackConfigurationsEnvelope_included) SetStackStructuralChanges(value StackStructuralChangesable) {
+	err := m.GetBackingStore().Set("stackStructuralChanges", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetIngressAttributes()(IngressAttributesable)
-    GetStackAggregateOutputs()(StackAggregateOutputsable)
-    GetStackConfigurationSummaries()(StackConfigurationSummariesable)
-    GetStackDiagnostics()(StackDiagnosticsable)
-    GetStackStructuralChanges()(StackStructuralChangesable)
-    SetIngressAttributes(value IngressAttributesable)()
-    SetStackAggregateOutputs(value StackAggregateOutputsable)()
-    SetStackConfigurationSummaries(value StackConfigurationSummariesable)()
-    SetStackDiagnostics(value StackDiagnosticsable)()
-    SetStackStructuralChanges(value StackStructuralChangesable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetIngressAttributes() IngressAttributesable
+	GetStackAggregateOutputs() StackAggregateOutputsable
+	GetStackConfigurationSummaries() StackConfigurationSummariesable
+	GetStackDiagnostics() StackDiagnosticsable
+	GetStackStructuralChanges() StackStructuralChangesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetIngressAttributes(value IngressAttributesable)
+	SetStackAggregateOutputs(value StackAggregateOutputsable)
+	SetStackConfigurationSummaries(value StackConfigurationSummariesable)
+	SetStackDiagnostics(value StackDiagnosticsable)
+	SetStackStructuralChanges(value StackStructuralChangesable)
 }
+
 // NewStackConfigurationsEnvelope instantiates a new StackConfigurationsEnvelope and sets the default values.
-func NewStackConfigurationsEnvelope()(*StackConfigurationsEnvelope) {
-    m := &StackConfigurationsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackConfigurationsEnvelope() *StackConfigurationsEnvelope {
+	m := &StackConfigurationsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackConfigurationsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackConfigurationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackConfigurationsEnvelope(), nil
+func CreateStackConfigurationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackConfigurationsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackConfigurationsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackConfigurationsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurationsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a StackConfigurationsable when successful
-func (m *StackConfigurationsEnvelope) GetData()(StackConfigurationsable) {
-    return m.data
+func (m *StackConfigurationsEnvelope) GetData() StackConfigurationsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackConfigurationsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(StackConfigurationsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackConfigurationsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(StackConfigurationsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateStackConfigurationsEnvelope_StackConfigurationsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable when successful
-func (m *StackConfigurationsEnvelope) GetIncluded()([]StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable) {
-    return m.included
+func (m *StackConfigurationsEnvelope) GetIncluded() []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackConfigurationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackConfigurationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackConfigurationsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackConfigurationsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurationsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *StackConfigurationsEnvelope) SetData(value StackConfigurationsable)() {
-    m.data = value
+func (m *StackConfigurationsEnvelope) SetData(value StackConfigurationsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *StackConfigurationsEnvelope) SetIncluded(value []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)() {
-    m.included = value
+func (m *StackConfigurationsEnvelope) SetIncluded(value []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackConfigurationsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(StackConfigurationsable)
-    GetIncluded()([]StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)
-    SetData(value StackConfigurationsable)()
-    SetIncluded(value []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() StackConfigurationsable
+	GetIncluded() []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value StackConfigurationsable)
+	SetIncluded(value []StackConfigurationsEnvelope_StackConfigurationsEnvelope_includedable)
 }

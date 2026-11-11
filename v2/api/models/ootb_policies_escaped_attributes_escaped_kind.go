@@ -2,36 +2,40 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The policy engine type.
 type OotbPolicies_attributes_kind int
 
 const (
-    SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND OotbPolicies_attributes_kind = iota
-    TFPOLICY_OOTBPOLICIES_ATTRIBUTES_KIND
+	SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND OotbPolicies_attributes_kind = iota
+	TFPOLICY_OOTBPOLICIES_ATTRIBUTES_KIND
 )
 
 func (i OotbPolicies_attributes_kind) String() string {
-    return []string{"sentinel", "tfpolicy"}[i]
+	return []string{"sentinel", "tfpolicy"}[i]
 }
+
 func ParseOotbPolicies_attributes_kind(v string) (any, error) {
-    result := SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND
-    switch v {
-        case "sentinel":
-            result = SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND
-        case "tfpolicy":
-            result = TFPOLICY_OOTBPOLICIES_ATTRIBUTES_KIND
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND
+	switch v {
+	case "sentinel":
+		result = SENTINEL_OOTBPOLICIES_ATTRIBUTES_KIND
+	case "tfpolicy":
+		result = TFPOLICY_OOTBPOLICIES_ATTRIBUTES_KIND
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOotbPolicies_attributes_kind(values []OotbPolicies_attributes_kind) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OotbPolicies_attributes_kind) isMultiValue() bool {
-    return false
+	return false
 }

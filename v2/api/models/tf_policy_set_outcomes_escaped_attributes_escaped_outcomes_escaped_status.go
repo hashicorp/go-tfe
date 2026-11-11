@@ -2,42 +2,46 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The evaluation status of the policy
 type TfPolicySetOutcomes_attributes_outcomes_status int
 
 const (
-    PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS TfPolicySetOutcomes_attributes_outcomes_status = iota
-    FAILED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-    ERRORED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-    UNKNOWN_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS TfPolicySetOutcomes_attributes_outcomes_status = iota
+	FAILED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	ERRORED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	UNKNOWN_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
 )
 
 func (i TfPolicySetOutcomes_attributes_outcomes_status) String() string {
-    return []string{"passed", "failed", "errored", "unknown"}[i]
+	return []string{"passed", "failed", "errored", "unknown"}[i]
 }
+
 func ParseTfPolicySetOutcomes_attributes_outcomes_status(v string) (any, error) {
-    result := PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-    switch v {
-        case "passed":
-            result = PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-        case "failed":
-            result = FAILED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-        case "errored":
-            result = ERRORED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-        case "unknown":
-            result = UNKNOWN_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	switch v {
+	case "passed":
+		result = PASSED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	case "failed":
+		result = FAILED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	case "errored":
+		result = ERRORED_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	case "unknown":
+		result = UNKNOWN_TFPOLICYSETOUTCOMES_ATTRIBUTES_OUTCOMES_STATUS
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTfPolicySetOutcomes_attributes_outcomes_status(values []TfPolicySetOutcomes_attributes_outcomes_status) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TfPolicySetOutcomes_attributes_outcomes_status) isMultiValue() bool {
-    return false
+	return false
 }

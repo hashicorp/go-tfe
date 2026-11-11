@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TfPolicyEvaluationsIdentifier_type int
 
 const (
-    TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE TfPolicyEvaluationsIdentifier_type = iota
+	TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE TfPolicyEvaluationsIdentifier_type = iota
 )
 
 func (i TfPolicyEvaluationsIdentifier_type) String() string {
-    return []string{"tf-policy-evaluations"}[i]
+	return []string{"tf-policy-evaluations"}[i]
 }
+
 func ParseTfPolicyEvaluationsIdentifier_type(v string) (any, error) {
-    result := TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE
-    switch v {
-        case "tf-policy-evaluations":
-            result = TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE
+	switch v {
+	case "tf-policy-evaluations":
+		result = TFPOLICYEVALUATIONS_TFPOLICYEVALUATIONSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTfPolicyEvaluationsIdentifier_type(values []TfPolicyEvaluationsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TfPolicyEvaluationsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

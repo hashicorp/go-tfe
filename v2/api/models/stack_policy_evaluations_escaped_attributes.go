@@ -4,232 +4,335 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackPolicyEvaluations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Error information if the entire evaluation failed
-    error StackPolicyEvaluations_attributes_errorable
-    // External ID of the attachable resource (typically a stack plan operation)
-    policyAttachableId *string
-    // Type of the attachable resource. Currently only stack plan operations (`plan`) are supported.
-    policyAttachableType *StackPolicyEvaluations_attributes_policyAttachableType
-    // Aggregated counts of policy results across all policy sets in this evaluation
-    resultCount StackPolicyEvaluations_attributes_resultCountable
-    // Current status of the stack policy evaluation. Status values:- `pending`: Initial state, not yet evaluated- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `errored`: System error during processing (final state)- `unknown`: Unknown evaluation state
-    status *StackPolicyEvaluations_attributes_status
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackPolicyEvaluations_attributes instantiates a new StackPolicyEvaluations_attributes and sets the default values.
-func NewStackPolicyEvaluations_attributes()(*StackPolicyEvaluations_attributes) {
-    m := &StackPolicyEvaluations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackPolicyEvaluations_attributes() *StackPolicyEvaluations_attributes {
+	m := &StackPolicyEvaluations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackPolicyEvaluations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackPolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackPolicyEvaluations_attributes(), nil
+func CreateStackPolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackPolicyEvaluations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackPolicyEvaluations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackPolicyEvaluations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackPolicyEvaluations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *StackPolicyEvaluations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *StackPolicyEvaluations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetError gets the error property value. Error information if the entire evaluation failed
 // returns a StackPolicyEvaluations_attributes_errorable when successful
-func (m *StackPolicyEvaluations_attributes) GetError()(StackPolicyEvaluations_attributes_errorable) {
-    return m.error
+func (m *StackPolicyEvaluations_attributes) GetError() StackPolicyEvaluations_attributes_errorable {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicyEvaluations_attributes_errorable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackPolicyEvaluations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackPolicyEvaluations_attributes_errorFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val.(StackPolicyEvaluations_attributes_errorable))
-        }
-        return nil
-    }
-    res["policy-attachable-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyAttachableId(val)
-        }
-        return nil
-    }
-    res["policy-attachable-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackPolicyEvaluations_attributes_policyAttachableType)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyAttachableType(val.(*StackPolicyEvaluations_attributes_policyAttachableType))
-        }
-        return nil
-    }
-    res["result-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackPolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResultCount(val.(StackPolicyEvaluations_attributes_resultCountable))
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackPolicyEvaluations_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*StackPolicyEvaluations_attributes_status))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackPolicyEvaluations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackPolicyEvaluations_attributes_errorFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val.(StackPolicyEvaluations_attributes_errorable))
+		}
+		return nil
+	}
+	res["policy-attachable-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyAttachableId(val)
+		}
+		return nil
+	}
+	res["policy-attachable-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackPolicyEvaluations_attributes_policyAttachableType)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyAttachableType(val.(*StackPolicyEvaluations_attributes_policyAttachableType))
+		}
+		return nil
+	}
+	res["result-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackPolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResultCount(val.(StackPolicyEvaluations_attributes_resultCountable))
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackPolicyEvaluations_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*StackPolicyEvaluations_attributes_status))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPolicyAttachableId gets the policy-attachable-id property value. External ID of the attachable resource (typically a stack plan operation)
 // returns a *string when successful
-func (m *StackPolicyEvaluations_attributes) GetPolicyAttachableId()(*string) {
-    return m.policyAttachableId
+func (m *StackPolicyEvaluations_attributes) GetPolicyAttachableId() *string {
+	val, err := m.GetBackingStore().Get("policyAttachableId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPolicyAttachableType gets the policy-attachable-type property value. Type of the attachable resource. Currently only stack plan operations (`plan`) are supported.
 // returns a *StackPolicyEvaluations_attributes_policyAttachableType when successful
-func (m *StackPolicyEvaluations_attributes) GetPolicyAttachableType()(*StackPolicyEvaluations_attributes_policyAttachableType) {
-    return m.policyAttachableType
+func (m *StackPolicyEvaluations_attributes) GetPolicyAttachableType() *StackPolicyEvaluations_attributes_policyAttachableType {
+	val, err := m.GetBackingStore().Get("policyAttachableType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackPolicyEvaluations_attributes_policyAttachableType)
+	}
+	return nil
 }
+
 // GetResultCount gets the result-count property value. Aggregated counts of policy results across all policy sets in this evaluation
 // returns a StackPolicyEvaluations_attributes_resultCountable when successful
-func (m *StackPolicyEvaluations_attributes) GetResultCount()(StackPolicyEvaluations_attributes_resultCountable) {
-    return m.resultCount
+func (m *StackPolicyEvaluations_attributes) GetResultCount() StackPolicyEvaluations_attributes_resultCountable {
+	val, err := m.GetBackingStore().Get("resultCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackPolicyEvaluations_attributes_resultCountable)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. Current status of the stack policy evaluation. Status values:- `pending`: Initial state, not yet evaluated- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `errored`: System error during processing (final state)- `unknown`: Unknown evaluation state
 // returns a *StackPolicyEvaluations_attributes_status when successful
-func (m *StackPolicyEvaluations_attributes) GetStatus()(*StackPolicyEvaluations_attributes_status) {
-    return m.status
+func (m *StackPolicyEvaluations_attributes) GetStatus() *StackPolicyEvaluations_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackPolicyEvaluations_attributes_status)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *StackPolicyEvaluations_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *StackPolicyEvaluations_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackPolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("error", m.GetError())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("result-count", m.GetResultCount())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackPolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("error", m.GetError())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("result-count", m.GetResultCount())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackPolicyEvaluations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackPolicyEvaluations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackPolicyEvaluations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *StackPolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *StackPolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetError sets the error property value. Error information if the entire evaluation failed
-func (m *StackPolicyEvaluations_attributes) SetError(value StackPolicyEvaluations_attributes_errorable)() {
-    m.error = value
+func (m *StackPolicyEvaluations_attributes) SetError(value StackPolicyEvaluations_attributes_errorable) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyAttachableId sets the policy-attachable-id property value. External ID of the attachable resource (typically a stack plan operation)
-func (m *StackPolicyEvaluations_attributes) SetPolicyAttachableId(value *string)() {
-    m.policyAttachableId = value
+func (m *StackPolicyEvaluations_attributes) SetPolicyAttachableId(value *string) {
+	err := m.GetBackingStore().Set("policyAttachableId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyAttachableType sets the policy-attachable-type property value. Type of the attachable resource. Currently only stack plan operations (`plan`) are supported.
-func (m *StackPolicyEvaluations_attributes) SetPolicyAttachableType(value *StackPolicyEvaluations_attributes_policyAttachableType)() {
-    m.policyAttachableType = value
+func (m *StackPolicyEvaluations_attributes) SetPolicyAttachableType(value *StackPolicyEvaluations_attributes_policyAttachableType) {
+	err := m.GetBackingStore().Set("policyAttachableType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResultCount sets the result-count property value. Aggregated counts of policy results across all policy sets in this evaluation
-func (m *StackPolicyEvaluations_attributes) SetResultCount(value StackPolicyEvaluations_attributes_resultCountable)() {
-    m.resultCount = value
+func (m *StackPolicyEvaluations_attributes) SetResultCount(value StackPolicyEvaluations_attributes_resultCountable) {
+	err := m.GetBackingStore().Set("resultCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. Current status of the stack policy evaluation. Status values:- `pending`: Initial state, not yet evaluated- `passed`: All policies passed (final state)- `failed`: Failed with mandatory policies (final state)- `errored`: System error during processing (final state)- `unknown`: Unknown evaluation state
-func (m *StackPolicyEvaluations_attributes) SetStatus(value *StackPolicyEvaluations_attributes_status)() {
-    m.status = value
+func (m *StackPolicyEvaluations_attributes) SetStatus(value *StackPolicyEvaluations_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *StackPolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *StackPolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackPolicyEvaluations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetError()(StackPolicyEvaluations_attributes_errorable)
-    GetPolicyAttachableId()(*string)
-    GetPolicyAttachableType()(*StackPolicyEvaluations_attributes_policyAttachableType)
-    GetResultCount()(StackPolicyEvaluations_attributes_resultCountable)
-    GetStatus()(*StackPolicyEvaluations_attributes_status)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetError(value StackPolicyEvaluations_attributes_errorable)()
-    SetPolicyAttachableId(value *string)()
-    SetPolicyAttachableType(value *StackPolicyEvaluations_attributes_policyAttachableType)()
-    SetResultCount(value StackPolicyEvaluations_attributes_resultCountable)()
-    SetStatus(value *StackPolicyEvaluations_attributes_status)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetError() StackPolicyEvaluations_attributes_errorable
+	GetPolicyAttachableId() *string
+	GetPolicyAttachableType() *StackPolicyEvaluations_attributes_policyAttachableType
+	GetResultCount() StackPolicyEvaluations_attributes_resultCountable
+	GetStatus() *StackPolicyEvaluations_attributes_status
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetError(value StackPolicyEvaluations_attributes_errorable)
+	SetPolicyAttachableId(value *string)
+	SetPolicyAttachableType(value *StackPolicyEvaluations_attributes_policyAttachableType)
+	SetResultCount(value StackPolicyEvaluations_attributes_resultCountable)
+	SetStatus(value *StackPolicyEvaluations_attributes_status)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

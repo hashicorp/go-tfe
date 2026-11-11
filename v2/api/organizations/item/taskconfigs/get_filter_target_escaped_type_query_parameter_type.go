@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package taskconfigs
+
 type GetFilterTarget_typeQueryParameterType int
 
 const (
-    PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE GetFilterTarget_typeQueryParameterType = iota
+	PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE GetFilterTarget_typeQueryParameterType = iota
 )
 
 func (i GetFilterTarget_typeQueryParameterType) String() string {
-    return []string{"projects"}[i]
+	return []string{"projects"}[i]
 }
+
 func ParseGetFilterTarget_typeQueryParameterType(v string) (any, error) {
-    result := PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE
-    switch v {
-        case "projects":
-            result = PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE
+	switch v {
+	case "projects":
+		result = PROJECTS_GETFILTERTARGET_TYPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterTarget_typeQueryParameterType(values []GetFilterTarget_typeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterTarget_typeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,110 +4,163 @@
 package stackconfigurations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemUploadUrlGetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data ItemUploadUrlGetResponse_dataable
-    // The links property
-    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemUploadUrlGetResponse instantiates a new ItemUploadUrlGetResponse and sets the default values.
-func NewItemUploadUrlGetResponse()(*ItemUploadUrlGetResponse) {
-    m := &ItemUploadUrlGetResponse{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemUploadUrlGetResponse() *ItemUploadUrlGetResponse {
+	m := &ItemUploadUrlGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemUploadUrlGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemUploadUrlGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemUploadUrlGetResponse(), nil
+func CreateItemUploadUrlGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemUploadUrlGetResponse(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemUploadUrlGetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemUploadUrlGetResponse) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemUploadUrlGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a ItemUploadUrlGetResponse_dataable when successful
-func (m *ItemUploadUrlGetResponse) GetData()(ItemUploadUrlGetResponse_dataable) {
-    return m.data
+func (m *ItemUploadUrlGetResponse) GetData() ItemUploadUrlGetResponse_dataable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ItemUploadUrlGetResponse_dataable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemUploadUrlGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateItemUploadUrlGetResponse_dataFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(ItemUploadUrlGetResponse_dataable))
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemUploadUrlGetResponse) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateItemUploadUrlGetResponse_dataFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(ItemUploadUrlGetResponse_dataable))
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLinks gets the links property value. The links property
 // returns a Selfable when successful
-func (m *ItemUploadUrlGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable) {
-    return m.links
+func (m *ItemUploadUrlGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable {
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *ItemUploadUrlGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemUploadUrlGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemUploadUrlGetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemUploadUrlGetResponse) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemUploadUrlGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *ItemUploadUrlGetResponse) SetData(value ItemUploadUrlGetResponse_dataable)() {
-    m.data = value
+func (m *ItemUploadUrlGetResponse) SetData(value ItemUploadUrlGetResponse_dataable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLinks sets the links property value. The links property
-func (m *ItemUploadUrlGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable)() {
-    m.links = value
+func (m *ItemUploadUrlGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable) {
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type ItemUploadUrlGetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(ItemUploadUrlGetResponse_dataable)
-    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable)
-    SetData(value ItemUploadUrlGetResponse_dataable)()
-    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() ItemUploadUrlGetResponse_dataable
+	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value ItemUploadUrlGetResponse_dataable)
+	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Selfable)
 }

@@ -4,80 +4,123 @@
 package admin
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type SamlSettingsActionsCertValidationPostRequestBody_data_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // PEM-encoded X.509 certificate to validate.
-    cert *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewSamlSettingsActionsCertValidationPostRequestBody_data_attributes instantiates a new SamlSettingsActionsCertValidationPostRequestBody_data_attributes and sets the default values.
-func NewSamlSettingsActionsCertValidationPostRequestBody_data_attributes()(*SamlSettingsActionsCertValidationPostRequestBody_data_attributes) {
-    m := &SamlSettingsActionsCertValidationPostRequestBody_data_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewSamlSettingsActionsCertValidationPostRequestBody_data_attributes() *SamlSettingsActionsCertValidationPostRequestBody_data_attributes {
+	m := &SamlSettingsActionsCertValidationPostRequestBody_data_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateSamlSettingsActionsCertValidationPostRequestBody_data_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateSamlSettingsActionsCertValidationPostRequestBody_data_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewSamlSettingsActionsCertValidationPostRequestBody_data_attributes(), nil
+func CreateSamlSettingsActionsCertValidationPostRequestBody_data_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewSamlSettingsActionsCertValidationPostRequestBody_data_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCert gets the cert property value. PEM-encoded X.509 certificate to validate.
 // returns a *string when successful
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetCert()(*string) {
-    return m.cert
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetCert() *string {
+	val, err := m.GetBackingStore().Get("cert")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["cert"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCert(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["cert"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCert(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("cert", m.GetCert())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("cert", m.GetCert())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCert sets the cert property value. PEM-encoded X.509 certificate to validate.
-func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) SetCert(value *string)() {
-    m.cert = value
+func (m *SamlSettingsActionsCertValidationPostRequestBody_data_attributes) SetCert(value *string) {
+	err := m.GetBackingStore().Set("cert", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type SamlSettingsActionsCertValidationPostRequestBody_data_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCert()(*string)
-    SetCert(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCert() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCert(value *string)
 }

@@ -4,134 +4,187 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // CostEstimates_attributes_resources low-level cost estimation details, only present when status is "finished". The keys or structure of this hash may change over time.
 type CostEstimates_attributes_resources struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The matched property
-    matched []CostEstimates_attributes_resources_matchedable
-    // The unmatched property
-    unmatched []CostEstimates_attributes_resources_unmatchedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewCostEstimates_attributes_resources instantiates a new CostEstimates_attributes_resources and sets the default values.
-func NewCostEstimates_attributes_resources()(*CostEstimates_attributes_resources) {
-    m := &CostEstimates_attributes_resources{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewCostEstimates_attributes_resources() *CostEstimates_attributes_resources {
+	m := &CostEstimates_attributes_resources{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateCostEstimates_attributes_resourcesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateCostEstimates_attributes_resourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewCostEstimates_attributes_resources(), nil
+func CreateCostEstimates_attributes_resourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewCostEstimates_attributes_resources(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *CostEstimates_attributes_resources) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *CostEstimates_attributes_resources) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *CostEstimates_attributes_resources) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *CostEstimates_attributes_resources) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["matched"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateCostEstimates_attributes_resources_matchedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]CostEstimates_attributes_resources_matchedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(CostEstimates_attributes_resources_matchedable)
-                }
-            }
-            m.SetMatched(res)
-        }
-        return nil
-    }
-    res["unmatched"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateCostEstimates_attributes_resources_unmatchedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]CostEstimates_attributes_resources_unmatchedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(CostEstimates_attributes_resources_unmatchedable)
-                }
-            }
-            m.SetUnmatched(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *CostEstimates_attributes_resources) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["matched"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateCostEstimates_attributes_resources_matchedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]CostEstimates_attributes_resources_matchedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(CostEstimates_attributes_resources_matchedable)
+				}
+			}
+			m.SetMatched(res)
+		}
+		return nil
+	}
+	res["unmatched"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateCostEstimates_attributes_resources_unmatchedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]CostEstimates_attributes_resources_unmatchedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(CostEstimates_attributes_resources_unmatchedable)
+				}
+			}
+			m.SetUnmatched(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetMatched gets the matched property value. The matched property
 // returns a []CostEstimates_attributes_resources_matchedable when successful
-func (m *CostEstimates_attributes_resources) GetMatched()([]CostEstimates_attributes_resources_matchedable) {
-    return m.matched
+func (m *CostEstimates_attributes_resources) GetMatched() []CostEstimates_attributes_resources_matchedable {
+	val, err := m.GetBackingStore().Get("matched")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]CostEstimates_attributes_resources_matchedable)
+	}
+	return nil
 }
+
 // GetUnmatched gets the unmatched property value. The unmatched property
 // returns a []CostEstimates_attributes_resources_unmatchedable when successful
-func (m *CostEstimates_attributes_resources) GetUnmatched()([]CostEstimates_attributes_resources_unmatchedable) {
-    return m.unmatched
+func (m *CostEstimates_attributes_resources) GetUnmatched() []CostEstimates_attributes_resources_unmatchedable {
+	val, err := m.GetBackingStore().Get("unmatched")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]CostEstimates_attributes_resources_unmatchedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *CostEstimates_attributes_resources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetMatched() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetMatched()))
-        for i, v := range m.GetMatched() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("matched", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetUnmatched() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetUnmatched()))
-        for i, v := range m.GetUnmatched() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("unmatched", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *CostEstimates_attributes_resources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetMatched() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetMatched()))
+		for i, v := range m.GetMatched() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("matched", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetUnmatched() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetUnmatched()))
+		for i, v := range m.GetUnmatched() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("unmatched", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *CostEstimates_attributes_resources) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *CostEstimates_attributes_resources) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *CostEstimates_attributes_resources) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetMatched sets the matched property value. The matched property
-func (m *CostEstimates_attributes_resources) SetMatched(value []CostEstimates_attributes_resources_matchedable)() {
-    m.matched = value
+func (m *CostEstimates_attributes_resources) SetMatched(value []CostEstimates_attributes_resources_matchedable) {
+	err := m.GetBackingStore().Set("matched", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUnmatched sets the unmatched property value. The unmatched property
-func (m *CostEstimates_attributes_resources) SetUnmatched(value []CostEstimates_attributes_resources_unmatchedable)() {
-    m.unmatched = value
+func (m *CostEstimates_attributes_resources) SetUnmatched(value []CostEstimates_attributes_resources_unmatchedable) {
+	err := m.GetBackingStore().Set("unmatched", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type CostEstimates_attributes_resourcesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetMatched()([]CostEstimates_attributes_resources_matchedable)
-    GetUnmatched()([]CostEstimates_attributes_resources_unmatchedable)
-    SetMatched(value []CostEstimates_attributes_resources_matchedable)()
-    SetUnmatched(value []CostEstimates_attributes_resources_unmatchedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetMatched() []CostEstimates_attributes_resources_matchedable
+	GetUnmatched() []CostEstimates_attributes_resources_unmatchedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetMatched(value []CostEstimates_attributes_resources_matchedable)
+	SetUnmatched(value []CostEstimates_attributes_resources_unmatchedable)
 }

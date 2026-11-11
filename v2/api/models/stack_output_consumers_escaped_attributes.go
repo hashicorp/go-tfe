@@ -4,143 +4,216 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackOutputConsumers_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The deployment property
-    deployment *string
-    // The stackName property
-    stackName *string
-    // The upstreamName property
-    upstreamName *string
-    // The upstreamPublishOutputAddress property
-    upstreamPublishOutputAddress *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackOutputConsumers_attributes instantiates a new StackOutputConsumers_attributes and sets the default values.
-func NewStackOutputConsumers_attributes()(*StackOutputConsumers_attributes) {
-    m := &StackOutputConsumers_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackOutputConsumers_attributes() *StackOutputConsumers_attributes {
+	m := &StackOutputConsumers_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackOutputConsumers_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackOutputConsumers_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackOutputConsumers_attributes(), nil
+func CreateStackOutputConsumers_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackOutputConsumers_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackOutputConsumers_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackOutputConsumers_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackOutputConsumers_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDeployment gets the deployment property value. The deployment property
 // returns a *string when successful
-func (m *StackOutputConsumers_attributes) GetDeployment()(*string) {
-    return m.deployment
+func (m *StackOutputConsumers_attributes) GetDeployment() *string {
+	val, err := m.GetBackingStore().Get("deployment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackOutputConsumers_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["deployment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeployment(val)
-        }
-        return nil
-    }
-    res["stack-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackName(val)
-        }
-        return nil
-    }
-    res["upstream-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpstreamName(val)
-        }
-        return nil
-    }
-    res["upstream-publish-output-address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpstreamPublishOutputAddress(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackOutputConsumers_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["deployment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeployment(val)
+		}
+		return nil
+	}
+	res["stack-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackName(val)
+		}
+		return nil
+	}
+	res["upstream-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpstreamName(val)
+		}
+		return nil
+	}
+	res["upstream-publish-output-address"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpstreamPublishOutputAddress(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetStackName gets the stack-name property value. The stackName property
 // returns a *string when successful
-func (m *StackOutputConsumers_attributes) GetStackName()(*string) {
-    return m.stackName
+func (m *StackOutputConsumers_attributes) GetStackName() *string {
+	val, err := m.GetBackingStore().Get("stackName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetUpstreamName gets the upstream-name property value. The upstreamName property
 // returns a *string when successful
-func (m *StackOutputConsumers_attributes) GetUpstreamName()(*string) {
-    return m.upstreamName
+func (m *StackOutputConsumers_attributes) GetUpstreamName() *string {
+	val, err := m.GetBackingStore().Get("upstreamName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetUpstreamPublishOutputAddress gets the upstream-publish-output-address property value. The upstreamPublishOutputAddress property
 // returns a *string when successful
-func (m *StackOutputConsumers_attributes) GetUpstreamPublishOutputAddress()(*string) {
-    return m.upstreamPublishOutputAddress
+func (m *StackOutputConsumers_attributes) GetUpstreamPublishOutputAddress() *string {
+	val, err := m.GetBackingStore().Get("upstreamPublishOutputAddress")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackOutputConsumers_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackOutputConsumers_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackOutputConsumers_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackOutputConsumers_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackOutputConsumers_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDeployment sets the deployment property value. The deployment property
-func (m *StackOutputConsumers_attributes) SetDeployment(value *string)() {
-    m.deployment = value
+func (m *StackOutputConsumers_attributes) SetDeployment(value *string) {
+	err := m.GetBackingStore().Set("deployment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackName sets the stack-name property value. The stackName property
-func (m *StackOutputConsumers_attributes) SetStackName(value *string)() {
-    m.stackName = value
+func (m *StackOutputConsumers_attributes) SetStackName(value *string) {
+	err := m.GetBackingStore().Set("stackName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpstreamName sets the upstream-name property value. The upstreamName property
-func (m *StackOutputConsumers_attributes) SetUpstreamName(value *string)() {
-    m.upstreamName = value
+func (m *StackOutputConsumers_attributes) SetUpstreamName(value *string) {
+	err := m.GetBackingStore().Set("upstreamName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpstreamPublishOutputAddress sets the upstream-publish-output-address property value. The upstreamPublishOutputAddress property
-func (m *StackOutputConsumers_attributes) SetUpstreamPublishOutputAddress(value *string)() {
-    m.upstreamPublishOutputAddress = value
+func (m *StackOutputConsumers_attributes) SetUpstreamPublishOutputAddress(value *string) {
+	err := m.GetBackingStore().Set("upstreamPublishOutputAddress", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackOutputConsumers_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDeployment()(*string)
-    GetStackName()(*string)
-    GetUpstreamName()(*string)
-    GetUpstreamPublishOutputAddress()(*string)
-    SetDeployment(value *string)()
-    SetStackName(value *string)()
-    SetUpstreamName(value *string)()
-    SetUpstreamPublishOutputAddress(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDeployment() *string
+	GetStackName() *string
+	GetUpstreamName() *string
+	GetUpstreamPublishOutputAddress() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDeployment(value *string)
+	SetStackName(value *string)
+	SetUpstreamName(value *string)
+	SetUpstreamPublishOutputAddress(value *string)
 }

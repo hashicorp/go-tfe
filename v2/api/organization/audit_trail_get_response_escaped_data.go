@@ -4,256 +4,359 @@
 package organization
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22 "github.com/google/uuid"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22 "github.com/google/uuid"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type AuditTrailGetResponse_data struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The auth property
-    auth AuditTrailGetResponse_data_authable
-    // The ID of this audit event.
-    id *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID
-    // The request property
-    request AuditTrailGetResponse_data_requestable
-    // The resource property
-    resource AuditTrailGetResponse_data_resourceable
-    // UTC ISO8601 timestamp of the event.
-    timestamp *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The type of audit event (defaults to "Resource").
-    typeEscaped *string
-    // The audit trail schema version.
-    version *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAuditTrailGetResponse_data instantiates a new AuditTrailGetResponse_data and sets the default values.
-func NewAuditTrailGetResponse_data()(*AuditTrailGetResponse_data) {
-    m := &AuditTrailGetResponse_data{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAuditTrailGetResponse_data() *AuditTrailGetResponse_data {
+	m := &AuditTrailGetResponse_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAuditTrailGetResponse_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAuditTrailGetResponse_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAuditTrailGetResponse_data(), nil
+func CreateAuditTrailGetResponse_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAuditTrailGetResponse_data(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AuditTrailGetResponse_data) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AuditTrailGetResponse_data) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAuth gets the auth property value. The auth property
 // returns a AuditTrailGetResponse_data_authable when successful
-func (m *AuditTrailGetResponse_data) GetAuth()(AuditTrailGetResponse_data_authable) {
-    return m.auth
+func (m *AuditTrailGetResponse_data) GetAuth() AuditTrailGetResponse_data_authable {
+	val, err := m.GetBackingStore().Get("auth")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AuditTrailGetResponse_data_authable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AuditTrailGetResponse_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AuditTrailGetResponse_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["auth"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_authFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuth(val.(AuditTrailGetResponse_data_authable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetUUIDValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["request"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_requestFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRequest(val.(AuditTrailGetResponse_data_requestable))
-        }
-        return nil
-    }
-    res["resource"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_resourceFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResource(val.(AuditTrailGetResponse_data_resourceable))
-        }
-        return nil
-    }
-    res["timestamp"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTimestamp(val)
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val)
-        }
-        return nil
-    }
-    res["version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVersion(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AuditTrailGetResponse_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["auth"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_authFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuth(val.(AuditTrailGetResponse_data_authable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetUUIDValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["request"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_requestFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRequest(val.(AuditTrailGetResponse_data_requestable))
+		}
+		return nil
+	}
+	res["resource"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuditTrailGetResponse_data_resourceFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResource(val.(AuditTrailGetResponse_data_resourceable))
+		}
+		return nil
+	}
+	res["timestamp"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTimestamp(val)
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val)
+		}
+		return nil
+	}
+	res["version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVersion(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The ID of this audit event.
 // returns a *UUID when successful
-func (m *AuditTrailGetResponse_data) GetId()(*i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID) {
-    return m.id
+func (m *AuditTrailGetResponse_data) GetId() *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID)
+	}
+	return nil
 }
+
 // GetRequest gets the request property value. The request property
 // returns a AuditTrailGetResponse_data_requestable when successful
-func (m *AuditTrailGetResponse_data) GetRequest()(AuditTrailGetResponse_data_requestable) {
-    return m.request
+func (m *AuditTrailGetResponse_data) GetRequest() AuditTrailGetResponse_data_requestable {
+	val, err := m.GetBackingStore().Get("request")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AuditTrailGetResponse_data_requestable)
+	}
+	return nil
 }
+
 // GetResource gets the resource property value. The resource property
 // returns a AuditTrailGetResponse_data_resourceable when successful
-func (m *AuditTrailGetResponse_data) GetResource()(AuditTrailGetResponse_data_resourceable) {
-    return m.resource
+func (m *AuditTrailGetResponse_data) GetResource() AuditTrailGetResponse_data_resourceable {
+	val, err := m.GetBackingStore().Get("resource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AuditTrailGetResponse_data_resourceable)
+	}
+	return nil
 }
+
 // GetTimestamp gets the timestamp property value. UTC ISO8601 timestamp of the event.
 // returns a *Time when successful
-func (m *AuditTrailGetResponse_data) GetTimestamp()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.timestamp
+func (m *AuditTrailGetResponse_data) GetTimestamp() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("timestamp")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type of audit event (defaults to "Resource").
 // returns a *string when successful
-func (m *AuditTrailGetResponse_data) GetTypeEscaped()(*string) {
-    return m.typeEscaped
+func (m *AuditTrailGetResponse_data) GetTypeEscaped() *string {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVersion gets the version property value. The audit trail schema version.
 // returns a *string when successful
-func (m *AuditTrailGetResponse_data) GetVersion()(*string) {
-    return m.version
+func (m *AuditTrailGetResponse_data) GetVersion() *string {
+	val, err := m.GetBackingStore().Get("version")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AuditTrailGetResponse_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("auth", m.GetAuth())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteUUIDValue("id", m.GetId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("request", m.GetRequest())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("resource", m.GetResource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("timestamp", m.GetTimestamp())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("type", m.GetTypeEscaped())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("version", m.GetVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AuditTrailGetResponse_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("auth", m.GetAuth())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteUUIDValue("id", m.GetId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("request", m.GetRequest())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("resource", m.GetResource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("timestamp", m.GetTimestamp())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("type", m.GetTypeEscaped())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("version", m.GetVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AuditTrailGetResponse_data) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AuditTrailGetResponse_data) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAuth sets the auth property value. The auth property
-func (m *AuditTrailGetResponse_data) SetAuth(value AuditTrailGetResponse_data_authable)() {
-    m.auth = value
+func (m *AuditTrailGetResponse_data) SetAuth(value AuditTrailGetResponse_data_authable) {
+	err := m.GetBackingStore().Set("auth", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AuditTrailGetResponse_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The ID of this audit event.
-func (m *AuditTrailGetResponse_data) SetId(value *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID)() {
-    m.id = value
+func (m *AuditTrailGetResponse_data) SetId(value *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRequest sets the request property value. The request property
-func (m *AuditTrailGetResponse_data) SetRequest(value AuditTrailGetResponse_data_requestable)() {
-    m.request = value
+func (m *AuditTrailGetResponse_data) SetRequest(value AuditTrailGetResponse_data_requestable) {
+	err := m.GetBackingStore().Set("request", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResource sets the resource property value. The resource property
-func (m *AuditTrailGetResponse_data) SetResource(value AuditTrailGetResponse_data_resourceable)() {
-    m.resource = value
+func (m *AuditTrailGetResponse_data) SetResource(value AuditTrailGetResponse_data_resourceable) {
+	err := m.GetBackingStore().Set("resource", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTimestamp sets the timestamp property value. UTC ISO8601 timestamp of the event.
-func (m *AuditTrailGetResponse_data) SetTimestamp(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.timestamp = value
+func (m *AuditTrailGetResponse_data) SetTimestamp(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("timestamp", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type of audit event (defaults to "Resource").
-func (m *AuditTrailGetResponse_data) SetTypeEscaped(value *string)() {
-    m.typeEscaped = value
+func (m *AuditTrailGetResponse_data) SetTypeEscaped(value *string) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVersion sets the version property value. The audit trail schema version.
-func (m *AuditTrailGetResponse_data) SetVersion(value *string)() {
-    m.version = value
+func (m *AuditTrailGetResponse_data) SetVersion(value *string) {
+	err := m.GetBackingStore().Set("version", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AuditTrailGetResponse_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAuth()(AuditTrailGetResponse_data_authable)
-    GetId()(*i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID)
-    GetRequest()(AuditTrailGetResponse_data_requestable)
-    GetResource()(AuditTrailGetResponse_data_resourceable)
-    GetTimestamp()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetTypeEscaped()(*string)
-    GetVersion()(*string)
-    SetAuth(value AuditTrailGetResponse_data_authable)()
-    SetId(value *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID)()
-    SetRequest(value AuditTrailGetResponse_data_requestable)()
-    SetResource(value AuditTrailGetResponse_data_resourceable)()
-    SetTimestamp(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetTypeEscaped(value *string)()
-    SetVersion(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAuth() AuditTrailGetResponse_data_authable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID
+	GetRequest() AuditTrailGetResponse_data_requestable
+	GetResource() AuditTrailGetResponse_data_resourceable
+	GetTimestamp() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetTypeEscaped() *string
+	GetVersion() *string
+	SetAuth(value AuditTrailGetResponse_data_authable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *i561e97a8befe7661a44c8f54600992b4207a3a0cf6770e5559949bc276de2e22.UUID)
+	SetRequest(value AuditTrailGetResponse_data_requestable)
+	SetResource(value AuditTrailGetResponse_data_resourceable)
+	SetTimestamp(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetTypeEscaped(value *string)
+	SetVersion(value *string)
 }

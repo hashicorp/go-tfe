@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type SshKeysNullableIdentifierDocument_data_type int
 
 const (
-    SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE SshKeysNullableIdentifierDocument_data_type = iota
+	SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE SshKeysNullableIdentifierDocument_data_type = iota
 )
 
 func (i SshKeysNullableIdentifierDocument_data_type) String() string {
-    return []string{"ssh-keys"}[i]
+	return []string{"ssh-keys"}[i]
 }
+
 func ParseSshKeysNullableIdentifierDocument_data_type(v string) (any, error) {
-    result := SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE
-    switch v {
-        case "ssh-keys":
-            result = SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE
+	switch v {
+	case "ssh-keys":
+		result = SSHKEYS_SSHKEYSNULLABLEIDENTIFIERDOCUMENT_DATA_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeSshKeysNullableIdentifierDocument_data_type(values []SshKeysNullableIdentifierDocument_data_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i SshKeysNullableIdentifierDocument_data_type) isMultiValue() bool {
-    return false
+	return false
 }

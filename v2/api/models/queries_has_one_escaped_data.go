@@ -4,39 +4,44 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type QueriesHasOne_data struct {
-    QueriesIdentifier
+	QueriesIdentifier
 }
+
 // NewQueriesHasOne_data instantiates a new QueriesHasOne_data and sets the default values.
-func NewQueriesHasOne_data()(*QueriesHasOne_data) {
-    m := &QueriesHasOne_data{
-        QueriesIdentifier: *NewQueriesIdentifier(),
-    }
-    return m
+func NewQueriesHasOne_data() *QueriesHasOne_data {
+	m := &QueriesHasOne_data{
+		QueriesIdentifier: *NewQueriesIdentifier(),
+	}
+	return m
 }
+
 // CreateQueriesHasOne_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateQueriesHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewQueriesHasOne_data(), nil
+func CreateQueriesHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewQueriesHasOne_data(), nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *QueriesHasOne_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := m.QueriesIdentifier.GetFieldDeserializers()
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *QueriesHasOne_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := m.QueriesIdentifier.GetFieldDeserializers()
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *QueriesHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    err := m.QueriesIdentifier.Serialize(writer)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *QueriesHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	err := m.QueriesIdentifier.Serialize(writer)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 type QueriesHasOne_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    QueriesIdentifierable
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	QueriesIdentifierable
 }

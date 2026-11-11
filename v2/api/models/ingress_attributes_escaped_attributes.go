@@ -4,544 +4,747 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type IngressAttributes_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The branch property
-    branch *string
-    // The cloneUrl property
-    cloneUrl *string
-    // The commitMessage property
-    commitMessage *string
-    // The commitSha property
-    commitSha *string
-    // The commitUrl property
-    commitUrl *string
-    // The compareUrl property
-    compareUrl *string
-    // The identifier property
-    identifier *string
-    // The isPullRequest property
-    isPullRequest *bool
-    // The onDefaultBranch property
-    onDefaultBranch *bool
-    // The pullRequestBody property
-    pullRequestBody *string
-    // The pullRequestNumber property
-    pullRequestNumber *int32
-    // The pullRequestTitle property
-    pullRequestTitle *string
-    // The pullRequestUrl property
-    pullRequestUrl *string
-    // The senderAvatarUrl property
-    senderAvatarUrl *string
-    // The senderHtmlUrl property
-    senderHtmlUrl *string
-    // The senderUsername property
-    senderUsername *string
-    // The tag property
-    tag *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewIngressAttributes_attributes instantiates a new IngressAttributes_attributes and sets the default values.
-func NewIngressAttributes_attributes()(*IngressAttributes_attributes) {
-    m := &IngressAttributes_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewIngressAttributes_attributes() *IngressAttributes_attributes {
+	m := &IngressAttributes_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateIngressAttributes_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateIngressAttributes_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewIngressAttributes_attributes(), nil
+func CreateIngressAttributes_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewIngressAttributes_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *IngressAttributes_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *IngressAttributes_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *IngressAttributes_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBranch gets the branch property value. The branch property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetBranch()(*string) {
-    return m.branch
+func (m *IngressAttributes_attributes) GetBranch() *string {
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCloneUrl gets the clone-url property value. The cloneUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetCloneUrl()(*string) {
-    return m.cloneUrl
+func (m *IngressAttributes_attributes) GetCloneUrl() *string {
+	val, err := m.GetBackingStore().Get("cloneUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCommitMessage gets the commit-message property value. The commitMessage property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetCommitMessage()(*string) {
-    return m.commitMessage
+func (m *IngressAttributes_attributes) GetCommitMessage() *string {
+	val, err := m.GetBackingStore().Get("commitMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCommitSha gets the commit-sha property value. The commitSha property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetCommitSha()(*string) {
-    return m.commitSha
+func (m *IngressAttributes_attributes) GetCommitSha() *string {
+	val, err := m.GetBackingStore().Get("commitSha")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCommitUrl gets the commit-url property value. The commitUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetCommitUrl()(*string) {
-    return m.commitUrl
+func (m *IngressAttributes_attributes) GetCommitUrl() *string {
+	val, err := m.GetBackingStore().Get("commitUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCompareUrl gets the compare-url property value. The compareUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetCompareUrl()(*string) {
-    return m.compareUrl
+func (m *IngressAttributes_attributes) GetCompareUrl() *string {
+	val, err := m.GetBackingStore().Get("compareUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *IngressAttributes_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBranch(val)
-        }
-        return nil
-    }
-    res["clone-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCloneUrl(val)
-        }
-        return nil
-    }
-    res["commit-message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCommitMessage(val)
-        }
-        return nil
-    }
-    res["commit-sha"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCommitSha(val)
-        }
-        return nil
-    }
-    res["commit-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCommitUrl(val)
-        }
-        return nil
-    }
-    res["compare-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCompareUrl(val)
-        }
-        return nil
-    }
-    res["identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIdentifier(val)
-        }
-        return nil
-    }
-    res["is-pull-request"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsPullRequest(val)
-        }
-        return nil
-    }
-    res["on-default-branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOnDefaultBranch(val)
-        }
-        return nil
-    }
-    res["pull-request-body"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPullRequestBody(val)
-        }
-        return nil
-    }
-    res["pull-request-number"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPullRequestNumber(val)
-        }
-        return nil
-    }
-    res["pull-request-title"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPullRequestTitle(val)
-        }
-        return nil
-    }
-    res["pull-request-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPullRequestUrl(val)
-        }
-        return nil
-    }
-    res["sender-avatar-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSenderAvatarUrl(val)
-        }
-        return nil
-    }
-    res["sender-html-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSenderHtmlUrl(val)
-        }
-        return nil
-    }
-    res["sender-username"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSenderUsername(val)
-        }
-        return nil
-    }
-    res["tag"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTag(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *IngressAttributes_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["branch"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBranch(val)
+		}
+		return nil
+	}
+	res["clone-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCloneUrl(val)
+		}
+		return nil
+	}
+	res["commit-message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCommitMessage(val)
+		}
+		return nil
+	}
+	res["commit-sha"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCommitSha(val)
+		}
+		return nil
+	}
+	res["commit-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCommitUrl(val)
+		}
+		return nil
+	}
+	res["compare-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCompareUrl(val)
+		}
+		return nil
+	}
+	res["identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIdentifier(val)
+		}
+		return nil
+	}
+	res["is-pull-request"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsPullRequest(val)
+		}
+		return nil
+	}
+	res["on-default-branch"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOnDefaultBranch(val)
+		}
+		return nil
+	}
+	res["pull-request-body"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPullRequestBody(val)
+		}
+		return nil
+	}
+	res["pull-request-number"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPullRequestNumber(val)
+		}
+		return nil
+	}
+	res["pull-request-title"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPullRequestTitle(val)
+		}
+		return nil
+	}
+	res["pull-request-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPullRequestUrl(val)
+		}
+		return nil
+	}
+	res["sender-avatar-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSenderAvatarUrl(val)
+		}
+		return nil
+	}
+	res["sender-html-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSenderHtmlUrl(val)
+		}
+		return nil
+	}
+	res["sender-username"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSenderUsername(val)
+		}
+		return nil
+	}
+	res["tag"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTag(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIdentifier gets the identifier property value. The identifier property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetIdentifier()(*string) {
-    return m.identifier
+func (m *IngressAttributes_attributes) GetIdentifier() *string {
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIsPullRequest gets the is-pull-request property value. The isPullRequest property
 // returns a *bool when successful
-func (m *IngressAttributes_attributes) GetIsPullRequest()(*bool) {
-    return m.isPullRequest
+func (m *IngressAttributes_attributes) GetIsPullRequest() *bool {
+	val, err := m.GetBackingStore().Get("isPullRequest")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetOnDefaultBranch gets the on-default-branch property value. The onDefaultBranch property
 // returns a *bool when successful
-func (m *IngressAttributes_attributes) GetOnDefaultBranch()(*bool) {
-    return m.onDefaultBranch
+func (m *IngressAttributes_attributes) GetOnDefaultBranch() *bool {
+	val, err := m.GetBackingStore().Get("onDefaultBranch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPullRequestBody gets the pull-request-body property value. The pullRequestBody property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetPullRequestBody()(*string) {
-    return m.pullRequestBody
+func (m *IngressAttributes_attributes) GetPullRequestBody() *string {
+	val, err := m.GetBackingStore().Get("pullRequestBody")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPullRequestNumber gets the pull-request-number property value. The pullRequestNumber property
 // returns a *int32 when successful
-func (m *IngressAttributes_attributes) GetPullRequestNumber()(*int32) {
-    return m.pullRequestNumber
+func (m *IngressAttributes_attributes) GetPullRequestNumber() *int32 {
+	val, err := m.GetBackingStore().Get("pullRequestNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPullRequestTitle gets the pull-request-title property value. The pullRequestTitle property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetPullRequestTitle()(*string) {
-    return m.pullRequestTitle
+func (m *IngressAttributes_attributes) GetPullRequestTitle() *string {
+	val, err := m.GetBackingStore().Get("pullRequestTitle")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPullRequestUrl gets the pull-request-url property value. The pullRequestUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetPullRequestUrl()(*string) {
-    return m.pullRequestUrl
+func (m *IngressAttributes_attributes) GetPullRequestUrl() *string {
+	val, err := m.GetBackingStore().Get("pullRequestUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSenderAvatarUrl gets the sender-avatar-url property value. The senderAvatarUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetSenderAvatarUrl()(*string) {
-    return m.senderAvatarUrl
+func (m *IngressAttributes_attributes) GetSenderAvatarUrl() *string {
+	val, err := m.GetBackingStore().Get("senderAvatarUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSenderHtmlUrl gets the sender-html-url property value. The senderHtmlUrl property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetSenderHtmlUrl()(*string) {
-    return m.senderHtmlUrl
+func (m *IngressAttributes_attributes) GetSenderHtmlUrl() *string {
+	val, err := m.GetBackingStore().Get("senderHtmlUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSenderUsername gets the sender-username property value. The senderUsername property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetSenderUsername()(*string) {
-    return m.senderUsername
+func (m *IngressAttributes_attributes) GetSenderUsername() *string {
+	val, err := m.GetBackingStore().Get("senderUsername")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTag gets the tag property value. The tag property
 // returns a *string when successful
-func (m *IngressAttributes_attributes) GetTag()(*string) {
-    return m.tag
+func (m *IngressAttributes_attributes) GetTag() *string {
+	val, err := m.GetBackingStore().Get("tag")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *IngressAttributes_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("branch", m.GetBranch())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("clone-url", m.GetCloneUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("commit-message", m.GetCommitMessage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("commit-sha", m.GetCommitSha())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("commit-url", m.GetCommitUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("compare-url", m.GetCompareUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("identifier", m.GetIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-pull-request", m.GetIsPullRequest())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("on-default-branch", m.GetOnDefaultBranch())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("pull-request-body", m.GetPullRequestBody())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("pull-request-number", m.GetPullRequestNumber())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("pull-request-title", m.GetPullRequestTitle())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("pull-request-url", m.GetPullRequestUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("sender-avatar-url", m.GetSenderAvatarUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("sender-html-url", m.GetSenderHtmlUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("sender-username", m.GetSenderUsername())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("tag", m.GetTag())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *IngressAttributes_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("branch", m.GetBranch())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("clone-url", m.GetCloneUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("commit-message", m.GetCommitMessage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("commit-sha", m.GetCommitSha())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("commit-url", m.GetCommitUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("compare-url", m.GetCompareUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("identifier", m.GetIdentifier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-pull-request", m.GetIsPullRequest())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("on-default-branch", m.GetOnDefaultBranch())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("pull-request-body", m.GetPullRequestBody())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("pull-request-number", m.GetPullRequestNumber())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("pull-request-title", m.GetPullRequestTitle())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("pull-request-url", m.GetPullRequestUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("sender-avatar-url", m.GetSenderAvatarUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("sender-html-url", m.GetSenderHtmlUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("sender-username", m.GetSenderUsername())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("tag", m.GetTag())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *IngressAttributes_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *IngressAttributes_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *IngressAttributes_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBranch sets the branch property value. The branch property
-func (m *IngressAttributes_attributes) SetBranch(value *string)() {
-    m.branch = value
+func (m *IngressAttributes_attributes) SetBranch(value *string) {
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCloneUrl sets the clone-url property value. The cloneUrl property
-func (m *IngressAttributes_attributes) SetCloneUrl(value *string)() {
-    m.cloneUrl = value
+func (m *IngressAttributes_attributes) SetCloneUrl(value *string) {
+	err := m.GetBackingStore().Set("cloneUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCommitMessage sets the commit-message property value. The commitMessage property
-func (m *IngressAttributes_attributes) SetCommitMessage(value *string)() {
-    m.commitMessage = value
+func (m *IngressAttributes_attributes) SetCommitMessage(value *string) {
+	err := m.GetBackingStore().Set("commitMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCommitSha sets the commit-sha property value. The commitSha property
-func (m *IngressAttributes_attributes) SetCommitSha(value *string)() {
-    m.commitSha = value
+func (m *IngressAttributes_attributes) SetCommitSha(value *string) {
+	err := m.GetBackingStore().Set("commitSha", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCommitUrl sets the commit-url property value. The commitUrl property
-func (m *IngressAttributes_attributes) SetCommitUrl(value *string)() {
-    m.commitUrl = value
+func (m *IngressAttributes_attributes) SetCommitUrl(value *string) {
+	err := m.GetBackingStore().Set("commitUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCompareUrl sets the compare-url property value. The compareUrl property
-func (m *IngressAttributes_attributes) SetCompareUrl(value *string)() {
-    m.compareUrl = value
+func (m *IngressAttributes_attributes) SetCompareUrl(value *string) {
+	err := m.GetBackingStore().Set("compareUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIdentifier sets the identifier property value. The identifier property
-func (m *IngressAttributes_attributes) SetIdentifier(value *string)() {
-    m.identifier = value
+func (m *IngressAttributes_attributes) SetIdentifier(value *string) {
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsPullRequest sets the is-pull-request property value. The isPullRequest property
-func (m *IngressAttributes_attributes) SetIsPullRequest(value *bool)() {
-    m.isPullRequest = value
+func (m *IngressAttributes_attributes) SetIsPullRequest(value *bool) {
+	err := m.GetBackingStore().Set("isPullRequest", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOnDefaultBranch sets the on-default-branch property value. The onDefaultBranch property
-func (m *IngressAttributes_attributes) SetOnDefaultBranch(value *bool)() {
-    m.onDefaultBranch = value
+func (m *IngressAttributes_attributes) SetOnDefaultBranch(value *bool) {
+	err := m.GetBackingStore().Set("onDefaultBranch", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPullRequestBody sets the pull-request-body property value. The pullRequestBody property
-func (m *IngressAttributes_attributes) SetPullRequestBody(value *string)() {
-    m.pullRequestBody = value
+func (m *IngressAttributes_attributes) SetPullRequestBody(value *string) {
+	err := m.GetBackingStore().Set("pullRequestBody", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPullRequestNumber sets the pull-request-number property value. The pullRequestNumber property
-func (m *IngressAttributes_attributes) SetPullRequestNumber(value *int32)() {
-    m.pullRequestNumber = value
+func (m *IngressAttributes_attributes) SetPullRequestNumber(value *int32) {
+	err := m.GetBackingStore().Set("pullRequestNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPullRequestTitle sets the pull-request-title property value. The pullRequestTitle property
-func (m *IngressAttributes_attributes) SetPullRequestTitle(value *string)() {
-    m.pullRequestTitle = value
+func (m *IngressAttributes_attributes) SetPullRequestTitle(value *string) {
+	err := m.GetBackingStore().Set("pullRequestTitle", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPullRequestUrl sets the pull-request-url property value. The pullRequestUrl property
-func (m *IngressAttributes_attributes) SetPullRequestUrl(value *string)() {
-    m.pullRequestUrl = value
+func (m *IngressAttributes_attributes) SetPullRequestUrl(value *string) {
+	err := m.GetBackingStore().Set("pullRequestUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSenderAvatarUrl sets the sender-avatar-url property value. The senderAvatarUrl property
-func (m *IngressAttributes_attributes) SetSenderAvatarUrl(value *string)() {
-    m.senderAvatarUrl = value
+func (m *IngressAttributes_attributes) SetSenderAvatarUrl(value *string) {
+	err := m.GetBackingStore().Set("senderAvatarUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSenderHtmlUrl sets the sender-html-url property value. The senderHtmlUrl property
-func (m *IngressAttributes_attributes) SetSenderHtmlUrl(value *string)() {
-    m.senderHtmlUrl = value
+func (m *IngressAttributes_attributes) SetSenderHtmlUrl(value *string) {
+	err := m.GetBackingStore().Set("senderHtmlUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSenderUsername sets the sender-username property value. The senderUsername property
-func (m *IngressAttributes_attributes) SetSenderUsername(value *string)() {
-    m.senderUsername = value
+func (m *IngressAttributes_attributes) SetSenderUsername(value *string) {
+	err := m.GetBackingStore().Set("senderUsername", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTag sets the tag property value. The tag property
-func (m *IngressAttributes_attributes) SetTag(value *string)() {
-    m.tag = value
+func (m *IngressAttributes_attributes) SetTag(value *string) {
+	err := m.GetBackingStore().Set("tag", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type IngressAttributes_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetBranch()(*string)
-    GetCloneUrl()(*string)
-    GetCommitMessage()(*string)
-    GetCommitSha()(*string)
-    GetCommitUrl()(*string)
-    GetCompareUrl()(*string)
-    GetIdentifier()(*string)
-    GetIsPullRequest()(*bool)
-    GetOnDefaultBranch()(*bool)
-    GetPullRequestBody()(*string)
-    GetPullRequestNumber()(*int32)
-    GetPullRequestTitle()(*string)
-    GetPullRequestUrl()(*string)
-    GetSenderAvatarUrl()(*string)
-    GetSenderHtmlUrl()(*string)
-    GetSenderUsername()(*string)
-    GetTag()(*string)
-    SetBranch(value *string)()
-    SetCloneUrl(value *string)()
-    SetCommitMessage(value *string)()
-    SetCommitSha(value *string)()
-    SetCommitUrl(value *string)()
-    SetCompareUrl(value *string)()
-    SetIdentifier(value *string)()
-    SetIsPullRequest(value *bool)()
-    SetOnDefaultBranch(value *bool)()
-    SetPullRequestBody(value *string)()
-    SetPullRequestNumber(value *int32)()
-    SetPullRequestTitle(value *string)()
-    SetPullRequestUrl(value *string)()
-    SetSenderAvatarUrl(value *string)()
-    SetSenderHtmlUrl(value *string)()
-    SetSenderUsername(value *string)()
-    SetTag(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBranch() *string
+	GetCloneUrl() *string
+	GetCommitMessage() *string
+	GetCommitSha() *string
+	GetCommitUrl() *string
+	GetCompareUrl() *string
+	GetIdentifier() *string
+	GetIsPullRequest() *bool
+	GetOnDefaultBranch() *bool
+	GetPullRequestBody() *string
+	GetPullRequestNumber() *int32
+	GetPullRequestTitle() *string
+	GetPullRequestUrl() *string
+	GetSenderAvatarUrl() *string
+	GetSenderHtmlUrl() *string
+	GetSenderUsername() *string
+	GetTag() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBranch(value *string)
+	SetCloneUrl(value *string)
+	SetCommitMessage(value *string)
+	SetCommitSha(value *string)
+	SetCommitUrl(value *string)
+	SetCompareUrl(value *string)
+	SetIdentifier(value *string)
+	SetIsPullRequest(value *bool)
+	SetOnDefaultBranch(value *bool)
+	SetPullRequestBody(value *string)
+	SetPullRequestNumber(value *int32)
+	SetPullRequestTitle(value *string)
+	SetPullRequestUrl(value *string)
+	SetSenderAvatarUrl(value *string)
+	SetSenderHtmlUrl(value *string)
+	SetSenderUsername(value *string)
+	SetTag(value *string)
 }

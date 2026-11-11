@@ -4,197 +4,280 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Applies_attributes_executionDetails struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentId property
-    agentId *string
-    // The agentName property
-    agentName *string
-    // The agentPoolId property
-    agentPoolId *string
-    // The agentPoolName property
-    agentPoolName *string
-    // The mode property
-    mode *Applies_attributes_executionDetails_mode
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewApplies_attributes_executionDetails instantiates a new Applies_attributes_executionDetails and sets the default values.
-func NewApplies_attributes_executionDetails()(*Applies_attributes_executionDetails) {
-    m := &Applies_attributes_executionDetails{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewApplies_attributes_executionDetails() *Applies_attributes_executionDetails {
+	m := &Applies_attributes_executionDetails{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateApplies_attributes_executionDetailsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateApplies_attributes_executionDetailsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewApplies_attributes_executionDetails(), nil
+func CreateApplies_attributes_executionDetailsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewApplies_attributes_executionDetails(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Applies_attributes_executionDetails) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Applies_attributes_executionDetails) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAgentId gets the agent-id property value. The agentId property
 // returns a *string when successful
-func (m *Applies_attributes_executionDetails) GetAgentId()(*string) {
-    return m.agentId
+func (m *Applies_attributes_executionDetails) GetAgentId() *string {
+	val, err := m.GetBackingStore().Get("agentId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAgentName gets the agent-name property value. The agentName property
 // returns a *string when successful
-func (m *Applies_attributes_executionDetails) GetAgentName()(*string) {
-    return m.agentName
+func (m *Applies_attributes_executionDetails) GetAgentName() *string {
+	val, err := m.GetBackingStore().Get("agentName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAgentPoolId gets the agent-pool-id property value. The agentPoolId property
 // returns a *string when successful
-func (m *Applies_attributes_executionDetails) GetAgentPoolId()(*string) {
-    return m.agentPoolId
+func (m *Applies_attributes_executionDetails) GetAgentPoolId() *string {
+	val, err := m.GetBackingStore().Get("agentPoolId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAgentPoolName gets the agent-pool-name property value. The agentPoolName property
 // returns a *string when successful
-func (m *Applies_attributes_executionDetails) GetAgentPoolName()(*string) {
-    return m.agentPoolName
+func (m *Applies_attributes_executionDetails) GetAgentPoolName() *string {
+	val, err := m.GetBackingStore().Get("agentPoolName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Applies_attributes_executionDetails) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Applies_attributes_executionDetails) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentId(val)
-        }
-        return nil
-    }
-    res["agent-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentName(val)
-        }
-        return nil
-    }
-    res["agent-pool-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPoolId(val)
-        }
-        return nil
-    }
-    res["agent-pool-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPoolName(val)
-        }
-        return nil
-    }
-    res["mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseApplies_attributes_executionDetails_mode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMode(val.(*Applies_attributes_executionDetails_mode))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Applies_attributes_executionDetails) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentId(val)
+		}
+		return nil
+	}
+	res["agent-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentName(val)
+		}
+		return nil
+	}
+	res["agent-pool-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPoolId(val)
+		}
+		return nil
+	}
+	res["agent-pool-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPoolName(val)
+		}
+		return nil
+	}
+	res["mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseApplies_attributes_executionDetails_mode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMode(val.(*Applies_attributes_executionDetails_mode))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetMode gets the mode property value. The mode property
 // returns a *Applies_attributes_executionDetails_mode when successful
-func (m *Applies_attributes_executionDetails) GetMode()(*Applies_attributes_executionDetails_mode) {
-    return m.mode
+func (m *Applies_attributes_executionDetails) GetMode() *Applies_attributes_executionDetails_mode {
+	val, err := m.GetBackingStore().Get("mode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Applies_attributes_executionDetails_mode)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Applies_attributes_executionDetails) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("agent-id", m.GetAgentId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("agent-name", m.GetAgentName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("agent-pool-id", m.GetAgentPoolId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("agent-pool-name", m.GetAgentPoolName())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetMode() != nil {
-        cast := (*m.GetMode()).String()
-        err := writer.WriteStringValue("mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Applies_attributes_executionDetails) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("agent-id", m.GetAgentId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("agent-name", m.GetAgentName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("agent-pool-id", m.GetAgentPoolId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("agent-pool-name", m.GetAgentPoolName())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetMode() != nil {
+		cast := (*m.GetMode()).String()
+		err := writer.WriteStringValue("mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Applies_attributes_executionDetails) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Applies_attributes_executionDetails) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentId sets the agent-id property value. The agentId property
-func (m *Applies_attributes_executionDetails) SetAgentId(value *string)() {
-    m.agentId = value
+func (m *Applies_attributes_executionDetails) SetAgentId(value *string) {
+	err := m.GetBackingStore().Set("agentId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentName sets the agent-name property value. The agentName property
-func (m *Applies_attributes_executionDetails) SetAgentName(value *string)() {
-    m.agentName = value
+func (m *Applies_attributes_executionDetails) SetAgentName(value *string) {
+	err := m.GetBackingStore().Set("agentName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentPoolId sets the agent-pool-id property value. The agentPoolId property
-func (m *Applies_attributes_executionDetails) SetAgentPoolId(value *string)() {
-    m.agentPoolId = value
+func (m *Applies_attributes_executionDetails) SetAgentPoolId(value *string) {
+	err := m.GetBackingStore().Set("agentPoolId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentPoolName sets the agent-pool-name property value. The agentPoolName property
-func (m *Applies_attributes_executionDetails) SetAgentPoolName(value *string)() {
-    m.agentPoolName = value
+func (m *Applies_attributes_executionDetails) SetAgentPoolName(value *string) {
+	err := m.GetBackingStore().Set("agentPoolName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Applies_attributes_executionDetails) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetMode sets the mode property value. The mode property
-func (m *Applies_attributes_executionDetails) SetMode(value *Applies_attributes_executionDetails_mode)() {
-    m.mode = value
+func (m *Applies_attributes_executionDetails) SetMode(value *Applies_attributes_executionDetails_mode) {
+	err := m.GetBackingStore().Set("mode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Applies_attributes_executionDetailsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentId()(*string)
-    GetAgentName()(*string)
-    GetAgentPoolId()(*string)
-    GetAgentPoolName()(*string)
-    GetMode()(*Applies_attributes_executionDetails_mode)
-    SetAgentId(value *string)()
-    SetAgentName(value *string)()
-    SetAgentPoolId(value *string)()
-    SetAgentPoolName(value *string)()
-    SetMode(value *Applies_attributes_executionDetails_mode)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentId() *string
+	GetAgentName() *string
+	GetAgentPoolId() *string
+	GetAgentPoolName() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetMode() *Applies_attributes_executionDetails_mode
+	SetAgentId(value *string)
+	SetAgentName(value *string)
+	SetAgentPoolId(value *string)
+	SetAgentPoolName(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetMode(value *Applies_attributes_executionDetails_mode)
 }

@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceChangeRequests_type int
 
 const (
-    WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE WorkspaceChangeRequests_type = iota
+	WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE WorkspaceChangeRequests_type = iota
 )
 
 func (i WorkspaceChangeRequests_type) String() string {
-    return []string{"workspace-change-requests"}[i]
+	return []string{"workspace-change-requests"}[i]
 }
+
 func ParseWorkspaceChangeRequests_type(v string) (any, error) {
-    result := WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE
-    switch v {
-        case "workspace-change-requests":
-            result = WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE
+	switch v {
+	case "workspace-change-requests":
+		result = WORKSPACECHANGEREQUESTS_WORKSPACECHANGEREQUESTS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceChangeRequests_type(values []WorkspaceChangeRequests_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceChangeRequests_type) isMultiValue() bool {
-    return false
+	return false
 }

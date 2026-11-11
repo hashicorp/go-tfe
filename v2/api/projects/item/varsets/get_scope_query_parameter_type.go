@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package varsets
+
 type GetScopeQueryParameterType int
 
 const (
-    APPLIED_GETSCOPEQUERYPARAMETERTYPE GetScopeQueryParameterType = iota
-    SHARED_GETSCOPEQUERYPARAMETERTYPE
-    OWNED_GETSCOPEQUERYPARAMETERTYPE
-    ALL_GETSCOPEQUERYPARAMETERTYPE
+	APPLIED_GETSCOPEQUERYPARAMETERTYPE GetScopeQueryParameterType = iota
+	SHARED_GETSCOPEQUERYPARAMETERTYPE
+	OWNED_GETSCOPEQUERYPARAMETERTYPE
+	ALL_GETSCOPEQUERYPARAMETERTYPE
 )
 
 func (i GetScopeQueryParameterType) String() string {
-    return []string{"applied", "shared", "owned", "all"}[i]
+	return []string{"applied", "shared", "owned", "all"}[i]
 }
+
 func ParseGetScopeQueryParameterType(v string) (any, error) {
-    result := APPLIED_GETSCOPEQUERYPARAMETERTYPE
-    switch v {
-        case "applied":
-            result = APPLIED_GETSCOPEQUERYPARAMETERTYPE
-        case "shared":
-            result = SHARED_GETSCOPEQUERYPARAMETERTYPE
-        case "owned":
-            result = OWNED_GETSCOPEQUERYPARAMETERTYPE
-        case "all":
-            result = ALL_GETSCOPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := APPLIED_GETSCOPEQUERYPARAMETERTYPE
+	switch v {
+	case "applied":
+		result = APPLIED_GETSCOPEQUERYPARAMETERTYPE
+	case "shared":
+		result = SHARED_GETSCOPEQUERYPARAMETERTYPE
+	case "owned":
+		result = OWNED_GETSCOPEQUERYPARAMETERTYPE
+	case "all":
+		result = ALL_GETSCOPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetScopeQueryParameterType(values []GetScopeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetScopeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

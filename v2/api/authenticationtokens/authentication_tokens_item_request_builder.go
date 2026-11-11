@@ -4,90 +4,98 @@
 package authenticationtokens
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7 "github.com/hashicorp/go-tfe/v2/api/authenticationtokens/item"
+	"context"
+	ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7 "github.com/hashicorp/go-tfe/v2/api/authenticationtokens/item"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // AuthenticationTokensItemRequestBuilder builds and executes requests for operations under \authentication-tokens\{id}
 type AuthenticationTokensItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // AuthenticationTokensItemRequestBuilderGetQueryParameters get details about an authentication token
 type AuthenticationTokensItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsauthenticationTokens []string "uriparametername:\"fields%5Bauthentication%2Dtokens%5D\""
-    // Optionally side-load the specified relationships.
-    Include []ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for authentication-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsauthenticationTokens []string "uriparametername:\"fields%5Bauthentication%2Dtokens%5D\""
+	// Optionally side-load the specified relationships.
+	Include []ic2a2d04c3c75910a8e47e22dd5413145827191627e495a2871d674304e5aa9d7.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // NewAuthenticationTokensItemRequestBuilderInternal instantiates a new AuthenticationTokensItemRequestBuilder and sets the default values.
-func NewAuthenticationTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensItemRequestBuilder) {
-    m := &AuthenticationTokensItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens/{id}{?fields%5Bauthentication%2Dtokens%5D,include}", pathParameters),
-    }
-    return m
+func NewAuthenticationTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *AuthenticationTokensItemRequestBuilder {
+	m := &AuthenticationTokensItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/authentication-tokens/{id}{?fields%5Bauthentication%2Dtokens%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewAuthenticationTokensItemRequestBuilder instantiates a new AuthenticationTokensItemRequestBuilder and sets the default values.
-func NewAuthenticationTokensItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewAuthenticationTokensItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewAuthenticationTokensItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *AuthenticationTokensItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewAuthenticationTokensItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Delete delete an authentication token
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
-    requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *AuthenticationTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) error {
+	requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 // Get get details about an authentication token
 // returns a AuthenticationTokensEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuthenticationTokensItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAuthenticationTokensEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable), nil
+func (m *AuthenticationTokensItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuthenticationTokensItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateAuthenticationTokensEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.AuthenticationTokensEnvelopeable), nil
 }
+
 // ToDeleteRequestInformation delete an authentication token
 // returns a *RequestInformation when successful
-func (m *AuthenticationTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *AuthenticationTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToGetRequestInformation get details about an authentication token
 // returns a *RequestInformation when successful
-func (m *AuthenticationTokensItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuthenticationTokensItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *AuthenticationTokensItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuthenticationTokensItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *AuthenticationTokensItemRequestBuilder when successful
-func (m *AuthenticationTokensItemRequestBuilder) WithUrl(rawUrl string)(*AuthenticationTokensItemRequestBuilder) {
-    return NewAuthenticationTokensItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *AuthenticationTokensItemRequestBuilder) WithUrl(rawUrl string) *AuthenticationTokensItemRequestBuilder {
+	return NewAuthenticationTokensItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

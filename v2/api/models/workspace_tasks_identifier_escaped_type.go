@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type WorkspaceTasksIdentifier_type int
 
 const (
-    WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE WorkspaceTasksIdentifier_type = iota
+	WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE WorkspaceTasksIdentifier_type = iota
 )
 
 func (i WorkspaceTasksIdentifier_type) String() string {
-    return []string{"workspace-tasks"}[i]
+	return []string{"workspace-tasks"}[i]
 }
+
 func ParseWorkspaceTasksIdentifier_type(v string) (any, error) {
-    result := WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE
-    switch v {
-        case "workspace-tasks":
-            result = WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE
+	switch v {
+	case "workspace-tasks":
+		result = WORKSPACETASKS_WORKSPACETASKSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeWorkspaceTasksIdentifier_type(values []WorkspaceTasksIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i WorkspaceTasksIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

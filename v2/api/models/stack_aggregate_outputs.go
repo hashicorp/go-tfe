@@ -4,155 +4,228 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackAggregateOutputs struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes StackAggregateOutputs_attributesable
-    // The id property
-    id *string
-    // The relationships property
-    relationships StackAggregateOutputs_relationshipsable
-    // The type property
-    typeEscaped *StackAggregateOutputs_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackAggregateOutputs instantiates a new StackAggregateOutputs and sets the default values.
-func NewStackAggregateOutputs()(*StackAggregateOutputs) {
-    m := &StackAggregateOutputs{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackAggregateOutputs() *StackAggregateOutputs {
+	m := &StackAggregateOutputs{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackAggregateOutputsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackAggregateOutputsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackAggregateOutputs(), nil
+func CreateStackAggregateOutputsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackAggregateOutputs(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackAggregateOutputs) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackAggregateOutputs) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a StackAggregateOutputs_attributesable when successful
-func (m *StackAggregateOutputs) GetAttributes()(StackAggregateOutputs_attributesable) {
-    return m.attributes
+func (m *StackAggregateOutputs) GetAttributes() StackAggregateOutputs_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackAggregateOutputs_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackAggregateOutputs) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackAggregateOutputs) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackAggregateOutputs_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(StackAggregateOutputs_attributesable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackAggregateOutputs_relationshipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRelationships(val.(StackAggregateOutputs_relationshipsable))
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackAggregateOutputs_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*StackAggregateOutputs_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackAggregateOutputs) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackAggregateOutputs_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(StackAggregateOutputs_attributesable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["relationships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackAggregateOutputs_relationshipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRelationships(val.(StackAggregateOutputs_relationshipsable))
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackAggregateOutputs_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*StackAggregateOutputs_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *StackAggregateOutputs) GetId()(*string) {
-    return m.id
+func (m *StackAggregateOutputs) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetRelationships gets the relationships property value. The relationships property
 // returns a StackAggregateOutputs_relationshipsable when successful
-func (m *StackAggregateOutputs) GetRelationships()(StackAggregateOutputs_relationshipsable) {
-    return m.relationships
+func (m *StackAggregateOutputs) GetRelationships() StackAggregateOutputs_relationshipsable {
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackAggregateOutputs_relationshipsable)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *StackAggregateOutputs_type when successful
-func (m *StackAggregateOutputs) GetTypeEscaped()(*StackAggregateOutputs_type) {
-    return m.typeEscaped
+func (m *StackAggregateOutputs) GetTypeEscaped() *StackAggregateOutputs_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackAggregateOutputs_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackAggregateOutputs) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("relationships", m.GetRelationships())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackAggregateOutputs) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("relationships", m.GetRelationships())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackAggregateOutputs) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackAggregateOutputs) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *StackAggregateOutputs) SetAttributes(value StackAggregateOutputs_attributesable)() {
-    m.attributes = value
+func (m *StackAggregateOutputs) SetAttributes(value StackAggregateOutputs_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackAggregateOutputs) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The id property
-func (m *StackAggregateOutputs) SetId(value *string)() {
-    m.id = value
+func (m *StackAggregateOutputs) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRelationships sets the relationships property value. The relationships property
-func (m *StackAggregateOutputs) SetRelationships(value StackAggregateOutputs_relationshipsable)() {
-    m.relationships = value
+func (m *StackAggregateOutputs) SetRelationships(value StackAggregateOutputs_relationshipsable) {
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *StackAggregateOutputs) SetTypeEscaped(value *StackAggregateOutputs_type)() {
-    m.typeEscaped = value
+func (m *StackAggregateOutputs) SetTypeEscaped(value *StackAggregateOutputs_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackAggregateOutputsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(StackAggregateOutputs_attributesable)
-    GetId()(*string)
-    GetRelationships()(StackAggregateOutputs_relationshipsable)
-    GetTypeEscaped()(*StackAggregateOutputs_type)
-    SetAttributes(value StackAggregateOutputs_attributesable)()
-    SetId(value *string)()
-    SetRelationships(value StackAggregateOutputs_relationshipsable)()
-    SetTypeEscaped(value *StackAggregateOutputs_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() StackAggregateOutputs_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	GetRelationships() StackAggregateOutputs_relationshipsable
+	GetTypeEscaped() *StackAggregateOutputs_type
+	SetAttributes(value StackAggregateOutputs_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
+	SetRelationships(value StackAggregateOutputs_relationshipsable)
+	SetTypeEscaped(value *StackAggregateOutputs_type)
 }

@@ -4,63 +4,69 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemVcsRepoRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs\repo
 type ItemVcsRepoRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemVcsRepoRequestBuilderGetQueryParameters this endpoint checks if a repository exists and is accessible to the user.
 type ItemVcsRepoRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for vcs-repo-check resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsvcsRepoCheck []string "uriparametername:\"fields%5Bvcs%2Drepo%2Dcheck%5D\""
-    // The repository identifier (e.g., "owner/repo")
-    Identifier *string "uriparametername:\"identifier\""
-    // The OAuth token ID to authenticate with the VCS provider
-    Oauth_token_id *string "uriparametername:\"oauth_token_id\""
+	// Return only the specified fields for vcs-repo-check resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsvcsRepoCheck []string "uriparametername:\"fields%5Bvcs%2Drepo%2Dcheck%5D\""
+	// The repository identifier (e.g., "owner/repo")
+	Identifier *string "uriparametername:\"identifier\""
+	// The OAuth token ID to authenticate with the VCS provider
+	Oauth_token_id *string "uriparametername:\"oauth_token_id\""
 }
+
 // NewItemVcsRepoRequestBuilderInternal instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
-func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {
-    m := &ItemVcsRepoRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}{&fields%5Bvcs%2Drepo%2Dcheck%5D}", pathParameters),
-    }
-    return m
+func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsRepoRequestBuilder {
+	m := &ItemVcsRepoRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs/repo?identifier={identifier}&oauth_token_id={oauth_token_id}{&fields%5Bvcs%2Drepo%2Dcheck%5D}", pathParameters),
+	}
+	return m
 }
+
 // NewItemVcsRepoRequestBuilder instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
-func NewItemVcsRepoRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemVcsRepoRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemVcsRepoRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsRepoRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemVcsRepoRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get this endpoint checks if a repository exists and is accessible to the user.
 // returns a VcsRepoCheckEnvelopeable when successful
-func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VcsRepoCheckEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateVcsRepoCheckEnvelopeFromDiscriminatorValue, nil)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VcsRepoCheckEnvelopeable), nil
+func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VcsRepoCheckEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateVcsRepoCheckEnvelopeFromDiscriminatorValue, nil)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VcsRepoCheckEnvelopeable), nil
 }
+
 // ToGetRequestInformation this endpoint checks if a repository exists and is accessible to the user.
 // returns a *RequestInformation when successful
-func (m *ItemVcsRepoRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemVcsRepoRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemVcsRepoRequestBuilder when successful
-func (m *ItemVcsRepoRequestBuilder) WithUrl(rawUrl string)(*ItemVcsRepoRequestBuilder) {
-    return NewItemVcsRepoRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemVcsRepoRequestBuilder) WithUrl(rawUrl string) *ItemVcsRepoRequestBuilder {
+	return NewItemVcsRepoRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

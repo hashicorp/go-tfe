@@ -4,114 +4,122 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596 "github.com/hashicorp/go-tfe/v2/api/organizations/item/policysets"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596 "github.com/hashicorp/go-tfe/v2/api/organizations/item/policysets"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemPolicySetsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\policy-sets
 type ItemPolicySetsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemPolicySetsRequestBuilderGetQueryParameters list all policy sets in an organization.
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
-    // Filter policy sets by kind.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
-    Filterkind *i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
-    // Only the literal value `true` opts in and narrows results to policysets with at least one available forward OOTB update, using the sameavailability predicate as `include-ootb-update`'s markers andaggregate count; `false` or any other value is a no-op, same asomitting the parameter. Index only; the show operation ignores thisfilter if supplied. Independent of `include-ootb-update`: using thisfilter alone adds no `ootb-update` attributes or`ootb-policy-updates` meta; using `include-ootb-update` alone does notnarrow results; using both returns the filtered rows alongside theunchanged organization-wide `affected-policy-set-count`. Composes with`filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`,`search[name]`, sort and pagination. When OOTB policy updates areunavailable for the organization, this filter is ignored and noavailability query runs. An authorized-to-read but otherwiseunauthorized actor (e.g. a site-auditor without update-metadata permission) receives theordinary, unfiltered index — no narrowing and no update metadata,not an error.
-    FilterneedsUpdate *bool "uriparametername:\"filter%5Bneeds%2Dupdate%5D\""
-    // Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when OOTB policies are available for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.
-    FilterootbPolicy *string "uriparametername:\"filter%5Bootb%2Dpolicy%5D\""
-    // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
-    Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetIncludeQueryParameterType "uriparametername:\"include\""
-    // If true and the actor is authorized for update metadata, sideloaded`policies` each gain a nullable `ootb-update` attribute and theresponse gains top-level `meta.ootb-policy-updates.affected-policy-set-count`.Default response shape is unchanged and no availability query runswhen omitted or when OOTB policy updates are unavailable for theorganization. When updates are unavailable, this parameter is ignoredand no OOTB update attributes or metadata are added.
-    IncludeOotbUpdate *bool "uriparametername:\"include%2Dootb%2Dupdate\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
-    // Filter policy sets by name.
-    Searchname *string "uriparametername:\"search%5Bname%5D\""
+	// Return only the specified fields for policy-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldspolicySets []string "uriparametername:\"fields%5Bpolicy%2Dsets%5D\""
+	// Filter policy sets by kind.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
+	Filterkind *i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetFilterKindQueryParameterType "uriparametername:\"filter%5Bkind%5D\""
+	// Only the literal value `true` opts in and narrows results to policysets with at least one available forward OOTB update, using the sameavailability predicate as `include-ootb-update`'s markers andaggregate count; `false` or any other value is a no-op, same asomitting the parameter. Index only; the show operation ignores thisfilter if supplied. Independent of `include-ootb-update`: using thisfilter alone adds no `ootb-update` attributes or`ootb-policy-updates` meta; using `include-ootb-update` alone does notnarrow results; using both returns the filtered rows alongside theunchanged organization-wide `affected-policy-set-count`. Composes with`filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`,`search[name]`, sort and pagination. When OOTB policy updates areunavailable for the organization, this filter is ignored and noavailability query runs. An authorized-to-read but otherwiseunauthorized actor (e.g. a site-auditor without update-metadata permission) receives theordinary, unfiltered index — no narrowing and no update metadata,not an error.
+	FilterneedsUpdate *bool "uriparametername:\"filter%5Bneeds%2Dupdate%5D\""
+	// Restrict results to policy sets currently connected to the OOTB policy identified by this external ID. Only available in HCP Terraform when OOTB policies are available for the organization (404 otherwise). Returns 400 if the given ID is not a string, is blank, is malformed, or does not identify an existing OOTB policy.
+	FilterootbPolicy *string "uriparametername:\"filter%5Bootb%2Dpolicy%5D\""
+	// If true, only return versioned policy sets. If false, only return non-versioned policy sets.
+	Filterversioned *bool "uriparametername:\"filter%5Bversioned%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i68c0d88f19bdb5f6799704485b8f56a81066e073df17782a0dcb2f0a7e75c596.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// If true and the actor is authorized for update metadata, sideloaded`policies` each gain a nullable `ootb-update` attribute and theresponse gains top-level `meta.ootb-policy-updates.affected-policy-set-count`.Default response shape is unchanged and no availability query runswhen omitted or when OOTB policy updates are unavailable for theorganization. When updates are unavailable, this parameter is ignoredand no OOTB update attributes or metadata are added.
+	IncludeOotbUpdate *bool "uriparametername:\"include%2Dootb%2Dupdate\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Filter policy sets by name.
+	Searchname *string "uriparametername:\"search%5Bname%5D\""
 }
+
 // NewItemPolicySetsRequestBuilderInternal instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
-func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
-    m := &ItemPolicySetsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bneeds%2Dupdate%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,include,include%2Dootb%2Dupdate*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
-    }
-    return m
+func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicySetsRequestBuilder {
+	m := &ItemPolicySetsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/policy-sets{?fields%5Bpolicy%2Dsets%5D,filter%5Bkind%5D*,filter%5Bneeds%2Dupdate%5D*,filter%5Bootb%2Dpolicy%5D*,filter%5Bversioned%5D*,include,include%2Dootb%2Dupdate*,page%5Bnumber%5D*,page%5Bsize%5D*,search%5Bname%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemPolicySetsRequestBuilder instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
-func NewItemPolicySetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemPolicySetsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemPolicySetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicySetsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemPolicySetsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list all policy sets in an organization.
 // returns a ItemPolicySetsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters])(ItemPolicySetsGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetsGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPolicySetsGetResponseable), nil
+func (m *ItemPolicySetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters]) (ItemPolicySetsGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetsGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemPolicySetsGetResponseable), nil
 }
+
 // Post create a new policy set in an organization.
 // returns a PolicySetsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePolicySetsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable), nil
+func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, error) {
+	requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreatePolicySetsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable), nil
 }
+
 // ToGetRequestInformation list all policy sets in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemPolicySetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemPolicySetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToPostRequestInformation create a new policy set in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemPolicySetsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
-    if err != nil {
-        return nil, err
-    }
-    return requestInfo, nil
+func (m *ItemPolicySetsRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.PolicySetsEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+	if err != nil {
+		return nil, err
+	}
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemPolicySetsRequestBuilder when successful
-func (m *ItemPolicySetsRequestBuilder) WithUrl(rawUrl string)(*ItemPolicySetsRequestBuilder) {
-    return NewItemPolicySetsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemPolicySetsRequestBuilder) WithUrl(rawUrl string) *ItemPolicySetsRequestBuilder {
+	return NewItemPolicySetsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

@@ -4,35 +4,38 @@
 package hyokcustomerkeyversions
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // HyokCustomerKeyVersionsRequestBuilder builds and executes requests for operations under \hyok-customer-key-versions
 type HyokCustomerKeyVersionsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ByHyok_customer_key_version_id gets an item from the github.com/hashicorp/go-tfe/v2/api.hyokCustomerKeyVersions.item collection
 // returns a *WithHyok_customer_key_version_ItemRequestBuilder when successful
-func (m *HyokCustomerKeyVersionsRequestBuilder) ByHyok_customer_key_version_id(hyok_customer_key_version_id string)(*WithHyok_customer_key_version_ItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if hyok_customer_key_version_id != "" {
-        urlTplParams["hyok_customer_key_version_id"] = hyok_customer_key_version_id
-    }
-    return NewWithHyok_customer_key_version_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *HyokCustomerKeyVersionsRequestBuilder) ByHyok_customer_key_version_id(hyok_customer_key_version_id string) *WithHyok_customer_key_version_ItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if hyok_customer_key_version_id != "" {
+		urlTplParams["hyok_customer_key_version_id"] = hyok_customer_key_version_id
+	}
+	return NewWithHyok_customer_key_version_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewHyokCustomerKeyVersionsRequestBuilderInternal instantiates a new HyokCustomerKeyVersionsRequestBuilder and sets the default values.
-func NewHyokCustomerKeyVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*HyokCustomerKeyVersionsRequestBuilder) {
-    m := &HyokCustomerKeyVersionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-customer-key-versions", pathParameters),
-    }
-    return m
+func NewHyokCustomerKeyVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *HyokCustomerKeyVersionsRequestBuilder {
+	m := &HyokCustomerKeyVersionsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/hyok-customer-key-versions", pathParameters),
+	}
+	return m
 }
+
 // NewHyokCustomerKeyVersionsRequestBuilder instantiates a new HyokCustomerKeyVersionsRequestBuilder and sets the default values.
-func NewHyokCustomerKeyVersionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*HyokCustomerKeyVersionsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewHyokCustomerKeyVersionsRequestBuilderInternal(urlParams, requestAdapter)
+func NewHyokCustomerKeyVersionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *HyokCustomerKeyVersionsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewHyokCustomerKeyVersionsRequestBuilderInternal(urlParams, requestAdapter)
 }

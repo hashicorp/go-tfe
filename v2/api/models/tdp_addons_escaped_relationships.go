@@ -4,138 +4,201 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TdpAddons_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The addonDefinition property
-    addonDefinition TdpAddonDefinitionsHasOneable
-    // The project property
-    project ProjectsHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTdpAddons_relationships instantiates a new TdpAddons_relationships and sets the default values.
-func NewTdpAddons_relationships()(*TdpAddons_relationships) {
-    m := &TdpAddons_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTdpAddons_relationships() *TdpAddons_relationships {
+	m := &TdpAddons_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTdpAddons_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTdpAddons_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTdpAddons_relationships(), nil
+func CreateTdpAddons_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTdpAddons_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TdpAddons_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TdpAddons_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAddonDefinition gets the addon-definition property value. The addonDefinition property
 // returns a TdpAddonDefinitionsHasOneable when successful
-func (m *TdpAddons_relationships) GetAddonDefinition()(TdpAddonDefinitionsHasOneable) {
-    return m.addonDefinition
+func (m *TdpAddons_relationships) GetAddonDefinition() TdpAddonDefinitionsHasOneable {
+	val, err := m.GetBackingStore().Get("addonDefinition")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TdpAddonDefinitionsHasOneable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TdpAddons_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TdpAddons_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["addon-definition"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTdpAddonDefinitionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAddonDefinition(val.(TdpAddonDefinitionsHasOneable))
-        }
-        return nil
-    }
-    res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProject(val.(ProjectsHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TdpAddons_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["addon-definition"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTdpAddonDefinitionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAddonDefinition(val.(TdpAddonDefinitionsHasOneable))
+		}
+		return nil
+	}
+	res["project"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProject(val.(ProjectsHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetProject gets the project property value. The project property
 // returns a ProjectsHasOneable when successful
-func (m *TdpAddons_relationships) GetProject()(ProjectsHasOneable) {
-    return m.project
+func (m *TdpAddons_relationships) GetProject() ProjectsHasOneable {
+	val, err := m.GetBackingStore().Get("project")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasOneable)
+	}
+	return nil
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *TdpAddons_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *TdpAddons_relationships) GetWorkspace() WorkspacesHasOneable {
+	val, err := m.GetBackingStore().Get("workspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TdpAddons_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("addon-definition", m.GetAddonDefinition())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("project", m.GetProject())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TdpAddons_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("addon-definition", m.GetAddonDefinition())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("project", m.GetProject())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TdpAddons_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TdpAddons_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAddonDefinition sets the addon-definition property value. The addonDefinition property
-func (m *TdpAddons_relationships) SetAddonDefinition(value TdpAddonDefinitionsHasOneable)() {
-    m.addonDefinition = value
+func (m *TdpAddons_relationships) SetAddonDefinition(value TdpAddonDefinitionsHasOneable) {
+	err := m.GetBackingStore().Set("addonDefinition", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TdpAddons_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetProject sets the project property value. The project property
-func (m *TdpAddons_relationships) SetProject(value ProjectsHasOneable)() {
-    m.project = value
+func (m *TdpAddons_relationships) SetProject(value ProjectsHasOneable) {
+	err := m.GetBackingStore().Set("project", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *TdpAddons_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *TdpAddons_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	err := m.GetBackingStore().Set("workspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TdpAddons_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAddonDefinition()(TdpAddonDefinitionsHasOneable)
-    GetProject()(ProjectsHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetAddonDefinition(value TdpAddonDefinitionsHasOneable)()
-    SetProject(value ProjectsHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAddonDefinition() TdpAddonDefinitionsHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetProject() ProjectsHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetAddonDefinition(value TdpAddonDefinitionsHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetProject(value ProjectsHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

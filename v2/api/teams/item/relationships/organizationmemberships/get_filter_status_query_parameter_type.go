@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package organizationmemberships
+
 type GetFilterStatusQueryParameterType int
 
 const (
-    ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE GetFilterStatusQueryParameterType = iota
-    INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
-    INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
+	ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE GetFilterStatusQueryParameterType = iota
+	INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
 )
 
 func (i GetFilterStatusQueryParameterType) String() string {
-    return []string{"active", "invited", "inactive"}[i]
+	return []string{"active", "invited", "inactive"}[i]
 }
+
 func ParseGetFilterStatusQueryParameterType(v string) (any, error) {
-    result := ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
-    switch v {
-        case "active":
-            result = ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
-        case "invited":
-            result = INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
-        case "inactive":
-            result = INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
+	switch v {
+	case "active":
+		result = ACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
+	case "invited":
+		result = INVITED_GETFILTERSTATUSQUERYPARAMETERTYPE
+	case "inactive":
+		result = INACTIVE_GETFILTERSTATUSQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterStatusQueryParameterType(values []GetFilterStatusQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterStatusQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

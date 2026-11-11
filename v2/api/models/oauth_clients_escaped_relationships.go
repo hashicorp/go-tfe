@@ -4,167 +4,240 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type OauthClients_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentPool property
-    agentPool AgentPoolsHasOneable
-    // The oauthTokens property
-    oauthTokens OauthTokensHasManyable
-    // The organization property
-    organization OrganizationsHasOneable
-    // The projects property
-    projects ProjectsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewOauthClients_relationships instantiates a new OauthClients_relationships and sets the default values.
-func NewOauthClients_relationships()(*OauthClients_relationships) {
-    m := &OauthClients_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOauthClients_relationships() *OauthClients_relationships {
+	m := &OauthClients_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOauthClients_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOauthClients_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOauthClients_relationships(), nil
+func CreateOauthClients_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOauthClients_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OauthClients_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OauthClients_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *OauthClients_relationships) GetAgentPool()(AgentPoolsHasOneable) {
-    return m.agentPool
+func (m *OauthClients_relationships) GetAgentPool() AgentPoolsHasOneable {
+	val, err := m.GetBackingStore().Get("agentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AgentPoolsHasOneable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OauthClients_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OauthClients_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["oauth-tokens"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOauthTokensHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOauthTokens(val.(OauthTokensHasManyable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjects(val.(ProjectsHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OauthClients_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["oauth-tokens"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOauthTokensHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOauthTokens(val.(OauthTokensHasManyable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["projects"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjects(val.(ProjectsHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOauthTokens gets the oauth-tokens property value. The oauthTokens property
 // returns a OauthTokensHasManyable when successful
-func (m *OauthClients_relationships) GetOauthTokens()(OauthTokensHasManyable) {
-    return m.oauthTokens
+func (m *OauthClients_relationships) GetOauthTokens() OauthTokensHasManyable {
+	val, err := m.GetBackingStore().Get("oauthTokens")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OauthTokensHasManyable)
+	}
+	return nil
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *OauthClients_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *OauthClients_relationships) GetOrganization() OrganizationsHasOneable {
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
+
 // GetProjects gets the projects property value. The projects property
 // returns a ProjectsHasManyable when successful
-func (m *OauthClients_relationships) GetProjects()(ProjectsHasManyable) {
-    return m.projects
+func (m *OauthClients_relationships) GetProjects() ProjectsHasManyable {
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasManyable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OauthClients_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("oauth-tokens", m.GetOauthTokens())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("projects", m.GetProjects())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OauthClients_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("oauth-tokens", m.GetOauthTokens())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("projects", m.GetProjects())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OauthClients_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OauthClients_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *OauthClients_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
-    m.agentPool = value
+func (m *OauthClients_relationships) SetAgentPool(value AgentPoolsHasOneable) {
+	err := m.GetBackingStore().Set("agentPool", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OauthClients_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetOauthTokens sets the oauth-tokens property value. The oauthTokens property
-func (m *OauthClients_relationships) SetOauthTokens(value OauthTokensHasManyable)() {
-    m.oauthTokens = value
+func (m *OauthClients_relationships) SetOauthTokens(value OauthTokensHasManyable) {
+	err := m.GetBackingStore().Set("oauthTokens", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *OauthClients_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *OauthClients_relationships) SetOrganization(value OrganizationsHasOneable) {
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProjects sets the projects property value. The projects property
-func (m *OauthClients_relationships) SetProjects(value ProjectsHasManyable)() {
-    m.projects = value
+func (m *OauthClients_relationships) SetProjects(value ProjectsHasManyable) {
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type OauthClients_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsHasOneable)
-    GetOauthTokens()(OauthTokensHasManyable)
-    GetOrganization()(OrganizationsHasOneable)
-    GetProjects()(ProjectsHasManyable)
-    SetAgentPool(value AgentPoolsHasOneable)()
-    SetOauthTokens(value OauthTokensHasManyable)()
-    SetOrganization(value OrganizationsHasOneable)()
-    SetProjects(value ProjectsHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPool() AgentPoolsHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetOauthTokens() OauthTokensHasManyable
+	GetOrganization() OrganizationsHasOneable
+	GetProjects() ProjectsHasManyable
+	SetAgentPool(value AgentPoolsHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetOauthTokens(value OauthTokensHasManyable)
+	SetOrganization(value OrganizationsHasOneable)
+	SetProjects(value ProjectsHasManyable)
 }

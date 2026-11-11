@@ -4,76 +4,84 @@
 package tfpolicyevaluations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551 "github.com/hashicorp/go-tfe/v2/api/tfpolicyevaluations/item"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551 "github.com/hashicorp/go-tfe/v2/api/tfpolicyevaluations/item"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemRequestBuilder builds and executes requests for operations under \tf-policy-evaluations\{-id}
 type ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemRequestBuilderGetQueryParameters get details about a specific Terraform Policy evaluation.
 type ItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for tf-policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldstfPolicyEvaluations []string "uriparametername:\"fields%5Btf%2Dpolicy%2Devaluations%5D\""
-    // Optionally side-load the specified relationships.
-    Include []id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for tf-policy-evaluations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldstfPolicyEvaluations []string "uriparametername:\"fields%5Btf%2Dpolicy%2Devaluations%5D\""
+	// Optionally side-load the specified relationships.
+	Include []id3df30ae4d569a0a0ef1010203e79e5c07c3c2b84bdcd283f9451661f5f59551.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
-func (m *ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
-    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRequestBuilder) Actions() *ItemActionsRequestBuilder {
+	return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewItemRequestBuilderInternal instantiates a new ItemRequestBuilder and sets the default values.
-func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
-    m := &ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}{?fields%5Btf%2Dpolicy%2Devaluations%5D,include}", pathParameters),
-    }
-    return m
+func NewItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRequestBuilder {
+	m := &ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/tf-policy-evaluations/{%2Did}{?fields%5Btf%2Dpolicy%2Devaluations%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewItemRequestBuilder instantiates a new ItemRequestBuilder and sets the default values.
-func NewItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get details about a specific Terraform Policy evaluation.
 // returns a TfPolicyEvaluationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTfPolicyEvaluationsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsEnvelopeable), nil
+func (m *ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateTfPolicyEvaluationsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.TfPolicyEvaluationsEnvelopeable), nil
 }
+
 // TfPolicySetOutcomes the tfPolicySetOutcomes property
 // returns a *ItemTfPolicySetOutcomesRequestBuilder when successful
-func (m *ItemRequestBuilder) TfPolicySetOutcomes()(*ItemTfPolicySetOutcomesRequestBuilder) {
-    return NewItemTfPolicySetOutcomesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemRequestBuilder) TfPolicySetOutcomes() *ItemTfPolicySetOutcomesRequestBuilder {
+	return NewItemTfPolicySetOutcomesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // ToGetRequestInformation get details about a specific Terraform Policy evaluation.
 // returns a *RequestInformation when successful
-func (m *ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemRequestBuilder when successful
-func (m *ItemRequestBuilder) WithUrl(rawUrl string)(*ItemRequestBuilder) {
-    return NewItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemRequestBuilder) WithUrl(rawUrl string) *ItemRequestBuilder {
+	return NewItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

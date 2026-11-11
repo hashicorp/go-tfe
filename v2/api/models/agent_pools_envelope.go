@@ -4,347 +4,503 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type AgentPoolsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data AgentPoolsable
-    // The included property
-    included []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// AgentPoolsEnvelope_AgentPoolsEnvelope_included composed type wrapper for classes CidrRangeListsable, CidrRangesable, HyokConfigurationsable, OauthClientsable, Projectsable, RegistryModulesable, Stacksable, Workspacesable
+
+// AgentPoolsEnvelope_AgentPoolsEnvelope_included composed type wrapper for classes CidrRangeLists, CidrRanges, HyokConfigurations, OauthClients, Projects, RegistryModules, Stacks, Workspaces
 type AgentPoolsEnvelope_AgentPoolsEnvelope_included struct {
-    // Composed type representation for type CidrRangeListsable
-    cidrRangeLists CidrRangeListsable
-    // Composed type representation for type CidrRangesable
-    cidrRanges CidrRangesable
-    // Composed type representation for type HyokConfigurationsable
-    hyokConfigurations HyokConfigurationsable
-    // Composed type representation for type OauthClientsable
-    oauthClients OauthClientsable
-    // Composed type representation for type Projectsable
-    projects Projectsable
-    // Composed type representation for type RegistryModulesable
-    registryModules RegistryModulesable
-    // Composed type representation for type Stacksable
-    stacks Stacksable
-    // Composed type representation for type Workspacesable
-    workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAgentPoolsEnvelope_AgentPoolsEnvelope_included instantiates a new AgentPoolsEnvelope_AgentPoolsEnvelope_included and sets the default values.
-func NewAgentPoolsEnvelope_AgentPoolsEnvelope_included()(*AgentPoolsEnvelope_AgentPoolsEnvelope_included) {
-    m := &AgentPoolsEnvelope_AgentPoolsEnvelope_included{
-    }
-    return m
+func NewAgentPoolsEnvelope_AgentPoolsEnvelope_included() *AgentPoolsEnvelope_AgentPoolsEnvelope_included {
+	m := &AgentPoolsEnvelope_AgentPoolsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewAgentPoolsEnvelope_AgentPoolsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-range-lists") {
-                    result.SetCidrRangeLists(NewCidrRangeLists())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-ranges") {
-                    result.SetCidrRanges(NewCidrRanges())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-configurations") {
-                    result.SetHyokConfigurations(NewHyokConfigurations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "oauth-clients") {
-                    result.SetOauthClients(NewOauthClients())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
-                    result.SetProjects(NewProjects())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "registry-modules") {
-                    result.SetRegistryModules(NewRegistryModules())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
-                    result.SetStacks(NewStacks())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
-                    result.SetWorkspaces(NewWorkspaces())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewAgentPoolsEnvelope_AgentPoolsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-range-lists") {
+					result.SetCidrRangeLists(NewCidrRangeLists())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "cidr-ranges") {
+					result.SetCidrRanges(NewCidrRanges())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-configurations") {
+					result.SetHyokConfigurations(NewHyokConfigurations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "oauth-clients") {
+					result.SetOauthClients(NewOauthClients())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+					result.SetProjects(NewProjects())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "registry-modules") {
+					result.SetRegistryModules(NewRegistryModules())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+					result.SetStacks(NewStacks())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+					result.SetWorkspaces(NewWorkspaces())
+				}
+			}
+		}
+	}
+	return result, nil
 }
-// GetCidrRangeLists gets the cidrRangeLists property value. Composed type representation for type CidrRangeListsable
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetCidrRangeLists gets the cidrRangeLists property value. Composed type representation for type CidrRangeLists
 // returns a CidrRangeListsable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRangeLists()(CidrRangeListsable) {
-    return m.cidrRangeLists
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRangeLists() CidrRangeListsable {
+	val, err := m.GetBackingStore().Get("cidrRangeLists")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CidrRangeListsable)
+	}
+	return nil
 }
-// GetCidrRanges gets the cidrRanges property value. Composed type representation for type CidrRangesable
+
+// GetCidrRanges gets the cidrRanges property value. Composed type representation for type CidrRanges
 // returns a CidrRangesable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRanges()(CidrRangesable) {
-    return m.cidrRanges
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetCidrRanges() CidrRangesable {
+	val, err := m.GetBackingStore().Get("cidrRanges")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(CidrRangesable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetCidrRangeLists() != nil {
-        return m.GetCidrRangeLists().GetFieldDeserializers()
-    } else if m.GetCidrRanges() != nil {
-        return m.GetCidrRanges().GetFieldDeserializers()
-    } else if m.GetHyokConfigurations() != nil {
-        return m.GetHyokConfigurations().GetFieldDeserializers()
-    } else if m.GetOauthClients() != nil {
-        return m.GetOauthClients().GetFieldDeserializers()
-    } else if m.GetProjects() != nil {
-        return m.GetProjects().GetFieldDeserializers()
-    } else if m.GetRegistryModules() != nil {
-        return m.GetRegistryModules().GetFieldDeserializers()
-    } else if m.GetStacks() != nil {
-        return m.GetStacks().GetFieldDeserializers()
-    } else if m.GetWorkspaces() != nil {
-        return m.GetWorkspaces().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetCidrRangeLists() != nil {
+		return m.GetCidrRangeLists().GetFieldDeserializers()
+	} else if m.GetCidrRanges() != nil {
+		return m.GetCidrRanges().GetFieldDeserializers()
+	} else if m.GetHyokConfigurations() != nil {
+		return m.GetHyokConfigurations().GetFieldDeserializers()
+	} else if m.GetOauthClients() != nil {
+		return m.GetOauthClients().GetFieldDeserializers()
+	} else if m.GetProjects() != nil {
+		return m.GetProjects().GetFieldDeserializers()
+	} else if m.GetRegistryModules() != nil {
+		return m.GetRegistryModules().GetFieldDeserializers()
+	} else if m.GetStacks() != nil {
+		return m.GetStacks().GetFieldDeserializers()
+	} else if m.GetWorkspaces() != nil {
+		return m.GetWorkspaces().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
-// GetHyokConfigurations gets the hyokConfigurations property value. Composed type representation for type HyokConfigurationsable
+
+// GetHyokConfigurations gets the hyokConfigurations property value. Composed type representation for type HyokConfigurations
 // returns a HyokConfigurationsable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetHyokConfigurations()(HyokConfigurationsable) {
-    return m.hyokConfigurations
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetHyokConfigurations() HyokConfigurationsable {
+	val, err := m.GetBackingStore().Get("hyokConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurationsable)
+	}
+	return nil
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetOauthClients gets the oauthClients property value. Composed type representation for type OauthClientsable
+
+// GetOauthClients gets the oauthClients property value. Composed type representation for type OauthClients
 // returns a OauthClientsable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetOauthClients()(OauthClientsable) {
-    return m.oauthClients
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetOauthClients() OauthClientsable {
+	val, err := m.GetBackingStore().Get("oauthClients")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OauthClientsable)
+	}
+	return nil
 }
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetProjects()(Projectsable) {
-    return m.projects
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetProjects() Projectsable {
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
-// GetRegistryModules gets the registryModules property value. Composed type representation for type RegistryModulesable
+
+// GetRegistryModules gets the registryModules property value. Composed type representation for type RegistryModules
 // returns a RegistryModulesable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetRegistryModules()(RegistryModulesable) {
-    return m.registryModules
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetRegistryModules() RegistryModulesable {
+	val, err := m.GetBackingStore().Get("registryModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RegistryModulesable)
+	}
+	return nil
 }
-// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+
+// GetStacks gets the stacks property value. Composed type representation for type Stacks
 // returns a Stacksable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetStacks()(Stacksable) {
-    return m.stacks
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetStacks() Stacksable {
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacksable)
+	}
+	return nil
 }
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetWorkspaces()(Workspacesable) {
-    return m.workspaces
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) GetWorkspaces() Workspacesable {
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetCidrRangeLists() != nil {
-        err := writer.WriteObjectValue("", m.GetCidrRangeLists())
-        if err != nil {
-            return err
-        }
-    } else if m.GetCidrRanges() != nil {
-        err := writer.WriteObjectValue("", m.GetCidrRanges())
-        if err != nil {
-            return err
-        }
-    } else if m.GetHyokConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetHyokConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetOauthClients() != nil {
-        err := writer.WriteObjectValue("", m.GetOauthClients())
-        if err != nil {
-            return err
-        }
-    } else if m.GetProjects() != nil {
-        err := writer.WriteObjectValue("", m.GetProjects())
-        if err != nil {
-            return err
-        }
-    } else if m.GetRegistryModules() != nil {
-        err := writer.WriteObjectValue("", m.GetRegistryModules())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStacks() != nil {
-        err := writer.WriteObjectValue("", m.GetStacks())
-        if err != nil {
-            return err
-        }
-    } else if m.GetWorkspaces() != nil {
-        err := writer.WriteObjectValue("", m.GetWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetCidrRangeLists() != nil {
+		err := writer.WriteObjectValue("", m.GetCidrRangeLists())
+		if err != nil {
+			return err
+		}
+	} else if m.GetCidrRanges() != nil {
+		err := writer.WriteObjectValue("", m.GetCidrRanges())
+		if err != nil {
+			return err
+		}
+	} else if m.GetHyokConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetHyokConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetOauthClients() != nil {
+		err := writer.WriteObjectValue("", m.GetOauthClients())
+		if err != nil {
+			return err
+		}
+	} else if m.GetProjects() != nil {
+		err := writer.WriteObjectValue("", m.GetProjects())
+		if err != nil {
+			return err
+		}
+	} else if m.GetRegistryModules() != nil {
+		err := writer.WriteObjectValue("", m.GetRegistryModules())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStacks() != nil {
+		err := writer.WriteObjectValue("", m.GetStacks())
+		if err != nil {
+			return err
+		}
+	} else if m.GetWorkspaces() != nil {
+		err := writer.WriteObjectValue("", m.GetWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetCidrRangeLists sets the cidrRangeLists property value. Composed type representation for type CidrRangeListsable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRangeLists(value CidrRangeListsable)() {
-    m.cidrRangeLists = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetCidrRanges sets the cidrRanges property value. Composed type representation for type CidrRangesable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRanges(value CidrRangesable)() {
-    m.cidrRanges = value
+
+// SetCidrRangeLists sets the cidrRangeLists property value. Composed type representation for type CidrRangeLists
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRangeLists(value CidrRangeListsable) {
+	err := m.GetBackingStore().Set("cidrRangeLists", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetHyokConfigurations sets the hyokConfigurations property value. Composed type representation for type HyokConfigurationsable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetHyokConfigurations(value HyokConfigurationsable)() {
-    m.hyokConfigurations = value
+
+// SetCidrRanges sets the cidrRanges property value. Composed type representation for type CidrRanges
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetCidrRanges(value CidrRangesable) {
+	err := m.GetBackingStore().Set("cidrRanges", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetOauthClients sets the oauthClients property value. Composed type representation for type OauthClientsable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetOauthClients(value OauthClientsable)() {
-    m.oauthClients = value
+
+// SetHyokConfigurations sets the hyokConfigurations property value. Composed type representation for type HyokConfigurations
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetHyokConfigurations(value HyokConfigurationsable) {
+	err := m.GetBackingStore().Set("hyokConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetProjects(value Projectsable)() {
-    m.projects = value
+
+// SetOauthClients sets the oauthClients property value. Composed type representation for type OauthClients
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetOauthClients(value OauthClientsable) {
+	err := m.GetBackingStore().Set("oauthClients", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetRegistryModules sets the registryModules property value. Composed type representation for type RegistryModulesable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetRegistryModules(value RegistryModulesable)() {
-    m.registryModules = value
+
+// SetProjects sets the projects property value. Composed type representation for type Projects
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetProjects(value Projectsable) {
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStacks sets the stacks property value. Composed type representation for type Stacksable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetStacks(value Stacksable)() {
-    m.stacks = value
+
+// SetRegistryModules sets the registryModules property value. Composed type representation for type RegistryModules
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetRegistryModules(value RegistryModulesable) {
+	err := m.GetBackingStore().Set("registryModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
-func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetWorkspaces(value Workspacesable)() {
-    m.workspaces = value
+
+// SetStacks sets the stacks property value. Composed type representation for type Stacks
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetStacks(value Stacksable) {
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
+func (m *AgentPoolsEnvelope_AgentPoolsEnvelope_included) SetWorkspaces(value Workspacesable) {
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type AgentPoolsEnvelope_AgentPoolsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCidrRangeLists()(CidrRangeListsable)
-    GetCidrRanges()(CidrRangesable)
-    GetHyokConfigurations()(HyokConfigurationsable)
-    GetOauthClients()(OauthClientsable)
-    GetProjects()(Projectsable)
-    GetRegistryModules()(RegistryModulesable)
-    GetStacks()(Stacksable)
-    GetWorkspaces()(Workspacesable)
-    SetCidrRangeLists(value CidrRangeListsable)()
-    SetCidrRanges(value CidrRangesable)()
-    SetHyokConfigurations(value HyokConfigurationsable)()
-    SetOauthClients(value OauthClientsable)()
-    SetProjects(value Projectsable)()
-    SetRegistryModules(value RegistryModulesable)()
-    SetStacks(value Stacksable)()
-    SetWorkspaces(value Workspacesable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCidrRangeLists() CidrRangeListsable
+	GetCidrRanges() CidrRangesable
+	GetHyokConfigurations() HyokConfigurationsable
+	GetOauthClients() OauthClientsable
+	GetProjects() Projectsable
+	GetRegistryModules() RegistryModulesable
+	GetStacks() Stacksable
+	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCidrRangeLists(value CidrRangeListsable)
+	SetCidrRanges(value CidrRangesable)
+	SetHyokConfigurations(value HyokConfigurationsable)
+	SetOauthClients(value OauthClientsable)
+	SetProjects(value Projectsable)
+	SetRegistryModules(value RegistryModulesable)
+	SetStacks(value Stacksable)
+	SetWorkspaces(value Workspacesable)
 }
+
 // NewAgentPoolsEnvelope instantiates a new AgentPoolsEnvelope and sets the default values.
-func NewAgentPoolsEnvelope()(*AgentPoolsEnvelope) {
-    m := &AgentPoolsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAgentPoolsEnvelope() *AgentPoolsEnvelope {
+	m := &AgentPoolsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAgentPoolsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAgentPoolsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAgentPoolsEnvelope(), nil
+func CreateAgentPoolsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAgentPoolsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AgentPoolsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AgentPoolsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AgentPoolsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a AgentPoolsable when successful
-func (m *AgentPoolsEnvelope) GetData()(AgentPoolsable) {
-    return m.data
+func (m *AgentPoolsEnvelope) GetData() AgentPoolsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AgentPoolsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AgentPoolsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(AgentPoolsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AgentPoolsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(AgentPoolsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateAgentPoolsEnvelope_AgentPoolsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable when successful
-func (m *AgentPoolsEnvelope) GetIncluded()([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable) {
-    return m.included
+func (m *AgentPoolsEnvelope) GetIncluded() []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AgentPoolsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AgentPoolsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AgentPoolsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AgentPoolsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AgentPoolsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *AgentPoolsEnvelope) SetData(value AgentPoolsable)() {
-    m.data = value
+func (m *AgentPoolsEnvelope) SetData(value AgentPoolsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *AgentPoolsEnvelope) SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)() {
-    m.included = value
+func (m *AgentPoolsEnvelope) SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AgentPoolsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(AgentPoolsable)
-    GetIncluded()([]AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
-    SetData(value AgentPoolsable)()
-    SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() AgentPoolsable
+	GetIncluded() []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value AgentPoolsable)
+	SetIncluded(value []AgentPoolsEnvelope_AgentPoolsEnvelope_includedable)
 }

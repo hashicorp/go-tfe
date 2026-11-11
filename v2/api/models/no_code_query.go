@@ -4,162 +4,235 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type NoCodeQuery struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes NoCodeQuery_attributesable
-    // The id property
-    id *string
-    // The relationships property
-    relationships NoCodeQuery_relationshipsable
-    // The type property
-    typeEscaped *NoCodeQuery_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewNoCodeQuery instantiates a new NoCodeQuery and sets the default values.
-func NewNoCodeQuery()(*NoCodeQuery) {
-    m := &NoCodeQuery{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewNoCodeQuery() *NoCodeQuery {
+	m := &NoCodeQuery{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateNoCodeQueryFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateNoCodeQueryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewNoCodeQuery(), nil
+func CreateNoCodeQueryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewNoCodeQuery(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *NoCodeQuery) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *NoCodeQuery) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a NoCodeQuery_attributesable when successful
-func (m *NoCodeQuery) GetAttributes()(NoCodeQuery_attributesable) {
-    return m.attributes
+func (m *NoCodeQuery) GetAttributes() NoCodeQuery_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(NoCodeQuery_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *NoCodeQuery) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *NoCodeQuery) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNoCodeQuery_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(NoCodeQuery_attributesable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNoCodeQuery_relationshipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRelationships(val.(NoCodeQuery_relationshipsable))
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseNoCodeQuery_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*NoCodeQuery_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *NoCodeQuery) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateNoCodeQuery_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(NoCodeQuery_attributesable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["relationships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateNoCodeQuery_relationshipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRelationships(val.(NoCodeQuery_relationshipsable))
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseNoCodeQuery_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*NoCodeQuery_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *NoCodeQuery) GetId()(*string) {
-    return m.id
+func (m *NoCodeQuery) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetRelationships gets the relationships property value. The relationships property
 // returns a NoCodeQuery_relationshipsable when successful
-func (m *NoCodeQuery) GetRelationships()(NoCodeQuery_relationshipsable) {
-    return m.relationships
+func (m *NoCodeQuery) GetRelationships() NoCodeQuery_relationshipsable {
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(NoCodeQuery_relationshipsable)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *NoCodeQuery_type when successful
-func (m *NoCodeQuery) GetTypeEscaped()(*NoCodeQuery_type) {
-    return m.typeEscaped
+func (m *NoCodeQuery) GetTypeEscaped() *NoCodeQuery_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*NoCodeQuery_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *NoCodeQuery) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("relationships", m.GetRelationships())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *NoCodeQuery) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("relationships", m.GetRelationships())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTypeEscaped() != nil {
+		cast := (*m.GetTypeEscaped()).String()
+		err := writer.WriteStringValue("type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *NoCodeQuery) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *NoCodeQuery) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *NoCodeQuery) SetAttributes(value NoCodeQuery_attributesable)() {
-    m.attributes = value
+func (m *NoCodeQuery) SetAttributes(value NoCodeQuery_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *NoCodeQuery) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The id property
-func (m *NoCodeQuery) SetId(value *string)() {
-    m.id = value
+func (m *NoCodeQuery) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRelationships sets the relationships property value. The relationships property
-func (m *NoCodeQuery) SetRelationships(value NoCodeQuery_relationshipsable)() {
-    m.relationships = value
+func (m *NoCodeQuery) SetRelationships(value NoCodeQuery_relationshipsable) {
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *NoCodeQuery) SetTypeEscaped(value *NoCodeQuery_type)() {
-    m.typeEscaped = value
+func (m *NoCodeQuery) SetTypeEscaped(value *NoCodeQuery_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type NoCodeQueryable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(NoCodeQuery_attributesable)
-    GetId()(*string)
-    GetRelationships()(NoCodeQuery_relationshipsable)
-    GetTypeEscaped()(*NoCodeQuery_type)
-    SetAttributes(value NoCodeQuery_attributesable)()
-    SetId(value *string)()
-    SetRelationships(value NoCodeQuery_relationshipsable)()
-    SetTypeEscaped(value *NoCodeQuery_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() NoCodeQuery_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	GetRelationships() NoCodeQuery_relationshipsable
+	GetTypeEscaped() *NoCodeQuery_type
+	SetAttributes(value NoCodeQuery_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
+	SetRelationships(value NoCodeQuery_relationshipsable)
+	SetTypeEscaped(value *NoCodeQuery_type)
 }

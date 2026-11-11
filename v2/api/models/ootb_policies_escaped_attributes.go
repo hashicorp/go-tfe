@@ -4,314 +4,437 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type OotbPolicies_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Source location (docs/repository URL) for this policy, taken from the latest version's library policy. Null when no active library release is available.
-    controlSource *string
-    // Catalog record creation time (not policy release/publication time).
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Policy description.
-    description *string
-    // Array of Terraform resource types this policy governs.
-    governedResources []string
-    // The policy engine type.
-    kind *OotbPolicies_attributes_kind
-    // The name of the policy.
-    name *string
-    // Cloud provider the policy targets, stored lower-cased (e.g. `aws`, `azure`, `gcp`). Use as the value of `filter[provider]` on the list endpoint; matching is case-insensitive. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.providers`.
-    provider *string
-    // Cloud service the policy targets (e.g. `s3`, `iam`, `compute`). Use as the value of `filter[service]` on the list endpoint. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.services`.
-    service *string
-    // URL-friendly unique identifier for the policy.
-    slug *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewOotbPolicies_attributes instantiates a new OotbPolicies_attributes and sets the default values.
-func NewOotbPolicies_attributes()(*OotbPolicies_attributes) {
-    m := &OotbPolicies_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOotbPolicies_attributes() *OotbPolicies_attributes {
+	m := &OotbPolicies_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOotbPolicies_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOotbPolicies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOotbPolicies_attributes(), nil
+func CreateOotbPolicies_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOotbPolicies_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OotbPolicies_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OotbPolicies_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OotbPolicies_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetControlSource gets the control-source property value. Source location (docs/repository URL) for this policy, taken from the latest version's library policy. Null when no active library release is available.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetControlSource()(*string) {
-    return m.controlSource
+func (m *OotbPolicies_attributes) GetControlSource() *string {
+	val, err := m.GetBackingStore().Get("controlSource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. Catalog record creation time (not policy release/publication time).
 // returns a *Time when successful
-func (m *OotbPolicies_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *OotbPolicies_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. Policy description.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetDescription()(*string) {
-    return m.description
+func (m *OotbPolicies_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OotbPolicies_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["control-source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetControlSource(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["governed-resources"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetGovernedResources(res)
-        }
-        return nil
-    }
-    res["kind"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseOotbPolicies_attributes_kind)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKind(val.(*OotbPolicies_attributes_kind))
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["provider"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProvider(val)
-        }
-        return nil
-    }
-    res["service"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetService(val)
-        }
-        return nil
-    }
-    res["slug"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSlug(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OotbPolicies_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["control-source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetControlSource(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["governed-resources"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfPrimitiveValues("string")
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]string, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*string))
+				}
+			}
+			m.SetGovernedResources(res)
+		}
+		return nil
+	}
+	res["kind"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseOotbPolicies_attributes_kind)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKind(val.(*OotbPolicies_attributes_kind))
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["provider"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProvider(val)
+		}
+		return nil
+	}
+	res["service"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetService(val)
+		}
+		return nil
+	}
+	res["slug"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSlug(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGovernedResources gets the governed-resources property value. Array of Terraform resource types this policy governs.
 // returns a []string when successful
-func (m *OotbPolicies_attributes) GetGovernedResources()([]string) {
-    return m.governedResources
+func (m *OotbPolicies_attributes) GetGovernedResources() []string {
+	val, err := m.GetBackingStore().Get("governedResources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]string)
+	}
+	return nil
 }
+
 // GetKind gets the kind property value. The policy engine type.
 // returns a *OotbPolicies_attributes_kind when successful
-func (m *OotbPolicies_attributes) GetKind()(*OotbPolicies_attributes_kind) {
-    return m.kind
+func (m *OotbPolicies_attributes) GetKind() *OotbPolicies_attributes_kind {
+	val, err := m.GetBackingStore().Get("kind")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*OotbPolicies_attributes_kind)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name of the policy.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetName()(*string) {
-    return m.name
+func (m *OotbPolicies_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetProvider gets the provider property value. Cloud provider the policy targets, stored lower-cased (e.g. `aws`, `azure`, `gcp`). Use as the value of `filter[provider]` on the list endpoint; matching is case-insensitive. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.providers`.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetProvider()(*string) {
-    return m.provider
+func (m *OotbPolicies_attributes) GetProvider() *string {
+	val, err := m.GetBackingStore().Get("provider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetService gets the service property value. Cloud service the policy targets (e.g. `s3`, `iam`, `compute`). Use as the value of `filter[service]` on the list endpoint. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.services`.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetService()(*string) {
-    return m.service
+func (m *OotbPolicies_attributes) GetService() *string {
+	val, err := m.GetBackingStore().Get("service")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSlug gets the slug property value. URL-friendly unique identifier for the policy.
 // returns a *string when successful
-func (m *OotbPolicies_attributes) GetSlug()(*string) {
-    return m.slug
+func (m *OotbPolicies_attributes) GetSlug() *string {
+	val, err := m.GetBackingStore().Get("slug")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OotbPolicies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("control-source", m.GetControlSource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetGovernedResources() != nil {
-        err := writer.WriteCollectionOfStringValues("governed-resources", m.GetGovernedResources())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetKind() != nil {
-        cast := (*m.GetKind()).String()
-        err := writer.WriteStringValue("kind", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("provider", m.GetProvider())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("service", m.GetService())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("slug", m.GetSlug())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OotbPolicies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("control-source", m.GetControlSource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetGovernedResources() != nil {
+		err := writer.WriteCollectionOfStringValues("governed-resources", m.GetGovernedResources())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetKind() != nil {
+		cast := (*m.GetKind()).String()
+		err := writer.WriteStringValue("kind", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("provider", m.GetProvider())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("service", m.GetService())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("slug", m.GetSlug())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OotbPolicies_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OotbPolicies_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OotbPolicies_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetControlSource sets the control-source property value. Source location (docs/repository URL) for this policy, taken from the latest version's library policy. Null when no active library release is available.
-func (m *OotbPolicies_attributes) SetControlSource(value *string)() {
-    m.controlSource = value
+func (m *OotbPolicies_attributes) SetControlSource(value *string) {
+	err := m.GetBackingStore().Set("controlSource", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. Catalog record creation time (not policy release/publication time).
-func (m *OotbPolicies_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *OotbPolicies_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. Policy description.
-func (m *OotbPolicies_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *OotbPolicies_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetGovernedResources sets the governed-resources property value. Array of Terraform resource types this policy governs.
-func (m *OotbPolicies_attributes) SetGovernedResources(value []string)() {
-    m.governedResources = value
+func (m *OotbPolicies_attributes) SetGovernedResources(value []string) {
+	err := m.GetBackingStore().Set("governedResources", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetKind sets the kind property value. The policy engine type.
-func (m *OotbPolicies_attributes) SetKind(value *OotbPolicies_attributes_kind)() {
-    m.kind = value
+func (m *OotbPolicies_attributes) SetKind(value *OotbPolicies_attributes_kind) {
+	err := m.GetBackingStore().Set("kind", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name of the policy.
-func (m *OotbPolicies_attributes) SetName(value *string)() {
-    m.name = value
+func (m *OotbPolicies_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProvider sets the provider property value. Cloud provider the policy targets, stored lower-cased (e.g. `aws`, `azure`, `gcp`). Use as the value of `filter[provider]` on the list endpoint; matching is case-insensitive. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.providers`.
-func (m *OotbPolicies_attributes) SetProvider(value *string)() {
-    m.provider = value
+func (m *OotbPolicies_attributes) SetProvider(value *string) {
+	err := m.GetBackingStore().Set("provider", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetService sets the service property value. Cloud service the policy targets (e.g. `s3`, `iam`, `compute`). Use as the value of `filter[service]` on the list endpoint. Available values are returned by the `getOotbPolicyFilterOptions` endpoint under `data.attributes.services`.
-func (m *OotbPolicies_attributes) SetService(value *string)() {
-    m.service = value
+func (m *OotbPolicies_attributes) SetService(value *string) {
+	err := m.GetBackingStore().Set("service", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSlug sets the slug property value. URL-friendly unique identifier for the policy.
-func (m *OotbPolicies_attributes) SetSlug(value *string)() {
-    m.slug = value
+func (m *OotbPolicies_attributes) SetSlug(value *string) {
+	err := m.GetBackingStore().Set("slug", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type OotbPolicies_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetControlSource()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDescription()(*string)
-    GetGovernedResources()([]string)
-    GetKind()(*OotbPolicies_attributes_kind)
-    GetName()(*string)
-    GetProvider()(*string)
-    GetService()(*string)
-    GetSlug()(*string)
-    SetControlSource(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDescription(value *string)()
-    SetGovernedResources(value []string)()
-    SetKind(value *OotbPolicies_attributes_kind)()
-    SetName(value *string)()
-    SetProvider(value *string)()
-    SetService(value *string)()
-    SetSlug(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetControlSource() *string
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDescription() *string
+	GetGovernedResources() []string
+	GetKind() *OotbPolicies_attributes_kind
+	GetName() *string
+	GetProvider() *string
+	GetService() *string
+	GetSlug() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetControlSource(value *string)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDescription(value *string)
+	SetGovernedResources(value []string)
+	SetKind(value *OotbPolicies_attributes_kind)
+	SetName(value *string)
+	SetProvider(value *string)
+	SetService(value *string)
+	SetSlug(value *string)
 }

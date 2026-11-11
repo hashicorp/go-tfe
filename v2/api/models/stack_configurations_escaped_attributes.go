@@ -4,277 +4,404 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type StackConfigurations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
-    branch *string
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
-    deploymentTopology StackConfigurations_attributes_deploymentTopologyable
-    // If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
-    destroyAll *bool
-    // The preparingEventStreamUrl property
-    preparingEventStreamUrl *string
-    // The sequenceNumber property
-    sequenceNumber *int32
-    // Specifies if this is a speculative configuration that HCP Terraform cannot converge past the plan step.
-    speculative *bool
-    // The status property
-    status *StackConfigurations_attributes_status
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackConfigurations_attributes instantiates a new StackConfigurations_attributes and sets the default values.
-func NewStackConfigurations_attributes()(*StackConfigurations_attributes) {
-    m := &StackConfigurations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackConfigurations_attributes() *StackConfigurations_attributes {
+	m := &StackConfigurations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	destroyAllValue := false
+	m.SetDestroyAll(&destroyAllValue)
+	speculativeValue := false
+	m.SetSpeculative(&speculativeValue)
+	return m
 }
+
 // CreateStackConfigurations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackConfigurations_attributes(), nil
+func CreateStackConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackConfigurations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackConfigurations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackConfigurations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBranch gets the branch property value. The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
 // returns a *string when successful
-func (m *StackConfigurations_attributes) GetBranch()(*string) {
-    return m.branch
+func (m *StackConfigurations_attributes) GetBranch() *string {
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *StackConfigurations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *StackConfigurations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDeploymentTopology gets the deployment-topology property value. The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
 // returns a StackConfigurations_attributes_deploymentTopologyable when successful
-func (m *StackConfigurations_attributes) GetDeploymentTopology()(StackConfigurations_attributes_deploymentTopologyable) {
-    return m.deploymentTopology
+func (m *StackConfigurations_attributes) GetDeploymentTopology() StackConfigurations_attributes_deploymentTopologyable {
+	val, err := m.GetBackingStore().Get("deploymentTopology")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurations_attributes_deploymentTopologyable)
+	}
+	return nil
 }
+
 // GetDestroyAll gets the destroy-all property value. If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
 // returns a *bool when successful
-func (m *StackConfigurations_attributes) GetDestroyAll()(*bool) {
-    return m.destroyAll
+func (m *StackConfigurations_attributes) GetDestroyAll() *bool {
+	val, err := m.GetBackingStore().Get("destroyAll")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackConfigurations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBranch(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["deployment-topology"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurations_attributes_deploymentTopologyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeploymentTopology(val.(StackConfigurations_attributes_deploymentTopologyable))
-        }
-        return nil
-    }
-    res["destroy-all"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDestroyAll(val)
-        }
-        return nil
-    }
-    res["preparing-event-stream-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPreparingEventStreamUrl(val)
-        }
-        return nil
-    }
-    res["sequence-number"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSequenceNumber(val)
-        }
-        return nil
-    }
-    res["speculative"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSpeculative(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStackConfigurations_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*StackConfigurations_attributes_status))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackConfigurations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["branch"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBranch(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["deployment-topology"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurations_attributes_deploymentTopologyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeploymentTopology(val.(StackConfigurations_attributes_deploymentTopologyable))
+		}
+		return nil
+	}
+	res["destroy-all"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDestroyAll(val)
+		}
+		return nil
+	}
+	res["preparing-event-stream-url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPreparingEventStreamUrl(val)
+		}
+		return nil
+	}
+	res["sequence-number"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSequenceNumber(val)
+		}
+		return nil
+	}
+	res["speculative"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSpeculative(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStackConfigurations_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*StackConfigurations_attributes_status))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPreparingEventStreamUrl gets the preparing-event-stream-url property value. The preparingEventStreamUrl property
 // returns a *string when successful
-func (m *StackConfigurations_attributes) GetPreparingEventStreamUrl()(*string) {
-    return m.preparingEventStreamUrl
+func (m *StackConfigurations_attributes) GetPreparingEventStreamUrl() *string {
+	val, err := m.GetBackingStore().Get("preparingEventStreamUrl")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSequenceNumber gets the sequence-number property value. The sequenceNumber property
 // returns a *int32 when successful
-func (m *StackConfigurations_attributes) GetSequenceNumber()(*int32) {
-    return m.sequenceNumber
+func (m *StackConfigurations_attributes) GetSequenceNumber() *int32 {
+	val, err := m.GetBackingStore().Get("sequenceNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSpeculative gets the speculative property value. Specifies if this is a speculative configuration that HCP Terraform cannot converge past the plan step.
 // returns a *bool when successful
-func (m *StackConfigurations_attributes) GetSpeculative()(*bool) {
-    return m.speculative
+func (m *StackConfigurations_attributes) GetSpeculative() *bool {
+	val, err := m.GetBackingStore().Get("speculative")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *StackConfigurations_attributes_status when successful
-func (m *StackConfigurations_attributes) GetStatus()(*StackConfigurations_attributes_status) {
-    return m.status
+func (m *StackConfigurations_attributes) GetStatus() *StackConfigurations_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*StackConfigurations_attributes_status)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *StackConfigurations_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *StackConfigurations_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("branch", m.GetBranch())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("destroy-all", m.GetDestroyAll())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("speculative", m.GetSpeculative())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("branch", m.GetBranch())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("destroy-all", m.GetDestroyAll())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("speculative", m.GetSpeculative())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackConfigurations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackConfigurations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBranch sets the branch property value. The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
-func (m *StackConfigurations_attributes) SetBranch(value *string)() {
-    m.branch = value
+func (m *StackConfigurations_attributes) SetBranch(value *string) {
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *StackConfigurations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *StackConfigurations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeploymentTopology sets the deployment-topology property value. The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
-func (m *StackConfigurations_attributes) SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)() {
-    m.deploymentTopology = value
+func (m *StackConfigurations_attributes) SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable) {
+	err := m.GetBackingStore().Set("deploymentTopology", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDestroyAll sets the destroy-all property value. If true, the created configuration will behave as though every deployment in the configuration was declared with `destroy = true`.
-func (m *StackConfigurations_attributes) SetDestroyAll(value *bool)() {
-    m.destroyAll = value
+func (m *StackConfigurations_attributes) SetDestroyAll(value *bool) {
+	err := m.GetBackingStore().Set("destroyAll", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPreparingEventStreamUrl sets the preparing-event-stream-url property value. The preparingEventStreamUrl property
-func (m *StackConfigurations_attributes) SetPreparingEventStreamUrl(value *string)() {
-    m.preparingEventStreamUrl = value
+func (m *StackConfigurations_attributes) SetPreparingEventStreamUrl(value *string) {
+	err := m.GetBackingStore().Set("preparingEventStreamUrl", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSequenceNumber sets the sequence-number property value. The sequenceNumber property
-func (m *StackConfigurations_attributes) SetSequenceNumber(value *int32)() {
-    m.sequenceNumber = value
+func (m *StackConfigurations_attributes) SetSequenceNumber(value *int32) {
+	err := m.GetBackingStore().Set("sequenceNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSpeculative sets the speculative property value. Specifies if this is a speculative configuration that HCP Terraform cannot converge past the plan step.
-func (m *StackConfigurations_attributes) SetSpeculative(value *bool)() {
-    m.speculative = value
+func (m *StackConfigurations_attributes) SetSpeculative(value *bool) {
+	err := m.GetBackingStore().Set("speculative", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *StackConfigurations_attributes) SetStatus(value *StackConfigurations_attributes_status)() {
-    m.status = value
+func (m *StackConfigurations_attributes) SetStatus(value *StackConfigurations_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *StackConfigurations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *StackConfigurations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackConfigurations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetBranch()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDeploymentTopology()(StackConfigurations_attributes_deploymentTopologyable)
-    GetDestroyAll()(*bool)
-    GetPreparingEventStreamUrl()(*string)
-    GetSequenceNumber()(*int32)
-    GetSpeculative()(*bool)
-    GetStatus()(*StackConfigurations_attributes_status)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetBranch(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)()
-    SetDestroyAll(value *bool)()
-    SetPreparingEventStreamUrl(value *string)()
-    SetSequenceNumber(value *int32)()
-    SetSpeculative(value *bool)()
-    SetStatus(value *StackConfigurations_attributes_status)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBranch() *string
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDeploymentTopology() StackConfigurations_attributes_deploymentTopologyable
+	GetDestroyAll() *bool
+	GetPreparingEventStreamUrl() *string
+	GetSequenceNumber() *int32
+	GetSpeculative() *bool
+	GetStatus() *StackConfigurations_attributes_status
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBranch(value *string)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)
+	SetDestroyAll(value *bool)
+	SetPreparingEventStreamUrl(value *string)
+	SetSequenceNumber(value *int32)
+	SetSpeculative(value *bool)
+	SetStatus(value *StackConfigurations_attributes_status)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

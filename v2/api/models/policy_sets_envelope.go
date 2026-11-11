@@ -4,325 +4,471 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type PolicySetsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data PolicySetsable
-    // The included property
-    included []PolicySetsEnvelope_PolicySetsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// PolicySetsEnvelope_PolicySetsEnvelope_included composed type wrapper for classes OotbPoliciesable, OotbPolicyLibrariesable, Policiesable, PolicySetVersionsable, Projectsable, Stacksable, Workspacesable
+
+// PolicySetsEnvelope_PolicySetsEnvelope_included composed type wrapper for classes OotbPolicies, OotbPolicyLibraries, Policies, PolicySetVersions, Projects, Stacks, Workspaces
 type PolicySetsEnvelope_PolicySetsEnvelope_included struct {
-    // Composed type representation for type OotbPoliciesable
-    ootbPolicies OotbPoliciesable
-    // Composed type representation for type OotbPolicyLibrariesable
-    ootbPolicyLibraries OotbPolicyLibrariesable
-    // Composed type representation for type Policiesable
-    policies Policiesable
-    // Composed type representation for type PolicySetVersionsable
-    policySetVersions PolicySetVersionsable
-    // Composed type representation for type Projectsable
-    projects Projectsable
-    // Composed type representation for type Stacksable
-    stacks Stacksable
-    // Composed type representation for type Workspacesable
-    workspaces Workspacesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPolicySetsEnvelope_PolicySetsEnvelope_included instantiates a new PolicySetsEnvelope_PolicySetsEnvelope_included and sets the default values.
-func NewPolicySetsEnvelope_PolicySetsEnvelope_included()(*PolicySetsEnvelope_PolicySetsEnvelope_included) {
-    m := &PolicySetsEnvelope_PolicySetsEnvelope_included{
-    }
-    return m
+func NewPolicySetsEnvelope_PolicySetsEnvelope_included() *PolicySetsEnvelope_PolicySetsEnvelope_included {
+	m := &PolicySetsEnvelope_PolicySetsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewPolicySetsEnvelope_PolicySetsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policies") {
-                    result.SetOotbPolicies(NewOotbPolicies())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policy-libraries") {
-                    result.SetOotbPolicyLibraries(NewOotbPolicyLibraries())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policies") {
-                    result.SetPolicies(NewPolicies())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policy-set-versions") {
-                    result.SetPolicySetVersions(NewPolicySetVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
-                    result.SetProjects(NewProjects())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
-                    result.SetStacks(NewStacks())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
-                    result.SetWorkspaces(NewWorkspaces())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewPolicySetsEnvelope_PolicySetsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policies") {
+					result.SetOotbPolicies(NewOotbPolicies())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "ootb-policy-libraries") {
+					result.SetOotbPolicyLibraries(NewOotbPolicyLibraries())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policies") {
+					result.SetPolicies(NewPolicies())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "policy-set-versions") {
+					result.SetPolicySetVersions(NewPolicySetVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+					result.SetProjects(NewProjects())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "stacks") {
+					result.SetStacks(NewStacks())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "workspaces") {
+					result.SetWorkspaces(NewWorkspaces())
+				}
+			}
+		}
+	}
+	return result, nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetOotbPolicies() != nil {
-        return m.GetOotbPolicies().GetFieldDeserializers()
-    } else if m.GetOotbPolicyLibraries() != nil {
-        return m.GetOotbPolicyLibraries().GetFieldDeserializers()
-    } else if m.GetPolicies() != nil {
-        return m.GetPolicies().GetFieldDeserializers()
-    } else if m.GetPolicySetVersions() != nil {
-        return m.GetPolicySetVersions().GetFieldDeserializers()
-    } else if m.GetProjects() != nil {
-        return m.GetProjects().GetFieldDeserializers()
-    } else if m.GetStacks() != nil {
-        return m.GetStacks().GetFieldDeserializers()
-    } else if m.GetWorkspaces() != nil {
-        return m.GetWorkspaces().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetOotbPolicies() != nil {
+		return m.GetOotbPolicies().GetFieldDeserializers()
+	} else if m.GetOotbPolicyLibraries() != nil {
+		return m.GetOotbPolicyLibraries().GetFieldDeserializers()
+	} else if m.GetPolicies() != nil {
+		return m.GetPolicies().GetFieldDeserializers()
+	} else if m.GetPolicySetVersions() != nil {
+		return m.GetPolicySetVersions().GetFieldDeserializers()
+	} else if m.GetProjects() != nil {
+		return m.GetProjects().GetFieldDeserializers()
+	} else if m.GetStacks() != nil {
+		return m.GetStacks().GetFieldDeserializers()
+	} else if m.GetWorkspaces() != nil {
+		return m.GetWorkspaces().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetOotbPolicies gets the ootbPolicies property value. Composed type representation for type OotbPoliciesable
+
+// GetOotbPolicies gets the ootbPolicies property value. Composed type representation for type OotbPolicies
 // returns a OotbPoliciesable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicies()(OotbPoliciesable) {
-    return m.ootbPolicies
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicies() OotbPoliciesable {
+	val, err := m.GetBackingStore().Get("ootbPolicies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OotbPoliciesable)
+	}
+	return nil
 }
-// GetOotbPolicyLibraries gets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibrariesable
+
+// GetOotbPolicyLibraries gets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibraries
 // returns a OotbPolicyLibrariesable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicyLibraries()(OotbPolicyLibrariesable) {
-    return m.ootbPolicyLibraries
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetOotbPolicyLibraries() OotbPolicyLibrariesable {
+	val, err := m.GetBackingStore().Get("ootbPolicyLibraries")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OotbPolicyLibrariesable)
+	}
+	return nil
 }
-// GetPolicies gets the policies property value. Composed type representation for type Policiesable
+
+// GetPolicies gets the policies property value. Composed type representation for type Policies
 // returns a Policiesable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicies()(Policiesable) {
-    return m.policies
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicies() Policiesable {
+	val, err := m.GetBackingStore().Get("policies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Policiesable)
+	}
+	return nil
 }
-// GetPolicySetVersions gets the policySetVersions property value. Composed type representation for type PolicySetVersionsable
+
+// GetPolicySetVersions gets the policySetVersions property value. Composed type representation for type PolicySetVersions
 // returns a PolicySetVersionsable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicySetVersions()(PolicySetVersionsable) {
-    return m.policySetVersions
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetPolicySetVersions() PolicySetVersionsable {
+	val, err := m.GetBackingStore().Get("policySetVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetVersionsable)
+	}
+	return nil
 }
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetProjects()(Projectsable) {
-    return m.projects
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetProjects() Projectsable {
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
-// GetStacks gets the stacks property value. Composed type representation for type Stacksable
+
+// GetStacks gets the stacks property value. Composed type representation for type Stacks
 // returns a Stacksable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetStacks()(Stacksable) {
-    return m.stacks
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetStacks() Stacksable {
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacksable)
+	}
+	return nil
 }
-// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspacesable
+
+// GetWorkspaces gets the workspaces property value. Composed type representation for type Workspaces
 // returns a Workspacesable when successful
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetWorkspaces()(Workspacesable) {
-    return m.workspaces
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) GetWorkspaces() Workspacesable {
+	val, err := m.GetBackingStore().Get("workspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspacesable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetOotbPolicies() != nil {
-        err := writer.WriteObjectValue("", m.GetOotbPolicies())
-        if err != nil {
-            return err
-        }
-    } else if m.GetOotbPolicyLibraries() != nil {
-        err := writer.WriteObjectValue("", m.GetOotbPolicyLibraries())
-        if err != nil {
-            return err
-        }
-    } else if m.GetPolicies() != nil {
-        err := writer.WriteObjectValue("", m.GetPolicies())
-        if err != nil {
-            return err
-        }
-    } else if m.GetPolicySetVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetPolicySetVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetProjects() != nil {
-        err := writer.WriteObjectValue("", m.GetProjects())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStacks() != nil {
-        err := writer.WriteObjectValue("", m.GetStacks())
-        if err != nil {
-            return err
-        }
-    } else if m.GetWorkspaces() != nil {
-        err := writer.WriteObjectValue("", m.GetWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetOotbPolicies() != nil {
+		err := writer.WriteObjectValue("", m.GetOotbPolicies())
+		if err != nil {
+			return err
+		}
+	} else if m.GetOotbPolicyLibraries() != nil {
+		err := writer.WriteObjectValue("", m.GetOotbPolicyLibraries())
+		if err != nil {
+			return err
+		}
+	} else if m.GetPolicies() != nil {
+		err := writer.WriteObjectValue("", m.GetPolicies())
+		if err != nil {
+			return err
+		}
+	} else if m.GetPolicySetVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetPolicySetVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetProjects() != nil {
+		err := writer.WriteObjectValue("", m.GetProjects())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStacks() != nil {
+		err := writer.WriteObjectValue("", m.GetStacks())
+		if err != nil {
+			return err
+		}
+	} else if m.GetWorkspaces() != nil {
+		err := writer.WriteObjectValue("", m.GetWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetOotbPolicies sets the ootbPolicies property value. Composed type representation for type OotbPoliciesable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicies(value OotbPoliciesable)() {
-    m.ootbPolicies = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetOotbPolicyLibraries sets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibrariesable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicyLibraries(value OotbPolicyLibrariesable)() {
-    m.ootbPolicyLibraries = value
+
+// SetOotbPolicies sets the ootbPolicies property value. Composed type representation for type OotbPolicies
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicies(value OotbPoliciesable) {
+	err := m.GetBackingStore().Set("ootbPolicies", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetPolicies sets the policies property value. Composed type representation for type Policiesable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicies(value Policiesable)() {
-    m.policies = value
+
+// SetOotbPolicyLibraries sets the ootbPolicyLibraries property value. Composed type representation for type OotbPolicyLibraries
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetOotbPolicyLibraries(value OotbPolicyLibrariesable) {
+	err := m.GetBackingStore().Set("ootbPolicyLibraries", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetPolicySetVersions sets the policySetVersions property value. Composed type representation for type PolicySetVersionsable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicySetVersions(value PolicySetVersionsable)() {
-    m.policySetVersions = value
+
+// SetPolicies sets the policies property value. Composed type representation for type Policies
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicies(value Policiesable) {
+	err := m.GetBackingStore().Set("policies", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetProjects(value Projectsable)() {
-    m.projects = value
+
+// SetPolicySetVersions sets the policySetVersions property value. Composed type representation for type PolicySetVersions
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetPolicySetVersions(value PolicySetVersionsable) {
+	err := m.GetBackingStore().Set("policySetVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStacks sets the stacks property value. Composed type representation for type Stacksable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetStacks(value Stacksable)() {
-    m.stacks = value
+
+// SetProjects sets the projects property value. Composed type representation for type Projects
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetProjects(value Projectsable) {
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspacesable
-func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetWorkspaces(value Workspacesable)() {
-    m.workspaces = value
+
+// SetStacks sets the stacks property value. Composed type representation for type Stacks
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetStacks(value Stacksable) {
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetWorkspaces sets the workspaces property value. Composed type representation for type Workspaces
+func (m *PolicySetsEnvelope_PolicySetsEnvelope_included) SetWorkspaces(value Workspacesable) {
+	err := m.GetBackingStore().Set("workspaces", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type PolicySetsEnvelope_PolicySetsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetOotbPolicies()(OotbPoliciesable)
-    GetOotbPolicyLibraries()(OotbPolicyLibrariesable)
-    GetPolicies()(Policiesable)
-    GetPolicySetVersions()(PolicySetVersionsable)
-    GetProjects()(Projectsable)
-    GetStacks()(Stacksable)
-    GetWorkspaces()(Workspacesable)
-    SetOotbPolicies(value OotbPoliciesable)()
-    SetOotbPolicyLibraries(value OotbPolicyLibrariesable)()
-    SetPolicies(value Policiesable)()
-    SetPolicySetVersions(value PolicySetVersionsable)()
-    SetProjects(value Projectsable)()
-    SetStacks(value Stacksable)()
-    SetWorkspaces(value Workspacesable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetOotbPolicies() OotbPoliciesable
+	GetOotbPolicyLibraries() OotbPolicyLibrariesable
+	GetPolicies() Policiesable
+	GetPolicySetVersions() PolicySetVersionsable
+	GetProjects() Projectsable
+	GetStacks() Stacksable
+	GetWorkspaces() Workspacesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetOotbPolicies(value OotbPoliciesable)
+	SetOotbPolicyLibraries(value OotbPolicyLibrariesable)
+	SetPolicies(value Policiesable)
+	SetPolicySetVersions(value PolicySetVersionsable)
+	SetProjects(value Projectsable)
+	SetStacks(value Stacksable)
+	SetWorkspaces(value Workspacesable)
 }
+
 // NewPolicySetsEnvelope instantiates a new PolicySetsEnvelope and sets the default values.
-func NewPolicySetsEnvelope()(*PolicySetsEnvelope) {
-    m := &PolicySetsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicySetsEnvelope() *PolicySetsEnvelope {
+	m := &PolicySetsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicySetsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicySetsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicySetsEnvelope(), nil
+func CreatePolicySetsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicySetsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicySetsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicySetsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySetsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a PolicySetsable when successful
-func (m *PolicySetsEnvelope) GetData()(PolicySetsable) {
-    return m.data
+func (m *PolicySetsEnvelope) GetData() PolicySetsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicySetsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(PolicySetsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]PolicySetsEnvelope_PolicySetsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(PolicySetsEnvelope_PolicySetsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicySetsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicySetsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(PolicySetsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreatePolicySetsEnvelope_PolicySetsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]PolicySetsEnvelope_PolicySetsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(PolicySetsEnvelope_PolicySetsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []PolicySetsEnvelope_PolicySetsEnvelope_includedable when successful
-func (m *PolicySetsEnvelope) GetIncluded()([]PolicySetsEnvelope_PolicySetsEnvelope_includedable) {
-    return m.included
+func (m *PolicySetsEnvelope) GetIncluded() []PolicySetsEnvelope_PolicySetsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]PolicySetsEnvelope_PolicySetsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicySetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicySetsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicySetsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicySetsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySetsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *PolicySetsEnvelope) SetData(value PolicySetsable)() {
-    m.data = value
+func (m *PolicySetsEnvelope) SetData(value PolicySetsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable)() {
-    m.included = value
+func (m *PolicySetsEnvelope) SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PolicySetsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(PolicySetsable)
-    GetIncluded()([]PolicySetsEnvelope_PolicySetsEnvelope_includedable)
-    SetData(value PolicySetsable)()
-    SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() PolicySetsable
+	GetIncluded() []PolicySetsEnvelope_PolicySetsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value PolicySetsable)
+	SetIncluded(value []PolicySetsEnvelope_PolicySetsEnvelope_includedable)
 }

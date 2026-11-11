@@ -4,203 +4,286 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TaskResultOutcomes_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // A human-readable description of this outcome.
-    description *string
-    // A unique identifier for this outcome within the run task result.
-    outcomeId *string
-    // An array of tag category objects. Each object has a label (category name) and a value array of tag entries with label and level fields.
-    tags []TaskResultOutcomes_attributes_tagsable
-    // A URL with additional details about this outcome.
-    url *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTaskResultOutcomes_attributes instantiates a new TaskResultOutcomes_attributes and sets the default values.
-func NewTaskResultOutcomes_attributes()(*TaskResultOutcomes_attributes) {
-    m := &TaskResultOutcomes_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTaskResultOutcomes_attributes() *TaskResultOutcomes_attributes {
+	m := &TaskResultOutcomes_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTaskResultOutcomes_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTaskResultOutcomes_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTaskResultOutcomes_attributes(), nil
+func CreateTaskResultOutcomes_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTaskResultOutcomes_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TaskResultOutcomes_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TaskResultOutcomes_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskResultOutcomes_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *TaskResultOutcomes_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *TaskResultOutcomes_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. A human-readable description of this outcome.
 // returns a *string when successful
-func (m *TaskResultOutcomes_attributes) GetDescription()(*string) {
-    return m.description
+func (m *TaskResultOutcomes_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TaskResultOutcomes_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["outcome-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOutcomeId(val)
-        }
-        return nil
-    }
-    res["tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTaskResultOutcomes_attributes_tagsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TaskResultOutcomes_attributes_tagsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TaskResultOutcomes_attributes_tagsable)
-                }
-            }
-            m.SetTags(res)
-        }
-        return nil
-    }
-    res["url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUrl(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TaskResultOutcomes_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["outcome-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOutcomeId(val)
+		}
+		return nil
+	}
+	res["tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTaskResultOutcomes_attributes_tagsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TaskResultOutcomes_attributes_tagsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TaskResultOutcomes_attributes_tagsable)
+				}
+			}
+			m.SetTags(res)
+		}
+		return nil
+	}
+	res["url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUrl(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOutcomeId gets the outcome-id property value. A unique identifier for this outcome within the run task result.
 // returns a *string when successful
-func (m *TaskResultOutcomes_attributes) GetOutcomeId()(*string) {
-    return m.outcomeId
+func (m *TaskResultOutcomes_attributes) GetOutcomeId() *string {
+	val, err := m.GetBackingStore().Get("outcomeId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTags gets the tags property value. An array of tag category objects. Each object has a label (category name) and a value array of tag entries with label and level fields.
 // returns a []TaskResultOutcomes_attributes_tagsable when successful
-func (m *TaskResultOutcomes_attributes) GetTags()([]TaskResultOutcomes_attributes_tagsable) {
-    return m.tags
+func (m *TaskResultOutcomes_attributes) GetTags() []TaskResultOutcomes_attributes_tagsable {
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TaskResultOutcomes_attributes_tagsable)
+	}
+	return nil
 }
+
 // GetUrl gets the url property value. A URL with additional details about this outcome.
 // returns a *string when successful
-func (m *TaskResultOutcomes_attributes) GetUrl()(*string) {
-    return m.url
+func (m *TaskResultOutcomes_attributes) GetUrl() *string {
+	val, err := m.GetBackingStore().Get("url")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TaskResultOutcomes_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("outcome-id", m.GetOutcomeId())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTags() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTags()))
-        for i, v := range m.GetTags() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("tags", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("url", m.GetUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TaskResultOutcomes_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("outcome-id", m.GetOutcomeId())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTags() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetTags()))
+		for i, v := range m.GetTags() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("tags", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("url", m.GetUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TaskResultOutcomes_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TaskResultOutcomes_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskResultOutcomes_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *TaskResultOutcomes_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *TaskResultOutcomes_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. A human-readable description of this outcome.
-func (m *TaskResultOutcomes_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *TaskResultOutcomes_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOutcomeId sets the outcome-id property value. A unique identifier for this outcome within the run task result.
-func (m *TaskResultOutcomes_attributes) SetOutcomeId(value *string)() {
-    m.outcomeId = value
+func (m *TaskResultOutcomes_attributes) SetOutcomeId(value *string) {
+	err := m.GetBackingStore().Set("outcomeId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTags sets the tags property value. An array of tag category objects. Each object has a label (category name) and a value array of tag entries with label and level fields.
-func (m *TaskResultOutcomes_attributes) SetTags(value []TaskResultOutcomes_attributes_tagsable)() {
-    m.tags = value
+func (m *TaskResultOutcomes_attributes) SetTags(value []TaskResultOutcomes_attributes_tagsable) {
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUrl sets the url property value. A URL with additional details about this outcome.
-func (m *TaskResultOutcomes_attributes) SetUrl(value *string)() {
-    m.url = value
+func (m *TaskResultOutcomes_attributes) SetUrl(value *string) {
+	err := m.GetBackingStore().Set("url", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TaskResultOutcomes_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDescription()(*string)
-    GetOutcomeId()(*string)
-    GetTags()([]TaskResultOutcomes_attributes_tagsable)
-    GetUrl()(*string)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDescription(value *string)()
-    SetOutcomeId(value *string)()
-    SetTags(value []TaskResultOutcomes_attributes_tagsable)()
-    SetUrl(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDescription() *string
+	GetOutcomeId() *string
+	GetTags() []TaskResultOutcomes_attributes_tagsable
+	GetUrl() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDescription(value *string)
+	SetOutcomeId(value *string)
+	SetTags(value []TaskResultOutcomes_attributes_tagsable)
+	SetUrl(value *string)
 }

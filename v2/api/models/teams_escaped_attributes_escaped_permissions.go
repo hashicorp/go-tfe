@@ -4,313 +4,436 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // Teams_attributes_permissions permissions for the current user on this team.
 type Teams_attributes_permissions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The canDestroy property
-    canDestroy *bool
-    // The canUpdateApiToken property
-    canUpdateApiToken *bool
-    // The canUpdateMembership property
-    canUpdateMembership *bool
-    // The canUpdateMemberTokenManagement property
-    canUpdateMemberTokenManagement *bool
-    // The canUpdateName property
-    canUpdateName *bool
-    // The canUpdateOrganizationAccess property
-    canUpdateOrganizationAccess *bool
-    // The canUpdateSsoTeamId property
-    canUpdateSsoTeamId *bool
-    // The canUpdateVisibility property
-    canUpdateVisibility *bool
-    // The canViewApiToken property
-    canViewApiToken *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTeams_attributes_permissions instantiates a new Teams_attributes_permissions and sets the default values.
-func NewTeams_attributes_permissions()(*Teams_attributes_permissions) {
-    m := &Teams_attributes_permissions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTeams_attributes_permissions() *Teams_attributes_permissions {
+	m := &Teams_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTeams_attributes_permissionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTeams_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTeams_attributes_permissions(), nil
+func CreateTeams_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTeams_attributes_permissions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Teams_attributes_permissions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Teams_attributes_permissions) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Teams_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanDestroy gets the can-destroy property value. The canDestroy property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanDestroy()(*bool) {
-    return m.canDestroy
+func (m *Teams_attributes_permissions) GetCanDestroy() *bool {
+	val, err := m.GetBackingStore().Get("canDestroy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateApiToken gets the can-update-api-token property value. The canUpdateApiToken property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateApiToken()(*bool) {
-    return m.canUpdateApiToken
+func (m *Teams_attributes_permissions) GetCanUpdateApiToken() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateApiToken")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateMembership gets the can-update-membership property value. The canUpdateMembership property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateMembership()(*bool) {
-    return m.canUpdateMembership
+func (m *Teams_attributes_permissions) GetCanUpdateMembership() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateMembership")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateMemberTokenManagement gets the can-update-member-token-management property value. The canUpdateMemberTokenManagement property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateMemberTokenManagement()(*bool) {
-    return m.canUpdateMemberTokenManagement
+func (m *Teams_attributes_permissions) GetCanUpdateMemberTokenManagement() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateMemberTokenManagement")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateName gets the can-update-name property value. The canUpdateName property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateName()(*bool) {
-    return m.canUpdateName
+func (m *Teams_attributes_permissions) GetCanUpdateName() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateOrganizationAccess gets the can-update-organization-access property value. The canUpdateOrganizationAccess property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateOrganizationAccess()(*bool) {
-    return m.canUpdateOrganizationAccess
+func (m *Teams_attributes_permissions) GetCanUpdateOrganizationAccess() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateOrganizationAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateSsoTeamId gets the can-update-sso-team-id property value. The canUpdateSsoTeamId property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateSsoTeamId()(*bool) {
-    return m.canUpdateSsoTeamId
+func (m *Teams_attributes_permissions) GetCanUpdateSsoTeamId() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateSsoTeamId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanUpdateVisibility gets the can-update-visibility property value. The canUpdateVisibility property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanUpdateVisibility()(*bool) {
-    return m.canUpdateVisibility
+func (m *Teams_attributes_permissions) GetCanUpdateVisibility() *bool {
+	val, err := m.GetBackingStore().Get("canUpdateVisibility")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanViewApiToken gets the can-view-api-token property value. The canViewApiToken property
 // returns a *bool when successful
-func (m *Teams_attributes_permissions) GetCanViewApiToken()(*bool) {
-    return m.canViewApiToken
+func (m *Teams_attributes_permissions) GetCanViewApiToken() *bool {
+	val, err := m.GetBackingStore().Get("canViewApiToken")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Teams_attributes_permissions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["can-destroy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanDestroy(val)
-        }
-        return nil
-    }
-    res["can-update-api-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateApiToken(val)
-        }
-        return nil
-    }
-    res["can-update-membership"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateMembership(val)
-        }
-        return nil
-    }
-    res["can-update-member-token-management"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateMemberTokenManagement(val)
-        }
-        return nil
-    }
-    res["can-update-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateName(val)
-        }
-        return nil
-    }
-    res["can-update-organization-access"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateOrganizationAccess(val)
-        }
-        return nil
-    }
-    res["can-update-sso-team-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateSsoTeamId(val)
-        }
-        return nil
-    }
-    res["can-update-visibility"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanUpdateVisibility(val)
-        }
-        return nil
-    }
-    res["can-view-api-token"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanViewApiToken(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Teams_attributes_permissions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["can-destroy"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanDestroy(val)
+		}
+		return nil
+	}
+	res["can-update-api-token"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateApiToken(val)
+		}
+		return nil
+	}
+	res["can-update-membership"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateMembership(val)
+		}
+		return nil
+	}
+	res["can-update-member-token-management"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateMemberTokenManagement(val)
+		}
+		return nil
+	}
+	res["can-update-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateName(val)
+		}
+		return nil
+	}
+	res["can-update-organization-access"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateOrganizationAccess(val)
+		}
+		return nil
+	}
+	res["can-update-sso-team-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateSsoTeamId(val)
+		}
+		return nil
+	}
+	res["can-update-visibility"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanUpdateVisibility(val)
+		}
+		return nil
+	}
+	res["can-view-api-token"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanViewApiToken(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *Teams_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("can-destroy", m.GetCanDestroy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-api-token", m.GetCanUpdateApiToken())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-membership", m.GetCanUpdateMembership())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-member-token-management", m.GetCanUpdateMemberTokenManagement())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-name", m.GetCanUpdateName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-organization-access", m.GetCanUpdateOrganizationAccess())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-sso-team-id", m.GetCanUpdateSsoTeamId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-update-visibility", m.GetCanUpdateVisibility())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-view-api-token", m.GetCanViewApiToken())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Teams_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("can-destroy", m.GetCanDestroy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-api-token", m.GetCanUpdateApiToken())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-membership", m.GetCanUpdateMembership())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-member-token-management", m.GetCanUpdateMemberTokenManagement())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-name", m.GetCanUpdateName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-organization-access", m.GetCanUpdateOrganizationAccess())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-sso-team-id", m.GetCanUpdateSsoTeamId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-update-visibility", m.GetCanUpdateVisibility())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-view-api-token", m.GetCanViewApiToken())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Teams_attributes_permissions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Teams_attributes_permissions) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Teams_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanDestroy sets the can-destroy property value. The canDestroy property
-func (m *Teams_attributes_permissions) SetCanDestroy(value *bool)() {
-    m.canDestroy = value
+func (m *Teams_attributes_permissions) SetCanDestroy(value *bool) {
+	err := m.GetBackingStore().Set("canDestroy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateApiToken sets the can-update-api-token property value. The canUpdateApiToken property
-func (m *Teams_attributes_permissions) SetCanUpdateApiToken(value *bool)() {
-    m.canUpdateApiToken = value
+func (m *Teams_attributes_permissions) SetCanUpdateApiToken(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateApiToken", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateMembership sets the can-update-membership property value. The canUpdateMembership property
-func (m *Teams_attributes_permissions) SetCanUpdateMembership(value *bool)() {
-    m.canUpdateMembership = value
+func (m *Teams_attributes_permissions) SetCanUpdateMembership(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateMembership", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateMemberTokenManagement sets the can-update-member-token-management property value. The canUpdateMemberTokenManagement property
-func (m *Teams_attributes_permissions) SetCanUpdateMemberTokenManagement(value *bool)() {
-    m.canUpdateMemberTokenManagement = value
+func (m *Teams_attributes_permissions) SetCanUpdateMemberTokenManagement(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateMemberTokenManagement", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateName sets the can-update-name property value. The canUpdateName property
-func (m *Teams_attributes_permissions) SetCanUpdateName(value *bool)() {
-    m.canUpdateName = value
+func (m *Teams_attributes_permissions) SetCanUpdateName(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateOrganizationAccess sets the can-update-organization-access property value. The canUpdateOrganizationAccess property
-func (m *Teams_attributes_permissions) SetCanUpdateOrganizationAccess(value *bool)() {
-    m.canUpdateOrganizationAccess = value
+func (m *Teams_attributes_permissions) SetCanUpdateOrganizationAccess(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateOrganizationAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateSsoTeamId sets the can-update-sso-team-id property value. The canUpdateSsoTeamId property
-func (m *Teams_attributes_permissions) SetCanUpdateSsoTeamId(value *bool)() {
-    m.canUpdateSsoTeamId = value
+func (m *Teams_attributes_permissions) SetCanUpdateSsoTeamId(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateSsoTeamId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanUpdateVisibility sets the can-update-visibility property value. The canUpdateVisibility property
-func (m *Teams_attributes_permissions) SetCanUpdateVisibility(value *bool)() {
-    m.canUpdateVisibility = value
+func (m *Teams_attributes_permissions) SetCanUpdateVisibility(value *bool) {
+	err := m.GetBackingStore().Set("canUpdateVisibility", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanViewApiToken sets the can-view-api-token property value. The canViewApiToken property
-func (m *Teams_attributes_permissions) SetCanViewApiToken(value *bool)() {
-    m.canViewApiToken = value
+func (m *Teams_attributes_permissions) SetCanViewApiToken(value *bool) {
+	err := m.GetBackingStore().Set("canViewApiToken", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Teams_attributes_permissionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCanDestroy()(*bool)
-    GetCanUpdateApiToken()(*bool)
-    GetCanUpdateMembership()(*bool)
-    GetCanUpdateMemberTokenManagement()(*bool)
-    GetCanUpdateName()(*bool)
-    GetCanUpdateOrganizationAccess()(*bool)
-    GetCanUpdateSsoTeamId()(*bool)
-    GetCanUpdateVisibility()(*bool)
-    GetCanViewApiToken()(*bool)
-    SetCanDestroy(value *bool)()
-    SetCanUpdateApiToken(value *bool)()
-    SetCanUpdateMembership(value *bool)()
-    SetCanUpdateMemberTokenManagement(value *bool)()
-    SetCanUpdateName(value *bool)()
-    SetCanUpdateOrganizationAccess(value *bool)()
-    SetCanUpdateSsoTeamId(value *bool)()
-    SetCanUpdateVisibility(value *bool)()
-    SetCanViewApiToken(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanDestroy() *bool
+	GetCanUpdateApiToken() *bool
+	GetCanUpdateMembership() *bool
+	GetCanUpdateMemberTokenManagement() *bool
+	GetCanUpdateName() *bool
+	GetCanUpdateOrganizationAccess() *bool
+	GetCanUpdateSsoTeamId() *bool
+	GetCanUpdateVisibility() *bool
+	GetCanViewApiToken() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanDestroy(value *bool)
+	SetCanUpdateApiToken(value *bool)
+	SetCanUpdateMembership(value *bool)
+	SetCanUpdateMemberTokenManagement(value *bool)
+	SetCanUpdateName(value *bool)
+	SetCanUpdateOrganizationAccess(value *bool)
+	SetCanUpdateSsoTeamId(value *bool)
+	SetCanUpdateVisibility(value *bool)
+	SetCanViewApiToken(value *bool)
 }

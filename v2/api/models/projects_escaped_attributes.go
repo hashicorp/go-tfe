@@ -4,396 +4,549 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Projects_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The autoDestroyActivityDuration property
-    autoDestroyActivityDuration *string
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The defaultExecutionMode property
-    defaultExecutionMode *Projects_attributes_defaultExecutionMode
-    // The description property
-    description *string
-    // This attribute is only available in HCP Terraform.
-    hcpId *string
-    // This attribute is only available in HCP Terraform.
-    isUnified *bool
-    // The name property
-    name *string
-    // The permissions property
-    permissions Projects_attributes_permissionsable
-    // The settingOverwrites property
-    settingOverwrites Projects_attributes_settingOverwritesable
-    // The stacksDefaultExecutionMode property
-    stacksDefaultExecutionMode *Projects_attributes_stacksDefaultExecutionMode
-    // The teamCount property
-    teamCount *int32
-    // The workspaceCount property
-    workspaceCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewProjects_attributes instantiates a new Projects_attributes and sets the default values.
-func NewProjects_attributes()(*Projects_attributes) {
-    m := &Projects_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewProjects_attributes() *Projects_attributes {
+	m := &Projects_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateProjects_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateProjects_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewProjects_attributes(), nil
+func CreateProjects_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewProjects_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Projects_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Projects_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAutoDestroyActivityDuration gets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
 // returns a *string when successful
-func (m *Projects_attributes) GetAutoDestroyActivityDuration()(*string) {
-    return m.autoDestroyActivityDuration
+func (m *Projects_attributes) GetAutoDestroyActivityDuration() *string {
+	val, err := m.GetBackingStore().Get("autoDestroyActivityDuration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Projects_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *Projects_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *Projects_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDefaultExecutionMode gets the default-execution-mode property value. The defaultExecutionMode property
 // returns a *Projects_attributes_defaultExecutionMode when successful
-func (m *Projects_attributes) GetDefaultExecutionMode()(*Projects_attributes_defaultExecutionMode) {
-    return m.defaultExecutionMode
+func (m *Projects_attributes) GetDefaultExecutionMode() *Projects_attributes_defaultExecutionMode {
+	val, err := m.GetBackingStore().Get("defaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Projects_attributes_defaultExecutionMode)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
-func (m *Projects_attributes) GetDescription()(*string) {
-    return m.description
+func (m *Projects_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Projects_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["auto-destroy-activity-duration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAutoDestroyActivityDuration(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseProjects_attributes_defaultExecutionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultExecutionMode(val.(*Projects_attributes_defaultExecutionMode))
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["hcp-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHcpId(val)
-        }
-        return nil
-    }
-    res["is-unified"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsUnified(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjects_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(Projects_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjects_attributes_settingOverwritesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSettingOverwrites(val.(Projects_attributes_settingOverwritesable))
-        }
-        return nil
-    }
-    res["stacks-default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseProjects_attributes_stacksDefaultExecutionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksDefaultExecutionMode(val.(*Projects_attributes_stacksDefaultExecutionMode))
-        }
-        return nil
-    }
-    res["team-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTeamCount(val)
-        }
-        return nil
-    }
-    res["workspace-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Projects_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["auto-destroy-activity-duration"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAutoDestroyActivityDuration(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseProjects_attributes_defaultExecutionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultExecutionMode(val.(*Projects_attributes_defaultExecutionMode))
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["hcp-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHcpId(val)
+		}
+		return nil
+	}
+	res["is-unified"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsUnified(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjects_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(Projects_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["setting-overwrites"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjects_attributes_settingOverwritesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSettingOverwrites(val.(Projects_attributes_settingOverwritesable))
+		}
+		return nil
+	}
+	res["stacks-default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseProjects_attributes_stacksDefaultExecutionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksDefaultExecutionMode(val.(*Projects_attributes_stacksDefaultExecutionMode))
+		}
+		return nil
+	}
+	res["team-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTeamCount(val)
+		}
+		return nil
+	}
+	res["workspace-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHcpId gets the hcp-id property value. This attribute is only available in HCP Terraform.
 // returns a *string when successful
-func (m *Projects_attributes) GetHcpId()(*string) {
-    return m.hcpId
+func (m *Projects_attributes) GetHcpId() *string {
+	val, err := m.GetBackingStore().Get("hcpId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIsUnified gets the is-unified property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
-func (m *Projects_attributes) GetIsUnified()(*bool) {
-    return m.isUnified
+func (m *Projects_attributes) GetIsUnified() *bool {
+	val, err := m.GetBackingStore().Get("isUnified")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *Projects_attributes) GetName()(*string) {
-    return m.name
+func (m *Projects_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Projects_attributes_permissionsable when successful
-func (m *Projects_attributes) GetPermissions()(Projects_attributes_permissionsable) {
-    return m.permissions
+func (m *Projects_attributes) GetPermissions() Projects_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projects_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Projects_attributes_settingOverwritesable when successful
-func (m *Projects_attributes) GetSettingOverwrites()(Projects_attributes_settingOverwritesable) {
-    return m.settingOverwrites
+func (m *Projects_attributes) GetSettingOverwrites() Projects_attributes_settingOverwritesable {
+	val, err := m.GetBackingStore().Get("settingOverwrites")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projects_attributes_settingOverwritesable)
+	}
+	return nil
 }
+
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *Projects_attributes_stacksDefaultExecutionMode when successful
-func (m *Projects_attributes) GetStacksDefaultExecutionMode()(*Projects_attributes_stacksDefaultExecutionMode) {
-    return m.stacksDefaultExecutionMode
+func (m *Projects_attributes) GetStacksDefaultExecutionMode() *Projects_attributes_stacksDefaultExecutionMode {
+	val, err := m.GetBackingStore().Get("stacksDefaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Projects_attributes_stacksDefaultExecutionMode)
+	}
+	return nil
 }
+
 // GetTeamCount gets the team-count property value. The teamCount property
 // returns a *int32 when successful
-func (m *Projects_attributes) GetTeamCount()(*int32) {
-    return m.teamCount
+func (m *Projects_attributes) GetTeamCount() *int32 {
+	val, err := m.GetBackingStore().Get("teamCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetWorkspaceCount gets the workspace-count property value. The workspaceCount property
 // returns a *int32 when successful
-func (m *Projects_attributes) GetWorkspaceCount()(*int32) {
-    return m.workspaceCount
+func (m *Projects_attributes) GetWorkspaceCount() *int32 {
+	val, err := m.GetBackingStore().Get("workspaceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Projects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("auto-destroy-activity-duration", m.GetAutoDestroyActivityDuration())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetDefaultExecutionMode() != nil {
-        cast := (*m.GetDefaultExecutionMode()).String()
-        err := writer.WriteStringValue("default-execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("hcp-id", m.GetHcpId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-unified", m.GetIsUnified())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("permissions", m.GetPermissions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStacksDefaultExecutionMode() != nil {
-        cast := (*m.GetStacksDefaultExecutionMode()).String()
-        err := writer.WriteStringValue("stacks-default-execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("team-count", m.GetTeamCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("workspace-count", m.GetWorkspaceCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Projects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("auto-destroy-activity-duration", m.GetAutoDestroyActivityDuration())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetDefaultExecutionMode() != nil {
+		cast := (*m.GetDefaultExecutionMode()).String()
+		err := writer.WriteStringValue("default-execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("hcp-id", m.GetHcpId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-unified", m.GetIsUnified())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("permissions", m.GetPermissions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStacksDefaultExecutionMode() != nil {
+		cast := (*m.GetStacksDefaultExecutionMode()).String()
+		err := writer.WriteStringValue("stacks-default-execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("team-count", m.GetTeamCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("workspace-count", m.GetWorkspaceCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Projects_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Projects_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAutoDestroyActivityDuration sets the auto-destroy-activity-duration property value. The autoDestroyActivityDuration property
-func (m *Projects_attributes) SetAutoDestroyActivityDuration(value *string)() {
-    m.autoDestroyActivityDuration = value
+func (m *Projects_attributes) SetAutoDestroyActivityDuration(value *string) {
+	err := m.GetBackingStore().Set("autoDestroyActivityDuration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Projects_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *Projects_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *Projects_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDefaultExecutionMode sets the default-execution-mode property value. The defaultExecutionMode property
-func (m *Projects_attributes) SetDefaultExecutionMode(value *Projects_attributes_defaultExecutionMode)() {
-    m.defaultExecutionMode = value
+func (m *Projects_attributes) SetDefaultExecutionMode(value *Projects_attributes_defaultExecutionMode) {
+	err := m.GetBackingStore().Set("defaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. The description property
-func (m *Projects_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *Projects_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHcpId sets the hcp-id property value. This attribute is only available in HCP Terraform.
-func (m *Projects_attributes) SetHcpId(value *string)() {
-    m.hcpId = value
+func (m *Projects_attributes) SetHcpId(value *string) {
+	err := m.GetBackingStore().Set("hcpId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsUnified sets the is-unified property value. This attribute is only available in HCP Terraform.
-func (m *Projects_attributes) SetIsUnified(value *bool)() {
-    m.isUnified = value
+func (m *Projects_attributes) SetIsUnified(value *bool) {
+	err := m.GetBackingStore().Set("isUnified", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *Projects_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Projects_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *Projects_attributes) SetPermissions(value Projects_attributes_permissionsable)() {
-    m.permissions = value
+func (m *Projects_attributes) SetPermissions(value Projects_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
-func (m *Projects_attributes) SetSettingOverwrites(value Projects_attributes_settingOverwritesable)() {
-    m.settingOverwrites = value
+func (m *Projects_attributes) SetSettingOverwrites(value Projects_attributes_settingOverwritesable) {
+	err := m.GetBackingStore().Set("settingOverwrites", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
-func (m *Projects_attributes) SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)() {
-    m.stacksDefaultExecutionMode = value
+func (m *Projects_attributes) SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode) {
+	err := m.GetBackingStore().Set("stacksDefaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTeamCount sets the team-count property value. The teamCount property
-func (m *Projects_attributes) SetTeamCount(value *int32)() {
-    m.teamCount = value
+func (m *Projects_attributes) SetTeamCount(value *int32) {
+	err := m.GetBackingStore().Set("teamCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspaceCount sets the workspace-count property value. The workspaceCount property
-func (m *Projects_attributes) SetWorkspaceCount(value *int32)() {
-    m.workspaceCount = value
+func (m *Projects_attributes) SetWorkspaceCount(value *int32) {
+	err := m.GetBackingStore().Set("workspaceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Projects_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAutoDestroyActivityDuration()(*string)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDefaultExecutionMode()(*Projects_attributes_defaultExecutionMode)
-    GetDescription()(*string)
-    GetHcpId()(*string)
-    GetIsUnified()(*bool)
-    GetName()(*string)
-    GetPermissions()(Projects_attributes_permissionsable)
-    GetSettingOverwrites()(Projects_attributes_settingOverwritesable)
-    GetStacksDefaultExecutionMode()(*Projects_attributes_stacksDefaultExecutionMode)
-    GetTeamCount()(*int32)
-    GetWorkspaceCount()(*int32)
-    SetAutoDestroyActivityDuration(value *string)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDefaultExecutionMode(value *Projects_attributes_defaultExecutionMode)()
-    SetDescription(value *string)()
-    SetHcpId(value *string)()
-    SetIsUnified(value *bool)()
-    SetName(value *string)()
-    SetPermissions(value Projects_attributes_permissionsable)()
-    SetSettingOverwrites(value Projects_attributes_settingOverwritesable)()
-    SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)()
-    SetTeamCount(value *int32)()
-    SetWorkspaceCount(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAutoDestroyActivityDuration() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDefaultExecutionMode() *Projects_attributes_defaultExecutionMode
+	GetDescription() *string
+	GetHcpId() *string
+	GetIsUnified() *bool
+	GetName() *string
+	GetPermissions() Projects_attributes_permissionsable
+	GetSettingOverwrites() Projects_attributes_settingOverwritesable
+	GetStacksDefaultExecutionMode() *Projects_attributes_stacksDefaultExecutionMode
+	GetTeamCount() *int32
+	GetWorkspaceCount() *int32
+	SetAutoDestroyActivityDuration(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDefaultExecutionMode(value *Projects_attributes_defaultExecutionMode)
+	SetDescription(value *string)
+	SetHcpId(value *string)
+	SetIsUnified(value *bool)
+	SetName(value *string)
+	SetPermissions(value Projects_attributes_permissionsable)
+	SetSettingOverwrites(value Projects_attributes_settingOverwritesable)
+	SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)
+	SetTeamCount(value *int32)
+	SetWorkspaceCount(value *int32)
 }

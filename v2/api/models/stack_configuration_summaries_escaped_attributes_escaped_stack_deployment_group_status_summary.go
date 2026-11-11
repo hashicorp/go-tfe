@@ -4,226 +4,319 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary contains a count of the number of deployment groups in each state.
 type StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary struct {
-    // The abandoned property
-    abandoned *int32
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The deploying property
-    deploying *int32
-    // The failed property
-    failed *int32
-    // The pending property
-    pending *int32
-    // The preDeploying property
-    preDeploying *int32
-    // The succeeded property
-    succeeded *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary instantiates a new StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary and sets the default values.
-func NewStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary()(*StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) {
-    m := &StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary() *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary {
+	m := &StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary(), nil
+func CreateStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary(), nil
 }
+
 // GetAbandoned gets the abandoned property value. The abandoned property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetAbandoned()(*int32) {
-    return m.abandoned
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetAbandoned() *int32 {
+	val, err := m.GetBackingStore().Get("abandoned")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDeploying gets the deploying property value. The deploying property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetDeploying()(*int32) {
-    return m.deploying
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetDeploying() *int32 {
+	val, err := m.GetBackingStore().Get("deploying")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFailed gets the failed property value. The failed property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetFailed()(*int32) {
-    return m.failed
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetFailed() *int32 {
+	val, err := m.GetBackingStore().Get("failed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["abandoned"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAbandoned(val)
-        }
-        return nil
-    }
-    res["deploying"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeploying(val)
-        }
-        return nil
-    }
-    res["failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFailed(val)
-        }
-        return nil
-    }
-    res["pending"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPending(val)
-        }
-        return nil
-    }
-    res["pre-deploying"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPreDeploying(val)
-        }
-        return nil
-    }
-    res["succeeded"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSucceeded(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["abandoned"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAbandoned(val)
+		}
+		return nil
+	}
+	res["deploying"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeploying(val)
+		}
+		return nil
+	}
+	res["failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFailed(val)
+		}
+		return nil
+	}
+	res["pending"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPending(val)
+		}
+		return nil
+	}
+	res["pre-deploying"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPreDeploying(val)
+		}
+		return nil
+	}
+	res["succeeded"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSucceeded(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPending gets the pending property value. The pending property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetPending()(*int32) {
-    return m.pending
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetPending() *int32 {
+	val, err := m.GetBackingStore().Get("pending")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPreDeploying gets the pre-deploying property value. The preDeploying property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetPreDeploying()(*int32) {
-    return m.preDeploying
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetPreDeploying() *int32 {
+	val, err := m.GetBackingStore().Get("preDeploying")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSucceeded gets the succeeded property value. The succeeded property
 // returns a *int32 when successful
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetSucceeded()(*int32) {
-    return m.succeeded
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) GetSucceeded() *int32 {
+	val, err := m.GetBackingStore().Get("succeeded")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("abandoned", m.GetAbandoned())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("deploying", m.GetDeploying())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("failed", m.GetFailed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("pending", m.GetPending())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("pre-deploying", m.GetPreDeploying())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("succeeded", m.GetSucceeded())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("abandoned", m.GetAbandoned())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("deploying", m.GetDeploying())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("failed", m.GetFailed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("pending", m.GetPending())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("pre-deploying", m.GetPreDeploying())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("succeeded", m.GetSucceeded())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAbandoned sets the abandoned property value. The abandoned property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetAbandoned(value *int32)() {
-    m.abandoned = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetAbandoned(value *int32) {
+	err := m.GetBackingStore().Set("abandoned", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDeploying sets the deploying property value. The deploying property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetDeploying(value *int32)() {
-    m.deploying = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetDeploying(value *int32) {
+	err := m.GetBackingStore().Set("deploying", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFailed sets the failed property value. The failed property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetFailed(value *int32)() {
-    m.failed = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetFailed(value *int32) {
+	err := m.GetBackingStore().Set("failed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPending sets the pending property value. The pending property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetPending(value *int32)() {
-    m.pending = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetPending(value *int32) {
+	err := m.GetBackingStore().Set("pending", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPreDeploying sets the pre-deploying property value. The preDeploying property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetPreDeploying(value *int32)() {
-    m.preDeploying = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetPreDeploying(value *int32) {
+	err := m.GetBackingStore().Set("preDeploying", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSucceeded sets the succeeded property value. The succeeded property
-func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetSucceeded(value *int32)() {
-    m.succeeded = value
+func (m *StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummary) SetSucceeded(value *int32) {
+	err := m.GetBackingStore().Set("succeeded", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackConfigurationSummaries_attributes_stackDeploymentGroupStatusSummaryable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAbandoned()(*int32)
-    GetDeploying()(*int32)
-    GetFailed()(*int32)
-    GetPending()(*int32)
-    GetPreDeploying()(*int32)
-    GetSucceeded()(*int32)
-    SetAbandoned(value *int32)()
-    SetDeploying(value *int32)()
-    SetFailed(value *int32)()
-    SetPending(value *int32)()
-    SetPreDeploying(value *int32)()
-    SetSucceeded(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAbandoned() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDeploying() *int32
+	GetFailed() *int32
+	GetPending() *int32
+	GetPreDeploying() *int32
+	GetSucceeded() *int32
+	SetAbandoned(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDeploying(value *int32)
+	SetFailed(value *int32)
+	SetPending(value *int32)
+	SetPreDeploying(value *int32)
+	SetSucceeded(value *int32)
 }

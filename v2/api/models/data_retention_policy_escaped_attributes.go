@@ -4,341 +4,474 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type DataRetentionPolicy_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The configurationVersionsDeleteAfterNDays property
-    configurationVersionsDeleteAfterNDays *int32
-    // The configurationVersionsKeepLatestCount property
-    configurationVersionsKeepLatestCount *int32
-    // The deleteConfigurationVersions property
-    deleteConfigurationVersions *bool
-    // The deleteOlderThanNDays property
-    deleteOlderThanNDays *int32
-    // The deleteRunDataAndLogs property
-    deleteRunDataAndLogs *bool
-    // The deleteStateVersions property
-    deleteStateVersions *bool
-    // The runDataAndLogsDeleteAfterNDays property
-    runDataAndLogsDeleteAfterNDays *int32
-    // The runDataKeepLatestCount property
-    runDataKeepLatestCount *int32
-    // The stateVersionsDeleteAfterNDays property
-    stateVersionsDeleteAfterNDays *int32
-    // The stateVersionsKeepLatestCount property
-    stateVersionsKeepLatestCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewDataRetentionPolicy_attributes instantiates a new DataRetentionPolicy_attributes and sets the default values.
-func NewDataRetentionPolicy_attributes()(*DataRetentionPolicy_attributes) {
-    m := &DataRetentionPolicy_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewDataRetentionPolicy_attributes() *DataRetentionPolicy_attributes {
+	m := &DataRetentionPolicy_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateDataRetentionPolicy_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateDataRetentionPolicy_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewDataRetentionPolicy_attributes(), nil
+func CreateDataRetentionPolicy_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewDataRetentionPolicy_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *DataRetentionPolicy_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *DataRetentionPolicy_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *DataRetentionPolicy_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetConfigurationVersionsDeleteAfterNDays gets the configuration-versions-delete-after-n-days property value. The configurationVersionsDeleteAfterNDays property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsDeleteAfterNDays()(*int32) {
-    return m.configurationVersionsDeleteAfterNDays
+func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsDeleteAfterNDays() *int32 {
+	val, err := m.GetBackingStore().Get("configurationVersionsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetConfigurationVersionsKeepLatestCount gets the configuration-versions-keep-latest-count property value. The configurationVersionsKeepLatestCount property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsKeepLatestCount()(*int32) {
-    return m.configurationVersionsKeepLatestCount
+func (m *DataRetentionPolicy_attributes) GetConfigurationVersionsKeepLatestCount() *int32 {
+	val, err := m.GetBackingStore().Get("configurationVersionsKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetDeleteConfigurationVersions gets the delete-configuration-versions property value. The deleteConfigurationVersions property
 // returns a *bool when successful
-func (m *DataRetentionPolicy_attributes) GetDeleteConfigurationVersions()(*bool) {
-    return m.deleteConfigurationVersions
+func (m *DataRetentionPolicy_attributes) GetDeleteConfigurationVersions() *bool {
+	val, err := m.GetBackingStore().Get("deleteConfigurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDeleteOlderThanNDays gets the delete-older-than-n-days property value. The deleteOlderThanNDays property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetDeleteOlderThanNDays()(*int32) {
-    return m.deleteOlderThanNDays
+func (m *DataRetentionPolicy_attributes) GetDeleteOlderThanNDays() *int32 {
+	val, err := m.GetBackingStore().Get("deleteOlderThanNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetDeleteRunDataAndLogs gets the delete-run-data-and-logs property value. The deleteRunDataAndLogs property
 // returns a *bool when successful
-func (m *DataRetentionPolicy_attributes) GetDeleteRunDataAndLogs()(*bool) {
-    return m.deleteRunDataAndLogs
+func (m *DataRetentionPolicy_attributes) GetDeleteRunDataAndLogs() *bool {
+	val, err := m.GetBackingStore().Get("deleteRunDataAndLogs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDeleteStateVersions gets the delete-state-versions property value. The deleteStateVersions property
 // returns a *bool when successful
-func (m *DataRetentionPolicy_attributes) GetDeleteStateVersions()(*bool) {
-    return m.deleteStateVersions
+func (m *DataRetentionPolicy_attributes) GetDeleteStateVersions() *bool {
+	val, err := m.GetBackingStore().Get("deleteStateVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *DataRetentionPolicy_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["configuration-versions-delete-after-n-days"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConfigurationVersionsDeleteAfterNDays(val)
-        }
-        return nil
-    }
-    res["configuration-versions-keep-latest-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetConfigurationVersionsKeepLatestCount(val)
-        }
-        return nil
-    }
-    res["delete-configuration-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeleteConfigurationVersions(val)
-        }
-        return nil
-    }
-    res["delete-older-than-n-days"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeleteOlderThanNDays(val)
-        }
-        return nil
-    }
-    res["delete-run-data-and-logs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeleteRunDataAndLogs(val)
-        }
-        return nil
-    }
-    res["delete-state-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeleteStateVersions(val)
-        }
-        return nil
-    }
-    res["run-data-and-logs-delete-after-n-days"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunDataAndLogsDeleteAfterNDays(val)
-        }
-        return nil
-    }
-    res["run-data-keep-latest-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunDataKeepLatestCount(val)
-        }
-        return nil
-    }
-    res["state-versions-delete-after-n-days"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStateVersionsDeleteAfterNDays(val)
-        }
-        return nil
-    }
-    res["state-versions-keep-latest-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStateVersionsKeepLatestCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *DataRetentionPolicy_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["configuration-versions-delete-after-n-days"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConfigurationVersionsDeleteAfterNDays(val)
+		}
+		return nil
+	}
+	res["configuration-versions-keep-latest-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetConfigurationVersionsKeepLatestCount(val)
+		}
+		return nil
+	}
+	res["delete-configuration-versions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeleteConfigurationVersions(val)
+		}
+		return nil
+	}
+	res["delete-older-than-n-days"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeleteOlderThanNDays(val)
+		}
+		return nil
+	}
+	res["delete-run-data-and-logs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeleteRunDataAndLogs(val)
+		}
+		return nil
+	}
+	res["delete-state-versions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeleteStateVersions(val)
+		}
+		return nil
+	}
+	res["run-data-and-logs-delete-after-n-days"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunDataAndLogsDeleteAfterNDays(val)
+		}
+		return nil
+	}
+	res["run-data-keep-latest-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunDataKeepLatestCount(val)
+		}
+		return nil
+	}
+	res["state-versions-delete-after-n-days"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStateVersionsDeleteAfterNDays(val)
+		}
+		return nil
+	}
+	res["state-versions-keep-latest-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStateVersionsKeepLatestCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetRunDataAndLogsDeleteAfterNDays gets the run-data-and-logs-delete-after-n-days property value. The runDataAndLogsDeleteAfterNDays property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetRunDataAndLogsDeleteAfterNDays()(*int32) {
-    return m.runDataAndLogsDeleteAfterNDays
+func (m *DataRetentionPolicy_attributes) GetRunDataAndLogsDeleteAfterNDays() *int32 {
+	val, err := m.GetBackingStore().Get("runDataAndLogsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetRunDataKeepLatestCount gets the run-data-keep-latest-count property value. The runDataKeepLatestCount property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetRunDataKeepLatestCount()(*int32) {
-    return m.runDataKeepLatestCount
+func (m *DataRetentionPolicy_attributes) GetRunDataKeepLatestCount() *int32 {
+	val, err := m.GetBackingStore().Get("runDataKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetStateVersionsDeleteAfterNDays gets the state-versions-delete-after-n-days property value. The stateVersionsDeleteAfterNDays property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetStateVersionsDeleteAfterNDays()(*int32) {
-    return m.stateVersionsDeleteAfterNDays
+func (m *DataRetentionPolicy_attributes) GetStateVersionsDeleteAfterNDays() *int32 {
+	val, err := m.GetBackingStore().Get("stateVersionsDeleteAfterNDays")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetStateVersionsKeepLatestCount gets the state-versions-keep-latest-count property value. The stateVersionsKeepLatestCount property
 // returns a *int32 when successful
-func (m *DataRetentionPolicy_attributes) GetStateVersionsKeepLatestCount()(*int32) {
-    return m.stateVersionsKeepLatestCount
+func (m *DataRetentionPolicy_attributes) GetStateVersionsKeepLatestCount() *int32 {
+	val, err := m.GetBackingStore().Get("stateVersionsKeepLatestCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *DataRetentionPolicy_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("configuration-versions-delete-after-n-days", m.GetConfigurationVersionsDeleteAfterNDays())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("configuration-versions-keep-latest-count", m.GetConfigurationVersionsKeepLatestCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("delete-configuration-versions", m.GetDeleteConfigurationVersions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("delete-older-than-n-days", m.GetDeleteOlderThanNDays())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("delete-run-data-and-logs", m.GetDeleteRunDataAndLogs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("delete-state-versions", m.GetDeleteStateVersions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("run-data-and-logs-delete-after-n-days", m.GetRunDataAndLogsDeleteAfterNDays())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("run-data-keep-latest-count", m.GetRunDataKeepLatestCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("state-versions-delete-after-n-days", m.GetStateVersionsDeleteAfterNDays())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("state-versions-keep-latest-count", m.GetStateVersionsKeepLatestCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *DataRetentionPolicy_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("configuration-versions-delete-after-n-days", m.GetConfigurationVersionsDeleteAfterNDays())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("configuration-versions-keep-latest-count", m.GetConfigurationVersionsKeepLatestCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("delete-configuration-versions", m.GetDeleteConfigurationVersions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("delete-older-than-n-days", m.GetDeleteOlderThanNDays())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("delete-run-data-and-logs", m.GetDeleteRunDataAndLogs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("delete-state-versions", m.GetDeleteStateVersions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("run-data-and-logs-delete-after-n-days", m.GetRunDataAndLogsDeleteAfterNDays())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("run-data-keep-latest-count", m.GetRunDataKeepLatestCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("state-versions-delete-after-n-days", m.GetStateVersionsDeleteAfterNDays())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("state-versions-keep-latest-count", m.GetStateVersionsKeepLatestCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *DataRetentionPolicy_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *DataRetentionPolicy_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *DataRetentionPolicy_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetConfigurationVersionsDeleteAfterNDays sets the configuration-versions-delete-after-n-days property value. The configurationVersionsDeleteAfterNDays property
-func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsDeleteAfterNDays(value *int32)() {
-    m.configurationVersionsDeleteAfterNDays = value
+func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsDeleteAfterNDays(value *int32) {
+	err := m.GetBackingStore().Set("configurationVersionsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetConfigurationVersionsKeepLatestCount sets the configuration-versions-keep-latest-count property value. The configurationVersionsKeepLatestCount property
-func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsKeepLatestCount(value *int32)() {
-    m.configurationVersionsKeepLatestCount = value
+func (m *DataRetentionPolicy_attributes) SetConfigurationVersionsKeepLatestCount(value *int32) {
+	err := m.GetBackingStore().Set("configurationVersionsKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeleteConfigurationVersions sets the delete-configuration-versions property value. The deleteConfigurationVersions property
-func (m *DataRetentionPolicy_attributes) SetDeleteConfigurationVersions(value *bool)() {
-    m.deleteConfigurationVersions = value
+func (m *DataRetentionPolicy_attributes) SetDeleteConfigurationVersions(value *bool) {
+	err := m.GetBackingStore().Set("deleteConfigurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeleteOlderThanNDays sets the delete-older-than-n-days property value. The deleteOlderThanNDays property
-func (m *DataRetentionPolicy_attributes) SetDeleteOlderThanNDays(value *int32)() {
-    m.deleteOlderThanNDays = value
+func (m *DataRetentionPolicy_attributes) SetDeleteOlderThanNDays(value *int32) {
+	err := m.GetBackingStore().Set("deleteOlderThanNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeleteRunDataAndLogs sets the delete-run-data-and-logs property value. The deleteRunDataAndLogs property
-func (m *DataRetentionPolicy_attributes) SetDeleteRunDataAndLogs(value *bool)() {
-    m.deleteRunDataAndLogs = value
+func (m *DataRetentionPolicy_attributes) SetDeleteRunDataAndLogs(value *bool) {
+	err := m.GetBackingStore().Set("deleteRunDataAndLogs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeleteStateVersions sets the delete-state-versions property value. The deleteStateVersions property
-func (m *DataRetentionPolicy_attributes) SetDeleteStateVersions(value *bool)() {
-    m.deleteStateVersions = value
+func (m *DataRetentionPolicy_attributes) SetDeleteStateVersions(value *bool) {
+	err := m.GetBackingStore().Set("deleteStateVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunDataAndLogsDeleteAfterNDays sets the run-data-and-logs-delete-after-n-days property value. The runDataAndLogsDeleteAfterNDays property
-func (m *DataRetentionPolicy_attributes) SetRunDataAndLogsDeleteAfterNDays(value *int32)() {
-    m.runDataAndLogsDeleteAfterNDays = value
+func (m *DataRetentionPolicy_attributes) SetRunDataAndLogsDeleteAfterNDays(value *int32) {
+	err := m.GetBackingStore().Set("runDataAndLogsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunDataKeepLatestCount sets the run-data-keep-latest-count property value. The runDataKeepLatestCount property
-func (m *DataRetentionPolicy_attributes) SetRunDataKeepLatestCount(value *int32)() {
-    m.runDataKeepLatestCount = value
+func (m *DataRetentionPolicy_attributes) SetRunDataKeepLatestCount(value *int32) {
+	err := m.GetBackingStore().Set("runDataKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStateVersionsDeleteAfterNDays sets the state-versions-delete-after-n-days property value. The stateVersionsDeleteAfterNDays property
-func (m *DataRetentionPolicy_attributes) SetStateVersionsDeleteAfterNDays(value *int32)() {
-    m.stateVersionsDeleteAfterNDays = value
+func (m *DataRetentionPolicy_attributes) SetStateVersionsDeleteAfterNDays(value *int32) {
+	err := m.GetBackingStore().Set("stateVersionsDeleteAfterNDays", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStateVersionsKeepLatestCount sets the state-versions-keep-latest-count property value. The stateVersionsKeepLatestCount property
-func (m *DataRetentionPolicy_attributes) SetStateVersionsKeepLatestCount(value *int32)() {
-    m.stateVersionsKeepLatestCount = value
+func (m *DataRetentionPolicy_attributes) SetStateVersionsKeepLatestCount(value *int32) {
+	err := m.GetBackingStore().Set("stateVersionsKeepLatestCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type DataRetentionPolicy_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetConfigurationVersionsDeleteAfterNDays()(*int32)
-    GetConfigurationVersionsKeepLatestCount()(*int32)
-    GetDeleteConfigurationVersions()(*bool)
-    GetDeleteOlderThanNDays()(*int32)
-    GetDeleteRunDataAndLogs()(*bool)
-    GetDeleteStateVersions()(*bool)
-    GetRunDataAndLogsDeleteAfterNDays()(*int32)
-    GetRunDataKeepLatestCount()(*int32)
-    GetStateVersionsDeleteAfterNDays()(*int32)
-    GetStateVersionsKeepLatestCount()(*int32)
-    SetConfigurationVersionsDeleteAfterNDays(value *int32)()
-    SetConfigurationVersionsKeepLatestCount(value *int32)()
-    SetDeleteConfigurationVersions(value *bool)()
-    SetDeleteOlderThanNDays(value *int32)()
-    SetDeleteRunDataAndLogs(value *bool)()
-    SetDeleteStateVersions(value *bool)()
-    SetRunDataAndLogsDeleteAfterNDays(value *int32)()
-    SetRunDataKeepLatestCount(value *int32)()
-    SetStateVersionsDeleteAfterNDays(value *int32)()
-    SetStateVersionsKeepLatestCount(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetConfigurationVersionsDeleteAfterNDays() *int32
+	GetConfigurationVersionsKeepLatestCount() *int32
+	GetDeleteConfigurationVersions() *bool
+	GetDeleteOlderThanNDays() *int32
+	GetDeleteRunDataAndLogs() *bool
+	GetDeleteStateVersions() *bool
+	GetRunDataAndLogsDeleteAfterNDays() *int32
+	GetRunDataKeepLatestCount() *int32
+	GetStateVersionsDeleteAfterNDays() *int32
+	GetStateVersionsKeepLatestCount() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetConfigurationVersionsDeleteAfterNDays(value *int32)
+	SetConfigurationVersionsKeepLatestCount(value *int32)
+	SetDeleteConfigurationVersions(value *bool)
+	SetDeleteOlderThanNDays(value *int32)
+	SetDeleteRunDataAndLogs(value *bool)
+	SetDeleteStateVersions(value *bool)
+	SetRunDataAndLogsDeleteAfterNDays(value *int32)
+	SetRunDataKeepLatestCount(value *int32)
+	SetStateVersionsDeleteAfterNDays(value *int32)
+	SetStateVersionsKeepLatestCount(value *int32)
 }

@@ -4,139 +4,202 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TeamProjects_attributes struct {
-    // The access level granted to the team on the project.
-    access *TeamProjects_attributes_access
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Fine-grained project access permissions. Only meaningful when access is "custom".
-    projectAccess TeamProjects_attributes_projectAccessable
-    // Fine-grained workspace access permissions. Only meaningful when access is "custom".
-    workspaceAccess TeamProjects_attributes_workspaceAccessable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTeamProjects_attributes instantiates a new TeamProjects_attributes and sets the default values.
-func NewTeamProjects_attributes()(*TeamProjects_attributes) {
-    m := &TeamProjects_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTeamProjects_attributes() *TeamProjects_attributes {
+	m := &TeamProjects_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTeamProjects_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTeamProjects_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTeamProjects_attributes(), nil
+func CreateTeamProjects_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTeamProjects_attributes(), nil
 }
+
 // GetAccess gets the access property value. The access level granted to the team on the project.
 // returns a *TeamProjects_attributes_access when successful
-func (m *TeamProjects_attributes) GetAccess()(*TeamProjects_attributes_access) {
-    return m.access
+func (m *TeamProjects_attributes) GetAccess() *TeamProjects_attributes_access {
+	val, err := m.GetBackingStore().Get("access")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TeamProjects_attributes_access)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TeamProjects_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TeamProjects_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TeamProjects_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TeamProjects_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["access"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTeamProjects_attributes_access)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAccess(val.(*TeamProjects_attributes_access))
-        }
-        return nil
-    }
-    res["project-access"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamProjects_attributes_projectAccessFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjectAccess(val.(TeamProjects_attributes_projectAccessable))
-        }
-        return nil
-    }
-    res["workspace-access"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamProjects_attributes_workspaceAccessFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceAccess(val.(TeamProjects_attributes_workspaceAccessable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TeamProjects_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["access"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTeamProjects_attributes_access)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAccess(val.(*TeamProjects_attributes_access))
+		}
+		return nil
+	}
+	res["project-access"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTeamProjects_attributes_projectAccessFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjectAccess(val.(TeamProjects_attributes_projectAccessable))
+		}
+		return nil
+	}
+	res["workspace-access"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTeamProjects_attributes_workspaceAccessFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceAccess(val.(TeamProjects_attributes_workspaceAccessable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetProjectAccess gets the project-access property value. Fine-grained project access permissions. Only meaningful when access is "custom".
 // returns a TeamProjects_attributes_projectAccessable when successful
-func (m *TeamProjects_attributes) GetProjectAccess()(TeamProjects_attributes_projectAccessable) {
-    return m.projectAccess
+func (m *TeamProjects_attributes) GetProjectAccess() TeamProjects_attributes_projectAccessable {
+	val, err := m.GetBackingStore().Get("projectAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TeamProjects_attributes_projectAccessable)
+	}
+	return nil
 }
+
 // GetWorkspaceAccess gets the workspace-access property value. Fine-grained workspace access permissions. Only meaningful when access is "custom".
 // returns a TeamProjects_attributes_workspaceAccessable when successful
-func (m *TeamProjects_attributes) GetWorkspaceAccess()(TeamProjects_attributes_workspaceAccessable) {
-    return m.workspaceAccess
+func (m *TeamProjects_attributes) GetWorkspaceAccess() TeamProjects_attributes_workspaceAccessable {
+	val, err := m.GetBackingStore().Get("workspaceAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TeamProjects_attributes_workspaceAccessable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TeamProjects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAccess() != nil {
-        cast := (*m.GetAccess()).String()
-        err := writer.WriteStringValue("access", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("project-access", m.GetProjectAccess())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace-access", m.GetWorkspaceAccess())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TeamProjects_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAccess() != nil {
+		cast := (*m.GetAccess()).String()
+		err := writer.WriteStringValue("access", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("project-access", m.GetProjectAccess())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace-access", m.GetWorkspaceAccess())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAccess sets the access property value. The access level granted to the team on the project.
-func (m *TeamProjects_attributes) SetAccess(value *TeamProjects_attributes_access)() {
-    m.access = value
+func (m *TeamProjects_attributes) SetAccess(value *TeamProjects_attributes_access) {
+	err := m.GetBackingStore().Set("access", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TeamProjects_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TeamProjects_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TeamProjects_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetProjectAccess sets the project-access property value. Fine-grained project access permissions. Only meaningful when access is "custom".
-func (m *TeamProjects_attributes) SetProjectAccess(value TeamProjects_attributes_projectAccessable)() {
-    m.projectAccess = value
+func (m *TeamProjects_attributes) SetProjectAccess(value TeamProjects_attributes_projectAccessable) {
+	err := m.GetBackingStore().Set("projectAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspaceAccess sets the workspace-access property value. Fine-grained workspace access permissions. Only meaningful when access is "custom".
-func (m *TeamProjects_attributes) SetWorkspaceAccess(value TeamProjects_attributes_workspaceAccessable)() {
-    m.workspaceAccess = value
+func (m *TeamProjects_attributes) SetWorkspaceAccess(value TeamProjects_attributes_workspaceAccessable) {
+	err := m.GetBackingStore().Set("workspaceAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TeamProjects_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAccess()(*TeamProjects_attributes_access)
-    GetProjectAccess()(TeamProjects_attributes_projectAccessable)
-    GetWorkspaceAccess()(TeamProjects_attributes_workspaceAccessable)
-    SetAccess(value *TeamProjects_attributes_access)()
-    SetProjectAccess(value TeamProjects_attributes_projectAccessable)()
-    SetWorkspaceAccess(value TeamProjects_attributes_workspaceAccessable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAccess() *TeamProjects_attributes_access
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetProjectAccess() TeamProjects_attributes_projectAccessable
+	GetWorkspaceAccess() TeamProjects_attributes_workspaceAccessable
+	SetAccess(value *TeamProjects_attributes_access)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetProjectAccess(value TeamProjects_attributes_projectAccessable)
+	SetWorkspaceAccess(value TeamProjects_attributes_workspaceAccessable)
 }

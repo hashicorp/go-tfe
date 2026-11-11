@@ -4,192 +4,275 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TaskConfigs_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The run stages during which the task is evaluated.
-    allowedStages []TaskConfigs_attributes_allowedStages
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The enforcement level applied to the task's stages.
-    enforcementLevel *TaskConfigs_attributes_enforcementLevel
-    // Whether the task configuration applies to all child resources owned for the owner. When `false`, the configuration only applies to the associated projects.
-    global *bool
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTaskConfigs_attributes instantiates a new TaskConfigs_attributes and sets the default values.
-func NewTaskConfigs_attributes()(*TaskConfigs_attributes) {
-    m := &TaskConfigs_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTaskConfigs_attributes() *TaskConfigs_attributes {
+	m := &TaskConfigs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTaskConfigs_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTaskConfigs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTaskConfigs_attributes(), nil
+func CreateTaskConfigs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTaskConfigs_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TaskConfigs_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TaskConfigs_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAllowedStages gets the allowed-stages property value. The run stages during which the task is evaluated.
 // returns a []TaskConfigs_attributes_allowedStages when successful
-func (m *TaskConfigs_attributes) GetAllowedStages()([]TaskConfigs_attributes_allowedStages) {
-    return m.allowedStages
+func (m *TaskConfigs_attributes) GetAllowedStages() []TaskConfigs_attributes_allowedStages {
+	val, err := m.GetBackingStore().Get("allowedStages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TaskConfigs_attributes_allowedStages)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskConfigs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *TaskConfigs_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *TaskConfigs_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetEnforcementLevel gets the enforcement-level property value. The enforcement level applied to the task's stages.
 // returns a *TaskConfigs_attributes_enforcementLevel when successful
-func (m *TaskConfigs_attributes) GetEnforcementLevel()(*TaskConfigs_attributes_enforcementLevel) {
-    return m.enforcementLevel
+func (m *TaskConfigs_attributes) GetEnforcementLevel() *TaskConfigs_attributes_enforcementLevel {
+	val, err := m.GetBackingStore().Get("enforcementLevel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TaskConfigs_attributes_enforcementLevel)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TaskConfigs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["allowed-stages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfEnumValues(ParseTaskConfigs_attributes_allowedStages)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TaskConfigs_attributes_allowedStages, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*TaskConfigs_attributes_allowedStages))
-                }
-            }
-            m.SetAllowedStages(res)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTaskConfigs_attributes_enforcementLevel)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val.(*TaskConfigs_attributes_enforcementLevel))
-        }
-        return nil
-    }
-    res["global"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobal(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TaskConfigs_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["allowed-stages"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfEnumValues(ParseTaskConfigs_attributes_allowedStages)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TaskConfigs_attributes_allowedStages, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = *(v.(*TaskConfigs_attributes_allowedStages))
+				}
+			}
+			m.SetAllowedStages(res)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["enforcement-level"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTaskConfigs_attributes_enforcementLevel)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforcementLevel(val.(*TaskConfigs_attributes_enforcementLevel))
+		}
+		return nil
+	}
+	res["global"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobal(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGlobal gets the global property value. Whether the task configuration applies to all child resources owned for the owner. When `false`, the configuration only applies to the associated projects.
 // returns a *bool when successful
-func (m *TaskConfigs_attributes) GetGlobal()(*bool) {
-    return m.global
+func (m *TaskConfigs_attributes) GetGlobal() *bool {
+	val, err := m.GetBackingStore().Get("global")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *TaskConfigs_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *TaskConfigs_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TaskConfigs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAllowedStages() != nil {
-        err := writer.WriteCollectionOfStringValues("allowed-stages", SerializeTaskConfigs_attributes_allowedStages(m.GetAllowedStages()))
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetEnforcementLevel() != nil {
-        cast := (*m.GetEnforcementLevel()).String()
-        err := writer.WriteStringValue("enforcement-level", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global", m.GetGlobal())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TaskConfigs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAllowedStages() != nil {
+		err := writer.WriteCollectionOfStringValues("allowed-stages", SerializeTaskConfigs_attributes_allowedStages(m.GetAllowedStages()))
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetEnforcementLevel() != nil {
+		cast := (*m.GetEnforcementLevel()).String()
+		err := writer.WriteStringValue("enforcement-level", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global", m.GetGlobal())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TaskConfigs_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TaskConfigs_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAllowedStages sets the allowed-stages property value. The run stages during which the task is evaluated.
-func (m *TaskConfigs_attributes) SetAllowedStages(value []TaskConfigs_attributes_allowedStages)() {
-    m.allowedStages = value
+func (m *TaskConfigs_attributes) SetAllowedStages(value []TaskConfigs_attributes_allowedStages) {
+	err := m.GetBackingStore().Set("allowedStages", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskConfigs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *TaskConfigs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *TaskConfigs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEnforcementLevel sets the enforcement-level property value. The enforcement level applied to the task's stages.
-func (m *TaskConfigs_attributes) SetEnforcementLevel(value *TaskConfigs_attributes_enforcementLevel)() {
-    m.enforcementLevel = value
+func (m *TaskConfigs_attributes) SetEnforcementLevel(value *TaskConfigs_attributes_enforcementLevel) {
+	err := m.GetBackingStore().Set("enforcementLevel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetGlobal sets the global property value. Whether the task configuration applies to all child resources owned for the owner. When `false`, the configuration only applies to the associated projects.
-func (m *TaskConfigs_attributes) SetGlobal(value *bool)() {
-    m.global = value
+func (m *TaskConfigs_attributes) SetGlobal(value *bool) {
+	err := m.GetBackingStore().Set("global", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *TaskConfigs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *TaskConfigs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TaskConfigs_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAllowedStages()([]TaskConfigs_attributes_allowedStages)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetEnforcementLevel()(*TaskConfigs_attributes_enforcementLevel)
-    GetGlobal()(*bool)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetAllowedStages(value []TaskConfigs_attributes_allowedStages)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetEnforcementLevel(value *TaskConfigs_attributes_enforcementLevel)()
-    SetGlobal(value *bool)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAllowedStages() []TaskConfigs_attributes_allowedStages
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetEnforcementLevel() *TaskConfigs_attributes_enforcementLevel
+	GetGlobal() *bool
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetAllowedStages(value []TaskConfigs_attributes_allowedStages)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetEnforcementLevel(value *TaskConfigs_attributes_enforcementLevel)
+	SetGlobal(value *bool)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

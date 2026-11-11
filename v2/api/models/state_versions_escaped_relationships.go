@@ -4,283 +4,396 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StateVersions_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdBy property
-    createdBy UsersHasOneable
-    // The hyokEncryptedDataKey property
-    hyokEncryptedDataKey HyokEncryptedDataKeysHasOneable
-    // The nextStateVersion property
-    nextStateVersion StateVersionsHasOneable
-    // The outputs property
-    outputs StateVersionOutputsHasManyable
-    // The previousStateVersion property
-    previousStateVersion StateVersionsHasOneable
-    // The rollbackStateVersion property
-    rollbackStateVersion StateVersionsHasOneable
-    // The run property
-    run RunsHasOneable
-    // The workspace property
-    workspace WorkspacesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStateVersions_relationships instantiates a new StateVersions_relationships and sets the default values.
-func NewStateVersions_relationships()(*StateVersions_relationships) {
-    m := &StateVersions_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStateVersions_relationships() *StateVersions_relationships {
+	m := &StateVersions_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStateVersions_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStateVersions_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStateVersions_relationships(), nil
+func CreateStateVersions_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStateVersions_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StateVersions_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StateVersions_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersions_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a UsersHasOneable when successful
-func (m *StateVersions_relationships) GetCreatedBy()(UsersHasOneable) {
-    return m.createdBy
+func (m *StateVersions_relationships) GetCreatedBy() UsersHasOneable {
+	val, err := m.GetBackingStore().Get("createdBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(UsersHasOneable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StateVersions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedBy(val.(UsersHasOneable))
-        }
-        return nil
-    }
-    res["hyok-encrypted-data-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokEncryptedDataKeysHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHyokEncryptedDataKey(val.(HyokEncryptedDataKeysHasOneable))
-        }
-        return nil
-    }
-    res["next-state-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNextStateVersion(val.(StateVersionsHasOneable))
-        }
-        return nil
-    }
-    res["outputs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionOutputsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOutputs(val.(StateVersionOutputsHasManyable))
-        }
-        return nil
-    }
-    res["previous-state-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPreviousStateVersion(val.(StateVersionsHasOneable))
-        }
-        return nil
-    }
-    res["rollback-state-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRollbackStateVersion(val.(StateVersionsHasOneable))
-        }
-        return nil
-    }
-    res["run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRun(val.(RunsHasOneable))
-        }
-        return nil
-    }
-    res["workspace"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspace(val.(WorkspacesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StateVersions_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedBy(val.(UsersHasOneable))
+		}
+		return nil
+	}
+	res["hyok-encrypted-data-key"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokEncryptedDataKeysHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHyokEncryptedDataKey(val.(HyokEncryptedDataKeysHasOneable))
+		}
+		return nil
+	}
+	res["next-state-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNextStateVersion(val.(StateVersionsHasOneable))
+		}
+		return nil
+	}
+	res["outputs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionOutputsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOutputs(val.(StateVersionOutputsHasManyable))
+		}
+		return nil
+	}
+	res["previous-state-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPreviousStateVersion(val.(StateVersionsHasOneable))
+		}
+		return nil
+	}
+	res["rollback-state-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRollbackStateVersion(val.(StateVersionsHasOneable))
+		}
+		return nil
+	}
+	res["run"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRun(val.(RunsHasOneable))
+		}
+		return nil
+	}
+	res["workspace"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspacesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspace(val.(WorkspacesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
 // returns a HyokEncryptedDataKeysHasOneable when successful
-func (m *StateVersions_relationships) GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable) {
-    return m.hyokEncryptedDataKey
+func (m *StateVersions_relationships) GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable {
+	val, err := m.GetBackingStore().Get("hyokEncryptedDataKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokEncryptedDataKeysHasOneable)
+	}
+	return nil
 }
+
 // GetNextStateVersion gets the next-state-version property value. The nextStateVersion property
 // returns a StateVersionsHasOneable when successful
-func (m *StateVersions_relationships) GetNextStateVersion()(StateVersionsHasOneable) {
-    return m.nextStateVersion
+func (m *StateVersions_relationships) GetNextStateVersion() StateVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("nextStateVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetOutputs gets the outputs property value. The outputs property
 // returns a StateVersionOutputsHasManyable when successful
-func (m *StateVersions_relationships) GetOutputs()(StateVersionOutputsHasManyable) {
-    return m.outputs
+func (m *StateVersions_relationships) GetOutputs() StateVersionOutputsHasManyable {
+	val, err := m.GetBackingStore().Get("outputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionOutputsHasManyable)
+	}
+	return nil
 }
+
 // GetPreviousStateVersion gets the previous-state-version property value. The previousStateVersion property
 // returns a StateVersionsHasOneable when successful
-func (m *StateVersions_relationships) GetPreviousStateVersion()(StateVersionsHasOneable) {
-    return m.previousStateVersion
+func (m *StateVersions_relationships) GetPreviousStateVersion() StateVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("previousStateVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetRollbackStateVersion gets the rollback-state-version property value. The rollbackStateVersion property
 // returns a StateVersionsHasOneable when successful
-func (m *StateVersions_relationships) GetRollbackStateVersion()(StateVersionsHasOneable) {
-    return m.rollbackStateVersion
+func (m *StateVersions_relationships) GetRollbackStateVersion() StateVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("rollbackStateVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetRun gets the run property value. The run property
 // returns a RunsHasOneable when successful
-func (m *StateVersions_relationships) GetRun()(RunsHasOneable) {
-    return m.run
+func (m *StateVersions_relationships) GetRun() RunsHasOneable {
+	val, err := m.GetBackingStore().Get("run")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
+
 // GetWorkspace gets the workspace property value. The workspace property
 // returns a WorkspacesHasOneable when successful
-func (m *StateVersions_relationships) GetWorkspace()(WorkspacesHasOneable) {
-    return m.workspace
+func (m *StateVersions_relationships) GetWorkspace() WorkspacesHasOneable {
+	val, err := m.GetBackingStore().Get("workspace")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspacesHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StateVersions_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("hyok-encrypted-data-key", m.GetHyokEncryptedDataKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("next-state-version", m.GetNextStateVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("outputs", m.GetOutputs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("previous-state-version", m.GetPreviousStateVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("rollback-state-version", m.GetRollbackStateVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("run", m.GetRun())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace", m.GetWorkspace())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StateVersions_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("hyok-encrypted-data-key", m.GetHyokEncryptedDataKey())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("next-state-version", m.GetNextStateVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("outputs", m.GetOutputs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("previous-state-version", m.GetPreviousStateVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("rollback-state-version", m.GetRollbackStateVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("run", m.GetRun())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace", m.GetWorkspace())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StateVersions_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StateVersions_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersions_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *StateVersions_relationships) SetCreatedBy(value UsersHasOneable)() {
-    m.createdBy = value
+func (m *StateVersions_relationships) SetCreatedBy(value UsersHasOneable) {
+	err := m.GetBackingStore().Set("createdBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. The hyokEncryptedDataKey property
-func (m *StateVersions_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)() {
-    m.hyokEncryptedDataKey = value
+func (m *StateVersions_relationships) SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable) {
+	err := m.GetBackingStore().Set("hyokEncryptedDataKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNextStateVersion sets the next-state-version property value. The nextStateVersion property
-func (m *StateVersions_relationships) SetNextStateVersion(value StateVersionsHasOneable)() {
-    m.nextStateVersion = value
+func (m *StateVersions_relationships) SetNextStateVersion(value StateVersionsHasOneable) {
+	err := m.GetBackingStore().Set("nextStateVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOutputs sets the outputs property value. The outputs property
-func (m *StateVersions_relationships) SetOutputs(value StateVersionOutputsHasManyable)() {
-    m.outputs = value
+func (m *StateVersions_relationships) SetOutputs(value StateVersionOutputsHasManyable) {
+	err := m.GetBackingStore().Set("outputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPreviousStateVersion sets the previous-state-version property value. The previousStateVersion property
-func (m *StateVersions_relationships) SetPreviousStateVersion(value StateVersionsHasOneable)() {
-    m.previousStateVersion = value
+func (m *StateVersions_relationships) SetPreviousStateVersion(value StateVersionsHasOneable) {
+	err := m.GetBackingStore().Set("previousStateVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRollbackStateVersion sets the rollback-state-version property value. The rollbackStateVersion property
-func (m *StateVersions_relationships) SetRollbackStateVersion(value StateVersionsHasOneable)() {
-    m.rollbackStateVersion = value
+func (m *StateVersions_relationships) SetRollbackStateVersion(value StateVersionsHasOneable) {
+	err := m.GetBackingStore().Set("rollbackStateVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRun sets the run property value. The run property
-func (m *StateVersions_relationships) SetRun(value RunsHasOneable)() {
-    m.run = value
+func (m *StateVersions_relationships) SetRun(value RunsHasOneable) {
+	err := m.GetBackingStore().Set("run", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspace sets the workspace property value. The workspace property
-func (m *StateVersions_relationships) SetWorkspace(value WorkspacesHasOneable)() {
-    m.workspace = value
+func (m *StateVersions_relationships) SetWorkspace(value WorkspacesHasOneable) {
+	err := m.GetBackingStore().Set("workspace", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StateVersions_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedBy()(UsersHasOneable)
-    GetHyokEncryptedDataKey()(HyokEncryptedDataKeysHasOneable)
-    GetNextStateVersion()(StateVersionsHasOneable)
-    GetOutputs()(StateVersionOutputsHasManyable)
-    GetPreviousStateVersion()(StateVersionsHasOneable)
-    GetRollbackStateVersion()(StateVersionsHasOneable)
-    GetRun()(RunsHasOneable)
-    GetWorkspace()(WorkspacesHasOneable)
-    SetCreatedBy(value UsersHasOneable)()
-    SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)()
-    SetNextStateVersion(value StateVersionsHasOneable)()
-    SetOutputs(value StateVersionOutputsHasManyable)()
-    SetPreviousStateVersion(value StateVersionsHasOneable)()
-    SetRollbackStateVersion(value StateVersionsHasOneable)()
-    SetRun(value RunsHasOneable)()
-    SetWorkspace(value WorkspacesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedBy() UsersHasOneable
+	GetHyokEncryptedDataKey() HyokEncryptedDataKeysHasOneable
+	GetNextStateVersion() StateVersionsHasOneable
+	GetOutputs() StateVersionOutputsHasManyable
+	GetPreviousStateVersion() StateVersionsHasOneable
+	GetRollbackStateVersion() StateVersionsHasOneable
+	GetRun() RunsHasOneable
+	GetWorkspace() WorkspacesHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedBy(value UsersHasOneable)
+	SetHyokEncryptedDataKey(value HyokEncryptedDataKeysHasOneable)
+	SetNextStateVersion(value StateVersionsHasOneable)
+	SetOutputs(value StateVersionOutputsHasManyable)
+	SetPreviousStateVersion(value StateVersionsHasOneable)
+	SetRollbackStateVersion(value StateVersionsHasOneable)
+	SetRun(value RunsHasOneable)
+	SetWorkspace(value WorkspacesHasOneable)
 }

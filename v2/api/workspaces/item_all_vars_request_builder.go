@@ -4,66 +4,72 @@
 package workspaces
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i441cc2be729e559048a1e0368e3971f1f7c0c435a048216bfaa55ae045bcc4fe "github.com/hashicorp/go-tfe/v2/api/workspaces/item/allvars"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i441cc2be729e559048a1e0368e3971f1f7c0c435a048216bfaa55ae045bcc4fe "github.com/hashicorp/go-tfe/v2/api/workspaces/item/allvars"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemAllVarsRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\all-vars
 type ItemAllVarsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemAllVarsRequestBuilderGetQueryParameters this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
 type ItemAllVarsRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i441cc2be729e559048a1e0368e3971f1f7c0c435a048216bfaa55ae045bcc4fe.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i441cc2be729e559048a1e0368e3971f1f7c0c435a048216bfaa55ae045bcc4fe.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // NewItemAllVarsRequestBuilderInternal instantiates a new ItemAllVarsRequestBuilder and sets the default values.
-func NewItemAllVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAllVarsRequestBuilder) {
-    m := &ItemAllVarsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/all-vars{?fields%5Bvars%5D,include}", pathParameters),
-    }
-    return m
+func NewItemAllVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemAllVarsRequestBuilder {
+	m := &ItemAllVarsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/all-vars{?fields%5Bvars%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewItemAllVarsRequestBuilder instantiates a new ItemAllVarsRequestBuilder and sets the default values.
-func NewItemAllVarsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAllVarsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemAllVarsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemAllVarsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemAllVarsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemAllVarsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
 // returns a ItemAllVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAllVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAllVarsRequestBuilderGetQueryParameters])(ItemAllVarsGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAllVarsGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAllVarsGetResponseable), nil
+func (m *ItemAllVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAllVarsRequestBuilderGetQueryParameters]) (ItemAllVarsGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAllVarsGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemAllVarsGetResponseable), nil
 }
+
 // ToGetRequestInformation this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
 // returns a *RequestInformation when successful
-func (m *ItemAllVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAllVarsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemAllVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAllVarsRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemAllVarsRequestBuilder when successful
-func (m *ItemAllVarsRequestBuilder) WithUrl(rawUrl string)(*ItemAllVarsRequestBuilder) {
-    return NewItemAllVarsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemAllVarsRequestBuilder) WithUrl(rawUrl string) *ItemAllVarsRequestBuilder {
+	return NewItemAllVarsRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

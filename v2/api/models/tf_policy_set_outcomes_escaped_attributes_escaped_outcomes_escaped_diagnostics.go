@@ -4,237 +4,330 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicySetOutcomes_attributes_outcomes_diagnostics struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Code snippet from the policy file showing the enforce block that was evaluated
-    code *string
-    // The policy declaration context (e.g., 'resource_policy "aws_s3_bucket" "test"')
-    context *string
-    // Error message for the enforce block when not specific to a resource
-    error_message *string
-    // List of Terraform resources that failed this enforce block's condition
-    resources []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable
-    // Line number where the enforce block starts in the policy file
-    start_line *int32
-    // Human-readable summary of the diagnostic, typically the policy declaration
-    summary *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTfPolicySetOutcomes_attributes_outcomes_diagnostics instantiates a new TfPolicySetOutcomes_attributes_outcomes_diagnostics and sets the default values.
-func NewTfPolicySetOutcomes_attributes_outcomes_diagnostics()(*TfPolicySetOutcomes_attributes_outcomes_diagnostics) {
-    m := &TfPolicySetOutcomes_attributes_outcomes_diagnostics{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTfPolicySetOutcomes_attributes_outcomes_diagnostics() *TfPolicySetOutcomes_attributes_outcomes_diagnostics {
+	m := &TfPolicySetOutcomes_attributes_outcomes_diagnostics{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTfPolicySetOutcomes_attributes_outcomes_diagnosticsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTfPolicySetOutcomes_attributes_outcomes_diagnosticsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTfPolicySetOutcomes_attributes_outcomes_diagnostics(), nil
+func CreateTfPolicySetOutcomes_attributes_outcomes_diagnosticsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTfPolicySetOutcomes_attributes_outcomes_diagnostics(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCode gets the code property value. Code snippet from the policy file showing the enforce block that was evaluated
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetCode()(*string) {
-    return m.code
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetCode() *string {
+	val, err := m.GetBackingStore().Get("code")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetContext gets the context property value. The policy declaration context (e.g., 'resource_policy "aws_s3_bucket" "test"')
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetContext()(*string) {
-    return m.context
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetContext() *string {
+	val, err := m.GetBackingStore().Get("context")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetErrorMessage gets the error_message property value. Error message for the enforce block when not specific to a resource
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetErrorMessage()(*string) {
-    return m.error_message
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetErrorMessage() *string {
+	val, err := m.GetBackingStore().Get("error_message")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["code"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCode(val)
-        }
-        return nil
-    }
-    res["context"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetContext(val)
-        }
-        return nil
-    }
-    res["error_message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErrorMessage(val)
-        }
-        return nil
-    }
-    res["resources"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)
-                }
-            }
-            m.SetResources(res)
-        }
-        return nil
-    }
-    res["start_line"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStartLine(val)
-        }
-        return nil
-    }
-    res["summary"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSummary(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["code"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCode(val)
+		}
+		return nil
+	}
+	res["context"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetContext(val)
+		}
+		return nil
+	}
+	res["error_message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErrorMessage(val)
+		}
+		return nil
+	}
+	res["resources"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)
+				}
+			}
+			m.SetResources(res)
+		}
+		return nil
+	}
+	res["start_line"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStartLine(val)
+		}
+		return nil
+	}
+	res["summary"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSummary(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetResources gets the resources property value. List of Terraform resources that failed this enforce block's condition
 // returns a []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetResources()([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable) {
-    return m.resources
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetResources() []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable {
+	val, err := m.GetBackingStore().Get("resources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)
+	}
+	return nil
 }
+
 // GetStartLine gets the start_line property value. Line number where the enforce block starts in the policy file
 // returns a *int32 when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetStartLine()(*int32) {
-    return m.start_line
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetStartLine() *int32 {
+	val, err := m.GetBackingStore().Get("start_line")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSummary gets the summary property value. Human-readable summary of the diagnostic, typically the policy declaration
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetSummary()(*string) {
-    return m.summary
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) GetSummary() *string {
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("code", m.GetCode())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("context", m.GetContext())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("error_message", m.GetErrorMessage())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetResources() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetResources()))
-        for i, v := range m.GetResources() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("resources", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("start_line", m.GetStartLine())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("summary", m.GetSummary())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("code", m.GetCode())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("context", m.GetContext())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("error_message", m.GetErrorMessage())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetResources() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetResources()))
+		for i, v := range m.GetResources() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("resources", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("start_line", m.GetStartLine())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("summary", m.GetSummary())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCode sets the code property value. Code snippet from the policy file showing the enforce block that was evaluated
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetCode(value *string)() {
-    m.code = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetCode(value *string) {
+	err := m.GetBackingStore().Set("code", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetContext sets the context property value. The policy declaration context (e.g., 'resource_policy "aws_s3_bucket" "test"')
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetContext(value *string)() {
-    m.context = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetContext(value *string) {
+	err := m.GetBackingStore().Set("context", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErrorMessage sets the error_message property value. Error message for the enforce block when not specific to a resource
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetErrorMessage(value *string)() {
-    m.error_message = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetErrorMessage(value *string) {
+	err := m.GetBackingStore().Set("error_message", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResources sets the resources property value. List of Terraform resources that failed this enforce block's condition
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetResources(value []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)() {
-    m.resources = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetResources(value []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable) {
+	err := m.GetBackingStore().Set("resources", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStartLine sets the start_line property value. Line number where the enforce block starts in the policy file
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetStartLine(value *int32)() {
-    m.start_line = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetStartLine(value *int32) {
+	err := m.GetBackingStore().Set("start_line", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSummary sets the summary property value. Human-readable summary of the diagnostic, typically the policy declaration
-func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetSummary(value *string)() {
-    m.summary = value
+func (m *TfPolicySetOutcomes_attributes_outcomes_diagnostics) SetSummary(value *string) {
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TfPolicySetOutcomes_attributes_outcomes_diagnosticsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCode()(*string)
-    GetContext()(*string)
-    GetErrorMessage()(*string)
-    GetResources()([]TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)
-    GetStartLine()(*int32)
-    GetSummary()(*string)
-    SetCode(value *string)()
-    SetContext(value *string)()
-    SetErrorMessage(value *string)()
-    SetResources(value []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)()
-    SetStartLine(value *int32)()
-    SetSummary(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCode() *string
+	GetContext() *string
+	GetErrorMessage() *string
+	GetResources() []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable
+	GetStartLine() *int32
+	GetSummary() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCode(value *string)
+	SetContext(value *string)
+	SetErrorMessage(value *string)
+	SetResources(value []TfPolicySetOutcomes_attributes_outcomes_diagnostics_resourcesable)
+	SetStartLine(value *int32)
+	SetSummary(value *string)
 }

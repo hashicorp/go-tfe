@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentruns
+
 type GetFilterLatest_onlyQueryParameterType int
 
 const (
-    TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE GetFilterLatest_onlyQueryParameterType = iota
+	TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE GetFilterLatest_onlyQueryParameterType = iota
 )
 
 func (i GetFilterLatest_onlyQueryParameterType) String() string {
-    return []string{"true"}[i]
+	return []string{"true"}[i]
 }
+
 func ParseGetFilterLatest_onlyQueryParameterType(v string) (any, error) {
-    result := TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE
-    switch v {
-        case "true":
-            result = TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE
+	switch v {
+	case "true":
+		result = TRUE_GETFILTERLATEST_ONLYQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterLatest_onlyQueryParameterType(values []GetFilterLatest_onlyQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterLatest_onlyQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

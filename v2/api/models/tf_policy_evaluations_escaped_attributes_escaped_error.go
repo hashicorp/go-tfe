@@ -4,140 +4,203 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // TfPolicyEvaluations_attributes_error error information if the entire evaluation failed (not policy-specific errors)
 type TfPolicyEvaluations_attributes_error struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Detailed error message with additional context
-    detail *string
-    // Brief error summary for display
-    summary *string
-    // Error type identifier indicating the category of failure
-    typeEscaped *TfPolicyEvaluations_attributes_error_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTfPolicyEvaluations_attributes_error instantiates a new TfPolicyEvaluations_attributes_error and sets the default values.
-func NewTfPolicyEvaluations_attributes_error()(*TfPolicyEvaluations_attributes_error) {
-    m := &TfPolicyEvaluations_attributes_error{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTfPolicyEvaluations_attributes_error() *TfPolicyEvaluations_attributes_error {
+	m := &TfPolicyEvaluations_attributes_error{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTfPolicyEvaluations_attributes_errorFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTfPolicyEvaluations_attributes_errorFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTfPolicyEvaluations_attributes_error(), nil
+func CreateTfPolicyEvaluations_attributes_errorFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTfPolicyEvaluations_attributes_error(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TfPolicyEvaluations_attributes_error) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TfPolicyEvaluations_attributes_error) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicyEvaluations_attributes_error) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDetail gets the detail property value. Detailed error message with additional context
 // returns a *string when successful
-func (m *TfPolicyEvaluations_attributes_error) GetDetail()(*string) {
-    return m.detail
+func (m *TfPolicyEvaluations_attributes_error) GetDetail() *string {
+	val, err := m.GetBackingStore().Get("detail")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TfPolicyEvaluations_attributes_error) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["detail"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDetail(val)
-        }
-        return nil
-    }
-    res["summary"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSummary(val)
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_error_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*TfPolicyEvaluations_attributes_error_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TfPolicyEvaluations_attributes_error) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["detail"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDetail(val)
+		}
+		return nil
+	}
+	res["summary"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSummary(val)
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTfPolicyEvaluations_attributes_error_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*TfPolicyEvaluations_attributes_error_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSummary gets the summary property value. Brief error summary for display
 // returns a *string when successful
-func (m *TfPolicyEvaluations_attributes_error) GetSummary()(*string) {
-    return m.summary
+func (m *TfPolicyEvaluations_attributes_error) GetSummary() *string {
+	val, err := m.GetBackingStore().Get("summary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. Error type identifier indicating the category of failure
 // returns a *TfPolicyEvaluations_attributes_error_type when successful
-func (m *TfPolicyEvaluations_attributes_error) GetTypeEscaped()(*TfPolicyEvaluations_attributes_error_type) {
-    return m.typeEscaped
+func (m *TfPolicyEvaluations_attributes_error) GetTypeEscaped() *TfPolicyEvaluations_attributes_error_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TfPolicyEvaluations_attributes_error_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TfPolicyEvaluations_attributes_error) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("detail", m.GetDetail())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("summary", m.GetSummary())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TfPolicyEvaluations_attributes_error) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("detail", m.GetDetail())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("summary", m.GetSummary())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTypeEscaped() != nil {
+		cast := (*m.GetTypeEscaped()).String()
+		err := writer.WriteStringValue("type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TfPolicyEvaluations_attributes_error) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TfPolicyEvaluations_attributes_error) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicyEvaluations_attributes_error) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDetail sets the detail property value. Detailed error message with additional context
-func (m *TfPolicyEvaluations_attributes_error) SetDetail(value *string)() {
-    m.detail = value
+func (m *TfPolicyEvaluations_attributes_error) SetDetail(value *string) {
+	err := m.GetBackingStore().Set("detail", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSummary sets the summary property value. Brief error summary for display
-func (m *TfPolicyEvaluations_attributes_error) SetSummary(value *string)() {
-    m.summary = value
+func (m *TfPolicyEvaluations_attributes_error) SetSummary(value *string) {
+	err := m.GetBackingStore().Set("summary", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. Error type identifier indicating the category of failure
-func (m *TfPolicyEvaluations_attributes_error) SetTypeEscaped(value *TfPolicyEvaluations_attributes_error_type)() {
-    m.typeEscaped = value
+func (m *TfPolicyEvaluations_attributes_error) SetTypeEscaped(value *TfPolicyEvaluations_attributes_error_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TfPolicyEvaluations_attributes_errorable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDetail()(*string)
-    GetSummary()(*string)
-    GetTypeEscaped()(*TfPolicyEvaluations_attributes_error_type)
-    SetDetail(value *string)()
-    SetSummary(value *string)()
-    SetTypeEscaped(value *TfPolicyEvaluations_attributes_error_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDetail() *string
+	GetSummary() *string
+	GetTypeEscaped() *TfPolicyEvaluations_attributes_error_type
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDetail(value *string)
+	SetSummary(value *string)
+	SetTypeEscaped(value *TfPolicyEvaluations_attributes_error_type)
 }

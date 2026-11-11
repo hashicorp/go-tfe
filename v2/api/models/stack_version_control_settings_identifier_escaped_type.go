@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackVersionControlSettingsIdentifier_type int
 
 const (
-    STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE StackVersionControlSettingsIdentifier_type = iota
+	STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE StackVersionControlSettingsIdentifier_type = iota
 )
 
 func (i StackVersionControlSettingsIdentifier_type) String() string {
-    return []string{"stack-version-control-settings"}[i]
+	return []string{"stack-version-control-settings"}[i]
 }
+
 func ParseStackVersionControlSettingsIdentifier_type(v string) (any, error) {
-    result := STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE
-    switch v {
-        case "stack-version-control-settings":
-            result = STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE
+	switch v {
+	case "stack-version-control-settings":
+		result = STACKVERSIONCONTROLSETTINGS_STACKVERSIONCONTROLSETTINGSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackVersionControlSettingsIdentifier_type(values []StackVersionControlSettingsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackVersionControlSettingsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

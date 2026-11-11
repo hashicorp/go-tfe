@@ -4,144 +4,217 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackOperationPlans_attributes_changeSummary summary of the resource changes detected by the plan operation.
 type StackOperationPlans_attributes_changeSummary struct {
-    // The add property
-    add *int32
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The change property
-    change *int32
-    // The remove property
-    remove *int32
-    // The total property
-    total *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackOperationPlans_attributes_changeSummary instantiates a new StackOperationPlans_attributes_changeSummary and sets the default values.
-func NewStackOperationPlans_attributes_changeSummary()(*StackOperationPlans_attributes_changeSummary) {
-    m := &StackOperationPlans_attributes_changeSummary{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackOperationPlans_attributes_changeSummary() *StackOperationPlans_attributes_changeSummary {
+	m := &StackOperationPlans_attributes_changeSummary{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackOperationPlans_attributes_changeSummaryFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackOperationPlans_attributes_changeSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackOperationPlans_attributes_changeSummary(), nil
+func CreateStackOperationPlans_attributes_changeSummaryFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackOperationPlans_attributes_changeSummary(), nil
 }
+
 // GetAdd gets the add property value. The add property
 // returns a *int32 when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetAdd()(*int32) {
-    return m.add
+func (m *StackOperationPlans_attributes_changeSummary) GetAdd() *int32 {
+	val, err := m.GetBackingStore().Get("add")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackOperationPlans_attributes_changeSummary) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackOperationPlans_attributes_changeSummary) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetChange gets the change property value. The change property
 // returns a *int32 when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetChange()(*int32) {
-    return m.change
+func (m *StackOperationPlans_attributes_changeSummary) GetChange() *int32 {
+	val, err := m.GetBackingStore().Get("change")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["add"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAdd(val)
-        }
-        return nil
-    }
-    res["change"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChange(val)
-        }
-        return nil
-    }
-    res["remove"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRemove(val)
-        }
-        return nil
-    }
-    res["total"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTotal(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackOperationPlans_attributes_changeSummary) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["add"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAdd(val)
+		}
+		return nil
+	}
+	res["change"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChange(val)
+		}
+		return nil
+	}
+	res["remove"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRemove(val)
+		}
+		return nil
+	}
+	res["total"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTotal(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetRemove gets the remove property value. The remove property
 // returns a *int32 when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetRemove()(*int32) {
-    return m.remove
+func (m *StackOperationPlans_attributes_changeSummary) GetRemove() *int32 {
+	val, err := m.GetBackingStore().Get("remove")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetTotal gets the total property value. The total property
 // returns a *int32 when successful
-func (m *StackOperationPlans_attributes_changeSummary) GetTotal()(*int32) {
-    return m.total
+func (m *StackOperationPlans_attributes_changeSummary) GetTotal() *int32 {
+	val, err := m.GetBackingStore().Get("total")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackOperationPlans_attributes_changeSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackOperationPlans_attributes_changeSummary) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdd sets the add property value. The add property
-func (m *StackOperationPlans_attributes_changeSummary) SetAdd(value *int32)() {
-    m.add = value
+func (m *StackOperationPlans_attributes_changeSummary) SetAdd(value *int32) {
+	err := m.GetBackingStore().Set("add", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackOperationPlans_attributes_changeSummary) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackOperationPlans_attributes_changeSummary) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackOperationPlans_attributes_changeSummary) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetChange sets the change property value. The change property
-func (m *StackOperationPlans_attributes_changeSummary) SetChange(value *int32)() {
-    m.change = value
+func (m *StackOperationPlans_attributes_changeSummary) SetChange(value *int32) {
+	err := m.GetBackingStore().Set("change", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRemove sets the remove property value. The remove property
-func (m *StackOperationPlans_attributes_changeSummary) SetRemove(value *int32)() {
-    m.remove = value
+func (m *StackOperationPlans_attributes_changeSummary) SetRemove(value *int32) {
+	err := m.GetBackingStore().Set("remove", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTotal sets the total property value. The total property
-func (m *StackOperationPlans_attributes_changeSummary) SetTotal(value *int32)() {
-    m.total = value
+func (m *StackOperationPlans_attributes_changeSummary) SetTotal(value *int32) {
+	err := m.GetBackingStore().Set("total", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackOperationPlans_attributes_changeSummaryable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAdd()(*int32)
-    GetChange()(*int32)
-    GetRemove()(*int32)
-    GetTotal()(*int32)
-    SetAdd(value *int32)()
-    SetChange(value *int32)()
-    SetRemove(value *int32)()
-    SetTotal(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAdd() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetChange() *int32
+	GetRemove() *int32
+	GetTotal() *int32
+	SetAdd(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetChange(value *int32)
+	SetRemove(value *int32)
+	SetTotal(value *int32)
 }

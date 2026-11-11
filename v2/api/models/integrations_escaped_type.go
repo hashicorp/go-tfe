@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Integrations_type int
 
 const (
-    INTEGRATIONS_INTEGRATIONS_TYPE Integrations_type = iota
+	INTEGRATIONS_INTEGRATIONS_TYPE Integrations_type = iota
 )
 
 func (i Integrations_type) String() string {
-    return []string{"integrations"}[i]
+	return []string{"integrations"}[i]
 }
+
 func ParseIntegrations_type(v string) (any, error) {
-    result := INTEGRATIONS_INTEGRATIONS_TYPE
-    switch v {
-        case "integrations":
-            result = INTEGRATIONS_INTEGRATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := INTEGRATIONS_INTEGRATIONS_TYPE
+	switch v {
+	case "integrations":
+		result = INTEGRATIONS_INTEGRATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeIntegrations_type(values []Integrations_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Integrations_type) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,66 +4,72 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    ie5bf1a07a4aed9c1b7f92edc407a7e27e2c292d7939e34eaadad1916c2f40c95 "github.com/hashicorp/go-tfe/v2/api/organizations/item/providersets/item"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	ie5bf1a07a4aed9c1b7f92edc407a7e27e2c292d7939e34eaadad1916c2f40c95 "github.com/hashicorp/go-tfe/v2/api/organizations/item/providersets/item"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemProviderSetsWithProvider_set_nameItemRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\provider-sets\{provider_set_name}
 type ItemProviderSetsWithProvider_set_nameItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters fetch details about the specified provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 type ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsproviderSets []string "uriparametername:\"fields%5Bprovider%2Dsets%5D\""
-    // Optionally side-load the specified relationships.
-    Include []ie5bf1a07a4aed9c1b7f92edc407a7e27e2c292d7939e34eaadad1916c2f40c95.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for provider-sets resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsproviderSets []string "uriparametername:\"fields%5Bprovider%2Dsets%5D\""
+	// Optionally side-load the specified relationships.
+	Include []ie5bf1a07a4aed9c1b7f92edc407a7e27e2c292d7939e34eaadad1916c2f40c95.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal instantiates a new ItemProviderSetsWithProvider_set_nameItemRequestBuilder and sets the default values.
-func NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsWithProvider_set_nameItemRequestBuilder) {
-    m := &ItemProviderSetsWithProvider_set_nameItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets/{provider_set_name}{?fields%5Bprovider%2Dsets%5D,include}", pathParameters),
-    }
-    return m
+func NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemProviderSetsWithProvider_set_nameItemRequestBuilder {
+	m := &ItemProviderSetsWithProvider_set_nameItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/provider-sets/{provider_set_name}{?fields%5Bprovider%2Dsets%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewItemProviderSetsWithProvider_set_nameItemRequestBuilder instantiates a new ItemProviderSetsWithProvider_set_nameItemRequestBuilder and sets the default values.
-func NewItemProviderSetsWithProvider_set_nameItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemProviderSetsWithProvider_set_nameItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemProviderSetsWithProvider_set_nameItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemProviderSetsWithProvider_set_nameItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemProviderSetsWithProvider_set_nameItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get fetch details about the specified provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a ProviderSetsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateProviderSetsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable), nil
+func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateProviderSetsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ProviderSetsEnvelopeable), nil
 }
+
 // ToGetRequestInformation fetch details about the specified provider set.This operation is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *RequestInformation when successful
-func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemProviderSetsWithProvider_set_nameItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemProviderSetsWithProvider_set_nameItemRequestBuilder when successful
-func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) WithUrl(rawUrl string)(*ItemProviderSetsWithProvider_set_nameItemRequestBuilder) {
-    return NewItemProviderSetsWithProvider_set_nameItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemProviderSetsWithProvider_set_nameItemRequestBuilder) WithUrl(rawUrl string) *ItemProviderSetsWithProvider_set_nameItemRequestBuilder {
+	return NewItemProviderSetsWithProvider_set_nameItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

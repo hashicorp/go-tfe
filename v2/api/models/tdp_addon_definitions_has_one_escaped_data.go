@@ -4,39 +4,44 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type TdpAddonDefinitionsHasOne_data struct {
-    TdpAddonDefinitionsIdentifier
+	TdpAddonDefinitionsIdentifier
 }
+
 // NewTdpAddonDefinitionsHasOne_data instantiates a new TdpAddonDefinitionsHasOne_data and sets the default values.
-func NewTdpAddonDefinitionsHasOne_data()(*TdpAddonDefinitionsHasOne_data) {
-    m := &TdpAddonDefinitionsHasOne_data{
-        TdpAddonDefinitionsIdentifier: *NewTdpAddonDefinitionsIdentifier(),
-    }
-    return m
+func NewTdpAddonDefinitionsHasOne_data() *TdpAddonDefinitionsHasOne_data {
+	m := &TdpAddonDefinitionsHasOne_data{
+		TdpAddonDefinitionsIdentifier: *NewTdpAddonDefinitionsIdentifier(),
+	}
+	return m
 }
+
 // CreateTdpAddonDefinitionsHasOne_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTdpAddonDefinitionsHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTdpAddonDefinitionsHasOne_data(), nil
+func CreateTdpAddonDefinitionsHasOne_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTdpAddonDefinitionsHasOne_data(), nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TdpAddonDefinitionsHasOne_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := m.TdpAddonDefinitionsIdentifier.GetFieldDeserializers()
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TdpAddonDefinitionsHasOne_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := m.TdpAddonDefinitionsIdentifier.GetFieldDeserializers()
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *TdpAddonDefinitionsHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    err := m.TdpAddonDefinitionsIdentifier.Serialize(writer)
-    if err != nil {
-        return err
-    }
-    return nil
+func (m *TdpAddonDefinitionsHasOne_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	err := m.TdpAddonDefinitionsIdentifier.Serialize(writer)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
 type TdpAddonDefinitionsHasOne_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    TdpAddonDefinitionsIdentifierable
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	TdpAddonDefinitionsIdentifierable
 }

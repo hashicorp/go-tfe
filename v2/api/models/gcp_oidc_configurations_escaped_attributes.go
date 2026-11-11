@@ -4,254 +4,357 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type GcpOidcConfigurations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The projectNumber property
-    projectNumber *string
-    // The region property
-    region *string
-    // The serviceAccountEmail property
-    serviceAccountEmail *string
-    // The type property
-    typeEscaped *string
-    // Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-    workloadPoolId *string
-    // Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-    workloadProviderId *string
-    // Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-    workloadProviderName *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewGcpOidcConfigurations_attributes instantiates a new GcpOidcConfigurations_attributes and sets the default values.
-func NewGcpOidcConfigurations_attributes()(*GcpOidcConfigurations_attributes) {
-    m := &GcpOidcConfigurations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewGcpOidcConfigurations_attributes() *GcpOidcConfigurations_attributes {
+	m := &GcpOidcConfigurations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateGcpOidcConfigurations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateGcpOidcConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewGcpOidcConfigurations_attributes(), nil
+func CreateGcpOidcConfigurations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewGcpOidcConfigurations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *GcpOidcConfigurations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *GcpOidcConfigurations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *GcpOidcConfigurations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *GcpOidcConfigurations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["project-number"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjectNumber(val)
-        }
-        return nil
-    }
-    res["region"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRegion(val)
-        }
-        return nil
-    }
-    res["service-account-email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetServiceAccountEmail(val)
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val)
-        }
-        return nil
-    }
-    res["workload-pool-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkloadPoolId(val)
-        }
-        return nil
-    }
-    res["workload-provider-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkloadProviderId(val)
-        }
-        return nil
-    }
-    res["workload-provider-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkloadProviderName(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *GcpOidcConfigurations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["project-number"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjectNumber(val)
+		}
+		return nil
+	}
+	res["region"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRegion(val)
+		}
+		return nil
+	}
+	res["service-account-email"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetServiceAccountEmail(val)
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val)
+		}
+		return nil
+	}
+	res["workload-pool-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkloadPoolId(val)
+		}
+		return nil
+	}
+	res["workload-provider-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkloadProviderId(val)
+		}
+		return nil
+	}
+	res["workload-provider-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkloadProviderName(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetProjectNumber gets the project-number property value. The projectNumber property
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetProjectNumber()(*string) {
-    return m.projectNumber
+func (m *GcpOidcConfigurations_attributes) GetProjectNumber() *string {
+	val, err := m.GetBackingStore().Get("projectNumber")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetRegion gets the region property value. The region property
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetRegion()(*string) {
-    return m.region
+func (m *GcpOidcConfigurations_attributes) GetRegion() *string {
+	val, err := m.GetBackingStore().Get("region")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetServiceAccountEmail gets the service-account-email property value. The serviceAccountEmail property
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetServiceAccountEmail()(*string) {
-    return m.serviceAccountEmail
+func (m *GcpOidcConfigurations_attributes) GetServiceAccountEmail() *string {
+	val, err := m.GetBackingStore().Get("serviceAccountEmail")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetTypeEscaped()(*string) {
-    return m.typeEscaped
+func (m *GcpOidcConfigurations_attributes) GetTypeEscaped() *string {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetWorkloadPoolId gets the workload-pool-id property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetWorkloadPoolId()(*string) {
-    return m.workloadPoolId
+func (m *GcpOidcConfigurations_attributes) GetWorkloadPoolId() *string {
+	val, err := m.GetBackingStore().Get("workloadPoolId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetWorkloadProviderId gets the workload-provider-id property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetWorkloadProviderId()(*string) {
-    return m.workloadProviderId
+func (m *GcpOidcConfigurations_attributes) GetWorkloadProviderId() *string {
+	val, err := m.GetBackingStore().Get("workloadProviderId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetWorkloadProviderName gets the workload-provider-name property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
 // returns a *string when successful
-func (m *GcpOidcConfigurations_attributes) GetWorkloadProviderName()(*string) {
-    return m.workloadProviderName
+func (m *GcpOidcConfigurations_attributes) GetWorkloadProviderName() *string {
+	val, err := m.GetBackingStore().Get("workloadProviderName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *GcpOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("project-number", m.GetProjectNumber())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("region", m.GetRegion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("service-account-email", m.GetServiceAccountEmail())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("type", m.GetTypeEscaped())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("workload-pool-id", m.GetWorkloadPoolId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("workload-provider-id", m.GetWorkloadProviderId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("workload-provider-name", m.GetWorkloadProviderName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *GcpOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("project-number", m.GetProjectNumber())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("region", m.GetRegion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("service-account-email", m.GetServiceAccountEmail())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("type", m.GetTypeEscaped())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("workload-pool-id", m.GetWorkloadPoolId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("workload-provider-id", m.GetWorkloadProviderId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("workload-provider-name", m.GetWorkloadProviderName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *GcpOidcConfigurations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *GcpOidcConfigurations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *GcpOidcConfigurations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetProjectNumber sets the project-number property value. The projectNumber property
-func (m *GcpOidcConfigurations_attributes) SetProjectNumber(value *string)() {
-    m.projectNumber = value
+func (m *GcpOidcConfigurations_attributes) SetProjectNumber(value *string) {
+	err := m.GetBackingStore().Set("projectNumber", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRegion sets the region property value. The region property
-func (m *GcpOidcConfigurations_attributes) SetRegion(value *string)() {
-    m.region = value
+func (m *GcpOidcConfigurations_attributes) SetRegion(value *string) {
+	err := m.GetBackingStore().Set("region", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetServiceAccountEmail sets the service-account-email property value. The serviceAccountEmail property
-func (m *GcpOidcConfigurations_attributes) SetServiceAccountEmail(value *string)() {
-    m.serviceAccountEmail = value
+func (m *GcpOidcConfigurations_attributes) SetServiceAccountEmail(value *string) {
+	err := m.GetBackingStore().Set("serviceAccountEmail", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *GcpOidcConfigurations_attributes) SetTypeEscaped(value *string)() {
-    m.typeEscaped = value
+func (m *GcpOidcConfigurations_attributes) SetTypeEscaped(value *string) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkloadPoolId sets the workload-pool-id property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-func (m *GcpOidcConfigurations_attributes) SetWorkloadPoolId(value *string)() {
-    m.workloadPoolId = value
+func (m *GcpOidcConfigurations_attributes) SetWorkloadPoolId(value *string) {
+	err := m.GetBackingStore().Set("workloadPoolId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkloadProviderId sets the workload-provider-id property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-func (m *GcpOidcConfigurations_attributes) SetWorkloadProviderId(value *string)() {
-    m.workloadProviderId = value
+func (m *GcpOidcConfigurations_attributes) SetWorkloadProviderId(value *string) {
+	err := m.GetBackingStore().Set("workloadProviderId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkloadProviderName sets the workload-provider-name property value. Either the workload-provider-name or workload-pool-id and workload-provider-id must be provided
-func (m *GcpOidcConfigurations_attributes) SetWorkloadProviderName(value *string)() {
-    m.workloadProviderName = value
+func (m *GcpOidcConfigurations_attributes) SetWorkloadProviderName(value *string) {
+	err := m.GetBackingStore().Set("workloadProviderName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type GcpOidcConfigurations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetProjectNumber()(*string)
-    GetRegion()(*string)
-    GetServiceAccountEmail()(*string)
-    GetTypeEscaped()(*string)
-    GetWorkloadPoolId()(*string)
-    GetWorkloadProviderId()(*string)
-    GetWorkloadProviderName()(*string)
-    SetProjectNumber(value *string)()
-    SetRegion(value *string)()
-    SetServiceAccountEmail(value *string)()
-    SetTypeEscaped(value *string)()
-    SetWorkloadPoolId(value *string)()
-    SetWorkloadProviderId(value *string)()
-    SetWorkloadProviderName(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetProjectNumber() *string
+	GetRegion() *string
+	GetServiceAccountEmail() *string
+	GetTypeEscaped() *string
+	GetWorkloadPoolId() *string
+	GetWorkloadProviderId() *string
+	GetWorkloadProviderName() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetProjectNumber(value *string)
+	SetRegion(value *string)
+	SetServiceAccountEmail(value *string)
+	SetTypeEscaped(value *string)
+	SetWorkloadPoolId(value *string)
+	SetWorkloadProviderId(value *string)
+	SetWorkloadProviderName(value *string)
 }

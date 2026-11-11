@@ -4,259 +4,375 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type OrganizationsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data Organizationsable
-    // The included property
-    included []OrganizationsEnvelope_OrganizationsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// OrganizationsEnvelope_OrganizationsEnvelope_included composed type wrapper for classes EntitlementSetsable, OnboardingTaskListsable, Projectsable, Subscriptionsable
+
+// OrganizationsEnvelope_OrganizationsEnvelope_included composed type wrapper for classes EntitlementSets, OnboardingTaskLists, Projects, Subscriptions
 type OrganizationsEnvelope_OrganizationsEnvelope_included struct {
-    // Composed type representation for type EntitlementSetsable
-    entitlementSets EntitlementSetsable
-    // Composed type representation for type OnboardingTaskListsable
-    onboardingTaskLists OnboardingTaskListsable
-    // Composed type representation for type Projectsable
-    projects Projectsable
-    // Composed type representation for type Subscriptionsable
-    subscriptions Subscriptionsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewOrganizationsEnvelope_OrganizationsEnvelope_included instantiates a new OrganizationsEnvelope_OrganizationsEnvelope_included and sets the default values.
-func NewOrganizationsEnvelope_OrganizationsEnvelope_included()(*OrganizationsEnvelope_OrganizationsEnvelope_included) {
-    m := &OrganizationsEnvelope_OrganizationsEnvelope_included{
-    }
-    return m
+func NewOrganizationsEnvelope_OrganizationsEnvelope_included() *OrganizationsEnvelope_OrganizationsEnvelope_included {
+	m := &OrganizationsEnvelope_OrganizationsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateOrganizationsEnvelope_OrganizationsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationsEnvelope_OrganizationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewOrganizationsEnvelope_OrganizationsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "entitlement-sets") {
-                    result.SetEntitlementSets(NewEntitlementSets())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "onboarding-task-lists") {
-                    result.SetOnboardingTaskLists(NewOnboardingTaskLists())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
-                    result.SetProjects(NewProjects())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "subscriptions") {
-                    result.SetSubscriptions(NewSubscriptions())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateOrganizationsEnvelope_OrganizationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewOrganizationsEnvelope_OrganizationsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "entitlement-sets") {
+					result.SetEntitlementSets(NewEntitlementSets())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "onboarding-task-lists") {
+					result.SetOnboardingTaskLists(NewOnboardingTaskLists())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "projects") {
+					result.SetProjects(NewProjects())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "subscriptions") {
+					result.SetSubscriptions(NewSubscriptions())
+				}
+			}
+		}
+	}
+	return result, nil
 }
-// GetEntitlementSets gets the entitlementSets property value. Composed type representation for type EntitlementSetsable
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetEntitlementSets gets the entitlementSets property value. Composed type representation for type EntitlementSets
 // returns a EntitlementSetsable when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetEntitlementSets()(EntitlementSetsable) {
-    return m.entitlementSets
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetEntitlementSets() EntitlementSetsable {
+	val, err := m.GetBackingStore().Get("entitlementSets")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(EntitlementSetsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetEntitlementSets() != nil {
-        return m.GetEntitlementSets().GetFieldDeserializers()
-    } else if m.GetOnboardingTaskLists() != nil {
-        return m.GetOnboardingTaskLists().GetFieldDeserializers()
-    } else if m.GetProjects() != nil {
-        return m.GetProjects().GetFieldDeserializers()
-    } else if m.GetSubscriptions() != nil {
-        return m.GetSubscriptions().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetEntitlementSets() != nil {
+		return m.GetEntitlementSets().GetFieldDeserializers()
+	} else if m.GetOnboardingTaskLists() != nil {
+		return m.GetOnboardingTaskLists().GetFieldDeserializers()
+	} else if m.GetProjects() != nil {
+		return m.GetProjects().GetFieldDeserializers()
+	} else if m.GetSubscriptions() != nil {
+		return m.GetSubscriptions().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetOnboardingTaskLists gets the onboardingTaskLists property value. Composed type representation for type OnboardingTaskListsable
+
+// GetOnboardingTaskLists gets the onboardingTaskLists property value. Composed type representation for type OnboardingTaskLists
 // returns a OnboardingTaskListsable when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetOnboardingTaskLists()(OnboardingTaskListsable) {
-    return m.onboardingTaskLists
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetOnboardingTaskLists() OnboardingTaskListsable {
+	val, err := m.GetBackingStore().Get("onboardingTaskLists")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OnboardingTaskListsable)
+	}
+	return nil
 }
-// GetProjects gets the projects property value. Composed type representation for type Projectsable
+
+// GetProjects gets the projects property value. Composed type representation for type Projects
 // returns a Projectsable when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetProjects()(Projectsable) {
-    return m.projects
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetProjects() Projectsable {
+	val, err := m.GetBackingStore().Get("projects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Projectsable)
+	}
+	return nil
 }
-// GetSubscriptions gets the subscriptions property value. Composed type representation for type Subscriptionsable
+
+// GetSubscriptions gets the subscriptions property value. Composed type representation for type Subscriptions
 // returns a Subscriptionsable when successful
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetSubscriptions()(Subscriptionsable) {
-    return m.subscriptions
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) GetSubscriptions() Subscriptionsable {
+	val, err := m.GetBackingStore().Get("subscriptions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Subscriptionsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetEntitlementSets() != nil {
-        err := writer.WriteObjectValue("", m.GetEntitlementSets())
-        if err != nil {
-            return err
-        }
-    } else if m.GetOnboardingTaskLists() != nil {
-        err := writer.WriteObjectValue("", m.GetOnboardingTaskLists())
-        if err != nil {
-            return err
-        }
-    } else if m.GetProjects() != nil {
-        err := writer.WriteObjectValue("", m.GetProjects())
-        if err != nil {
-            return err
-        }
-    } else if m.GetSubscriptions() != nil {
-        err := writer.WriteObjectValue("", m.GetSubscriptions())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetEntitlementSets() != nil {
+		err := writer.WriteObjectValue("", m.GetEntitlementSets())
+		if err != nil {
+			return err
+		}
+	} else if m.GetOnboardingTaskLists() != nil {
+		err := writer.WriteObjectValue("", m.GetOnboardingTaskLists())
+		if err != nil {
+			return err
+		}
+	} else if m.GetProjects() != nil {
+		err := writer.WriteObjectValue("", m.GetProjects())
+		if err != nil {
+			return err
+		}
+	} else if m.GetSubscriptions() != nil {
+		err := writer.WriteObjectValue("", m.GetSubscriptions())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetEntitlementSets sets the entitlementSets property value. Composed type representation for type EntitlementSetsable
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetEntitlementSets(value EntitlementSetsable)() {
-    m.entitlementSets = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetOnboardingTaskLists sets the onboardingTaskLists property value. Composed type representation for type OnboardingTaskListsable
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetOnboardingTaskLists(value OnboardingTaskListsable)() {
-    m.onboardingTaskLists = value
+
+// SetEntitlementSets sets the entitlementSets property value. Composed type representation for type EntitlementSets
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetEntitlementSets(value EntitlementSetsable) {
+	err := m.GetBackingStore().Set("entitlementSets", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetProjects sets the projects property value. Composed type representation for type Projectsable
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetProjects(value Projectsable)() {
-    m.projects = value
+
+// SetOnboardingTaskLists sets the onboardingTaskLists property value. Composed type representation for type OnboardingTaskLists
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetOnboardingTaskLists(value OnboardingTaskListsable) {
+	err := m.GetBackingStore().Set("onboardingTaskLists", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetSubscriptions sets the subscriptions property value. Composed type representation for type Subscriptionsable
-func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetSubscriptions(value Subscriptionsable)() {
-    m.subscriptions = value
+
+// SetProjects sets the projects property value. Composed type representation for type Projects
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetProjects(value Projectsable) {
+	err := m.GetBackingStore().Set("projects", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetSubscriptions sets the subscriptions property value. Composed type representation for type Subscriptions
+func (m *OrganizationsEnvelope_OrganizationsEnvelope_included) SetSubscriptions(value Subscriptionsable) {
+	err := m.GetBackingStore().Set("subscriptions", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type OrganizationsEnvelope_OrganizationsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEntitlementSets()(EntitlementSetsable)
-    GetOnboardingTaskLists()(OnboardingTaskListsable)
-    GetProjects()(Projectsable)
-    GetSubscriptions()(Subscriptionsable)
-    SetEntitlementSets(value EntitlementSetsable)()
-    SetOnboardingTaskLists(value OnboardingTaskListsable)()
-    SetProjects(value Projectsable)()
-    SetSubscriptions(value Subscriptionsable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEntitlementSets() EntitlementSetsable
+	GetOnboardingTaskLists() OnboardingTaskListsable
+	GetProjects() Projectsable
+	GetSubscriptions() Subscriptionsable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEntitlementSets(value EntitlementSetsable)
+	SetOnboardingTaskLists(value OnboardingTaskListsable)
+	SetProjects(value Projectsable)
+	SetSubscriptions(value Subscriptionsable)
 }
+
 // NewOrganizationsEnvelope instantiates a new OrganizationsEnvelope and sets the default values.
-func NewOrganizationsEnvelope()(*OrganizationsEnvelope) {
-    m := &OrganizationsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOrganizationsEnvelope() *OrganizationsEnvelope {
+	m := &OrganizationsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOrganizationsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOrganizationsEnvelope(), nil
+func CreateOrganizationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOrganizationsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OrganizationsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OrganizationsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a Organizationsable when successful
-func (m *OrganizationsEnvelope) GetData()(Organizationsable) {
-    return m.data
+func (m *OrganizationsEnvelope) GetData() Organizationsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Organizationsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(Organizationsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateOrganizationsEnvelope_OrganizationsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]OrganizationsEnvelope_OrganizationsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(OrganizationsEnvelope_OrganizationsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(Organizationsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateOrganizationsEnvelope_OrganizationsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]OrganizationsEnvelope_OrganizationsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(OrganizationsEnvelope_OrganizationsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []OrganizationsEnvelope_OrganizationsEnvelope_includedable when successful
-func (m *OrganizationsEnvelope) GetIncluded()([]OrganizationsEnvelope_OrganizationsEnvelope_includedable) {
-    return m.included
+func (m *OrganizationsEnvelope) GetIncluded() []OrganizationsEnvelope_OrganizationsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]OrganizationsEnvelope_OrganizationsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OrganizationsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OrganizationsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *OrganizationsEnvelope) SetData(value Organizationsable)() {
-    m.data = value
+func (m *OrganizationsEnvelope) SetData(value Organizationsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *OrganizationsEnvelope) SetIncluded(value []OrganizationsEnvelope_OrganizationsEnvelope_includedable)() {
-    m.included = value
+func (m *OrganizationsEnvelope) SetIncluded(value []OrganizationsEnvelope_OrganizationsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type OrganizationsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(Organizationsable)
-    GetIncluded()([]OrganizationsEnvelope_OrganizationsEnvelope_includedable)
-    SetData(value Organizationsable)()
-    SetIncluded(value []OrganizationsEnvelope_OrganizationsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() Organizationsable
+	GetIncluded() []OrganizationsEnvelope_OrganizationsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value Organizationsable)
+	SetIncluded(value []OrganizationsEnvelope_OrganizationsEnvelope_includedable)
 }

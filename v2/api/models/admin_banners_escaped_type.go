@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AdminBanners_type int
 
 const (
-    ADMINBANNERS_ADMINBANNERS_TYPE AdminBanners_type = iota
+	ADMINBANNERS_ADMINBANNERS_TYPE AdminBanners_type = iota
 )
 
 func (i AdminBanners_type) String() string {
-    return []string{"admin-banners"}[i]
+	return []string{"admin-banners"}[i]
 }
+
 func ParseAdminBanners_type(v string) (any, error) {
-    result := ADMINBANNERS_ADMINBANNERS_TYPE
-    switch v {
-        case "admin-banners":
-            result = ADMINBANNERS_ADMINBANNERS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ADMINBANNERS_ADMINBANNERS_TYPE
+	switch v {
+	case "admin-banners":
+		result = ADMINBANNERS_ADMINBANNERS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminBanners_type(values []AdminBanners_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminBanners_type) isMultiValue() bool {
-    return false
+	return false
 }

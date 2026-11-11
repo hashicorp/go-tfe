@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Vars_type int
 
 const (
-    VARS_VARS_TYPE Vars_type = iota
+	VARS_VARS_TYPE Vars_type = iota
 )
 
 func (i Vars_type) String() string {
-    return []string{"vars"}[i]
+	return []string{"vars"}[i]
 }
+
 func ParseVars_type(v string) (any, error) {
-    result := VARS_VARS_TYPE
-    switch v {
-        case "vars":
-            result = VARS_VARS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := VARS_VARS_TYPE
+	switch v {
+	case "vars":
+		result = VARS_VARS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeVars_type(values []Vars_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Vars_type) isMultiValue() bool {
-    return false
+	return false
 }

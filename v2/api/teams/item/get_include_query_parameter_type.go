@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    USERS_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    ORGANIZATIONMEMBERSHIPS_GETINCLUDEQUERYPARAMETERTYPE
+	USERS_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	ORGANIZATIONMEMBERSHIPS_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"users", "organization-memberships"}[i]
+	return []string{"users", "organization-memberships"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := USERS_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "users":
-            result = USERS_GETINCLUDEQUERYPARAMETERTYPE
-        case "organization-memberships":
-            result = ORGANIZATIONMEMBERSHIPS_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := USERS_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "users":
+		result = USERS_GETINCLUDEQUERYPARAMETERTYPE
+	case "organization-memberships":
+		result = ORGANIZATIONMEMBERSHIPS_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

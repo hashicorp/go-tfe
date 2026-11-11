@@ -4,236 +4,339 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminScimSettings_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether SCIM provisioning is enabled. Enabling requires SAML to be enabled with a SCIM-compatible provider type.
-    enabled *bool
-    // Whether SCIM provisioning is temporarily paused. Cannot be true while disabled.
-    paused *bool
-    // The permissions property
-    permissions AdminScimSettings_attributes_permissionsable
-    // Display name of the site admin group.
-    siteAdminGroupDisplayName *string
-    // SCIM id of the group whose members are granted site admin permissions.
-    siteAdminGroupScimId *string
-    // Display name of the site auditor group.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-    siteAuditorGroupDisplayName *string
-    // SCIM id of the group whose members are granted site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-    siteAuditorGroupScimId *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAdminScimSettings_attributes instantiates a new AdminScimSettings_attributes and sets the default values.
-func NewAdminScimSettings_attributes()(*AdminScimSettings_attributes) {
-    m := &AdminScimSettings_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAdminScimSettings_attributes() *AdminScimSettings_attributes {
+	m := &AdminScimSettings_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAdminScimSettings_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAdminScimSettings_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAdminScimSettings_attributes(), nil
+func CreateAdminScimSettings_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAdminScimSettings_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AdminScimSettings_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AdminScimSettings_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminScimSettings_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetEnabled gets the enabled property value. Whether SCIM provisioning is enabled. Enabling requires SAML to be enabled with a SCIM-compatible provider type.
 // returns a *bool when successful
-func (m *AdminScimSettings_attributes) GetEnabled()(*bool) {
-    return m.enabled
+func (m *AdminScimSettings_attributes) GetEnabled() *bool {
+	val, err := m.GetBackingStore().Get("enabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AdminScimSettings_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnabled(val)
-        }
-        return nil
-    }
-    res["paused"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPaused(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAdminScimSettings_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(AdminScimSettings_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["site-admin-group-display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSiteAdminGroupDisplayName(val)
-        }
-        return nil
-    }
-    res["site-admin-group-scim-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSiteAdminGroupScimId(val)
-        }
-        return nil
-    }
-    res["site-auditor-group-display-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSiteAuditorGroupDisplayName(val)
-        }
-        return nil
-    }
-    res["site-auditor-group-scim-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSiteAuditorGroupScimId(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AdminScimSettings_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnabled(val)
+		}
+		return nil
+	}
+	res["paused"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPaused(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAdminScimSettings_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(AdminScimSettings_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["site-admin-group-display-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSiteAdminGroupDisplayName(val)
+		}
+		return nil
+	}
+	res["site-admin-group-scim-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSiteAdminGroupScimId(val)
+		}
+		return nil
+	}
+	res["site-auditor-group-display-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSiteAuditorGroupDisplayName(val)
+		}
+		return nil
+	}
+	res["site-auditor-group-scim-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSiteAuditorGroupScimId(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPaused gets the paused property value. Whether SCIM provisioning is temporarily paused. Cannot be true while disabled.
 // returns a *bool when successful
-func (m *AdminScimSettings_attributes) GetPaused()(*bool) {
-    return m.paused
+func (m *AdminScimSettings_attributes) GetPaused() *bool {
+	val, err := m.GetBackingStore().Get("paused")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPermissions gets the permissions property value. The permissions property
 // returns a AdminScimSettings_attributes_permissionsable when successful
-func (m *AdminScimSettings_attributes) GetPermissions()(AdminScimSettings_attributes_permissionsable) {
-    return m.permissions
+func (m *AdminScimSettings_attributes) GetPermissions() AdminScimSettings_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AdminScimSettings_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetSiteAdminGroupDisplayName gets the site-admin-group-display-name property value. Display name of the site admin group.
 // returns a *string when successful
-func (m *AdminScimSettings_attributes) GetSiteAdminGroupDisplayName()(*string) {
-    return m.siteAdminGroupDisplayName
+func (m *AdminScimSettings_attributes) GetSiteAdminGroupDisplayName() *string {
+	val, err := m.GetBackingStore().Get("siteAdminGroupDisplayName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSiteAdminGroupScimId gets the site-admin-group-scim-id property value. SCIM id of the group whose members are granted site admin permissions.
 // returns a *string when successful
-func (m *AdminScimSettings_attributes) GetSiteAdminGroupScimId()(*string) {
-    return m.siteAdminGroupScimId
+func (m *AdminScimSettings_attributes) GetSiteAdminGroupScimId() *string {
+	val, err := m.GetBackingStore().Get("siteAdminGroupScimId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSiteAuditorGroupDisplayName gets the site-auditor-group-display-name property value. Display name of the site auditor group.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *string when successful
-func (m *AdminScimSettings_attributes) GetSiteAuditorGroupDisplayName()(*string) {
-    return m.siteAuditorGroupDisplayName
+func (m *AdminScimSettings_attributes) GetSiteAuditorGroupDisplayName() *string {
+	val, err := m.GetBackingStore().Get("siteAuditorGroupDisplayName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSiteAuditorGroupScimId gets the site-auditor-group-scim-id property value. SCIM id of the group whose members are granted site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
 // returns a *string when successful
-func (m *AdminScimSettings_attributes) GetSiteAuditorGroupScimId()(*string) {
-    return m.siteAuditorGroupScimId
+func (m *AdminScimSettings_attributes) GetSiteAuditorGroupScimId() *string {
+	val, err := m.GetBackingStore().Get("siteAuditorGroupScimId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AdminScimSettings_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("enabled", m.GetEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("paused", m.GetPaused())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("site-admin-group-scim-id", m.GetSiteAdminGroupScimId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("site-auditor-group-scim-id", m.GetSiteAuditorGroupScimId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AdminScimSettings_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("enabled", m.GetEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("paused", m.GetPaused())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("site-admin-group-scim-id", m.GetSiteAdminGroupScimId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("site-auditor-group-scim-id", m.GetSiteAuditorGroupScimId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AdminScimSettings_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AdminScimSettings_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminScimSettings_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetEnabled sets the enabled property value. Whether SCIM provisioning is enabled. Enabling requires SAML to be enabled with a SCIM-compatible provider type.
-func (m *AdminScimSettings_attributes) SetEnabled(value *bool)() {
-    m.enabled = value
+func (m *AdminScimSettings_attributes) SetEnabled(value *bool) {
+	err := m.GetBackingStore().Set("enabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPaused sets the paused property value. Whether SCIM provisioning is temporarily paused. Cannot be true while disabled.
-func (m *AdminScimSettings_attributes) SetPaused(value *bool)() {
-    m.paused = value
+func (m *AdminScimSettings_attributes) SetPaused(value *bool) {
+	err := m.GetBackingStore().Set("paused", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. The permissions property
-func (m *AdminScimSettings_attributes) SetPermissions(value AdminScimSettings_attributes_permissionsable)() {
-    m.permissions = value
+func (m *AdminScimSettings_attributes) SetPermissions(value AdminScimSettings_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSiteAdminGroupDisplayName sets the site-admin-group-display-name property value. Display name of the site admin group.
-func (m *AdminScimSettings_attributes) SetSiteAdminGroupDisplayName(value *string)() {
-    m.siteAdminGroupDisplayName = value
+func (m *AdminScimSettings_attributes) SetSiteAdminGroupDisplayName(value *string) {
+	err := m.GetBackingStore().Set("siteAdminGroupDisplayName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSiteAdminGroupScimId sets the site-admin-group-scim-id property value. SCIM id of the group whose members are granted site admin permissions.
-func (m *AdminScimSettings_attributes) SetSiteAdminGroupScimId(value *string)() {
-    m.siteAdminGroupScimId = value
+func (m *AdminScimSettings_attributes) SetSiteAdminGroupScimId(value *string) {
+	err := m.GetBackingStore().Set("siteAdminGroupScimId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSiteAuditorGroupDisplayName sets the site-auditor-group-display-name property value. Display name of the site auditor group.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-func (m *AdminScimSettings_attributes) SetSiteAuditorGroupDisplayName(value *string)() {
-    m.siteAuditorGroupDisplayName = value
+func (m *AdminScimSettings_attributes) SetSiteAuditorGroupDisplayName(value *string) {
+	err := m.GetBackingStore().Set("siteAuditorGroupDisplayName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSiteAuditorGroupScimId sets the site-auditor-group-scim-id property value. SCIM id of the group whose members are granted site auditor permissions.This attribute is only available in Terraform Enterprise version 2.1.0 or later.
-func (m *AdminScimSettings_attributes) SetSiteAuditorGroupScimId(value *string)() {
-    m.siteAuditorGroupScimId = value
+func (m *AdminScimSettings_attributes) SetSiteAuditorGroupScimId(value *string) {
+	err := m.GetBackingStore().Set("siteAuditorGroupScimId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AdminScimSettings_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEnabled()(*bool)
-    GetPaused()(*bool)
-    GetPermissions()(AdminScimSettings_attributes_permissionsable)
-    GetSiteAdminGroupDisplayName()(*string)
-    GetSiteAdminGroupScimId()(*string)
-    GetSiteAuditorGroupDisplayName()(*string)
-    GetSiteAuditorGroupScimId()(*string)
-    SetEnabled(value *bool)()
-    SetPaused(value *bool)()
-    SetPermissions(value AdminScimSettings_attributes_permissionsable)()
-    SetSiteAdminGroupDisplayName(value *string)()
-    SetSiteAdminGroupScimId(value *string)()
-    SetSiteAuditorGroupDisplayName(value *string)()
-    SetSiteAuditorGroupScimId(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEnabled() *bool
+	GetPaused() *bool
+	GetPermissions() AdminScimSettings_attributes_permissionsable
+	GetSiteAdminGroupDisplayName() *string
+	GetSiteAdminGroupScimId() *string
+	GetSiteAuditorGroupDisplayName() *string
+	GetSiteAuditorGroupScimId() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEnabled(value *bool)
+	SetPaused(value *bool)
+	SetPermissions(value AdminScimSettings_attributes_permissionsable)
+	SetSiteAdminGroupDisplayName(value *string)
+	SetSiteAdminGroupScimId(value *string)
+	SetSiteAuditorGroupDisplayName(value *string)
+	SetSiteAuditorGroupScimId(value *string)
 }

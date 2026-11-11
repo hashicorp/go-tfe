@@ -4,81 +4,124 @@
 package organizations
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // ItemPolicySetsGetResponse_meta_ootbPolicyUpdates present only when `include-ootb-update=true`, OOTB policy updates are available for the organization, and the actor is authorized for update metadata.
 type ItemPolicySetsGetResponse_meta_ootbPolicyUpdates struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The organization-wide count of policy sets with at least one available OOTB update, in the caller's authorized scope. Captured before `filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`, `filter[needs-update]`, search, or pagination, so it does not change with those filters.
-    affectedPolicySetCount *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemPolicySetsGetResponse_meta_ootbPolicyUpdates instantiates a new ItemPolicySetsGetResponse_meta_ootbPolicyUpdates and sets the default values.
-func NewItemPolicySetsGetResponse_meta_ootbPolicyUpdates()(*ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) {
-    m := &ItemPolicySetsGetResponse_meta_ootbPolicyUpdates{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewItemPolicySetsGetResponse_meta_ootbPolicyUpdates() *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates {
+	m := &ItemPolicySetsGetResponse_meta_ootbPolicyUpdates{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateItemPolicySetsGetResponse_meta_ootbPolicyUpdatesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemPolicySetsGetResponse_meta_ootbPolicyUpdatesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemPolicySetsGetResponse_meta_ootbPolicyUpdates(), nil
+func CreateItemPolicySetsGetResponse_meta_ootbPolicyUpdatesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemPolicySetsGetResponse_meta_ootbPolicyUpdates(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAffectedPolicySetCount gets the affected-policy-set-count property value. The organization-wide count of policy sets with at least one available OOTB update, in the caller's authorized scope. Captured before `filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`, `filter[needs-update]`, search, or pagination, so it does not change with those filters.
 // returns a *int32 when successful
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetAffectedPolicySetCount()(*int32) {
-    return m.affectedPolicySetCount
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetAffectedPolicySetCount() *int32 {
+	val, err := m.GetBackingStore().Get("affectedPolicySetCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["affected-policy-set-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAffectedPolicySetCount(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["affected-policy-set-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAffectedPolicySetCount(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("affected-policy-set-count", m.GetAffectedPolicySetCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("affected-policy-set-count", m.GetAffectedPolicySetCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAffectedPolicySetCount sets the affected-policy-set-count property value. The organization-wide count of policy sets with at least one available OOTB update, in the caller's authorized scope. Captured before `filter[versioned]`, `filter[kind]`, `filter[ootb-policy]`, `filter[needs-update]`, search, or pagination, so it does not change with those filters.
-func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) SetAffectedPolicySetCount(value *int32)() {
-    m.affectedPolicySetCount = value
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) SetAffectedPolicySetCount(value *int32) {
+	err := m.GetBackingStore().Set("affectedPolicySetCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemPolicySetsGetResponse_meta_ootbPolicyUpdates) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 type ItemPolicySetsGetResponse_meta_ootbPolicyUpdatesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAffectedPolicySetCount()(*int32)
-    SetAffectedPolicySetCount(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAffectedPolicySetCount() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	SetAffectedPolicySetCount(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
 }

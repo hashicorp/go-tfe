@@ -4,440 +4,625 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type Stacks_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The deleteable property
-    deleteable *bool
-    // The description property
-    description *string
-    // The downstreamCount property
-    downstreamCount *int32
-    // The executionMode property
-    executionMode *Stacks_attributes_executionMode
-    // The inputsCount property
-    inputsCount *int32
-    // The name property
-    name *string
-    // The outputsCount property
-    outputsCount *int32
-    // The resourceCount property
-    resourceCount *int32
-    // The settingOverwrites property
-    settingOverwrites Stacks_attributes_settingOverwritesable
-    // The speculativeEnabled property
-    speculativeEnabled *bool
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The upstreamCount property
-    upstreamCount *int32
-    // The vcsRepo property
-    vcsRepo Stacks_attributes_vcsRepoable
-    // The workingDirectory property
-    workingDirectory *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStacks_attributes instantiates a new Stacks_attributes and sets the default values.
-func NewStacks_attributes()(*Stacks_attributes) {
-    m := &Stacks_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStacks_attributes() *Stacks_attributes {
+	m := &Stacks_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	speculativeEnabledValue := false
+	m.SetSpeculativeEnabled(&speculativeEnabledValue)
+	return m
 }
+
 // CreateStacks_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStacks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStacks_attributes(), nil
+func CreateStacks_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStacks_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Stacks_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Stacks_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Stacks_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *Stacks_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *Stacks_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDeleteable gets the deleteable property value. The deleteable property
 // returns a *bool when successful
-func (m *Stacks_attributes) GetDeleteable()(*bool) {
-    return m.deleteable
+func (m *Stacks_attributes) GetDeleteable() *bool {
+	val, err := m.GetBackingStore().Get("deleteable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. The description property
 // returns a *string when successful
-func (m *Stacks_attributes) GetDescription()(*string) {
-    return m.description
+func (m *Stacks_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetDownstreamCount gets the downstream-count property value. The downstreamCount property
 // returns a *int32 when successful
-func (m *Stacks_attributes) GetDownstreamCount()(*int32) {
-    return m.downstreamCount
+func (m *Stacks_attributes) GetDownstreamCount() *int32 {
+	val, err := m.GetBackingStore().Get("downstreamCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetExecutionMode gets the execution-mode property value. The executionMode property
 // returns a *Stacks_attributes_executionMode when successful
-func (m *Stacks_attributes) GetExecutionMode()(*Stacks_attributes_executionMode) {
-    return m.executionMode
+func (m *Stacks_attributes) GetExecutionMode() *Stacks_attributes_executionMode {
+	val, err := m.GetBackingStore().Get("executionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*Stacks_attributes_executionMode)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Stacks_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["deleteable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeleteable(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["downstream-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDownstreamCount(val)
-        }
-        return nil
-    }
-    res["execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseStacks_attributes_executionMode)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetExecutionMode(val.(*Stacks_attributes_executionMode))
-        }
-        return nil
-    }
-    res["inputs-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInputsCount(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["outputs-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOutputsCount(val)
-        }
-        return nil
-    }
-    res["resource-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourceCount(val)
-        }
-        return nil
-    }
-    res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStacks_attributes_settingOverwritesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSettingOverwrites(val.(Stacks_attributes_settingOverwritesable))
-        }
-        return nil
-    }
-    res["speculative-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSpeculativeEnabled(val)
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    res["upstream-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpstreamCount(val)
-        }
-        return nil
-    }
-    res["vcs-repo"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStacks_attributes_vcsRepoFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVcsRepo(val.(Stacks_attributes_vcsRepoable))
-        }
-        return nil
-    }
-    res["working-directory"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkingDirectory(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Stacks_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["deleteable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeleteable(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["downstream-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDownstreamCount(val)
+		}
+		return nil
+	}
+	res["execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseStacks_attributes_executionMode)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetExecutionMode(val.(*Stacks_attributes_executionMode))
+		}
+		return nil
+	}
+	res["inputs-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetInputsCount(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["outputs-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOutputsCount(val)
+		}
+		return nil
+	}
+	res["resource-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourceCount(val)
+		}
+		return nil
+	}
+	res["setting-overwrites"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStacks_attributes_settingOverwritesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSettingOverwrites(val.(Stacks_attributes_settingOverwritesable))
+		}
+		return nil
+	}
+	res["speculative-enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSpeculativeEnabled(val)
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	res["upstream-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpstreamCount(val)
+		}
+		return nil
+	}
+	res["vcs-repo"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStacks_attributes_vcsRepoFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVcsRepo(val.(Stacks_attributes_vcsRepoable))
+		}
+		return nil
+	}
+	res["working-directory"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkingDirectory(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetInputsCount gets the inputs-count property value. The inputsCount property
 // returns a *int32 when successful
-func (m *Stacks_attributes) GetInputsCount()(*int32) {
-    return m.inputsCount
+func (m *Stacks_attributes) GetInputsCount() *int32 {
+	val, err := m.GetBackingStore().Get("inputsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *Stacks_attributes) GetName()(*string) {
-    return m.name
+func (m *Stacks_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetOutputsCount gets the outputs-count property value. The outputsCount property
 // returns a *int32 when successful
-func (m *Stacks_attributes) GetOutputsCount()(*int32) {
-    return m.outputsCount
+func (m *Stacks_attributes) GetOutputsCount() *int32 {
+	val, err := m.GetBackingStore().Get("outputsCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetResourceCount gets the resource-count property value. The resourceCount property
 // returns a *int32 when successful
-func (m *Stacks_attributes) GetResourceCount()(*int32) {
-    return m.resourceCount
+func (m *Stacks_attributes) GetResourceCount() *int32 {
+	val, err := m.GetBackingStore().Get("resourceCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Stacks_attributes_settingOverwritesable when successful
-func (m *Stacks_attributes) GetSettingOverwrites()(Stacks_attributes_settingOverwritesable) {
-    return m.settingOverwrites
+func (m *Stacks_attributes) GetSettingOverwrites() Stacks_attributes_settingOverwritesable {
+	val, err := m.GetBackingStore().Get("settingOverwrites")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacks_attributes_settingOverwritesable)
+	}
+	return nil
 }
+
 // GetSpeculativeEnabled gets the speculative-enabled property value. The speculativeEnabled property
 // returns a *bool when successful
-func (m *Stacks_attributes) GetSpeculativeEnabled()(*bool) {
-    return m.speculativeEnabled
+func (m *Stacks_attributes) GetSpeculativeEnabled() *bool {
+	val, err := m.GetBackingStore().Get("speculativeEnabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *Stacks_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *Stacks_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetUpstreamCount gets the upstream-count property value. The upstreamCount property
 // returns a *int32 when successful
-func (m *Stacks_attributes) GetUpstreamCount()(*int32) {
-    return m.upstreamCount
+func (m *Stacks_attributes) GetUpstreamCount() *int32 {
+	val, err := m.GetBackingStore().Get("upstreamCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetVcsRepo gets the vcs-repo property value. The vcsRepo property
 // returns a Stacks_attributes_vcsRepoable when successful
-func (m *Stacks_attributes) GetVcsRepo()(Stacks_attributes_vcsRepoable) {
-    return m.vcsRepo
+func (m *Stacks_attributes) GetVcsRepo() Stacks_attributes_vcsRepoable {
+	val, err := m.GetBackingStore().Get("vcsRepo")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Stacks_attributes_vcsRepoable)
+	}
+	return nil
 }
+
 // GetWorkingDirectory gets the working-directory property value. The workingDirectory property
 // returns a *string when successful
-func (m *Stacks_attributes) GetWorkingDirectory()(*string) {
-    return m.workingDirectory
+func (m *Stacks_attributes) GetWorkingDirectory() *string {
+	val, err := m.GetBackingStore().Get("workingDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Stacks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetExecutionMode() != nil {
-        cast := (*m.GetExecutionMode()).String()
-        err := writer.WriteStringValue("execution-mode", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("speculative-enabled", m.GetSpeculativeEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("working-directory", m.GetWorkingDirectory())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Stacks_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetExecutionMode() != nil {
+		cast := (*m.GetExecutionMode()).String()
+		err := writer.WriteStringValue("execution-mode", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("setting-overwrites", m.GetSettingOverwrites())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("speculative-enabled", m.GetSpeculativeEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("working-directory", m.GetWorkingDirectory())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Stacks_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Stacks_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Stacks_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *Stacks_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *Stacks_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeleteable sets the deleteable property value. The deleteable property
-func (m *Stacks_attributes) SetDeleteable(value *bool)() {
-    m.deleteable = value
+func (m *Stacks_attributes) SetDeleteable(value *bool) {
+	err := m.GetBackingStore().Set("deleteable", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. The description property
-func (m *Stacks_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *Stacks_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDownstreamCount sets the downstream-count property value. The downstreamCount property
-func (m *Stacks_attributes) SetDownstreamCount(value *int32)() {
-    m.downstreamCount = value
+func (m *Stacks_attributes) SetDownstreamCount(value *int32) {
+	err := m.GetBackingStore().Set("downstreamCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetExecutionMode sets the execution-mode property value. The executionMode property
-func (m *Stacks_attributes) SetExecutionMode(value *Stacks_attributes_executionMode)() {
-    m.executionMode = value
+func (m *Stacks_attributes) SetExecutionMode(value *Stacks_attributes_executionMode) {
+	err := m.GetBackingStore().Set("executionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetInputsCount sets the inputs-count property value. The inputsCount property
-func (m *Stacks_attributes) SetInputsCount(value *int32)() {
-    m.inputsCount = value
+func (m *Stacks_attributes) SetInputsCount(value *int32) {
+	err := m.GetBackingStore().Set("inputsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *Stacks_attributes) SetName(value *string)() {
-    m.name = value
+func (m *Stacks_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOutputsCount sets the outputs-count property value. The outputsCount property
-func (m *Stacks_attributes) SetOutputsCount(value *int32)() {
-    m.outputsCount = value
+func (m *Stacks_attributes) SetOutputsCount(value *int32) {
+	err := m.GetBackingStore().Set("outputsCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourceCount sets the resource-count property value. The resourceCount property
-func (m *Stacks_attributes) SetResourceCount(value *int32)() {
-    m.resourceCount = value
+func (m *Stacks_attributes) SetResourceCount(value *int32) {
+	err := m.GetBackingStore().Set("resourceCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
-func (m *Stacks_attributes) SetSettingOverwrites(value Stacks_attributes_settingOverwritesable)() {
-    m.settingOverwrites = value
+func (m *Stacks_attributes) SetSettingOverwrites(value Stacks_attributes_settingOverwritesable) {
+	err := m.GetBackingStore().Set("settingOverwrites", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSpeculativeEnabled sets the speculative-enabled property value. The speculativeEnabled property
-func (m *Stacks_attributes) SetSpeculativeEnabled(value *bool)() {
-    m.speculativeEnabled = value
+func (m *Stacks_attributes) SetSpeculativeEnabled(value *bool) {
+	err := m.GetBackingStore().Set("speculativeEnabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *Stacks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *Stacks_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpstreamCount sets the upstream-count property value. The upstreamCount property
-func (m *Stacks_attributes) SetUpstreamCount(value *int32)() {
-    m.upstreamCount = value
+func (m *Stacks_attributes) SetUpstreamCount(value *int32) {
+	err := m.GetBackingStore().Set("upstreamCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVcsRepo sets the vcs-repo property value. The vcsRepo property
-func (m *Stacks_attributes) SetVcsRepo(value Stacks_attributes_vcsRepoable)() {
-    m.vcsRepo = value
+func (m *Stacks_attributes) SetVcsRepo(value Stacks_attributes_vcsRepoable) {
+	err := m.GetBackingStore().Set("vcsRepo", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkingDirectory sets the working-directory property value. The workingDirectory property
-func (m *Stacks_attributes) SetWorkingDirectory(value *string)() {
-    m.workingDirectory = value
+func (m *Stacks_attributes) SetWorkingDirectory(value *string) {
+	err := m.GetBackingStore().Set("workingDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Stacks_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDeleteable()(*bool)
-    GetDescription()(*string)
-    GetDownstreamCount()(*int32)
-    GetExecutionMode()(*Stacks_attributes_executionMode)
-    GetInputsCount()(*int32)
-    GetName()(*string)
-    GetOutputsCount()(*int32)
-    GetResourceCount()(*int32)
-    GetSettingOverwrites()(Stacks_attributes_settingOverwritesable)
-    GetSpeculativeEnabled()(*bool)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetUpstreamCount()(*int32)
-    GetVcsRepo()(Stacks_attributes_vcsRepoable)
-    GetWorkingDirectory()(*string)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDeleteable(value *bool)()
-    SetDescription(value *string)()
-    SetDownstreamCount(value *int32)()
-    SetExecutionMode(value *Stacks_attributes_executionMode)()
-    SetInputsCount(value *int32)()
-    SetName(value *string)()
-    SetOutputsCount(value *int32)()
-    SetResourceCount(value *int32)()
-    SetSettingOverwrites(value Stacks_attributes_settingOverwritesable)()
-    SetSpeculativeEnabled(value *bool)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetUpstreamCount(value *int32)()
-    SetVcsRepo(value Stacks_attributes_vcsRepoable)()
-    SetWorkingDirectory(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDeleteable() *bool
+	GetDescription() *string
+	GetDownstreamCount() *int32
+	GetExecutionMode() *Stacks_attributes_executionMode
+	GetInputsCount() *int32
+	GetName() *string
+	GetOutputsCount() *int32
+	GetResourceCount() *int32
+	GetSettingOverwrites() Stacks_attributes_settingOverwritesable
+	GetSpeculativeEnabled() *bool
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetUpstreamCount() *int32
+	GetVcsRepo() Stacks_attributes_vcsRepoable
+	GetWorkingDirectory() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDeleteable(value *bool)
+	SetDescription(value *string)
+	SetDownstreamCount(value *int32)
+	SetExecutionMode(value *Stacks_attributes_executionMode)
+	SetInputsCount(value *int32)
+	SetName(value *string)
+	SetOutputsCount(value *int32)
+	SetResourceCount(value *int32)
+	SetSettingOverwrites(value Stacks_attributes_settingOverwritesable)
+	SetSpeculativeEnabled(value *bool)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetUpstreamCount(value *int32)
+	SetVcsRepo(value Stacks_attributes_vcsRepoable)
+	SetWorkingDirectory(value *string)
 }

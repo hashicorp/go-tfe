@@ -4,61 +4,93 @@
 package policysets
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type ItemActionsUpdateOotbPoliciesPostRequestBody_data struct {
-    // The external ID of a materialized OOTB policy in this policy set.
-    id *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewItemActionsUpdateOotbPoliciesPostRequestBody_data instantiates a new ItemActionsUpdateOotbPoliciesPostRequestBody_data and sets the default values.
-func NewItemActionsUpdateOotbPoliciesPostRequestBody_data()(*ItemActionsUpdateOotbPoliciesPostRequestBody_data) {
-    m := &ItemActionsUpdateOotbPoliciesPostRequestBody_data{
-    }
-    return m
+func NewItemActionsUpdateOotbPoliciesPostRequestBody_data() *ItemActionsUpdateOotbPoliciesPostRequestBody_data {
+	m := &ItemActionsUpdateOotbPoliciesPostRequestBody_data{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateItemActionsUpdateOotbPoliciesPostRequestBody_dataFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateItemActionsUpdateOotbPoliciesPostRequestBody_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewItemActionsUpdateOotbPoliciesPostRequestBody_data(), nil
+func CreateItemActionsUpdateOotbPoliciesPostRequestBody_dataFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewItemActionsUpdateOotbPoliciesPostRequestBody_data(), nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The external ID of a materialized OOTB policy in this policy set.
 // returns a *string when successful
-func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) GetId()(*string) {
-    return m.id
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("id", m.GetId())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("id", m.GetId())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The external ID of a materialized OOTB policy in this policy set.
-func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) SetId(value *string)() {
-    m.id = value
+func (m *ItemActionsUpdateOotbPoliciesPostRequestBody_data) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type ItemActionsUpdateOotbPoliciesPostRequestBody_dataable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetId()(*string)
-    SetId(value *string)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
 }

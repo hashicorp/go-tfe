@@ -4,110 +4,163 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AdminCustomizationSettings_attributes_avatarSources struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether the source is active.
-    enabled *bool
-    // The name of the avatar source.
-    source *AdminCustomizationSettings_attributes_avatarSources_source
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAdminCustomizationSettings_attributes_avatarSources instantiates a new AdminCustomizationSettings_attributes_avatarSources and sets the default values.
-func NewAdminCustomizationSettings_attributes_avatarSources()(*AdminCustomizationSettings_attributes_avatarSources) {
-    m := &AdminCustomizationSettings_attributes_avatarSources{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAdminCustomizationSettings_attributes_avatarSources() *AdminCustomizationSettings_attributes_avatarSources {
+	m := &AdminCustomizationSettings_attributes_avatarSources{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAdminCustomizationSettings_attributes_avatarSourcesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAdminCustomizationSettings_attributes_avatarSourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAdminCustomizationSettings_attributes_avatarSources(), nil
+func CreateAdminCustomizationSettings_attributes_avatarSourcesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAdminCustomizationSettings_attributes_avatarSources(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AdminCustomizationSettings_attributes_avatarSources) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AdminCustomizationSettings_attributes_avatarSources) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminCustomizationSettings_attributes_avatarSources) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetEnabled gets the enabled property value. Whether the source is active.
 // returns a *bool when successful
-func (m *AdminCustomizationSettings_attributes_avatarSources) GetEnabled()(*bool) {
-    return m.enabled
+func (m *AdminCustomizationSettings_attributes_avatarSources) GetEnabled() *bool {
+	val, err := m.GetBackingStore().Get("enabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AdminCustomizationSettings_attributes_avatarSources) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnabled(val)
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseAdminCustomizationSettings_attributes_avatarSources_source)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val.(*AdminCustomizationSettings_attributes_avatarSources_source))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AdminCustomizationSettings_attributes_avatarSources) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnabled(val)
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseAdminCustomizationSettings_attributes_avatarSources_source)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val.(*AdminCustomizationSettings_attributes_avatarSources_source))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSource gets the source property value. The name of the avatar source.
 // returns a *AdminCustomizationSettings_attributes_avatarSources_source when successful
-func (m *AdminCustomizationSettings_attributes_avatarSources) GetSource()(*AdminCustomizationSettings_attributes_avatarSources_source) {
-    return m.source
+func (m *AdminCustomizationSettings_attributes_avatarSources) GetSource() *AdminCustomizationSettings_attributes_avatarSources_source {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*AdminCustomizationSettings_attributes_avatarSources_source)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AdminCustomizationSettings_attributes_avatarSources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("enabled", m.GetEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetSource() != nil {
-        cast := (*m.GetSource()).String()
-        err := writer.WriteStringValue("source", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AdminCustomizationSettings_attributes_avatarSources) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("enabled", m.GetEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetSource() != nil {
+		cast := (*m.GetSource()).String()
+		err := writer.WriteStringValue("source", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AdminCustomizationSettings_attributes_avatarSources) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AdminCustomizationSettings_attributes_avatarSources) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminCustomizationSettings_attributes_avatarSources) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetEnabled sets the enabled property value. Whether the source is active.
-func (m *AdminCustomizationSettings_attributes_avatarSources) SetEnabled(value *bool)() {
-    m.enabled = value
+func (m *AdminCustomizationSettings_attributes_avatarSources) SetEnabled(value *bool) {
+	err := m.GetBackingStore().Set("enabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The name of the avatar source.
-func (m *AdminCustomizationSettings_attributes_avatarSources) SetSource(value *AdminCustomizationSettings_attributes_avatarSources_source)() {
-    m.source = value
+func (m *AdminCustomizationSettings_attributes_avatarSources) SetSource(value *AdminCustomizationSettings_attributes_avatarSources_source) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AdminCustomizationSettings_attributes_avatarSourcesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEnabled()(*bool)
-    GetSource()(*AdminCustomizationSettings_attributes_avatarSources_source)
-    SetEnabled(value *bool)()
-    SetSource(value *AdminCustomizationSettings_attributes_avatarSources_source)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEnabled() *bool
+	GetSource() *AdminCustomizationSettings_attributes_avatarSources_source
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEnabled(value *bool)
+	SetSource(value *AdminCustomizationSettings_attributes_avatarSources_source)
 }

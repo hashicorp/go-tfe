@@ -4,167 +4,240 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Projects_attributes_settingOverwrites struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The defaultAgentPool property
-    defaultAgentPool *bool
-    // The defaultExecutionMode property
-    defaultExecutionMode *bool
-    // The stacksDefaultAgentPool property
-    stacksDefaultAgentPool *bool
-    // The stacksDefaultExecutionMode property
-    stacksDefaultExecutionMode *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewProjects_attributes_settingOverwrites instantiates a new Projects_attributes_settingOverwrites and sets the default values.
-func NewProjects_attributes_settingOverwrites()(*Projects_attributes_settingOverwrites) {
-    m := &Projects_attributes_settingOverwrites{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewProjects_attributes_settingOverwrites() *Projects_attributes_settingOverwrites {
+	m := &Projects_attributes_settingOverwrites{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateProjects_attributes_settingOverwritesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateProjects_attributes_settingOverwritesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewProjects_attributes_settingOverwrites(), nil
+func CreateProjects_attributes_settingOverwritesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewProjects_attributes_settingOverwrites(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Projects_attributes_settingOverwrites) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Projects_attributes_settingOverwrites) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Projects_attributes_settingOverwrites) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDefaultAgentPool gets the default-agent-pool property value. The defaultAgentPool property
 // returns a *bool when successful
-func (m *Projects_attributes_settingOverwrites) GetDefaultAgentPool()(*bool) {
-    return m.defaultAgentPool
+func (m *Projects_attributes_settingOverwrites) GetDefaultAgentPool() *bool {
+	val, err := m.GetBackingStore().Get("defaultAgentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDefaultExecutionMode gets the default-execution-mode property value. The defaultExecutionMode property
 // returns a *bool when successful
-func (m *Projects_attributes_settingOverwrites) GetDefaultExecutionMode()(*bool) {
-    return m.defaultExecutionMode
+func (m *Projects_attributes_settingOverwrites) GetDefaultExecutionMode() *bool {
+	val, err := m.GetBackingStore().Get("defaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Projects_attributes_settingOverwrites) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultAgentPool(val)
-        }
-        return nil
-    }
-    res["default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultExecutionMode(val)
-        }
-        return nil
-    }
-    res["stacks-default-agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksDefaultAgentPool(val)
-        }
-        return nil
-    }
-    res["stacks-default-execution-mode"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacksDefaultExecutionMode(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Projects_attributes_settingOverwrites) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["default-agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultAgentPool(val)
+		}
+		return nil
+	}
+	res["default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultExecutionMode(val)
+		}
+		return nil
+	}
+	res["stacks-default-agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksDefaultAgentPool(val)
+		}
+		return nil
+	}
+	res["stacks-default-execution-mode"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacksDefaultExecutionMode(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetStacksDefaultAgentPool gets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
 // returns a *bool when successful
-func (m *Projects_attributes_settingOverwrites) GetStacksDefaultAgentPool()(*bool) {
-    return m.stacksDefaultAgentPool
+func (m *Projects_attributes_settingOverwrites) GetStacksDefaultAgentPool() *bool {
+	val, err := m.GetBackingStore().Get("stacksDefaultAgentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStacksDefaultExecutionMode gets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
 // returns a *bool when successful
-func (m *Projects_attributes_settingOverwrites) GetStacksDefaultExecutionMode()(*bool) {
-    return m.stacksDefaultExecutionMode
+func (m *Projects_attributes_settingOverwrites) GetStacksDefaultExecutionMode() *bool {
+	val, err := m.GetBackingStore().Get("stacksDefaultExecutionMode")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Projects_attributes_settingOverwrites) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("default-agent-pool", m.GetDefaultAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("default-execution-mode", m.GetDefaultExecutionMode())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("stacks-default-agent-pool", m.GetStacksDefaultAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("stacks-default-execution-mode", m.GetStacksDefaultExecutionMode())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Projects_attributes_settingOverwrites) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("default-agent-pool", m.GetDefaultAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("default-execution-mode", m.GetDefaultExecutionMode())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("stacks-default-agent-pool", m.GetStacksDefaultAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("stacks-default-execution-mode", m.GetStacksDefaultExecutionMode())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Projects_attributes_settingOverwrites) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Projects_attributes_settingOverwrites) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Projects_attributes_settingOverwrites) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDefaultAgentPool sets the default-agent-pool property value. The defaultAgentPool property
-func (m *Projects_attributes_settingOverwrites) SetDefaultAgentPool(value *bool)() {
-    m.defaultAgentPool = value
+func (m *Projects_attributes_settingOverwrites) SetDefaultAgentPool(value *bool) {
+	err := m.GetBackingStore().Set("defaultAgentPool", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDefaultExecutionMode sets the default-execution-mode property value. The defaultExecutionMode property
-func (m *Projects_attributes_settingOverwrites) SetDefaultExecutionMode(value *bool)() {
-    m.defaultExecutionMode = value
+func (m *Projects_attributes_settingOverwrites) SetDefaultExecutionMode(value *bool) {
+	err := m.GetBackingStore().Set("defaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStacksDefaultAgentPool sets the stacks-default-agent-pool property value. The stacksDefaultAgentPool property
-func (m *Projects_attributes_settingOverwrites) SetStacksDefaultAgentPool(value *bool)() {
-    m.stacksDefaultAgentPool = value
+func (m *Projects_attributes_settingOverwrites) SetStacksDefaultAgentPool(value *bool) {
+	err := m.GetBackingStore().Set("stacksDefaultAgentPool", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStacksDefaultExecutionMode sets the stacks-default-execution-mode property value. The stacksDefaultExecutionMode property
-func (m *Projects_attributes_settingOverwrites) SetStacksDefaultExecutionMode(value *bool)() {
-    m.stacksDefaultExecutionMode = value
+func (m *Projects_attributes_settingOverwrites) SetStacksDefaultExecutionMode(value *bool) {
+	err := m.GetBackingStore().Set("stacksDefaultExecutionMode", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Projects_attributes_settingOverwritesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDefaultAgentPool()(*bool)
-    GetDefaultExecutionMode()(*bool)
-    GetStacksDefaultAgentPool()(*bool)
-    GetStacksDefaultExecutionMode()(*bool)
-    SetDefaultAgentPool(value *bool)()
-    SetDefaultExecutionMode(value *bool)()
-    SetStacksDefaultAgentPool(value *bool)()
-    SetStacksDefaultExecutionMode(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDefaultAgentPool() *bool
+	GetDefaultExecutionMode() *bool
+	GetStacksDefaultAgentPool() *bool
+	GetStacksDefaultExecutionMode() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDefaultAgentPool(value *bool)
+	SetDefaultExecutionMode(value *bool)
+	SetStacksDefaultAgentPool(value *bool)
+	SetStacksDefaultExecutionMode(value *bool)
 }

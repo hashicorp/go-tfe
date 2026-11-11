@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AuthenticationTokens_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdBy property
-    createdBy AuthTokenCreatedByHasOneable
-    // The team property
-    team TeamsNullableHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAuthenticationTokens_relationships instantiates a new AuthenticationTokens_relationships and sets the default values.
-func NewAuthenticationTokens_relationships()(*AuthenticationTokens_relationships) {
-    m := &AuthenticationTokens_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAuthenticationTokens_relationships() *AuthenticationTokens_relationships {
+	m := &AuthenticationTokens_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAuthenticationTokens_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAuthenticationTokens_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAuthenticationTokens_relationships(), nil
+func CreateAuthenticationTokens_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAuthenticationTokens_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AuthenticationTokens_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AuthenticationTokens_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AuthenticationTokens_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedBy gets the created-by property value. The createdBy property
 // returns a AuthTokenCreatedByHasOneable when successful
-func (m *AuthenticationTokens_relationships) GetCreatedBy()(AuthTokenCreatedByHasOneable) {
-    return m.createdBy
+func (m *AuthenticationTokens_relationships) GetCreatedBy() AuthTokenCreatedByHasOneable {
+	val, err := m.GetBackingStore().Get("createdBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AuthTokenCreatedByHasOneable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AuthenticationTokens_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuthTokenCreatedByHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedBy(val.(AuthTokenCreatedByHasOneable))
-        }
-        return nil
-    }
-    res["team"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTeamsNullableHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTeam(val.(TeamsNullableHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AuthenticationTokens_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuthTokenCreatedByHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedBy(val.(AuthTokenCreatedByHasOneable))
+		}
+		return nil
+	}
+	res["team"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTeamsNullableHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTeam(val.(TeamsNullableHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTeam gets the team property value. The team property
 // returns a TeamsNullableHasOneable when successful
-func (m *AuthenticationTokens_relationships) GetTeam()(TeamsNullableHasOneable) {
-    return m.team
+func (m *AuthenticationTokens_relationships) GetTeam() TeamsNullableHasOneable {
+	val, err := m.GetBackingStore().Get("team")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TeamsNullableHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AuthenticationTokens_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("team", m.GetTeam())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AuthenticationTokens_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("created-by", m.GetCreatedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("team", m.GetTeam())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AuthenticationTokens_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AuthenticationTokens_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AuthenticationTokens_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedBy sets the created-by property value. The createdBy property
-func (m *AuthenticationTokens_relationships) SetCreatedBy(value AuthTokenCreatedByHasOneable)() {
-    m.createdBy = value
+func (m *AuthenticationTokens_relationships) SetCreatedBy(value AuthTokenCreatedByHasOneable) {
+	err := m.GetBackingStore().Set("createdBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTeam sets the team property value. The team property
-func (m *AuthenticationTokens_relationships) SetTeam(value TeamsNullableHasOneable)() {
-    m.team = value
+func (m *AuthenticationTokens_relationships) SetTeam(value TeamsNullableHasOneable) {
+	err := m.GetBackingStore().Set("team", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AuthenticationTokens_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedBy()(AuthTokenCreatedByHasOneable)
-    GetTeam()(TeamsNullableHasOneable)
-    SetCreatedBy(value AuthTokenCreatedByHasOneable)()
-    SetTeam(value TeamsNullableHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedBy() AuthTokenCreatedByHasOneable
+	GetTeam() TeamsNullableHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedBy(value AuthTokenCreatedByHasOneable)
+	SetTeam(value TeamsNullableHasOneable)
 }

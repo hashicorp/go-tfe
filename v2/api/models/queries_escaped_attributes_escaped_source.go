@@ -2,48 +2,52 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The query source. Requests with the X-Terraform-Integration header set to cloud are stored and returned with source terraform, overriding the submitted source. Terraform CLI 1.14 sends this header with source tfe-api.
 type Queries_attributes_source int
 
 const (
-    TFEAPI_QUERIES_ATTRIBUTES_SOURCE Queries_attributes_source = iota
-    TFEUI_QUERIES_ATTRIBUTES_SOURCE
-    TFEMODULE_QUERIES_ATTRIBUTES_SOURCE
-    TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
-    TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
-    TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
+	TFEAPI_QUERIES_ATTRIBUTES_SOURCE Queries_attributes_source = iota
+	TFEUI_QUERIES_ATTRIBUTES_SOURCE
+	TFEMODULE_QUERIES_ATTRIBUTES_SOURCE
+	TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
+	TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
+	TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
 )
 
 func (i Queries_attributes_source) String() string {
-    return []string{"tfe-api", "tfe-ui", "tfe-module", "tfe-no-code-query", "terraform", "terraform-mcp"}[i]
+	return []string{"tfe-api", "tfe-ui", "tfe-module", "tfe-no-code-query", "terraform", "terraform-mcp"}[i]
 }
+
 func ParseQueries_attributes_source(v string) (any, error) {
-    result := TFEAPI_QUERIES_ATTRIBUTES_SOURCE
-    switch v {
-        case "tfe-api":
-            result = TFEAPI_QUERIES_ATTRIBUTES_SOURCE
-        case "tfe-ui":
-            result = TFEUI_QUERIES_ATTRIBUTES_SOURCE
-        case "tfe-module":
-            result = TFEMODULE_QUERIES_ATTRIBUTES_SOURCE
-        case "tfe-no-code-query":
-            result = TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
-        case "terraform":
-            result = TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
-        case "terraform-mcp":
-            result = TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TFEAPI_QUERIES_ATTRIBUTES_SOURCE
+	switch v {
+	case "tfe-api":
+		result = TFEAPI_QUERIES_ATTRIBUTES_SOURCE
+	case "tfe-ui":
+		result = TFEUI_QUERIES_ATTRIBUTES_SOURCE
+	case "tfe-module":
+		result = TFEMODULE_QUERIES_ATTRIBUTES_SOURCE
+	case "tfe-no-code-query":
+		result = TFENOCODEQUERY_QUERIES_ATTRIBUTES_SOURCE
+	case "terraform":
+		result = TERRAFORM_QUERIES_ATTRIBUTES_SOURCE
+	case "terraform-mcp":
+		result = TERRAFORMMCP_QUERIES_ATTRIBUTES_SOURCE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeQueries_attributes_source(values []Queries_attributes_source) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Queries_attributes_source) isMultiValue() bool {
-    return false
+	return false
 }

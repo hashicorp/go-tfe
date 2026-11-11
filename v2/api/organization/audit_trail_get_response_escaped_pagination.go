@@ -4,225 +4,318 @@
 package organization
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AuditTrailGetResponse_pagination struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The current_page property
-    current_page *int32
-    // The next_page property
-    next_page *int32
-    // The page_size property
-    page_size *int32
-    // The prev_page property
-    prev_page *int32
-    // The total_count property
-    total_count *int32
-    // The total_pages property
-    total_pages *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAuditTrailGetResponse_pagination instantiates a new AuditTrailGetResponse_pagination and sets the default values.
-func NewAuditTrailGetResponse_pagination()(*AuditTrailGetResponse_pagination) {
-    m := &AuditTrailGetResponse_pagination{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAuditTrailGetResponse_pagination() *AuditTrailGetResponse_pagination {
+	m := &AuditTrailGetResponse_pagination{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAuditTrailGetResponse_paginationFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAuditTrailGetResponse_paginationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAuditTrailGetResponse_pagination(), nil
+func CreateAuditTrailGetResponse_paginationFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAuditTrailGetResponse_pagination(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AuditTrailGetResponse_pagination) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AuditTrailGetResponse_pagination) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AuditTrailGetResponse_pagination) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCurrentPage gets the current_page property value. The current_page property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetCurrentPage()(*int32) {
-    return m.current_page
+func (m *AuditTrailGetResponse_pagination) GetCurrentPage() *int32 {
+	val, err := m.GetBackingStore().Get("current_page")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AuditTrailGetResponse_pagination) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["current_page"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentPage(val)
-        }
-        return nil
-    }
-    res["next_page"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNextPage(val)
-        }
-        return nil
-    }
-    res["page_size"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPageSize(val)
-        }
-        return nil
-    }
-    res["prev_page"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrevPage(val)
-        }
-        return nil
-    }
-    res["total_count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTotalCount(val)
-        }
-        return nil
-    }
-    res["total_pages"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTotalPages(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AuditTrailGetResponse_pagination) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["current_page"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentPage(val)
+		}
+		return nil
+	}
+	res["next_page"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNextPage(val)
+		}
+		return nil
+	}
+	res["page_size"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPageSize(val)
+		}
+		return nil
+	}
+	res["prev_page"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrevPage(val)
+		}
+		return nil
+	}
+	res["total_count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTotalCount(val)
+		}
+		return nil
+	}
+	res["total_pages"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTotalPages(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetNextPage gets the next_page property value. The next_page property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetNextPage()(*int32) {
-    return m.next_page
+func (m *AuditTrailGetResponse_pagination) GetNextPage() *int32 {
+	val, err := m.GetBackingStore().Get("next_page")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPageSize gets the page_size property value. The page_size property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetPageSize()(*int32) {
-    return m.page_size
+func (m *AuditTrailGetResponse_pagination) GetPageSize() *int32 {
+	val, err := m.GetBackingStore().Get("page_size")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPrevPage gets the prev_page property value. The prev_page property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetPrevPage()(*int32) {
-    return m.prev_page
+func (m *AuditTrailGetResponse_pagination) GetPrevPage() *int32 {
+	val, err := m.GetBackingStore().Get("prev_page")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetTotalCount gets the total_count property value. The total_count property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetTotalCount()(*int32) {
-    return m.total_count
+func (m *AuditTrailGetResponse_pagination) GetTotalCount() *int32 {
+	val, err := m.GetBackingStore().Get("total_count")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetTotalPages gets the total_pages property value. The total_pages property
 // returns a *int32 when successful
-func (m *AuditTrailGetResponse_pagination) GetTotalPages()(*int32) {
-    return m.total_pages
+func (m *AuditTrailGetResponse_pagination) GetTotalPages() *int32 {
+	val, err := m.GetBackingStore().Get("total_pages")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AuditTrailGetResponse_pagination) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("current_page", m.GetCurrentPage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("next_page", m.GetNextPage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("page_size", m.GetPageSize())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("prev_page", m.GetPrevPage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("total_count", m.GetTotalCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("total_pages", m.GetTotalPages())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AuditTrailGetResponse_pagination) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("current_page", m.GetCurrentPage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("next_page", m.GetNextPage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("page_size", m.GetPageSize())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("prev_page", m.GetPrevPage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("total_count", m.GetTotalCount())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("total_pages", m.GetTotalPages())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AuditTrailGetResponse_pagination) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AuditTrailGetResponse_pagination) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AuditTrailGetResponse_pagination) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCurrentPage sets the current_page property value. The current_page property
-func (m *AuditTrailGetResponse_pagination) SetCurrentPage(value *int32)() {
-    m.current_page = value
+func (m *AuditTrailGetResponse_pagination) SetCurrentPage(value *int32) {
+	err := m.GetBackingStore().Set("current_page", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNextPage sets the next_page property value. The next_page property
-func (m *AuditTrailGetResponse_pagination) SetNextPage(value *int32)() {
-    m.next_page = value
+func (m *AuditTrailGetResponse_pagination) SetNextPage(value *int32) {
+	err := m.GetBackingStore().Set("next_page", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPageSize sets the page_size property value. The page_size property
-func (m *AuditTrailGetResponse_pagination) SetPageSize(value *int32)() {
-    m.page_size = value
+func (m *AuditTrailGetResponse_pagination) SetPageSize(value *int32) {
+	err := m.GetBackingStore().Set("page_size", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrevPage sets the prev_page property value. The prev_page property
-func (m *AuditTrailGetResponse_pagination) SetPrevPage(value *int32)() {
-    m.prev_page = value
+func (m *AuditTrailGetResponse_pagination) SetPrevPage(value *int32) {
+	err := m.GetBackingStore().Set("prev_page", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTotalCount sets the total_count property value. The total_count property
-func (m *AuditTrailGetResponse_pagination) SetTotalCount(value *int32)() {
-    m.total_count = value
+func (m *AuditTrailGetResponse_pagination) SetTotalCount(value *int32) {
+	err := m.GetBackingStore().Set("total_count", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTotalPages sets the total_pages property value. The total_pages property
-func (m *AuditTrailGetResponse_pagination) SetTotalPages(value *int32)() {
-    m.total_pages = value
+func (m *AuditTrailGetResponse_pagination) SetTotalPages(value *int32) {
+	err := m.GetBackingStore().Set("total_pages", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AuditTrailGetResponse_paginationable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCurrentPage()(*int32)
-    GetNextPage()(*int32)
-    GetPageSize()(*int32)
-    GetPrevPage()(*int32)
-    GetTotalCount()(*int32)
-    GetTotalPages()(*int32)
-    SetCurrentPage(value *int32)()
-    SetNextPage(value *int32)()
-    SetPageSize(value *int32)()
-    SetPrevPage(value *int32)()
-    SetTotalCount(value *int32)()
-    SetTotalPages(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCurrentPage() *int32
+	GetNextPage() *int32
+	GetPageSize() *int32
+	GetPrevPage() *int32
+	GetTotalCount() *int32
+	GetTotalPages() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCurrentPage(value *int32)
+	SetNextPage(value *int32)
+	SetPageSize(value *int32)
+	SetPrevPage(value *int32)
+	SetTotalCount(value *int32)
+	SetTotalPages(value *int32)
 }

@@ -4,138 +4,201 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Subscriptions_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The featureSet property
-    featureSet FeatureSetsHasOneable
-    // The nextSubscription property
-    nextSubscription SubscriptionsHasOneable
-    // The organization property
-    organization OrganizationsHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewSubscriptions_relationships instantiates a new Subscriptions_relationships and sets the default values.
-func NewSubscriptions_relationships()(*Subscriptions_relationships) {
-    m := &Subscriptions_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewSubscriptions_relationships() *Subscriptions_relationships {
+	m := &Subscriptions_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateSubscriptions_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateSubscriptions_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewSubscriptions_relationships(), nil
+func CreateSubscriptions_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewSubscriptions_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Subscriptions_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Subscriptions_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Subscriptions_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFeatureSet gets the feature-set property value. The featureSet property
 // returns a FeatureSetsHasOneable when successful
-func (m *Subscriptions_relationships) GetFeatureSet()(FeatureSetsHasOneable) {
-    return m.featureSet
+func (m *Subscriptions_relationships) GetFeatureSet() FeatureSetsHasOneable {
+	val, err := m.GetBackingStore().Get("featureSet")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(FeatureSetsHasOneable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Subscriptions_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["feature-set"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateFeatureSetsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFeatureSet(val.(FeatureSetsHasOneable))
-        }
-        return nil
-    }
-    res["next-subscription"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSubscriptionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNextSubscription(val.(SubscriptionsHasOneable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Subscriptions_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["feature-set"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateFeatureSetsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFeatureSet(val.(FeatureSetsHasOneable))
+		}
+		return nil
+	}
+	res["next-subscription"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateSubscriptionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNextSubscription(val.(SubscriptionsHasOneable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetNextSubscription gets the next-subscription property value. The nextSubscription property
 // returns a SubscriptionsHasOneable when successful
-func (m *Subscriptions_relationships) GetNextSubscription()(SubscriptionsHasOneable) {
-    return m.nextSubscription
+func (m *Subscriptions_relationships) GetNextSubscription() SubscriptionsHasOneable {
+	val, err := m.GetBackingStore().Get("nextSubscription")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(SubscriptionsHasOneable)
+	}
+	return nil
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *Subscriptions_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *Subscriptions_relationships) GetOrganization() OrganizationsHasOneable {
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Subscriptions_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("feature-set", m.GetFeatureSet())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("next-subscription", m.GetNextSubscription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Subscriptions_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("feature-set", m.GetFeatureSet())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("next-subscription", m.GetNextSubscription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Subscriptions_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Subscriptions_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Subscriptions_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetFeatureSet sets the feature-set property value. The featureSet property
-func (m *Subscriptions_relationships) SetFeatureSet(value FeatureSetsHasOneable)() {
-    m.featureSet = value
+func (m *Subscriptions_relationships) SetFeatureSet(value FeatureSetsHasOneable) {
+	err := m.GetBackingStore().Set("featureSet", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNextSubscription sets the next-subscription property value. The nextSubscription property
-func (m *Subscriptions_relationships) SetNextSubscription(value SubscriptionsHasOneable)() {
-    m.nextSubscription = value
+func (m *Subscriptions_relationships) SetNextSubscription(value SubscriptionsHasOneable) {
+	err := m.GetBackingStore().Set("nextSubscription", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *Subscriptions_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *Subscriptions_relationships) SetOrganization(value OrganizationsHasOneable) {
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Subscriptions_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetFeatureSet()(FeatureSetsHasOneable)
-    GetNextSubscription()(SubscriptionsHasOneable)
-    GetOrganization()(OrganizationsHasOneable)
-    SetFeatureSet(value FeatureSetsHasOneable)()
-    SetNextSubscription(value SubscriptionsHasOneable)()
-    SetOrganization(value OrganizationsHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetFeatureSet() FeatureSetsHasOneable
+	GetNextSubscription() SubscriptionsHasOneable
+	GetOrganization() OrganizationsHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetFeatureSet(value FeatureSetsHasOneable)
+	SetNextSubscription(value SubscriptionsHasOneable)
+	SetOrganization(value OrganizationsHasOneable)
 }

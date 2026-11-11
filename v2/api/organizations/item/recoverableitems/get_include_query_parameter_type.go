@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package recoverableitems
+
 type GetIncludeQueryParameterType int
 
 const (
-    RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    DELETED_BY_GETINCLUDEQUERYPARAMETERTYPE
-    PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+	RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	DELETED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	PROJECT_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"recoverable", "deleted_by", "project"}[i]
+	return []string{"recoverable", "deleted_by", "project"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "recoverable":
-            result = RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE
-        case "deleted_by":
-            result = DELETED_BY_GETINCLUDEQUERYPARAMETERTYPE
-        case "project":
-            result = PROJECT_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "recoverable":
+		result = RECOVERABLE_GETINCLUDEQUERYPARAMETERTYPE
+	case "deleted_by":
+		result = DELETED_BY_GETINCLUDEQUERYPARAMETERTYPE
+	case "project":
+		result = PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

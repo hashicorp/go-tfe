@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"default_account"}[i]
+	return []string{"default_account"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "default_account":
-            result = DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "default_account":
+		result = DEFAULT_ACCOUNT_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

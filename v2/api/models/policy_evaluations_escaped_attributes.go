@@ -4,216 +4,309 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type PolicyEvaluations_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The policyKind property
-    policyKind *PolicyEvaluations_attributes_policyKind
-    // The resultCount property
-    resultCount PolicyEvaluations_attributes_resultCountable
-    // The status property
-    status *PolicyEvaluations_attributes_status
-    // The statusTimestamps property
-    statusTimestamps PolicyEvaluations_attributes_statusTimestampsable
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPolicyEvaluations_attributes instantiates a new PolicyEvaluations_attributes and sets the default values.
-func NewPolicyEvaluations_attributes()(*PolicyEvaluations_attributes) {
-    m := &PolicyEvaluations_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicyEvaluations_attributes() *PolicyEvaluations_attributes {
+	m := &PolicyEvaluations_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicyEvaluations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicyEvaluations_attributes(), nil
+func CreatePolicyEvaluations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicyEvaluations_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicyEvaluations_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicyEvaluations_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicyEvaluations_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *PolicyEvaluations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *PolicyEvaluations_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicyEvaluations_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["policy-kind"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicyEvaluations_attributes_policyKind)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyKind(val.(*PolicyEvaluations_attributes_policyKind))
-        }
-        return nil
-    }
-    res["result-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResultCount(val.(PolicyEvaluations_attributes_resultCountable))
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicyEvaluations_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*PolicyEvaluations_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(PolicyEvaluations_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicyEvaluations_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["policy-kind"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicyEvaluations_attributes_policyKind)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyKind(val.(*PolicyEvaluations_attributes_policyKind))
+		}
+		return nil
+	}
+	res["result-count"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyEvaluations_attributes_resultCountFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResultCount(val.(PolicyEvaluations_attributes_resultCountable))
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicyEvaluations_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*PolicyEvaluations_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicyEvaluations_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(PolicyEvaluations_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPolicyKind gets the policy-kind property value. The policyKind property
 // returns a *PolicyEvaluations_attributes_policyKind when successful
-func (m *PolicyEvaluations_attributes) GetPolicyKind()(*PolicyEvaluations_attributes_policyKind) {
-    return m.policyKind
+func (m *PolicyEvaluations_attributes) GetPolicyKind() *PolicyEvaluations_attributes_policyKind {
+	val, err := m.GetBackingStore().Get("policyKind")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicyEvaluations_attributes_policyKind)
+	}
+	return nil
 }
+
 // GetResultCount gets the result-count property value. The resultCount property
 // returns a PolicyEvaluations_attributes_resultCountable when successful
-func (m *PolicyEvaluations_attributes) GetResultCount()(PolicyEvaluations_attributes_resultCountable) {
-    return m.resultCount
+func (m *PolicyEvaluations_attributes) GetResultCount() PolicyEvaluations_attributes_resultCountable {
+	val, err := m.GetBackingStore().Get("resultCount")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyEvaluations_attributes_resultCountable)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *PolicyEvaluations_attributes_status when successful
-func (m *PolicyEvaluations_attributes) GetStatus()(*PolicyEvaluations_attributes_status) {
-    return m.status
+func (m *PolicyEvaluations_attributes) GetStatus() *PolicyEvaluations_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicyEvaluations_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a PolicyEvaluations_attributes_statusTimestampsable when successful
-func (m *PolicyEvaluations_attributes) GetStatusTimestamps()(PolicyEvaluations_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *PolicyEvaluations_attributes) GetStatusTimestamps() PolicyEvaluations_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicyEvaluations_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *PolicyEvaluations_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *PolicyEvaluations_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetPolicyKind() != nil {
-        cast := (*m.GetPolicyKind()).String()
-        err := writer.WriteStringValue("policy-kind", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("result-count", m.GetResultCount())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicyEvaluations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetPolicyKind() != nil {
+		cast := (*m.GetPolicyKind()).String()
+		err := writer.WriteStringValue("policy-kind", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("result-count", m.GetResultCount())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicyEvaluations_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicyEvaluations_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicyEvaluations_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *PolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *PolicyEvaluations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyKind sets the policy-kind property value. The policyKind property
-func (m *PolicyEvaluations_attributes) SetPolicyKind(value *PolicyEvaluations_attributes_policyKind)() {
-    m.policyKind = value
+func (m *PolicyEvaluations_attributes) SetPolicyKind(value *PolicyEvaluations_attributes_policyKind) {
+	err := m.GetBackingStore().Set("policyKind", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResultCount sets the result-count property value. The resultCount property
-func (m *PolicyEvaluations_attributes) SetResultCount(value PolicyEvaluations_attributes_resultCountable)() {
-    m.resultCount = value
+func (m *PolicyEvaluations_attributes) SetResultCount(value PolicyEvaluations_attributes_resultCountable) {
+	err := m.GetBackingStore().Set("resultCount", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *PolicyEvaluations_attributes) SetStatus(value *PolicyEvaluations_attributes_status)() {
-    m.status = value
+func (m *PolicyEvaluations_attributes) SetStatus(value *PolicyEvaluations_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
-func (m *PolicyEvaluations_attributes) SetStatusTimestamps(value PolicyEvaluations_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *PolicyEvaluations_attributes) SetStatusTimestamps(value PolicyEvaluations_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *PolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *PolicyEvaluations_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PolicyEvaluations_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetPolicyKind()(*PolicyEvaluations_attributes_policyKind)
-    GetResultCount()(PolicyEvaluations_attributes_resultCountable)
-    GetStatus()(*PolicyEvaluations_attributes_status)
-    GetStatusTimestamps()(PolicyEvaluations_attributes_statusTimestampsable)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetPolicyKind(value *PolicyEvaluations_attributes_policyKind)()
-    SetResultCount(value PolicyEvaluations_attributes_resultCountable)()
-    SetStatus(value *PolicyEvaluations_attributes_status)()
-    SetStatusTimestamps(value PolicyEvaluations_attributes_statusTimestampsable)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetPolicyKind() *PolicyEvaluations_attributes_policyKind
+	GetResultCount() PolicyEvaluations_attributes_resultCountable
+	GetStatus() *PolicyEvaluations_attributes_status
+	GetStatusTimestamps() PolicyEvaluations_attributes_statusTimestampsable
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetPolicyKind(value *PolicyEvaluations_attributes_policyKind)
+	SetResultCount(value PolicyEvaluations_attributes_resultCountable)
+	SetStatus(value *PolicyEvaluations_attributes_status)
+	SetStatusTimestamps(value PolicyEvaluations_attributes_statusTimestampsable)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

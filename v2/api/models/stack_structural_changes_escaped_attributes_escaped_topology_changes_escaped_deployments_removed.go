@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The deployment property
-    deployment *string
-    // The deployment group losing the deployment.
-    from *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackStructuralChanges_attributes_topologyChanges_deploymentsRemoved instantiates a new StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved and sets the default values.
-func NewStackStructuralChanges_attributes_topologyChanges_deploymentsRemoved()(*StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) {
-    m := &StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackStructuralChanges_attributes_topologyChanges_deploymentsRemoved() *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved {
+	m := &StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackStructuralChanges_attributes_topologyChanges_deploymentsRemovedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackStructuralChanges_attributes_topologyChanges_deploymentsRemovedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackStructuralChanges_attributes_topologyChanges_deploymentsRemoved(), nil
+func CreateStackStructuralChanges_attributes_topologyChanges_deploymentsRemovedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackStructuralChanges_attributes_topologyChanges_deploymentsRemoved(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDeployment gets the deployment property value. The deployment property
 // returns a *string when successful
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetDeployment()(*string) {
-    return m.deployment
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetDeployment() *string {
+	val, err := m.GetBackingStore().Get("deployment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["deployment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeployment(val)
-        }
-        return nil
-    }
-    res["from"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFrom(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["deployment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeployment(val)
+		}
+		return nil
+	}
+	res["from"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFrom(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFrom gets the from property value. The deployment group losing the deployment.
 // returns a *string when successful
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetFrom()(*string) {
-    return m.from
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) GetFrom() *string {
+	val, err := m.GetBackingStore().Get("from")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("deployment", m.GetDeployment())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("from", m.GetFrom())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("deployment", m.GetDeployment())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("from", m.GetFrom())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDeployment sets the deployment property value. The deployment property
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetDeployment(value *string)() {
-    m.deployment = value
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetDeployment(value *string) {
+	err := m.GetBackingStore().Set("deployment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFrom sets the from property value. The deployment group losing the deployment.
-func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetFrom(value *string)() {
-    m.from = value
+func (m *StackStructuralChanges_attributes_topologyChanges_deploymentsRemoved) SetFrom(value *string) {
+	err := m.GetBackingStore().Set("from", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackStructuralChanges_attributes_topologyChanges_deploymentsRemovedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDeployment()(*string)
-    GetFrom()(*string)
-    SetDeployment(value *string)()
-    SetFrom(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDeployment() *string
+	GetFrom() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDeployment(value *string)
+	SetFrom(value *string)
 }

@@ -4,169 +4,242 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type TokenTtlPolicy_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // When the policy was created
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The maximum time-to-live for the token in milliseconds
-    maxTtlMs *int64
-    // The type of the token TTL policy
-    tokenType *TokenTtlPolicy_attributes_tokenType
-    // When the policy was last updated
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTokenTtlPolicy_attributes instantiates a new TokenTtlPolicy_attributes and sets the default values.
-func NewTokenTtlPolicy_attributes()(*TokenTtlPolicy_attributes) {
-    m := &TokenTtlPolicy_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTokenTtlPolicy_attributes() *TokenTtlPolicy_attributes {
+	m := &TokenTtlPolicy_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTokenTtlPolicy_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTokenTtlPolicy_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTokenTtlPolicy_attributes(), nil
+func CreateTokenTtlPolicy_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTokenTtlPolicy_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TokenTtlPolicy_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TokenTtlPolicy_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TokenTtlPolicy_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. When the policy was created
 // returns a *Time when successful
-func (m *TokenTtlPolicy_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *TokenTtlPolicy_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TokenTtlPolicy_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["max-ttl-ms"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMaxTtlMs(val)
-        }
-        return nil
-    }
-    res["token-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTokenTtlPolicy_attributes_tokenType)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTokenType(val.(*TokenTtlPolicy_attributes_tokenType))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TokenTtlPolicy_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["max-ttl-ms"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMaxTtlMs(val)
+		}
+		return nil
+	}
+	res["token-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTokenTtlPolicy_attributes_tokenType)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTokenType(val.(*TokenTtlPolicy_attributes_tokenType))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetMaxTtlMs gets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
 // returns a *int64 when successful
-func (m *TokenTtlPolicy_attributes) GetMaxTtlMs()(*int64) {
-    return m.maxTtlMs
+func (m *TokenTtlPolicy_attributes) GetMaxTtlMs() *int64 {
+	val, err := m.GetBackingStore().Get("maxTtlMs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int64)
+	}
+	return nil
 }
+
 // GetTokenType gets the token-type property value. The type of the token TTL policy
 // returns a *TokenTtlPolicy_attributes_tokenType when successful
-func (m *TokenTtlPolicy_attributes) GetTokenType()(*TokenTtlPolicy_attributes_tokenType) {
-    return m.tokenType
+func (m *TokenTtlPolicy_attributes) GetTokenType() *TokenTtlPolicy_attributes_tokenType {
+	val, err := m.GetBackingStore().Get("tokenType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TokenTtlPolicy_attributes_tokenType)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. When the policy was last updated
 // returns a *Time when successful
-func (m *TokenTtlPolicy_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *TokenTtlPolicy_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TokenTtlPolicy_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteTimeValue("created-at", m.GetCreatedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt64Value("max-ttl-ms", m.GetMaxTtlMs())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTokenType() != nil {
-        cast := (*m.GetTokenType()).String()
-        err := writer.WriteStringValue("token-type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("updated-at", m.GetUpdatedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TokenTtlPolicy_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteTimeValue("created-at", m.GetCreatedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt64Value("max-ttl-ms", m.GetMaxTtlMs())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTokenType() != nil {
+		cast := (*m.GetTokenType()).String()
+		err := writer.WriteStringValue("token-type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("updated-at", m.GetUpdatedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TokenTtlPolicy_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TokenTtlPolicy_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TokenTtlPolicy_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. When the policy was created
-func (m *TokenTtlPolicy_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *TokenTtlPolicy_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMaxTtlMs sets the max-ttl-ms property value. The maximum time-to-live for the token in milliseconds
-func (m *TokenTtlPolicy_attributes) SetMaxTtlMs(value *int64)() {
-    m.maxTtlMs = value
+func (m *TokenTtlPolicy_attributes) SetMaxTtlMs(value *int64) {
+	err := m.GetBackingStore().Set("maxTtlMs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTokenType sets the token-type property value. The type of the token TTL policy
-func (m *TokenTtlPolicy_attributes) SetTokenType(value *TokenTtlPolicy_attributes_tokenType)() {
-    m.tokenType = value
+func (m *TokenTtlPolicy_attributes) SetTokenType(value *TokenTtlPolicy_attributes_tokenType) {
+	err := m.GetBackingStore().Set("tokenType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. When the policy was last updated
-func (m *TokenTtlPolicy_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *TokenTtlPolicy_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TokenTtlPolicy_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetMaxTtlMs()(*int64)
-    GetTokenType()(*TokenTtlPolicy_attributes_tokenType)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetMaxTtlMs(value *int64)()
-    SetTokenType(value *TokenTtlPolicy_attributes_tokenType)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetMaxTtlMs() *int64
+	GetTokenType() *TokenTtlPolicy_attributes_tokenType
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetMaxTtlMs(value *int64)
+	SetTokenType(value *TokenTtlPolicy_attributes_tokenType)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

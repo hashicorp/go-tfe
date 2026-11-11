@@ -4,515 +4,708 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Workspaces_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The agentPool property
-    agentPool AgentPoolsHasOneable
-    // The currentAssessmentResult property
-    currentAssessmentResult AssessmentResultsHasOneable
-    // The currentConfigurationVersion property
-    currentConfigurationVersion ConfigurationVersionsHasOneable
-    // The currentRun property
-    currentRun RunsHasOneable
-    // The currentStateVersion property
-    currentStateVersion StateVersionsHasOneable
-    // The latestRun property
-    latestRun RunsHasOneable
-    // The lockedBy property
-    lockedBy LockedByHasOneable
-    // The noCodeModuleVersion property
-    noCodeModuleVersion NoCodeModuleVersionsHasOneable
-    // The organization property
-    organization OrganizationsHasOneable
-    // The outputs property
-    outputs WorkspaceOutputsHasManyable
-    // The project property
-    project ProjectsHasOneable
-    // The readme property
-    readme WorkspaceReadmeHasOneable
-    // The remoteStateConsumers property
-    remoteStateConsumers Workspaces_relationships_remoteStateConsumersable
-    // The sshKey property
-    sshKey SshKeysHasOneable
-    // The tags property
-    tags TagsHasManyable
-    // The vars property
-    vars VarsHasManyable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewWorkspaces_relationships instantiates a new Workspaces_relationships and sets the default values.
-func NewWorkspaces_relationships()(*Workspaces_relationships) {
-    m := &Workspaces_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewWorkspaces_relationships() *Workspaces_relationships {
+	m := &Workspaces_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateWorkspaces_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaces_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaces_relationships(), nil
+func CreateWorkspaces_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaces_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Workspaces_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Workspaces_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAgentPool gets the agent-pool property value. The agentPool property
 // returns a AgentPoolsHasOneable when successful
-func (m *Workspaces_relationships) GetAgentPool()(AgentPoolsHasOneable) {
-    return m.agentPool
+func (m *Workspaces_relationships) GetAgentPool() AgentPoolsHasOneable {
+	val, err := m.GetBackingStore().Get("agentPool")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AgentPoolsHasOneable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Workspaces_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCurrentAssessmentResult gets the current-assessment-result property value. The currentAssessmentResult property
 // returns a AssessmentResultsHasOneable when successful
-func (m *Workspaces_relationships) GetCurrentAssessmentResult()(AssessmentResultsHasOneable) {
-    return m.currentAssessmentResult
+func (m *Workspaces_relationships) GetCurrentAssessmentResult() AssessmentResultsHasOneable {
+	val, err := m.GetBackingStore().Get("currentAssessmentResult")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AssessmentResultsHasOneable)
+	}
+	return nil
 }
+
 // GetCurrentConfigurationVersion gets the current-configuration-version property value. The currentConfigurationVersion property
 // returns a ConfigurationVersionsHasOneable when successful
-func (m *Workspaces_relationships) GetCurrentConfigurationVersion()(ConfigurationVersionsHasOneable) {
-    return m.currentConfigurationVersion
+func (m *Workspaces_relationships) GetCurrentConfigurationVersion() ConfigurationVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("currentConfigurationVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ConfigurationVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetCurrentRun gets the current-run property value. The currentRun property
 // returns a RunsHasOneable when successful
-func (m *Workspaces_relationships) GetCurrentRun()(RunsHasOneable) {
-    return m.currentRun
+func (m *Workspaces_relationships) GetCurrentRun() RunsHasOneable {
+	val, err := m.GetBackingStore().Get("currentRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
+
 // GetCurrentStateVersion gets the current-state-version property value. The currentStateVersion property
 // returns a StateVersionsHasOneable when successful
-func (m *Workspaces_relationships) GetCurrentStateVersion()(StateVersionsHasOneable) {
-    return m.currentStateVersion
+func (m *Workspaces_relationships) GetCurrentStateVersion() StateVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("currentStateVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Workspaces_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["agent-pool"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAgentPool(val.(AgentPoolsHasOneable))
-        }
-        return nil
-    }
-    res["current-assessment-result"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAssessmentResultsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentAssessmentResult(val.(AssessmentResultsHasOneable))
-        }
-        return nil
-    }
-    res["current-configuration-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentConfigurationVersion(val.(ConfigurationVersionsHasOneable))
-        }
-        return nil
-    }
-    res["current-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentRun(val.(RunsHasOneable))
-        }
-        return nil
-    }
-    res["current-state-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCurrentStateVersion(val.(StateVersionsHasOneable))
-        }
-        return nil
-    }
-    res["latest-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLatestRun(val.(RunsHasOneable))
-        }
-        return nil
-    }
-    res["locked-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLockedByHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLockedBy(val.(LockedByHasOneable))
-        }
-        return nil
-    }
-    res["no-code-module-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateNoCodeModuleVersionsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNoCodeModuleVersion(val.(NoCodeModuleVersionsHasOneable))
-        }
-        return nil
-    }
-    res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganization(val.(OrganizationsHasOneable))
-        }
-        return nil
-    }
-    res["outputs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceOutputsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOutputs(val.(WorkspaceOutputsHasManyable))
-        }
-        return nil
-    }
-    res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProject(val.(ProjectsHasOneable))
-        }
-        return nil
-    }
-    res["readme"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceReadmeHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetReadme(val.(WorkspaceReadmeHasOneable))
-        }
-        return nil
-    }
-    res["remote-state-consumers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaces_relationships_remoteStateConsumersFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRemoteStateConsumers(val.(Workspaces_relationships_remoteStateConsumersable))
-        }
-        return nil
-    }
-    res["ssh-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSshKeysHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSshKey(val.(SshKeysHasOneable))
-        }
-        return nil
-    }
-    res["tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTagsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTags(val.(TagsHasManyable))
-        }
-        return nil
-    }
-    res["vars"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateVarsHasManyFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVars(val.(VarsHasManyable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Workspaces_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["agent-pool"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAgentPoolsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAgentPool(val.(AgentPoolsHasOneable))
+		}
+		return nil
+	}
+	res["current-assessment-result"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAssessmentResultsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentAssessmentResult(val.(AssessmentResultsHasOneable))
+		}
+		return nil
+	}
+	res["current-configuration-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateConfigurationVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentConfigurationVersion(val.(ConfigurationVersionsHasOneable))
+		}
+		return nil
+	}
+	res["current-run"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentRun(val.(RunsHasOneable))
+		}
+		return nil
+	}
+	res["current-state-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCurrentStateVersion(val.(StateVersionsHasOneable))
+		}
+		return nil
+	}
+	res["latest-run"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateRunsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLatestRun(val.(RunsHasOneable))
+		}
+		return nil
+	}
+	res["locked-by"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLockedByHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLockedBy(val.(LockedByHasOneable))
+		}
+		return nil
+	}
+	res["no-code-module-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateNoCodeModuleVersionsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNoCodeModuleVersion(val.(NoCodeModuleVersionsHasOneable))
+		}
+		return nil
+	}
+	res["organization"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganization(val.(OrganizationsHasOneable))
+		}
+		return nil
+	}
+	res["outputs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceOutputsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOutputs(val.(WorkspaceOutputsHasManyable))
+		}
+		return nil
+	}
+	res["project"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProject(val.(ProjectsHasOneable))
+		}
+		return nil
+	}
+	res["readme"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceReadmeHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetReadme(val.(WorkspaceReadmeHasOneable))
+		}
+		return nil
+	}
+	res["remote-state-consumers"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaces_relationships_remoteStateConsumersFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRemoteStateConsumers(val.(Workspaces_relationships_remoteStateConsumersable))
+		}
+		return nil
+	}
+	res["ssh-key"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateSshKeysHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSshKey(val.(SshKeysHasOneable))
+		}
+		return nil
+	}
+	res["tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTagsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTags(val.(TagsHasManyable))
+		}
+		return nil
+	}
+	res["vars"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateVarsHasManyFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVars(val.(VarsHasManyable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetLatestRun gets the latest-run property value. The latestRun property
 // returns a RunsHasOneable when successful
-func (m *Workspaces_relationships) GetLatestRun()(RunsHasOneable) {
-    return m.latestRun
+func (m *Workspaces_relationships) GetLatestRun() RunsHasOneable {
+	val, err := m.GetBackingStore().Get("latestRun")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(RunsHasOneable)
+	}
+	return nil
 }
+
 // GetLockedBy gets the locked-by property value. The lockedBy property
 // returns a LockedByHasOneable when successful
-func (m *Workspaces_relationships) GetLockedBy()(LockedByHasOneable) {
-    return m.lockedBy
+func (m *Workspaces_relationships) GetLockedBy() LockedByHasOneable {
+	val, err := m.GetBackingStore().Get("lockedBy")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(LockedByHasOneable)
+	}
+	return nil
 }
+
 // GetNoCodeModuleVersion gets the no-code-module-version property value. The noCodeModuleVersion property
 // returns a NoCodeModuleVersionsHasOneable when successful
-func (m *Workspaces_relationships) GetNoCodeModuleVersion()(NoCodeModuleVersionsHasOneable) {
-    return m.noCodeModuleVersion
+func (m *Workspaces_relationships) GetNoCodeModuleVersion() NoCodeModuleVersionsHasOneable {
+	val, err := m.GetBackingStore().Get("noCodeModuleVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(NoCodeModuleVersionsHasOneable)
+	}
+	return nil
 }
+
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
-func (m *Workspaces_relationships) GetOrganization()(OrganizationsHasOneable) {
-    return m.organization
+func (m *Workspaces_relationships) GetOrganization() OrganizationsHasOneable {
+	val, err := m.GetBackingStore().Get("organization")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationsHasOneable)
+	}
+	return nil
 }
+
 // GetOutputs gets the outputs property value. The outputs property
 // returns a WorkspaceOutputsHasManyable when successful
-func (m *Workspaces_relationships) GetOutputs()(WorkspaceOutputsHasManyable) {
-    return m.outputs
+func (m *Workspaces_relationships) GetOutputs() WorkspaceOutputsHasManyable {
+	val, err := m.GetBackingStore().Get("outputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceOutputsHasManyable)
+	}
+	return nil
 }
+
 // GetProject gets the project property value. The project property
 // returns a ProjectsHasOneable when successful
-func (m *Workspaces_relationships) GetProject()(ProjectsHasOneable) {
-    return m.project
+func (m *Workspaces_relationships) GetProject() ProjectsHasOneable {
+	val, err := m.GetBackingStore().Get("project")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(ProjectsHasOneable)
+	}
+	return nil
 }
+
 // GetReadme gets the readme property value. The readme property
 // returns a WorkspaceReadmeHasOneable when successful
-func (m *Workspaces_relationships) GetReadme()(WorkspaceReadmeHasOneable) {
-    return m.readme
+func (m *Workspaces_relationships) GetReadme() WorkspaceReadmeHasOneable {
+	val, err := m.GetBackingStore().Get("readme")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceReadmeHasOneable)
+	}
+	return nil
 }
+
 // GetRemoteStateConsumers gets the remote-state-consumers property value. The remoteStateConsumers property
 // returns a Workspaces_relationships_remoteStateConsumersable when successful
-func (m *Workspaces_relationships) GetRemoteStateConsumers()(Workspaces_relationships_remoteStateConsumersable) {
-    return m.remoteStateConsumers
+func (m *Workspaces_relationships) GetRemoteStateConsumers() Workspaces_relationships_remoteStateConsumersable {
+	val, err := m.GetBackingStore().Get("remoteStateConsumers")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Workspaces_relationships_remoteStateConsumersable)
+	}
+	return nil
 }
+
 // GetSshKey gets the ssh-key property value. The sshKey property
 // returns a SshKeysHasOneable when successful
-func (m *Workspaces_relationships) GetSshKey()(SshKeysHasOneable) {
-    return m.sshKey
+func (m *Workspaces_relationships) GetSshKey() SshKeysHasOneable {
+	val, err := m.GetBackingStore().Get("sshKey")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(SshKeysHasOneable)
+	}
+	return nil
 }
+
 // GetTags gets the tags property value. The tags property
 // returns a TagsHasManyable when successful
-func (m *Workspaces_relationships) GetTags()(TagsHasManyable) {
-    return m.tags
+func (m *Workspaces_relationships) GetTags() TagsHasManyable {
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TagsHasManyable)
+	}
+	return nil
 }
+
 // GetVars gets the vars property value. The vars property
 // returns a VarsHasManyable when successful
-func (m *Workspaces_relationships) GetVars()(VarsHasManyable) {
-    return m.vars
+func (m *Workspaces_relationships) GetVars() VarsHasManyable {
+	val, err := m.GetBackingStore().Get("vars")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VarsHasManyable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Workspaces_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("current-assessment-result", m.GetCurrentAssessmentResult())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("current-configuration-version", m.GetCurrentConfigurationVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("current-run", m.GetCurrentRun())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("current-state-version", m.GetCurrentStateVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("latest-run", m.GetLatestRun())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("locked-by", m.GetLockedBy())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("no-code-module-version", m.GetNoCodeModuleVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization", m.GetOrganization())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("outputs", m.GetOutputs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("project", m.GetProject())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("readme", m.GetReadme())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("remote-state-consumers", m.GetRemoteStateConsumers())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("ssh-key", m.GetSshKey())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("tags", m.GetTags())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("vars", m.GetVars())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Workspaces_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("agent-pool", m.GetAgentPool())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("current-assessment-result", m.GetCurrentAssessmentResult())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("current-configuration-version", m.GetCurrentConfigurationVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("current-run", m.GetCurrentRun())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("current-state-version", m.GetCurrentStateVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("latest-run", m.GetLatestRun())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("locked-by", m.GetLockedBy())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("no-code-module-version", m.GetNoCodeModuleVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization", m.GetOrganization())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("outputs", m.GetOutputs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("project", m.GetProject())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("readme", m.GetReadme())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("remote-state-consumers", m.GetRemoteStateConsumers())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("ssh-key", m.GetSshKey())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("tags", m.GetTags())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("vars", m.GetVars())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Workspaces_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Workspaces_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAgentPool sets the agent-pool property value. The agentPool property
-func (m *Workspaces_relationships) SetAgentPool(value AgentPoolsHasOneable)() {
-    m.agentPool = value
+func (m *Workspaces_relationships) SetAgentPool(value AgentPoolsHasOneable) {
+	err := m.GetBackingStore().Set("agentPool", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Workspaces_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCurrentAssessmentResult sets the current-assessment-result property value. The currentAssessmentResult property
-func (m *Workspaces_relationships) SetCurrentAssessmentResult(value AssessmentResultsHasOneable)() {
-    m.currentAssessmentResult = value
+func (m *Workspaces_relationships) SetCurrentAssessmentResult(value AssessmentResultsHasOneable) {
+	err := m.GetBackingStore().Set("currentAssessmentResult", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCurrentConfigurationVersion sets the current-configuration-version property value. The currentConfigurationVersion property
-func (m *Workspaces_relationships) SetCurrentConfigurationVersion(value ConfigurationVersionsHasOneable)() {
-    m.currentConfigurationVersion = value
+func (m *Workspaces_relationships) SetCurrentConfigurationVersion(value ConfigurationVersionsHasOneable) {
+	err := m.GetBackingStore().Set("currentConfigurationVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCurrentRun sets the current-run property value. The currentRun property
-func (m *Workspaces_relationships) SetCurrentRun(value RunsHasOneable)() {
-    m.currentRun = value
+func (m *Workspaces_relationships) SetCurrentRun(value RunsHasOneable) {
+	err := m.GetBackingStore().Set("currentRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCurrentStateVersion sets the current-state-version property value. The currentStateVersion property
-func (m *Workspaces_relationships) SetCurrentStateVersion(value StateVersionsHasOneable)() {
-    m.currentStateVersion = value
+func (m *Workspaces_relationships) SetCurrentStateVersion(value StateVersionsHasOneable) {
+	err := m.GetBackingStore().Set("currentStateVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLatestRun sets the latest-run property value. The latestRun property
-func (m *Workspaces_relationships) SetLatestRun(value RunsHasOneable)() {
-    m.latestRun = value
+func (m *Workspaces_relationships) SetLatestRun(value RunsHasOneable) {
+	err := m.GetBackingStore().Set("latestRun", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLockedBy sets the locked-by property value. The lockedBy property
-func (m *Workspaces_relationships) SetLockedBy(value LockedByHasOneable)() {
-    m.lockedBy = value
+func (m *Workspaces_relationships) SetLockedBy(value LockedByHasOneable) {
+	err := m.GetBackingStore().Set("lockedBy", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNoCodeModuleVersion sets the no-code-module-version property value. The noCodeModuleVersion property
-func (m *Workspaces_relationships) SetNoCodeModuleVersion(value NoCodeModuleVersionsHasOneable)() {
-    m.noCodeModuleVersion = value
+func (m *Workspaces_relationships) SetNoCodeModuleVersion(value NoCodeModuleVersionsHasOneable) {
+	err := m.GetBackingStore().Set("noCodeModuleVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOrganization sets the organization property value. The organization property
-func (m *Workspaces_relationships) SetOrganization(value OrganizationsHasOneable)() {
-    m.organization = value
+func (m *Workspaces_relationships) SetOrganization(value OrganizationsHasOneable) {
+	err := m.GetBackingStore().Set("organization", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOutputs sets the outputs property value. The outputs property
-func (m *Workspaces_relationships) SetOutputs(value WorkspaceOutputsHasManyable)() {
-    m.outputs = value
+func (m *Workspaces_relationships) SetOutputs(value WorkspaceOutputsHasManyable) {
+	err := m.GetBackingStore().Set("outputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProject sets the project property value. The project property
-func (m *Workspaces_relationships) SetProject(value ProjectsHasOneable)() {
-    m.project = value
+func (m *Workspaces_relationships) SetProject(value ProjectsHasOneable) {
+	err := m.GetBackingStore().Set("project", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetReadme sets the readme property value. The readme property
-func (m *Workspaces_relationships) SetReadme(value WorkspaceReadmeHasOneable)() {
-    m.readme = value
+func (m *Workspaces_relationships) SetReadme(value WorkspaceReadmeHasOneable) {
+	err := m.GetBackingStore().Set("readme", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRemoteStateConsumers sets the remote-state-consumers property value. The remoteStateConsumers property
-func (m *Workspaces_relationships) SetRemoteStateConsumers(value Workspaces_relationships_remoteStateConsumersable)() {
-    m.remoteStateConsumers = value
+func (m *Workspaces_relationships) SetRemoteStateConsumers(value Workspaces_relationships_remoteStateConsumersable) {
+	err := m.GetBackingStore().Set("remoteStateConsumers", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSshKey sets the ssh-key property value. The sshKey property
-func (m *Workspaces_relationships) SetSshKey(value SshKeysHasOneable)() {
-    m.sshKey = value
+func (m *Workspaces_relationships) SetSshKey(value SshKeysHasOneable) {
+	err := m.GetBackingStore().Set("sshKey", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTags sets the tags property value. The tags property
-func (m *Workspaces_relationships) SetTags(value TagsHasManyable)() {
-    m.tags = value
+func (m *Workspaces_relationships) SetTags(value TagsHasManyable) {
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVars sets the vars property value. The vars property
-func (m *Workspaces_relationships) SetVars(value VarsHasManyable)() {
-    m.vars = value
+func (m *Workspaces_relationships) SetVars(value VarsHasManyable) {
+	err := m.GetBackingStore().Set("vars", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Workspaces_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAgentPool()(AgentPoolsHasOneable)
-    GetCurrentAssessmentResult()(AssessmentResultsHasOneable)
-    GetCurrentConfigurationVersion()(ConfigurationVersionsHasOneable)
-    GetCurrentRun()(RunsHasOneable)
-    GetCurrentStateVersion()(StateVersionsHasOneable)
-    GetLatestRun()(RunsHasOneable)
-    GetLockedBy()(LockedByHasOneable)
-    GetNoCodeModuleVersion()(NoCodeModuleVersionsHasOneable)
-    GetOrganization()(OrganizationsHasOneable)
-    GetOutputs()(WorkspaceOutputsHasManyable)
-    GetProject()(ProjectsHasOneable)
-    GetReadme()(WorkspaceReadmeHasOneable)
-    GetRemoteStateConsumers()(Workspaces_relationships_remoteStateConsumersable)
-    GetSshKey()(SshKeysHasOneable)
-    GetTags()(TagsHasManyable)
-    GetVars()(VarsHasManyable)
-    SetAgentPool(value AgentPoolsHasOneable)()
-    SetCurrentAssessmentResult(value AssessmentResultsHasOneable)()
-    SetCurrentConfigurationVersion(value ConfigurationVersionsHasOneable)()
-    SetCurrentRun(value RunsHasOneable)()
-    SetCurrentStateVersion(value StateVersionsHasOneable)()
-    SetLatestRun(value RunsHasOneable)()
-    SetLockedBy(value LockedByHasOneable)()
-    SetNoCodeModuleVersion(value NoCodeModuleVersionsHasOneable)()
-    SetOrganization(value OrganizationsHasOneable)()
-    SetOutputs(value WorkspaceOutputsHasManyable)()
-    SetProject(value ProjectsHasOneable)()
-    SetReadme(value WorkspaceReadmeHasOneable)()
-    SetRemoteStateConsumers(value Workspaces_relationships_remoteStateConsumersable)()
-    SetSshKey(value SshKeysHasOneable)()
-    SetTags(value TagsHasManyable)()
-    SetVars(value VarsHasManyable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAgentPool() AgentPoolsHasOneable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCurrentAssessmentResult() AssessmentResultsHasOneable
+	GetCurrentConfigurationVersion() ConfigurationVersionsHasOneable
+	GetCurrentRun() RunsHasOneable
+	GetCurrentStateVersion() StateVersionsHasOneable
+	GetLatestRun() RunsHasOneable
+	GetLockedBy() LockedByHasOneable
+	GetNoCodeModuleVersion() NoCodeModuleVersionsHasOneable
+	GetOrganization() OrganizationsHasOneable
+	GetOutputs() WorkspaceOutputsHasManyable
+	GetProject() ProjectsHasOneable
+	GetReadme() WorkspaceReadmeHasOneable
+	GetRemoteStateConsumers() Workspaces_relationships_remoteStateConsumersable
+	GetSshKey() SshKeysHasOneable
+	GetTags() TagsHasManyable
+	GetVars() VarsHasManyable
+	SetAgentPool(value AgentPoolsHasOneable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCurrentAssessmentResult(value AssessmentResultsHasOneable)
+	SetCurrentConfigurationVersion(value ConfigurationVersionsHasOneable)
+	SetCurrentRun(value RunsHasOneable)
+	SetCurrentStateVersion(value StateVersionsHasOneable)
+	SetLatestRun(value RunsHasOneable)
+	SetLockedBy(value LockedByHasOneable)
+	SetNoCodeModuleVersion(value NoCodeModuleVersionsHasOneable)
+	SetOrganization(value OrganizationsHasOneable)
+	SetOutputs(value WorkspaceOutputsHasManyable)
+	SetProject(value ProjectsHasOneable)
+	SetReadme(value WorkspaceReadmeHasOneable)
+	SetRemoteStateConsumers(value Workspaces_relationships_remoteStateConsumersable)
+	SetSshKey(value SshKeysHasOneable)
+	SetTags(value TagsHasManyable)
+	SetVars(value VarsHasManyable)
 }

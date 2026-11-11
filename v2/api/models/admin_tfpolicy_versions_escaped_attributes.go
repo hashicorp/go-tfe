@@ -4,377 +4,518 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type AdminTfpolicyVersions_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The set of platform/architecture builds available for this version. On create, either at least one entry here or the top-level `url`/`sha` pair must be provided. On update, providing `archs` replaces the full set of architectures for this version; omitting it leaves existing architectures unchanged, while providing an empty array is rejected with 422 Unprocessable Content (a TFPolicy version must always have at least one architecture).
-    archs []AdminTfpolicyVersionArchitectureable
-    // Whether this version is a beta/pre-release.
-    beta *bool
-    // The timestamp when this version was created.
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Whether this version is deprecated. On update (`PATCH`), when set to `true` without a `deprecated-reason` in the same request, the server fills in a default reason referencing the current version. This default does not apply on create.
-    deprecated *bool
-    // Explanation shown to users when `deprecated` is `true`.
-    deprecatedReason *string
-    // Whether this version can be selected for use. Attempting to set `enabled` to `false` while the version is in use returns 409 Conflict.
-    enabled *bool
-    // Whether this is an official HashiCorp-published release.
-    official *bool
-    // The current user's permissions for this TFPolicy version, when included.
-    permissions AdminTfpolicyVersions_attributes_permissionsable
-    // The SHA-256 checksum of the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].sha` field instead. Null under the same conditions as `url`.
-    // Deprecated: 
-    sha *string
-    // The URL where you can download the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].url` field instead. Null when no linux/amd64 architecture has been registered for this version (e.g. an arm64-only release). On create, either `url` and `sha` or at least one entry in `archs` must be provided. If both are given, the linux/amd64 entry in `archs` (when present) must match `url`/`sha` exactly, or the request is rejected with 422 Unprocessable Content.
-    // Deprecated: 
-    url *string
-    // The semantic version string for this TFPolicy release (e.g. "0.1.0"). Must be unique among TFPolicy versions.
-    version *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAdminTfpolicyVersions_attributes instantiates a new AdminTfpolicyVersions_attributes and sets the default values.
-func NewAdminTfpolicyVersions_attributes()(*AdminTfpolicyVersions_attributes) {
-    m := &AdminTfpolicyVersions_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAdminTfpolicyVersions_attributes() *AdminTfpolicyVersions_attributes {
+	m := &AdminTfpolicyVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAdminTfpolicyVersions_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAdminTfpolicyVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAdminTfpolicyVersions_attributes(), nil
+func CreateAdminTfpolicyVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAdminTfpolicyVersions_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AdminTfpolicyVersions_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AdminTfpolicyVersions_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetArchs gets the archs property value. The set of platform/architecture builds available for this version. On create, either at least one entry here or the top-level `url`/`sha` pair must be provided. On update, providing `archs` replaces the full set of architectures for this version; omitting it leaves existing architectures unchanged, while providing an empty array is rejected with 422 Unprocessable Content (a TFPolicy version must always have at least one architecture).
 // returns a []AdminTfpolicyVersionArchitectureable when successful
-func (m *AdminTfpolicyVersions_attributes) GetArchs()([]AdminTfpolicyVersionArchitectureable) {
-    return m.archs
+func (m *AdminTfpolicyVersions_attributes) GetArchs() []AdminTfpolicyVersionArchitectureable {
+	val, err := m.GetBackingStore().Get("archs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]AdminTfpolicyVersionArchitectureable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AdminTfpolicyVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBeta gets the beta property value. Whether this version is a beta/pre-release.
 // returns a *bool when successful
-func (m *AdminTfpolicyVersions_attributes) GetBeta()(*bool) {
-    return m.beta
+func (m *AdminTfpolicyVersions_attributes) GetBeta() *bool {
+	val, err := m.GetBackingStore().Get("beta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. The timestamp when this version was created.
 // returns a *Time when successful
-func (m *AdminTfpolicyVersions_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *AdminTfpolicyVersions_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDeprecated gets the deprecated property value. Whether this version is deprecated. On update (`PATCH`), when set to `true` without a `deprecated-reason` in the same request, the server fills in a default reason referencing the current version. This default does not apply on create.
 // returns a *bool when successful
-func (m *AdminTfpolicyVersions_attributes) GetDeprecated()(*bool) {
-    return m.deprecated
+func (m *AdminTfpolicyVersions_attributes) GetDeprecated() *bool {
+	val, err := m.GetBackingStore().Get("deprecated")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDeprecatedReason gets the deprecated-reason property value. Explanation shown to users when `deprecated` is `true`.
 // returns a *string when successful
-func (m *AdminTfpolicyVersions_attributes) GetDeprecatedReason()(*string) {
-    return m.deprecatedReason
+func (m *AdminTfpolicyVersions_attributes) GetDeprecatedReason() *string {
+	val, err := m.GetBackingStore().Get("deprecatedReason")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetEnabled gets the enabled property value. Whether this version can be selected for use. Attempting to set `enabled` to `false` while the version is in use returns 409 Conflict.
 // returns a *bool when successful
-func (m *AdminTfpolicyVersions_attributes) GetEnabled()(*bool) {
-    return m.enabled
+func (m *AdminTfpolicyVersions_attributes) GetEnabled() *bool {
+	val, err := m.GetBackingStore().Get("enabled")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AdminTfpolicyVersions_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["archs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateAdminTfpolicyVersionArchitectureFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]AdminTfpolicyVersionArchitectureable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(AdminTfpolicyVersionArchitectureable)
-                }
-            }
-            m.SetArchs(res)
-        }
-        return nil
-    }
-    res["beta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBeta(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["deprecated"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeprecated(val)
-        }
-        return nil
-    }
-    res["deprecated-reason"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDeprecatedReason(val)
-        }
-        return nil
-    }
-    res["enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnabled(val)
-        }
-        return nil
-    }
-    res["official"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOfficial(val)
-        }
-        return nil
-    }
-    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAdminTfpolicyVersions_attributes_permissionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPermissions(val.(AdminTfpolicyVersions_attributes_permissionsable))
-        }
-        return nil
-    }
-    res["sha"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSha(val)
-        }
-        return nil
-    }
-    res["url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUrl(val)
-        }
-        return nil
-    }
-    res["version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVersion(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AdminTfpolicyVersions_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["archs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateAdminTfpolicyVersionArchitectureFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]AdminTfpolicyVersionArchitectureable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(AdminTfpolicyVersionArchitectureable)
+				}
+			}
+			m.SetArchs(res)
+		}
+		return nil
+	}
+	res["beta"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBeta(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["deprecated"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeprecated(val)
+		}
+		return nil
+	}
+	res["deprecated-reason"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDeprecatedReason(val)
+		}
+		return nil
+	}
+	res["enabled"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnabled(val)
+		}
+		return nil
+	}
+	res["official"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOfficial(val)
+		}
+		return nil
+	}
+	res["permissions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAdminTfpolicyVersions_attributes_permissionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPermissions(val.(AdminTfpolicyVersions_attributes_permissionsable))
+		}
+		return nil
+	}
+	res["sha"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSha(val)
+		}
+		return nil
+	}
+	res["url"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUrl(val)
+		}
+		return nil
+	}
+	res["version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVersion(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetOfficial gets the official property value. Whether this is an official HashiCorp-published release.
 // returns a *bool when successful
-func (m *AdminTfpolicyVersions_attributes) GetOfficial()(*bool) {
-    return m.official
+func (m *AdminTfpolicyVersions_attributes) GetOfficial() *bool {
+	val, err := m.GetBackingStore().Get("official")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPermissions gets the permissions property value. The current user's permissions for this TFPolicy version, when included.
 // returns a AdminTfpolicyVersions_attributes_permissionsable when successful
-func (m *AdminTfpolicyVersions_attributes) GetPermissions()(AdminTfpolicyVersions_attributes_permissionsable) {
-    return m.permissions
+func (m *AdminTfpolicyVersions_attributes) GetPermissions() AdminTfpolicyVersions_attributes_permissionsable {
+	val, err := m.GetBackingStore().Get("permissions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AdminTfpolicyVersions_attributes_permissionsable)
+	}
+	return nil
 }
+
 // GetSha gets the sha property value. The SHA-256 checksum of the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].sha` field instead. Null under the same conditions as `url`.
-// Deprecated: 
+// Deprecated:
 // returns a *string when successful
-func (m *AdminTfpolicyVersions_attributes) GetSha()(*string) {
-    return m.sha
+func (m *AdminTfpolicyVersions_attributes) GetSha() *string {
+	val, err := m.GetBackingStore().Get("sha")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetUrl gets the url property value. The URL where you can download the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].url` field instead. Null when no linux/amd64 architecture has been registered for this version (e.g. an arm64-only release). On create, either `url` and `sha` or at least one entry in `archs` must be provided. If both are given, the linux/amd64 entry in `archs` (when present) must match `url`/`sha` exactly, or the request is rejected with 422 Unprocessable Content.
-// Deprecated: 
+// Deprecated:
 // returns a *string when successful
-func (m *AdminTfpolicyVersions_attributes) GetUrl()(*string) {
-    return m.url
+func (m *AdminTfpolicyVersions_attributes) GetUrl() *string {
+	val, err := m.GetBackingStore().Get("url")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetVersion gets the version property value. The semantic version string for this TFPolicy release (e.g. "0.1.0"). Must be unique among TFPolicy versions.
 // returns a *string when successful
-func (m *AdminTfpolicyVersions_attributes) GetVersion()(*string) {
-    return m.version
+func (m *AdminTfpolicyVersions_attributes) GetVersion() *string {
+	val, err := m.GetBackingStore().Get("version")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AdminTfpolicyVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetArchs() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetArchs()))
-        for i, v := range m.GetArchs() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("archs", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("beta", m.GetBeta())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("deprecated", m.GetDeprecated())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("deprecated-reason", m.GetDeprecatedReason())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("enabled", m.GetEnabled())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("official", m.GetOfficial())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("sha", m.GetSha())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("url", m.GetUrl())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("version", m.GetVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AdminTfpolicyVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetArchs() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetArchs()))
+		for i, v := range m.GetArchs() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("archs", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("beta", m.GetBeta())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("deprecated", m.GetDeprecated())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("deprecated-reason", m.GetDeprecatedReason())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("enabled", m.GetEnabled())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("official", m.GetOfficial())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("sha", m.GetSha())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("url", m.GetUrl())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("version", m.GetVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AdminTfpolicyVersions_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AdminTfpolicyVersions_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetArchs sets the archs property value. The set of platform/architecture builds available for this version. On create, either at least one entry here or the top-level `url`/`sha` pair must be provided. On update, providing `archs` replaces the full set of architectures for this version; omitting it leaves existing architectures unchanged, while providing an empty array is rejected with 422 Unprocessable Content (a TFPolicy version must always have at least one architecture).
-func (m *AdminTfpolicyVersions_attributes) SetArchs(value []AdminTfpolicyVersionArchitectureable)() {
-    m.archs = value
+func (m *AdminTfpolicyVersions_attributes) SetArchs(value []AdminTfpolicyVersionArchitectureable) {
+	err := m.GetBackingStore().Set("archs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AdminTfpolicyVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBeta sets the beta property value. Whether this version is a beta/pre-release.
-func (m *AdminTfpolicyVersions_attributes) SetBeta(value *bool)() {
-    m.beta = value
+func (m *AdminTfpolicyVersions_attributes) SetBeta(value *bool) {
+	err := m.GetBackingStore().Set("beta", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. The timestamp when this version was created.
-func (m *AdminTfpolicyVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *AdminTfpolicyVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeprecated sets the deprecated property value. Whether this version is deprecated. On update (`PATCH`), when set to `true` without a `deprecated-reason` in the same request, the server fills in a default reason referencing the current version. This default does not apply on create.
-func (m *AdminTfpolicyVersions_attributes) SetDeprecated(value *bool)() {
-    m.deprecated = value
+func (m *AdminTfpolicyVersions_attributes) SetDeprecated(value *bool) {
+	err := m.GetBackingStore().Set("deprecated", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDeprecatedReason sets the deprecated-reason property value. Explanation shown to users when `deprecated` is `true`.
-func (m *AdminTfpolicyVersions_attributes) SetDeprecatedReason(value *string)() {
-    m.deprecatedReason = value
+func (m *AdminTfpolicyVersions_attributes) SetDeprecatedReason(value *string) {
+	err := m.GetBackingStore().Set("deprecatedReason", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEnabled sets the enabled property value. Whether this version can be selected for use. Attempting to set `enabled` to `false` while the version is in use returns 409 Conflict.
-func (m *AdminTfpolicyVersions_attributes) SetEnabled(value *bool)() {
-    m.enabled = value
+func (m *AdminTfpolicyVersions_attributes) SetEnabled(value *bool) {
+	err := m.GetBackingStore().Set("enabled", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOfficial sets the official property value. Whether this is an official HashiCorp-published release.
-func (m *AdminTfpolicyVersions_attributes) SetOfficial(value *bool)() {
-    m.official = value
+func (m *AdminTfpolicyVersions_attributes) SetOfficial(value *bool) {
+	err := m.GetBackingStore().Set("official", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPermissions sets the permissions property value. The current user's permissions for this TFPolicy version, when included.
-func (m *AdminTfpolicyVersions_attributes) SetPermissions(value AdminTfpolicyVersions_attributes_permissionsable)() {
-    m.permissions = value
+func (m *AdminTfpolicyVersions_attributes) SetPermissions(value AdminTfpolicyVersions_attributes_permissionsable) {
+	err := m.GetBackingStore().Set("permissions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSha sets the sha property value. The SHA-256 checksum of the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].sha` field instead. Null under the same conditions as `url`.
-// Deprecated: 
-func (m *AdminTfpolicyVersions_attributes) SetSha(value *string)() {
-    m.sha = value
+// Deprecated:
+func (m *AdminTfpolicyVersions_attributes) SetSha(value *string) {
+	err := m.GetBackingStore().Set("sha", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUrl sets the url property value. The URL where you can download the linux/amd64 binary of this version. This field is deprecated; we recommend using the `archs[n].url` field instead. Null when no linux/amd64 architecture has been registered for this version (e.g. an arm64-only release). On create, either `url` and `sha` or at least one entry in `archs` must be provided. If both are given, the linux/amd64 entry in `archs` (when present) must match `url`/`sha` exactly, or the request is rejected with 422 Unprocessable Content.
-// Deprecated: 
-func (m *AdminTfpolicyVersions_attributes) SetUrl(value *string)() {
-    m.url = value
+// Deprecated:
+func (m *AdminTfpolicyVersions_attributes) SetUrl(value *string) {
+	err := m.GetBackingStore().Set("url", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVersion sets the version property value. The semantic version string for this TFPolicy release (e.g. "0.1.0"). Must be unique among TFPolicy versions.
-func (m *AdminTfpolicyVersions_attributes) SetVersion(value *string)() {
-    m.version = value
+func (m *AdminTfpolicyVersions_attributes) SetVersion(value *string) {
+	err := m.GetBackingStore().Set("version", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AdminTfpolicyVersions_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetArchs()([]AdminTfpolicyVersionArchitectureable)
-    GetBeta()(*bool)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDeprecated()(*bool)
-    GetDeprecatedReason()(*string)
-    GetEnabled()(*bool)
-    GetOfficial()(*bool)
-    GetPermissions()(AdminTfpolicyVersions_attributes_permissionsable)
-    GetSha()(*string)
-    GetUrl()(*string)
-    GetVersion()(*string)
-    SetArchs(value []AdminTfpolicyVersionArchitectureable)()
-    SetBeta(value *bool)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDeprecated(value *bool)()
-    SetDeprecatedReason(value *string)()
-    SetEnabled(value *bool)()
-    SetOfficial(value *bool)()
-    SetPermissions(value AdminTfpolicyVersions_attributes_permissionsable)()
-    SetSha(value *string)()
-    SetUrl(value *string)()
-    SetVersion(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetArchs() []AdminTfpolicyVersionArchitectureable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBeta() *bool
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDeprecated() *bool
+	GetDeprecatedReason() *string
+	GetEnabled() *bool
+	GetOfficial() *bool
+	GetPermissions() AdminTfpolicyVersions_attributes_permissionsable
+	GetSha() *string
+	GetUrl() *string
+	GetVersion() *string
+	SetArchs(value []AdminTfpolicyVersionArchitectureable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBeta(value *bool)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDeprecated(value *bool)
+	SetDeprecatedReason(value *string)
+	SetEnabled(value *bool)
+	SetOfficial(value *bool)
+	SetPermissions(value AdminTfpolicyVersions_attributes_permissionsable)
+	SetSha(value *string)
+	SetUrl(value *string)
+	SetVersion(value *string)
 }

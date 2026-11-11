@@ -4,167 +4,250 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type HyokCustomerKeyVersions_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The error property
-    error *string
-    // The keyVersion property
-    keyVersion *string
-    // The status property
-    status *HyokCustomerKeyVersions_attributes_status
-    // The workspacesSecured property
-    workspacesSecured *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewHyokCustomerKeyVersions_attributes instantiates a new HyokCustomerKeyVersions_attributes and sets the default values.
-func NewHyokCustomerKeyVersions_attributes()(*HyokCustomerKeyVersions_attributes) {
-    m := &HyokCustomerKeyVersions_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHyokCustomerKeyVersions_attributes() *HyokCustomerKeyVersions_attributes {
+	m := &HyokCustomerKeyVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHyokCustomerKeyVersions_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokCustomerKeyVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHyokCustomerKeyVersions_attributes(), nil
+func CreateHyokCustomerKeyVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHyokCustomerKeyVersions_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HyokCustomerKeyVersions_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HyokCustomerKeyVersions_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokCustomerKeyVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *HyokCustomerKeyVersions_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *HyokCustomerKeyVersions_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetError gets the error property value. The error property
 // returns a *string when successful
-func (m *HyokCustomerKeyVersions_attributes) GetError()(*string) {
-    return m.error
+func (m *HyokCustomerKeyVersions_attributes) GetError() *string {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokCustomerKeyVersions_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val)
-        }
-        return nil
-    }
-    res["key-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetKeyVersion(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseHyokCustomerKeyVersions_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*HyokCustomerKeyVersions_attributes_status))
-        }
-        return nil
-    }
-    res["workspaces-secured"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspacesSecured(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokCustomerKeyVersions_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val)
+		}
+		return nil
+	}
+	res["key-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetKeyVersion(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseHyokCustomerKeyVersions_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*HyokCustomerKeyVersions_attributes_status))
+		}
+		return nil
+	}
+	res["workspaces-secured"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspacesSecured(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetKeyVersion gets the key-version property value. The keyVersion property
 // returns a *string when successful
-func (m *HyokCustomerKeyVersions_attributes) GetKeyVersion()(*string) {
-    return m.keyVersion
+func (m *HyokCustomerKeyVersions_attributes) GetKeyVersion() *string {
+	val, err := m.GetBackingStore().Get("keyVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *HyokCustomerKeyVersions_attributes_status when successful
-func (m *HyokCustomerKeyVersions_attributes) GetStatus()(*HyokCustomerKeyVersions_attributes_status) {
-    return m.status
+func (m *HyokCustomerKeyVersions_attributes) GetStatus() *HyokCustomerKeyVersions_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*HyokCustomerKeyVersions_attributes_status)
+	}
+	return nil
 }
+
 // GetWorkspacesSecured gets the workspaces-secured property value. The workspacesSecured property
 // returns a *int32 when successful
-func (m *HyokCustomerKeyVersions_attributes) GetWorkspacesSecured()(*int32) {
-    return m.workspacesSecured
+func (m *HyokCustomerKeyVersions_attributes) GetWorkspacesSecured() *int32 {
+	val, err := m.GetBackingStore().Get("workspacesSecured")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HyokCustomerKeyVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokCustomerKeyVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HyokCustomerKeyVersions_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HyokCustomerKeyVersions_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokCustomerKeyVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *HyokCustomerKeyVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *HyokCustomerKeyVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetError sets the error property value. The error property
-func (m *HyokCustomerKeyVersions_attributes) SetError(value *string)() {
-    m.error = value
+func (m *HyokCustomerKeyVersions_attributes) SetError(value *string) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetKeyVersion sets the key-version property value. The keyVersion property
-func (m *HyokCustomerKeyVersions_attributes) SetKeyVersion(value *string)() {
-    m.keyVersion = value
+func (m *HyokCustomerKeyVersions_attributes) SetKeyVersion(value *string) {
+	err := m.GetBackingStore().Set("keyVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *HyokCustomerKeyVersions_attributes) SetStatus(value *HyokCustomerKeyVersions_attributes_status)() {
-    m.status = value
+func (m *HyokCustomerKeyVersions_attributes) SetStatus(value *HyokCustomerKeyVersions_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspacesSecured sets the workspaces-secured property value. The workspacesSecured property
-func (m *HyokCustomerKeyVersions_attributes) SetWorkspacesSecured(value *int32)() {
-    m.workspacesSecured = value
+func (m *HyokCustomerKeyVersions_attributes) SetWorkspacesSecured(value *int32) {
+	err := m.GetBackingStore().Set("workspacesSecured", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type HyokCustomerKeyVersions_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetError()(*string)
-    GetKeyVersion()(*string)
-    GetStatus()(*HyokCustomerKeyVersions_attributes_status)
-    GetWorkspacesSecured()(*int32)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetError(value *string)()
-    SetKeyVersion(value *string)()
-    SetStatus(value *HyokCustomerKeyVersions_attributes_status)()
-    SetWorkspacesSecured(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetError() *string
+	GetKeyVersion() *string
+	GetStatus() *HyokCustomerKeyVersions_attributes_status
+	GetWorkspacesSecured() *int32
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetError(value *string)
+	SetKeyVersion(value *string)
+	SetStatus(value *HyokCustomerKeyVersions_attributes_status)
+	SetWorkspacesSecured(value *int32)
 }

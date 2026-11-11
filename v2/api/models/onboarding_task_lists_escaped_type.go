@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type OnboardingTaskLists_type int
 
 const (
-    ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE OnboardingTaskLists_type = iota
+	ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE OnboardingTaskLists_type = iota
 )
 
 func (i OnboardingTaskLists_type) String() string {
-    return []string{"onboarding-task-lists"}[i]
+	return []string{"onboarding-task-lists"}[i]
 }
+
 func ParseOnboardingTaskLists_type(v string) (any, error) {
-    result := ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE
-    switch v {
-        case "onboarding-task-lists":
-            result = ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE
+	switch v {
+	case "onboarding-task-lists":
+		result = ONBOARDINGTASKLISTS_ONBOARDINGTASKLISTS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOnboardingTaskLists_type(values []OnboardingTaskLists_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i OnboardingTaskLists_type) isMultiValue() bool {
-    return false
+	return false
 }

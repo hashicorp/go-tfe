@@ -4,273 +4,386 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type PolicySetVersions_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The createdAt property
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The error property
-    error *string
-    // The errorMessage property
-    errorMessage *string
-    // The ingressAttributes property
-    ingressAttributes PolicySetVersions_attributes_ingressAttributesable
-    // The source property
-    source *string
-    // The status property
-    status *PolicySetVersions_attributes_status
-    // The statusTimestamps property
-    statusTimestamps PolicySetVersions_attributes_statusTimestampsable
-    // The updatedAt property
-    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPolicySetVersions_attributes instantiates a new PolicySetVersions_attributes and sets the default values.
-func NewPolicySetVersions_attributes()(*PolicySetVersions_attributes) {
-    m := &PolicySetVersions_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPolicySetVersions_attributes() *PolicySetVersions_attributes {
+	m := &PolicySetVersions_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePolicySetVersions_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePolicySetVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPolicySetVersions_attributes(), nil
+func CreatePolicySetVersions_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPolicySetVersions_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PolicySetVersions_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PolicySetVersions_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PolicySetVersions_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
-func (m *PolicySetVersions_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *PolicySetVersions_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetError gets the error property value. The error property
 // returns a *string when successful
-func (m *PolicySetVersions_attributes) GetError()(*string) {
-    return m.error
+func (m *PolicySetVersions_attributes) GetError() *string {
+	val, err := m.GetBackingStore().Get("error")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetErrorMessage gets the error-message property value. The errorMessage property
 // returns a *string when successful
-func (m *PolicySetVersions_attributes) GetErrorMessage()(*string) {
-    return m.errorMessage
+func (m *PolicySetVersions_attributes) GetErrorMessage() *string {
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PolicySetVersions_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["error"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetError(val)
-        }
-        return nil
-    }
-    res["error-message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErrorMessage(val)
-        }
-        return nil
-    }
-    res["ingress-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetVersions_attributes_ingressAttributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIngressAttributes(val.(PolicySetVersions_attributes_ingressAttributesable))
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePolicySetVersions_attributes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*PolicySetVersions_attributes_status))
-        }
-        return nil
-    }
-    res["status-timestamps"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreatePolicySetVersions_attributes_statusTimestampsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatusTimestamps(val.(PolicySetVersions_attributes_statusTimestampsable))
-        }
-        return nil
-    }
-    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUpdatedAt(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PolicySetVersions_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["error"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetError(val)
+		}
+		return nil
+	}
+	res["error-message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErrorMessage(val)
+		}
+		return nil
+	}
+	res["ingress-attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicySetVersions_attributes_ingressAttributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIngressAttributes(val.(PolicySetVersions_attributes_ingressAttributesable))
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePolicySetVersions_attributes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*PolicySetVersions_attributes_status))
+		}
+		return nil
+	}
+	res["status-timestamps"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreatePolicySetVersions_attributes_statusTimestampsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatusTimestamps(val.(PolicySetVersions_attributes_statusTimestampsable))
+		}
+		return nil
+	}
+	res["updated-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUpdatedAt(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIngressAttributes gets the ingress-attributes property value. The ingressAttributes property
 // returns a PolicySetVersions_attributes_ingressAttributesable when successful
-func (m *PolicySetVersions_attributes) GetIngressAttributes()(PolicySetVersions_attributes_ingressAttributesable) {
-    return m.ingressAttributes
+func (m *PolicySetVersions_attributes) GetIngressAttributes() PolicySetVersions_attributes_ingressAttributesable {
+	val, err := m.GetBackingStore().Get("ingressAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetVersions_attributes_ingressAttributesable)
+	}
+	return nil
 }
+
 // GetSource gets the source property value. The source property
 // returns a *string when successful
-func (m *PolicySetVersions_attributes) GetSource()(*string) {
-    return m.source
+func (m *PolicySetVersions_attributes) GetSource() *string {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *PolicySetVersions_attributes_status when successful
-func (m *PolicySetVersions_attributes) GetStatus()(*PolicySetVersions_attributes_status) {
-    return m.status
+func (m *PolicySetVersions_attributes) GetStatus() *PolicySetVersions_attributes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PolicySetVersions_attributes_status)
+	}
+	return nil
 }
+
 // GetStatusTimestamps gets the status-timestamps property value. The statusTimestamps property
 // returns a PolicySetVersions_attributes_statusTimestampsable when successful
-func (m *PolicySetVersions_attributes) GetStatusTimestamps()(PolicySetVersions_attributes_statusTimestampsable) {
-    return m.statusTimestamps
+func (m *PolicySetVersions_attributes) GetStatusTimestamps() PolicySetVersions_attributes_statusTimestampsable {
+	val, err := m.GetBackingStore().Get("statusTimestamps")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(PolicySetVersions_attributes_statusTimestampsable)
+	}
+	return nil
 }
+
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
-func (m *PolicySetVersions_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.updatedAt
+func (m *PolicySetVersions_attributes) GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("updatedAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PolicySetVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("error", m.GetError())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("error-message", m.GetErrorMessage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("ingress-attributes", m.GetIngressAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source", m.GetSource())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PolicySetVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("error", m.GetError())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("error-message", m.GetErrorMessage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("ingress-attributes", m.GetIngressAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source", m.GetSource())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("status-timestamps", m.GetStatusTimestamps())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PolicySetVersions_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PolicySetVersions_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PolicySetVersions_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCreatedAt sets the created-at property value. The createdAt property
-func (m *PolicySetVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *PolicySetVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetError sets the error property value. The error property
-func (m *PolicySetVersions_attributes) SetError(value *string)() {
-    m.error = value
+func (m *PolicySetVersions_attributes) SetError(value *string) {
+	err := m.GetBackingStore().Set("error", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErrorMessage sets the error-message property value. The errorMessage property
-func (m *PolicySetVersions_attributes) SetErrorMessage(value *string)() {
-    m.errorMessage = value
+func (m *PolicySetVersions_attributes) SetErrorMessage(value *string) {
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIngressAttributes sets the ingress-attributes property value. The ingressAttributes property
-func (m *PolicySetVersions_attributes) SetIngressAttributes(value PolicySetVersions_attributes_ingressAttributesable)() {
-    m.ingressAttributes = value
+func (m *PolicySetVersions_attributes) SetIngressAttributes(value PolicySetVersions_attributes_ingressAttributesable) {
+	err := m.GetBackingStore().Set("ingressAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The source property
-func (m *PolicySetVersions_attributes) SetSource(value *string)() {
-    m.source = value
+func (m *PolicySetVersions_attributes) SetSource(value *string) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *PolicySetVersions_attributes) SetStatus(value *PolicySetVersions_attributes_status)() {
-    m.status = value
+func (m *PolicySetVersions_attributes) SetStatus(value *PolicySetVersions_attributes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatusTimestamps sets the status-timestamps property value. The statusTimestamps property
-func (m *PolicySetVersions_attributes) SetStatusTimestamps(value PolicySetVersions_attributes_statusTimestampsable)() {
-    m.statusTimestamps = value
+func (m *PolicySetVersions_attributes) SetStatusTimestamps(value PolicySetVersions_attributes_statusTimestampsable) {
+	err := m.GetBackingStore().Set("statusTimestamps", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
-func (m *PolicySetVersions_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.updatedAt = value
+func (m *PolicySetVersions_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("updatedAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PolicySetVersions_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetError()(*string)
-    GetErrorMessage()(*string)
-    GetIngressAttributes()(PolicySetVersions_attributes_ingressAttributesable)
-    GetSource()(*string)
-    GetStatus()(*PolicySetVersions_attributes_status)
-    GetStatusTimestamps()(PolicySetVersions_attributes_statusTimestampsable)
-    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetError(value *string)()
-    SetErrorMessage(value *string)()
-    SetIngressAttributes(value PolicySetVersions_attributes_ingressAttributesable)()
-    SetSource(value *string)()
-    SetStatus(value *PolicySetVersions_attributes_status)()
-    SetStatusTimestamps(value PolicySetVersions_attributes_statusTimestampsable)()
-    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetError() *string
+	GetErrorMessage() *string
+	GetIngressAttributes() PolicySetVersions_attributes_ingressAttributesable
+	GetSource() *string
+	GetStatus() *PolicySetVersions_attributes_status
+	GetStatusTimestamps() PolicySetVersions_attributes_statusTimestampsable
+	GetUpdatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetError(value *string)
+	SetErrorMessage(value *string)
+	SetIngressAttributes(value PolicySetVersions_attributes_ingressAttributesable)
+	SetSource(value *string)
+	SetStatus(value *PolicySetVersions_attributes_status)
+	SetStatusTimestamps(value PolicySetVersions_attributes_statusTimestampsable)
+	SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
 }

@@ -4,111 +4,164 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type PoliciesIdentifierArrayDocument_dataMember2_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The enforcementLevel property
-    enforcementLevel *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel
-    // The source property
-    source *PoliciesIdentifierArrayDocument_dataMember2_attributes_source
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewPoliciesIdentifierArrayDocument_dataMember2_attributes instantiates a new PoliciesIdentifierArrayDocument_dataMember2_attributes and sets the default values.
-func NewPoliciesIdentifierArrayDocument_dataMember2_attributes()(*PoliciesIdentifierArrayDocument_dataMember2_attributes) {
-    m := &PoliciesIdentifierArrayDocument_dataMember2_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewPoliciesIdentifierArrayDocument_dataMember2_attributes() *PoliciesIdentifierArrayDocument_dataMember2_attributes {
+	m := &PoliciesIdentifierArrayDocument_dataMember2_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreatePoliciesIdentifierArrayDocument_dataMember2_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreatePoliciesIdentifierArrayDocument_dataMember2_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewPoliciesIdentifierArrayDocument_dataMember2_attributes(), nil
+func CreatePoliciesIdentifierArrayDocument_dataMember2_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewPoliciesIdentifierArrayDocument_dataMember2_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetEnforcementLevel gets the enforcement-level property value. The enforcementLevel property
 // returns a *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel when successful
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetEnforcementLevel()(*PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel) {
-    return m.enforcementLevel
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetEnforcementLevel() *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel {
+	val, err := m.GetBackingStore().Get("enforcementLevel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel))
-        }
-        return nil
-    }
-    res["source"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParsePoliciesIdentifierArrayDocument_dataMember2_attributes_source)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSource(val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_source))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["enforcement-level"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforcementLevel(val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel))
+		}
+		return nil
+	}
+	res["source"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParsePoliciesIdentifierArrayDocument_dataMember2_attributes_source)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSource(val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_source))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSource gets the source property value. The source property
 // returns a *PoliciesIdentifierArrayDocument_dataMember2_attributes_source when successful
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetSource()(*PoliciesIdentifierArrayDocument_dataMember2_attributes_source) {
-    return m.source
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) GetSource() *PoliciesIdentifierArrayDocument_dataMember2_attributes_source {
+	val, err := m.GetBackingStore().Get("source")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*PoliciesIdentifierArrayDocument_dataMember2_attributes_source)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetEnforcementLevel() != nil {
-        cast := (*m.GetEnforcementLevel()).String()
-        err := writer.WriteStringValue("enforcement-level", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetSource() != nil {
-        cast := (*m.GetSource()).String()
-        err := writer.WriteStringValue("source", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetEnforcementLevel() != nil {
+		cast := (*m.GetEnforcementLevel()).String()
+		err := writer.WriteStringValue("enforcement-level", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetSource() != nil {
+		cast := (*m.GetSource()).String()
+		err := writer.WriteStringValue("source", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetEnforcementLevel sets the enforcement-level property value. The enforcementLevel property
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetEnforcementLevel(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)() {
-    m.enforcementLevel = value
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetEnforcementLevel(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel) {
+	err := m.GetBackingStore().Set("enforcementLevel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSource sets the source property value. The source property
-func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetSource(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_source)() {
-    m.source = value
+func (m *PoliciesIdentifierArrayDocument_dataMember2_attributes) SetSource(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_source) {
+	err := m.GetBackingStore().Set("source", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type PoliciesIdentifierArrayDocument_dataMember2_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetEnforcementLevel()(*PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)
-    GetSource()(*PoliciesIdentifierArrayDocument_dataMember2_attributes_source)
-    SetEnforcementLevel(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)()
-    SetSource(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_source)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetEnforcementLevel() *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel
+	GetSource() *PoliciesIdentifierArrayDocument_dataMember2_attributes_source
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetEnforcementLevel(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_enforcementLevel)
+	SetSource(value *PoliciesIdentifierArrayDocument_dataMember2_attributes_source)
 }

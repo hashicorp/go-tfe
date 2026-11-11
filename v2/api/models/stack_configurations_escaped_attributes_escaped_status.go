@@ -2,47 +2,51 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type StackConfigurations_attributes_status int
 
 const (
-    PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS StackConfigurations_attributes_status = iota
-    QUEUED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-    PREPARING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-    PENDING_STRUCTURAL_APPROVAL_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-    COMPLETED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-    FAILED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS StackConfigurations_attributes_status = iota
+	QUEUED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	PREPARING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	PENDING_STRUCTURAL_APPROVAL_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	COMPLETED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	FAILED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
 )
 
 func (i StackConfigurations_attributes_status) String() string {
-    return []string{"pending", "queued", "preparing", "pending_structural_approval", "completed", "failed"}[i]
+	return []string{"pending", "queued", "preparing", "pending_structural_approval", "completed", "failed"}[i]
 }
+
 func ParseStackConfigurations_attributes_status(v string) (any, error) {
-    result := PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-    switch v {
-        case "pending":
-            result = PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        case "queued":
-            result = QUEUED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        case "preparing":
-            result = PREPARING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        case "pending_structural_approval":
-            result = PENDING_STRUCTURAL_APPROVAL_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        case "completed":
-            result = COMPLETED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        case "failed":
-            result = FAILED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	switch v {
+	case "pending":
+		result = PENDING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	case "queued":
+		result = QUEUED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	case "preparing":
+		result = PREPARING_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	case "pending_structural_approval":
+		result = PENDING_STRUCTURAL_APPROVAL_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	case "completed":
+		result = COMPLETED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	case "failed":
+		result = FAILED_STACKCONFIGURATIONS_ATTRIBUTES_STATUS
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStackConfigurations_attributes_status(values []StackConfigurations_attributes_status) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StackConfigurations_attributes_status) isMultiValue() bool {
-    return false
+	return false
 }

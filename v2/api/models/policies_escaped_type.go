@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Policies_type int
 
 const (
-    POLICIES_POLICIES_TYPE Policies_type = iota
+	POLICIES_POLICIES_TYPE Policies_type = iota
 )
 
 func (i Policies_type) String() string {
-    return []string{"policies"}[i]
+	return []string{"policies"}[i]
 }
+
 func ParsePolicies_type(v string) (any, error) {
-    result := POLICIES_POLICIES_TYPE
-    switch v {
-        case "policies":
-            result = POLICIES_POLICIES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := POLICIES_POLICIES_TYPE
+	switch v {
+	case "policies":
+		result = POLICIES_POLICIES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicies_type(values []Policies_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Policies_type) isMultiValue() bool {
-    return false
+	return false
 }

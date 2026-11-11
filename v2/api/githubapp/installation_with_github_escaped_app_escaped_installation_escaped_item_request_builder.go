@@ -4,63 +4,69 @@
 package githubapp
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // InstallationWithGithub_app_installation_ItemRequestBuilder builds and executes requests for operations under \github-app\installation\{github_app_installation_id}
 type InstallationWithGithub_app_installation_ItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters get details about a GitHub App installation.
 type InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
+	// Return only the specified fields for github-app-installations resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsgithubAppInstallations []string "uriparametername:\"fields%5Bgithub%2Dapp%2Dinstallations%5D\""
 }
+
 // NewInstallationWithGithub_app_installation_ItemRequestBuilderInternal instantiates a new InstallationWithGithub_app_installation_ItemRequestBuilder and sets the default values.
-func NewInstallationWithGithub_app_installation_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InstallationWithGithub_app_installation_ItemRequestBuilder) {
-    m := &InstallationWithGithub_app_installation_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/github-app/installation/{github_app_installation_id}{?fields%5Bgithub%2Dapp%2Dinstallations%5D}", pathParameters),
-    }
-    return m
+func NewInstallationWithGithub_app_installation_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *InstallationWithGithub_app_installation_ItemRequestBuilder {
+	m := &InstallationWithGithub_app_installation_ItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/github-app/installation/{github_app_installation_id}{?fields%5Bgithub%2Dapp%2Dinstallations%5D}", pathParameters),
+	}
+	return m
 }
+
 // NewInstallationWithGithub_app_installation_ItemRequestBuilder instantiates a new InstallationWithGithub_app_installation_ItemRequestBuilder and sets the default values.
-func NewInstallationWithGithub_app_installation_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*InstallationWithGithub_app_installation_ItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewInstallationWithGithub_app_installation_ItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewInstallationWithGithub_app_installation_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *InstallationWithGithub_app_installation_ItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewInstallationWithGithub_app_installation_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get get details about a GitHub App installation.
 // returns a GithubAppInstallationsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GithubAppInstallationsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateGithubAppInstallationsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GithubAppInstallationsEnvelopeable), nil
+func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GithubAppInstallationsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateGithubAppInstallationsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.GithubAppInstallationsEnvelopeable), nil
 }
+
 // ToGetRequestInformation get details about a GitHub App installation.
 // returns a *RequestInformation when successful
-func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[InstallationWithGithub_app_installation_ItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *InstallationWithGithub_app_installation_ItemRequestBuilder when successful
-func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) WithUrl(rawUrl string)(*InstallationWithGithub_app_installation_ItemRequestBuilder) {
-    return NewInstallationWithGithub_app_installation_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *InstallationWithGithub_app_installation_ItemRequestBuilder) WithUrl(rawUrl string) *InstallationWithGithub_app_installation_ItemRequestBuilder {
+	return NewInstallationWithGithub_app_installation_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

@@ -4,121 +4,174 @@
 package organization
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type AuditTrailGetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data []AuditTrailGetResponse_dataable
-    // The pagination property
-    pagination AuditTrailGetResponse_paginationable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAuditTrailGetResponse instantiates a new AuditTrailGetResponse and sets the default values.
-func NewAuditTrailGetResponse()(*AuditTrailGetResponse) {
-    m := &AuditTrailGetResponse{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAuditTrailGetResponse() *AuditTrailGetResponse {
+	m := &AuditTrailGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAuditTrailGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAuditTrailGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAuditTrailGetResponse(), nil
+func CreateAuditTrailGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAuditTrailGetResponse(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AuditTrailGetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AuditTrailGetResponse) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AuditTrailGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a []AuditTrailGetResponse_dataable when successful
-func (m *AuditTrailGetResponse) GetData()([]AuditTrailGetResponse_dataable) {
-    return m.data
+func (m *AuditTrailGetResponse) GetData() []AuditTrailGetResponse_dataable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]AuditTrailGetResponse_dataable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AuditTrailGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateAuditTrailGetResponse_dataFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]AuditTrailGetResponse_dataable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(AuditTrailGetResponse_dataable)
-                }
-            }
-            m.SetData(res)
-        }
-        return nil
-    }
-    res["pagination"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateAuditTrailGetResponse_paginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPagination(val.(AuditTrailGetResponse_paginationable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AuditTrailGetResponse) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateAuditTrailGetResponse_dataFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]AuditTrailGetResponse_dataable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(AuditTrailGetResponse_dataable)
+				}
+			}
+			m.SetData(res)
+		}
+		return nil
+	}
+	res["pagination"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateAuditTrailGetResponse_paginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPagination(val.(AuditTrailGetResponse_paginationable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetPagination gets the pagination property value. The pagination property
 // returns a AuditTrailGetResponse_paginationable when successful
-func (m *AuditTrailGetResponse) GetPagination()(AuditTrailGetResponse_paginationable) {
-    return m.pagination
+func (m *AuditTrailGetResponse) GetPagination() AuditTrailGetResponse_paginationable {
+	val, err := m.GetBackingStore().Get("pagination")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AuditTrailGetResponse_paginationable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AuditTrailGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("pagination", m.GetPagination())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AuditTrailGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetData() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+		for i, v := range m.GetData() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("data", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("pagination", m.GetPagination())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AuditTrailGetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AuditTrailGetResponse) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AuditTrailGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *AuditTrailGetResponse) SetData(value []AuditTrailGetResponse_dataable)() {
-    m.data = value
+func (m *AuditTrailGetResponse) SetData(value []AuditTrailGetResponse_dataable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPagination sets the pagination property value. The pagination property
-func (m *AuditTrailGetResponse) SetPagination(value AuditTrailGetResponse_paginationable)() {
-    m.pagination = value
+func (m *AuditTrailGetResponse) SetPagination(value AuditTrailGetResponse_paginationable) {
+	err := m.GetBackingStore().Set("pagination", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AuditTrailGetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]AuditTrailGetResponse_dataable)
-    GetPagination()(AuditTrailGetResponse_paginationable)
-    SetData(value []AuditTrailGetResponse_dataable)()
-    SetPagination(value AuditTrailGetResponse_paginationable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() []AuditTrailGetResponse_dataable
+	GetPagination() AuditTrailGetResponse_paginationable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value []AuditTrailGetResponse_dataable)
+	SetPagination(value AuditTrailGetResponse_paginationable)
 }

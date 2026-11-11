@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type TaskResults_relationships_taskResultOutcomes_data_type int
 
 const (
-    TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE TaskResults_relationships_taskResultOutcomes_data_type = iota
+	TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE TaskResults_relationships_taskResultOutcomes_data_type = iota
 )
 
 func (i TaskResults_relationships_taskResultOutcomes_data_type) String() string {
-    return []string{"task-result-outcomes"}[i]
+	return []string{"task-result-outcomes"}[i]
 }
+
 func ParseTaskResults_relationships_taskResultOutcomes_data_type(v string) (any, error) {
-    result := TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE
-    switch v {
-        case "task-result-outcomes":
-            result = TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE
+	switch v {
+	case "task-result-outcomes":
+		result = TASKRESULTOUTCOMES_TASKRESULTS_RELATIONSHIPS_TASKRESULTOUTCOMES_DATA_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeTaskResults_relationships_taskResultOutcomes_data_type(values []TaskResults_relationships_taskResultOutcomes_data_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i TaskResults_relationships_taskResultOutcomes_data_type) isMultiValue() bool {
-    return false
+	return false
 }

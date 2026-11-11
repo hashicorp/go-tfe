@@ -4,225 +4,318 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type WorkspaceOutputs_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // A detailed representation of the output type. May be a string forsimple types or an array for complex types such as tuples and objects.
-    detailedType i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
-    // The name property
-    name *string
-    // The organizationAttributes property
-    organizationAttributes WorkspaceOutputs_attributes_organizationAttributesable
-    // The Terraform type of the output value (e.g. string, number, bool,list, map, set, object, tuple).
-    outputType *string
-    // The sensitive property
-    sensitive *bool
-    // The workspaceAttributes property
-    workspaceAttributes WorkspaceOutputs_attributes_workspaceAttributesable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewWorkspaceOutputs_attributes instantiates a new WorkspaceOutputs_attributes and sets the default values.
-func NewWorkspaceOutputs_attributes()(*WorkspaceOutputs_attributes) {
-    m := &WorkspaceOutputs_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewWorkspaceOutputs_attributes() *WorkspaceOutputs_attributes {
+	m := &WorkspaceOutputs_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateWorkspaceOutputs_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateWorkspaceOutputs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewWorkspaceOutputs_attributes(), nil
+func CreateWorkspaceOutputs_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewWorkspaceOutputs_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *WorkspaceOutputs_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *WorkspaceOutputs_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *WorkspaceOutputs_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDetailedType gets the detailed-type property value. A detailed representation of the output type. May be a string forsimple types or an array for complex types such as tuples and objects.
 // returns a UntypedNodeable when successful
-func (m *WorkspaceOutputs_attributes) GetDetailedType()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
-    return m.detailedType
+func (m *WorkspaceOutputs_attributes) GetDetailedType() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable {
+	val, err := m.GetBackingStore().Get("detailedType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *WorkspaceOutputs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["detailed-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.CreateUntypedNodeFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDetailedType(val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable))
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["organization-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceOutputs_attributes_organizationAttributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOrganizationAttributes(val.(WorkspaceOutputs_attributes_organizationAttributesable))
-        }
-        return nil
-    }
-    res["output-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOutputType(val)
-        }
-        return nil
-    }
-    res["sensitive"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSensitive(val)
-        }
-        return nil
-    }
-    res["workspace-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateWorkspaceOutputs_attributes_workspaceAttributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWorkspaceAttributes(val.(WorkspaceOutputs_attributes_workspaceAttributesable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *WorkspaceOutputs_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["detailed-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.CreateUntypedNodeFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDetailedType(val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable))
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["organization-attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceOutputs_attributes_organizationAttributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOrganizationAttributes(val.(WorkspaceOutputs_attributes_organizationAttributesable))
+		}
+		return nil
+	}
+	res["output-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOutputType(val)
+		}
+		return nil
+	}
+	res["sensitive"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSensitive(val)
+		}
+		return nil
+	}
+	res["workspace-attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateWorkspaceOutputs_attributes_workspaceAttributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWorkspaceAttributes(val.(WorkspaceOutputs_attributes_workspaceAttributesable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetName gets the name property value. The name property
 // returns a *string when successful
-func (m *WorkspaceOutputs_attributes) GetName()(*string) {
-    return m.name
+func (m *WorkspaceOutputs_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetOrganizationAttributes gets the organization-attributes property value. The organizationAttributes property
 // returns a WorkspaceOutputs_attributes_organizationAttributesable when successful
-func (m *WorkspaceOutputs_attributes) GetOrganizationAttributes()(WorkspaceOutputs_attributes_organizationAttributesable) {
-    return m.organizationAttributes
+func (m *WorkspaceOutputs_attributes) GetOrganizationAttributes() WorkspaceOutputs_attributes_organizationAttributesable {
+	val, err := m.GetBackingStore().Get("organizationAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceOutputs_attributes_organizationAttributesable)
+	}
+	return nil
 }
+
 // GetOutputType gets the output-type property value. The Terraform type of the output value (e.g. string, number, bool,list, map, set, object, tuple).
 // returns a *string when successful
-func (m *WorkspaceOutputs_attributes) GetOutputType()(*string) {
-    return m.outputType
+func (m *WorkspaceOutputs_attributes) GetOutputType() *string {
+	val, err := m.GetBackingStore().Get("outputType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSensitive gets the sensitive property value. The sensitive property
 // returns a *bool when successful
-func (m *WorkspaceOutputs_attributes) GetSensitive()(*bool) {
-    return m.sensitive
+func (m *WorkspaceOutputs_attributes) GetSensitive() *bool {
+	val, err := m.GetBackingStore().Get("sensitive")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetWorkspaceAttributes gets the workspace-attributes property value. The workspaceAttributes property
 // returns a WorkspaceOutputs_attributes_workspaceAttributesable when successful
-func (m *WorkspaceOutputs_attributes) GetWorkspaceAttributes()(WorkspaceOutputs_attributes_workspaceAttributesable) {
-    return m.workspaceAttributes
+func (m *WorkspaceOutputs_attributes) GetWorkspaceAttributes() WorkspaceOutputs_attributes_workspaceAttributesable {
+	val, err := m.GetBackingStore().Get("workspaceAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(WorkspaceOutputs_attributes_workspaceAttributesable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *WorkspaceOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("detailed-type", m.GetDetailedType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("organization-attributes", m.GetOrganizationAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("output-type", m.GetOutputType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("sensitive", m.GetSensitive())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("workspace-attributes", m.GetWorkspaceAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *WorkspaceOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("detailed-type", m.GetDetailedType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("organization-attributes", m.GetOrganizationAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("output-type", m.GetOutputType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("sensitive", m.GetSensitive())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("workspace-attributes", m.GetWorkspaceAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *WorkspaceOutputs_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *WorkspaceOutputs_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *WorkspaceOutputs_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDetailedType sets the detailed-type property value. A detailed representation of the output type. May be a string forsimple types or an array for complex types such as tuples and objects.
-func (m *WorkspaceOutputs_attributes) SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)() {
-    m.detailedType = value
+func (m *WorkspaceOutputs_attributes) SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
+	err := m.GetBackingStore().Set("detailedType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. The name property
-func (m *WorkspaceOutputs_attributes) SetName(value *string)() {
-    m.name = value
+func (m *WorkspaceOutputs_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOrganizationAttributes sets the organization-attributes property value. The organizationAttributes property
-func (m *WorkspaceOutputs_attributes) SetOrganizationAttributes(value WorkspaceOutputs_attributes_organizationAttributesable)() {
-    m.organizationAttributes = value
+func (m *WorkspaceOutputs_attributes) SetOrganizationAttributes(value WorkspaceOutputs_attributes_organizationAttributesable) {
+	err := m.GetBackingStore().Set("organizationAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOutputType sets the output-type property value. The Terraform type of the output value (e.g. string, number, bool,list, map, set, object, tuple).
-func (m *WorkspaceOutputs_attributes) SetOutputType(value *string)() {
-    m.outputType = value
+func (m *WorkspaceOutputs_attributes) SetOutputType(value *string) {
+	err := m.GetBackingStore().Set("outputType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSensitive sets the sensitive property value. The sensitive property
-func (m *WorkspaceOutputs_attributes) SetSensitive(value *bool)() {
-    m.sensitive = value
+func (m *WorkspaceOutputs_attributes) SetSensitive(value *bool) {
+	err := m.GetBackingStore().Set("sensitive", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWorkspaceAttributes sets the workspace-attributes property value. The workspaceAttributes property
-func (m *WorkspaceOutputs_attributes) SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable)() {
-    m.workspaceAttributes = value
+func (m *WorkspaceOutputs_attributes) SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable) {
+	err := m.GetBackingStore().Set("workspaceAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type WorkspaceOutputs_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDetailedType()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
-    GetName()(*string)
-    GetOrganizationAttributes()(WorkspaceOutputs_attributes_organizationAttributesable)
-    GetOutputType()(*string)
-    GetSensitive()(*bool)
-    GetWorkspaceAttributes()(WorkspaceOutputs_attributes_workspaceAttributesable)
-    SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
-    SetName(value *string)()
-    SetOrganizationAttributes(value WorkspaceOutputs_attributes_organizationAttributesable)()
-    SetOutputType(value *string)()
-    SetSensitive(value *bool)()
-    SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDetailedType() i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
+	GetName() *string
+	GetOrganizationAttributes() WorkspaceOutputs_attributes_organizationAttributesable
+	GetOutputType() *string
+	GetSensitive() *bool
+	GetWorkspaceAttributes() WorkspaceOutputs_attributes_workspaceAttributesable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
+	SetName(value *string)
+	SetOrganizationAttributes(value WorkspaceOutputs_attributes_organizationAttributesable)
+	SetOutputType(value *string)
+	SetSensitive(value *bool)
+	SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable)
 }

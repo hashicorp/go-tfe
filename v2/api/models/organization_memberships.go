@@ -4,220 +4,313 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type OrganizationMemberships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The attributes property
-    attributes OrganizationMemberships_attributesable
-    // The organization membership ID
-    id *string
-    // The links property
-    links SelfWithPaginationable
-    // The meta property
-    meta OrganizationMemberships_metaable
-    // The relationships property
-    relationships OrganizationMemberships_relationshipsable
-    // The type property
-    typeEscaped *OrganizationMemberships_type
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewOrganizationMemberships instantiates a new OrganizationMemberships and sets the default values.
-func NewOrganizationMemberships()(*OrganizationMemberships) {
-    m := &OrganizationMemberships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewOrganizationMemberships() *OrganizationMemberships {
+	m := &OrganizationMemberships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateOrganizationMembershipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateOrganizationMembershipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewOrganizationMemberships(), nil
+func CreateOrganizationMembershipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewOrganizationMemberships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *OrganizationMemberships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *OrganizationMemberships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAttributes gets the attributes property value. The attributes property
 // returns a OrganizationMemberships_attributesable when successful
-func (m *OrganizationMemberships) GetAttributes()(OrganizationMemberships_attributesable) {
-    return m.attributes
+func (m *OrganizationMemberships) GetAttributes() OrganizationMemberships_attributesable {
+	val, err := m.GetBackingStore().Get("attributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationMemberships_attributesable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *OrganizationMemberships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *OrganizationMemberships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_attributesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAttributes(val.(OrganizationMemberships_attributesable))
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateSelfWithPaginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(SelfWithPaginationable))
-        }
-        return nil
-    }
-    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_metaFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMeta(val.(OrganizationMemberships_metaable))
-        }
-        return nil
-    }
-    res["relationships"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateOrganizationMemberships_relationshipsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRelationships(val.(OrganizationMemberships_relationshipsable))
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseOrganizationMemberships_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*OrganizationMemberships_type))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *OrganizationMemberships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationMemberships_attributesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAttributes(val.(OrganizationMemberships_attributesable))
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateSelfWithPaginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(SelfWithPaginationable))
+		}
+		return nil
+	}
+	res["meta"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationMemberships_metaFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMeta(val.(OrganizationMemberships_metaable))
+		}
+		return nil
+	}
+	res["relationships"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateOrganizationMemberships_relationshipsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRelationships(val.(OrganizationMemberships_relationshipsable))
+		}
+		return nil
+	}
+	res["type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseOrganizationMemberships_type)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTypeEscaped(val.(*OrganizationMemberships_type))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetId gets the id property value. The organization membership ID
 // returns a *string when successful
-func (m *OrganizationMemberships) GetId()(*string) {
-    return m.id
+func (m *OrganizationMemberships) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
-func (m *OrganizationMemberships) GetLinks()(SelfWithPaginationable) {
-    return m.links
+func (m *OrganizationMemberships) GetLinks() SelfWithPaginationable {
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(SelfWithPaginationable)
+	}
+	return nil
 }
+
 // GetMeta gets the meta property value. The meta property
 // returns a OrganizationMemberships_metaable when successful
-func (m *OrganizationMemberships) GetMeta()(OrganizationMemberships_metaable) {
-    return m.meta
+func (m *OrganizationMemberships) GetMeta() OrganizationMemberships_metaable {
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationMemberships_metaable)
+	}
+	return nil
 }
+
 // GetRelationships gets the relationships property value. The relationships property
 // returns a OrganizationMemberships_relationshipsable when successful
-func (m *OrganizationMemberships) GetRelationships()(OrganizationMemberships_relationshipsable) {
-    return m.relationships
+func (m *OrganizationMemberships) GetRelationships() OrganizationMemberships_relationshipsable {
+	val, err := m.GetBackingStore().Get("relationships")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(OrganizationMemberships_relationshipsable)
+	}
+	return nil
 }
+
 // GetTypeEscaped gets the type property value. The type property
 // returns a *OrganizationMemberships_type when successful
-func (m *OrganizationMemberships) GetTypeEscaped()(*OrganizationMemberships_type) {
-    return m.typeEscaped
+func (m *OrganizationMemberships) GetTypeEscaped() *OrganizationMemberships_type {
+	val, err := m.GetBackingStore().Get("typeEscaped")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*OrganizationMemberships_type)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *OrganizationMemberships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("attributes", m.GetAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("meta", m.GetMeta())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("relationships", m.GetRelationships())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *OrganizationMemberships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("attributes", m.GetAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("meta", m.GetMeta())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("relationships", m.GetRelationships())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetTypeEscaped() != nil {
+		cast := (*m.GetTypeEscaped()).String()
+		err := writer.WriteStringValue("type", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *OrganizationMemberships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *OrganizationMemberships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAttributes sets the attributes property value. The attributes property
-func (m *OrganizationMemberships) SetAttributes(value OrganizationMemberships_attributesable)() {
-    m.attributes = value
+func (m *OrganizationMemberships) SetAttributes(value OrganizationMemberships_attributesable) {
+	err := m.GetBackingStore().Set("attributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *OrganizationMemberships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetId sets the id property value. The organization membership ID
-func (m *OrganizationMemberships) SetId(value *string)() {
-    m.id = value
+func (m *OrganizationMemberships) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLinks sets the links property value. The links property
-func (m *OrganizationMemberships) SetLinks(value SelfWithPaginationable)() {
-    m.links = value
+func (m *OrganizationMemberships) SetLinks(value SelfWithPaginationable) {
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMeta sets the meta property value. The meta property
-func (m *OrganizationMemberships) SetMeta(value OrganizationMemberships_metaable)() {
-    m.meta = value
+func (m *OrganizationMemberships) SetMeta(value OrganizationMemberships_metaable) {
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRelationships sets the relationships property value. The relationships property
-func (m *OrganizationMemberships) SetRelationships(value OrganizationMemberships_relationshipsable)() {
-    m.relationships = value
+func (m *OrganizationMemberships) SetRelationships(value OrganizationMemberships_relationshipsable) {
+	err := m.GetBackingStore().Set("relationships", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTypeEscaped sets the type property value. The type property
-func (m *OrganizationMemberships) SetTypeEscaped(value *OrganizationMemberships_type)() {
-    m.typeEscaped = value
+func (m *OrganizationMemberships) SetTypeEscaped(value *OrganizationMemberships_type) {
+	err := m.GetBackingStore().Set("typeEscaped", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type OrganizationMembershipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAttributes()(OrganizationMemberships_attributesable)
-    GetId()(*string)
-    GetLinks()(SelfWithPaginationable)
-    GetMeta()(OrganizationMemberships_metaable)
-    GetRelationships()(OrganizationMemberships_relationshipsable)
-    GetTypeEscaped()(*OrganizationMemberships_type)
-    SetAttributes(value OrganizationMemberships_attributesable)()
-    SetId(value *string)()
-    SetLinks(value SelfWithPaginationable)()
-    SetMeta(value OrganizationMemberships_metaable)()
-    SetRelationships(value OrganizationMemberships_relationshipsable)()
-    SetTypeEscaped(value *OrganizationMemberships_type)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAttributes() OrganizationMemberships_attributesable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetId() *string
+	GetLinks() SelfWithPaginationable
+	GetMeta() OrganizationMemberships_metaable
+	GetRelationships() OrganizationMemberships_relationshipsable
+	GetTypeEscaped() *OrganizationMemberships_type
+	SetAttributes(value OrganizationMemberships_attributesable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetId(value *string)
+	SetLinks(value SelfWithPaginationable)
+	SetMeta(value OrganizationMemberships_metaable)
+	SetRelationships(value OrganizationMemberships_relationshipsable)
+	SetTypeEscaped(value *OrganizationMemberships_type)
 }

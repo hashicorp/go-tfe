@@ -4,313 +4,436 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // RegistryModules_attributes_vcsRepo the VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
 type RegistryModules_attributes_vcsRepo struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The repository branch to publish the module from (branch-based publishing).
-    branch *string
-    // The display identifier for the repository. For most VCS providersoutside of Bitbucket Cloud, this matches `identifier`.
-    displayIdentifier *string
-    // The VCS Connection GitHub App Installation to use. Mutuallyexclusive with `oauth-token-id`.
-    githubAppInstallationId *string
-    // The repository from which to ingress the configuration, e.g. "org/repo".
-    identifier *string
-    // Whether submodules should be fetched when cloning the repository.
-    ingressSubmodules *bool
-    // The VCS Connection (OAuth Connection + Token) to use, obtained fromthe oauth-tokens endpoint. Mutually exclusive with`github-app-installation-id`.
-    oauthTokenId *string
-    // The directory within the repository where the module is located.
-    sourceDirectory *string
-    // An optional prefix used to filter tags for tag-based publishing.
-    tagPrefix *string
-    // Whether the module uses the tag-based publishing workflow.
-    tags *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewRegistryModules_attributes_vcsRepo instantiates a new RegistryModules_attributes_vcsRepo and sets the default values.
-func NewRegistryModules_attributes_vcsRepo()(*RegistryModules_attributes_vcsRepo) {
-    m := &RegistryModules_attributes_vcsRepo{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRegistryModules_attributes_vcsRepo() *RegistryModules_attributes_vcsRepo {
+	m := &RegistryModules_attributes_vcsRepo{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRegistryModules_attributes_vcsRepoFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRegistryModules_attributes_vcsRepoFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRegistryModules_attributes_vcsRepo(), nil
+func CreateRegistryModules_attributes_vcsRepoFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRegistryModules_attributes_vcsRepo(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *RegistryModules_attributes_vcsRepo) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *RegistryModules_attributes_vcsRepo) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *RegistryModules_attributes_vcsRepo) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBranch gets the branch property value. The repository branch to publish the module from (branch-based publishing).
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetBranch()(*string) {
-    return m.branch
+func (m *RegistryModules_attributes_vcsRepo) GetBranch() *string {
+	val, err := m.GetBackingStore().Get("branch")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetDisplayIdentifier gets the display-identifier property value. The display identifier for the repository. For most VCS providersoutside of Bitbucket Cloud, this matches `identifier`.
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetDisplayIdentifier()(*string) {
-    return m.displayIdentifier
+func (m *RegistryModules_attributes_vcsRepo) GetDisplayIdentifier() *string {
+	val, err := m.GetBackingStore().Get("displayIdentifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *RegistryModules_attributes_vcsRepo) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["branch"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBranch(val)
-        }
-        return nil
-    }
-    res["display-identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDisplayIdentifier(val)
-        }
-        return nil
-    }
-    res["github-app-installation-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGithubAppInstallationId(val)
-        }
-        return nil
-    }
-    res["identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIdentifier(val)
-        }
-        return nil
-    }
-    res["ingress-submodules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIngressSubmodules(val)
-        }
-        return nil
-    }
-    res["oauth-token-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetOauthTokenId(val)
-        }
-        return nil
-    }
-    res["source-directory"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSourceDirectory(val)
-        }
-        return nil
-    }
-    res["tag-prefix"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTagPrefix(val)
-        }
-        return nil
-    }
-    res["tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTags(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *RegistryModules_attributes_vcsRepo) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["branch"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBranch(val)
+		}
+		return nil
+	}
+	res["display-identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDisplayIdentifier(val)
+		}
+		return nil
+	}
+	res["github-app-installation-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGithubAppInstallationId(val)
+		}
+		return nil
+	}
+	res["identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIdentifier(val)
+		}
+		return nil
+	}
+	res["ingress-submodules"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIngressSubmodules(val)
+		}
+		return nil
+	}
+	res["oauth-token-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetOauthTokenId(val)
+		}
+		return nil
+	}
+	res["source-directory"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSourceDirectory(val)
+		}
+		return nil
+	}
+	res["tag-prefix"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTagPrefix(val)
+		}
+		return nil
+	}
+	res["tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTags(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGithubAppInstallationId gets the github-app-installation-id property value. The VCS Connection GitHub App Installation to use. Mutuallyexclusive with `oauth-token-id`.
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetGithubAppInstallationId()(*string) {
-    return m.githubAppInstallationId
+func (m *RegistryModules_attributes_vcsRepo) GetGithubAppInstallationId() *string {
+	val, err := m.GetBackingStore().Get("githubAppInstallationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIdentifier gets the identifier property value. The repository from which to ingress the configuration, e.g. "org/repo".
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetIdentifier()(*string) {
-    return m.identifier
+func (m *RegistryModules_attributes_vcsRepo) GetIdentifier() *string {
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIngressSubmodules gets the ingress-submodules property value. Whether submodules should be fetched when cloning the repository.
 // returns a *bool when successful
-func (m *RegistryModules_attributes_vcsRepo) GetIngressSubmodules()(*bool) {
-    return m.ingressSubmodules
+func (m *RegistryModules_attributes_vcsRepo) GetIngressSubmodules() *bool {
+	val, err := m.GetBackingStore().Get("ingressSubmodules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetOauthTokenId gets the oauth-token-id property value. The VCS Connection (OAuth Connection + Token) to use, obtained fromthe oauth-tokens endpoint. Mutually exclusive with`github-app-installation-id`.
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetOauthTokenId()(*string) {
-    return m.oauthTokenId
+func (m *RegistryModules_attributes_vcsRepo) GetOauthTokenId() *string {
+	val, err := m.GetBackingStore().Get("oauthTokenId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetSourceDirectory gets the source-directory property value. The directory within the repository where the module is located.
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetSourceDirectory()(*string) {
-    return m.sourceDirectory
+func (m *RegistryModules_attributes_vcsRepo) GetSourceDirectory() *string {
+	val, err := m.GetBackingStore().Get("sourceDirectory")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTagPrefix gets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.
 // returns a *string when successful
-func (m *RegistryModules_attributes_vcsRepo) GetTagPrefix()(*string) {
-    return m.tagPrefix
+func (m *RegistryModules_attributes_vcsRepo) GetTagPrefix() *string {
+	val, err := m.GetBackingStore().Get("tagPrefix")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetTags gets the tags property value. Whether the module uses the tag-based publishing workflow.
 // returns a *bool when successful
-func (m *RegistryModules_attributes_vcsRepo) GetTags()(*bool) {
-    return m.tags
+func (m *RegistryModules_attributes_vcsRepo) GetTags() *bool {
+	val, err := m.GetBackingStore().Get("tags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *RegistryModules_attributes_vcsRepo) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("branch", m.GetBranch())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("display-identifier", m.GetDisplayIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("github-app-installation-id", m.GetGithubAppInstallationId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("identifier", m.GetIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("ingress-submodules", m.GetIngressSubmodules())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("oauth-token-id", m.GetOauthTokenId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("source-directory", m.GetSourceDirectory())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("tag-prefix", m.GetTagPrefix())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("tags", m.GetTags())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *RegistryModules_attributes_vcsRepo) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("branch", m.GetBranch())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("display-identifier", m.GetDisplayIdentifier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("github-app-installation-id", m.GetGithubAppInstallationId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("identifier", m.GetIdentifier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("ingress-submodules", m.GetIngressSubmodules())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("oauth-token-id", m.GetOauthTokenId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("source-directory", m.GetSourceDirectory())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("tag-prefix", m.GetTagPrefix())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("tags", m.GetTags())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *RegistryModules_attributes_vcsRepo) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *RegistryModules_attributes_vcsRepo) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *RegistryModules_attributes_vcsRepo) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBranch sets the branch property value. The repository branch to publish the module from (branch-based publishing).
-func (m *RegistryModules_attributes_vcsRepo) SetBranch(value *string)() {
-    m.branch = value
+func (m *RegistryModules_attributes_vcsRepo) SetBranch(value *string) {
+	err := m.GetBackingStore().Set("branch", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDisplayIdentifier sets the display-identifier property value. The display identifier for the repository. For most VCS providersoutside of Bitbucket Cloud, this matches `identifier`.
-func (m *RegistryModules_attributes_vcsRepo) SetDisplayIdentifier(value *string)() {
-    m.displayIdentifier = value
+func (m *RegistryModules_attributes_vcsRepo) SetDisplayIdentifier(value *string) {
+	err := m.GetBackingStore().Set("displayIdentifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetGithubAppInstallationId sets the github-app-installation-id property value. The VCS Connection GitHub App Installation to use. Mutuallyexclusive with `oauth-token-id`.
-func (m *RegistryModules_attributes_vcsRepo) SetGithubAppInstallationId(value *string)() {
-    m.githubAppInstallationId = value
+func (m *RegistryModules_attributes_vcsRepo) SetGithubAppInstallationId(value *string) {
+	err := m.GetBackingStore().Set("githubAppInstallationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIdentifier sets the identifier property value. The repository from which to ingress the configuration, e.g. "org/repo".
-func (m *RegistryModules_attributes_vcsRepo) SetIdentifier(value *string)() {
-    m.identifier = value
+func (m *RegistryModules_attributes_vcsRepo) SetIdentifier(value *string) {
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIngressSubmodules sets the ingress-submodules property value. Whether submodules should be fetched when cloning the repository.
-func (m *RegistryModules_attributes_vcsRepo) SetIngressSubmodules(value *bool)() {
-    m.ingressSubmodules = value
+func (m *RegistryModules_attributes_vcsRepo) SetIngressSubmodules(value *bool) {
+	err := m.GetBackingStore().Set("ingressSubmodules", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetOauthTokenId sets the oauth-token-id property value. The VCS Connection (OAuth Connection + Token) to use, obtained fromthe oauth-tokens endpoint. Mutually exclusive with`github-app-installation-id`.
-func (m *RegistryModules_attributes_vcsRepo) SetOauthTokenId(value *string)() {
-    m.oauthTokenId = value
+func (m *RegistryModules_attributes_vcsRepo) SetOauthTokenId(value *string) {
+	err := m.GetBackingStore().Set("oauthTokenId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSourceDirectory sets the source-directory property value. The directory within the repository where the module is located.
-func (m *RegistryModules_attributes_vcsRepo) SetSourceDirectory(value *string)() {
-    m.sourceDirectory = value
+func (m *RegistryModules_attributes_vcsRepo) SetSourceDirectory(value *string) {
+	err := m.GetBackingStore().Set("sourceDirectory", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTagPrefix sets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.
-func (m *RegistryModules_attributes_vcsRepo) SetTagPrefix(value *string)() {
-    m.tagPrefix = value
+func (m *RegistryModules_attributes_vcsRepo) SetTagPrefix(value *string) {
+	err := m.GetBackingStore().Set("tagPrefix", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTags sets the tags property value. Whether the module uses the tag-based publishing workflow.
-func (m *RegistryModules_attributes_vcsRepo) SetTags(value *bool)() {
-    m.tags = value
+func (m *RegistryModules_attributes_vcsRepo) SetTags(value *bool) {
+	err := m.GetBackingStore().Set("tags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type RegistryModules_attributes_vcsRepoable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetBranch()(*string)
-    GetDisplayIdentifier()(*string)
-    GetGithubAppInstallationId()(*string)
-    GetIdentifier()(*string)
-    GetIngressSubmodules()(*bool)
-    GetOauthTokenId()(*string)
-    GetSourceDirectory()(*string)
-    GetTagPrefix()(*string)
-    GetTags()(*bool)
-    SetBranch(value *string)()
-    SetDisplayIdentifier(value *string)()
-    SetGithubAppInstallationId(value *string)()
-    SetIdentifier(value *string)()
-    SetIngressSubmodules(value *bool)()
-    SetOauthTokenId(value *string)()
-    SetSourceDirectory(value *string)()
-    SetTagPrefix(value *string)()
-    SetTags(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBranch() *string
+	GetDisplayIdentifier() *string
+	GetGithubAppInstallationId() *string
+	GetIdentifier() *string
+	GetIngressSubmodules() *bool
+	GetOauthTokenId() *string
+	GetSourceDirectory() *string
+	GetTagPrefix() *string
+	GetTags() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBranch(value *string)
+	SetDisplayIdentifier(value *string)
+	SetGithubAppInstallationId(value *string)
+	SetIdentifier(value *string)
+	SetIngressSubmodules(value *bool)
+	SetOauthTokenId(value *string)
+	SetSourceDirectory(value *string)
+	SetTagPrefix(value *string)
+	SetTags(value *bool)
 }

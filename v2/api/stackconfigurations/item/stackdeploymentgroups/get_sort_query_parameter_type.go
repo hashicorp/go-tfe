@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package stackdeploymentgroups
+
 type GetSortQueryParameterType int
 
 const (
-    NAME_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
-    MINUS_NAME_GETSORTQUERYPARAMETERTYPE
-    STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
-    MINUS_STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
+	NAME_GETSORTQUERYPARAMETERTYPE GetSortQueryParameterType = iota
+	MINUS_NAME_GETSORTQUERYPARAMETERTYPE
+	STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
+	MINUS_STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
 )
 
 func (i GetSortQueryParameterType) String() string {
-    return []string{"name", "-name", "status-priority", "-status-priority"}[i]
+	return []string{"name", "-name", "status-priority", "-status-priority"}[i]
 }
+
 func ParseGetSortQueryParameterType(v string) (any, error) {
-    result := NAME_GETSORTQUERYPARAMETERTYPE
-    switch v {
-        case "name":
-            result = NAME_GETSORTQUERYPARAMETERTYPE
-        case "-name":
-            result = MINUS_NAME_GETSORTQUERYPARAMETERTYPE
-        case "status-priority":
-            result = STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
-        case "-status-priority":
-            result = MINUS_STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := NAME_GETSORTQUERYPARAMETERTYPE
+	switch v {
+	case "name":
+		result = NAME_GETSORTQUERYPARAMETERTYPE
+	case "-name":
+		result = MINUS_NAME_GETSORTQUERYPARAMETERTYPE
+	case "status-priority":
+		result = STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
+	case "-status-priority":
+		result = MINUS_STATUSPRIORITY_GETSORTQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetSortQueryParameterType(values []GetSortQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetSortQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

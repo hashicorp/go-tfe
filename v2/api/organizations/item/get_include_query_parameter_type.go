@@ -2,41 +2,45 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package item
+
 type GetIncludeQueryParameterType int
 
 const (
-    SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
-    DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
-    ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
-    CURRENT_ONBOARDING_TASK_LIST_GETINCLUDEQUERYPARAMETERTYPE
+	SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE GetIncludeQueryParameterType = iota
+	DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+	ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
+	CURRENT_ONBOARDING_TASK_LIST_GETINCLUDEQUERYPARAMETERTYPE
 )
 
 func (i GetIncludeQueryParameterType) String() string {
-    return []string{"subscription", "default_project", "entitlement_set", "current_onboarding_task_list"}[i]
+	return []string{"subscription", "default_project", "entitlement_set", "current_onboarding_task_list"}[i]
 }
+
 func ParseGetIncludeQueryParameterType(v string) (any, error) {
-    result := SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
-    switch v {
-        case "subscription":
-            result = SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
-        case "default_project":
-            result = DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
-        case "entitlement_set":
-            result = ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
-        case "current_onboarding_task_list":
-            result = CURRENT_ONBOARDING_TASK_LIST_GETINCLUDEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
+	switch v {
+	case "subscription":
+		result = SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
+	case "default_project":
+		result = DEFAULT_PROJECT_GETINCLUDEQUERYPARAMETERTYPE
+	case "entitlement_set":
+		result = ENTITLEMENT_SET_GETINCLUDEQUERYPARAMETERTYPE
+	case "current_onboarding_task_list":
+		result = CURRENT_ONBOARDING_TASK_LIST_GETINCLUDEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetIncludeQueryParameterType(values []GetIncludeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetIncludeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,374 +4,530 @@
 package stateversions
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type StateVersionsGetResponse struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
-    // The included property
-    included []StateVersionsGetResponse_StateVersionsGetResponse_includedable
-    // The links property
-    links i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
-    // The meta property
-    meta StateVersionsGetResponse_metaable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// StateVersionsGetResponse_StateVersionsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+
+// StateVersionsGetResponse_StateVersionsGetResponse_included composed type wrapper for classes i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeys, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputs, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users
 type StateVersionsGetResponse_StateVersionsGetResponse_included struct {
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-    configurationVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
-    hyokCustomerKeyVersions i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable
-    hyokEncryptedDataKeys i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-    runs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable
-    stateVersionOutputs i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable
-    // Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-    users i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStateVersionsGetResponse_StateVersionsGetResponse_included instantiates a new StateVersionsGetResponse_StateVersionsGetResponse_included and sets the default values.
-func NewStateVersionsGetResponse_StateVersionsGetResponse_included()(*StateVersionsGetResponse_StateVersionsGetResponse_included) {
-    m := &StateVersionsGetResponse_StateVersionsGetResponse_included{
-    }
-    return m
+func NewStateVersionsGetResponse_StateVersionsGetResponse_included() *StateVersionsGetResponse_StateVersionsGetResponse_included {
+	m := &StateVersionsGetResponse_StateVersionsGetResponse_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateStateVersionsGetResponse_StateVersionsGetResponse_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStateVersionsGetResponse_StateVersionsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewStateVersionsGetResponse_StateVersionsGetResponse_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
-                    result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
-                    result.SetHyokCustomerKeyVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewHyokCustomerKeyVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-encrypted-data-keys") {
-                    result.SetHyokEncryptedDataKeys(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewHyokEncryptedDataKeys())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
-                    result.SetRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewRuns())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-version-outputs") {
-                    result.SetStateVersionOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStateVersionOutputs())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
-                    result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateStateVersionsGetResponse_StateVersionsGetResponse_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewStateVersionsGetResponse_StateVersionsGetResponse_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "configuration-versions") {
+					result.SetConfigurationVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewConfigurationVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
+					result.SetHyokCustomerKeyVersions(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewHyokCustomerKeyVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-encrypted-data-keys") {
+					result.SetHyokEncryptedDataKeys(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewHyokEncryptedDataKeys())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "runs") {
+					result.SetRuns(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewRuns())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "state-version-outputs") {
+					result.SetStateVersionOutputs(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewStateVersionOutputs())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "users") {
+					result.SetUsers(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.NewUsers())
+				}
+			}
+		}
+	}
+	return result, nil
 }
-// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
+// GetConfigurationVersions gets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions
 // returns a ConfigurationVersionsable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
-    return m.configurationVersions
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable {
+	val, err := m.GetBackingStore().Get("configurationVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetConfigurationVersions() != nil {
-        return m.GetConfigurationVersions().GetFieldDeserializers()
-    } else if m.GetHyokCustomerKeyVersions() != nil {
-        return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
-    } else if m.GetHyokEncryptedDataKeys() != nil {
-        return m.GetHyokEncryptedDataKeys().GetFieldDeserializers()
-    } else if m.GetRuns() != nil {
-        return m.GetRuns().GetFieldDeserializers()
-    } else if m.GetStateVersionOutputs() != nil {
-        return m.GetStateVersionOutputs().GetFieldDeserializers()
-    } else if m.GetUsers() != nil {
-        return m.GetUsers().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetConfigurationVersions() != nil {
+		return m.GetConfigurationVersions().GetFieldDeserializers()
+	} else if m.GetHyokCustomerKeyVersions() != nil {
+		return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
+	} else if m.GetHyokEncryptedDataKeys() != nil {
+		return m.GetHyokEncryptedDataKeys().GetFieldDeserializers()
+	} else if m.GetRuns() != nil {
+		return m.GetRuns().GetFieldDeserializers()
+	} else if m.GetStateVersionOutputs() != nil {
+		return m.GetStateVersionOutputs().GetFieldDeserializers()
+	} else if m.GetUsers() != nil {
+		return m.GetUsers().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
-// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions
 // returns a HyokCustomerKeyVersionsable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetHyokCustomerKeyVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable) {
-    return m.hyokCustomerKeyVersions
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetHyokCustomerKeyVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable {
+	val, err := m.GetBackingStore().Get("hyokCustomerKeyVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
+	}
+	return nil
 }
-// GetHyokEncryptedDataKeys gets the hyokEncryptedDataKeys property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable
+
+// GetHyokEncryptedDataKeys gets the hyokEncryptedDataKeys property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeys
 // returns a HyokEncryptedDataKeysable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetHyokEncryptedDataKeys()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable) {
-    return m.hyokEncryptedDataKeys
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetHyokEncryptedDataKeys() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable {
+	val, err := m.GetBackingStore().Get("hyokEncryptedDataKeys")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable)
+	}
+	return nil
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetIsComposedType()(bool) {
-    return true
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetIsComposedType() bool {
+	return true
 }
-// GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+
+// GetRuns gets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs
 // returns a Runsable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
-    return m.runs
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetRuns() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable {
+	val, err := m.GetBackingStore().Get("runs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
+	}
+	return nil
 }
-// GetStateVersionOutputs gets the stateVersionOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable
+
+// GetStateVersionOutputs gets the stateVersionOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputs
 // returns a StateVersionOutputsable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetStateVersionOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable) {
-    return m.stateVersionOutputs
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetStateVersionOutputs() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable {
+	val, err := m.GetBackingStore().Get("stateVersionOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable)
+	}
+	return nil
 }
-// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+
+// GetUsers gets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users
 // returns a Usersable when successful
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
-    return m.users
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) GetUsers() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable {
+	val, err := m.GetBackingStore().Get("users")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetConfigurationVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetConfigurationVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetHyokCustomerKeyVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetHyokEncryptedDataKeys() != nil {
-        err := writer.WriteObjectValue("", m.GetHyokEncryptedDataKeys())
-        if err != nil {
-            return err
-        }
-    } else if m.GetRuns() != nil {
-        err := writer.WriteObjectValue("", m.GetRuns())
-        if err != nil {
-            return err
-        }
-    } else if m.GetStateVersionOutputs() != nil {
-        err := writer.WriteObjectValue("", m.GetStateVersionOutputs())
-        if err != nil {
-            return err
-        }
-    } else if m.GetUsers() != nil {
-        err := writer.WriteObjectValue("", m.GetUsers())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetConfigurationVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetConfigurationVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetHyokCustomerKeyVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetHyokEncryptedDataKeys() != nil {
+		err := writer.WriteObjectValue("", m.GetHyokEncryptedDataKeys())
+		if err != nil {
+			return err
+		}
+	} else if m.GetRuns() != nil {
+		err := writer.WriteObjectValue("", m.GetRuns())
+		if err != nil {
+			return err
+		}
+	} else if m.GetStateVersionOutputs() != nil {
+		err := writer.WriteObjectValue("", m.GetStateVersionOutputs())
+		if err != nil {
+			return err
+		}
+	} else if m.GetUsers() != nil {
+		err := writer.WriteObjectValue("", m.GetUsers())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)() {
-    m.configurationVersions = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)() {
-    m.hyokCustomerKeyVersions = value
+
+// SetConfigurationVersions sets the configurationVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersions
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable) {
+	err := m.GetBackingStore().Set("configurationVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetHyokEncryptedDataKeys sets the hyokEncryptedDataKeys property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetHyokEncryptedDataKeys(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable)() {
-    m.hyokEncryptedDataKeys = value
+
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersions
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable) {
+	err := m.GetBackingStore().Set("hyokCustomerKeyVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)() {
-    m.runs = value
+
+// SetHyokEncryptedDataKeys sets the hyokEncryptedDataKeys property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeys
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetHyokEncryptedDataKeys(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable) {
+	err := m.GetBackingStore().Set("hyokEncryptedDataKeys", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetStateVersionOutputs sets the stateVersionOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetStateVersionOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable)() {
-    m.stateVersionOutputs = value
+
+// SetRuns sets the runs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runs
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable) {
+	err := m.GetBackingStore().Set("runs", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
-func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)() {
-    m.users = value
+
+// SetStateVersionOutputs sets the stateVersionOutputs property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputs
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetStateVersionOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable) {
+	err := m.GetBackingStore().Set("stateVersionOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetUsers sets the users property value. Composed type representation for type i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Users
+func (m *StateVersionsGetResponse_StateVersionsGetResponse_included) SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable) {
+	err := m.GetBackingStore().Set("users", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type StateVersionsGetResponse_StateVersionsGetResponse_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetConfigurationVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
-    GetHyokCustomerKeyVersions()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
-    GetHyokEncryptedDataKeys()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable)
-    GetRuns()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
-    GetStateVersionOutputs()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable)
-    GetUsers()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
-    SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)()
-    SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)()
-    SetHyokEncryptedDataKeys(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable)()
-    SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)()
-    SetStateVersionOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable)()
-    SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetConfigurationVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable
+	GetHyokCustomerKeyVersions() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable
+	GetHyokEncryptedDataKeys() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable
+	GetRuns() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable
+	GetStateVersionOutputs() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable
+	GetUsers() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetConfigurationVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.ConfigurationVersionsable)
+	SetHyokCustomerKeyVersions(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokCustomerKeyVersionsable)
+	SetHyokEncryptedDataKeys(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.HyokEncryptedDataKeysable)
+	SetRuns(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Runsable)
+	SetStateVersionOutputs(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionOutputsable)
+	SetUsers(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.Usersable)
 }
+
 // NewStateVersionsGetResponse instantiates a new StateVersionsGetResponse and sets the default values.
-func NewStateVersionsGetResponse()(*StateVersionsGetResponse) {
-    m := &StateVersionsGetResponse{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStateVersionsGetResponse() *StateVersionsGetResponse {
+	m := &StateVersionsGetResponse{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStateVersionsGetResponseFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStateVersionsGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStateVersionsGetResponse(), nil
+func CreateStateVersionsGetResponseFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStateVersionsGetResponse(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StateVersionsGetResponse) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StateVersionsGetResponse) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StateVersionsGetResponse) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a []StateVersionsable when successful
-func (m *StateVersionsGetResponse) GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
-    return m.data
+func (m *StateVersionsGetResponse) GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StateVersionsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStateVersionsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
-                }
-            }
-            m.SetData(res)
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateStateVersionsGetResponse_StateVersionsGetResponse_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]StateVersionsGetResponse_StateVersionsGetResponse_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(StateVersionsGetResponse_StateVersionsGetResponse_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
-        }
-        return nil
-    }
-    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStateVersionsGetResponse_metaFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMeta(val.(StateVersionsGetResponse_metaable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StateVersionsGetResponse) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateStateVersionsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+				}
+			}
+			m.SetData(res)
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateStateVersionsGetResponse_StateVersionsGetResponse_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]StateVersionsGetResponse_StateVersionsGetResponse_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(StateVersionsGetResponse_StateVersionsGetResponse_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	res["links"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateSelfWithPaginationFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetLinks(val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable))
+		}
+		return nil
+	}
+	res["meta"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStateVersionsGetResponse_metaFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMeta(val.(StateVersionsGetResponse_metaable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []StateVersionsGetResponse_StateVersionsGetResponse_includedable when successful
-func (m *StateVersionsGetResponse) GetIncluded()([]StateVersionsGetResponse_StateVersionsGetResponse_includedable) {
-    return m.included
+func (m *StateVersionsGetResponse) GetIncluded() []StateVersionsGetResponse_StateVersionsGetResponse_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]StateVersionsGetResponse_StateVersionsGetResponse_includedable)
+	}
+	return nil
 }
+
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
-func (m *StateVersionsGetResponse) GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
-    return m.links
+func (m *StateVersionsGetResponse) GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable {
+	val, err := m.GetBackingStore().Get("links")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	}
+	return nil
 }
+
 // GetMeta gets the meta property value. The meta property
 // returns a StateVersionsGetResponse_metaable when successful
-func (m *StateVersionsGetResponse) GetMeta()(StateVersionsGetResponse_metaable) {
-    return m.meta
+func (m *StateVersionsGetResponse) GetMeta() StateVersionsGetResponse_metaable {
+	val, err := m.GetBackingStore().Get("meta")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StateVersionsGetResponse_metaable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StateVersionsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetData() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
-        for i, v := range m.GetData() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("data", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("links", m.GetLinks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("meta", m.GetMeta())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StateVersionsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetData() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+		for i, v := range m.GetData() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("data", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("links", m.GetLinks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("meta", m.GetMeta())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StateVersionsGetResponse) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StateVersionsGetResponse) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StateVersionsGetResponse) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *StateVersionsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)() {
-    m.data = value
+func (m *StateVersionsGetResponse) SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *StateVersionsGetResponse) SetIncluded(value []StateVersionsGetResponse_StateVersionsGetResponse_includedable)() {
-    m.included = value
+func (m *StateVersionsGetResponse) SetIncluded(value []StateVersionsGetResponse_StateVersionsGetResponse_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetLinks sets the links property value. The links property
-func (m *StateVersionsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)() {
-    m.links = value
+func (m *StateVersionsGetResponse) SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable) {
+	err := m.GetBackingStore().Set("links", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMeta sets the meta property value. The meta property
-func (m *StateVersionsGetResponse) SetMeta(value StateVersionsGetResponse_metaable)() {
-    m.meta = value
+func (m *StateVersionsGetResponse) SetMeta(value StateVersionsGetResponse_metaable) {
+	err := m.GetBackingStore().Set("meta", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StateVersionsGetResponseable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
-    GetIncluded()([]StateVersionsGetResponse_StateVersionsGetResponse_includedable)
-    GetLinks()(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
-    GetMeta()(StateVersionsGetResponse_metaable)
-    SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)()
-    SetIncluded(value []StateVersionsGetResponse_StateVersionsGetResponse_includedable)()
-    SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)()
-    SetMeta(value StateVersionsGetResponse_metaable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable
+	GetIncluded() []StateVersionsGetResponse_StateVersionsGetResponse_includedable
+	GetLinks() i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable
+	GetMeta() StateVersionsGetResponse_metaable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value []i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.StateVersionsable)
+	SetIncluded(value []StateVersionsGetResponse_StateVersionsGetResponse_includedable)
+	SetLinks(value i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.SelfWithPaginationable)
+	SetMeta(value StateVersionsGetResponse_metaable)
 }

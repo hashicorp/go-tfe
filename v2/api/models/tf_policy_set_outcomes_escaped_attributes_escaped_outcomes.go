@@ -4,280 +4,383 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TfPolicySetOutcomes_attributes_outcomes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The description of the policy
-    description *string
-    // List of diagnostic entries grouped by enforce block
-    diagnostics []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable
-    // The enforcement level of the policy
-    enforcement_level *TfPolicySetOutcomes_attributes_outcomes_enforcement_level
-    // The filename of the policy
-    file_name *string
-    // List of Terraform resources that passed all enforce blocks in this policy
-    passed_resources []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable
-    // The name of the policy
-    policy_name *string
-    // The evaluation status of the policy
-    status *TfPolicySetOutcomes_attributes_outcomes_status
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTfPolicySetOutcomes_attributes_outcomes instantiates a new TfPolicySetOutcomes_attributes_outcomes and sets the default values.
-func NewTfPolicySetOutcomes_attributes_outcomes()(*TfPolicySetOutcomes_attributes_outcomes) {
-    m := &TfPolicySetOutcomes_attributes_outcomes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTfPolicySetOutcomes_attributes_outcomes() *TfPolicySetOutcomes_attributes_outcomes {
+	m := &TfPolicySetOutcomes_attributes_outcomes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTfPolicySetOutcomes_attributes_outcomesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTfPolicySetOutcomes_attributes_outcomesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTfPolicySetOutcomes_attributes_outcomes(), nil
+func CreateTfPolicySetOutcomes_attributes_outcomesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTfPolicySetOutcomes_attributes_outcomes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDescription gets the description property value. The description of the policy
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetDescription()(*string) {
-    return m.description
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetDiagnostics gets the diagnostics property value. List of diagnostic entries grouped by enforce block
 // returns a []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetDiagnostics()([]TfPolicySetOutcomes_attributes_outcomes_diagnosticsable) {
-    return m.diagnostics
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetDiagnostics() []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable {
+	val, err := m.GetBackingStore().Get("diagnostics")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)
+	}
+	return nil
 }
+
 // GetEnforcementLevel gets the enforcement_level property value. The enforcement level of the policy
 // returns a *TfPolicySetOutcomes_attributes_outcomes_enforcement_level when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetEnforcementLevel()(*TfPolicySetOutcomes_attributes_outcomes_enforcement_level) {
-    return m.enforcement_level
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetEnforcementLevel() *TfPolicySetOutcomes_attributes_outcomes_enforcement_level {
+	val, err := m.GetBackingStore().Get("enforcement_level")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TfPolicySetOutcomes_attributes_outcomes_enforcement_level)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["diagnostics"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_diagnosticsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TfPolicySetOutcomes_attributes_outcomes_diagnosticsable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)
-                }
-            }
-            m.SetDiagnostics(res)
-        }
-        return nil
-    }
-    res["enforcement_level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTfPolicySetOutcomes_attributes_outcomes_enforcement_level)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetEnforcementLevel(val.(*TfPolicySetOutcomes_attributes_outcomes_enforcement_level))
-        }
-        return nil
-    }
-    res["file_name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFileName(val)
-        }
-        return nil
-    }
-    res["passed_resources"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_passed_resourcesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)
-                }
-            }
-            m.SetPassedResources(res)
-        }
-        return nil
-    }
-    res["policy_name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyName(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseTfPolicySetOutcomes_attributes_outcomes_status)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val.(*TfPolicySetOutcomes_attributes_outcomes_status))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["diagnostics"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_diagnosticsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TfPolicySetOutcomes_attributes_outcomes_diagnosticsable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)
+				}
+			}
+			m.SetDiagnostics(res)
+		}
+		return nil
+	}
+	res["enforcement_level"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTfPolicySetOutcomes_attributes_outcomes_enforcement_level)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetEnforcementLevel(val.(*TfPolicySetOutcomes_attributes_outcomes_enforcement_level))
+		}
+		return nil
+	}
+	res["file_name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFileName(val)
+		}
+		return nil
+	}
+	res["passed_resources"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateTfPolicySetOutcomes_attributes_outcomes_passed_resourcesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)
+				}
+			}
+			m.SetPassedResources(res)
+		}
+		return nil
+	}
+	res["policy_name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyName(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetEnumValue(ParseTfPolicySetOutcomes_attributes_outcomes_status)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val.(*TfPolicySetOutcomes_attributes_outcomes_status))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFileName gets the file_name property value. The filename of the policy
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetFileName()(*string) {
-    return m.file_name
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetFileName() *string {
+	val, err := m.GetBackingStore().Get("file_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPassedResources gets the passed_resources property value. List of Terraform resources that passed all enforce blocks in this policy
 // returns a []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetPassedResources()([]TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable) {
-    return m.passed_resources
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetPassedResources() []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable {
+	val, err := m.GetBackingStore().Get("passed_resources")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)
+	}
+	return nil
 }
+
 // GetPolicyName gets the policy_name property value. The name of the policy
 // returns a *string when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetPolicyName()(*string) {
-    return m.policy_name
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetPolicyName() *string {
+	val, err := m.GetBackingStore().Get("policy_name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The evaluation status of the policy
 // returns a *TfPolicySetOutcomes_attributes_outcomes_status when successful
-func (m *TfPolicySetOutcomes_attributes_outcomes) GetStatus()(*TfPolicySetOutcomes_attributes_outcomes_status) {
-    return m.status
+func (m *TfPolicySetOutcomes_attributes_outcomes) GetStatus() *TfPolicySetOutcomes_attributes_outcomes_status {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*TfPolicySetOutcomes_attributes_outcomes_status)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TfPolicySetOutcomes_attributes_outcomes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetDiagnostics() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetDiagnostics()))
-        for i, v := range m.GetDiagnostics() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("diagnostics", cast)
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetEnforcementLevel() != nil {
-        cast := (*m.GetEnforcementLevel()).String()
-        err := writer.WriteStringValue("enforcement_level", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("file_name", m.GetFileName())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetPassedResources() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetPassedResources()))
-        for i, v := range m.GetPassedResources() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("passed_resources", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("policy_name", m.GetPolicyName())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TfPolicySetOutcomes_attributes_outcomes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetDiagnostics() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetDiagnostics()))
+		for i, v := range m.GetDiagnostics() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("diagnostics", cast)
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetEnforcementLevel() != nil {
+		cast := (*m.GetEnforcementLevel()).String()
+		err := writer.WriteStringValue("enforcement_level", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("file_name", m.GetFileName())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetPassedResources() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetPassedResources()))
+		for i, v := range m.GetPassedResources() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("passed_resources", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("policy_name", m.GetPolicyName())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetStatus() != nil {
+		cast := (*m.GetStatus()).String()
+		err := writer.WriteStringValue("status", &cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDescription sets the description property value. The description of the policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetDescription(value *string)() {
-    m.description = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDiagnostics sets the diagnostics property value. List of diagnostic entries grouped by enforce block
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetDiagnostics(value []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)() {
-    m.diagnostics = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetDiagnostics(value []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable) {
+	err := m.GetBackingStore().Set("diagnostics", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetEnforcementLevel sets the enforcement_level property value. The enforcement level of the policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetEnforcementLevel(value *TfPolicySetOutcomes_attributes_outcomes_enforcement_level)() {
-    m.enforcement_level = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetEnforcementLevel(value *TfPolicySetOutcomes_attributes_outcomes_enforcement_level) {
+	err := m.GetBackingStore().Set("enforcement_level", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFileName sets the file_name property value. The filename of the policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetFileName(value *string)() {
-    m.file_name = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetFileName(value *string) {
+	err := m.GetBackingStore().Set("file_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPassedResources sets the passed_resources property value. List of Terraform resources that passed all enforce blocks in this policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetPassedResources(value []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)() {
-    m.passed_resources = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetPassedResources(value []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable) {
+	err := m.GetBackingStore().Set("passed_resources", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyName sets the policy_name property value. The name of the policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetPolicyName(value *string)() {
-    m.policy_name = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetPolicyName(value *string) {
+	err := m.GetBackingStore().Set("policy_name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The evaluation status of the policy
-func (m *TfPolicySetOutcomes_attributes_outcomes) SetStatus(value *TfPolicySetOutcomes_attributes_outcomes_status)() {
-    m.status = value
+func (m *TfPolicySetOutcomes_attributes_outcomes) SetStatus(value *TfPolicySetOutcomes_attributes_outcomes_status) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TfPolicySetOutcomes_attributes_outcomesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetDescription()(*string)
-    GetDiagnostics()([]TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)
-    GetEnforcementLevel()(*TfPolicySetOutcomes_attributes_outcomes_enforcement_level)
-    GetFileName()(*string)
-    GetPassedResources()([]TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)
-    GetPolicyName()(*string)
-    GetStatus()(*TfPolicySetOutcomes_attributes_outcomes_status)
-    SetDescription(value *string)()
-    SetDiagnostics(value []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)()
-    SetEnforcementLevel(value *TfPolicySetOutcomes_attributes_outcomes_enforcement_level)()
-    SetFileName(value *string)()
-    SetPassedResources(value []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)()
-    SetPolicyName(value *string)()
-    SetStatus(value *TfPolicySetOutcomes_attributes_outcomes_status)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDescription() *string
+	GetDiagnostics() []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable
+	GetEnforcementLevel() *TfPolicySetOutcomes_attributes_outcomes_enforcement_level
+	GetFileName() *string
+	GetPassedResources() []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable
+	GetPolicyName() *string
+	GetStatus() *TfPolicySetOutcomes_attributes_outcomes_status
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDescription(value *string)
+	SetDiagnostics(value []TfPolicySetOutcomes_attributes_outcomes_diagnosticsable)
+	SetEnforcementLevel(value *TfPolicySetOutcomes_attributes_outcomes_enforcement_level)
+	SetFileName(value *string)
+	SetPassedResources(value []TfPolicySetOutcomes_attributes_outcomes_passed_resourcesable)
+	SetPolicyName(value *string)
+	SetStatus(value *TfPolicySetOutcomes_attributes_outcomes_status)
 }

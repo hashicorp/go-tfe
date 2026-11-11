@@ -4,107 +4,116 @@
 package organizations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemMetricsTokensRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\metrics-tokens
 type ItemMetricsTokensRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemMetricsTokensRequestBuilderGetQueryParameters lists all Metrics service tokens for the organization.This operation is only available in HCP Terraform.
 type ItemMetricsTokensRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for metrics-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsmetricsTokens []string "uriparametername:\"fields%5Bmetrics%2Dtokens%5D\""
+	// Return only the specified fields for metrics-tokens resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsmetricsTokens []string "uriparametername:\"fields%5Bmetrics%2Dtokens%5D\""
 }
+
 // ById gets an item from the github.com/hashicorp/go-tfe/v2/api.organizations.item.metricsTokens.item collection
 // returns a *ItemMetricsTokensMetricsTokensItemRequestBuilder when successful
-func (m *ItemMetricsTokensRequestBuilder) ById(id string)(*ItemMetricsTokensMetricsTokensItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if id != "" {
-        urlTplParams["id"] = id
-    }
-    return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemMetricsTokensRequestBuilder) ById(id string) *ItemMetricsTokensMetricsTokensItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if id != "" {
+		urlTplParams["id"] = id
+	}
+	return NewItemMetricsTokensMetricsTokensItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewItemMetricsTokensRequestBuilderInternal instantiates a new ItemMetricsTokensRequestBuilder and sets the default values.
-func NewItemMetricsTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemMetricsTokensRequestBuilder) {
-    m := &ItemMetricsTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/metrics-tokens{?fields%5Bmetrics%2Dtokens%5D}", pathParameters),
-    }
-    return m
+func NewItemMetricsTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemMetricsTokensRequestBuilder {
+	m := &ItemMetricsTokensRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/metrics-tokens{?fields%5Bmetrics%2Dtokens%5D}", pathParameters),
+	}
+	return m
 }
+
 // NewItemMetricsTokensRequestBuilder instantiates a new ItemMetricsTokensRequestBuilder and sets the default values.
-func NewItemMetricsTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemMetricsTokensRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemMetricsTokensRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemMetricsTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemMetricsTokensRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemMetricsTokensRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get lists all Metrics service tokens for the organization.This operation is only available in HCP Terraform.
 // returns a ItemMetricsTokensGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemMetricsTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemMetricsTokensRequestBuilderGetQueryParameters])(ItemMetricsTokensGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemMetricsTokensGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemMetricsTokensGetResponseable), nil
+func (m *ItemMetricsTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemMetricsTokensRequestBuilderGetQueryParameters]) (ItemMetricsTokensGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemMetricsTokensGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemMetricsTokensGetResponseable), nil
 }
+
 // Post generates a new Metrics Service token.This operation is only available in HCP Terraform.
 // returns a ItemMetricsTokensPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemMetricsTokensRequestBuilder) Post(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemMetricsTokensPostResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemMetricsTokensPostResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemMetricsTokensPostResponseable), nil
+func (m *ItemMetricsTokensRequestBuilder) Post(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (ItemMetricsTokensPostResponseable, error) {
+	requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemMetricsTokensPostResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemMetricsTokensPostResponseable), nil
 }
+
 // ToGetRequestInformation lists all Metrics service tokens for the organization.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *ItemMetricsTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemMetricsTokensRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemMetricsTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemMetricsTokensRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToPostRequestInformation generates a new Metrics Service token.This operation is only available in HCP Terraform.
 // returns a *RequestInformation when successful
-func (m *ItemMetricsTokensRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
-    if err != nil {
-        return nil, err
-    }
-    return requestInfo, nil
+func (m *ItemMetricsTokensRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemMetricsTokensPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+	if err != nil {
+		return nil, err
+	}
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemMetricsTokensRequestBuilder when successful
-func (m *ItemMetricsTokensRequestBuilder) WithUrl(rawUrl string)(*ItemMetricsTokensRequestBuilder) {
-    return NewItemMetricsTokensRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemMetricsTokensRequestBuilder) WithUrl(rawUrl string) *ItemMetricsTokensRequestBuilder {
+	return NewItemMetricsTokensRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

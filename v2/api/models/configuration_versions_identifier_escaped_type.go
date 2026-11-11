@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type ConfigurationVersionsIdentifier_type int
 
 const (
-    CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE ConfigurationVersionsIdentifier_type = iota
+	CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE ConfigurationVersionsIdentifier_type = iota
 )
 
 func (i ConfigurationVersionsIdentifier_type) String() string {
-    return []string{"configuration-versions"}[i]
+	return []string{"configuration-versions"}[i]
 }
+
 func ParseConfigurationVersionsIdentifier_type(v string) (any, error) {
-    result := CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE
-    switch v {
-        case "configuration-versions":
-            result = CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE
+	switch v {
+	case "configuration-versions":
+		result = CONFIGURATIONVERSIONS_CONFIGURATIONVERSIONSIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeConfigurationVersionsIdentifier_type(values []ConfigurationVersionsIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i ConfigurationVersionsIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

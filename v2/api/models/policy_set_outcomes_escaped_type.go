@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type PolicySetOutcomes_type int
 
 const (
-    POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE PolicySetOutcomes_type = iota
+	POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE PolicySetOutcomes_type = iota
 )
 
 func (i PolicySetOutcomes_type) String() string {
-    return []string{"policy-set-outcomes"}[i]
+	return []string{"policy-set-outcomes"}[i]
 }
+
 func ParsePolicySetOutcomes_type(v string) (any, error) {
-    result := POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE
-    switch v {
-        case "policy-set-outcomes":
-            result = POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE
+	switch v {
+	case "policy-set-outcomes":
+		result = POLICYSETOUTCOMES_POLICYSETOUTCOMES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicySetOutcomes_type(values []PolicySetOutcomes_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PolicySetOutcomes_type) isMultiValue() bool {
-    return false
+	return false
 }

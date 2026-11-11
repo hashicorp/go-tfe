@@ -4,33 +4,37 @@
 package organizations
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemVcsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs
 type ItemVcsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemVcsRequestBuilderInternal instantiates a new ItemVcsRequestBuilder and sets the default values.
-func NewItemVcsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRequestBuilder) {
-    m := &ItemVcsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs", pathParameters),
-    }
-    return m
+func NewItemVcsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsRequestBuilder {
+	m := &ItemVcsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/vcs", pathParameters),
+	}
+	return m
 }
+
 // NewItemVcsRequestBuilder instantiates a new ItemVcsRequestBuilder and sets the default values.
-func NewItemVcsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemVcsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemVcsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVcsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemVcsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Repo the repo property
 // returns a *ItemVcsRepoRequestBuilder when successful
-func (m *ItemVcsRequestBuilder) Repo()(*ItemVcsRepoRequestBuilder) {
-    return NewItemVcsRepoRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemVcsRequestBuilder) Repo() *ItemVcsRepoRequestBuilder {
+	return NewItemVcsRepoRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Tree the tree property
 // returns a *ItemVcsTreeRequestBuilder when successful
-func (m *ItemVcsRequestBuilder) Tree()(*ItemVcsTreeRequestBuilder) {
-    return NewItemVcsTreeRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemVcsRequestBuilder) Tree() *ItemVcsTreeRequestBuilder {
+	return NewItemVcsTreeRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

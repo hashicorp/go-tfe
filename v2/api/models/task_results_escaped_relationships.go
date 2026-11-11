@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type TaskResults_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The taskResultOutcomes property
-    taskResultOutcomes TaskResults_relationships_taskResultOutcomesable
-    // The taskStage property
-    taskStage TaskStagesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTaskResults_relationships instantiates a new TaskResults_relationships and sets the default values.
-func NewTaskResults_relationships()(*TaskResults_relationships) {
-    m := &TaskResults_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTaskResults_relationships() *TaskResults_relationships {
+	m := &TaskResults_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTaskResults_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTaskResults_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTaskResults_relationships(), nil
+func CreateTaskResults_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTaskResults_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *TaskResults_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *TaskResults_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *TaskResults_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *TaskResults_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["task-result-outcomes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskResults_relationships_taskResultOutcomesFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskResultOutcomes(val.(TaskResults_relationships_taskResultOutcomesable))
-        }
-        return nil
-    }
-    res["task-stage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateTaskStagesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskStage(val.(TaskStagesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *TaskResults_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["task-result-outcomes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTaskResults_relationships_taskResultOutcomesFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskResultOutcomes(val.(TaskResults_relationships_taskResultOutcomesable))
+		}
+		return nil
+	}
+	res["task-stage"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateTaskStagesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskStage(val.(TaskStagesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTaskResultOutcomes gets the task-result-outcomes property value. The taskResultOutcomes property
 // returns a TaskResults_relationships_taskResultOutcomesable when successful
-func (m *TaskResults_relationships) GetTaskResultOutcomes()(TaskResults_relationships_taskResultOutcomesable) {
-    return m.taskResultOutcomes
+func (m *TaskResults_relationships) GetTaskResultOutcomes() TaskResults_relationships_taskResultOutcomesable {
+	val, err := m.GetBackingStore().Get("taskResultOutcomes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskResults_relationships_taskResultOutcomesable)
+	}
+	return nil
 }
+
 // GetTaskStage gets the task-stage property value. The taskStage property
 // returns a TaskStagesHasOneable when successful
-func (m *TaskResults_relationships) GetTaskStage()(TaskStagesHasOneable) {
-    return m.taskStage
+func (m *TaskResults_relationships) GetTaskStage() TaskStagesHasOneable {
+	val, err := m.GetBackingStore().Get("taskStage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(TaskStagesHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *TaskResults_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("task-result-outcomes", m.GetTaskResultOutcomes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("task-stage", m.GetTaskStage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *TaskResults_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("task-result-outcomes", m.GetTaskResultOutcomes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("task-stage", m.GetTaskStage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *TaskResults_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *TaskResults_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *TaskResults_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetTaskResultOutcomes sets the task-result-outcomes property value. The taskResultOutcomes property
-func (m *TaskResults_relationships) SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)() {
-    m.taskResultOutcomes = value
+func (m *TaskResults_relationships) SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable) {
+	err := m.GetBackingStore().Set("taskResultOutcomes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTaskStage sets the task-stage property value. The taskStage property
-func (m *TaskResults_relationships) SetTaskStage(value TaskStagesHasOneable)() {
-    m.taskStage = value
+func (m *TaskResults_relationships) SetTaskStage(value TaskStagesHasOneable) {
+	err := m.GetBackingStore().Set("taskStage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type TaskResults_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTaskResultOutcomes()(TaskResults_relationships_taskResultOutcomesable)
-    GetTaskStage()(TaskStagesHasOneable)
-    SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)()
-    SetTaskStage(value TaskStagesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetTaskResultOutcomes() TaskResults_relationships_taskResultOutcomesable
+	GetTaskStage() TaskStagesHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)
+	SetTaskStage(value TaskStagesHasOneable)
 }

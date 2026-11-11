@@ -2,39 +2,43 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The policy-as-code framework for the policy.
 type Policies_attributes_kind int
 
 const (
-    SENTINEL_POLICIES_ATTRIBUTES_KIND Policies_attributes_kind = iota
-    OPA_POLICIES_ATTRIBUTES_KIND
-    TFPOLICY_POLICIES_ATTRIBUTES_KIND
+	SENTINEL_POLICIES_ATTRIBUTES_KIND Policies_attributes_kind = iota
+	OPA_POLICIES_ATTRIBUTES_KIND
+	TFPOLICY_POLICIES_ATTRIBUTES_KIND
 )
 
 func (i Policies_attributes_kind) String() string {
-    return []string{"sentinel", "opa", "tfpolicy"}[i]
+	return []string{"sentinel", "opa", "tfpolicy"}[i]
 }
+
 func ParsePolicies_attributes_kind(v string) (any, error) {
-    result := SENTINEL_POLICIES_ATTRIBUTES_KIND
-    switch v {
-        case "sentinel":
-            result = SENTINEL_POLICIES_ATTRIBUTES_KIND
-        case "opa":
-            result = OPA_POLICIES_ATTRIBUTES_KIND
-        case "tfpolicy":
-            result = TFPOLICY_POLICIES_ATTRIBUTES_KIND
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SENTINEL_POLICIES_ATTRIBUTES_KIND
+	switch v {
+	case "sentinel":
+		result = SENTINEL_POLICIES_ATTRIBUTES_KIND
+	case "opa":
+		result = OPA_POLICIES_ATTRIBUTES_KIND
+	case "tfpolicy":
+		result = TFPOLICY_POLICIES_ATTRIBUTES_KIND
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicies_attributes_kind(values []Policies_attributes_kind) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Policies_attributes_kind) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,371 +4,514 @@
 package models
 
 import (
-    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
 )
 
 type AssessmentResults_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether all health checks passed
-    allChecksSucceeded *bool
-    // Number of health checks that errored
-    checksErrored *int32
-    // Number of health checks that failed
-    checksFailed *int32
-    // Number of health checks that passed
-    checksPassed *int32
-    // Number of health checks with unknown status
-    checksUnknown *int32
-    // Timestamp when the assessment result was created
-    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // Whether drift was detected
-    drifted *bool
-    // Error message if the assessment failed
-    errorMessage *string
-    // Number of resources that have drifted
-    resourcesDrifted *int32
-    // Number of resources that have not drifted
-    resourcesUndrifted *int32
-    // Whether the assessment completed successfully
-    succeeded *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewAssessmentResults_attributes instantiates a new AssessmentResults_attributes and sets the default values.
-func NewAssessmentResults_attributes()(*AssessmentResults_attributes) {
-    m := &AssessmentResults_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewAssessmentResults_attributes() *AssessmentResults_attributes {
+	m := &AssessmentResults_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateAssessmentResults_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateAssessmentResults_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewAssessmentResults_attributes(), nil
+func CreateAssessmentResults_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewAssessmentResults_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *AssessmentResults_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *AssessmentResults_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAllChecksSucceeded gets the all-checks-succeeded property value. Whether all health checks passed
 // returns a *bool when successful
-func (m *AssessmentResults_attributes) GetAllChecksSucceeded()(*bool) {
-    return m.allChecksSucceeded
+func (m *AssessmentResults_attributes) GetAllChecksSucceeded() *bool {
+	val, err := m.GetBackingStore().Get("allChecksSucceeded")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *AssessmentResults_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetChecksErrored gets the checks-errored property value. Number of health checks that errored
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetChecksErrored()(*int32) {
-    return m.checksErrored
+func (m *AssessmentResults_attributes) GetChecksErrored() *int32 {
+	val, err := m.GetBackingStore().Get("checksErrored")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetChecksFailed gets the checks-failed property value. Number of health checks that failed
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetChecksFailed()(*int32) {
-    return m.checksFailed
+func (m *AssessmentResults_attributes) GetChecksFailed() *int32 {
+	val, err := m.GetBackingStore().Get("checksFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetChecksPassed gets the checks-passed property value. Number of health checks that passed
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetChecksPassed()(*int32) {
-    return m.checksPassed
+func (m *AssessmentResults_attributes) GetChecksPassed() *int32 {
+	val, err := m.GetBackingStore().Get("checksPassed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetChecksUnknown gets the checks-unknown property value. Number of health checks with unknown status
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetChecksUnknown()(*int32) {
-    return m.checksUnknown
+func (m *AssessmentResults_attributes) GetChecksUnknown() *int32 {
+	val, err := m.GetBackingStore().Get("checksUnknown")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetCreatedAt gets the created-at property value. Timestamp when the assessment result was created
 // returns a *Time when successful
-func (m *AssessmentResults_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
-    return m.createdAt
+func (m *AssessmentResults_attributes) GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time {
+	val, err := m.GetBackingStore().Get("createdAt")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	}
+	return nil
 }
+
 // GetDrifted gets the drifted property value. Whether drift was detected
 // returns a *bool when successful
-func (m *AssessmentResults_attributes) GetDrifted()(*bool) {
-    return m.drifted
+func (m *AssessmentResults_attributes) GetDrifted() *bool {
+	val, err := m.GetBackingStore().Get("drifted")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetErrorMessage gets the error-message property value. Error message if the assessment failed
 // returns a *string when successful
-func (m *AssessmentResults_attributes) GetErrorMessage()(*string) {
-    return m.errorMessage
+func (m *AssessmentResults_attributes) GetErrorMessage() *string {
+	val, err := m.GetBackingStore().Get("errorMessage")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *AssessmentResults_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["all-checks-succeeded"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAllChecksSucceeded(val)
-        }
-        return nil
-    }
-    res["checks-errored"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChecksErrored(val)
-        }
-        return nil
-    }
-    res["checks-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChecksFailed(val)
-        }
-        return nil
-    }
-    res["checks-passed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChecksPassed(val)
-        }
-        return nil
-    }
-    res["checks-unknown"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChecksUnknown(val)
-        }
-        return nil
-    }
-    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetTimeValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCreatedAt(val)
-        }
-        return nil
-    }
-    res["drifted"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDrifted(val)
-        }
-        return nil
-    }
-    res["error-message"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErrorMessage(val)
-        }
-        return nil
-    }
-    res["resources-drifted"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourcesDrifted(val)
-        }
-        return nil
-    }
-    res["resources-undrifted"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetResourcesUndrifted(val)
-        }
-        return nil
-    }
-    res["succeeded"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSucceeded(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *AssessmentResults_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["all-checks-succeeded"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAllChecksSucceeded(val)
+		}
+		return nil
+	}
+	res["checks-errored"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChecksErrored(val)
+		}
+		return nil
+	}
+	res["checks-failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChecksFailed(val)
+		}
+		return nil
+	}
+	res["checks-passed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChecksPassed(val)
+		}
+		return nil
+	}
+	res["checks-unknown"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChecksUnknown(val)
+		}
+		return nil
+	}
+	res["created-at"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetTimeValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCreatedAt(val)
+		}
+		return nil
+	}
+	res["drifted"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDrifted(val)
+		}
+		return nil
+	}
+	res["error-message"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErrorMessage(val)
+		}
+		return nil
+	}
+	res["resources-drifted"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourcesDrifted(val)
+		}
+		return nil
+	}
+	res["resources-undrifted"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetResourcesUndrifted(val)
+		}
+		return nil
+	}
+	res["succeeded"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSucceeded(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetResourcesDrifted gets the resources-drifted property value. Number of resources that have drifted
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetResourcesDrifted()(*int32) {
-    return m.resourcesDrifted
+func (m *AssessmentResults_attributes) GetResourcesDrifted() *int32 {
+	val, err := m.GetBackingStore().Get("resourcesDrifted")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetResourcesUndrifted gets the resources-undrifted property value. Number of resources that have not drifted
 // returns a *int32 when successful
-func (m *AssessmentResults_attributes) GetResourcesUndrifted()(*int32) {
-    return m.resourcesUndrifted
+func (m *AssessmentResults_attributes) GetResourcesUndrifted() *int32 {
+	val, err := m.GetBackingStore().Get("resourcesUndrifted")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetSucceeded gets the succeeded property value. Whether the assessment completed successfully
 // returns a *bool when successful
-func (m *AssessmentResults_attributes) GetSucceeded()(*bool) {
-    return m.succeeded
+func (m *AssessmentResults_attributes) GetSucceeded() *bool {
+	val, err := m.GetBackingStore().Get("succeeded")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *AssessmentResults_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("all-checks-succeeded", m.GetAllChecksSucceeded())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("checks-errored", m.GetChecksErrored())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("checks-failed", m.GetChecksFailed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("checks-passed", m.GetChecksPassed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("checks-unknown", m.GetChecksUnknown())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteTimeValue("created-at", m.GetCreatedAt())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("drifted", m.GetDrifted())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("error-message", m.GetErrorMessage())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("resources-drifted", m.GetResourcesDrifted())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("resources-undrifted", m.GetResourcesUndrifted())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("succeeded", m.GetSucceeded())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *AssessmentResults_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("all-checks-succeeded", m.GetAllChecksSucceeded())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("checks-errored", m.GetChecksErrored())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("checks-failed", m.GetChecksFailed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("checks-passed", m.GetChecksPassed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("checks-unknown", m.GetChecksUnknown())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteTimeValue("created-at", m.GetCreatedAt())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("drifted", m.GetDrifted())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("error-message", m.GetErrorMessage())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("resources-drifted", m.GetResourcesDrifted())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("resources-undrifted", m.GetResourcesUndrifted())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("succeeded", m.GetSucceeded())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *AssessmentResults_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *AssessmentResults_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAllChecksSucceeded sets the all-checks-succeeded property value. Whether all health checks passed
-func (m *AssessmentResults_attributes) SetAllChecksSucceeded(value *bool)() {
-    m.allChecksSucceeded = value
+func (m *AssessmentResults_attributes) SetAllChecksSucceeded(value *bool) {
+	err := m.GetBackingStore().Set("allChecksSucceeded", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *AssessmentResults_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetChecksErrored sets the checks-errored property value. Number of health checks that errored
-func (m *AssessmentResults_attributes) SetChecksErrored(value *int32)() {
-    m.checksErrored = value
+func (m *AssessmentResults_attributes) SetChecksErrored(value *int32) {
+	err := m.GetBackingStore().Set("checksErrored", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetChecksFailed sets the checks-failed property value. Number of health checks that failed
-func (m *AssessmentResults_attributes) SetChecksFailed(value *int32)() {
-    m.checksFailed = value
+func (m *AssessmentResults_attributes) SetChecksFailed(value *int32) {
+	err := m.GetBackingStore().Set("checksFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetChecksPassed sets the checks-passed property value. Number of health checks that passed
-func (m *AssessmentResults_attributes) SetChecksPassed(value *int32)() {
-    m.checksPassed = value
+func (m *AssessmentResults_attributes) SetChecksPassed(value *int32) {
+	err := m.GetBackingStore().Set("checksPassed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetChecksUnknown sets the checks-unknown property value. Number of health checks with unknown status
-func (m *AssessmentResults_attributes) SetChecksUnknown(value *int32)() {
-    m.checksUnknown = value
+func (m *AssessmentResults_attributes) SetChecksUnknown(value *int32) {
+	err := m.GetBackingStore().Set("checksUnknown", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCreatedAt sets the created-at property value. Timestamp when the assessment result was created
-func (m *AssessmentResults_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
-    m.createdAt = value
+func (m *AssessmentResults_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+	err := m.GetBackingStore().Set("createdAt", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDrifted sets the drifted property value. Whether drift was detected
-func (m *AssessmentResults_attributes) SetDrifted(value *bool)() {
-    m.drifted = value
+func (m *AssessmentResults_attributes) SetDrifted(value *bool) {
+	err := m.GetBackingStore().Set("drifted", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetErrorMessage sets the error-message property value. Error message if the assessment failed
-func (m *AssessmentResults_attributes) SetErrorMessage(value *string)() {
-    m.errorMessage = value
+func (m *AssessmentResults_attributes) SetErrorMessage(value *string) {
+	err := m.GetBackingStore().Set("errorMessage", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourcesDrifted sets the resources-drifted property value. Number of resources that have drifted
-func (m *AssessmentResults_attributes) SetResourcesDrifted(value *int32)() {
-    m.resourcesDrifted = value
+func (m *AssessmentResults_attributes) SetResourcesDrifted(value *int32) {
+	err := m.GetBackingStore().Set("resourcesDrifted", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetResourcesUndrifted sets the resources-undrifted property value. Number of resources that have not drifted
-func (m *AssessmentResults_attributes) SetResourcesUndrifted(value *int32)() {
-    m.resourcesUndrifted = value
+func (m *AssessmentResults_attributes) SetResourcesUndrifted(value *int32) {
+	err := m.GetBackingStore().Set("resourcesUndrifted", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSucceeded sets the succeeded property value. Whether the assessment completed successfully
-func (m *AssessmentResults_attributes) SetSucceeded(value *bool)() {
-    m.succeeded = value
+func (m *AssessmentResults_attributes) SetSucceeded(value *bool) {
+	err := m.GetBackingStore().Set("succeeded", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type AssessmentResults_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAllChecksSucceeded()(*bool)
-    GetChecksErrored()(*int32)
-    GetChecksFailed()(*int32)
-    GetChecksPassed()(*int32)
-    GetChecksUnknown()(*int32)
-    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
-    GetDrifted()(*bool)
-    GetErrorMessage()(*string)
-    GetResourcesDrifted()(*int32)
-    GetResourcesUndrifted()(*int32)
-    GetSucceeded()(*bool)
-    SetAllChecksSucceeded(value *bool)()
-    SetChecksErrored(value *int32)()
-    SetChecksFailed(value *int32)()
-    SetChecksPassed(value *int32)()
-    SetChecksUnknown(value *int32)()
-    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
-    SetDrifted(value *bool)()
-    SetErrorMessage(value *string)()
-    SetResourcesDrifted(value *int32)()
-    SetResourcesUndrifted(value *int32)()
-    SetSucceeded(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAllChecksSucceeded() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetChecksErrored() *int32
+	GetChecksFailed() *int32
+	GetChecksPassed() *int32
+	GetChecksUnknown() *int32
+	GetCreatedAt() *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+	GetDrifted() *bool
+	GetErrorMessage() *string
+	GetResourcesDrifted() *int32
+	GetResourcesUndrifted() *int32
+	GetSucceeded() *bool
+	SetAllChecksSucceeded(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetChecksErrored(value *int32)
+	SetChecksFailed(value *int32)
+	SetChecksPassed(value *int32)
+	SetChecksUnknown(value *int32)
+	SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+	SetDrifted(value *bool)
+	SetErrorMessage(value *string)
+	SetResourcesDrifted(value *int32)
+	SetResourcesUndrifted(value *int32)
+	SetSucceeded(value *bool)
 }

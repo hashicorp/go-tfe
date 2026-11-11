@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type NoCodeModuleVersions_type int
 
 const (
-    NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE NoCodeModuleVersions_type = iota
+	NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE NoCodeModuleVersions_type = iota
 )
 
 func (i NoCodeModuleVersions_type) String() string {
-    return []string{"no-code-module-versions"}[i]
+	return []string{"no-code-module-versions"}[i]
 }
+
 func ParseNoCodeModuleVersions_type(v string) (any, error) {
-    result := NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE
-    switch v {
-        case "no-code-module-versions":
-            result = NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE
+	switch v {
+	case "no-code-module-versions":
+		result = NOCODEMODULEVERSIONS_NOCODEMODULEVERSIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeNoCodeModuleVersions_type(values []NoCodeModuleVersions_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i NoCodeModuleVersions_type) isMultiValue() bool {
-    return false
+	return false
 }

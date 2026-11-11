@@ -4,457 +4,630 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type HcpBillingAccount_attributes struct {
-    // The accountType property
-    accountType *string
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The balance property
-    balance *int32
-    // The cardBrand property
-    cardBrand *string
-    // The cardExpMonth property
-    cardExpMonth *int32
-    // The cardExpYear property
-    cardExpYear *int32
-    // The cardLast4 property
-    cardLast4 *string
-    // The flexVersion property
-    flexVersion *string
-    // The hcpOrganizationId property
-    hcpOrganizationId *string
-    // The hcpOrganizationName property
-    hcpOrganizationName *string
-    // The id property
-    id *string
-    // The isPaymentMethodConfigured property
-    isPaymentMethodConfigured *bool
-    // The paymentProvider property
-    paymentProvider *string
-    // The projectId property
-    projectId *string
-    // The status property
-    status *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewHcpBillingAccount_attributes instantiates a new HcpBillingAccount_attributes and sets the default values.
-func NewHcpBillingAccount_attributes()(*HcpBillingAccount_attributes) {
-    m := &HcpBillingAccount_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHcpBillingAccount_attributes() *HcpBillingAccount_attributes {
+	m := &HcpBillingAccount_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHcpBillingAccount_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHcpBillingAccount_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHcpBillingAccount_attributes(), nil
+func CreateHcpBillingAccount_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHcpBillingAccount_attributes(), nil
 }
+
 // GetAccountType gets the account-type property value. The accountType property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetAccountType()(*string) {
-    return m.accountType
+func (m *HcpBillingAccount_attributes) GetAccountType() *string {
+	val, err := m.GetBackingStore().Get("accountType")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HcpBillingAccount_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HcpBillingAccount_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HcpBillingAccount_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetBalance gets the balance property value. The balance property
 // returns a *int32 when successful
-func (m *HcpBillingAccount_attributes) GetBalance()(*int32) {
-    return m.balance
+func (m *HcpBillingAccount_attributes) GetBalance() *int32 {
+	val, err := m.GetBackingStore().Get("balance")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetCardBrand gets the card-brand property value. The cardBrand property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetCardBrand()(*string) {
-    return m.cardBrand
+func (m *HcpBillingAccount_attributes) GetCardBrand() *string {
+	val, err := m.GetBackingStore().Get("cardBrand")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetCardExpMonth gets the card-exp-month property value. The cardExpMonth property
 // returns a *int32 when successful
-func (m *HcpBillingAccount_attributes) GetCardExpMonth()(*int32) {
-    return m.cardExpMonth
+func (m *HcpBillingAccount_attributes) GetCardExpMonth() *int32 {
+	val, err := m.GetBackingStore().Get("cardExpMonth")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetCardExpYear gets the card-exp-year property value. The cardExpYear property
 // returns a *int32 when successful
-func (m *HcpBillingAccount_attributes) GetCardExpYear()(*int32) {
-    return m.cardExpYear
+func (m *HcpBillingAccount_attributes) GetCardExpYear() *int32 {
+	val, err := m.GetBackingStore().Get("cardExpYear")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetCardLast4 gets the card-last4 property value. The cardLast4 property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetCardLast4()(*string) {
-    return m.cardLast4
+func (m *HcpBillingAccount_attributes) GetCardLast4() *string {
+	val, err := m.GetBackingStore().Get("cardLast4")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HcpBillingAccount_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["account-type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAccountType(val)
-        }
-        return nil
-    }
-    res["balance"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetBalance(val)
-        }
-        return nil
-    }
-    res["card-brand"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCardBrand(val)
-        }
-        return nil
-    }
-    res["card-exp-month"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCardExpMonth(val)
-        }
-        return nil
-    }
-    res["card-exp-year"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCardExpYear(val)
-        }
-        return nil
-    }
-    res["card-last4"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCardLast4(val)
-        }
-        return nil
-    }
-    res["flex-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetFlexVersion(val)
-        }
-        return nil
-    }
-    res["hcp-organization-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHcpOrganizationId(val)
-        }
-        return nil
-    }
-    res["hcp-organization-name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHcpOrganizationName(val)
-        }
-        return nil
-    }
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["is-payment-method-configured"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsPaymentMethodConfigured(val)
-        }
-        return nil
-    }
-    res["payment-provider"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPaymentProvider(val)
-        }
-        return nil
-    }
-    res["project-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetProjectId(val)
-        }
-        return nil
-    }
-    res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStatus(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HcpBillingAccount_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["account-type"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAccountType(val)
+		}
+		return nil
+	}
+	res["balance"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetBalance(val)
+		}
+		return nil
+	}
+	res["card-brand"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCardBrand(val)
+		}
+		return nil
+	}
+	res["card-exp-month"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCardExpMonth(val)
+		}
+		return nil
+	}
+	res["card-exp-year"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCardExpYear(val)
+		}
+		return nil
+	}
+	res["card-last4"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCardLast4(val)
+		}
+		return nil
+	}
+	res["flex-version"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetFlexVersion(val)
+		}
+		return nil
+	}
+	res["hcp-organization-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHcpOrganizationId(val)
+		}
+		return nil
+	}
+	res["hcp-organization-name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHcpOrganizationName(val)
+		}
+		return nil
+	}
+	res["id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetId(val)
+		}
+		return nil
+	}
+	res["is-payment-method-configured"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsPaymentMethodConfigured(val)
+		}
+		return nil
+	}
+	res["payment-provider"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPaymentProvider(val)
+		}
+		return nil
+	}
+	res["project-id"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetProjectId(val)
+		}
+		return nil
+	}
+	res["status"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStatus(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetFlexVersion gets the flex-version property value. The flexVersion property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetFlexVersion()(*string) {
-    return m.flexVersion
+func (m *HcpBillingAccount_attributes) GetFlexVersion() *string {
+	val, err := m.GetBackingStore().Get("flexVersion")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetHcpOrganizationId gets the hcp-organization-id property value. The hcpOrganizationId property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetHcpOrganizationId()(*string) {
-    return m.hcpOrganizationId
+func (m *HcpBillingAccount_attributes) GetHcpOrganizationId() *string {
+	val, err := m.GetBackingStore().Get("hcpOrganizationId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetHcpOrganizationName gets the hcp-organization-name property value. The hcpOrganizationName property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetHcpOrganizationName()(*string) {
-    return m.hcpOrganizationName
+func (m *HcpBillingAccount_attributes) GetHcpOrganizationName() *string {
+	val, err := m.GetBackingStore().Get("hcpOrganizationName")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetId gets the id property value. The id property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetId()(*string) {
-    return m.id
+func (m *HcpBillingAccount_attributes) GetId() *string {
+	val, err := m.GetBackingStore().Get("id")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIsPaymentMethodConfigured gets the is-payment-method-configured property value. The isPaymentMethodConfigured property
 // returns a *bool when successful
-func (m *HcpBillingAccount_attributes) GetIsPaymentMethodConfigured()(*bool) {
-    return m.isPaymentMethodConfigured
+func (m *HcpBillingAccount_attributes) GetIsPaymentMethodConfigured() *bool {
+	val, err := m.GetBackingStore().Get("isPaymentMethodConfigured")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPaymentProvider gets the payment-provider property value. The paymentProvider property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetPaymentProvider()(*string) {
-    return m.paymentProvider
+func (m *HcpBillingAccount_attributes) GetPaymentProvider() *string {
+	val, err := m.GetBackingStore().Get("paymentProvider")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetProjectId gets the project-id property value. The projectId property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetProjectId()(*string) {
-    return m.projectId
+func (m *HcpBillingAccount_attributes) GetProjectId() *string {
+	val, err := m.GetBackingStore().Get("projectId")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStatus gets the status property value. The status property
 // returns a *string when successful
-func (m *HcpBillingAccount_attributes) GetStatus()(*string) {
-    return m.status
+func (m *HcpBillingAccount_attributes) GetStatus() *string {
+	val, err := m.GetBackingStore().Get("status")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HcpBillingAccount_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("account-type", m.GetAccountType())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("balance", m.GetBalance())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("card-brand", m.GetCardBrand())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("card-exp-month", m.GetCardExpMonth())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("card-exp-year", m.GetCardExpYear())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("card-last4", m.GetCardLast4())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("flex-version", m.GetFlexVersion())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("hcp-organization-id", m.GetHcpOrganizationId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("hcp-organization-name", m.GetHcpOrganizationName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("id", m.GetId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-payment-method-configured", m.GetIsPaymentMethodConfigured())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("payment-provider", m.GetPaymentProvider())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("project-id", m.GetProjectId())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("status", m.GetStatus())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HcpBillingAccount_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("account-type", m.GetAccountType())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("balance", m.GetBalance())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("card-brand", m.GetCardBrand())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("card-exp-month", m.GetCardExpMonth())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("card-exp-year", m.GetCardExpYear())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("card-last4", m.GetCardLast4())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("flex-version", m.GetFlexVersion())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("hcp-organization-id", m.GetHcpOrganizationId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("hcp-organization-name", m.GetHcpOrganizationName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("id", m.GetId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-payment-method-configured", m.GetIsPaymentMethodConfigured())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("payment-provider", m.GetPaymentProvider())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("project-id", m.GetProjectId())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("status", m.GetStatus())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAccountType sets the account-type property value. The accountType property
-func (m *HcpBillingAccount_attributes) SetAccountType(value *string)() {
-    m.accountType = value
+func (m *HcpBillingAccount_attributes) SetAccountType(value *string) {
+	err := m.GetBackingStore().Set("accountType", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HcpBillingAccount_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HcpBillingAccount_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HcpBillingAccount_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetBalance sets the balance property value. The balance property
-func (m *HcpBillingAccount_attributes) SetBalance(value *int32)() {
-    m.balance = value
+func (m *HcpBillingAccount_attributes) SetBalance(value *int32) {
+	err := m.GetBackingStore().Set("balance", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCardBrand sets the card-brand property value. The cardBrand property
-func (m *HcpBillingAccount_attributes) SetCardBrand(value *string)() {
-    m.cardBrand = value
+func (m *HcpBillingAccount_attributes) SetCardBrand(value *string) {
+	err := m.GetBackingStore().Set("cardBrand", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCardExpMonth sets the card-exp-month property value. The cardExpMonth property
-func (m *HcpBillingAccount_attributes) SetCardExpMonth(value *int32)() {
-    m.cardExpMonth = value
+func (m *HcpBillingAccount_attributes) SetCardExpMonth(value *int32) {
+	err := m.GetBackingStore().Set("cardExpMonth", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCardExpYear sets the card-exp-year property value. The cardExpYear property
-func (m *HcpBillingAccount_attributes) SetCardExpYear(value *int32)() {
-    m.cardExpYear = value
+func (m *HcpBillingAccount_attributes) SetCardExpYear(value *int32) {
+	err := m.GetBackingStore().Set("cardExpYear", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCardLast4 sets the card-last4 property value. The cardLast4 property
-func (m *HcpBillingAccount_attributes) SetCardLast4(value *string)() {
-    m.cardLast4 = value
+func (m *HcpBillingAccount_attributes) SetCardLast4(value *string) {
+	err := m.GetBackingStore().Set("cardLast4", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetFlexVersion sets the flex-version property value. The flexVersion property
-func (m *HcpBillingAccount_attributes) SetFlexVersion(value *string)() {
-    m.flexVersion = value
+func (m *HcpBillingAccount_attributes) SetFlexVersion(value *string) {
+	err := m.GetBackingStore().Set("flexVersion", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHcpOrganizationId sets the hcp-organization-id property value. The hcpOrganizationId property
-func (m *HcpBillingAccount_attributes) SetHcpOrganizationId(value *string)() {
-    m.hcpOrganizationId = value
+func (m *HcpBillingAccount_attributes) SetHcpOrganizationId(value *string) {
+	err := m.GetBackingStore().Set("hcpOrganizationId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHcpOrganizationName sets the hcp-organization-name property value. The hcpOrganizationName property
-func (m *HcpBillingAccount_attributes) SetHcpOrganizationName(value *string)() {
-    m.hcpOrganizationName = value
+func (m *HcpBillingAccount_attributes) SetHcpOrganizationName(value *string) {
+	err := m.GetBackingStore().Set("hcpOrganizationName", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetId sets the id property value. The id property
-func (m *HcpBillingAccount_attributes) SetId(value *string)() {
-    m.id = value
+func (m *HcpBillingAccount_attributes) SetId(value *string) {
+	err := m.GetBackingStore().Set("id", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsPaymentMethodConfigured sets the is-payment-method-configured property value. The isPaymentMethodConfigured property
-func (m *HcpBillingAccount_attributes) SetIsPaymentMethodConfigured(value *bool)() {
-    m.isPaymentMethodConfigured = value
+func (m *HcpBillingAccount_attributes) SetIsPaymentMethodConfigured(value *bool) {
+	err := m.GetBackingStore().Set("isPaymentMethodConfigured", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPaymentProvider sets the payment-provider property value. The paymentProvider property
-func (m *HcpBillingAccount_attributes) SetPaymentProvider(value *string)() {
-    m.paymentProvider = value
+func (m *HcpBillingAccount_attributes) SetPaymentProvider(value *string) {
+	err := m.GetBackingStore().Set("paymentProvider", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetProjectId sets the project-id property value. The projectId property
-func (m *HcpBillingAccount_attributes) SetProjectId(value *string)() {
-    m.projectId = value
+func (m *HcpBillingAccount_attributes) SetProjectId(value *string) {
+	err := m.GetBackingStore().Set("projectId", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStatus sets the status property value. The status property
-func (m *HcpBillingAccount_attributes) SetStatus(value *string)() {
-    m.status = value
+func (m *HcpBillingAccount_attributes) SetStatus(value *string) {
+	err := m.GetBackingStore().Set("status", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type HcpBillingAccount_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAccountType()(*string)
-    GetBalance()(*int32)
-    GetCardBrand()(*string)
-    GetCardExpMonth()(*int32)
-    GetCardExpYear()(*int32)
-    GetCardLast4()(*string)
-    GetFlexVersion()(*string)
-    GetHcpOrganizationId()(*string)
-    GetHcpOrganizationName()(*string)
-    GetId()(*string)
-    GetIsPaymentMethodConfigured()(*bool)
-    GetPaymentProvider()(*string)
-    GetProjectId()(*string)
-    GetStatus()(*string)
-    SetAccountType(value *string)()
-    SetBalance(value *int32)()
-    SetCardBrand(value *string)()
-    SetCardExpMonth(value *int32)()
-    SetCardExpYear(value *int32)()
-    SetCardLast4(value *string)()
-    SetFlexVersion(value *string)()
-    SetHcpOrganizationId(value *string)()
-    SetHcpOrganizationName(value *string)()
-    SetId(value *string)()
-    SetIsPaymentMethodConfigured(value *bool)()
-    SetPaymentProvider(value *string)()
-    SetProjectId(value *string)()
-    SetStatus(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAccountType() *string
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetBalance() *int32
+	GetCardBrand() *string
+	GetCardExpMonth() *int32
+	GetCardExpYear() *int32
+	GetCardLast4() *string
+	GetFlexVersion() *string
+	GetHcpOrganizationId() *string
+	GetHcpOrganizationName() *string
+	GetId() *string
+	GetIsPaymentMethodConfigured() *bool
+	GetPaymentProvider() *string
+	GetProjectId() *string
+	GetStatus() *string
+	SetAccountType(value *string)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetBalance(value *int32)
+	SetCardBrand(value *string)
+	SetCardExpMonth(value *int32)
+	SetCardExpYear(value *int32)
+	SetCardLast4(value *string)
+	SetFlexVersion(value *string)
+	SetHcpOrganizationId(value *string)
+	SetHcpOrganizationName(value *string)
+	SetId(value *string)
+	SetIsPaymentMethodConfigured(value *bool)
+	SetPaymentProvider(value *string)
+	SetProjectId(value *string)
+	SetStatus(value *string)
 }

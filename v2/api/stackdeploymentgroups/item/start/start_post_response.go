@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package start
+
 type StartPostResponse int
 
 const (
-    NULL_STARTPOSTRESPONSE StartPostResponse = iota
+	NULL_STARTPOSTRESPONSE StartPostResponse = iota
 )
 
 func (i StartPostResponse) String() string {
-    return []string{"null"}[i]
+	return []string{"null"}[i]
 }
+
 func ParseStartPostResponse(v string) (any, error) {
-    result := NULL_STARTPOSTRESPONSE
-    switch v {
-        case "null":
-            result = NULL_STARTPOSTRESPONSE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := NULL_STARTPOSTRESPONSE
+	switch v {
+	case "null":
+		result = NULL_STARTPOSTRESPONSE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeStartPostResponse(values []StartPostResponse) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i StartPostResponse) isMultiValue() bool {
-    return false
+	return false
 }

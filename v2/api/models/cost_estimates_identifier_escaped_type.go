@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type CostEstimatesIdentifier_type int
 
 const (
-    COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE CostEstimatesIdentifier_type = iota
+	COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE CostEstimatesIdentifier_type = iota
 )
 
 func (i CostEstimatesIdentifier_type) String() string {
-    return []string{"cost-estimates"}[i]
+	return []string{"cost-estimates"}[i]
 }
+
 func ParseCostEstimatesIdentifier_type(v string) (any, error) {
-    result := COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE
-    switch v {
-        case "cost-estimates":
-            result = COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE
+	switch v {
+	case "cost-estimates":
+		result = COSTESTIMATES_COSTESTIMATESIDENTIFIER_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeCostEstimatesIdentifier_type(values []CostEstimatesIdentifier_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i CostEstimatesIdentifier_type) isMultiValue() bool {
-    return false
+	return false
 }

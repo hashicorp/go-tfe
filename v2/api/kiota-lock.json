@@ -1,13 +1,13 @@
 {
-  "descriptionHash": "E92E3AA51F6F781FD8BB811778A29C87625C37B860C64E8EB3487D6219E63564FE6F1780BE562A35CDD44632C182DEB12AC8116AC1EEE79EAC3E5F9CFD9B12E9",
+  "descriptionHash": "83DFD324D6BFDAC6A47D7858418B0600944A74D19A1F64080582917E9E38EF98EC0E76DB32419294DDA23D6CF7126A07EBDA903EB6369C9A83936875B7717927",
   "descriptionLocation": "../openapi/spec.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.31.1",
+  "kiotaVersion": "1.38.0",
   "clientClassName": "ApiClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "github.com/hashicorp/go-tfe/v2/api",
   "language": "Go",
-  "usesBackingStore": false,
+  "usesBackingStore": true,
   "excludeBackwardCompatible": true,
   "includeAdditionalData": true,
   "disableSSLValidation": false,
@@ -30,5 +30,6 @@
   ],
   "includePatterns": [],
   "excludePatterns": [],
-  "disabledValidationRules": []
+  "disabledValidationRules": [],
+  "allowedExternalOrigins": []
 }

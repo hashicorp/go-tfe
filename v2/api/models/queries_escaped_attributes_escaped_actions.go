@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Queries_attributes_actions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The isCancelable property
-    isCancelable *bool
-    // The isForceCancelable property
-    isForceCancelable *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewQueries_attributes_actions instantiates a new Queries_attributes_actions and sets the default values.
-func NewQueries_attributes_actions()(*Queries_attributes_actions) {
-    m := &Queries_attributes_actions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewQueries_attributes_actions() *Queries_attributes_actions {
+	m := &Queries_attributes_actions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateQueries_attributes_actionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateQueries_attributes_actionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewQueries_attributes_actions(), nil
+func CreateQueries_attributes_actionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewQueries_attributes_actions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Queries_attributes_actions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Queries_attributes_actions) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Queries_attributes_actions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Queries_attributes_actions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["is-cancelable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsCancelable(val)
-        }
-        return nil
-    }
-    res["is-force-cancelable"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsForceCancelable(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Queries_attributes_actions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["is-cancelable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsCancelable(val)
+		}
+		return nil
+	}
+	res["is-force-cancelable"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsForceCancelable(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIsCancelable gets the is-cancelable property value. The isCancelable property
 // returns a *bool when successful
-func (m *Queries_attributes_actions) GetIsCancelable()(*bool) {
-    return m.isCancelable
+func (m *Queries_attributes_actions) GetIsCancelable() *bool {
+	val, err := m.GetBackingStore().Get("isCancelable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetIsForceCancelable gets the is-force-cancelable property value. The isForceCancelable property
 // returns a *bool when successful
-func (m *Queries_attributes_actions) GetIsForceCancelable()(*bool) {
-    return m.isForceCancelable
+func (m *Queries_attributes_actions) GetIsForceCancelable() *bool {
+	val, err := m.GetBackingStore().Get("isForceCancelable")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Queries_attributes_actions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("is-cancelable", m.GetIsCancelable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-force-cancelable", m.GetIsForceCancelable())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Queries_attributes_actions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("is-cancelable", m.GetIsCancelable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-force-cancelable", m.GetIsForceCancelable())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Queries_attributes_actions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Queries_attributes_actions) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Queries_attributes_actions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetIsCancelable sets the is-cancelable property value. The isCancelable property
-func (m *Queries_attributes_actions) SetIsCancelable(value *bool)() {
-    m.isCancelable = value
+func (m *Queries_attributes_actions) SetIsCancelable(value *bool) {
+	err := m.GetBackingStore().Set("isCancelable", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsForceCancelable sets the is-force-cancelable property value. The isForceCancelable property
-func (m *Queries_attributes_actions) SetIsForceCancelable(value *bool)() {
-    m.isForceCancelable = value
+func (m *Queries_attributes_actions) SetIsForceCancelable(value *bool) {
+	err := m.GetBackingStore().Set("isForceCancelable", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Queries_attributes_actionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetIsCancelable()(*bool)
-    GetIsForceCancelable()(*bool)
-    SetIsCancelable(value *bool)()
-    SetIsForceCancelable(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetIsCancelable() *bool
+	GetIsForceCancelable() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetIsCancelable(value *bool)
+	SetIsForceCancelable(value *bool)
 }

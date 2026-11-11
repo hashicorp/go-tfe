@@ -4,115 +4,124 @@
 package workspacetransfers
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // WorkspaceTransfersRequestBuilder builds and executes requests for operations under \workspace-transfers
 type WorkspaceTransfersRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // WorkspaceTransfersRequestBuilderGetQueryParameters list all workspace transfers you have access to.
 type WorkspaceTransfersRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
-    // Optionally side-load the specified relationships.
-    Include []GetIncludeQueryParameterType "uriparametername:\"include\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for workspace-transfers resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldsworkspaceTransfers []string "uriparametername:\"fields%5Bworkspace%2Dtransfers%5D\""
+	// Optionally side-load the specified relationships.
+	Include []GetIncludeQueryParameterType "uriparametername:\"include\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // ByWorkspace_transfer_id gets an item from the github.com/hashicorp/go-tfe/v2/api.workspaceTransfers.item collection
 // returns a *WithWorkspace_transfer_ItemRequestBuilder when successful
-func (m *WorkspaceTransfersRequestBuilder) ByWorkspace_transfer_id(workspace_transfer_id string)(*WithWorkspace_transfer_ItemRequestBuilder) {
-    urlTplParams := make(map[string]string)
-    for idx, item := range m.BaseRequestBuilder.PathParameters {
-        urlTplParams[idx] = item
-    }
-    if workspace_transfer_id != "" {
-        urlTplParams["workspace_transfer_id"] = workspace_transfer_id
-    }
-    return NewWithWorkspace_transfer_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+func (m *WorkspaceTransfersRequestBuilder) ByWorkspace_transfer_id(workspace_transfer_id string) *WithWorkspace_transfer_ItemRequestBuilder {
+	urlTplParams := make(map[string]string)
+	for idx, item := range m.BaseRequestBuilder.PathParameters {
+		urlTplParams[idx] = item
+	}
+	if workspace_transfer_id != "" {
+		urlTplParams["workspace_transfer_id"] = workspace_transfer_id
+	}
+	return NewWithWorkspace_transfer_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // NewWorkspaceTransfersRequestBuilderInternal instantiates a new WorkspaceTransfersRequestBuilder and sets the default values.
-func NewWorkspaceTransfersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WorkspaceTransfersRequestBuilder) {
-    m := &WorkspaceTransfersRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers{?fields%5Bworkspace%2Dtransfers%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewWorkspaceTransfersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WorkspaceTransfersRequestBuilder {
+	m := &WorkspaceTransfersRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspace-transfers{?fields%5Bworkspace%2Dtransfers%5D,include,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewWorkspaceTransfersRequestBuilder instantiates a new WorkspaceTransfersRequestBuilder and sets the default values.
-func NewWorkspaceTransfersRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WorkspaceTransfersRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewWorkspaceTransfersRequestBuilderInternal(urlParams, requestAdapter)
+func NewWorkspaceTransfersRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *WorkspaceTransfersRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewWorkspaceTransfersRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list all workspace transfers you have access to.
 // returns a WorkspaceTransfersGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WorkspaceTransfersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WorkspaceTransfersRequestBuilderGetQueryParameters])(WorkspaceTransfersGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateWorkspaceTransfersGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(WorkspaceTransfersGetResponseable), nil
+func (m *WorkspaceTransfersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WorkspaceTransfersRequestBuilderGetQueryParameters]) (WorkspaceTransfersGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateWorkspaceTransfersGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(WorkspaceTransfersGetResponseable), nil
 }
+
 // Post queue a new workspace transfer across organizations.
 // returns a WorkspaceTransfersEnvelopeable when successful
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WorkspaceTransfersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "422": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceTransfersEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable), nil
+func (m *WorkspaceTransfersRequestBuilder) Post(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, error) {
+	requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"422": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateWorkspaceTransfersEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable), nil
 }
+
 // ToGetRequestInformation list all workspace transfers you have access to.
 // returns a *RequestInformation when successful
-func (m *WorkspaceTransfersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WorkspaceTransfersRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *WorkspaceTransfersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WorkspaceTransfersRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // ToPostRequestInformation queue a new workspace transfer across organizations.
 // returns a *RequestInformation when successful
-func (m *WorkspaceTransfersRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
-    if err != nil {
-        return nil, err
-    }
-    return requestInfo, nil
+func (m *WorkspaceTransfersRequestBuilder) ToPostRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.WorkspaceTransfersEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+	if err != nil {
+		return nil, err
+	}
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WorkspaceTransfersRequestBuilder when successful
-func (m *WorkspaceTransfersRequestBuilder) WithUrl(rawUrl string)(*WorkspaceTransfersRequestBuilder) {
-    return NewWorkspaceTransfersRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *WorkspaceTransfersRequestBuilder) WithUrl(rawUrl string) *WorkspaceTransfersRequestBuilder {
+	return NewWorkspaceTransfersRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

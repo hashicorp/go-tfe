@@ -4,33 +4,37 @@
 package recoverableitems
 
 import (
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemActionsRequestBuilder builds and executes requests for operations under \recoverable-items\{id}\actions
 type ItemActionsRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // NewItemActionsRequestBuilderInternal instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    m := &ItemActionsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/recoverable-items/{id}/actions", pathParameters),
-    }
-    return m
+func NewItemActionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	m := &ItemActionsRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/recoverable-items/{id}/actions", pathParameters),
+	}
+	return m
 }
+
 // NewItemActionsRequestBuilder instantiates a new ItemActionsRequestBuilder and sets the default values.
-func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemActionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemActionsRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemActionsRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // PermanentlyDelete the permanentlyDelete property
 // returns a *ItemActionsPermanentlyDeleteRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) PermanentlyDelete()(*ItemActionsPermanentlyDeleteRequestBuilder) {
-    return NewItemActionsPermanentlyDeleteRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) PermanentlyDelete() *ItemActionsPermanentlyDeleteRequestBuilder {
+	return NewItemActionsPermanentlyDeleteRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+
 // Recover the recover property
 // returns a *ItemActionsRecoverRequestBuilder when successful
-func (m *ItemActionsRequestBuilder) Recover()(*ItemActionsRecoverRequestBuilder) {
-    return NewItemActionsRecoverRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+func (m *ItemActionsRequestBuilder) Recover() *ItemActionsRecoverRequestBuilder {
+	return NewItemActionsRecoverRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

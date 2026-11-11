@@ -4,168 +4,241 @@
 package admin
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // InAppNotificationsGetResponse_meta_statusCounts the number of feature announcements in each status, counted before `filter[status]` is applied. Every status is present, with zero when there are none, and `total` is their sum.
 type InAppNotificationsGetResponse_meta_statusCounts struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The approved property
-    approved *int32
-    // The denied property
-    denied *int32
-    // The draft property
-    draft *int32
-    // The total property
-    total *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewInAppNotificationsGetResponse_meta_statusCounts instantiates a new InAppNotificationsGetResponse_meta_statusCounts and sets the default values.
-func NewInAppNotificationsGetResponse_meta_statusCounts()(*InAppNotificationsGetResponse_meta_statusCounts) {
-    m := &InAppNotificationsGetResponse_meta_statusCounts{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewInAppNotificationsGetResponse_meta_statusCounts() *InAppNotificationsGetResponse_meta_statusCounts {
+	m := &InAppNotificationsGetResponse_meta_statusCounts{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateInAppNotificationsGetResponse_meta_statusCountsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateInAppNotificationsGetResponse_meta_statusCountsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewInAppNotificationsGetResponse_meta_statusCounts(), nil
+func CreateInAppNotificationsGetResponse_meta_statusCountsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewInAppNotificationsGetResponse_meta_statusCounts(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetApproved gets the approved property value. The approved property
 // returns a *int32 when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetApproved()(*int32) {
-    return m.approved
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetApproved() *int32 {
+	val, err := m.GetBackingStore().Get("approved")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDenied gets the denied property value. The denied property
 // returns a *int32 when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetDenied()(*int32) {
-    return m.denied
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetDenied() *int32 {
+	val, err := m.GetBackingStore().Get("denied")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetDraft gets the draft property value. The draft property
 // returns a *int32 when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetDraft()(*int32) {
-    return m.draft
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetDraft() *int32 {
+	val, err := m.GetBackingStore().Get("draft")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["approved"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetApproved(val)
-        }
-        return nil
-    }
-    res["denied"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDenied(val)
-        }
-        return nil
-    }
-    res["draft"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDraft(val)
-        }
-        return nil
-    }
-    res["total"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTotal(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["approved"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetApproved(val)
+		}
+		return nil
+	}
+	res["denied"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDenied(val)
+		}
+		return nil
+	}
+	res["draft"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDraft(val)
+		}
+		return nil
+	}
+	res["total"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTotal(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetTotal gets the total property value. The total property
 // returns a *int32 when successful
-func (m *InAppNotificationsGetResponse_meta_statusCounts) GetTotal()(*int32) {
-    return m.total
+func (m *InAppNotificationsGetResponse_meta_statusCounts) GetTotal() *int32 {
+	val, err := m.GetBackingStore().Get("total")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *InAppNotificationsGetResponse_meta_statusCounts) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("approved", m.GetApproved())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("denied", m.GetDenied())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("draft", m.GetDraft())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("total", m.GetTotal())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *InAppNotificationsGetResponse_meta_statusCounts) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("approved", m.GetApproved())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("denied", m.GetDenied())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("draft", m.GetDraft())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("total", m.GetTotal())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *InAppNotificationsGetResponse_meta_statusCounts) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetApproved sets the approved property value. The approved property
-func (m *InAppNotificationsGetResponse_meta_statusCounts) SetApproved(value *int32)() {
-    m.approved = value
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetApproved(value *int32) {
+	err := m.GetBackingStore().Set("approved", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDenied sets the denied property value. The denied property
-func (m *InAppNotificationsGetResponse_meta_statusCounts) SetDenied(value *int32)() {
-    m.denied = value
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetDenied(value *int32) {
+	err := m.GetBackingStore().Set("denied", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDraft sets the draft property value. The draft property
-func (m *InAppNotificationsGetResponse_meta_statusCounts) SetDraft(value *int32)() {
-    m.draft = value
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetDraft(value *int32) {
+	err := m.GetBackingStore().Set("draft", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTotal sets the total property value. The total property
-func (m *InAppNotificationsGetResponse_meta_statusCounts) SetTotal(value *int32)() {
-    m.total = value
+func (m *InAppNotificationsGetResponse_meta_statusCounts) SetTotal(value *int32) {
+	err := m.GetBackingStore().Set("total", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type InAppNotificationsGetResponse_meta_statusCountsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetApproved()(*int32)
-    GetDenied()(*int32)
-    GetDraft()(*int32)
-    GetTotal()(*int32)
-    SetApproved(value *int32)()
-    SetDenied(value *int32)()
-    SetDraft(value *int32)()
-    SetTotal(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetApproved() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDenied() *int32
+	GetDraft() *int32
+	GetTotal() *int32
+	SetApproved(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDenied(value *int32)
+	SetDraft(value *int32)
+	SetTotal(value *int32)
 }

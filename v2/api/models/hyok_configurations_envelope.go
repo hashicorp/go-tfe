@@ -4,281 +4,407 @@
 package models
 
 import (
-    ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
+	ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6 "strings"
 )
 
 type HyokConfigurationsEnvelope struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The data property
-    data HyokConfigurationsable
-    // The included property
-    included []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
-// HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included composed type wrapper for classes AwsOidcConfigurationsable, AzureOidcConfigurationsable, GcpOidcConfigurationsable, HyokCustomerKeyVersionsable, VaultOidcConfigurationsable
+
+// HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included composed type wrapper for classes AwsOidcConfigurations, AzureOidcConfigurations, GcpOidcConfigurations, HyokCustomerKeyVersions, VaultOidcConfigurations
 type HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included struct {
-    // Composed type representation for type AwsOidcConfigurationsable
-    awsOidcConfigurations AwsOidcConfigurationsable
-    // Composed type representation for type AzureOidcConfigurationsable
-    azureOidcConfigurations AzureOidcConfigurationsable
-    // Composed type representation for type GcpOidcConfigurationsable
-    gcpOidcConfigurations GcpOidcConfigurationsable
-    // Composed type representation for type HyokCustomerKeyVersionsable
-    hyokCustomerKeyVersions HyokCustomerKeyVersionsable
-    // Composed type representation for type VaultOidcConfigurationsable
-    vaultOidcConfigurations VaultOidcConfigurationsable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included instantiates a new HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included and sets the default values.
-func NewHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included()(*HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) {
-    m := &HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included{
-    }
-    return m
+func NewHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included() *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included {
+	m := &HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	return m
 }
+
 // CreateHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    result := NewHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included()
-    if parseNode != nil {
-        mappingValueNode, err := parseNode.GetChildNode("type")
-        if err != nil {
-            return nil, err
-        }
-        if mappingValueNode != nil {
-            mappingValue, err := mappingValueNode.GetStringValue()
-            if err != nil {
-                return nil, err
-            }
-            if mappingValue != nil {
-                if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "aws-oidc-configurations") {
-                    result.SetAwsOidcConfigurations(NewAwsOidcConfigurations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "azure-oidc-configurations") {
-                    result.SetAzureOidcConfigurations(NewAzureOidcConfigurations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "gcp-oidc-configurations") {
-                    result.SetGcpOidcConfigurations(NewGcpOidcConfigurations())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
-                    result.SetHyokCustomerKeyVersions(NewHyokCustomerKeyVersions())
-                } else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vault-oidc-configurations") {
-                    result.SetVaultOidcConfigurations(NewVaultOidcConfigurations())
-                }
-            }
-        }
-    }
-    return result, nil
+func CreateHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	result := NewHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included()
+	if parseNode != nil {
+		mappingValueNode, err := parseNode.GetChildNode("type")
+		if err != nil {
+			return nil, err
+		}
+		if mappingValueNode != nil {
+			mappingValue, err := mappingValueNode.GetStringValue()
+			if err != nil {
+				return nil, err
+			}
+			if mappingValue != nil {
+				if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "aws-oidc-configurations") {
+					result.SetAwsOidcConfigurations(NewAwsOidcConfigurations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "azure-oidc-configurations") {
+					result.SetAzureOidcConfigurations(NewAzureOidcConfigurations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "gcp-oidc-configurations") {
+					result.SetGcpOidcConfigurations(NewGcpOidcConfigurations())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "hyok-customer-key-versions") {
+					result.SetHyokCustomerKeyVersions(NewHyokCustomerKeyVersions())
+				} else if ie967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6.EqualFold(*mappingValue, "vault-oidc-configurations") {
+					result.SetVaultOidcConfigurations(NewVaultOidcConfigurations())
+				}
+			}
+		}
+	}
+	return result, nil
 }
-// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurationsable
+
+// GetAwsOidcConfigurations gets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurations
 // returns a AwsOidcConfigurationsable when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetAwsOidcConfigurations()(AwsOidcConfigurationsable) {
-    return m.awsOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetAwsOidcConfigurations() AwsOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("awsOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AwsOidcConfigurationsable)
+	}
+	return nil
 }
-// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurationsable
+
+// GetAzureOidcConfigurations gets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurations
 // returns a AzureOidcConfigurationsable when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetAzureOidcConfigurations()(AzureOidcConfigurationsable) {
-    return m.azureOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetAzureOidcConfigurations() AzureOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("azureOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(AzureOidcConfigurationsable)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    if m.GetAwsOidcConfigurations() != nil {
-        return m.GetAwsOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetAzureOidcConfigurations() != nil {
-        return m.GetAzureOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetGcpOidcConfigurations() != nil {
-        return m.GetGcpOidcConfigurations().GetFieldDeserializers()
-    } else if m.GetHyokCustomerKeyVersions() != nil {
-        return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
-    } else if m.GetVaultOidcConfigurations() != nil {
-        return m.GetVaultOidcConfigurations().GetFieldDeserializers()
-    }
-    return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	if m.GetAwsOidcConfigurations() != nil {
+		return m.GetAwsOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetAzureOidcConfigurations() != nil {
+		return m.GetAzureOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetGcpOidcConfigurations() != nil {
+		return m.GetGcpOidcConfigurations().GetFieldDeserializers()
+	} else if m.GetHyokCustomerKeyVersions() != nil {
+		return m.GetHyokCustomerKeyVersions().GetFieldDeserializers()
+	} else if m.GetVaultOidcConfigurations() != nil {
+		return m.GetVaultOidcConfigurations().GetFieldDeserializers()
+	}
+	return make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
 }
-// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurationsable
+
+// GetGcpOidcConfigurations gets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurations
 // returns a GcpOidcConfigurationsable when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetGcpOidcConfigurations()(GcpOidcConfigurationsable) {
-    return m.gcpOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetGcpOidcConfigurations() GcpOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("gcpOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(GcpOidcConfigurationsable)
+	}
+	return nil
 }
-// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
+
+// GetHyokCustomerKeyVersions gets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersions
 // returns a HyokCustomerKeyVersionsable when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsable) {
-    return m.hyokCustomerKeyVersions
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsable {
+	val, err := m.GetBackingStore().Get("hyokCustomerKeyVersions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokCustomerKeyVersionsable)
+	}
+	return nil
 }
+
 // GetIsComposedType determines if the current object is a wrapper around a composed type
 // returns a bool when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetIsComposedType()(bool) {
-    return true
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetIsComposedType() bool {
+	return true
 }
-// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurationsable
+
+// GetVaultOidcConfigurations gets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurations
 // returns a VaultOidcConfigurationsable when successful
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetVaultOidcConfigurations()(VaultOidcConfigurationsable) {
-    return m.vaultOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) GetVaultOidcConfigurations() VaultOidcConfigurationsable {
+	val, err := m.GetBackingStore().Get("vaultOidcConfigurations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(VaultOidcConfigurationsable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetAwsOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetAwsOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetAzureOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetAzureOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetGcpOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetGcpOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    } else if m.GetHyokCustomerKeyVersions() != nil {
-        err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
-        if err != nil {
-            return err
-        }
-    } else if m.GetVaultOidcConfigurations() != nil {
-        err := writer.WriteObjectValue("", m.GetVaultOidcConfigurations())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	if m.GetAwsOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetAwsOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetAzureOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetAzureOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetGcpOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetGcpOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	} else if m.GetHyokCustomerKeyVersions() != nil {
+		err := writer.WriteObjectValue("", m.GetHyokCustomerKeyVersions())
+		if err != nil {
+			return err
+		}
+	} else if m.GetVaultOidcConfigurations() != nil {
+		err := writer.WriteObjectValue("", m.GetVaultOidcConfigurations())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
-// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurationsable
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetAwsOidcConfigurations(value AwsOidcConfigurationsable)() {
-    m.awsOidcConfigurations = value
+
+// SetAwsOidcConfigurations sets the awsOidcConfigurations property value. Composed type representation for type AwsOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetAwsOidcConfigurations(value AwsOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("awsOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurationsable
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetAzureOidcConfigurations(value AzureOidcConfigurationsable)() {
-    m.azureOidcConfigurations = value
+
+// SetAzureOidcConfigurations sets the azureOidcConfigurations property value. Composed type representation for type AzureOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetAzureOidcConfigurations(value AzureOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("azureOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurationsable
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetGcpOidcConfigurations(value GcpOidcConfigurationsable)() {
-    m.gcpOidcConfigurations = value
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
 }
-// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersionsable
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)() {
-    m.hyokCustomerKeyVersions = value
+
+// SetGcpOidcConfigurations sets the gcpOidcConfigurations property value. Composed type representation for type GcpOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetGcpOidcConfigurations(value GcpOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("gcpOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
 }
-// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurationsable
-func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetVaultOidcConfigurations(value VaultOidcConfigurationsable)() {
-    m.vaultOidcConfigurations = value
+
+// SetHyokCustomerKeyVersions sets the hyokCustomerKeyVersions property value. Composed type representation for type HyokCustomerKeyVersions
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable) {
+	err := m.GetBackingStore().Set("hyokCustomerKeyVersions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetVaultOidcConfigurations sets the vaultOidcConfigurations property value. Composed type representation for type VaultOidcConfigurations
+func (m *HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_included) SetVaultOidcConfigurations(value VaultOidcConfigurationsable) {
+	err := m.GetBackingStore().Set("vaultOidcConfigurations", value)
+	if err != nil {
+		panic(err)
+	}
+}
+
 type HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAwsOidcConfigurations()(AwsOidcConfigurationsable)
-    GetAzureOidcConfigurations()(AzureOidcConfigurationsable)
-    GetGcpOidcConfigurations()(GcpOidcConfigurationsable)
-    GetHyokCustomerKeyVersions()(HyokCustomerKeyVersionsable)
-    GetVaultOidcConfigurations()(VaultOidcConfigurationsable)
-    SetAwsOidcConfigurations(value AwsOidcConfigurationsable)()
-    SetAzureOidcConfigurations(value AzureOidcConfigurationsable)()
-    SetGcpOidcConfigurations(value GcpOidcConfigurationsable)()
-    SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)()
-    SetVaultOidcConfigurations(value VaultOidcConfigurationsable)()
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAwsOidcConfigurations() AwsOidcConfigurationsable
+	GetAzureOidcConfigurations() AzureOidcConfigurationsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetGcpOidcConfigurations() GcpOidcConfigurationsable
+	GetHyokCustomerKeyVersions() HyokCustomerKeyVersionsable
+	GetVaultOidcConfigurations() VaultOidcConfigurationsable
+	SetAwsOidcConfigurations(value AwsOidcConfigurationsable)
+	SetAzureOidcConfigurations(value AzureOidcConfigurationsable)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetGcpOidcConfigurations(value GcpOidcConfigurationsable)
+	SetHyokCustomerKeyVersions(value HyokCustomerKeyVersionsable)
+	SetVaultOidcConfigurations(value VaultOidcConfigurationsable)
 }
+
 // NewHyokConfigurationsEnvelope instantiates a new HyokConfigurationsEnvelope and sets the default values.
-func NewHyokConfigurationsEnvelope()(*HyokConfigurationsEnvelope) {
-    m := &HyokConfigurationsEnvelope{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewHyokConfigurationsEnvelope() *HyokConfigurationsEnvelope {
+	m := &HyokConfigurationsEnvelope{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateHyokConfigurationsEnvelopeFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateHyokConfigurationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewHyokConfigurationsEnvelope(), nil
+func CreateHyokConfigurationsEnvelopeFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewHyokConfigurationsEnvelope(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *HyokConfigurationsEnvelope) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *HyokConfigurationsEnvelope) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *HyokConfigurationsEnvelope) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetData gets the data property value. The data property
 // returns a HyokConfigurationsable when successful
-func (m *HyokConfigurationsEnvelope) GetData()(HyokConfigurationsable) {
-    return m.data
+func (m *HyokConfigurationsEnvelope) GetData() HyokConfigurationsable {
+	val, err := m.GetBackingStore().Get("data")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(HyokConfigurationsable)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *HyokConfigurationsEnvelope) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateHyokConfigurationsFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetData(val.(HyokConfigurationsable))
-        }
-        return nil
-    }
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(CreateHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = v.(HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)
-                }
-            }
-            m.SetIncluded(res)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *HyokConfigurationsEnvelope) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["data"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateHyokConfigurationsFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetData(val.(HyokConfigurationsable))
+		}
+		return nil
+	}
+	res["included"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetCollectionOfObjectValues(CreateHyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			res := make([]HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable, len(val))
+			for i, v := range val {
+				if v != nil {
+					res[i] = v.(HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)
+				}
+			}
+			m.SetIncluded(res)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetIncluded gets the included property value. The included property
 // returns a []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable when successful
-func (m *HyokConfigurationsEnvelope) GetIncluded()([]HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable) {
-    return m.included
+func (m *HyokConfigurationsEnvelope) GetIncluded() []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable {
+	val, err := m.GetBackingStore().Get("included")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.([]HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *HyokConfigurationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("data", m.GetData())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
-            if v != nil {
-                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
-            }
-        }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *HyokConfigurationsEnvelope) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("data", m.GetData())
+		if err != nil {
+			return err
+		}
+	}
+	if m.GetIncluded() != nil {
+		cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+		for i, v := range m.GetIncluded() {
+			if v != nil {
+				cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+			}
+		}
+		err := writer.WriteCollectionOfObjectValues("included", cast)
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *HyokConfigurationsEnvelope) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *HyokConfigurationsEnvelope) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *HyokConfigurationsEnvelope) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetData sets the data property value. The data property
-func (m *HyokConfigurationsEnvelope) SetData(value HyokConfigurationsable)() {
-    m.data = value
+func (m *HyokConfigurationsEnvelope) SetData(value HyokConfigurationsable) {
+	err := m.GetBackingStore().Set("data", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIncluded sets the included property value. The included property
-func (m *HyokConfigurationsEnvelope) SetIncluded(value []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)() {
-    m.included = value
+func (m *HyokConfigurationsEnvelope) SetIncluded(value []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable) {
+	err := m.GetBackingStore().Set("included", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type HyokConfigurationsEnvelopeable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()(HyokConfigurationsable)
-    GetIncluded()([]HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)
-    SetData(value HyokConfigurationsable)()
-    SetIncluded(value []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetData() HyokConfigurationsable
+	GetIncluded() []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetData(value HyokConfigurationsable)
+	SetIncluded(value []HyokConfigurationsEnvelope_HyokConfigurationsEnvelope_includedable)
 }

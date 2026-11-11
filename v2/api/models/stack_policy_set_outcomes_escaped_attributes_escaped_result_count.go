@@ -4,226 +4,319 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // StackPolicySetOutcomes_attributes_resultCount aggregated counts of policy results for this policy set
 type StackPolicySetOutcomes_attributes_resultCount struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The advisoryFailed property
-    advisoryFailed *int32
-    // The errored property
-    errored *int32
-    // The mandatoryFailed property
-    mandatoryFailed *int32
-    // The mandatoryOverridableFailed property
-    mandatoryOverridableFailed *int32
-    // The passed property
-    passed *int32
-    // The unknown property
-    unknown *int32
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackPolicySetOutcomes_attributes_resultCount instantiates a new StackPolicySetOutcomes_attributes_resultCount and sets the default values.
-func NewStackPolicySetOutcomes_attributes_resultCount()(*StackPolicySetOutcomes_attributes_resultCount) {
-    m := &StackPolicySetOutcomes_attributes_resultCount{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackPolicySetOutcomes_attributes_resultCount() *StackPolicySetOutcomes_attributes_resultCount {
+	m := &StackPolicySetOutcomes_attributes_resultCount{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackPolicySetOutcomes_attributes_resultCountFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackPolicySetOutcomes_attributes_resultCountFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackPolicySetOutcomes_attributes_resultCount(), nil
+func CreateStackPolicySetOutcomes_attributes_resultCountFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackPolicySetOutcomes_attributes_resultCount(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAdvisoryFailed gets the advisory-failed property value. The advisoryFailed property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetAdvisoryFailed()(*int32) {
-    return m.advisoryFailed
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetAdvisoryFailed() *int32 {
+	val, err := m.GetBackingStore().Get("advisoryFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetErrored gets the errored property value. The errored property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetErrored()(*int32) {
-    return m.errored
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetErrored() *int32 {
+	val, err := m.GetBackingStore().Get("errored")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["advisory-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAdvisoryFailed(val)
-        }
-        return nil
-    }
-    res["errored"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetErrored(val)
-        }
-        return nil
-    }
-    res["mandatory-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMandatoryFailed(val)
-        }
-        return nil
-    }
-    res["mandatory-overridable-failed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetMandatoryOverridableFailed(val)
-        }
-        return nil
-    }
-    res["passed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPassed(val)
-        }
-        return nil
-    }
-    res["unknown"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetInt32Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUnknown(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["advisory-failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAdvisoryFailed(val)
+		}
+		return nil
+	}
+	res["errored"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetErrored(val)
+		}
+		return nil
+	}
+	res["mandatory-failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMandatoryFailed(val)
+		}
+		return nil
+	}
+	res["mandatory-overridable-failed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetMandatoryOverridableFailed(val)
+		}
+		return nil
+	}
+	res["passed"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPassed(val)
+		}
+		return nil
+	}
+	res["unknown"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetInt32Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUnknown(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetMandatoryFailed gets the mandatory-failed property value. The mandatoryFailed property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetMandatoryFailed()(*int32) {
-    return m.mandatoryFailed
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetMandatoryFailed() *int32 {
+	val, err := m.GetBackingStore().Get("mandatoryFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetMandatoryOverridableFailed gets the mandatory-overridable-failed property value. The mandatoryOverridableFailed property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetMandatoryOverridableFailed()(*int32) {
-    return m.mandatoryOverridableFailed
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetMandatoryOverridableFailed() *int32 {
+	val, err := m.GetBackingStore().Get("mandatoryOverridableFailed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetPassed gets the passed property value. The passed property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetPassed()(*int32) {
-    return m.passed
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetPassed() *int32 {
+	val, err := m.GetBackingStore().Get("passed")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // GetUnknown gets the unknown property value. The unknown property
 // returns a *int32 when successful
-func (m *StackPolicySetOutcomes_attributes_resultCount) GetUnknown()(*int32) {
-    return m.unknown
+func (m *StackPolicySetOutcomes_attributes_resultCount) GetUnknown() *int32 {
+	val, err := m.GetBackingStore().Get("unknown")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*int32)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackPolicySetOutcomes_attributes_resultCount) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteInt32Value("advisory-failed", m.GetAdvisoryFailed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("errored", m.GetErrored())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("mandatory-failed", m.GetMandatoryFailed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("mandatory-overridable-failed", m.GetMandatoryOverridableFailed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("passed", m.GetPassed())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("unknown", m.GetUnknown())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackPolicySetOutcomes_attributes_resultCount) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteInt32Value("advisory-failed", m.GetAdvisoryFailed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("errored", m.GetErrored())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("mandatory-failed", m.GetMandatoryFailed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("mandatory-overridable-failed", m.GetMandatoryOverridableFailed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("passed", m.GetPassed())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteInt32Value("unknown", m.GetUnknown())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdvisoryFailed sets the advisory-failed property value. The advisoryFailed property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetAdvisoryFailed(value *int32)() {
-    m.advisoryFailed = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetAdvisoryFailed(value *int32) {
+	err := m.GetBackingStore().Set("advisoryFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetErrored sets the errored property value. The errored property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetErrored(value *int32)() {
-    m.errored = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetErrored(value *int32) {
+	err := m.GetBackingStore().Set("errored", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMandatoryFailed sets the mandatory-failed property value. The mandatoryFailed property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetMandatoryFailed(value *int32)() {
-    m.mandatoryFailed = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetMandatoryFailed(value *int32) {
+	err := m.GetBackingStore().Set("mandatoryFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetMandatoryOverridableFailed sets the mandatory-overridable-failed property value. The mandatoryOverridableFailed property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetMandatoryOverridableFailed(value *int32)() {
-    m.mandatoryOverridableFailed = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetMandatoryOverridableFailed(value *int32) {
+	err := m.GetBackingStore().Set("mandatoryOverridableFailed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPassed sets the passed property value. The passed property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetPassed(value *int32)() {
-    m.passed = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetPassed(value *int32) {
+	err := m.GetBackingStore().Set("passed", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUnknown sets the unknown property value. The unknown property
-func (m *StackPolicySetOutcomes_attributes_resultCount) SetUnknown(value *int32)() {
-    m.unknown = value
+func (m *StackPolicySetOutcomes_attributes_resultCount) SetUnknown(value *int32) {
+	err := m.GetBackingStore().Set("unknown", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackPolicySetOutcomes_attributes_resultCountable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAdvisoryFailed()(*int32)
-    GetErrored()(*int32)
-    GetMandatoryFailed()(*int32)
-    GetMandatoryOverridableFailed()(*int32)
-    GetPassed()(*int32)
-    GetUnknown()(*int32)
-    SetAdvisoryFailed(value *int32)()
-    SetErrored(value *int32)()
-    SetMandatoryFailed(value *int32)()
-    SetMandatoryOverridableFailed(value *int32)()
-    SetPassed(value *int32)()
-    SetUnknown(value *int32)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAdvisoryFailed() *int32
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetErrored() *int32
+	GetMandatoryFailed() *int32
+	GetMandatoryOverridableFailed() *int32
+	GetPassed() *int32
+	GetUnknown() *int32
+	SetAdvisoryFailed(value *int32)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetErrored(value *int32)
+	SetMandatoryFailed(value *int32)
+	SetMandatoryOverridableFailed(value *int32)
+	SetPassed(value *int32)
+	SetUnknown(value *int32)
 }

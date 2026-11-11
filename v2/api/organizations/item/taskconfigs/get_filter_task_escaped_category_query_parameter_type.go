@@ -2,38 +2,42 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package taskconfigs
+
 type GetFilterTask_categoryQueryParameterType int
 
 const (
-    HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE GetFilterTask_categoryQueryParameterType = iota
-    TASK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
-    NATIVE_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE GetFilterTask_categoryQueryParameterType = iota
+	TASK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	NATIVE_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
 )
 
 func (i GetFilterTask_categoryQueryParameterType) String() string {
-    return []string{"hook", "task", "native"}[i]
+	return []string{"hook", "task", "native"}[i]
 }
+
 func ParseGetFilterTask_categoryQueryParameterType(v string) (any, error) {
-    result := HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
-    switch v {
-        case "hook":
-            result = HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
-        case "task":
-            result = TASK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
-        case "native":
-            result = NATIVE_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	switch v {
+	case "hook":
+		result = HOOK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	case "task":
+		result = TASK_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	case "native":
+		result = NATIVE_GETFILTERTASK_CATEGORYQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterTask_categoryQueryParameterType(values []GetFilterTask_categoryQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterTask_categoryQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

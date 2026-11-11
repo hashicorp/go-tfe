@@ -4,69 +4,75 @@
 package policyevaluations
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemPolicySetOutcomesRequestBuilder builds and executes requests for operations under \policy-evaluations\{policy_evaluation_id}\policy-set-outcomes
 type ItemPolicySetOutcomesRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemPolicySetOutcomesRequestBuilderGetQueryParameters list the policy set outcomes associated with a policy evaluation.
 type ItemPolicySetOutcomesRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    FieldspolicySetOutcomes []string "uriparametername:\"fields%5Bpolicy%2Dset%2Doutcomes%5D\""
-    // The page number to retrieve.
-    Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
-    // The number of items to retrieve per page. Defaults to 20.
-    Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
+	// Return only the specified fields for policy-set-outcomes resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	FieldspolicySetOutcomes []string "uriparametername:\"fields%5Bpolicy%2Dset%2Doutcomes%5D\""
+	// The page number to retrieve.
+	Pagenumber *int32 "uriparametername:\"page%5Bnumber%5D\""
+	// The number of items to retrieve per page. Defaults to 20.
+	Pagesize *int32 "uriparametername:\"page%5Bsize%5D\""
 }
+
 // NewItemPolicySetOutcomesRequestBuilderInternal instantiates a new ItemPolicySetOutcomesRequestBuilder and sets the default values.
-func NewItemPolicySetOutcomesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetOutcomesRequestBuilder) {
-    m := &ItemPolicySetOutcomesRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-evaluations/{policy_evaluation_id}/policy-set-outcomes{?fields%5Bpolicy%2Dset%2Doutcomes%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
-    }
-    return m
+func NewItemPolicySetOutcomesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicySetOutcomesRequestBuilder {
+	m := &ItemPolicySetOutcomesRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/policy-evaluations/{policy_evaluation_id}/policy-set-outcomes{?fields%5Bpolicy%2Dset%2Doutcomes%5D,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+	}
+	return m
 }
+
 // NewItemPolicySetOutcomesRequestBuilder instantiates a new ItemPolicySetOutcomesRequestBuilder and sets the default values.
-func NewItemPolicySetOutcomesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetOutcomesRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemPolicySetOutcomesRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemPolicySetOutcomesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemPolicySetOutcomesRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemPolicySetOutcomesRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get list the policy set outcomes associated with a policy evaluation.
 // returns a ItemPolicySetOutcomesGetResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetOutcomesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetOutcomesRequestBuilderGetQueryParameters])(ItemPolicySetOutcomesGetResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetOutcomesGetResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPolicySetOutcomesGetResponseable), nil
+func (m *ItemPolicySetOutcomesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetOutcomesRequestBuilderGetQueryParameters]) (ItemPolicySetOutcomesGetResponseable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"400": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetOutcomesGetResponseFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(ItemPolicySetOutcomesGetResponseable), nil
 }
+
 // ToGetRequestInformation list the policy set outcomes associated with a policy evaluation.
 // returns a *RequestInformation when successful
-func (m *ItemPolicySetOutcomesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetOutcomesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemPolicySetOutcomesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetOutcomesRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemPolicySetOutcomesRequestBuilder when successful
-func (m *ItemPolicySetOutcomesRequestBuilder) WithUrl(rawUrl string)(*ItemPolicySetOutcomesRequestBuilder) {
-    return NewItemPolicySetOutcomesRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemPolicySetOutcomesRequestBuilder) WithUrl(rawUrl string) *ItemPolicySetOutcomesRequestBuilder {
+	return NewItemPolicySetOutcomesRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

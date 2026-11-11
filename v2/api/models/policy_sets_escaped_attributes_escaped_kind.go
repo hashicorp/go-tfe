@@ -2,39 +2,43 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 // The kind of policies contained in this policy set.- `sentinel` - Sentinel policy enforcement- `opa` - Open Policy Agent (OPA) policy enforcement- `tfpolicy` - Terraform Policy enforcement
 type PolicySets_attributes_kind int
 
 const (
-    SENTINEL_POLICYSETS_ATTRIBUTES_KIND PolicySets_attributes_kind = iota
-    OPA_POLICYSETS_ATTRIBUTES_KIND
-    TFPOLICY_POLICYSETS_ATTRIBUTES_KIND
+	SENTINEL_POLICYSETS_ATTRIBUTES_KIND PolicySets_attributes_kind = iota
+	OPA_POLICYSETS_ATTRIBUTES_KIND
+	TFPOLICY_POLICYSETS_ATTRIBUTES_KIND
 )
 
 func (i PolicySets_attributes_kind) String() string {
-    return []string{"sentinel", "opa", "tfpolicy"}[i]
+	return []string{"sentinel", "opa", "tfpolicy"}[i]
 }
+
 func ParsePolicySets_attributes_kind(v string) (any, error) {
-    result := SENTINEL_POLICYSETS_ATTRIBUTES_KIND
-    switch v {
-        case "sentinel":
-            result = SENTINEL_POLICYSETS_ATTRIBUTES_KIND
-        case "opa":
-            result = OPA_POLICYSETS_ATTRIBUTES_KIND
-        case "tfpolicy":
-            result = TFPOLICY_POLICYSETS_ATTRIBUTES_KIND
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := SENTINEL_POLICYSETS_ATTRIBUTES_KIND
+	switch v {
+	case "sentinel":
+		result = SENTINEL_POLICYSETS_ATTRIBUTES_KIND
+	case "opa":
+		result = OPA_POLICYSETS_ATTRIBUTES_KIND
+	case "tfpolicy":
+		result = TFPOLICY_POLICYSETS_ATTRIBUTES_KIND
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializePolicySets_attributes_kind(values []PolicySets_attributes_kind) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i PolicySets_attributes_kind) isMultiValue() bool {
-    return false
+	return false
 }

@@ -4,661 +4,904 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 // Teams_attributes_organizationAccess settings for the team's organization-level permissions.
 type Teams_attributes_organizationAccess struct {
-    // The accessSecretTeams property
-    accessSecretTeams *bool
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The delegatePolicyOverrides property
-    delegatePolicyOverrides *bool
-    // The manageAgentPools property
-    manageAgentPools *bool
-    // The manageMembership property
-    manageMembership *bool
-    // The manageModules property
-    manageModules *bool
-    // The manageOrganizationAccess property
-    manageOrganizationAccess *bool
-    // The managePolicies property
-    managePolicies *bool
-    // The managePolicyOverrides property
-    managePolicyOverrides *bool
-    // The manageProjects property
-    manageProjects *bool
-    // The manageProviders property
-    manageProviders *bool
-    // This attribute is only available in HCP Terraform.
-    managePublicModules *bool
-    // This attribute is only available in HCP Terraform.
-    managePublicProviders *bool
-    // The manageRegistryArtifactTags property
-    manageRegistryArtifactTags *bool
-    // The manageRegistryArtifactVersionTags property
-    manageRegistryArtifactVersionTags *bool
-    // The manageRegistryComponents property
-    manageRegistryComponents *bool
-    // The manageRunTasks property
-    manageRunTasks *bool
-    // The manageTeams property
-    manageTeams *bool
-    // The manageVcsSettings property
-    manageVcsSettings *bool
-    // The manageWorkspaces property
-    manageWorkspaces *bool
-    // The readProjects property
-    readProjects *bool
-    // The readWorkspaces property
-    readWorkspaces *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewTeams_attributes_organizationAccess instantiates a new Teams_attributes_organizationAccess and sets the default values.
-func NewTeams_attributes_organizationAccess()(*Teams_attributes_organizationAccess) {
-    m := &Teams_attributes_organizationAccess{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewTeams_attributes_organizationAccess() *Teams_attributes_organizationAccess {
+	m := &Teams_attributes_organizationAccess{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateTeams_attributes_organizationAccessFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateTeams_attributes_organizationAccessFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewTeams_attributes_organizationAccess(), nil
+func CreateTeams_attributes_organizationAccessFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewTeams_attributes_organizationAccess(), nil
 }
+
 // GetAccessSecretTeams gets the access-secret-teams property value. The accessSecretTeams property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetAccessSecretTeams()(*bool) {
-    return m.accessSecretTeams
+func (m *Teams_attributes_organizationAccess) GetAccessSecretTeams() *bool {
+	val, err := m.GetBackingStore().Get("accessSecretTeams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Teams_attributes_organizationAccess) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Teams_attributes_organizationAccess) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Teams_attributes_organizationAccess) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetDelegatePolicyOverrides gets the delegate-policy-overrides property value. The delegatePolicyOverrides property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetDelegatePolicyOverrides()(*bool) {
-    return m.delegatePolicyOverrides
+func (m *Teams_attributes_organizationAccess) GetDelegatePolicyOverrides() *bool {
+	val, err := m.GetBackingStore().Get("delegatePolicyOverrides")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Teams_attributes_organizationAccess) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["access-secret-teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAccessSecretTeams(val)
-        }
-        return nil
-    }
-    res["delegate-policy-overrides"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDelegatePolicyOverrides(val)
-        }
-        return nil
-    }
-    res["manage-agent-pools"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageAgentPools(val)
-        }
-        return nil
-    }
-    res["manage-membership"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageMembership(val)
-        }
-        return nil
-    }
-    res["manage-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageModules(val)
-        }
-        return nil
-    }
-    res["manage-organization-access"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageOrganizationAccess(val)
-        }
-        return nil
-    }
-    res["manage-policies"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManagePolicies(val)
-        }
-        return nil
-    }
-    res["manage-policy-overrides"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManagePolicyOverrides(val)
-        }
-        return nil
-    }
-    res["manage-projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageProjects(val)
-        }
-        return nil
-    }
-    res["manage-providers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageProviders(val)
-        }
-        return nil
-    }
-    res["manage-public-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManagePublicModules(val)
-        }
-        return nil
-    }
-    res["manage-public-providers"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManagePublicProviders(val)
-        }
-        return nil
-    }
-    res["manage-registry-artifact-tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageRegistryArtifactTags(val)
-        }
-        return nil
-    }
-    res["manage-registry-artifact-version-tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageRegistryArtifactVersionTags(val)
-        }
-        return nil
-    }
-    res["manage-registry-components"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageRegistryComponents(val)
-        }
-        return nil
-    }
-    res["manage-run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageRunTasks(val)
-        }
-        return nil
-    }
-    res["manage-teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageTeams(val)
-        }
-        return nil
-    }
-    res["manage-vcs-settings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageVcsSettings(val)
-        }
-        return nil
-    }
-    res["manage-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetManageWorkspaces(val)
-        }
-        return nil
-    }
-    res["read-projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetReadProjects(val)
-        }
-        return nil
-    }
-    res["read-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetReadWorkspaces(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Teams_attributes_organizationAccess) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["access-secret-teams"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAccessSecretTeams(val)
+		}
+		return nil
+	}
+	res["delegate-policy-overrides"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDelegatePolicyOverrides(val)
+		}
+		return nil
+	}
+	res["manage-agent-pools"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageAgentPools(val)
+		}
+		return nil
+	}
+	res["manage-membership"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageMembership(val)
+		}
+		return nil
+	}
+	res["manage-modules"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageModules(val)
+		}
+		return nil
+	}
+	res["manage-organization-access"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageOrganizationAccess(val)
+		}
+		return nil
+	}
+	res["manage-policies"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManagePolicies(val)
+		}
+		return nil
+	}
+	res["manage-policy-overrides"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManagePolicyOverrides(val)
+		}
+		return nil
+	}
+	res["manage-projects"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageProjects(val)
+		}
+		return nil
+	}
+	res["manage-providers"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageProviders(val)
+		}
+		return nil
+	}
+	res["manage-public-modules"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManagePublicModules(val)
+		}
+		return nil
+	}
+	res["manage-public-providers"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManagePublicProviders(val)
+		}
+		return nil
+	}
+	res["manage-registry-artifact-tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageRegistryArtifactTags(val)
+		}
+		return nil
+	}
+	res["manage-registry-artifact-version-tags"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageRegistryArtifactVersionTags(val)
+		}
+		return nil
+	}
+	res["manage-registry-components"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageRegistryComponents(val)
+		}
+		return nil
+	}
+	res["manage-run-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageRunTasks(val)
+		}
+		return nil
+	}
+	res["manage-teams"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageTeams(val)
+		}
+		return nil
+	}
+	res["manage-vcs-settings"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageVcsSettings(val)
+		}
+		return nil
+	}
+	res["manage-workspaces"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetManageWorkspaces(val)
+		}
+		return nil
+	}
+	res["read-projects"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetReadProjects(val)
+		}
+		return nil
+	}
+	res["read-workspaces"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetReadWorkspaces(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetManageAgentPools gets the manage-agent-pools property value. The manageAgentPools property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageAgentPools()(*bool) {
-    return m.manageAgentPools
+func (m *Teams_attributes_organizationAccess) GetManageAgentPools() *bool {
+	val, err := m.GetBackingStore().Get("manageAgentPools")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageMembership gets the manage-membership property value. The manageMembership property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageMembership()(*bool) {
-    return m.manageMembership
+func (m *Teams_attributes_organizationAccess) GetManageMembership() *bool {
+	val, err := m.GetBackingStore().Get("manageMembership")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageModules gets the manage-modules property value. The manageModules property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageModules()(*bool) {
-    return m.manageModules
+func (m *Teams_attributes_organizationAccess) GetManageModules() *bool {
+	val, err := m.GetBackingStore().Get("manageModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageOrganizationAccess gets the manage-organization-access property value. The manageOrganizationAccess property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageOrganizationAccess()(*bool) {
-    return m.manageOrganizationAccess
+func (m *Teams_attributes_organizationAccess) GetManageOrganizationAccess() *bool {
+	val, err := m.GetBackingStore().Get("manageOrganizationAccess")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManagePolicies gets the manage-policies property value. The managePolicies property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManagePolicies()(*bool) {
-    return m.managePolicies
+func (m *Teams_attributes_organizationAccess) GetManagePolicies() *bool {
+	val, err := m.GetBackingStore().Get("managePolicies")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManagePolicyOverrides gets the manage-policy-overrides property value. The managePolicyOverrides property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManagePolicyOverrides()(*bool) {
-    return m.managePolicyOverrides
+func (m *Teams_attributes_organizationAccess) GetManagePolicyOverrides() *bool {
+	val, err := m.GetBackingStore().Get("managePolicyOverrides")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageProjects gets the manage-projects property value. The manageProjects property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageProjects()(*bool) {
-    return m.manageProjects
+func (m *Teams_attributes_organizationAccess) GetManageProjects() *bool {
+	val, err := m.GetBackingStore().Get("manageProjects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageProviders gets the manage-providers property value. The manageProviders property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageProviders()(*bool) {
-    return m.manageProviders
+func (m *Teams_attributes_organizationAccess) GetManageProviders() *bool {
+	val, err := m.GetBackingStore().Get("manageProviders")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManagePublicModules gets the manage-public-modules property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManagePublicModules()(*bool) {
-    return m.managePublicModules
+func (m *Teams_attributes_organizationAccess) GetManagePublicModules() *bool {
+	val, err := m.GetBackingStore().Get("managePublicModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManagePublicProviders gets the manage-public-providers property value. This attribute is only available in HCP Terraform.
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManagePublicProviders()(*bool) {
-    return m.managePublicProviders
+func (m *Teams_attributes_organizationAccess) GetManagePublicProviders() *bool {
+	val, err := m.GetBackingStore().Get("managePublicProviders")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageRegistryArtifactTags gets the manage-registry-artifact-tags property value. The manageRegistryArtifactTags property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageRegistryArtifactTags()(*bool) {
-    return m.manageRegistryArtifactTags
+func (m *Teams_attributes_organizationAccess) GetManageRegistryArtifactTags() *bool {
+	val, err := m.GetBackingStore().Get("manageRegistryArtifactTags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageRegistryArtifactVersionTags gets the manage-registry-artifact-version-tags property value. The manageRegistryArtifactVersionTags property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageRegistryArtifactVersionTags()(*bool) {
-    return m.manageRegistryArtifactVersionTags
+func (m *Teams_attributes_organizationAccess) GetManageRegistryArtifactVersionTags() *bool {
+	val, err := m.GetBackingStore().Get("manageRegistryArtifactVersionTags")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageRegistryComponents gets the manage-registry-components property value. The manageRegistryComponents property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageRegistryComponents()(*bool) {
-    return m.manageRegistryComponents
+func (m *Teams_attributes_organizationAccess) GetManageRegistryComponents() *bool {
+	val, err := m.GetBackingStore().Get("manageRegistryComponents")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageRunTasks gets the manage-run-tasks property value. The manageRunTasks property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageRunTasks()(*bool) {
-    return m.manageRunTasks
+func (m *Teams_attributes_organizationAccess) GetManageRunTasks() *bool {
+	val, err := m.GetBackingStore().Get("manageRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageTeams gets the manage-teams property value. The manageTeams property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageTeams()(*bool) {
-    return m.manageTeams
+func (m *Teams_attributes_organizationAccess) GetManageTeams() *bool {
+	val, err := m.GetBackingStore().Get("manageTeams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageVcsSettings gets the manage-vcs-settings property value. The manageVcsSettings property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageVcsSettings()(*bool) {
-    return m.manageVcsSettings
+func (m *Teams_attributes_organizationAccess) GetManageVcsSettings() *bool {
+	val, err := m.GetBackingStore().Get("manageVcsSettings")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetManageWorkspaces gets the manage-workspaces property value. The manageWorkspaces property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetManageWorkspaces()(*bool) {
-    return m.manageWorkspaces
+func (m *Teams_attributes_organizationAccess) GetManageWorkspaces() *bool {
+	val, err := m.GetBackingStore().Get("manageWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetReadProjects gets the read-projects property value. The readProjects property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetReadProjects()(*bool) {
-    return m.readProjects
+func (m *Teams_attributes_organizationAccess) GetReadProjects() *bool {
+	val, err := m.GetBackingStore().Get("readProjects")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetReadWorkspaces gets the read-workspaces property value. The readWorkspaces property
 // returns a *bool when successful
-func (m *Teams_attributes_organizationAccess) GetReadWorkspaces()(*bool) {
-    return m.readWorkspaces
+func (m *Teams_attributes_organizationAccess) GetReadWorkspaces() *bool {
+	val, err := m.GetBackingStore().Get("readWorkspaces")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *Teams_attributes_organizationAccess) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("access-secret-teams", m.GetAccessSecretTeams())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("delegate-policy-overrides", m.GetDelegatePolicyOverrides())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-agent-pools", m.GetManageAgentPools())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-membership", m.GetManageMembership())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-modules", m.GetManageModules())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-organization-access", m.GetManageOrganizationAccess())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-policies", m.GetManagePolicies())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-policy-overrides", m.GetManagePolicyOverrides())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-projects", m.GetManageProjects())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-providers", m.GetManageProviders())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-public-modules", m.GetManagePublicModules())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-public-providers", m.GetManagePublicProviders())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-registry-artifact-tags", m.GetManageRegistryArtifactTags())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-registry-artifact-version-tags", m.GetManageRegistryArtifactVersionTags())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-registry-components", m.GetManageRegistryComponents())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-run-tasks", m.GetManageRunTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-teams", m.GetManageTeams())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-vcs-settings", m.GetManageVcsSettings())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("manage-workspaces", m.GetManageWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("read-projects", m.GetReadProjects())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("read-workspaces", m.GetReadWorkspaces())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Teams_attributes_organizationAccess) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("access-secret-teams", m.GetAccessSecretTeams())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("delegate-policy-overrides", m.GetDelegatePolicyOverrides())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-agent-pools", m.GetManageAgentPools())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-membership", m.GetManageMembership())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-modules", m.GetManageModules())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-organization-access", m.GetManageOrganizationAccess())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-policies", m.GetManagePolicies())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-policy-overrides", m.GetManagePolicyOverrides())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-projects", m.GetManageProjects())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-providers", m.GetManageProviders())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-public-modules", m.GetManagePublicModules())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-public-providers", m.GetManagePublicProviders())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-registry-artifact-tags", m.GetManageRegistryArtifactTags())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-registry-artifact-version-tags", m.GetManageRegistryArtifactVersionTags())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-registry-components", m.GetManageRegistryComponents())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-run-tasks", m.GetManageRunTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-teams", m.GetManageTeams())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-vcs-settings", m.GetManageVcsSettings())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("manage-workspaces", m.GetManageWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("read-projects", m.GetReadProjects())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("read-workspaces", m.GetReadWorkspaces())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAccessSecretTeams sets the access-secret-teams property value. The accessSecretTeams property
-func (m *Teams_attributes_organizationAccess) SetAccessSecretTeams(value *bool)() {
-    m.accessSecretTeams = value
+func (m *Teams_attributes_organizationAccess) SetAccessSecretTeams(value *bool) {
+	err := m.GetBackingStore().Set("accessSecretTeams", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Teams_attributes_organizationAccess) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Teams_attributes_organizationAccess) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Teams_attributes_organizationAccess) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetDelegatePolicyOverrides sets the delegate-policy-overrides property value. The delegatePolicyOverrides property
-func (m *Teams_attributes_organizationAccess) SetDelegatePolicyOverrides(value *bool)() {
-    m.delegatePolicyOverrides = value
+func (m *Teams_attributes_organizationAccess) SetDelegatePolicyOverrides(value *bool) {
+	err := m.GetBackingStore().Set("delegatePolicyOverrides", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageAgentPools sets the manage-agent-pools property value. The manageAgentPools property
-func (m *Teams_attributes_organizationAccess) SetManageAgentPools(value *bool)() {
-    m.manageAgentPools = value
+func (m *Teams_attributes_organizationAccess) SetManageAgentPools(value *bool) {
+	err := m.GetBackingStore().Set("manageAgentPools", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageMembership sets the manage-membership property value. The manageMembership property
-func (m *Teams_attributes_organizationAccess) SetManageMembership(value *bool)() {
-    m.manageMembership = value
+func (m *Teams_attributes_organizationAccess) SetManageMembership(value *bool) {
+	err := m.GetBackingStore().Set("manageMembership", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageModules sets the manage-modules property value. The manageModules property
-func (m *Teams_attributes_organizationAccess) SetManageModules(value *bool)() {
-    m.manageModules = value
+func (m *Teams_attributes_organizationAccess) SetManageModules(value *bool) {
+	err := m.GetBackingStore().Set("manageModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageOrganizationAccess sets the manage-organization-access property value. The manageOrganizationAccess property
-func (m *Teams_attributes_organizationAccess) SetManageOrganizationAccess(value *bool)() {
-    m.manageOrganizationAccess = value
+func (m *Teams_attributes_organizationAccess) SetManageOrganizationAccess(value *bool) {
+	err := m.GetBackingStore().Set("manageOrganizationAccess", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManagePolicies sets the manage-policies property value. The managePolicies property
-func (m *Teams_attributes_organizationAccess) SetManagePolicies(value *bool)() {
-    m.managePolicies = value
+func (m *Teams_attributes_organizationAccess) SetManagePolicies(value *bool) {
+	err := m.GetBackingStore().Set("managePolicies", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManagePolicyOverrides sets the manage-policy-overrides property value. The managePolicyOverrides property
-func (m *Teams_attributes_organizationAccess) SetManagePolicyOverrides(value *bool)() {
-    m.managePolicyOverrides = value
+func (m *Teams_attributes_organizationAccess) SetManagePolicyOverrides(value *bool) {
+	err := m.GetBackingStore().Set("managePolicyOverrides", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageProjects sets the manage-projects property value. The manageProjects property
-func (m *Teams_attributes_organizationAccess) SetManageProjects(value *bool)() {
-    m.manageProjects = value
+func (m *Teams_attributes_organizationAccess) SetManageProjects(value *bool) {
+	err := m.GetBackingStore().Set("manageProjects", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageProviders sets the manage-providers property value. The manageProviders property
-func (m *Teams_attributes_organizationAccess) SetManageProviders(value *bool)() {
-    m.manageProviders = value
+func (m *Teams_attributes_organizationAccess) SetManageProviders(value *bool) {
+	err := m.GetBackingStore().Set("manageProviders", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManagePublicModules sets the manage-public-modules property value. This attribute is only available in HCP Terraform.
-func (m *Teams_attributes_organizationAccess) SetManagePublicModules(value *bool)() {
-    m.managePublicModules = value
+func (m *Teams_attributes_organizationAccess) SetManagePublicModules(value *bool) {
+	err := m.GetBackingStore().Set("managePublicModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManagePublicProviders sets the manage-public-providers property value. This attribute is only available in HCP Terraform.
-func (m *Teams_attributes_organizationAccess) SetManagePublicProviders(value *bool)() {
-    m.managePublicProviders = value
+func (m *Teams_attributes_organizationAccess) SetManagePublicProviders(value *bool) {
+	err := m.GetBackingStore().Set("managePublicProviders", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageRegistryArtifactTags sets the manage-registry-artifact-tags property value. The manageRegistryArtifactTags property
-func (m *Teams_attributes_organizationAccess) SetManageRegistryArtifactTags(value *bool)() {
-    m.manageRegistryArtifactTags = value
+func (m *Teams_attributes_organizationAccess) SetManageRegistryArtifactTags(value *bool) {
+	err := m.GetBackingStore().Set("manageRegistryArtifactTags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageRegistryArtifactVersionTags sets the manage-registry-artifact-version-tags property value. The manageRegistryArtifactVersionTags property
-func (m *Teams_attributes_organizationAccess) SetManageRegistryArtifactVersionTags(value *bool)() {
-    m.manageRegistryArtifactVersionTags = value
+func (m *Teams_attributes_organizationAccess) SetManageRegistryArtifactVersionTags(value *bool) {
+	err := m.GetBackingStore().Set("manageRegistryArtifactVersionTags", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageRegistryComponents sets the manage-registry-components property value. The manageRegistryComponents property
-func (m *Teams_attributes_organizationAccess) SetManageRegistryComponents(value *bool)() {
-    m.manageRegistryComponents = value
+func (m *Teams_attributes_organizationAccess) SetManageRegistryComponents(value *bool) {
+	err := m.GetBackingStore().Set("manageRegistryComponents", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageRunTasks sets the manage-run-tasks property value. The manageRunTasks property
-func (m *Teams_attributes_organizationAccess) SetManageRunTasks(value *bool)() {
-    m.manageRunTasks = value
+func (m *Teams_attributes_organizationAccess) SetManageRunTasks(value *bool) {
+	err := m.GetBackingStore().Set("manageRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageTeams sets the manage-teams property value. The manageTeams property
-func (m *Teams_attributes_organizationAccess) SetManageTeams(value *bool)() {
-    m.manageTeams = value
+func (m *Teams_attributes_organizationAccess) SetManageTeams(value *bool) {
+	err := m.GetBackingStore().Set("manageTeams", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageVcsSettings sets the manage-vcs-settings property value. The manageVcsSettings property
-func (m *Teams_attributes_organizationAccess) SetManageVcsSettings(value *bool)() {
-    m.manageVcsSettings = value
+func (m *Teams_attributes_organizationAccess) SetManageVcsSettings(value *bool) {
+	err := m.GetBackingStore().Set("manageVcsSettings", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetManageWorkspaces sets the manage-workspaces property value. The manageWorkspaces property
-func (m *Teams_attributes_organizationAccess) SetManageWorkspaces(value *bool)() {
-    m.manageWorkspaces = value
+func (m *Teams_attributes_organizationAccess) SetManageWorkspaces(value *bool) {
+	err := m.GetBackingStore().Set("manageWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetReadProjects sets the read-projects property value. The readProjects property
-func (m *Teams_attributes_organizationAccess) SetReadProjects(value *bool)() {
-    m.readProjects = value
+func (m *Teams_attributes_organizationAccess) SetReadProjects(value *bool) {
+	err := m.GetBackingStore().Set("readProjects", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetReadWorkspaces sets the read-workspaces property value. The readWorkspaces property
-func (m *Teams_attributes_organizationAccess) SetReadWorkspaces(value *bool)() {
-    m.readWorkspaces = value
+func (m *Teams_attributes_organizationAccess) SetReadWorkspaces(value *bool) {
+	err := m.GetBackingStore().Set("readWorkspaces", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Teams_attributes_organizationAccessable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAccessSecretTeams()(*bool)
-    GetDelegatePolicyOverrides()(*bool)
-    GetManageAgentPools()(*bool)
-    GetManageMembership()(*bool)
-    GetManageModules()(*bool)
-    GetManageOrganizationAccess()(*bool)
-    GetManagePolicies()(*bool)
-    GetManagePolicyOverrides()(*bool)
-    GetManageProjects()(*bool)
-    GetManageProviders()(*bool)
-    GetManagePublicModules()(*bool)
-    GetManagePublicProviders()(*bool)
-    GetManageRegistryArtifactTags()(*bool)
-    GetManageRegistryArtifactVersionTags()(*bool)
-    GetManageRegistryComponents()(*bool)
-    GetManageRunTasks()(*bool)
-    GetManageTeams()(*bool)
-    GetManageVcsSettings()(*bool)
-    GetManageWorkspaces()(*bool)
-    GetReadProjects()(*bool)
-    GetReadWorkspaces()(*bool)
-    SetAccessSecretTeams(value *bool)()
-    SetDelegatePolicyOverrides(value *bool)()
-    SetManageAgentPools(value *bool)()
-    SetManageMembership(value *bool)()
-    SetManageModules(value *bool)()
-    SetManageOrganizationAccess(value *bool)()
-    SetManagePolicies(value *bool)()
-    SetManagePolicyOverrides(value *bool)()
-    SetManageProjects(value *bool)()
-    SetManageProviders(value *bool)()
-    SetManagePublicModules(value *bool)()
-    SetManagePublicProviders(value *bool)()
-    SetManageRegistryArtifactTags(value *bool)()
-    SetManageRegistryArtifactVersionTags(value *bool)()
-    SetManageRegistryComponents(value *bool)()
-    SetManageRunTasks(value *bool)()
-    SetManageTeams(value *bool)()
-    SetManageVcsSettings(value *bool)()
-    SetManageWorkspaces(value *bool)()
-    SetReadProjects(value *bool)()
-    SetReadWorkspaces(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAccessSecretTeams() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetDelegatePolicyOverrides() *bool
+	GetManageAgentPools() *bool
+	GetManageMembership() *bool
+	GetManageModules() *bool
+	GetManageOrganizationAccess() *bool
+	GetManagePolicies() *bool
+	GetManagePolicyOverrides() *bool
+	GetManageProjects() *bool
+	GetManageProviders() *bool
+	GetManagePublicModules() *bool
+	GetManagePublicProviders() *bool
+	GetManageRegistryArtifactTags() *bool
+	GetManageRegistryArtifactVersionTags() *bool
+	GetManageRegistryComponents() *bool
+	GetManageRunTasks() *bool
+	GetManageTeams() *bool
+	GetManageVcsSettings() *bool
+	GetManageWorkspaces() *bool
+	GetReadProjects() *bool
+	GetReadWorkspaces() *bool
+	SetAccessSecretTeams(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetDelegatePolicyOverrides(value *bool)
+	SetManageAgentPools(value *bool)
+	SetManageMembership(value *bool)
+	SetManageModules(value *bool)
+	SetManageOrganizationAccess(value *bool)
+	SetManagePolicies(value *bool)
+	SetManagePolicyOverrides(value *bool)
+	SetManageProjects(value *bool)
+	SetManageProviders(value *bool)
+	SetManagePublicModules(value *bool)
+	SetManagePublicProviders(value *bool)
+	SetManageRegistryArtifactTags(value *bool)
+	SetManageRegistryArtifactVersionTags(value *bool)
+	SetManageRegistryComponents(value *bool)
+	SetManageRunTasks(value *bool)
+	SetManageTeams(value *bool)
+	SetManageVcsSettings(value *bool)
+	SetManageWorkspaces(value *bool)
+	SetReadProjects(value *bool)
+	SetReadWorkspaces(value *bool)
 }

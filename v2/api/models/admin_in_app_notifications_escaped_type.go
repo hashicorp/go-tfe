@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type AdminInAppNotifications_type int
 
 const (
-    INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE AdminInAppNotifications_type = iota
+	INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE AdminInAppNotifications_type = iota
 )
 
 func (i AdminInAppNotifications_type) String() string {
-    return []string{"in-app-notifications"}[i]
+	return []string{"in-app-notifications"}[i]
 }
+
 func ParseAdminInAppNotifications_type(v string) (any, error) {
-    result := INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE
-    switch v {
-        case "in-app-notifications":
-            result = INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE
+	switch v {
+	case "in-app-notifications":
+		result = INAPPNOTIFICATIONS_ADMININAPPNOTIFICATIONS_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeAdminInAppNotifications_type(values []AdminInAppNotifications_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i AdminInAppNotifications_type) isMultiValue() bool {
-    return false
+	return false
 }

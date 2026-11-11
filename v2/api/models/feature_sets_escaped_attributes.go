@@ -4,1472 +4,1995 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type FeatureSets_attributes struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // Whether the feature set includes assessments
-    assessments *bool
-    // Whether the feature set includes audit logging
-    auditLogging *bool
-    // Whether the organization can self-service downgrade from this feature set
-    canSelfServiceDowngrade *bool
-    // Whether the feature set includes change requests
-    changeRequests *bool
-    // The cost of the feature set in cents
-    cost *float64
-    // Whether the feature set includes cost estimation
-    costEstimation *bool
-    // Default maximum number of concurrent agents
-    defaultAgentsCeiling *float64
-    // Default maximum number of concurrent runs
-    defaultRunsCeiling *float64
-    // Description of the feature set
-    description *string
-    // Whether the feature set includes global run tasks
-    globalRunTasks *bool
-    // Whether the feature set includes Hold Your Own Key encryption
-    hyok *bool
-    // Unique identifier for the feature set
-    identifier *string
-    // Whether this is a current/active feature set
-    isCurrent *bool
-    // Whether this is a free tier feature set
-    isFreeTier *bool
-    // Whether this is a managed resource plan
-    isManagedResourcePlan *bool
-    // Whether this feature set includes module deprecations
-    moduleDeprecations *bool
-    // Whether this feature set includes module revocations
-    moduleRevocations *bool
-    // The moduleTestsAgentSupport property
-    moduleTestsAgentSupport *bool
-    // Whether the feature set includes module test generation
-    moduleTestsGeneration *bool
-    // Name of the feature set
-    name *string
-    // Whether the feature set includes native tasks
-    nativeTasks *bool
-    // Whether the feature set includes no-code modules
-    noCodeModules *bool
-    // Associated plan ID
-    plan *string
-    // Whether the feature set includes policy enforcement
-    policyEnforcement *bool
-    // Maximum number of policies (null means unlimited)
-    policyLimit *float64
-    // Maximum number of mandatory enforcement policies (null means unlimited)
-    policyMandatoryEnforcementLimit *float64
-    // Maximum number of policy sets (null means unlimited)
-    policySetLimit *float64
-    // Whether the feature set includes private networking
-    privateNetworking *bool
-    // Whether the feature set includes private policy agents
-    privatePolicyAgents *bool
-    // Whether the feature set includes private run tasks
-    privateRunTasks *bool
-    // Whether the feature set includes private VCS
-    privateVcs *bool
-    // Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-    recoverableItems *bool
-    // Maximum number of run tasks (null means unlimited)
-    runTaskLimit *float64
-    // Maximum number of mandatory enforcement run tasks (null means unlimited)
-    runTaskMandatoryEnforcementLimit *float64
-    // Whether the feature set includes run tasks
-    runTasks *bool
-    // Maximum number of workspaces per run task (null means unlimited)
-    runTaskWorkspaceLimit *float64
-    // Whether the feature set supports self-serve billing
-    selfServeBilling *bool
-    // Whether the feature set includes Sentinel (alias for policy-enforcement)
-    sentinel *bool
-    // Whether the feature set includes SSO
-    sso *bool
-    // Whether the feature set includes stacks
-    stacks *bool
-    // Whether the feature set includes the ability to scope tasks to projects
-    taskProjectScoping *bool
-    // Whether the feature set includes teams
-    teams *bool
-    // Whether the feature set includes Terraform Actions features
-    terraformActions *bool
-    // Whether the feature set includes init-stage Terraform policy enforcement
-    tfPolicyInitEnforcement *bool
-    // Maximum number of users (null means unlimited)
-    userLimit *float64
-    // Whether the feature set uses HCP RUM billing resource
-    usesHcpRumBillingResource *bool
-    // Maximum number of versioned policy sets (null means unlimited)
-    versionedPolicySetLimit *float64
-    // The waypointActions property
-    waypointActions *bool
-    // The waypointTemplatesAndAddons property
-    waypointTemplatesAndAddons *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewFeatureSets_attributes instantiates a new FeatureSets_attributes and sets the default values.
-func NewFeatureSets_attributes()(*FeatureSets_attributes) {
-    m := &FeatureSets_attributes{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewFeatureSets_attributes() *FeatureSets_attributes {
+	m := &FeatureSets_attributes{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateFeatureSets_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateFeatureSets_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewFeatureSets_attributes(), nil
+func CreateFeatureSets_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewFeatureSets_attributes(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *FeatureSets_attributes) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *FeatureSets_attributes) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
 // GetAssessments gets the assessments property value. Whether the feature set includes assessments
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetAssessments()(*bool) {
-    return m.assessments
+func (m *FeatureSets_attributes) GetAssessments() *bool {
+	val, err := m.GetBackingStore().Get("assessments")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetAuditLogging gets the audit-logging property value. Whether the feature set includes audit logging
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetAuditLogging()(*bool) {
-    return m.auditLogging
+func (m *FeatureSets_attributes) GetAuditLogging() *bool {
+	val, err := m.GetBackingStore().Get("auditLogging")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *FeatureSets_attributes) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanSelfServiceDowngrade gets the can-self-service-downgrade property value. Whether the organization can self-service downgrade from this feature set
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetCanSelfServiceDowngrade()(*bool) {
-    return m.canSelfServiceDowngrade
+func (m *FeatureSets_attributes) GetCanSelfServiceDowngrade() *bool {
+	val, err := m.GetBackingStore().Get("canSelfServiceDowngrade")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetChangeRequests gets the change-requests property value. Whether the feature set includes change requests
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetChangeRequests()(*bool) {
-    return m.changeRequests
+func (m *FeatureSets_attributes) GetChangeRequests() *bool {
+	val, err := m.GetBackingStore().Get("changeRequests")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCost gets the cost property value. The cost of the feature set in cents
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetCost()(*float64) {
-    return m.cost
+func (m *FeatureSets_attributes) GetCost() *float64 {
+	val, err := m.GetBackingStore().Get("cost")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetCostEstimation gets the cost-estimation property value. Whether the feature set includes cost estimation
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetCostEstimation()(*bool) {
-    return m.costEstimation
+func (m *FeatureSets_attributes) GetCostEstimation() *bool {
+	val, err := m.GetBackingStore().Get("costEstimation")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetDefaultAgentsCeiling gets the default-agents-ceiling property value. Default maximum number of concurrent agents
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetDefaultAgentsCeiling()(*float64) {
-    return m.defaultAgentsCeiling
+func (m *FeatureSets_attributes) GetDefaultAgentsCeiling() *float64 {
+	val, err := m.GetBackingStore().Get("defaultAgentsCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetDefaultRunsCeiling gets the default-runs-ceiling property value. Default maximum number of concurrent runs
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetDefaultRunsCeiling()(*float64) {
-    return m.defaultRunsCeiling
+func (m *FeatureSets_attributes) GetDefaultRunsCeiling() *float64 {
+	val, err := m.GetBackingStore().Get("defaultRunsCeiling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetDescription gets the description property value. Description of the feature set
 // returns a *string when successful
-func (m *FeatureSets_attributes) GetDescription()(*string) {
-    return m.description
+func (m *FeatureSets_attributes) GetDescription() *string {
+	val, err := m.GetBackingStore().Get("description")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["assessments"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAssessments(val)
-        }
-        return nil
-    }
-    res["audit-logging"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetAuditLogging(val)
-        }
-        return nil
-    }
-    res["can-self-service-downgrade"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanSelfServiceDowngrade(val)
-        }
-        return nil
-    }
-    res["change-requests"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetChangeRequests(val)
-        }
-        return nil
-    }
-    res["cost"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCost(val)
-        }
-        return nil
-    }
-    res["cost-estimation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCostEstimation(val)
-        }
-        return nil
-    }
-    res["default-agents-ceiling"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultAgentsCeiling(val)
-        }
-        return nil
-    }
-    res["default-runs-ceiling"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDefaultRunsCeiling(val)
-        }
-        return nil
-    }
-    res["description"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetDescription(val)
-        }
-        return nil
-    }
-    res["global-run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGlobalRunTasks(val)
-        }
-        return nil
-    }
-    res["hyok"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetHyok(val)
-        }
-        return nil
-    }
-    res["identifier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIdentifier(val)
-        }
-        return nil
-    }
-    res["is-current"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsCurrent(val)
-        }
-        return nil
-    }
-    res["is-free-tier"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsFreeTier(val)
-        }
-        return nil
-    }
-    res["is-managed-resource-plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsManagedResourcePlan(val)
-        }
-        return nil
-    }
-    res["module-deprecations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleDeprecations(val)
-        }
-        return nil
-    }
-    res["module-revocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleRevocations(val)
-        }
-        return nil
-    }
-    res["module-tests-agent-support"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleTestsAgentSupport(val)
-        }
-        return nil
-    }
-    res["module-tests-generation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetModuleTestsGeneration(val)
-        }
-        return nil
-    }
-    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetName(val)
-        }
-        return nil
-    }
-    res["native-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNativeTasks(val)
-        }
-        return nil
-    }
-    res["no-code-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetNoCodeModules(val)
-        }
-        return nil
-    }
-    res["plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPlan(val)
-        }
-        return nil
-    }
-    res["policy-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyEnforcement(val)
-        }
-        return nil
-    }
-    res["policy-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyLimit(val)
-        }
-        return nil
-    }
-    res["policy-mandatory-enforcement-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicyMandatoryEnforcementLimit(val)
-        }
-        return nil
-    }
-    res["policy-set-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPolicySetLimit(val)
-        }
-        return nil
-    }
-    res["private-networking"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrivateNetworking(val)
-        }
-        return nil
-    }
-    res["private-policy-agents"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrivatePolicyAgents(val)
-        }
-        return nil
-    }
-    res["private-run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrivateRunTasks(val)
-        }
-        return nil
-    }
-    res["private-vcs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetPrivateVcs(val)
-        }
-        return nil
-    }
-    res["recoverable-items"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRecoverableItems(val)
-        }
-        return nil
-    }
-    res["run-task-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunTaskLimit(val)
-        }
-        return nil
-    }
-    res["run-task-mandatory-enforcement-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunTaskMandatoryEnforcementLimit(val)
-        }
-        return nil
-    }
-    res["run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunTasks(val)
-        }
-        return nil
-    }
-    res["run-task-workspace-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetRunTaskWorkspaceLimit(val)
-        }
-        return nil
-    }
-    res["self-serve-billing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSelfServeBilling(val)
-        }
-        return nil
-    }
-    res["sentinel"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSentinel(val)
-        }
-        return nil
-    }
-    res["sso"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSso(val)
-        }
-        return nil
-    }
-    res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStacks(val)
-        }
-        return nil
-    }
-    res["task-project-scoping"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTaskProjectScoping(val)
-        }
-        return nil
-    }
-    res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTeams(val)
-        }
-        return nil
-    }
-    res["terraform-actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTerraformActions(val)
-        }
-        return nil
-    }
-    res["tf-policy-init-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTfPolicyInitEnforcement(val)
-        }
-        return nil
-    }
-    res["user-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUserLimit(val)
-        }
-        return nil
-    }
-    res["uses-hcp-rum-billing-resource"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetUsesHcpRumBillingResource(val)
-        }
-        return nil
-    }
-    res["versioned-policy-set-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetFloat64Value()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetVersionedPolicySetLimit(val)
-        }
-        return nil
-    }
-    res["waypoint-actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWaypointActions(val)
-        }
-        return nil
-    }
-    res["waypoint-templates-and-addons"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetWaypointTemplatesAndAddons(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *FeatureSets_attributes) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["assessments"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAssessments(val)
+		}
+		return nil
+	}
+	res["audit-logging"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetAuditLogging(val)
+		}
+		return nil
+	}
+	res["can-self-service-downgrade"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanSelfServiceDowngrade(val)
+		}
+		return nil
+	}
+	res["change-requests"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetChangeRequests(val)
+		}
+		return nil
+	}
+	res["cost"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCost(val)
+		}
+		return nil
+	}
+	res["cost-estimation"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCostEstimation(val)
+		}
+		return nil
+	}
+	res["default-agents-ceiling"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultAgentsCeiling(val)
+		}
+		return nil
+	}
+	res["default-runs-ceiling"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDefaultRunsCeiling(val)
+		}
+		return nil
+	}
+	res["description"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetDescription(val)
+		}
+		return nil
+	}
+	res["global-run-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGlobalRunTasks(val)
+		}
+		return nil
+	}
+	res["hyok"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetHyok(val)
+		}
+		return nil
+	}
+	res["identifier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIdentifier(val)
+		}
+		return nil
+	}
+	res["is-current"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsCurrent(val)
+		}
+		return nil
+	}
+	res["is-free-tier"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsFreeTier(val)
+		}
+		return nil
+	}
+	res["is-managed-resource-plan"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIsManagedResourcePlan(val)
+		}
+		return nil
+	}
+	res["module-deprecations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleDeprecations(val)
+		}
+		return nil
+	}
+	res["module-revocations"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleRevocations(val)
+		}
+		return nil
+	}
+	res["module-tests-agent-support"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleTestsAgentSupport(val)
+		}
+		return nil
+	}
+	res["module-tests-generation"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetModuleTestsGeneration(val)
+		}
+		return nil
+	}
+	res["name"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetName(val)
+		}
+		return nil
+	}
+	res["native-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNativeTasks(val)
+		}
+		return nil
+	}
+	res["no-code-modules"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetNoCodeModules(val)
+		}
+		return nil
+	}
+	res["plan"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPlan(val)
+		}
+		return nil
+	}
+	res["policy-enforcement"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyEnforcement(val)
+		}
+		return nil
+	}
+	res["policy-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyLimit(val)
+		}
+		return nil
+	}
+	res["policy-mandatory-enforcement-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicyMandatoryEnforcementLimit(val)
+		}
+		return nil
+	}
+	res["policy-set-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPolicySetLimit(val)
+		}
+		return nil
+	}
+	res["private-networking"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrivateNetworking(val)
+		}
+		return nil
+	}
+	res["private-policy-agents"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrivatePolicyAgents(val)
+		}
+		return nil
+	}
+	res["private-run-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrivateRunTasks(val)
+		}
+		return nil
+	}
+	res["private-vcs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetPrivateVcs(val)
+		}
+		return nil
+	}
+	res["recoverable-items"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRecoverableItems(val)
+		}
+		return nil
+	}
+	res["run-task-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunTaskLimit(val)
+		}
+		return nil
+	}
+	res["run-task-mandatory-enforcement-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunTaskMandatoryEnforcementLimit(val)
+		}
+		return nil
+	}
+	res["run-tasks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunTasks(val)
+		}
+		return nil
+	}
+	res["run-task-workspace-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetRunTaskWorkspaceLimit(val)
+		}
+		return nil
+	}
+	res["self-serve-billing"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSelfServeBilling(val)
+		}
+		return nil
+	}
+	res["sentinel"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSentinel(val)
+		}
+		return nil
+	}
+	res["sso"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSso(val)
+		}
+		return nil
+	}
+	res["stacks"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStacks(val)
+		}
+		return nil
+	}
+	res["task-project-scoping"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTaskProjectScoping(val)
+		}
+		return nil
+	}
+	res["teams"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTeams(val)
+		}
+		return nil
+	}
+	res["terraform-actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTerraformActions(val)
+		}
+		return nil
+	}
+	res["tf-policy-init-enforcement"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetTfPolicyInitEnforcement(val)
+		}
+		return nil
+	}
+	res["user-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUserLimit(val)
+		}
+		return nil
+	}
+	res["uses-hcp-rum-billing-resource"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetUsesHcpRumBillingResource(val)
+		}
+		return nil
+	}
+	res["versioned-policy-set-limit"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetFloat64Value()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetVersionedPolicySetLimit(val)
+		}
+		return nil
+	}
+	res["waypoint-actions"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWaypointActions(val)
+		}
+		return nil
+	}
+	res["waypoint-templates-and-addons"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetWaypointTemplatesAndAddons(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGlobalRunTasks gets the global-run-tasks property value. Whether the feature set includes global run tasks
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetGlobalRunTasks()(*bool) {
-    return m.globalRunTasks
+func (m *FeatureSets_attributes) GetGlobalRunTasks() *bool {
+	val, err := m.GetBackingStore().Get("globalRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetHyok gets the hyok property value. Whether the feature set includes Hold Your Own Key encryption
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetHyok()(*bool) {
-    return m.hyok
+func (m *FeatureSets_attributes) GetHyok() *bool {
+	val, err := m.GetBackingStore().Get("hyok")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetIdentifier gets the identifier property value. Unique identifier for the feature set
 // returns a *string when successful
-func (m *FeatureSets_attributes) GetIdentifier()(*string) {
-    return m.identifier
+func (m *FeatureSets_attributes) GetIdentifier() *string {
+	val, err := m.GetBackingStore().Get("identifier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetIsCurrent gets the is-current property value. Whether this is a current/active feature set
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetIsCurrent()(*bool) {
-    return m.isCurrent
+func (m *FeatureSets_attributes) GetIsCurrent() *bool {
+	val, err := m.GetBackingStore().Get("isCurrent")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetIsFreeTier gets the is-free-tier property value. Whether this is a free tier feature set
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetIsFreeTier()(*bool) {
-    return m.isFreeTier
+func (m *FeatureSets_attributes) GetIsFreeTier() *bool {
+	val, err := m.GetBackingStore().Get("isFreeTier")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetIsManagedResourcePlan gets the is-managed-resource-plan property value. Whether this is a managed resource plan
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetIsManagedResourcePlan()(*bool) {
-    return m.isManagedResourcePlan
+func (m *FeatureSets_attributes) GetIsManagedResourcePlan() *bool {
+	val, err := m.GetBackingStore().Get("isManagedResourcePlan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetModuleDeprecations gets the module-deprecations property value. Whether this feature set includes module deprecations
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetModuleDeprecations()(*bool) {
-    return m.moduleDeprecations
+func (m *FeatureSets_attributes) GetModuleDeprecations() *bool {
+	val, err := m.GetBackingStore().Get("moduleDeprecations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetModuleRevocations gets the module-revocations property value. Whether this feature set includes module revocations
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetModuleRevocations()(*bool) {
-    return m.moduleRevocations
+func (m *FeatureSets_attributes) GetModuleRevocations() *bool {
+	val, err := m.GetBackingStore().Get("moduleRevocations")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetModuleTestsAgentSupport gets the module-tests-agent-support property value. The moduleTestsAgentSupport property
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetModuleTestsAgentSupport()(*bool) {
-    return m.moduleTestsAgentSupport
+func (m *FeatureSets_attributes) GetModuleTestsAgentSupport() *bool {
+	val, err := m.GetBackingStore().Get("moduleTestsAgentSupport")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetModuleTestsGeneration gets the module-tests-generation property value. Whether the feature set includes module test generation
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetModuleTestsGeneration()(*bool) {
-    return m.moduleTestsGeneration
+func (m *FeatureSets_attributes) GetModuleTestsGeneration() *bool {
+	val, err := m.GetBackingStore().Get("moduleTestsGeneration")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetName gets the name property value. Name of the feature set
 // returns a *string when successful
-func (m *FeatureSets_attributes) GetName()(*string) {
-    return m.name
+func (m *FeatureSets_attributes) GetName() *string {
+	val, err := m.GetBackingStore().Get("name")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetNativeTasks gets the native-tasks property value. Whether the feature set includes native tasks
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetNativeTasks()(*bool) {
-    return m.nativeTasks
+func (m *FeatureSets_attributes) GetNativeTasks() *bool {
+	val, err := m.GetBackingStore().Get("nativeTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetNoCodeModules gets the no-code-modules property value. Whether the feature set includes no-code modules
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetNoCodeModules()(*bool) {
-    return m.noCodeModules
+func (m *FeatureSets_attributes) GetNoCodeModules() *bool {
+	val, err := m.GetBackingStore().Get("noCodeModules")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPlan gets the plan property value. Associated plan ID
 // returns a *string when successful
-func (m *FeatureSets_attributes) GetPlan()(*string) {
-    return m.plan
+func (m *FeatureSets_attributes) GetPlan() *string {
+	val, err := m.GetBackingStore().Get("plan")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetPolicyEnforcement gets the policy-enforcement property value. Whether the feature set includes policy enforcement
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetPolicyEnforcement()(*bool) {
-    return m.policyEnforcement
+func (m *FeatureSets_attributes) GetPolicyEnforcement() *bool {
+	val, err := m.GetBackingStore().Get("policyEnforcement")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPolicyLimit gets the policy-limit property value. Maximum number of policies (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetPolicyLimit()(*float64) {
-    return m.policyLimit
+func (m *FeatureSets_attributes) GetPolicyLimit() *float64 {
+	val, err := m.GetBackingStore().Get("policyLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetPolicyMandatoryEnforcementLimit gets the policy-mandatory-enforcement-limit property value. Maximum number of mandatory enforcement policies (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetPolicyMandatoryEnforcementLimit()(*float64) {
-    return m.policyMandatoryEnforcementLimit
+func (m *FeatureSets_attributes) GetPolicyMandatoryEnforcementLimit() *float64 {
+	val, err := m.GetBackingStore().Get("policyMandatoryEnforcementLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetPolicySetLimit gets the policy-set-limit property value. Maximum number of policy sets (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetPolicySetLimit()(*float64) {
-    return m.policySetLimit
+func (m *FeatureSets_attributes) GetPolicySetLimit() *float64 {
+	val, err := m.GetBackingStore().Get("policySetLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetPrivateNetworking gets the private-networking property value. Whether the feature set includes private networking
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetPrivateNetworking()(*bool) {
-    return m.privateNetworking
+func (m *FeatureSets_attributes) GetPrivateNetworking() *bool {
+	val, err := m.GetBackingStore().Get("privateNetworking")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPrivatePolicyAgents gets the private-policy-agents property value. Whether the feature set includes private policy agents
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetPrivatePolicyAgents()(*bool) {
-    return m.privatePolicyAgents
+func (m *FeatureSets_attributes) GetPrivatePolicyAgents() *bool {
+	val, err := m.GetBackingStore().Get("privatePolicyAgents")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPrivateRunTasks gets the private-run-tasks property value. Whether the feature set includes private run tasks
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetPrivateRunTasks()(*bool) {
-    return m.privateRunTasks
+func (m *FeatureSets_attributes) GetPrivateRunTasks() *bool {
+	val, err := m.GetBackingStore().Get("privateRunTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetPrivateVcs gets the private-vcs property value. Whether the feature set includes private VCS
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetPrivateVcs()(*bool) {
-    return m.privateVcs
+func (m *FeatureSets_attributes) GetPrivateVcs() *bool {
+	val, err := m.GetBackingStore().Get("privateVcs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetRecoverableItems gets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetRecoverableItems()(*bool) {
-    return m.recoverableItems
+func (m *FeatureSets_attributes) GetRecoverableItems() *bool {
+	val, err := m.GetBackingStore().Get("recoverableItems")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetRunTaskLimit gets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetRunTaskLimit()(*float64) {
-    return m.runTaskLimit
+func (m *FeatureSets_attributes) GetRunTaskLimit() *float64 {
+	val, err := m.GetBackingStore().Get("runTaskLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetRunTaskMandatoryEnforcementLimit gets the run-task-mandatory-enforcement-limit property value. Maximum number of mandatory enforcement run tasks (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetRunTaskMandatoryEnforcementLimit()(*float64) {
-    return m.runTaskMandatoryEnforcementLimit
+func (m *FeatureSets_attributes) GetRunTaskMandatoryEnforcementLimit() *float64 {
+	val, err := m.GetBackingStore().Get("runTaskMandatoryEnforcementLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetRunTasks gets the run-tasks property value. Whether the feature set includes run tasks
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetRunTasks()(*bool) {
-    return m.runTasks
+func (m *FeatureSets_attributes) GetRunTasks() *bool {
+	val, err := m.GetBackingStore().Get("runTasks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetRunTaskWorkspaceLimit gets the run-task-workspace-limit property value. Maximum number of workspaces per run task (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetRunTaskWorkspaceLimit()(*float64) {
-    return m.runTaskWorkspaceLimit
+func (m *FeatureSets_attributes) GetRunTaskWorkspaceLimit() *float64 {
+	val, err := m.GetBackingStore().Get("runTaskWorkspaceLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetSelfServeBilling gets the self-serve-billing property value. Whether the feature set supports self-serve billing
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetSelfServeBilling()(*bool) {
-    return m.selfServeBilling
+func (m *FeatureSets_attributes) GetSelfServeBilling() *bool {
+	val, err := m.GetBackingStore().Get("selfServeBilling")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetSentinel gets the sentinel property value. Whether the feature set includes Sentinel (alias for policy-enforcement)
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetSentinel()(*bool) {
-    return m.sentinel
+func (m *FeatureSets_attributes) GetSentinel() *bool {
+	val, err := m.GetBackingStore().Get("sentinel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetSso gets the sso property value. Whether the feature set includes SSO
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetSso()(*bool) {
-    return m.sso
+func (m *FeatureSets_attributes) GetSso() *bool {
+	val, err := m.GetBackingStore().Get("sso")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetStacks gets the stacks property value. Whether the feature set includes stacks
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetStacks()(*bool) {
-    return m.stacks
+func (m *FeatureSets_attributes) GetStacks() *bool {
+	val, err := m.GetBackingStore().Get("stacks")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetTaskProjectScoping gets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetTaskProjectScoping()(*bool) {
-    return m.taskProjectScoping
+func (m *FeatureSets_attributes) GetTaskProjectScoping() *bool {
+	val, err := m.GetBackingStore().Get("taskProjectScoping")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetTeams gets the teams property value. Whether the feature set includes teams
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetTeams()(*bool) {
-    return m.teams
+func (m *FeatureSets_attributes) GetTeams() *bool {
+	val, err := m.GetBackingStore().Get("teams")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetTerraformActions gets the terraform-actions property value. Whether the feature set includes Terraform Actions features
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetTerraformActions()(*bool) {
-    return m.terraformActions
+func (m *FeatureSets_attributes) GetTerraformActions() *bool {
+	val, err := m.GetBackingStore().Get("terraformActions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetTfPolicyInitEnforcement gets the tf-policy-init-enforcement property value. Whether the feature set includes init-stage Terraform policy enforcement
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetTfPolicyInitEnforcement()(*bool) {
-    return m.tfPolicyInitEnforcement
+func (m *FeatureSets_attributes) GetTfPolicyInitEnforcement() *bool {
+	val, err := m.GetBackingStore().Get("tfPolicyInitEnforcement")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetUserLimit gets the user-limit property value. Maximum number of users (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetUserLimit()(*float64) {
-    return m.userLimit
+func (m *FeatureSets_attributes) GetUserLimit() *float64 {
+	val, err := m.GetBackingStore().Get("userLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetUsesHcpRumBillingResource gets the uses-hcp-rum-billing-resource property value. Whether the feature set uses HCP RUM billing resource
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetUsesHcpRumBillingResource()(*bool) {
-    return m.usesHcpRumBillingResource
+func (m *FeatureSets_attributes) GetUsesHcpRumBillingResource() *bool {
+	val, err := m.GetBackingStore().Get("usesHcpRumBillingResource")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetVersionedPolicySetLimit gets the versioned-policy-set-limit property value. Maximum number of versioned policy sets (null means unlimited)
 // returns a *float64 when successful
-func (m *FeatureSets_attributes) GetVersionedPolicySetLimit()(*float64) {
-    return m.versionedPolicySetLimit
+func (m *FeatureSets_attributes) GetVersionedPolicySetLimit() *float64 {
+	val, err := m.GetBackingStore().Get("versionedPolicySetLimit")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*float64)
+	}
+	return nil
 }
+
 // GetWaypointActions gets the waypoint-actions property value. The waypointActions property
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetWaypointActions()(*bool) {
-    return m.waypointActions
+func (m *FeatureSets_attributes) GetWaypointActions() *bool {
+	val, err := m.GetBackingStore().Get("waypointActions")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetWaypointTemplatesAndAddons gets the waypoint-templates-and-addons property value. The waypointTemplatesAndAddons property
 // returns a *bool when successful
-func (m *FeatureSets_attributes) GetWaypointTemplatesAndAddons()(*bool) {
-    return m.waypointTemplatesAndAddons
+func (m *FeatureSets_attributes) GetWaypointTemplatesAndAddons() *bool {
+	val, err := m.GetBackingStore().Get("waypointTemplatesAndAddons")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("assessments", m.GetAssessments())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("audit-logging", m.GetAuditLogging())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-self-service-downgrade", m.GetCanSelfServiceDowngrade())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("change-requests", m.GetChangeRequests())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("cost", m.GetCost())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("cost-estimation", m.GetCostEstimation())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("default-agents-ceiling", m.GetDefaultAgentsCeiling())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("default-runs-ceiling", m.GetDefaultRunsCeiling())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("description", m.GetDescription())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("global-run-tasks", m.GetGlobalRunTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("hyok", m.GetHyok())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("identifier", m.GetIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-current", m.GetIsCurrent())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-free-tier", m.GetIsFreeTier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("is-managed-resource-plan", m.GetIsManagedResourcePlan())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("module-deprecations", m.GetModuleDeprecations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("module-revocations", m.GetModuleRevocations())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("module-tests-agent-support", m.GetModuleTestsAgentSupport())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("module-tests-generation", m.GetModuleTestsGeneration())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("name", m.GetName())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("native-tasks", m.GetNativeTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("no-code-modules", m.GetNoCodeModules())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("plan", m.GetPlan())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("policy-enforcement", m.GetPolicyEnforcement())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("policy-limit", m.GetPolicyLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("policy-mandatory-enforcement-limit", m.GetPolicyMandatoryEnforcementLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("policy-set-limit", m.GetPolicySetLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("private-networking", m.GetPrivateNetworking())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("private-policy-agents", m.GetPrivatePolicyAgents())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("private-run-tasks", m.GetPrivateRunTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("private-vcs", m.GetPrivateVcs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("recoverable-items", m.GetRecoverableItems())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("run-task-limit", m.GetRunTaskLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("run-task-mandatory-enforcement-limit", m.GetRunTaskMandatoryEnforcementLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("run-tasks", m.GetRunTasks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("run-task-workspace-limit", m.GetRunTaskWorkspaceLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("self-serve-billing", m.GetSelfServeBilling())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("sentinel", m.GetSentinel())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("sso", m.GetSso())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("stacks", m.GetStacks())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("task-project-scoping", m.GetTaskProjectScoping())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("teams", m.GetTeams())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("terraform-actions", m.GetTerraformActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("tf-policy-init-enforcement", m.GetTfPolicyInitEnforcement())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("user-limit", m.GetUserLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("uses-hcp-rum-billing-resource", m.GetUsesHcpRumBillingResource())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteFloat64Value("versioned-policy-set-limit", m.GetVersionedPolicySetLimit())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("waypoint-actions", m.GetWaypointActions())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("waypoint-templates-and-addons", m.GetWaypointTemplatesAndAddons())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("assessments", m.GetAssessments())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("audit-logging", m.GetAuditLogging())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-self-service-downgrade", m.GetCanSelfServiceDowngrade())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("change-requests", m.GetChangeRequests())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("cost", m.GetCost())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("cost-estimation", m.GetCostEstimation())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("default-agents-ceiling", m.GetDefaultAgentsCeiling())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("default-runs-ceiling", m.GetDefaultRunsCeiling())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("description", m.GetDescription())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("global-run-tasks", m.GetGlobalRunTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("hyok", m.GetHyok())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("identifier", m.GetIdentifier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-current", m.GetIsCurrent())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-free-tier", m.GetIsFreeTier())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("is-managed-resource-plan", m.GetIsManagedResourcePlan())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("module-deprecations", m.GetModuleDeprecations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("module-revocations", m.GetModuleRevocations())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("module-tests-agent-support", m.GetModuleTestsAgentSupport())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("module-tests-generation", m.GetModuleTestsGeneration())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("name", m.GetName())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("native-tasks", m.GetNativeTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("no-code-modules", m.GetNoCodeModules())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("plan", m.GetPlan())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("policy-enforcement", m.GetPolicyEnforcement())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("policy-limit", m.GetPolicyLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("policy-mandatory-enforcement-limit", m.GetPolicyMandatoryEnforcementLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("policy-set-limit", m.GetPolicySetLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("private-networking", m.GetPrivateNetworking())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("private-policy-agents", m.GetPrivatePolicyAgents())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("private-run-tasks", m.GetPrivateRunTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("private-vcs", m.GetPrivateVcs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("recoverable-items", m.GetRecoverableItems())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("run-task-limit", m.GetRunTaskLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("run-task-mandatory-enforcement-limit", m.GetRunTaskMandatoryEnforcementLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("run-tasks", m.GetRunTasks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("run-task-workspace-limit", m.GetRunTaskWorkspaceLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("self-serve-billing", m.GetSelfServeBilling())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("sentinel", m.GetSentinel())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("sso", m.GetSso())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("stacks", m.GetStacks())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("task-project-scoping", m.GetTaskProjectScoping())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("teams", m.GetTeams())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("terraform-actions", m.GetTerraformActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("tf-policy-init-enforcement", m.GetTfPolicyInitEnforcement())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("user-limit", m.GetUserLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("uses-hcp-rum-billing-resource", m.GetUsesHcpRumBillingResource())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteFloat64Value("versioned-policy-set-limit", m.GetVersionedPolicySetLimit())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("waypoint-actions", m.GetWaypointActions())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("waypoint-templates-and-addons", m.GetWaypointTemplatesAndAddons())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *FeatureSets_attributes) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *FeatureSets_attributes) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAssessments sets the assessments property value. Whether the feature set includes assessments
-func (m *FeatureSets_attributes) SetAssessments(value *bool)() {
-    m.assessments = value
+func (m *FeatureSets_attributes) SetAssessments(value *bool) {
+	err := m.GetBackingStore().Set("assessments", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetAuditLogging sets the audit-logging property value. Whether the feature set includes audit logging
-func (m *FeatureSets_attributes) SetAuditLogging(value *bool)() {
-    m.auditLogging = value
+func (m *FeatureSets_attributes) SetAuditLogging(value *bool) {
+	err := m.GetBackingStore().Set("auditLogging", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *FeatureSets_attributes) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanSelfServiceDowngrade sets the can-self-service-downgrade property value. Whether the organization can self-service downgrade from this feature set
-func (m *FeatureSets_attributes) SetCanSelfServiceDowngrade(value *bool)() {
-    m.canSelfServiceDowngrade = value
+func (m *FeatureSets_attributes) SetCanSelfServiceDowngrade(value *bool) {
+	err := m.GetBackingStore().Set("canSelfServiceDowngrade", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetChangeRequests sets the change-requests property value. Whether the feature set includes change requests
-func (m *FeatureSets_attributes) SetChangeRequests(value *bool)() {
-    m.changeRequests = value
+func (m *FeatureSets_attributes) SetChangeRequests(value *bool) {
+	err := m.GetBackingStore().Set("changeRequests", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCost sets the cost property value. The cost of the feature set in cents
-func (m *FeatureSets_attributes) SetCost(value *float64)() {
-    m.cost = value
+func (m *FeatureSets_attributes) SetCost(value *float64) {
+	err := m.GetBackingStore().Set("cost", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCostEstimation sets the cost-estimation property value. Whether the feature set includes cost estimation
-func (m *FeatureSets_attributes) SetCostEstimation(value *bool)() {
-    m.costEstimation = value
+func (m *FeatureSets_attributes) SetCostEstimation(value *bool) {
+	err := m.GetBackingStore().Set("costEstimation", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDefaultAgentsCeiling sets the default-agents-ceiling property value. Default maximum number of concurrent agents
-func (m *FeatureSets_attributes) SetDefaultAgentsCeiling(value *float64)() {
-    m.defaultAgentsCeiling = value
+func (m *FeatureSets_attributes) SetDefaultAgentsCeiling(value *float64) {
+	err := m.GetBackingStore().Set("defaultAgentsCeiling", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDefaultRunsCeiling sets the default-runs-ceiling property value. Default maximum number of concurrent runs
-func (m *FeatureSets_attributes) SetDefaultRunsCeiling(value *float64)() {
-    m.defaultRunsCeiling = value
+func (m *FeatureSets_attributes) SetDefaultRunsCeiling(value *float64) {
+	err := m.GetBackingStore().Set("defaultRunsCeiling", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetDescription sets the description property value. Description of the feature set
-func (m *FeatureSets_attributes) SetDescription(value *string)() {
-    m.description = value
+func (m *FeatureSets_attributes) SetDescription(value *string) {
+	err := m.GetBackingStore().Set("description", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetGlobalRunTasks sets the global-run-tasks property value. Whether the feature set includes global run tasks
-func (m *FeatureSets_attributes) SetGlobalRunTasks(value *bool)() {
-    m.globalRunTasks = value
+func (m *FeatureSets_attributes) SetGlobalRunTasks(value *bool) {
+	err := m.GetBackingStore().Set("globalRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetHyok sets the hyok property value. Whether the feature set includes Hold Your Own Key encryption
-func (m *FeatureSets_attributes) SetHyok(value *bool)() {
-    m.hyok = value
+func (m *FeatureSets_attributes) SetHyok(value *bool) {
+	err := m.GetBackingStore().Set("hyok", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIdentifier sets the identifier property value. Unique identifier for the feature set
-func (m *FeatureSets_attributes) SetIdentifier(value *string)() {
-    m.identifier = value
+func (m *FeatureSets_attributes) SetIdentifier(value *string) {
+	err := m.GetBackingStore().Set("identifier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsCurrent sets the is-current property value. Whether this is a current/active feature set
-func (m *FeatureSets_attributes) SetIsCurrent(value *bool)() {
-    m.isCurrent = value
+func (m *FeatureSets_attributes) SetIsCurrent(value *bool) {
+	err := m.GetBackingStore().Set("isCurrent", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsFreeTier sets the is-free-tier property value. Whether this is a free tier feature set
-func (m *FeatureSets_attributes) SetIsFreeTier(value *bool)() {
-    m.isFreeTier = value
+func (m *FeatureSets_attributes) SetIsFreeTier(value *bool) {
+	err := m.GetBackingStore().Set("isFreeTier", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIsManagedResourcePlan sets the is-managed-resource-plan property value. Whether this is a managed resource plan
-func (m *FeatureSets_attributes) SetIsManagedResourcePlan(value *bool)() {
-    m.isManagedResourcePlan = value
+func (m *FeatureSets_attributes) SetIsManagedResourcePlan(value *bool) {
+	err := m.GetBackingStore().Set("isManagedResourcePlan", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleDeprecations sets the module-deprecations property value. Whether this feature set includes module deprecations
-func (m *FeatureSets_attributes) SetModuleDeprecations(value *bool)() {
-    m.moduleDeprecations = value
+func (m *FeatureSets_attributes) SetModuleDeprecations(value *bool) {
+	err := m.GetBackingStore().Set("moduleDeprecations", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleRevocations sets the module-revocations property value. Whether this feature set includes module revocations
-func (m *FeatureSets_attributes) SetModuleRevocations(value *bool)() {
-    m.moduleRevocations = value
+func (m *FeatureSets_attributes) SetModuleRevocations(value *bool) {
+	err := m.GetBackingStore().Set("moduleRevocations", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleTestsAgentSupport sets the module-tests-agent-support property value. The moduleTestsAgentSupport property
-func (m *FeatureSets_attributes) SetModuleTestsAgentSupport(value *bool)() {
-    m.moduleTestsAgentSupport = value
+func (m *FeatureSets_attributes) SetModuleTestsAgentSupport(value *bool) {
+	err := m.GetBackingStore().Set("moduleTestsAgentSupport", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetModuleTestsGeneration sets the module-tests-generation property value. Whether the feature set includes module test generation
-func (m *FeatureSets_attributes) SetModuleTestsGeneration(value *bool)() {
-    m.moduleTestsGeneration = value
+func (m *FeatureSets_attributes) SetModuleTestsGeneration(value *bool) {
+	err := m.GetBackingStore().Set("moduleTestsGeneration", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetName sets the name property value. Name of the feature set
-func (m *FeatureSets_attributes) SetName(value *string)() {
-    m.name = value
+func (m *FeatureSets_attributes) SetName(value *string) {
+	err := m.GetBackingStore().Set("name", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNativeTasks sets the native-tasks property value. Whether the feature set includes native tasks
-func (m *FeatureSets_attributes) SetNativeTasks(value *bool)() {
-    m.nativeTasks = value
+func (m *FeatureSets_attributes) SetNativeTasks(value *bool) {
+	err := m.GetBackingStore().Set("nativeTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetNoCodeModules sets the no-code-modules property value. Whether the feature set includes no-code modules
-func (m *FeatureSets_attributes) SetNoCodeModules(value *bool)() {
-    m.noCodeModules = value
+func (m *FeatureSets_attributes) SetNoCodeModules(value *bool) {
+	err := m.GetBackingStore().Set("noCodeModules", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPlan sets the plan property value. Associated plan ID
-func (m *FeatureSets_attributes) SetPlan(value *string)() {
-    m.plan = value
+func (m *FeatureSets_attributes) SetPlan(value *string) {
+	err := m.GetBackingStore().Set("plan", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyEnforcement sets the policy-enforcement property value. Whether the feature set includes policy enforcement
-func (m *FeatureSets_attributes) SetPolicyEnforcement(value *bool)() {
-    m.policyEnforcement = value
+func (m *FeatureSets_attributes) SetPolicyEnforcement(value *bool) {
+	err := m.GetBackingStore().Set("policyEnforcement", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyLimit sets the policy-limit property value. Maximum number of policies (null means unlimited)
-func (m *FeatureSets_attributes) SetPolicyLimit(value *float64)() {
-    m.policyLimit = value
+func (m *FeatureSets_attributes) SetPolicyLimit(value *float64) {
+	err := m.GetBackingStore().Set("policyLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicyMandatoryEnforcementLimit sets the policy-mandatory-enforcement-limit property value. Maximum number of mandatory enforcement policies (null means unlimited)
-func (m *FeatureSets_attributes) SetPolicyMandatoryEnforcementLimit(value *float64)() {
-    m.policyMandatoryEnforcementLimit = value
+func (m *FeatureSets_attributes) SetPolicyMandatoryEnforcementLimit(value *float64) {
+	err := m.GetBackingStore().Set("policyMandatoryEnforcementLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPolicySetLimit sets the policy-set-limit property value. Maximum number of policy sets (null means unlimited)
-func (m *FeatureSets_attributes) SetPolicySetLimit(value *float64)() {
-    m.policySetLimit = value
+func (m *FeatureSets_attributes) SetPolicySetLimit(value *float64) {
+	err := m.GetBackingStore().Set("policySetLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrivateNetworking sets the private-networking property value. Whether the feature set includes private networking
-func (m *FeatureSets_attributes) SetPrivateNetworking(value *bool)() {
-    m.privateNetworking = value
+func (m *FeatureSets_attributes) SetPrivateNetworking(value *bool) {
+	err := m.GetBackingStore().Set("privateNetworking", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrivatePolicyAgents sets the private-policy-agents property value. Whether the feature set includes private policy agents
-func (m *FeatureSets_attributes) SetPrivatePolicyAgents(value *bool)() {
-    m.privatePolicyAgents = value
+func (m *FeatureSets_attributes) SetPrivatePolicyAgents(value *bool) {
+	err := m.GetBackingStore().Set("privatePolicyAgents", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrivateRunTasks sets the private-run-tasks property value. Whether the feature set includes private run tasks
-func (m *FeatureSets_attributes) SetPrivateRunTasks(value *bool)() {
-    m.privateRunTasks = value
+func (m *FeatureSets_attributes) SetPrivateRunTasks(value *bool) {
+	err := m.GetBackingStore().Set("privateRunTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetPrivateVcs sets the private-vcs property value. Whether the feature set includes private VCS
-func (m *FeatureSets_attributes) SetPrivateVcs(value *bool)() {
-    m.privateVcs = value
+func (m *FeatureSets_attributes) SetPrivateVcs(value *bool) {
+	err := m.GetBackingStore().Set("privateVcs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRecoverableItems sets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
-func (m *FeatureSets_attributes) SetRecoverableItems(value *bool)() {
-    m.recoverableItems = value
+func (m *FeatureSets_attributes) SetRecoverableItems(value *bool) {
+	err := m.GetBackingStore().Set("recoverableItems", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunTaskLimit sets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
-func (m *FeatureSets_attributes) SetRunTaskLimit(value *float64)() {
-    m.runTaskLimit = value
+func (m *FeatureSets_attributes) SetRunTaskLimit(value *float64) {
+	err := m.GetBackingStore().Set("runTaskLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunTaskMandatoryEnforcementLimit sets the run-task-mandatory-enforcement-limit property value. Maximum number of mandatory enforcement run tasks (null means unlimited)
-func (m *FeatureSets_attributes) SetRunTaskMandatoryEnforcementLimit(value *float64)() {
-    m.runTaskMandatoryEnforcementLimit = value
+func (m *FeatureSets_attributes) SetRunTaskMandatoryEnforcementLimit(value *float64) {
+	err := m.GetBackingStore().Set("runTaskMandatoryEnforcementLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunTasks sets the run-tasks property value. Whether the feature set includes run tasks
-func (m *FeatureSets_attributes) SetRunTasks(value *bool)() {
-    m.runTasks = value
+func (m *FeatureSets_attributes) SetRunTasks(value *bool) {
+	err := m.GetBackingStore().Set("runTasks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetRunTaskWorkspaceLimit sets the run-task-workspace-limit property value. Maximum number of workspaces per run task (null means unlimited)
-func (m *FeatureSets_attributes) SetRunTaskWorkspaceLimit(value *float64)() {
-    m.runTaskWorkspaceLimit = value
+func (m *FeatureSets_attributes) SetRunTaskWorkspaceLimit(value *float64) {
+	err := m.GetBackingStore().Set("runTaskWorkspaceLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSelfServeBilling sets the self-serve-billing property value. Whether the feature set supports self-serve billing
-func (m *FeatureSets_attributes) SetSelfServeBilling(value *bool)() {
-    m.selfServeBilling = value
+func (m *FeatureSets_attributes) SetSelfServeBilling(value *bool) {
+	err := m.GetBackingStore().Set("selfServeBilling", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSentinel sets the sentinel property value. Whether the feature set includes Sentinel (alias for policy-enforcement)
-func (m *FeatureSets_attributes) SetSentinel(value *bool)() {
-    m.sentinel = value
+func (m *FeatureSets_attributes) SetSentinel(value *bool) {
+	err := m.GetBackingStore().Set("sentinel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetSso sets the sso property value. Whether the feature set includes SSO
-func (m *FeatureSets_attributes) SetSso(value *bool)() {
-    m.sso = value
+func (m *FeatureSets_attributes) SetSso(value *bool) {
+	err := m.GetBackingStore().Set("sso", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStacks sets the stacks property value. Whether the feature set includes stacks
-func (m *FeatureSets_attributes) SetStacks(value *bool)() {
-    m.stacks = value
+func (m *FeatureSets_attributes) SetStacks(value *bool) {
+	err := m.GetBackingStore().Set("stacks", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTaskProjectScoping sets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
-func (m *FeatureSets_attributes) SetTaskProjectScoping(value *bool)() {
-    m.taskProjectScoping = value
+func (m *FeatureSets_attributes) SetTaskProjectScoping(value *bool) {
+	err := m.GetBackingStore().Set("taskProjectScoping", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTeams sets the teams property value. Whether the feature set includes teams
-func (m *FeatureSets_attributes) SetTeams(value *bool)() {
-    m.teams = value
+func (m *FeatureSets_attributes) SetTeams(value *bool) {
+	err := m.GetBackingStore().Set("teams", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTerraformActions sets the terraform-actions property value. Whether the feature set includes Terraform Actions features
-func (m *FeatureSets_attributes) SetTerraformActions(value *bool)() {
-    m.terraformActions = value
+func (m *FeatureSets_attributes) SetTerraformActions(value *bool) {
+	err := m.GetBackingStore().Set("terraformActions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetTfPolicyInitEnforcement sets the tf-policy-init-enforcement property value. Whether the feature set includes init-stage Terraform policy enforcement
-func (m *FeatureSets_attributes) SetTfPolicyInitEnforcement(value *bool)() {
-    m.tfPolicyInitEnforcement = value
+func (m *FeatureSets_attributes) SetTfPolicyInitEnforcement(value *bool) {
+	err := m.GetBackingStore().Set("tfPolicyInitEnforcement", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUserLimit sets the user-limit property value. Maximum number of users (null means unlimited)
-func (m *FeatureSets_attributes) SetUserLimit(value *float64)() {
-    m.userLimit = value
+func (m *FeatureSets_attributes) SetUserLimit(value *float64) {
+	err := m.GetBackingStore().Set("userLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetUsesHcpRumBillingResource sets the uses-hcp-rum-billing-resource property value. Whether the feature set uses HCP RUM billing resource
-func (m *FeatureSets_attributes) SetUsesHcpRumBillingResource(value *bool)() {
-    m.usesHcpRumBillingResource = value
+func (m *FeatureSets_attributes) SetUsesHcpRumBillingResource(value *bool) {
+	err := m.GetBackingStore().Set("usesHcpRumBillingResource", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetVersionedPolicySetLimit sets the versioned-policy-set-limit property value. Maximum number of versioned policy sets (null means unlimited)
-func (m *FeatureSets_attributes) SetVersionedPolicySetLimit(value *float64)() {
-    m.versionedPolicySetLimit = value
+func (m *FeatureSets_attributes) SetVersionedPolicySetLimit(value *float64) {
+	err := m.GetBackingStore().Set("versionedPolicySetLimit", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWaypointActions sets the waypoint-actions property value. The waypointActions property
-func (m *FeatureSets_attributes) SetWaypointActions(value *bool)() {
-    m.waypointActions = value
+func (m *FeatureSets_attributes) SetWaypointActions(value *bool) {
+	err := m.GetBackingStore().Set("waypointActions", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetWaypointTemplatesAndAddons sets the waypoint-templates-and-addons property value. The waypointTemplatesAndAddons property
-func (m *FeatureSets_attributes) SetWaypointTemplatesAndAddons(value *bool)() {
-    m.waypointTemplatesAndAddons = value
+func (m *FeatureSets_attributes) SetWaypointTemplatesAndAddons(value *bool) {
+	err := m.GetBackingStore().Set("waypointTemplatesAndAddons", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type FeatureSets_attributesable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetAssessments()(*bool)
-    GetAuditLogging()(*bool)
-    GetCanSelfServiceDowngrade()(*bool)
-    GetChangeRequests()(*bool)
-    GetCost()(*float64)
-    GetCostEstimation()(*bool)
-    GetDefaultAgentsCeiling()(*float64)
-    GetDefaultRunsCeiling()(*float64)
-    GetDescription()(*string)
-    GetGlobalRunTasks()(*bool)
-    GetHyok()(*bool)
-    GetIdentifier()(*string)
-    GetIsCurrent()(*bool)
-    GetIsFreeTier()(*bool)
-    GetIsManagedResourcePlan()(*bool)
-    GetModuleDeprecations()(*bool)
-    GetModuleRevocations()(*bool)
-    GetModuleTestsAgentSupport()(*bool)
-    GetModuleTestsGeneration()(*bool)
-    GetName()(*string)
-    GetNativeTasks()(*bool)
-    GetNoCodeModules()(*bool)
-    GetPlan()(*string)
-    GetPolicyEnforcement()(*bool)
-    GetPolicyLimit()(*float64)
-    GetPolicyMandatoryEnforcementLimit()(*float64)
-    GetPolicySetLimit()(*float64)
-    GetPrivateNetworking()(*bool)
-    GetPrivatePolicyAgents()(*bool)
-    GetPrivateRunTasks()(*bool)
-    GetPrivateVcs()(*bool)
-    GetRecoverableItems()(*bool)
-    GetRunTaskLimit()(*float64)
-    GetRunTaskMandatoryEnforcementLimit()(*float64)
-    GetRunTasks()(*bool)
-    GetRunTaskWorkspaceLimit()(*float64)
-    GetSelfServeBilling()(*bool)
-    GetSentinel()(*bool)
-    GetSso()(*bool)
-    GetStacks()(*bool)
-    GetTaskProjectScoping()(*bool)
-    GetTeams()(*bool)
-    GetTerraformActions()(*bool)
-    GetTfPolicyInitEnforcement()(*bool)
-    GetUserLimit()(*float64)
-    GetUsesHcpRumBillingResource()(*bool)
-    GetVersionedPolicySetLimit()(*float64)
-    GetWaypointActions()(*bool)
-    GetWaypointTemplatesAndAddons()(*bool)
-    SetAssessments(value *bool)()
-    SetAuditLogging(value *bool)()
-    SetCanSelfServiceDowngrade(value *bool)()
-    SetChangeRequests(value *bool)()
-    SetCost(value *float64)()
-    SetCostEstimation(value *bool)()
-    SetDefaultAgentsCeiling(value *float64)()
-    SetDefaultRunsCeiling(value *float64)()
-    SetDescription(value *string)()
-    SetGlobalRunTasks(value *bool)()
-    SetHyok(value *bool)()
-    SetIdentifier(value *string)()
-    SetIsCurrent(value *bool)()
-    SetIsFreeTier(value *bool)()
-    SetIsManagedResourcePlan(value *bool)()
-    SetModuleDeprecations(value *bool)()
-    SetModuleRevocations(value *bool)()
-    SetModuleTestsAgentSupport(value *bool)()
-    SetModuleTestsGeneration(value *bool)()
-    SetName(value *string)()
-    SetNativeTasks(value *bool)()
-    SetNoCodeModules(value *bool)()
-    SetPlan(value *string)()
-    SetPolicyEnforcement(value *bool)()
-    SetPolicyLimit(value *float64)()
-    SetPolicyMandatoryEnforcementLimit(value *float64)()
-    SetPolicySetLimit(value *float64)()
-    SetPrivateNetworking(value *bool)()
-    SetPrivatePolicyAgents(value *bool)()
-    SetPrivateRunTasks(value *bool)()
-    SetPrivateVcs(value *bool)()
-    SetRecoverableItems(value *bool)()
-    SetRunTaskLimit(value *float64)()
-    SetRunTaskMandatoryEnforcementLimit(value *float64)()
-    SetRunTasks(value *bool)()
-    SetRunTaskWorkspaceLimit(value *float64)()
-    SetSelfServeBilling(value *bool)()
-    SetSentinel(value *bool)()
-    SetSso(value *bool)()
-    SetStacks(value *bool)()
-    SetTaskProjectScoping(value *bool)()
-    SetTeams(value *bool)()
-    SetTerraformActions(value *bool)()
-    SetTfPolicyInitEnforcement(value *bool)()
-    SetUserLimit(value *float64)()
-    SetUsesHcpRumBillingResource(value *bool)()
-    SetVersionedPolicySetLimit(value *float64)()
-    SetWaypointActions(value *bool)()
-    SetWaypointTemplatesAndAddons(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetAssessments() *bool
+	GetAuditLogging() *bool
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanSelfServiceDowngrade() *bool
+	GetChangeRequests() *bool
+	GetCost() *float64
+	GetCostEstimation() *bool
+	GetDefaultAgentsCeiling() *float64
+	GetDefaultRunsCeiling() *float64
+	GetDescription() *string
+	GetGlobalRunTasks() *bool
+	GetHyok() *bool
+	GetIdentifier() *string
+	GetIsCurrent() *bool
+	GetIsFreeTier() *bool
+	GetIsManagedResourcePlan() *bool
+	GetModuleDeprecations() *bool
+	GetModuleRevocations() *bool
+	GetModuleTestsAgentSupport() *bool
+	GetModuleTestsGeneration() *bool
+	GetName() *string
+	GetNativeTasks() *bool
+	GetNoCodeModules() *bool
+	GetPlan() *string
+	GetPolicyEnforcement() *bool
+	GetPolicyLimit() *float64
+	GetPolicyMandatoryEnforcementLimit() *float64
+	GetPolicySetLimit() *float64
+	GetPrivateNetworking() *bool
+	GetPrivatePolicyAgents() *bool
+	GetPrivateRunTasks() *bool
+	GetPrivateVcs() *bool
+	GetRecoverableItems() *bool
+	GetRunTaskLimit() *float64
+	GetRunTaskMandatoryEnforcementLimit() *float64
+	GetRunTasks() *bool
+	GetRunTaskWorkspaceLimit() *float64
+	GetSelfServeBilling() *bool
+	GetSentinel() *bool
+	GetSso() *bool
+	GetStacks() *bool
+	GetTaskProjectScoping() *bool
+	GetTeams() *bool
+	GetTerraformActions() *bool
+	GetTfPolicyInitEnforcement() *bool
+	GetUserLimit() *float64
+	GetUsesHcpRumBillingResource() *bool
+	GetVersionedPolicySetLimit() *float64
+	GetWaypointActions() *bool
+	GetWaypointTemplatesAndAddons() *bool
+	SetAssessments(value *bool)
+	SetAuditLogging(value *bool)
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanSelfServiceDowngrade(value *bool)
+	SetChangeRequests(value *bool)
+	SetCost(value *float64)
+	SetCostEstimation(value *bool)
+	SetDefaultAgentsCeiling(value *float64)
+	SetDefaultRunsCeiling(value *float64)
+	SetDescription(value *string)
+	SetGlobalRunTasks(value *bool)
+	SetHyok(value *bool)
+	SetIdentifier(value *string)
+	SetIsCurrent(value *bool)
+	SetIsFreeTier(value *bool)
+	SetIsManagedResourcePlan(value *bool)
+	SetModuleDeprecations(value *bool)
+	SetModuleRevocations(value *bool)
+	SetModuleTestsAgentSupport(value *bool)
+	SetModuleTestsGeneration(value *bool)
+	SetName(value *string)
+	SetNativeTasks(value *bool)
+	SetNoCodeModules(value *bool)
+	SetPlan(value *string)
+	SetPolicyEnforcement(value *bool)
+	SetPolicyLimit(value *float64)
+	SetPolicyMandatoryEnforcementLimit(value *float64)
+	SetPolicySetLimit(value *float64)
+	SetPrivateNetworking(value *bool)
+	SetPrivatePolicyAgents(value *bool)
+	SetPrivateRunTasks(value *bool)
+	SetPrivateVcs(value *bool)
+	SetRecoverableItems(value *bool)
+	SetRunTaskLimit(value *float64)
+	SetRunTaskMandatoryEnforcementLimit(value *float64)
+	SetRunTasks(value *bool)
+	SetRunTaskWorkspaceLimit(value *float64)
+	SetSelfServeBilling(value *bool)
+	SetSentinel(value *bool)
+	SetSso(value *bool)
+	SetStacks(value *bool)
+	SetTaskProjectScoping(value *bool)
+	SetTeams(value *bool)
+	SetTerraformActions(value *bool)
+	SetTfPolicyInitEnforcement(value *bool)
+	SetUserLimit(value *float64)
+	SetUsesHcpRumBillingResource(value *bool)
+	SetVersionedPolicySetLimit(value *float64)
+	SetWaypointActions(value *bool)
+	SetWaypointTemplatesAndAddons(value *bool)
 }

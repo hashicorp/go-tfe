@@ -4,66 +4,72 @@
 package workspaces
 
 import (
-    "context"
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
-    i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
-    i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/varsets/item/relationships/vars/item"
+	"context"
+	i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16 "github.com/hashicorp/go-tfe/v2/api/models"
+	i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962 "github.com/hashicorp/go-tfe/v2/api/workspaces/item/varsets/item/relationships/vars/item"
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
 )
 
 // ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}\varsets\{varset_id}\relationships\vars\{id}
 type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder struct {
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+
 // ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters show details of a variable in a variable set, with overwrite context from the specified workspace.
 type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters struct {
-    // Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
-    Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
-    // Optionally side-load the specified relationships.
-    Include []i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962.GetIncludeQueryParameterType "uriparametername:\"include\""
+	// Return only the specified fields for vars resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
+	Fieldsvars []string "uriparametername:\"fields%5Bvars%5D\""
+	// Optionally side-load the specified relationships.
+	Include []i89da2f0ff713ed4cbca17ac7a81ba5ee56b322f80d1d4c368fffb0206bf45962.GetIncludeQueryParameterType "uriparametername:\"include\""
 }
+
 // NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal instantiates a new ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder and sets the default values.
-func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) {
-    m := &ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars/{id}{?fields%5Bvars%5D,include}", pathParameters),
-    }
-    return m
+func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder {
+	m := &ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder{
+		BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}/varsets/{varset_id}/relationships/vars/{id}{?fields%5Bvars%5D,include}", pathParameters),
+	}
+	return m
 }
+
 // NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder instantiates a new ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder and sets the default values.
-func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) {
-    urlParams := make(map[string]string)
-    urlParams["request-raw-url"] = rawUrl
-    return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(urlParams, requestAdapter)
+func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter) *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder {
+	urlParams := make(map[string]string)
+	urlParams["request-raw-url"] = rawUrl
+	return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+
 // Get show details of a variable in a variable set, with overwrite context from the specified workspace.
 // returns a VarsEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VarsEnvelopeable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateVarsEnvelopeFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VarsEnvelopeable), nil
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters]) (i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VarsEnvelopeable, error) {
+	requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration)
+	if err != nil {
+		return nil, err
+	}
+	errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings{
+		"XXX": i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateErrorsFromDiscriminatorValue,
+	}
+	res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.CreateVarsEnvelopeFromDiscriminatorValue, errorMapping)
+	if err != nil {
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+	return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.VarsEnvelopeable), nil
 }
+
 // ToGetRequestInformation show details of a variable in a variable set, with overwrite context from the specified workspace.
 // returns a *RequestInformation when successful
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
-    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
-    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
-    return requestInfo, nil
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetQueryParameters]) (*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+	requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+	i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
+	requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+	return requestInfo, nil
 }
+
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder when successful
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) WithUrl(rawUrl string)(*ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) {
-    return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) WithUrl(rawUrl string) *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder {
+	return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter)
 }

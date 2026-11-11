@@ -2,32 +2,36 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type EmailRecipientStatuses_type int
 
 const (
-    EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE EmailRecipientStatuses_type = iota
+	EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE EmailRecipientStatuses_type = iota
 )
 
 func (i EmailRecipientStatuses_type) String() string {
-    return []string{"email-recipient-statuses"}[i]
+	return []string{"email-recipient-statuses"}[i]
 }
+
 func ParseEmailRecipientStatuses_type(v string) (any, error) {
-    result := EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE
-    switch v {
-        case "email-recipient-statuses":
-            result = EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE
+	switch v {
+	case "email-recipient-statuses":
+		result = EMAILRECIPIENTSTATUSES_EMAILRECIPIENTSTATUSES_TYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeEmailRecipientStatuses_type(values []EmailRecipientStatuses_type) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i EmailRecipientStatuses_type) isMultiValue() bool {
-    return false
+	return false
 }

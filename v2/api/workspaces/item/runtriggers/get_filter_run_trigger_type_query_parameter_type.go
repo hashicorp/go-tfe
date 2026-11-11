@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package runtriggers
+
 type GetFilterRunTriggerTypeQueryParameterType int
 
 const (
-    INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE GetFilterRunTriggerTypeQueryParameterType = iota
-    OUTBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
+	INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE GetFilterRunTriggerTypeQueryParameterType = iota
+	OUTBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
 )
 
 func (i GetFilterRunTriggerTypeQueryParameterType) String() string {
-    return []string{"inbound", "outbound"}[i]
+	return []string{"inbound", "outbound"}[i]
 }
+
 func ParseGetFilterRunTriggerTypeQueryParameterType(v string) (any, error) {
-    result := INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
-    switch v {
-        case "inbound":
-            result = INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
-        case "outbound":
-            result = OUTBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
+	switch v {
+	case "inbound":
+		result = INBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
+	case "outbound":
+		result = OUTBOUND_GETFILTERRUNTRIGGERTYPEQUERYPARAMETERTYPE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeGetFilterRunTriggerTypeQueryParameterType(values []GetFilterRunTriggerTypeQueryParameterType) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i GetFilterRunTriggerTypeQueryParameterType) isMultiValue() bool {
-    return false
+	return false
 }

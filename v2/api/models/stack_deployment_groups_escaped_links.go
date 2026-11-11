@@ -4,109 +4,162 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackDeploymentGroups_links struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The self property
-    self *string
-    // The stackDeploymentGroupSummaries property
-    stackDeploymentGroupSummaries *string
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackDeploymentGroups_links instantiates a new StackDeploymentGroups_links and sets the default values.
-func NewStackDeploymentGroups_links()(*StackDeploymentGroups_links) {
-    m := &StackDeploymentGroups_links{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackDeploymentGroups_links() *StackDeploymentGroups_links {
+	m := &StackDeploymentGroups_links{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackDeploymentGroups_linksFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackDeploymentGroups_linksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackDeploymentGroups_links(), nil
+func CreateStackDeploymentGroups_linksFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackDeploymentGroups_links(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackDeploymentGroups_links) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackDeploymentGroups_links) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackDeploymentGroups_links) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackDeploymentGroups_links) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["self"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetSelf(val)
-        }
-        return nil
-    }
-    res["stack-deployment-group-summaries"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackDeploymentGroupSummaries(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackDeploymentGroups_links) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["self"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetSelf(val)
+		}
+		return nil
+	}
+	res["stack-deployment-group-summaries"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetStringValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackDeploymentGroupSummaries(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // GetSelf gets the self property value. The self property
 // returns a *string when successful
-func (m *StackDeploymentGroups_links) GetSelf()(*string) {
-    return m.self
+func (m *StackDeploymentGroups_links) GetSelf() *string {
+	val, err := m.GetBackingStore().Get("self")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // GetStackDeploymentGroupSummaries gets the stack-deployment-group-summaries property value. The stackDeploymentGroupSummaries property
 // returns a *string when successful
-func (m *StackDeploymentGroups_links) GetStackDeploymentGroupSummaries()(*string) {
-    return m.stackDeploymentGroupSummaries
+func (m *StackDeploymentGroups_links) GetStackDeploymentGroupSummaries() *string {
+	val, err := m.GetBackingStore().Get("stackDeploymentGroupSummaries")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*string)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackDeploymentGroups_links) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteStringValue("self", m.GetSelf())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteStringValue("stack-deployment-group-summaries", m.GetStackDeploymentGroupSummaries())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackDeploymentGroups_links) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteStringValue("self", m.GetSelf())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteStringValue("stack-deployment-group-summaries", m.GetStackDeploymentGroupSummaries())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackDeploymentGroups_links) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackDeploymentGroups_links) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackDeploymentGroups_links) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetSelf sets the self property value. The self property
-func (m *StackDeploymentGroups_links) SetSelf(value *string)() {
-    m.self = value
+func (m *StackDeploymentGroups_links) SetSelf(value *string) {
+	err := m.GetBackingStore().Set("self", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackDeploymentGroupSummaries sets the stack-deployment-group-summaries property value. The stackDeploymentGroupSummaries property
-func (m *StackDeploymentGroups_links) SetStackDeploymentGroupSummaries(value *string)() {
-    m.stackDeploymentGroupSummaries = value
+func (m *StackDeploymentGroups_links) SetStackDeploymentGroupSummaries(value *string) {
+	err := m.GetBackingStore().Set("stackDeploymentGroupSummaries", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackDeploymentGroups_linksable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetSelf()(*string)
-    GetStackDeploymentGroupSummaries()(*string)
-    SetSelf(value *string)()
-    SetStackDeploymentGroupSummaries(value *string)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetSelf() *string
+	GetStackDeploymentGroupSummaries() *string
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetSelf(value *string)
+	SetStackDeploymentGroupSummaries(value *string)
 }

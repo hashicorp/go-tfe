@@ -2,35 +2,39 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package models
+
 type Organizations_attributes_stacksDefaultExecutionMode int
 
 const (
-    REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE Organizations_attributes_stacksDefaultExecutionMode = iota
-    AGENT_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
+	REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE Organizations_attributes_stacksDefaultExecutionMode = iota
+	AGENT_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
 )
 
 func (i Organizations_attributes_stacksDefaultExecutionMode) String() string {
-    return []string{"remote", "agent"}[i]
+	return []string{"remote", "agent"}[i]
 }
+
 func ParseOrganizations_attributes_stacksDefaultExecutionMode(v string) (any, error) {
-    result := REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
-    switch v {
-        case "remote":
-            result = REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
-        case "agent":
-            result = AGENT_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
-        default:
-            return nil, nil
-    }
-    return &result, nil
+	result := REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
+	switch v {
+	case "remote":
+		result = REMOTE_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
+	case "agent":
+		result = AGENT_ORGANIZATIONS_ATTRIBUTES_STACKSDEFAULTEXECUTIONMODE
+	default:
+		return nil, nil
+	}
+	return &result, nil
 }
+
 func SerializeOrganizations_attributes_stacksDefaultExecutionMode(values []Organizations_attributes_stacksDefaultExecutionMode) []string {
-    result := make([]string, len(values))
-    for i, v := range values {
-        result[i] = v.String()
-    }
-    return result
+	result := make([]string, len(values))
+	for i, v := range values {
+		result[i] = v.String()
+	}
+	return result
 }
+
 func (i Organizations_attributes_stacksDefaultExecutionMode) isMultiValue() bool {
-    return false
+	return false
 }

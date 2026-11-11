@@ -4,312 +4,435 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type StackConfigurations_relationships struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The groupStatusSummaries property
-    groupStatusSummaries StackConfigurationSummariesHasOneable
-    // The ingressAttributes property
-    ingressAttributes IngressAttributesHasOneable
-    // The stack property
-    stack StacksHasOneable
-    // The stackAggregateOutputs property
-    stackAggregateOutputs StackAggregateOutputsHasOneable
-    // The stackConfigurationSummary property
-    stackConfigurationSummary StackConfigurationSummariesHasOneable
-    // The stackDeploymentGroups property
-    stackDeploymentGroups Links_relatedable
-    // The stackDiagnostics property
-    stackDiagnostics Links_relatedable
-    // The stackPublishedOutputs property
-    stackPublishedOutputs Links_relatedable
-    // The stackStructuralChange property
-    stackStructuralChange StackStructuralChangesHasOneable
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewStackConfigurations_relationships instantiates a new StackConfigurations_relationships and sets the default values.
-func NewStackConfigurations_relationships()(*StackConfigurations_relationships) {
-    m := &StackConfigurations_relationships{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewStackConfigurations_relationships() *StackConfigurations_relationships {
+	m := &StackConfigurations_relationships{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateStackConfigurations_relationshipsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateStackConfigurations_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewStackConfigurations_relationships(), nil
+func CreateStackConfigurations_relationshipsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewStackConfigurations_relationships(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *StackConfigurations_relationships) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *StackConfigurations_relationships) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *StackConfigurations_relationships) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *StackConfigurations_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["group-status-summaries"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationSummariesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetGroupStatusSummaries(val.(StackConfigurationSummariesHasOneable))
-        }
-        return nil
-    }
-    res["ingress-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateIngressAttributesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIngressAttributes(val.(IngressAttributesHasOneable))
-        }
-        return nil
-    }
-    res["stack"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStacksHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStack(val.(StacksHasOneable))
-        }
-        return nil
-    }
-    res["stack-aggregate-outputs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackAggregateOutputsHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackAggregateOutputs(val.(StackAggregateOutputsHasOneable))
-        }
-        return nil
-    }
-    res["stack-configuration-summary"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackConfigurationSummariesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackConfigurationSummary(val.(StackConfigurationSummariesHasOneable))
-        }
-        return nil
-    }
-    res["stack-deployment-groups"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackDeploymentGroups(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["stack-diagnostics"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackDiagnostics(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["stack-published-outputs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackPublishedOutputs(val.(Links_relatedable))
-        }
-        return nil
-    }
-    res["stack-structural-change"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateStackStructuralChangesHasOneFromDiscriminatorValue)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetStackStructuralChange(val.(StackStructuralChangesHasOneable))
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *StackConfigurations_relationships) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["group-status-summaries"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationSummariesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetGroupStatusSummaries(val.(StackConfigurationSummariesHasOneable))
+		}
+		return nil
+	}
+	res["ingress-attributes"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateIngressAttributesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetIngressAttributes(val.(IngressAttributesHasOneable))
+		}
+		return nil
+	}
+	res["stack"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStacksHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStack(val.(StacksHasOneable))
+		}
+		return nil
+	}
+	res["stack-aggregate-outputs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackAggregateOutputsHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackAggregateOutputs(val.(StackAggregateOutputsHasOneable))
+		}
+		return nil
+	}
+	res["stack-configuration-summary"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackConfigurationSummariesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackConfigurationSummary(val.(StackConfigurationSummariesHasOneable))
+		}
+		return nil
+	}
+	res["stack-deployment-groups"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackDeploymentGroups(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["stack-diagnostics"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackDiagnostics(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["stack-published-outputs"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackPublishedOutputs(val.(Links_relatedable))
+		}
+		return nil
+	}
+	res["stack-structural-change"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetObjectValue(CreateStackStructuralChangesHasOneFromDiscriminatorValue)
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetStackStructuralChange(val.(StackStructuralChangesHasOneable))
+		}
+		return nil
+	}
+	return res
 }
+
 // GetGroupStatusSummaries gets the group-status-summaries property value. The groupStatusSummaries property
 // returns a StackConfigurationSummariesHasOneable when successful
-func (m *StackConfigurations_relationships) GetGroupStatusSummaries()(StackConfigurationSummariesHasOneable) {
-    return m.groupStatusSummaries
+func (m *StackConfigurations_relationships) GetGroupStatusSummaries() StackConfigurationSummariesHasOneable {
+	val, err := m.GetBackingStore().Get("groupStatusSummaries")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationSummariesHasOneable)
+	}
+	return nil
 }
+
 // GetIngressAttributes gets the ingress-attributes property value. The ingressAttributes property
 // returns a IngressAttributesHasOneable when successful
-func (m *StackConfigurations_relationships) GetIngressAttributes()(IngressAttributesHasOneable) {
-    return m.ingressAttributes
+func (m *StackConfigurations_relationships) GetIngressAttributes() IngressAttributesHasOneable {
+	val, err := m.GetBackingStore().Get("ingressAttributes")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(IngressAttributesHasOneable)
+	}
+	return nil
 }
+
 // GetStack gets the stack property value. The stack property
 // returns a StacksHasOneable when successful
-func (m *StackConfigurations_relationships) GetStack()(StacksHasOneable) {
-    return m.stack
+func (m *StackConfigurations_relationships) GetStack() StacksHasOneable {
+	val, err := m.GetBackingStore().Get("stack")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StacksHasOneable)
+	}
+	return nil
 }
+
 // GetStackAggregateOutputs gets the stack-aggregate-outputs property value. The stackAggregateOutputs property
 // returns a StackAggregateOutputsHasOneable when successful
-func (m *StackConfigurations_relationships) GetStackAggregateOutputs()(StackAggregateOutputsHasOneable) {
-    return m.stackAggregateOutputs
+func (m *StackConfigurations_relationships) GetStackAggregateOutputs() StackAggregateOutputsHasOneable {
+	val, err := m.GetBackingStore().Get("stackAggregateOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackAggregateOutputsHasOneable)
+	}
+	return nil
 }
+
 // GetStackConfigurationSummary gets the stack-configuration-summary property value. The stackConfigurationSummary property
 // returns a StackConfigurationSummariesHasOneable when successful
-func (m *StackConfigurations_relationships) GetStackConfigurationSummary()(StackConfigurationSummariesHasOneable) {
-    return m.stackConfigurationSummary
+func (m *StackConfigurations_relationships) GetStackConfigurationSummary() StackConfigurationSummariesHasOneable {
+	val, err := m.GetBackingStore().Get("stackConfigurationSummary")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackConfigurationSummariesHasOneable)
+	}
+	return nil
 }
+
 // GetStackDeploymentGroups gets the stack-deployment-groups property value. The stackDeploymentGroups property
 // returns a Links_relatedable when successful
-func (m *StackConfigurations_relationships) GetStackDeploymentGroups()(Links_relatedable) {
-    return m.stackDeploymentGroups
+func (m *StackConfigurations_relationships) GetStackDeploymentGroups() Links_relatedable {
+	val, err := m.GetBackingStore().Get("stackDeploymentGroups")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
+
 // GetStackDiagnostics gets the stack-diagnostics property value. The stackDiagnostics property
 // returns a Links_relatedable when successful
-func (m *StackConfigurations_relationships) GetStackDiagnostics()(Links_relatedable) {
-    return m.stackDiagnostics
+func (m *StackConfigurations_relationships) GetStackDiagnostics() Links_relatedable {
+	val, err := m.GetBackingStore().Get("stackDiagnostics")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
+
 // GetStackPublishedOutputs gets the stack-published-outputs property value. The stackPublishedOutputs property
 // returns a Links_relatedable when successful
-func (m *StackConfigurations_relationships) GetStackPublishedOutputs()(Links_relatedable) {
-    return m.stackPublishedOutputs
+func (m *StackConfigurations_relationships) GetStackPublishedOutputs() Links_relatedable {
+	val, err := m.GetBackingStore().Get("stackPublishedOutputs")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(Links_relatedable)
+	}
+	return nil
 }
+
 // GetStackStructuralChange gets the stack-structural-change property value. The stackStructuralChange property
 // returns a StackStructuralChangesHasOneable when successful
-func (m *StackConfigurations_relationships) GetStackStructuralChange()(StackStructuralChangesHasOneable) {
-    return m.stackStructuralChange
+func (m *StackConfigurations_relationships) GetStackStructuralChange() StackStructuralChangesHasOneable {
+	val, err := m.GetBackingStore().Get("stackStructuralChange")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(StackStructuralChangesHasOneable)
+	}
+	return nil
 }
+
 // Serialize serializes information the current object
-func (m *StackConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteObjectValue("group-status-summaries", m.GetGroupStatusSummaries())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("ingress-attributes", m.GetIngressAttributes())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack", m.GetStack())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-aggregate-outputs", m.GetStackAggregateOutputs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-configuration-summary", m.GetStackConfigurationSummary())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-deployment-groups", m.GetStackDeploymentGroups())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-diagnostics", m.GetStackDiagnostics())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-published-outputs", m.GetStackPublishedOutputs())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteObjectValue("stack-structural-change", m.GetStackStructuralChange())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *StackConfigurations_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteObjectValue("group-status-summaries", m.GetGroupStatusSummaries())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("ingress-attributes", m.GetIngressAttributes())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack", m.GetStack())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-aggregate-outputs", m.GetStackAggregateOutputs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-configuration-summary", m.GetStackConfigurationSummary())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-deployment-groups", m.GetStackDeploymentGroups())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-diagnostics", m.GetStackDiagnostics())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-published-outputs", m.GetStackPublishedOutputs())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteObjectValue("stack-structural-change", m.GetStackStructuralChange())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *StackConfigurations_relationships) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *StackConfigurations_relationships) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *StackConfigurations_relationships) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetGroupStatusSummaries sets the group-status-summaries property value. The groupStatusSummaries property
-func (m *StackConfigurations_relationships) SetGroupStatusSummaries(value StackConfigurationSummariesHasOneable)() {
-    m.groupStatusSummaries = value
+func (m *StackConfigurations_relationships) SetGroupStatusSummaries(value StackConfigurationSummariesHasOneable) {
+	err := m.GetBackingStore().Set("groupStatusSummaries", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetIngressAttributes sets the ingress-attributes property value. The ingressAttributes property
-func (m *StackConfigurations_relationships) SetIngressAttributes(value IngressAttributesHasOneable)() {
-    m.ingressAttributes = value
+func (m *StackConfigurations_relationships) SetIngressAttributes(value IngressAttributesHasOneable) {
+	err := m.GetBackingStore().Set("ingressAttributes", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStack sets the stack property value. The stack property
-func (m *StackConfigurations_relationships) SetStack(value StacksHasOneable)() {
-    m.stack = value
+func (m *StackConfigurations_relationships) SetStack(value StacksHasOneable) {
+	err := m.GetBackingStore().Set("stack", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackAggregateOutputs sets the stack-aggregate-outputs property value. The stackAggregateOutputs property
-func (m *StackConfigurations_relationships) SetStackAggregateOutputs(value StackAggregateOutputsHasOneable)() {
-    m.stackAggregateOutputs = value
+func (m *StackConfigurations_relationships) SetStackAggregateOutputs(value StackAggregateOutputsHasOneable) {
+	err := m.GetBackingStore().Set("stackAggregateOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackConfigurationSummary sets the stack-configuration-summary property value. The stackConfigurationSummary property
-func (m *StackConfigurations_relationships) SetStackConfigurationSummary(value StackConfigurationSummariesHasOneable)() {
-    m.stackConfigurationSummary = value
+func (m *StackConfigurations_relationships) SetStackConfigurationSummary(value StackConfigurationSummariesHasOneable) {
+	err := m.GetBackingStore().Set("stackConfigurationSummary", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackDeploymentGroups sets the stack-deployment-groups property value. The stackDeploymentGroups property
-func (m *StackConfigurations_relationships) SetStackDeploymentGroups(value Links_relatedable)() {
-    m.stackDeploymentGroups = value
+func (m *StackConfigurations_relationships) SetStackDeploymentGroups(value Links_relatedable) {
+	err := m.GetBackingStore().Set("stackDeploymentGroups", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackDiagnostics sets the stack-diagnostics property value. The stackDiagnostics property
-func (m *StackConfigurations_relationships) SetStackDiagnostics(value Links_relatedable)() {
-    m.stackDiagnostics = value
+func (m *StackConfigurations_relationships) SetStackDiagnostics(value Links_relatedable) {
+	err := m.GetBackingStore().Set("stackDiagnostics", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackPublishedOutputs sets the stack-published-outputs property value. The stackPublishedOutputs property
-func (m *StackConfigurations_relationships) SetStackPublishedOutputs(value Links_relatedable)() {
-    m.stackPublishedOutputs = value
+func (m *StackConfigurations_relationships) SetStackPublishedOutputs(value Links_relatedable) {
+	err := m.GetBackingStore().Set("stackPublishedOutputs", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetStackStructuralChange sets the stack-structural-change property value. The stackStructuralChange property
-func (m *StackConfigurations_relationships) SetStackStructuralChange(value StackStructuralChangesHasOneable)() {
-    m.stackStructuralChange = value
+func (m *StackConfigurations_relationships) SetStackStructuralChange(value StackStructuralChangesHasOneable) {
+	err := m.GetBackingStore().Set("stackStructuralChange", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type StackConfigurations_relationshipsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetGroupStatusSummaries()(StackConfigurationSummariesHasOneable)
-    GetIngressAttributes()(IngressAttributesHasOneable)
-    GetStack()(StacksHasOneable)
-    GetStackAggregateOutputs()(StackAggregateOutputsHasOneable)
-    GetStackConfigurationSummary()(StackConfigurationSummariesHasOneable)
-    GetStackDeploymentGroups()(Links_relatedable)
-    GetStackDiagnostics()(Links_relatedable)
-    GetStackPublishedOutputs()(Links_relatedable)
-    GetStackStructuralChange()(StackStructuralChangesHasOneable)
-    SetGroupStatusSummaries(value StackConfigurationSummariesHasOneable)()
-    SetIngressAttributes(value IngressAttributesHasOneable)()
-    SetStack(value StacksHasOneable)()
-    SetStackAggregateOutputs(value StackAggregateOutputsHasOneable)()
-    SetStackConfigurationSummary(value StackConfigurationSummariesHasOneable)()
-    SetStackDeploymentGroups(value Links_relatedable)()
-    SetStackDiagnostics(value Links_relatedable)()
-    SetStackPublishedOutputs(value Links_relatedable)()
-    SetStackStructuralChange(value StackStructuralChangesHasOneable)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetGroupStatusSummaries() StackConfigurationSummariesHasOneable
+	GetIngressAttributes() IngressAttributesHasOneable
+	GetStack() StacksHasOneable
+	GetStackAggregateOutputs() StackAggregateOutputsHasOneable
+	GetStackConfigurationSummary() StackConfigurationSummariesHasOneable
+	GetStackDeploymentGroups() Links_relatedable
+	GetStackDiagnostics() Links_relatedable
+	GetStackPublishedOutputs() Links_relatedable
+	GetStackStructuralChange() StackStructuralChangesHasOneable
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetGroupStatusSummaries(value StackConfigurationSummariesHasOneable)
+	SetIngressAttributes(value IngressAttributesHasOneable)
+	SetStack(value StacksHasOneable)
+	SetStackAggregateOutputs(value StackAggregateOutputsHasOneable)
+	SetStackConfigurationSummary(value StackConfigurationSummariesHasOneable)
+	SetStackDeploymentGroups(value Links_relatedable)
+	SetStackDiagnostics(value Links_relatedable)
+	SetStackPublishedOutputs(value Links_relatedable)
+	SetStackStructuralChange(value StackStructuralChangesHasOneable)
 }

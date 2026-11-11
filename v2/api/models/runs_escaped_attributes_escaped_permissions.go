@@ -4,254 +4,357 @@
 package models
 
 import (
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e "github.com/microsoft/kiota-abstractions-go/store"
 )
 
 type Runs_attributes_permissions struct {
-    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-    additionalData map[string]any
-    // The canApply property
-    canApply *bool
-    // The canCancel property
-    canCancel *bool
-    // The canComment property
-    canComment *bool
-    // The canDiscard property
-    canDiscard *bool
-    // The canForceCancel property
-    canForceCancel *bool
-    // The canForceExecute property
-    canForceExecute *bool
-    // The canOverridePolicyCheck property
-    canOverridePolicyCheck *bool
+	// Stores model information.
+	backingStore ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
 }
+
 // NewRuns_attributes_permissions instantiates a new Runs_attributes_permissions and sets the default values.
-func NewRuns_attributes_permissions()(*Runs_attributes_permissions) {
-    m := &Runs_attributes_permissions{
-    }
-    m.SetAdditionalData(make(map[string]any))
-    return m
+func NewRuns_attributes_permissions() *Runs_attributes_permissions {
+	m := &Runs_attributes_permissions{}
+	m.backingStore = ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStoreFactoryInstance()
+	m.SetAdditionalData(make(map[string]any))
+	return m
 }
+
 // CreateRuns_attributes_permissionsFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
-func CreateRuns_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
-    return NewRuns_attributes_permissions(), nil
+func CreateRuns_attributes_permissionsFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) (i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
+	return NewRuns_attributes_permissions(), nil
 }
+
 // GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
 // returns a map[string]any when successful
-func (m *Runs_attributes_permissions) GetAdditionalData()(map[string]any) {
-    return m.additionalData
+func (m *Runs_attributes_permissions) GetAdditionalData() map[string]any {
+	val, err := m.backingStore.Get("additionalData")
+	if err != nil {
+		panic(err)
+	}
+	if val == nil {
+		var value = make(map[string]any)
+		m.SetAdditionalData(value)
+	}
+	return val.(map[string]any)
 }
+
+// GetBackingStore gets the BackingStore property value. Stores model information.
+// returns a BackingStore when successful
+func (m *Runs_attributes_permissions) GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore {
+	return m.backingStore
+}
+
 // GetCanApply gets the can-apply property value. The canApply property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanApply()(*bool) {
-    return m.canApply
+func (m *Runs_attributes_permissions) GetCanApply() *bool {
+	val, err := m.GetBackingStore().Get("canApply")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanCancel gets the can-cancel property value. The canCancel property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanCancel()(*bool) {
-    return m.canCancel
+func (m *Runs_attributes_permissions) GetCanCancel() *bool {
+	val, err := m.GetBackingStore().Get("canCancel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanComment gets the can-comment property value. The canComment property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanComment()(*bool) {
-    return m.canComment
+func (m *Runs_attributes_permissions) GetCanComment() *bool {
+	val, err := m.GetBackingStore().Get("canComment")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanDiscard gets the can-discard property value. The canDiscard property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanDiscard()(*bool) {
-    return m.canDiscard
+func (m *Runs_attributes_permissions) GetCanDiscard() *bool {
+	val, err := m.GetBackingStore().Get("canDiscard")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanForceCancel gets the can-force-cancel property value. The canForceCancel property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanForceCancel()(*bool) {
-    return m.canForceCancel
+func (m *Runs_attributes_permissions) GetCanForceCancel() *bool {
+	val, err := m.GetBackingStore().Get("canForceCancel")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanForceExecute gets the can-force-execute property value. The canForceExecute property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanForceExecute()(*bool) {
-    return m.canForceExecute
+func (m *Runs_attributes_permissions) GetCanForceExecute() *bool {
+	val, err := m.GetBackingStore().Get("canForceExecute")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetCanOverridePolicyCheck gets the can-override-policy-check property value. The canOverridePolicyCheck property
 // returns a *bool when successful
-func (m *Runs_attributes_permissions) GetCanOverridePolicyCheck()(*bool) {
-    return m.canOverridePolicyCheck
+func (m *Runs_attributes_permissions) GetCanOverridePolicyCheck() *bool {
+	val, err := m.GetBackingStore().Get("canOverridePolicyCheck")
+	if err != nil {
+		panic(err)
+	}
+	if val != nil {
+		return val.(*bool)
+	}
+	return nil
 }
+
 // GetFieldDeserializers the deserialization information for the current model
-// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
-func (m *Runs_attributes_permissions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
-    res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["can-apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanApply(val)
-        }
-        return nil
-    }
-    res["can-cancel"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanCancel(val)
-        }
-        return nil
-    }
-    res["can-comment"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanComment(val)
-        }
-        return nil
-    }
-    res["can-discard"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanDiscard(val)
-        }
-        return nil
-    }
-    res["can-force-cancel"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanForceCancel(val)
-        }
-        return nil
-    }
-    res["can-force-execute"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanForceExecute(val)
-        }
-        return nil
-    }
-    res["can-override-policy-check"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanOverridePolicyCheck(val)
-        }
-        return nil
-    }
-    return res
+// returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error when successful
+func (m *Runs_attributes_permissions) GetFieldDeserializers() map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+	res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error)
+	res["can-apply"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanApply(val)
+		}
+		return nil
+	}
+	res["can-cancel"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanCancel(val)
+		}
+		return nil
+	}
+	res["can-comment"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanComment(val)
+		}
+		return nil
+	}
+	res["can-discard"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanDiscard(val)
+		}
+		return nil
+	}
+	res["can-force-cancel"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanForceCancel(val)
+		}
+		return nil
+	}
+	res["can-force-execute"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanForceExecute(val)
+		}
+		return nil
+	}
+	res["can-override-policy-check"] = func(n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+		val, err := n.GetBoolValue()
+		if err != nil {
+			return err
+		}
+		if val != nil {
+			m.SetCanOverridePolicyCheck(val)
+		}
+		return nil
+	}
+	return res
 }
+
 // Serialize serializes information the current object
-func (m *Runs_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    {
-        err := writer.WriteBoolValue("can-apply", m.GetCanApply())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-cancel", m.GetCanCancel())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-comment", m.GetCanComment())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-discard", m.GetCanDiscard())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-force-cancel", m.GetCanForceCancel())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-force-execute", m.GetCanForceExecute())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("can-override-policy-check", m.GetCanOverridePolicyCheck())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteAdditionalData(m.GetAdditionalData())
-        if err != nil {
-            return err
-        }
-    }
-    return nil
+func (m *Runs_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter) error {
+	{
+		err := writer.WriteBoolValue("can-apply", m.GetCanApply())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-cancel", m.GetCanCancel())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-comment", m.GetCanComment())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-discard", m.GetCanDiscard())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-force-cancel", m.GetCanForceCancel())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-force-execute", m.GetCanForceExecute())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteBoolValue("can-override-policy-check", m.GetCanOverridePolicyCheck())
+		if err != nil {
+			return err
+		}
+	}
+	{
+		err := writer.WriteAdditionalData(m.GetAdditionalData())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
 // SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-func (m *Runs_attributes_permissions) SetAdditionalData(value map[string]any)() {
-    m.additionalData = value
+func (m *Runs_attributes_permissions) SetAdditionalData(value map[string]any) {
+	err := m.GetBackingStore().Set("additionalData", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
+// SetBackingStore sets the BackingStore property value. Stores model information.
+func (m *Runs_attributes_permissions) SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore) {
+	m.backingStore = value
+}
+
 // SetCanApply sets the can-apply property value. The canApply property
-func (m *Runs_attributes_permissions) SetCanApply(value *bool)() {
-    m.canApply = value
+func (m *Runs_attributes_permissions) SetCanApply(value *bool) {
+	err := m.GetBackingStore().Set("canApply", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanCancel sets the can-cancel property value. The canCancel property
-func (m *Runs_attributes_permissions) SetCanCancel(value *bool)() {
-    m.canCancel = value
+func (m *Runs_attributes_permissions) SetCanCancel(value *bool) {
+	err := m.GetBackingStore().Set("canCancel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanComment sets the can-comment property value. The canComment property
-func (m *Runs_attributes_permissions) SetCanComment(value *bool)() {
-    m.canComment = value
+func (m *Runs_attributes_permissions) SetCanComment(value *bool) {
+	err := m.GetBackingStore().Set("canComment", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanDiscard sets the can-discard property value. The canDiscard property
-func (m *Runs_attributes_permissions) SetCanDiscard(value *bool)() {
-    m.canDiscard = value
+func (m *Runs_attributes_permissions) SetCanDiscard(value *bool) {
+	err := m.GetBackingStore().Set("canDiscard", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanForceCancel sets the can-force-cancel property value. The canForceCancel property
-func (m *Runs_attributes_permissions) SetCanForceCancel(value *bool)() {
-    m.canForceCancel = value
+func (m *Runs_attributes_permissions) SetCanForceCancel(value *bool) {
+	err := m.GetBackingStore().Set("canForceCancel", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanForceExecute sets the can-force-execute property value. The canForceExecute property
-func (m *Runs_attributes_permissions) SetCanForceExecute(value *bool)() {
-    m.canForceExecute = value
+func (m *Runs_attributes_permissions) SetCanForceExecute(value *bool) {
+	err := m.GetBackingStore().Set("canForceExecute", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 // SetCanOverridePolicyCheck sets the can-override-policy-check property value. The canOverridePolicyCheck property
-func (m *Runs_attributes_permissions) SetCanOverridePolicyCheck(value *bool)() {
-    m.canOverridePolicyCheck = value
+func (m *Runs_attributes_permissions) SetCanOverridePolicyCheck(value *bool) {
+	err := m.GetBackingStore().Set("canOverridePolicyCheck", value)
+	if err != nil {
+		panic(err)
+	}
 }
+
 type Runs_attributes_permissionsable interface {
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
-    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetCanApply()(*bool)
-    GetCanCancel()(*bool)
-    GetCanComment()(*bool)
-    GetCanDiscard()(*bool)
-    GetCanForceCancel()(*bool)
-    GetCanForceExecute()(*bool)
-    GetCanOverridePolicyCheck()(*bool)
-    SetCanApply(value *bool)()
-    SetCanCancel(value *bool)()
-    SetCanComment(value *bool)()
-    SetCanDiscard(value *bool)()
-    SetCanForceCancel(value *bool)()
-    SetCanForceExecute(value *bool)()
-    SetCanOverridePolicyCheck(value *bool)()
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
+	ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackedModel
+	i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+	GetBackingStore() ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore
+	GetCanApply() *bool
+	GetCanCancel() *bool
+	GetCanComment() *bool
+	GetCanDiscard() *bool
+	GetCanForceCancel() *bool
+	GetCanForceExecute() *bool
+	GetCanOverridePolicyCheck() *bool
+	SetBackingStore(value ie8677ce2c7e1b4c22e9c3827ecd078d41185424dd9eeb92b7d971ed2d49a392e.BackingStore)
+	SetCanApply(value *bool)
+	SetCanCancel(value *bool)
+	SetCanComment(value *bool)
+	SetCanDiscard(value *bool)
+	SetCanForceCancel(value *bool)
+	SetCanForceExecute(value *bool)
+	SetCanOverridePolicyCheck(value *bool)
 }

@@ -9,6 +9,7 @@ import (
 	"net/url"
 
 	auth "github.com/microsoft/kiota-abstractions-go/authentication"
+	"github.com/microsoft/kiota-abstractions-go/store"
 
 	"github.com/hashicorp/go-tfe/v2/api"
 	"github.com/hashicorp/go-tfe/v2/middleware"
@@ -166,7 +167,7 @@ func NewClient(cfg *Config) (*Client, error) {
 		adapter: adapter,
 	}
 
-	client.API = api.NewApiClient(adapter)
+	client.API = api.NewApiClient(adapter, store.BackingStoreFactoryInstance)
 	client.Meta = Meta{
 		IPRanges: &ipRanges{
 			client: client,
