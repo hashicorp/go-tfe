@@ -19,8 +19,18 @@ type NotificationConfigurations_attributes struct {
     destinationType *NotificationConfigurations_attributes_destinationType
     // Email addresses for email-type notifications.
     emailAddresses []string
+    // Verification and unsubscription status of each email recipient. Only present for email destinations.
+    emailRecipientStatuses []NotificationConfigurations_attributes_emailRecipientStatusesable
     // Whether the notification configuration is enabled.
     enabled *bool
+    // External IDs of Stack deployment groups excluded from this notification configuration.
+    excludedDeploymentGroupIds []string
+    // Names of Stack deployment groups excluded from this notification configuration.
+    excludedDeploymentGroupNames []string
+    // External IDs of workspaces excluded from this notification configuration.
+    excludedWorkspaceIds []string
+    // Names of workspaces excluded from this notification configuration.
+    excludedWorkspaceNames []string
     // External email addresses (not associated with users) for this notification.
     externalEmailAddresses []string
     // The name of the notification configuration.
@@ -73,10 +83,35 @@ func (m *NotificationConfigurations_attributes) GetDestinationType()(*Notificati
 func (m *NotificationConfigurations_attributes) GetEmailAddresses()([]string) {
     return m.emailAddresses
 }
+// GetEmailRecipientStatuses gets the email-recipient-statuses property value. Verification and unsubscription status of each email recipient. Only present for email destinations.
+// returns a []NotificationConfigurations_attributes_emailRecipientStatusesable when successful
+func (m *NotificationConfigurations_attributes) GetEmailRecipientStatuses()([]NotificationConfigurations_attributes_emailRecipientStatusesable) {
+    return m.emailRecipientStatuses
+}
 // GetEnabled gets the enabled property value. Whether the notification configuration is enabled.
 // returns a *bool when successful
 func (m *NotificationConfigurations_attributes) GetEnabled()(*bool) {
     return m.enabled
+}
+// GetExcludedDeploymentGroupIds gets the excluded-deployment-group-ids property value. External IDs of Stack deployment groups excluded from this notification configuration.
+// returns a []string when successful
+func (m *NotificationConfigurations_attributes) GetExcludedDeploymentGroupIds()([]string) {
+    return m.excludedDeploymentGroupIds
+}
+// GetExcludedDeploymentGroupNames gets the excluded-deployment-group-names property value. Names of Stack deployment groups excluded from this notification configuration.
+// returns a []string when successful
+func (m *NotificationConfigurations_attributes) GetExcludedDeploymentGroupNames()([]string) {
+    return m.excludedDeploymentGroupNames
+}
+// GetExcludedWorkspaceIds gets the excluded-workspace-ids property value. External IDs of workspaces excluded from this notification configuration.
+// returns a []string when successful
+func (m *NotificationConfigurations_attributes) GetExcludedWorkspaceIds()([]string) {
+    return m.excludedWorkspaceIds
+}
+// GetExcludedWorkspaceNames gets the excluded-workspace-names property value. Names of workspaces excluded from this notification configuration.
+// returns a []string when successful
+func (m *NotificationConfigurations_attributes) GetExcludedWorkspaceNames()([]string) {
+    return m.excludedWorkspaceNames
 }
 // GetExternalEmailAddresses gets the external-email-addresses property value. External email addresses (not associated with users) for this notification.
 // returns a []string when successful
@@ -139,6 +174,22 @@ func (m *NotificationConfigurations_attributes) GetFieldDeserializers()(map[stri
         }
         return nil
     }
+    res["email-recipient-statuses"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateNotificationConfigurations_attributes_emailRecipientStatusesFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]NotificationConfigurations_attributes_emailRecipientStatusesable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(NotificationConfigurations_attributes_emailRecipientStatusesable)
+                }
+            }
+            m.SetEmailRecipientStatuses(res)
+        }
+        return nil
+    }
     res["enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -146,6 +197,70 @@ func (m *NotificationConfigurations_attributes) GetFieldDeserializers()(map[stri
         }
         if val != nil {
             m.SetEnabled(val)
+        }
+        return nil
+    }
+    res["excluded-deployment-group-ids"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetExcludedDeploymentGroupIds(res)
+        }
+        return nil
+    }
+    res["excluded-deployment-group-names"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetExcludedDeploymentGroupNames(res)
+        }
+        return nil
+    }
+    res["excluded-workspace-ids"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetExcludedWorkspaceIds(res)
+        }
+        return nil
+    }
+    res["excluded-workspace-names"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetExcludedWorkspaceNames(res)
         }
         return nil
     }
@@ -342,9 +457,29 @@ func (m *NotificationConfigurations_attributes) SetDestinationType(value *Notifi
 func (m *NotificationConfigurations_attributes) SetEmailAddresses(value []string)() {
     m.emailAddresses = value
 }
+// SetEmailRecipientStatuses sets the email-recipient-statuses property value. Verification and unsubscription status of each email recipient. Only present for email destinations.
+func (m *NotificationConfigurations_attributes) SetEmailRecipientStatuses(value []NotificationConfigurations_attributes_emailRecipientStatusesable)() {
+    m.emailRecipientStatuses = value
+}
 // SetEnabled sets the enabled property value. Whether the notification configuration is enabled.
 func (m *NotificationConfigurations_attributes) SetEnabled(value *bool)() {
     m.enabled = value
+}
+// SetExcludedDeploymentGroupIds sets the excluded-deployment-group-ids property value. External IDs of Stack deployment groups excluded from this notification configuration.
+func (m *NotificationConfigurations_attributes) SetExcludedDeploymentGroupIds(value []string)() {
+    m.excludedDeploymentGroupIds = value
+}
+// SetExcludedDeploymentGroupNames sets the excluded-deployment-group-names property value. Names of Stack deployment groups excluded from this notification configuration.
+func (m *NotificationConfigurations_attributes) SetExcludedDeploymentGroupNames(value []string)() {
+    m.excludedDeploymentGroupNames = value
+}
+// SetExcludedWorkspaceIds sets the excluded-workspace-ids property value. External IDs of workspaces excluded from this notification configuration.
+func (m *NotificationConfigurations_attributes) SetExcludedWorkspaceIds(value []string)() {
+    m.excludedWorkspaceIds = value
+}
+// SetExcludedWorkspaceNames sets the excluded-workspace-names property value. Names of workspaces excluded from this notification configuration.
+func (m *NotificationConfigurations_attributes) SetExcludedWorkspaceNames(value []string)() {
+    m.excludedWorkspaceNames = value
 }
 // SetExternalEmailAddresses sets the external-email-addresses property value. External email addresses (not associated with users) for this notification.
 func (m *NotificationConfigurations_attributes) SetExternalEmailAddresses(value []string)() {
@@ -381,7 +516,12 @@ type NotificationConfigurations_attributesable interface {
     GetDeliveryResponses()([]NotificationConfigurations_attributes_deliveryResponsesable)
     GetDestinationType()(*NotificationConfigurations_attributes_destinationType)
     GetEmailAddresses()([]string)
+    GetEmailRecipientStatuses()([]NotificationConfigurations_attributes_emailRecipientStatusesable)
     GetEnabled()(*bool)
+    GetExcludedDeploymentGroupIds()([]string)
+    GetExcludedDeploymentGroupNames()([]string)
+    GetExcludedWorkspaceIds()([]string)
+    GetExcludedWorkspaceNames()([]string)
     GetExternalEmailAddresses()([]string)
     GetName()(*string)
     GetToken()(*string)
@@ -393,7 +533,12 @@ type NotificationConfigurations_attributesable interface {
     SetDeliveryResponses(value []NotificationConfigurations_attributes_deliveryResponsesable)()
     SetDestinationType(value *NotificationConfigurations_attributes_destinationType)()
     SetEmailAddresses(value []string)()
+    SetEmailRecipientStatuses(value []NotificationConfigurations_attributes_emailRecipientStatusesable)()
     SetEnabled(value *bool)()
+    SetExcludedDeploymentGroupIds(value []string)()
+    SetExcludedDeploymentGroupNames(value []string)()
+    SetExcludedWorkspaceIds(value []string)()
+    SetExcludedWorkspaceNames(value []string)()
     SetExternalEmailAddresses(value []string)()
     SetName(value *string)()
     SetToken(value *string)()

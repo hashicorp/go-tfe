@@ -4,12 +4,17 @@
 package workspaces
 
 import (
+    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
 type ItemRelationshipsTagsGetResponse_data_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The createdAt property
+    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // The number of resources this tag is applied to.
+    instanceCount *int32
     // The name property
     name *string
 }
@@ -30,10 +35,35 @@ func CreateItemRelationshipsTagsGetResponse_data_attributesFromDiscriminatorValu
 func (m *ItemRelationshipsTagsGetResponse_data_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetCreatedAt gets the created-at property value. The createdAt property
+// returns a *Time when successful
+func (m *ItemRelationshipsTagsGetResponse_data_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.createdAt
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *ItemRelationshipsTagsGetResponse_data_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCreatedAt(val)
+        }
+        return nil
+    }
+    res["instance-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInstanceCount(val)
+        }
+        return nil
+    }
     res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -45,6 +75,11 @@ func (m *ItemRelationshipsTagsGetResponse_data_attributes) GetFieldDeserializers
         return nil
     }
     return res
+}
+// GetInstanceCount gets the instance-count property value. The number of resources this tag is applied to.
+// returns a *int32 when successful
+func (m *ItemRelationshipsTagsGetResponse_data_attributes) GetInstanceCount()(*int32) {
+    return m.instanceCount
 }
 // GetName gets the name property value. The name property
 // returns a *string when successful
@@ -71,6 +106,14 @@ func (m *ItemRelationshipsTagsGetResponse_data_attributes) Serialize(writer i878
 func (m *ItemRelationshipsTagsGetResponse_data_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetCreatedAt sets the created-at property value. The createdAt property
+func (m *ItemRelationshipsTagsGetResponse_data_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.createdAt = value
+}
+// SetInstanceCount sets the instance-count property value. The number of resources this tag is applied to.
+func (m *ItemRelationshipsTagsGetResponse_data_attributes) SetInstanceCount(value *int32)() {
+    m.instanceCount = value
+}
 // SetName sets the name property value. The name property
 func (m *ItemRelationshipsTagsGetResponse_data_attributes) SetName(value *string)() {
     m.name = value
@@ -78,6 +121,10 @@ func (m *ItemRelationshipsTagsGetResponse_data_attributes) SetName(value *string
 type ItemRelationshipsTagsGetResponse_data_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetInstanceCount()(*int32)
     GetName()(*string)
+    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetInstanceCount(value *int32)()
     SetName(value *string)()
 }

@@ -26,6 +26,8 @@ type Users_attributes struct {
     hasGitHubAppToken *bool
     // The hasLinkedHcp property
     hasLinkedHcp *bool
+    // Present only while an admin is impersonating this user. Contains theimpersonating admin's user attributes (as serialized for the currentuser, with null values removed).
+    impersonator Users_attributes_impersonatorable
     // TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
     initials *string
     // The isAdmin property
@@ -36,6 +38,8 @@ type Users_attributes struct {
     isServiceAccount *bool
     // Deprecated. Use is-admin.
     isSiteAdmin *bool
+    // Whether the current user is a site auditor. Present only for the current user.This attribute is only available in Terraform Enterprise.
+    isSiteAuditor *bool
     // The isSsoLogin property
     isSsoLogin *bool
     // The isSudo property
@@ -188,6 +192,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         return nil
     }
+    res["impersonator"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateUsers_attributes_impersonatorFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetImpersonator(val.(Users_attributes_impersonatorable))
+        }
+        return nil
+    }
     res["initials"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -235,6 +249,16 @@ func (m *Users_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e
         }
         if val != nil {
             m.SetIsSiteAdmin(val)
+        }
+        return nil
+    }
+    res["is-site-auditor"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetIsSiteAuditor(val)
         }
         return nil
     }
@@ -350,6 +374,11 @@ func (m *Users_attributes) GetHasGitHubAppToken()(*bool) {
 func (m *Users_attributes) GetHasLinkedHcp()(*bool) {
     return m.hasLinkedHcp
 }
+// GetImpersonator gets the impersonator property value. Present only while an admin is impersonating this user. Contains theimpersonating admin's user attributes (as serialized for the currentuser, with null values removed).
+// returns a Users_attributes_impersonatorable when successful
+func (m *Users_attributes) GetImpersonator()(Users_attributes_impersonatorable) {
+    return m.impersonator
+}
 // GetInitials gets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
 // returns a *string when successful
 func (m *Users_attributes) GetInitials()(*string) {
@@ -374,6 +403,11 @@ func (m *Users_attributes) GetIsServiceAccount()(*bool) {
 // returns a *bool when successful
 func (m *Users_attributes) GetIsSiteAdmin()(*bool) {
     return m.isSiteAdmin
+}
+// GetIsSiteAuditor gets the is-site-auditor property value. Whether the current user is a site auditor. Present only for the current user.This attribute is only available in Terraform Enterprise.
+// returns a *bool when successful
+func (m *Users_attributes) GetIsSiteAuditor()(*bool) {
+    return m.isSiteAuditor
 }
 // GetIsSsoLogin gets the is-sso-login property value. The isSsoLogin property
 // returns a *bool when successful
@@ -488,6 +522,12 @@ func (m *Users_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
         }
     }
     {
+        err := writer.WriteBoolValue("is-site-auditor", m.GetIsSiteAuditor())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("is-sso-login", m.GetIsSsoLogin())
         if err != nil {
             return err
@@ -591,6 +631,10 @@ func (m *Users_attributes) SetHasGitHubAppToken(value *bool)() {
 func (m *Users_attributes) SetHasLinkedHcp(value *bool)() {
     m.hasLinkedHcp = value
 }
+// SetImpersonator sets the impersonator property value. Present only while an admin is impersonating this user. Contains theimpersonating admin's user attributes (as serialized for the currentuser, with null values removed).
+func (m *Users_attributes) SetImpersonator(value Users_attributes_impersonatorable)() {
+    m.impersonator = value
+}
 // SetInitials sets the initials property value. TFE only. Backend-computed initials derived from the user's username, or email local part as a fallback. At most two characters. Returns "?" when neither is available.
 func (m *Users_attributes) SetInitials(value *string)() {
     m.initials = value
@@ -610,6 +654,10 @@ func (m *Users_attributes) SetIsServiceAccount(value *bool)() {
 // SetIsSiteAdmin sets the is-site-admin property value. Deprecated. Use is-admin.
 func (m *Users_attributes) SetIsSiteAdmin(value *bool)() {
     m.isSiteAdmin = value
+}
+// SetIsSiteAuditor sets the is-site-auditor property value. Whether the current user is a site auditor. Present only for the current user.This attribute is only available in Terraform Enterprise.
+func (m *Users_attributes) SetIsSiteAuditor(value *bool)() {
+    m.isSiteAuditor = value
 }
 // SetIsSsoLogin sets the is-sso-login property value. The isSsoLogin property
 func (m *Users_attributes) SetIsSsoLogin(value *bool)() {
@@ -662,11 +710,13 @@ type Users_attributesable interface {
     GetEnterpriseSupport()(*bool)
     GetHasGitHubAppToken()(*bool)
     GetHasLinkedHcp()(*bool)
+    GetImpersonator()(Users_attributes_impersonatorable)
     GetInitials()(*string)
     GetIsAdmin()(*bool)
     GetIsConfirmed()(*bool)
     GetIsServiceAccount()(*bool)
     GetIsSiteAdmin()(*bool)
+    GetIsSiteAuditor()(*bool)
     GetIsSsoLogin()(*bool)
     GetIsSudo()(*bool)
     GetIsUnified()(*bool)
@@ -685,11 +735,13 @@ type Users_attributesable interface {
     SetEnterpriseSupport(value *bool)()
     SetHasGitHubAppToken(value *bool)()
     SetHasLinkedHcp(value *bool)()
+    SetImpersonator(value Users_attributes_impersonatorable)()
     SetInitials(value *string)()
     SetIsAdmin(value *bool)()
     SetIsConfirmed(value *bool)()
     SetIsServiceAccount(value *bool)()
     SetIsSiteAdmin(value *bool)()
+    SetIsSiteAuditor(value *bool)()
     SetIsSsoLogin(value *bool)()
     SetIsSudo(value *bool)()
     SetIsUnified(value *bool)()
