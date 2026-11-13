@@ -20,6 +20,8 @@ type VaultOidcConfigurations_attributes struct {
     namespace *string
     // The role property
     role *string
+    // The OIDC configuration's internal class name.
+    typeEscaped *VaultOidcConfigurations_attributes_type
 }
 // NewVaultOidcConfigurations_attributes instantiates a new VaultOidcConfigurations_attributes and sets the default values.
 func NewVaultOidcConfigurations_attributes()(*VaultOidcConfigurations_attributes) {
@@ -107,6 +109,16 @@ func (m *VaultOidcConfigurations_attributes) GetFieldDeserializers()(map[string]
         }
         return nil
     }
+    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParseVaultOidcConfigurations_attributes_type)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTypeEscaped(val.(*VaultOidcConfigurations_attributes_type))
+        }
+        return nil
+    }
     return res
 }
 // GetNamespace gets the namespace property value. The namespace property
@@ -118,6 +130,11 @@ func (m *VaultOidcConfigurations_attributes) GetNamespace()(*string) {
 // returns a *string when successful
 func (m *VaultOidcConfigurations_attributes) GetRole()(*string) {
     return m.role
+}
+// GetTypeEscaped gets the type property value. The OIDC configuration's internal class name.
+// returns a *VaultOidcConfigurations_attributes_type when successful
+func (m *VaultOidcConfigurations_attributes) GetTypeEscaped()(*VaultOidcConfigurations_attributes_type) {
+    return m.typeEscaped
 }
 // Serialize serializes information the current object
 func (m *VaultOidcConfigurations_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -183,6 +200,10 @@ func (m *VaultOidcConfigurations_attributes) SetNamespace(value *string)() {
 func (m *VaultOidcConfigurations_attributes) SetRole(value *string)() {
     m.role = value
 }
+// SetTypeEscaped sets the type property value. The OIDC configuration's internal class name.
+func (m *VaultOidcConfigurations_attributes) SetTypeEscaped(value *VaultOidcConfigurations_attributes_type)() {
+    m.typeEscaped = value
+}
 type VaultOidcConfigurations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -191,9 +212,11 @@ type VaultOidcConfigurations_attributesable interface {
     GetEncodedCacert()(*string)
     GetNamespace()(*string)
     GetRole()(*string)
+    GetTypeEscaped()(*VaultOidcConfigurations_attributes_type)
     SetAddress(value *string)()
     SetAuthPath(value *string)()
     SetEncodedCacert(value *string)()
     SetNamespace(value *string)()
     SetRole(value *string)()
+    SetTypeEscaped(value *VaultOidcConfigurations_attributes_type)()
 }

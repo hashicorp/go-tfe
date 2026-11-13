@@ -10,6 +10,8 @@ import (
 type OnboardingTaskLists_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The onboardingTasks property
+    onboardingTasks OnboardingTasksHasManyable
     // The organization property
     organization OrganizationsHasOneable
 }
@@ -34,6 +36,16 @@ func (m *OnboardingTaskLists_relationships) GetAdditionalData()(map[string]any) 
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *OnboardingTaskLists_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["onboarding-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateOnboardingTasksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOnboardingTasks(val.(OnboardingTasksHasManyable))
+        }
+        return nil
+    }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -46,6 +58,11 @@ func (m *OnboardingTaskLists_relationships) GetFieldDeserializers()(map[string]f
     }
     return res
 }
+// GetOnboardingTasks gets the onboarding-tasks property value. The onboardingTasks property
+// returns a OnboardingTasksHasManyable when successful
+func (m *OnboardingTaskLists_relationships) GetOnboardingTasks()(OnboardingTasksHasManyable) {
+    return m.onboardingTasks
+}
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *OnboardingTaskLists_relationships) GetOrganization()(OrganizationsHasOneable) {
@@ -53,6 +70,12 @@ func (m *OnboardingTaskLists_relationships) GetOrganization()(OrganizationsHasOn
 }
 // Serialize serializes information the current object
 func (m *OnboardingTaskLists_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("onboarding-tasks", m.GetOnboardingTasks())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
         if err != nil {
@@ -71,6 +94,10 @@ func (m *OnboardingTaskLists_relationships) Serialize(writer i878a80d2330e89d268
 func (m *OnboardingTaskLists_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetOnboardingTasks sets the onboarding-tasks property value. The onboardingTasks property
+func (m *OnboardingTaskLists_relationships) SetOnboardingTasks(value OnboardingTasksHasManyable)() {
+    m.onboardingTasks = value
+}
 // SetOrganization sets the organization property value. The organization property
 func (m *OnboardingTaskLists_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
@@ -78,6 +105,8 @@ func (m *OnboardingTaskLists_relationships) SetOrganization(value OrganizationsH
 type OnboardingTaskLists_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetOnboardingTasks()(OnboardingTasksHasManyable)
     GetOrganization()(OrganizationsHasOneable)
+    SetOnboardingTasks(value OnboardingTasksHasManyable)()
     SetOrganization(value OrganizationsHasOneable)()
 }

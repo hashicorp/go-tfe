@@ -12,6 +12,8 @@ type StackDeploymentSteps_relationships_stackDiagnostics_meta struct {
     additionalData map[string]any
     // The count property
     count *int32
+    // The hasWarnings property
+    hasWarnings *bool
 }
 // NewStackDeploymentSteps_relationships_stackDiagnostics_meta instantiates a new StackDeploymentSteps_relationships_stackDiagnostics_meta and sets the default values.
 func NewStackDeploymentSteps_relationships_stackDiagnostics_meta()(*StackDeploymentSteps_relationships_stackDiagnostics_meta) {
@@ -49,12 +51,33 @@ func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) GetFieldDeser
         }
         return nil
     }
+    res["has-warnings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetHasWarnings(val)
+        }
+        return nil
+    }
     return res
+}
+// GetHasWarnings gets the has-warnings property value. The hasWarnings property
+// returns a *bool when successful
+func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) GetHasWarnings()(*bool) {
+    return m.hasWarnings
 }
 // Serialize serializes information the current object
 func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteInt32Value("count", m.GetCount())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("has-warnings", m.GetHasWarnings())
         if err != nil {
             return err
         }
@@ -75,9 +98,15 @@ func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) SetAdditional
 func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) SetCount(value *int32)() {
     m.count = value
 }
+// SetHasWarnings sets the has-warnings property value. The hasWarnings property
+func (m *StackDeploymentSteps_relationships_stackDiagnostics_meta) SetHasWarnings(value *bool)() {
+    m.hasWarnings = value
+}
 type StackDeploymentSteps_relationships_stackDiagnostics_metaable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCount()(*int32)
+    GetHasWarnings()(*bool)
     SetCount(value *int32)()
+    SetHasWarnings(value *bool)()
 }

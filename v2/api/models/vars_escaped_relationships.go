@@ -16,6 +16,8 @@ type Vars_relationships struct {
     overwriter VarsHasOneable
     // The overwritten property
     overwritten VarsHasManyable
+    // The policySet property
+    policySet PolicySetsHasOneable
     // The varset property
     varset VarsetsHasOneable
     // The workspace property
@@ -77,6 +79,16 @@ func (m *Vars_relationships) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["policy-set"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreatePolicySetsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicySet(val.(PolicySetsHasOneable))
+        }
+        return nil
+    }
     res["varset"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateVarsetsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -109,6 +121,11 @@ func (m *Vars_relationships) GetOverwriter()(VarsHasOneable) {
 func (m *Vars_relationships) GetOverwritten()(VarsHasManyable) {
     return m.overwritten
 }
+// GetPolicySet gets the policy-set property value. The policySet property
+// returns a PolicySetsHasOneable when successful
+func (m *Vars_relationships) GetPolicySet()(PolicySetsHasOneable) {
+    return m.policySet
+}
 // GetVarset gets the varset property value. The varset property
 // returns a VarsetsHasOneable when successful
 func (m *Vars_relationships) GetVarset()(VarsetsHasOneable) {
@@ -135,6 +152,12 @@ func (m *Vars_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef2
     }
     {
         err := writer.WriteObjectValue("overwritten", m.GetOverwritten())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("policy-set", m.GetPolicySet())
         if err != nil {
             return err
         }
@@ -175,6 +198,10 @@ func (m *Vars_relationships) SetOverwriter(value VarsHasOneable)() {
 func (m *Vars_relationships) SetOverwritten(value VarsHasManyable)() {
     m.overwritten = value
 }
+// SetPolicySet sets the policy-set property value. The policySet property
+func (m *Vars_relationships) SetPolicySet(value PolicySetsHasOneable)() {
+    m.policySet = value
+}
 // SetVarset sets the varset property value. The varset property
 func (m *Vars_relationships) SetVarset(value VarsetsHasOneable)() {
     m.varset = value
@@ -189,11 +216,13 @@ type Vars_relationshipsable interface {
     GetConfigurable()(ConfigurableHasOneable)
     GetOverwriter()(VarsHasOneable)
     GetOverwritten()(VarsHasManyable)
+    GetPolicySet()(PolicySetsHasOneable)
     GetVarset()(VarsetsHasOneable)
     GetWorkspace()(WorkspacesHasOneable)
     SetConfigurable(value ConfigurableHasOneable)()
     SetOverwriter(value VarsHasOneable)()
     SetOverwritten(value VarsHasManyable)()
+    SetPolicySet(value PolicySetsHasOneable)()
     SetVarset(value VarsetsHasOneable)()
     SetWorkspace(value WorkspacesHasOneable)()
 }

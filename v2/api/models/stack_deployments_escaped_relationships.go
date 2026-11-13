@@ -10,6 +10,8 @@ import (
 type StackDeployments_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The latestDeploymentRun property
+    latestDeploymentRun StackDeploymentRunsHasOneable
     // The stack property
     stack StacksHasOneable
 }
@@ -34,6 +36,16 @@ func (m *StackDeployments_relationships) GetAdditionalData()(map[string]any) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *StackDeployments_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["latest-deployment-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStackDeploymentRunsHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLatestDeploymentRun(val.(StackDeploymentRunsHasOneable))
+        }
+        return nil
+    }
     res["stack"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateStacksHasOneFromDiscriminatorValue)
         if err != nil {
@@ -46,6 +58,11 @@ func (m *StackDeployments_relationships) GetFieldDeserializers()(map[string]func
     }
     return res
 }
+// GetLatestDeploymentRun gets the latest-deployment-run property value. The latestDeploymentRun property
+// returns a StackDeploymentRunsHasOneable when successful
+func (m *StackDeployments_relationships) GetLatestDeploymentRun()(StackDeploymentRunsHasOneable) {
+    return m.latestDeploymentRun
+}
 // GetStack gets the stack property value. The stack property
 // returns a StacksHasOneable when successful
 func (m *StackDeployments_relationships) GetStack()(StacksHasOneable) {
@@ -53,6 +70,12 @@ func (m *StackDeployments_relationships) GetStack()(StacksHasOneable) {
 }
 // Serialize serializes information the current object
 func (m *StackDeployments_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("latest-deployment-run", m.GetLatestDeploymentRun())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("stack", m.GetStack())
         if err != nil {
@@ -71,6 +94,10 @@ func (m *StackDeployments_relationships) Serialize(writer i878a80d2330e89d268963
 func (m *StackDeployments_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetLatestDeploymentRun sets the latest-deployment-run property value. The latestDeploymentRun property
+func (m *StackDeployments_relationships) SetLatestDeploymentRun(value StackDeploymentRunsHasOneable)() {
+    m.latestDeploymentRun = value
+}
 // SetStack sets the stack property value. The stack property
 func (m *StackDeployments_relationships) SetStack(value StacksHasOneable)() {
     m.stack = value
@@ -78,6 +105,8 @@ func (m *StackDeployments_relationships) SetStack(value StacksHasOneable)() {
 type StackDeployments_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetLatestDeploymentRun()(StackDeploymentRunsHasOneable)
     GetStack()(StacksHasOneable)
+    SetLatestDeploymentRun(value StackDeploymentRunsHasOneable)()
     SetStack(value StacksHasOneable)()
 }

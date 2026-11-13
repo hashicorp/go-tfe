@@ -20,6 +20,8 @@ type Applies_attributes struct {
     executionDetails Applies_attributes_executionDetailsable
     // The logReadUrl property
     logReadUrl *string
+    // Permissions for the current user related to this apply. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+    permissions Applies_attributes_permissionsable
     // The resourceAdditions property
     resourceAdditions *int32
     // The resourceChanges property
@@ -32,6 +34,8 @@ type Applies_attributes struct {
     status *Applies_attributes_status
     // The statusTimestamps property
     statusTimestamps Applies_attributes_statusTimestampsable
+    // Whether structured run output is enabled
+    structuredRunOutputEnabled *bool
 }
 // NewApplies_attributes instantiates a new Applies_attributes and sets the default values.
 func NewApplies_attributes()(*Applies_attributes) {
@@ -124,6 +128,16 @@ func (m *Applies_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateApplies_attributes_permissionsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPermissions(val.(Applies_attributes_permissionsable))
+        }
+        return nil
+    }
     res["resource-additions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -184,12 +198,27 @@ func (m *Applies_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["structured-run-output-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStructuredRunOutputEnabled(val)
+        }
+        return nil
+    }
     return res
 }
 // GetLogReadUrl gets the log-read-url property value. The logReadUrl property
 // returns a *string when successful
 func (m *Applies_attributes) GetLogReadUrl()(*string) {
     return m.logReadUrl
+}
+// GetPermissions gets the permissions property value. Permissions for the current user related to this apply. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+// returns a Applies_attributes_permissionsable when successful
+func (m *Applies_attributes) GetPermissions()(Applies_attributes_permissionsable) {
+    return m.permissions
 }
 // GetResourceAdditions gets the resource-additions property value. The resourceAdditions property
 // returns a *int32 when successful
@@ -221,8 +250,19 @@ func (m *Applies_attributes) GetStatus()(*Applies_attributes_status) {
 func (m *Applies_attributes) GetStatusTimestamps()(Applies_attributes_statusTimestampsable) {
     return m.statusTimestamps
 }
+// GetStructuredRunOutputEnabled gets the structured-run-output-enabled property value. Whether structured run output is enabled
+// returns a *bool when successful
+func (m *Applies_attributes) GetStructuredRunOutputEnabled()(*bool) {
+    return m.structuredRunOutputEnabled
+}
 // Serialize serializes information the current object
 func (m *Applies_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteBoolValue("structured-run-output-enabled", m.GetStructuredRunOutputEnabled())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
@@ -255,6 +295,10 @@ func (m *Applies_attributes) SetExecutionDetails(value Applies_attributes_execut
 func (m *Applies_attributes) SetLogReadUrl(value *string)() {
     m.logReadUrl = value
 }
+// SetPermissions sets the permissions property value. Permissions for the current user related to this apply. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+func (m *Applies_attributes) SetPermissions(value Applies_attributes_permissionsable)() {
+    m.permissions = value
+}
 // SetResourceAdditions sets the resource-additions property value. The resourceAdditions property
 func (m *Applies_attributes) SetResourceAdditions(value *int32)() {
     m.resourceAdditions = value
@@ -279,6 +323,10 @@ func (m *Applies_attributes) SetStatus(value *Applies_attributes_status)() {
 func (m *Applies_attributes) SetStatusTimestamps(value Applies_attributes_statusTimestampsable)() {
     m.statusTimestamps = value
 }
+// SetStructuredRunOutputEnabled sets the structured-run-output-enabled property value. Whether structured run output is enabled
+func (m *Applies_attributes) SetStructuredRunOutputEnabled(value *bool)() {
+    m.structuredRunOutputEnabled = value
+}
 type Applies_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -287,21 +335,25 @@ type Applies_attributesable interface {
     GetBackingDataState()(*Applies_attributes_backingDataState)
     GetExecutionDetails()(Applies_attributes_executionDetailsable)
     GetLogReadUrl()(*string)
+    GetPermissions()(Applies_attributes_permissionsable)
     GetResourceAdditions()(*int32)
     GetResourceChanges()(*int32)
     GetResourceDestructions()(*int32)
     GetResourceImports()(*int32)
     GetStatus()(*Applies_attributes_status)
     GetStatusTimestamps()(Applies_attributes_statusTimestampsable)
+    GetStructuredRunOutputEnabled()(*bool)
     SetActionFailures(value *int32)()
     SetActionInvocations(value *int32)()
     SetBackingDataState(value *Applies_attributes_backingDataState)()
     SetExecutionDetails(value Applies_attributes_executionDetailsable)()
     SetLogReadUrl(value *string)()
+    SetPermissions(value Applies_attributes_permissionsable)()
     SetResourceAdditions(value *int32)()
     SetResourceChanges(value *int32)()
     SetResourceDestructions(value *int32)()
     SetResourceImports(value *int32)()
     SetStatus(value *Applies_attributes_status)()
     SetStatusTimestamps(value Applies_attributes_statusTimestampsable)()
+    SetStructuredRunOutputEnabled(value *bool)()
 }

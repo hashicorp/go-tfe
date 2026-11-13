@@ -13,6 +13,8 @@ type AgentPools_attributes struct {
     additionalData map[string]any
     // The agentCount property
     agentCount *int32
+    // The OS/architecture combinations supported by agents in this pool.
+    archs []AgentPools_attributes_archsable
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The name property
@@ -42,6 +44,11 @@ func (m *AgentPools_attributes) GetAdditionalData()(map[string]any) {
 func (m *AgentPools_attributes) GetAgentCount()(*int32) {
     return m.agentCount
 }
+// GetArchs gets the archs property value. The OS/architecture combinations supported by agents in this pool.
+// returns a []AgentPools_attributes_archsable when successful
+func (m *AgentPools_attributes) GetArchs()([]AgentPools_attributes_archsable) {
+    return m.archs
+}
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *AgentPools_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -58,6 +65,22 @@ func (m *AgentPools_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetAgentCount(val)
+        }
+        return nil
+    }
+    res["archs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateAgentPools_attributes_archsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]AgentPools_attributes_archsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(AgentPools_attributes_archsable)
+                }
+            }
+            m.SetArchs(res)
         }
         return nil
     }
@@ -105,6 +128,18 @@ func (m *AgentPools_attributes) GetOrganizationScoped()(*bool) {
 }
 // Serialize serializes information the current object
 func (m *AgentPools_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    if m.GetArchs() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetArchs()))
+        for i, v := range m.GetArchs() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("archs", cast)
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteStringValue("name", m.GetName())
         if err != nil {
@@ -133,6 +168,10 @@ func (m *AgentPools_attributes) SetAdditionalData(value map[string]any)() {
 func (m *AgentPools_attributes) SetAgentCount(value *int32)() {
     m.agentCount = value
 }
+// SetArchs sets the archs property value. The OS/architecture combinations supported by agents in this pool.
+func (m *AgentPools_attributes) SetArchs(value []AgentPools_attributes_archsable)() {
+    m.archs = value
+}
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *AgentPools_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
@@ -149,10 +188,12 @@ type AgentPools_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgentCount()(*int32)
+    GetArchs()([]AgentPools_attributes_archsable)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetName()(*string)
     GetOrganizationScoped()(*bool)
     SetAgentCount(value *int32)()
+    SetArchs(value []AgentPools_attributes_archsable)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetName(value *string)()
     SetOrganizationScoped(value *bool)()

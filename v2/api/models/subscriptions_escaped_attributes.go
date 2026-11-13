@@ -13,6 +13,8 @@ type Subscriptions_attributes struct {
     additionalData map[string]any
     // The agentsCeiling property
     agentsCeiling *int32
+    // Additional agents purchased via the current concurrency add-on, or null if none.
+    agentsCeilingAddOn *int32
     // The contractApplyLimit property
     contractApplyLimit *int32
     // The contractManagedResourcesLimit property
@@ -21,6 +23,10 @@ type Subscriptions_attributes struct {
     contractStartAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The contractUserLimit property
     contractUserLimit *int32
+    // The agents ceiling in effect, accounting for the feature set, subscription and any add-ons.
+    effectiveAgentsCeiling *int32
+    // The concurrent runs ceiling in effect, accounting for the feature set, subscription and any add-ons.
+    effectiveRunsCeiling *int32
     // The endAt property
     endAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The freeApplyMonthlyLimit property
@@ -55,6 +61,8 @@ type Subscriptions_attributes struct {
     rumThresholdAlertSentAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The runsCeiling property
     runsCeiling *int32
+    // Additional concurrent runs purchased via the current concurrency add-on, or null if none.
+    runsCeilingAddOn *int32
     // The runTaskLimit property
     runTaskLimit *int32
     // The runTaskMandatoryEnforcementLimit property
@@ -88,6 +96,11 @@ func (m *Subscriptions_attributes) GetAdditionalData()(map[string]any) {
 func (m *Subscriptions_attributes) GetAgentsCeiling()(*int32) {
     return m.agentsCeiling
 }
+// GetAgentsCeilingAddOn gets the agents-ceiling-add-on property value. Additional agents purchased via the current concurrency add-on, or null if none.
+// returns a *int32 when successful
+func (m *Subscriptions_attributes) GetAgentsCeilingAddOn()(*int32) {
+    return m.agentsCeilingAddOn
+}
 // GetContractApplyLimit gets the contract-apply-limit property value. The contractApplyLimit property
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetContractApplyLimit()(*int32) {
@@ -108,6 +121,16 @@ func (m *Subscriptions_attributes) GetContractStartAt()(*i336074805fc853987abe6f
 func (m *Subscriptions_attributes) GetContractUserLimit()(*int32) {
     return m.contractUserLimit
 }
+// GetEffectiveAgentsCeiling gets the effective-agents-ceiling property value. The agents ceiling in effect, accounting for the feature set, subscription and any add-ons.
+// returns a *int32 when successful
+func (m *Subscriptions_attributes) GetEffectiveAgentsCeiling()(*int32) {
+    return m.effectiveAgentsCeiling
+}
+// GetEffectiveRunsCeiling gets the effective-runs-ceiling property value. The concurrent runs ceiling in effect, accounting for the feature set, subscription and any add-ons.
+// returns a *int32 when successful
+func (m *Subscriptions_attributes) GetEffectiveRunsCeiling()(*int32) {
+    return m.effectiveRunsCeiling
+}
 // GetEndAt gets the end-at property value. The endAt property
 // returns a *Time when successful
 func (m *Subscriptions_attributes) GetEndAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -124,6 +147,16 @@ func (m *Subscriptions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetAgentsCeiling(val)
+        }
+        return nil
+    }
+    res["agents-ceiling-add-on"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAgentsCeilingAddOn(val)
         }
         return nil
     }
@@ -164,6 +197,26 @@ func (m *Subscriptions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetContractUserLimit(val)
+        }
+        return nil
+    }
+    res["effective-agents-ceiling"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveAgentsCeiling(val)
+        }
+        return nil
+    }
+    res["effective-runs-ceiling"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveRunsCeiling(val)
         }
         return nil
     }
@@ -337,6 +390,16 @@ func (m *Subscriptions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["runs-ceiling-add-on"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRunsCeilingAddOn(val)
+        }
+        return nil
+    }
     res["run-task-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -468,6 +531,11 @@ func (m *Subscriptions_attributes) GetRumThresholdAlertSentAt()(*i336074805fc853
 // returns a *int32 when successful
 func (m *Subscriptions_attributes) GetRunsCeiling()(*int32) {
     return m.runsCeiling
+}
+// GetRunsCeilingAddOn gets the runs-ceiling-add-on property value. Additional concurrent runs purchased via the current concurrency add-on, or null if none.
+// returns a *int32 when successful
+func (m *Subscriptions_attributes) GetRunsCeilingAddOn()(*int32) {
+    return m.runsCeilingAddOn
 }
 // GetRunTaskLimit gets the run-task-limit property value. The runTaskLimit property
 // returns a *int32 when successful
@@ -674,6 +742,10 @@ func (m *Subscriptions_attributes) SetAdditionalData(value map[string]any)() {
 func (m *Subscriptions_attributes) SetAgentsCeiling(value *int32)() {
     m.agentsCeiling = value
 }
+// SetAgentsCeilingAddOn sets the agents-ceiling-add-on property value. Additional agents purchased via the current concurrency add-on, or null if none.
+func (m *Subscriptions_attributes) SetAgentsCeilingAddOn(value *int32)() {
+    m.agentsCeilingAddOn = value
+}
 // SetContractApplyLimit sets the contract-apply-limit property value. The contractApplyLimit property
 func (m *Subscriptions_attributes) SetContractApplyLimit(value *int32)() {
     m.contractApplyLimit = value
@@ -689,6 +761,14 @@ func (m *Subscriptions_attributes) SetContractStartAt(value *i336074805fc853987a
 // SetContractUserLimit sets the contract-user-limit property value. The contractUserLimit property
 func (m *Subscriptions_attributes) SetContractUserLimit(value *int32)() {
     m.contractUserLimit = value
+}
+// SetEffectiveAgentsCeiling sets the effective-agents-ceiling property value. The agents ceiling in effect, accounting for the feature set, subscription and any add-ons.
+func (m *Subscriptions_attributes) SetEffectiveAgentsCeiling(value *int32)() {
+    m.effectiveAgentsCeiling = value
+}
+// SetEffectiveRunsCeiling sets the effective-runs-ceiling property value. The concurrent runs ceiling in effect, accounting for the feature set, subscription and any add-ons.
+func (m *Subscriptions_attributes) SetEffectiveRunsCeiling(value *int32)() {
+    m.effectiveRunsCeiling = value
 }
 // SetEndAt sets the end-at property value. The endAt property
 func (m *Subscriptions_attributes) SetEndAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
@@ -758,6 +838,10 @@ func (m *Subscriptions_attributes) SetRumThresholdAlertSentAt(value *i336074805f
 func (m *Subscriptions_attributes) SetRunsCeiling(value *int32)() {
     m.runsCeiling = value
 }
+// SetRunsCeilingAddOn sets the runs-ceiling-add-on property value. Additional concurrent runs purchased via the current concurrency add-on, or null if none.
+func (m *Subscriptions_attributes) SetRunsCeilingAddOn(value *int32)() {
+    m.runsCeilingAddOn = value
+}
 // SetRunTaskLimit sets the run-task-limit property value. The runTaskLimit property
 func (m *Subscriptions_attributes) SetRunTaskLimit(value *int32)() {
     m.runTaskLimit = value
@@ -782,10 +866,13 @@ type Subscriptions_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgentsCeiling()(*int32)
+    GetAgentsCeilingAddOn()(*int32)
     GetContractApplyLimit()(*int32)
     GetContractManagedResourcesLimit()(*int32)
     GetContractStartAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetContractUserLimit()(*int32)
+    GetEffectiveAgentsCeiling()(*int32)
+    GetEffectiveRunsCeiling()(*int32)
     GetEndAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetFreeApplyMonthlyLimit()(*int32)
     GetFreeApplyMonthlyLimitRemaining()(*int32)
@@ -803,16 +890,20 @@ type Subscriptions_attributesable interface {
     GetRumAlertThreshold()(*int32)
     GetRumThresholdAlertSentAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetRunsCeiling()(*int32)
+    GetRunsCeilingAddOn()(*int32)
     GetRunTaskLimit()(*int32)
     GetRunTaskMandatoryEnforcementLimit()(*int32)
     GetRunTaskWorkspaceLimit()(*int32)
     GetStartAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVersionedPolicySetLimit()(*int32)
     SetAgentsCeiling(value *int32)()
+    SetAgentsCeilingAddOn(value *int32)()
     SetContractApplyLimit(value *int32)()
     SetContractManagedResourcesLimit(value *int32)()
     SetContractStartAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetContractUserLimit(value *int32)()
+    SetEffectiveAgentsCeiling(value *int32)()
+    SetEffectiveRunsCeiling(value *int32)()
     SetEndAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetFreeApplyMonthlyLimit(value *int32)()
     SetFreeApplyMonthlyLimitRemaining(value *int32)()
@@ -830,6 +921,7 @@ type Subscriptions_attributesable interface {
     SetRumAlertThreshold(value *int32)()
     SetRumThresholdAlertSentAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetRunsCeiling(value *int32)()
+    SetRunsCeilingAddOn(value *int32)()
     SetRunTaskLimit(value *int32)()
     SetRunTaskMandatoryEnforcementLimit(value *int32)()
     SetRunTaskWorkspaceLimit(value *int32)()

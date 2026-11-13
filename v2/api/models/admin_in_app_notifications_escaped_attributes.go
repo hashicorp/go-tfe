@@ -13,7 +13,7 @@ type AdminInAppNotifications_attributes struct {
     additionalData map[string]any
     // The approvedAt property
     approvedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The announcement body.
+    // The announcement body. Optional, and not currently shown to users.
     body *string
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
@@ -54,7 +54,7 @@ func (m *AdminInAppNotifications_attributes) GetAdditionalData()(map[string]any)
 func (m *AdminInAppNotifications_attributes) GetApprovedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.approvedAt
 }
-// GetBody gets the body property value. The announcement body.
+// GetBody gets the body property value. The announcement body. Optional, and not currently shown to users.
 // returns a *string when successful
 func (m *AdminInAppNotifications_attributes) GetBody()(*string) {
     return m.body
@@ -241,7 +241,7 @@ func (m *AdminInAppNotifications_attributes) SetAdditionalData(value map[string]
 func (m *AdminInAppNotifications_attributes) SetApprovedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.approvedAt = value
 }
-// SetBody sets the body property value. The announcement body.
+// SetBody sets the body property value. The announcement body. Optional, and not currently shown to users.
 func (m *AdminInAppNotifications_attributes) SetBody(value *string)() {
     m.body = value
 }

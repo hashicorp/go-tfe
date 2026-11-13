@@ -9,6 +9,8 @@ import (
 )
 
 type Organizations_attributes struct {
+    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+    additionalData map[string]any
     // The aggregatedCommitStatusEnabled property
     aggregatedCommitStatusEnabled *bool
     // The allowForceDeleteWorkspaces property
@@ -104,12 +106,18 @@ type Organizations_attributes struct {
 func NewOrganizations_attributes()(*Organizations_attributes) {
     m := &Organizations_attributes{
     }
+    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateOrganizations_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
 // returns a Parsable when successful
 func CreateOrganizations_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewOrganizations_attributes(), nil
+}
+// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+// returns a map[string]any when successful
+func (m *Organizations_attributes) GetAdditionalData()(map[string]any) {
+    return m.additionalData
 }
 // GetAggregatedCommitStatusEnabled gets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 // returns a *bool when successful
@@ -953,7 +961,17 @@ func (m *Organizations_attributes) Serialize(writer i878a80d2330e89d26896388a3f4
             return err
         }
     }
+    {
+        err := writer.WriteAdditionalData(m.GetAdditionalData())
+        if err != nil {
+            return err
+        }
+    }
     return nil
+}
+// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+func (m *Organizations_attributes) SetAdditionalData(value map[string]any)() {
+    m.additionalData = value
 }
 // SetAggregatedCommitStatusEnabled sets the aggregated-commit-status-enabled property value. The aggregatedCommitStatusEnabled property
 func (m *Organizations_attributes) SetAggregatedCommitStatusEnabled(value *bool)() {
@@ -1136,6 +1154,7 @@ func (m *Organizations_attributes) SetUserTokensEnabled(value *bool)() {
     m.userTokensEnabled = value
 }
 type Organizations_attributesable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAggregatedCommitStatusEnabled()(*bool)
     GetAllowForceDeleteWorkspaces()(*bool)

@@ -8,6 +8,8 @@ import (
 )
 
 type Plans_attributes struct {
+    // The actionInvocations property
+    actionInvocations *int32
     // Actions available for this plan
     actions Plans_attributes_actionsable
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
@@ -22,7 +24,7 @@ type Plans_attributes struct {
     hasChanges *bool
     // URL to read the logs for this plan
     logReadUrl *string
-    // Permissions for the current user related to this plan
+    // Permissions for the current user related to this plan. Included in API responses; omitted when a plan is serialized outside a controller request.
     permissions Plans_attributes_permissionsable
     // Number of resources that will be added
     resourceAdditions *int32
@@ -51,6 +53,11 @@ func NewPlans_attributes()(*Plans_attributes) {
 func CreatePlans_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, error) {
     return NewPlans_attributes(), nil
 }
+// GetActionInvocations gets the action-invocations property value. The actionInvocations property
+// returns a *int32 when successful
+func (m *Plans_attributes) GetActionInvocations()(*int32) {
+    return m.actionInvocations
+}
 // GetActions gets the actions property value. Actions available for this plan
 // returns a Plans_attributes_actionsable when successful
 func (m *Plans_attributes) GetActions()(Plans_attributes_actionsable) {
@@ -75,6 +82,16 @@ func (m *Plans_attributes) GetExecutionDetails()(Plans_attributes_executionDetai
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Plans_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["action-invocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetActionInvocations(val)
+        }
+        return nil
+    }
     res["actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreatePlans_attributes_actionsFromDiscriminatorValue)
         if err != nil {
@@ -232,7 +249,7 @@ func (m *Plans_attributes) GetHasChanges()(*bool) {
 func (m *Plans_attributes) GetLogReadUrl()(*string) {
     return m.logReadUrl
 }
-// GetPermissions gets the permissions property value. Permissions for the current user related to this plan
+// GetPermissions gets the permissions property value. Permissions for the current user related to this plan. Included in API responses; omitted when a plan is serialized outside a controller request.
 // returns a Plans_attributes_permissionsable when successful
 func (m *Plans_attributes) GetPermissions()(Plans_attributes_permissionsable) {
     return m.permissions
@@ -361,6 +378,10 @@ func (m *Plans_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
     }
     return nil
 }
+// SetActionInvocations sets the action-invocations property value. The actionInvocations property
+func (m *Plans_attributes) SetActionInvocations(value *int32)() {
+    m.actionInvocations = value
+}
 // SetActions sets the actions property value. Actions available for this plan
 func (m *Plans_attributes) SetActions(value Plans_attributes_actionsable)() {
     m.actions = value
@@ -389,7 +410,7 @@ func (m *Plans_attributes) SetHasChanges(value *bool)() {
 func (m *Plans_attributes) SetLogReadUrl(value *string)() {
     m.logReadUrl = value
 }
-// SetPermissions sets the permissions property value. Permissions for the current user related to this plan
+// SetPermissions sets the permissions property value. Permissions for the current user related to this plan. Included in API responses; omitted when a plan is serialized outside a controller request.
 func (m *Plans_attributes) SetPermissions(value Plans_attributes_permissionsable)() {
     m.permissions = value
 }
@@ -424,6 +445,7 @@ func (m *Plans_attributes) SetStructuredRunOutputEnabled(value *bool)() {
 type Plans_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetActionInvocations()(*int32)
     GetActions()(Plans_attributes_actionsable)
     GetBackingDataState()(*Plans_attributes_backingDataState)
     GetExecutionDetails()(Plans_attributes_executionDetailsable)
@@ -438,6 +460,7 @@ type Plans_attributesable interface {
     GetStatus()(*Plans_attributes_status)
     GetStatusTimestamps()(Plans_attributes_statusTimestampsable)
     GetStructuredRunOutputEnabled()(*bool)
+    SetActionInvocations(value *int32)()
     SetActions(value Plans_attributes_actionsable)()
     SetBackingDataState(value *Plans_attributes_backingDataState)()
     SetExecutionDetails(value Plans_attributes_executionDetailsable)()
