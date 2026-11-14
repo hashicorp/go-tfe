@@ -7,7 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// WorkspaceOutputs workspace outputs are Terraform output values associated with a workspace.They include the name of the output and a sensitive boolean. There is anadditional attribute, "value", that can be any JSON type, including null whenthe output is sensitive; it is intentionally omitted from this schema (samepattern as state-version-outputs) because OpenAPI cannot express a nullableany-type under the project's nullable-type-sibling lint rule.
+// WorkspaceOutputs workspace outputs are Terraform output values associated with a workspace.They include the name of the output, its value, and a sensitive boolean.
 type WorkspaceOutputs struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any

@@ -14,6 +14,8 @@ type StackApprovals_relationships struct {
     approvalOn ApprovalOnHasOneable
     // The approvedBy property
     approvedBy ApprovedByHasOneable
+    // The user property
+    user UsersHasOneable
 }
 // NewStackApprovals_relationships instantiates a new StackApprovals_relationships and sets the default values.
 func NewStackApprovals_relationships()(*StackApprovals_relationships) {
@@ -66,7 +68,22 @@ func (m *StackApprovals_relationships) GetFieldDeserializers()(map[string]func(i
         }
         return nil
     }
+    res["user"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUser(val.(UsersHasOneable))
+        }
+        return nil
+    }
     return res
+}
+// GetUser gets the user property value. The user property
+// returns a UsersHasOneable when successful
+func (m *StackApprovals_relationships) GetUser()(UsersHasOneable) {
+    return m.user
 }
 // Serialize serializes information the current object
 func (m *StackApprovals_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -78,6 +95,12 @@ func (m *StackApprovals_relationships) Serialize(writer i878a80d2330e89d26896388
     }
     {
         err := writer.WriteObjectValue("approved-by", m.GetApprovedBy())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("user", m.GetUser())
         if err != nil {
             return err
         }
@@ -102,11 +125,17 @@ func (m *StackApprovals_relationships) SetApprovalOn(value ApprovalOnHasOneable)
 func (m *StackApprovals_relationships) SetApprovedBy(value ApprovedByHasOneable)() {
     m.approvedBy = value
 }
+// SetUser sets the user property value. The user property
+func (m *StackApprovals_relationships) SetUser(value UsersHasOneable)() {
+    m.user = value
+}
 type StackApprovals_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetApprovalOn()(ApprovalOnHasOneable)
     GetApprovedBy()(ApprovedByHasOneable)
+    GetUser()(UsersHasOneable)
     SetApprovalOn(value ApprovalOnHasOneable)()
     SetApprovedBy(value ApprovedByHasOneable)()
+    SetUser(value UsersHasOneable)()
 }

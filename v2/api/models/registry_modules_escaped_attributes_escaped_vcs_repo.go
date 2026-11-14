@@ -7,7 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// RegistryModules_attributes_vcsRepo the VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
+// RegistryModules_attributes_vcsRepo the VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, `tag-prefix`, or `source-directory` changes thepublishing settings in place.
 type RegistryModules_attributes_vcsRepo struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
@@ -23,9 +23,9 @@ type RegistryModules_attributes_vcsRepo struct {
     ingressSubmodules *bool
     // The VCS Connection (OAuth Connection + Token) to use, obtained fromthe oauth-tokens endpoint. Mutually exclusive with`github-app-installation-id`.
     oauthTokenId *string
-    // The directory within the repository where the module is located.
+    // The directory within the repository where the module is located.On update, null or an empty string selects the repository root;omission preserves the existing directory.
     sourceDirectory *string
-    // An optional prefix used to filter tags for tag-based publishing.
+    // An optional prefix used to filter tags for tag-based publishing.On update, null or an empty string clears it; omission preserves it.
     tagPrefix *string
     // Whether the module uses the tag-based publishing workflow.
     tags *bool
@@ -173,12 +173,12 @@ func (m *RegistryModules_attributes_vcsRepo) GetIngressSubmodules()(*bool) {
 func (m *RegistryModules_attributes_vcsRepo) GetOauthTokenId()(*string) {
     return m.oauthTokenId
 }
-// GetSourceDirectory gets the source-directory property value. The directory within the repository where the module is located.
+// GetSourceDirectory gets the source-directory property value. The directory within the repository where the module is located.On update, null or an empty string selects the repository root;omission preserves the existing directory.
 // returns a *string when successful
 func (m *RegistryModules_attributes_vcsRepo) GetSourceDirectory()(*string) {
     return m.sourceDirectory
 }
-// GetTagPrefix gets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.
+// GetTagPrefix gets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.On update, null or an empty string clears it; omission preserves it.
 // returns a *string when successful
 func (m *RegistryModules_attributes_vcsRepo) GetTagPrefix()(*string) {
     return m.tagPrefix
@@ -280,11 +280,11 @@ func (m *RegistryModules_attributes_vcsRepo) SetIngressSubmodules(value *bool)()
 func (m *RegistryModules_attributes_vcsRepo) SetOauthTokenId(value *string)() {
     m.oauthTokenId = value
 }
-// SetSourceDirectory sets the source-directory property value. The directory within the repository where the module is located.
+// SetSourceDirectory sets the source-directory property value. The directory within the repository where the module is located.On update, null or an empty string selects the repository root;omission preserves the existing directory.
 func (m *RegistryModules_attributes_vcsRepo) SetSourceDirectory(value *string)() {
     m.sourceDirectory = value
 }
-// SetTagPrefix sets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.
+// SetTagPrefix sets the tag-prefix property value. An optional prefix used to filter tags for tag-based publishing.On update, null or an empty string clears it; omission preserves it.
 func (m *RegistryModules_attributes_vcsRepo) SetTagPrefix(value *string)() {
     m.tagPrefix = value
 }

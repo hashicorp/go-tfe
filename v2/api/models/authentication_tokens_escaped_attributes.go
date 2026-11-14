@@ -17,6 +17,8 @@ type AuthenticationTokens_attributes struct {
     description *string
     // The UTC date and time that the token will expire, in ISO 8601 format. If omitted or set to null the token will never expire.
     expiredAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // Whether the token's expiration violates the organization's token TTL policy. Only present for tokens that belong to an organization.
+    isTtlRejected *bool
     // The lastUsedAt property
     lastUsedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The token property
@@ -88,6 +90,16 @@ func (m *AuthenticationTokens_attributes) GetFieldDeserializers()(map[string]fun
         }
         return nil
     }
+    res["is-ttl-rejected"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetIsTtlRejected(val)
+        }
+        return nil
+    }
     res["last-used-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetTimeValue()
         if err != nil {
@@ -109,6 +121,11 @@ func (m *AuthenticationTokens_attributes) GetFieldDeserializers()(map[string]fun
         return nil
     }
     return res
+}
+// GetIsTtlRejected gets the is-ttl-rejected property value. Whether the token's expiration violates the organization's token TTL policy. Only present for tokens that belong to an organization.
+// returns a *bool when successful
+func (m *AuthenticationTokens_attributes) GetIsTtlRejected()(*bool) {
+    return m.isTtlRejected
 }
 // GetLastUsedAt gets the last-used-at property value. The lastUsedAt property
 // returns a *Time when successful
@@ -158,6 +175,10 @@ func (m *AuthenticationTokens_attributes) SetDescription(value *string)() {
 func (m *AuthenticationTokens_attributes) SetExpiredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.expiredAt = value
 }
+// SetIsTtlRejected sets the is-ttl-rejected property value. Whether the token's expiration violates the organization's token TTL policy. Only present for tokens that belong to an organization.
+func (m *AuthenticationTokens_attributes) SetIsTtlRejected(value *bool)() {
+    m.isTtlRejected = value
+}
 // SetLastUsedAt sets the last-used-at property value. The lastUsedAt property
 func (m *AuthenticationTokens_attributes) SetLastUsedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.lastUsedAt = value
@@ -172,11 +193,13 @@ type AuthenticationTokens_attributesable interface {
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDescription()(*string)
     GetExpiredAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetIsTtlRejected()(*bool)
     GetLastUsedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetToken()(*string)
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDescription(value *string)()
     SetExpiredAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetIsTtlRejected(value *bool)()
     SetLastUsedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetToken(value *string)()
 }

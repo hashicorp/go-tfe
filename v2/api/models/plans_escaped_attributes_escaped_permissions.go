@@ -7,12 +7,14 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
-// Plans_attributes_permissions permissions for the current user related to this plan
+// Plans_attributes_permissions permissions for the current user related to this plan. Included in API responses; omitted when a plan is serialized outside a controller request.
 type Plans_attributes_permissions struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // Whether the current user can export the plan
     canExport *bool
+    // Whether the current user can restore this plan's backing data. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+    canRestoreBackingData *bool
 }
 // NewPlans_attributes_permissions instantiates a new Plans_attributes_permissions and sets the default values.
 func NewPlans_attributes_permissions()(*Plans_attributes_permissions) {
@@ -36,6 +38,11 @@ func (m *Plans_attributes_permissions) GetAdditionalData()(map[string]any) {
 func (m *Plans_attributes_permissions) GetCanExport()(*bool) {
     return m.canExport
 }
+// GetCanRestoreBackingData gets the can-restore-backing-data property value. Whether the current user can restore this plan's backing data. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+// returns a *bool when successful
+func (m *Plans_attributes_permissions) GetCanRestoreBackingData()(*bool) {
+    return m.canRestoreBackingData
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Plans_attributes_permissions) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -50,12 +57,28 @@ func (m *Plans_attributes_permissions) GetFieldDeserializers()(map[string]func(i
         }
         return nil
     }
+    res["can-restore-backing-data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanRestoreBackingData(val)
+        }
+        return nil
+    }
     return res
 }
 // Serialize serializes information the current object
 func (m *Plans_attributes_permissions) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteBoolValue("can-export", m.GetCanExport())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("can-restore-backing-data", m.GetCanRestoreBackingData())
         if err != nil {
             return err
         }
@@ -76,9 +99,15 @@ func (m *Plans_attributes_permissions) SetAdditionalData(value map[string]any)()
 func (m *Plans_attributes_permissions) SetCanExport(value *bool)() {
     m.canExport = value
 }
+// SetCanRestoreBackingData sets the can-restore-backing-data property value. Whether the current user can restore this plan's backing data. Only present when data retention policies for plans and applies are enabled.This attribute is only available in Terraform Enterprise.
+func (m *Plans_attributes_permissions) SetCanRestoreBackingData(value *bool)() {
+    m.canRestoreBackingData = value
+}
 type Plans_attributes_permissionsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCanExport()(*bool)
+    GetCanRestoreBackingData()(*bool)
     SetCanExport(value *bool)()
+    SetCanRestoreBackingData(value *bool)()
 }

@@ -21,8 +21,14 @@ type ItemApplicableVarsetsGetResponse_data_attributes struct {
     global *bool
     // The name property
     name *string
+    // The permissions property
+    permissions ItemApplicableVarsetsGetResponse_data_attributes_permissionsable
+    // The priority property
+    priority *bool
     // The projectCount property
     projectCount *int32
+    // The stackCount property
+    stackCount *int32
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The varCount property
@@ -116,6 +122,26 @@ func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetFieldDeserializers
         }
         return nil
     }
+    res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateItemApplicableVarsetsGetResponse_data_attributes_permissionsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPermissions(val.(ItemApplicableVarsetsGetResponse_data_attributes_permissionsable))
+        }
+        return nil
+    }
+    res["priority"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPriority(val)
+        }
+        return nil
+    }
     res["project-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -123,6 +149,16 @@ func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetFieldDeserializers
         }
         if val != nil {
             m.SetProjectCount(val)
+        }
+        return nil
+    }
+    res["stack-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStackCount(val)
         }
         return nil
     }
@@ -168,10 +204,25 @@ func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetGlobal()(*bool) {
 func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetName()(*string) {
     return m.name
 }
+// GetPermissions gets the permissions property value. The permissions property
+// returns a ItemApplicableVarsetsGetResponse_data_attributes_permissionsable when successful
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetPermissions()(ItemApplicableVarsetsGetResponse_data_attributes_permissionsable) {
+    return m.permissions
+}
+// GetPriority gets the priority property value. The priority property
+// returns a *bool when successful
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetPriority()(*bool) {
+    return m.priority
+}
 // GetProjectCount gets the project-count property value. The projectCount property
 // returns a *int32 when successful
 func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetProjectCount()(*int32) {
     return m.projectCount
+}
+// GetStackCount gets the stack-count property value. The stackCount property
+// returns a *int32 when successful
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) GetStackCount()(*int32) {
+    return m.stackCount
 }
 // GetUpdatedAt gets the updated-at property value. The updatedAt property
 // returns a *Time when successful
@@ -210,6 +261,12 @@ func (m *ItemApplicableVarsetsGetResponse_data_attributes) Serialize(writer i878
     }
     {
         err := writer.WriteStringValue("name", m.GetName())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("priority", m.GetPriority())
         if err != nil {
             return err
         }
@@ -264,9 +321,21 @@ func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetGlobal(value *bool
 func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetPermissions sets the permissions property value. The permissions property
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetPermissions(value ItemApplicableVarsetsGetResponse_data_attributes_permissionsable)() {
+    m.permissions = value
+}
+// SetPriority sets the priority property value. The priority property
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetPriority(value *bool)() {
+    m.priority = value
+}
 // SetProjectCount sets the project-count property value. The projectCount property
 func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetProjectCount(value *int32)() {
     m.projectCount = value
+}
+// SetStackCount sets the stack-count property value. The stackCount property
+func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetStackCount(value *int32)() {
+    m.stackCount = value
 }
 // SetUpdatedAt sets the updated-at property value. The updatedAt property
 func (m *ItemApplicableVarsetsGetResponse_data_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
@@ -288,7 +357,10 @@ type ItemApplicableVarsetsGetResponse_data_attributesable interface {
     GetDescription()(*string)
     GetGlobal()(*bool)
     GetName()(*string)
+    GetPermissions()(ItemApplicableVarsetsGetResponse_data_attributes_permissionsable)
+    GetPriority()(*bool)
     GetProjectCount()(*int32)
+    GetStackCount()(*int32)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVarCount()(*int32)
     GetWorkspaceCount()(*int32)
@@ -297,7 +369,10 @@ type ItemApplicableVarsetsGetResponse_data_attributesable interface {
     SetDescription(value *string)()
     SetGlobal(value *bool)()
     SetName(value *string)()
+    SetPermissions(value ItemApplicableVarsetsGetResponse_data_attributes_permissionsable)()
+    SetPriority(value *bool)()
     SetProjectCount(value *int32)()
+    SetStackCount(value *int32)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVarCount(value *int32)()
     SetWorkspaceCount(value *int32)()

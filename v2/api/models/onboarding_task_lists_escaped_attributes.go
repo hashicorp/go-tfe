@@ -4,6 +4,7 @@
 package models
 
 import (
+    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -14,6 +15,10 @@ type OnboardingTaskLists_attributes struct {
     expired *bool
     // The incompleteTaskCount property
     incompleteTaskCount *int32
+    // Whether the widget is snoozed with no expiry, so it never opens automatically.
+    permanentlySnoozed *bool
+    // When a timed snooze ends. Null when not snoozed or when snoozed permanently.
+    snoozedUntil *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The totalTaskCount property
     totalTaskCount *int32
 }
@@ -63,6 +68,26 @@ func (m *OnboardingTaskLists_attributes) GetFieldDeserializers()(map[string]func
         }
         return nil
     }
+    res["permanently-snoozed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPermanentlySnoozed(val)
+        }
+        return nil
+    }
+    res["snoozed-until"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSnoozedUntil(val)
+        }
+        return nil
+    }
     res["total-task-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -79,6 +104,16 @@ func (m *OnboardingTaskLists_attributes) GetFieldDeserializers()(map[string]func
 // returns a *int32 when successful
 func (m *OnboardingTaskLists_attributes) GetIncompleteTaskCount()(*int32) {
     return m.incompleteTaskCount
+}
+// GetPermanentlySnoozed gets the permanently-snoozed property value. Whether the widget is snoozed with no expiry, so it never opens automatically.
+// returns a *bool when successful
+func (m *OnboardingTaskLists_attributes) GetPermanentlySnoozed()(*bool) {
+    return m.permanentlySnoozed
+}
+// GetSnoozedUntil gets the snoozed-until property value. When a timed snooze ends. Null when not snoozed or when snoozed permanently.
+// returns a *Time when successful
+func (m *OnboardingTaskLists_attributes) GetSnoozedUntil()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.snoozedUntil
 }
 // GetTotalTaskCount gets the total-task-count property value. The totalTaskCount property
 // returns a *int32 when successful
@@ -125,6 +160,14 @@ func (m *OnboardingTaskLists_attributes) SetExpired(value *bool)() {
 func (m *OnboardingTaskLists_attributes) SetIncompleteTaskCount(value *int32)() {
     m.incompleteTaskCount = value
 }
+// SetPermanentlySnoozed sets the permanently-snoozed property value. Whether the widget is snoozed with no expiry, so it never opens automatically.
+func (m *OnboardingTaskLists_attributes) SetPermanentlySnoozed(value *bool)() {
+    m.permanentlySnoozed = value
+}
+// SetSnoozedUntil sets the snoozed-until property value. When a timed snooze ends. Null when not snoozed or when snoozed permanently.
+func (m *OnboardingTaskLists_attributes) SetSnoozedUntil(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.snoozedUntil = value
+}
 // SetTotalTaskCount sets the total-task-count property value. The totalTaskCount property
 func (m *OnboardingTaskLists_attributes) SetTotalTaskCount(value *int32)() {
     m.totalTaskCount = value
@@ -134,8 +177,12 @@ type OnboardingTaskLists_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetExpired()(*bool)
     GetIncompleteTaskCount()(*int32)
+    GetPermanentlySnoozed()(*bool)
+    GetSnoozedUntil()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetTotalTaskCount()(*int32)
     SetExpired(value *bool)()
     SetIncompleteTaskCount(value *int32)()
+    SetPermanentlySnoozed(value *bool)()
+    SetSnoozedUntil(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetTotalTaskCount(value *int32)()
 }

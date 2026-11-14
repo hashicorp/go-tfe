@@ -10,6 +10,8 @@ import (
 type RecoverableItems_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The deletedBy property
+    deletedBy UsersHasOneable
     // The project property
     project ProjectsHasOneable
     // The recoverable property
@@ -32,10 +34,25 @@ func CreateRecoverableItems_relationshipsFromDiscriminatorValue(parseNode i878a8
 func (m *RecoverableItems_relationships) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetDeletedBy gets the deleted-by property value. The deletedBy property
+// returns a UsersHasOneable when successful
+func (m *RecoverableItems_relationships) GetDeletedBy()(UsersHasOneable) {
+    return m.deletedBy
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *RecoverableItems_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["deleted-by"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateUsersHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDeletedBy(val.(UsersHasOneable))
+        }
+        return nil
+    }
     res["project"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateProjectsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -71,6 +88,12 @@ func (m *RecoverableItems_relationships) GetRecoverable()(RecoverableHasOneable)
 // Serialize serializes information the current object
 func (m *RecoverableItems_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteObjectValue("deleted-by", m.GetDeletedBy())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("project", m.GetProject())
         if err != nil {
             return err
@@ -94,6 +117,10 @@ func (m *RecoverableItems_relationships) Serialize(writer i878a80d2330e89d268963
 func (m *RecoverableItems_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetDeletedBy sets the deleted-by property value. The deletedBy property
+func (m *RecoverableItems_relationships) SetDeletedBy(value UsersHasOneable)() {
+    m.deletedBy = value
+}
 // SetProject sets the project property value. The project property
 func (m *RecoverableItems_relationships) SetProject(value ProjectsHasOneable)() {
     m.project = value
@@ -105,8 +132,10 @@ func (m *RecoverableItems_relationships) SetRecoverable(value RecoverableHasOnea
 type RecoverableItems_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetDeletedBy()(UsersHasOneable)
     GetProject()(ProjectsHasOneable)
     GetRecoverable()(RecoverableHasOneable)
+    SetDeletedBy(value UsersHasOneable)()
     SetProject(value ProjectsHasOneable)()
     SetRecoverable(value RecoverableHasOneable)()
 }

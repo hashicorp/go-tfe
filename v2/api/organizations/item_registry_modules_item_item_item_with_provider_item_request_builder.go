@@ -54,7 +54,7 @@ func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) Get(ctx 
     }
     return res.(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable), nil
 }
-// Patch when updating a VCS-backed private registry module, you can change the publishingmechanism (branch, tags, or tag prefix) and the VCS connection itself.Changing the connection re-validates the new VCS source and re-ingests themodule.
+// Patch when updating a VCS-backed private registry module, you can change its publishingsettings (branch, tags, tag prefix, or source directory) and VCS connection.Changing the connection re-validates the new VCS source and re-ingests themodule.
 // returns a RegistryModulesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) Patch(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable, error) {
@@ -82,7 +82,7 @@ func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) ToGetReq
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
-// ToPatchRequestInformation when updating a VCS-backed private registry module, you can change the publishingmechanism (branch, tags, or tag prefix) and the VCS connection itself.Changing the connection re-validates the new VCS source and re-ingests themodule.
+// ToPatchRequestInformation when updating a VCS-backed private registry module, you can change its publishingsettings (branch, tags, tag prefix, or source directory) and VCS connection.Changing the connection re-validates the new VCS source and re-ingests themodule.
 // returns a *RequestInformation when successful
 func (m *ItemRegistryModulesItemItemItemWithProviderItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body i05d5aa6b14db285c2e8df48c915f7a7082b77b17cca0def522e18528f80bec16.RegistryModulesEnvelopeable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

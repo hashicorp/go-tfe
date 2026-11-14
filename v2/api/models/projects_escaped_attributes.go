@@ -27,6 +27,12 @@ type Projects_attributes struct {
     name *string
     // The permissions property
     permissions Projects_attributes_permissionsable
+    // Number of private registry components in the project. Only present on the show endpoint.
+    registryComponentCount *int32
+    // Number of private registry modules in the project. Only present on the show endpoint.
+    registryModuleCount *int32
+    // Number of private registry providers in the project. Only present on the show endpoint.
+    registryProviderCount *int32
     // The settingOverwrites property
     settingOverwrites Projects_attributes_settingOverwritesable
     // The stacksDefaultExecutionMode property
@@ -157,6 +163,36 @@ func (m *Projects_attributes) GetFieldDeserializers()(map[string]func(i878a80d23
         }
         return nil
     }
+    res["registry-component-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryComponentCount(val)
+        }
+        return nil
+    }
+    res["registry-module-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryModuleCount(val)
+        }
+        return nil
+    }
+    res["registry-provider-count"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryProviderCount(val)
+        }
+        return nil
+    }
     res["setting-overwrites"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateProjects_attributes_settingOverwritesFromDiscriminatorValue)
         if err != nil {
@@ -218,6 +254,21 @@ func (m *Projects_attributes) GetName()(*string) {
 // returns a Projects_attributes_permissionsable when successful
 func (m *Projects_attributes) GetPermissions()(Projects_attributes_permissionsable) {
     return m.permissions
+}
+// GetRegistryComponentCount gets the registry-component-count property value. Number of private registry components in the project. Only present on the show endpoint.
+// returns a *int32 when successful
+func (m *Projects_attributes) GetRegistryComponentCount()(*int32) {
+    return m.registryComponentCount
+}
+// GetRegistryModuleCount gets the registry-module-count property value. Number of private registry modules in the project. Only present on the show endpoint.
+// returns a *int32 when successful
+func (m *Projects_attributes) GetRegistryModuleCount()(*int32) {
+    return m.registryModuleCount
+}
+// GetRegistryProviderCount gets the registry-provider-count property value. Number of private registry providers in the project. Only present on the show endpoint.
+// returns a *int32 when successful
+func (m *Projects_attributes) GetRegistryProviderCount()(*int32) {
+    return m.registryProviderCount
 }
 // GetSettingOverwrites gets the setting-overwrites property value. The settingOverwrites property
 // returns a Projects_attributes_settingOverwritesable when successful
@@ -353,6 +404,18 @@ func (m *Projects_attributes) SetName(value *string)() {
 func (m *Projects_attributes) SetPermissions(value Projects_attributes_permissionsable)() {
     m.permissions = value
 }
+// SetRegistryComponentCount sets the registry-component-count property value. Number of private registry components in the project. Only present on the show endpoint.
+func (m *Projects_attributes) SetRegistryComponentCount(value *int32)() {
+    m.registryComponentCount = value
+}
+// SetRegistryModuleCount sets the registry-module-count property value. Number of private registry modules in the project. Only present on the show endpoint.
+func (m *Projects_attributes) SetRegistryModuleCount(value *int32)() {
+    m.registryModuleCount = value
+}
+// SetRegistryProviderCount sets the registry-provider-count property value. Number of private registry providers in the project. Only present on the show endpoint.
+func (m *Projects_attributes) SetRegistryProviderCount(value *int32)() {
+    m.registryProviderCount = value
+}
 // SetSettingOverwrites sets the setting-overwrites property value. The settingOverwrites property
 func (m *Projects_attributes) SetSettingOverwrites(value Projects_attributes_settingOverwritesable)() {
     m.settingOverwrites = value
@@ -380,6 +443,9 @@ type Projects_attributesable interface {
     GetIsUnified()(*bool)
     GetName()(*string)
     GetPermissions()(Projects_attributes_permissionsable)
+    GetRegistryComponentCount()(*int32)
+    GetRegistryModuleCount()(*int32)
+    GetRegistryProviderCount()(*int32)
     GetSettingOverwrites()(Projects_attributes_settingOverwritesable)
     GetStacksDefaultExecutionMode()(*Projects_attributes_stacksDefaultExecutionMode)
     GetTeamCount()(*int32)
@@ -392,6 +458,9 @@ type Projects_attributesable interface {
     SetIsUnified(value *bool)()
     SetName(value *string)()
     SetPermissions(value Projects_attributes_permissionsable)()
+    SetRegistryComponentCount(value *int32)()
+    SetRegistryModuleCount(value *int32)()
+    SetRegistryProviderCount(value *int32)()
     SetSettingOverwrites(value Projects_attributes_settingOverwritesable)()
     SetStacksDefaultExecutionMode(value *Projects_attributes_stacksDefaultExecutionMode)()
     SetTeamCount(value *int32)()
