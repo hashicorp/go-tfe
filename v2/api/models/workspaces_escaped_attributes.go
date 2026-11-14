@@ -11,6 +11,8 @@ import (
 type Workspaces_attributes struct {
     // The actions property
     actions Workspaces_attributes_actionsable
+    // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+    additionalData map[string]any
     // The allowDestroyPlan property
     allowDestroyPlan *bool
     // The applyDurationAverage property
@@ -118,6 +120,7 @@ type Workspaces_attributes struct {
 func NewWorkspaces_attributes()(*Workspaces_attributes) {
     m := &Workspaces_attributes{
     }
+    m.SetAdditionalData(make(map[string]any))
     return m
 }
 // CreateWorkspaces_attributesFromDiscriminatorValue creates a new instance of the appropriate class based on discriminator value
@@ -129,6 +132,11 @@ func CreateWorkspaces_attributesFromDiscriminatorValue(parseNode i878a80d2330e89
 // returns a Workspaces_attributes_actionsable when successful
 func (m *Workspaces_attributes) GetActions()(Workspaces_attributes_actionsable) {
     return m.actions
+}
+// GetAdditionalData gets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+// returns a map[string]any when successful
+func (m *Workspaces_attributes) GetAdditionalData()(map[string]any) {
+    return m.additionalData
 }
 // GetAllowDestroyPlan gets the allow-destroy-plan property value. The allowDestroyPlan property
 // returns a *bool when successful
@@ -1220,11 +1228,21 @@ func (m *Workspaces_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
             return err
         }
     }
+    {
+        err := writer.WriteAdditionalData(m.GetAdditionalData())
+        if err != nil {
+            return err
+        }
+    }
     return nil
 }
 // SetActions sets the actions property value. The actions property
 func (m *Workspaces_attributes) SetActions(value Workspaces_attributes_actionsable)() {
     m.actions = value
+}
+// SetAdditionalData sets the AdditionalData property value. Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+func (m *Workspaces_attributes) SetAdditionalData(value map[string]any)() {
+    m.additionalData = value
 }
 // SetAllowDestroyPlan sets the allow-destroy-plan property value. The allowDestroyPlan property
 func (m *Workspaces_attributes) SetAllowDestroyPlan(value *bool)() {
@@ -1431,6 +1449,7 @@ func (m *Workspaces_attributes) SetWorkspaceKpisRunsCount(value *int32)() {
     m.workspaceKpisRunsCount = value
 }
 type Workspaces_attributesable interface {
+    i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetActions()(Workspaces_attributes_actionsable)
     GetAllowDestroyPlan()(*bool)

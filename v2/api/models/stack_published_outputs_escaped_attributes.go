@@ -4,6 +4,7 @@
 package models
 
 import (
+    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,8 @@ type StackPublishedOutputs_attributes struct {
     action *string
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The createdAt property
+    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The currentValue property
     currentValue *string
     // The name property
@@ -20,6 +23,8 @@ type StackPublishedOutputs_attributes struct {
     previousValue *string
     // The sourceRange property
     sourceRange *string
+    // The updatedAt property
+    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
 }
 // NewStackPublishedOutputs_attributes instantiates a new StackPublishedOutputs_attributes and sets the default values.
 func NewStackPublishedOutputs_attributes()(*StackPublishedOutputs_attributes) {
@@ -43,6 +48,11 @@ func (m *StackPublishedOutputs_attributes) GetAction()(*string) {
 func (m *StackPublishedOutputs_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetCreatedAt gets the created-at property value. The createdAt property
+// returns a *Time when successful
+func (m *StackPublishedOutputs_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.createdAt
+}
 // GetCurrentValue gets the current-value property value. The currentValue property
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetCurrentValue()(*string) {
@@ -59,6 +69,16 @@ func (m *StackPublishedOutputs_attributes) GetFieldDeserializers()(map[string]fu
         }
         if val != nil {
             m.SetAction(val)
+        }
+        return nil
+    }
+    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCreatedAt(val)
         }
         return nil
     }
@@ -102,6 +122,16 @@ func (m *StackPublishedOutputs_attributes) GetFieldDeserializers()(map[string]fu
         }
         return nil
     }
+    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUpdatedAt(val)
+        }
+        return nil
+    }
     return res
 }
 // GetName gets the name property value. The name property
@@ -118,6 +148,11 @@ func (m *StackPublishedOutputs_attributes) GetPreviousValue()(*string) {
 // returns a *string when successful
 func (m *StackPublishedOutputs_attributes) GetSourceRange()(*string) {
     return m.sourceRange
+}
+// GetUpdatedAt gets the updated-at property value. The updatedAt property
+// returns a *Time when successful
+func (m *StackPublishedOutputs_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.updatedAt
 }
 // Serialize serializes information the current object
 func (m *StackPublishedOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -137,6 +172,10 @@ func (m *StackPublishedOutputs_attributes) SetAction(value *string)() {
 func (m *StackPublishedOutputs_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetCreatedAt sets the created-at property value. The createdAt property
+func (m *StackPublishedOutputs_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.createdAt = value
+}
 // SetCurrentValue sets the current-value property value. The currentValue property
 func (m *StackPublishedOutputs_attributes) SetCurrentValue(value *string)() {
     m.currentValue = value
@@ -153,17 +192,25 @@ func (m *StackPublishedOutputs_attributes) SetPreviousValue(value *string)() {
 func (m *StackPublishedOutputs_attributes) SetSourceRange(value *string)() {
     m.sourceRange = value
 }
+// SetUpdatedAt sets the updated-at property value. The updatedAt property
+func (m *StackPublishedOutputs_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.updatedAt = value
+}
 type StackPublishedOutputs_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAction()(*string)
+    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetCurrentValue()(*string)
     GetName()(*string)
     GetPreviousValue()(*string)
     GetSourceRange()(*string)
+    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetAction(value *string)()
+    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetCurrentValue(value *string)()
     SetName(value *string)()
     SetPreviousValue(value *string)()
     SetSourceRange(value *string)()
+    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
 }

@@ -34,12 +34,18 @@ type FeatureSets_attributes struct {
     hyok *bool
     // Unique identifier for the feature set
     identifier *string
+    // Whether the feature set includes Infragraph
+    infragraph *bool
+    // Whether the feature set includes Infragraph with non-resource-under-management (NRTU) billing
+    infragraphWithNrtu *bool
     // Whether this is a current/active feature set
     isCurrent *bool
     // Whether this is a free tier feature set
     isFreeTier *bool
     // Whether this is a managed resource plan
     isManagedResourcePlan *bool
+    // Whether the feature set includes metrics service token management
+    metricsServiceTokenManagement *bool
     // Whether this feature set includes module deprecations
     moduleDeprecations *bool
     // Whether this feature set includes module revocations
@@ -72,8 +78,14 @@ type FeatureSets_attributes struct {
     privateRunTasks *bool
     // Whether the feature set includes private VCS
     privateVcs *bool
+    // Whether the feature set includes project-level notifications
+    projectNotifications *bool
     // Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
     recoverableItems *bool
+    // Whether the feature set includes registry artifact version tagging
+    registryArtifactVersionTagging *bool
+    // Whether the feature set includes registry usage control
+    registryUsageControl *bool
     // Maximum number of run tasks (null means unlimited)
     runTaskLimit *float64
     // Maximum number of mandatory enforcement run tasks (null means unlimited)
@@ -82,6 +94,8 @@ type FeatureSets_attributes struct {
     runTasks *bool
     // Maximum number of workspaces per run task (null means unlimited)
     runTaskWorkspaceLimit *float64
+    // Whether the feature set includes SCIM provisioning
+    scim *bool
     // Whether the feature set supports self-serve billing
     selfServeBilling *bool
     // Whether the feature set includes Sentinel (alias for policy-enforcement)
@@ -90,6 +104,10 @@ type FeatureSets_attributes struct {
     sso *bool
     // Whether the feature set includes stacks
     stacks *bool
+    // Whether this feature set supports concurrency add-ons
+    supportsConcurrencyAddOns *bool
+    // Whether subscriptions on this feature set support concurrency overrides
+    supportsSubscriptionConcurrencyOverrides *bool
     // Whether the feature set includes the ability to scope tasks to projects
     taskProjectScoping *bool
     // Whether the feature set includes teams
@@ -295,6 +313,26 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["infragraph"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInfragraph(val)
+        }
+        return nil
+    }
+    res["infragraph-with-nrtu"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInfragraphWithNrtu(val)
+        }
+        return nil
+    }
     res["is-current"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -322,6 +360,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetIsManagedResourcePlan(val)
+        }
+        return nil
+    }
+    res["metrics-service-token-management"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMetricsServiceTokenManagement(val)
         }
         return nil
     }
@@ -485,6 +533,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["project-notifications"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetProjectNotifications(val)
+        }
+        return nil
+    }
     res["recoverable-items"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -492,6 +550,26 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetRecoverableItems(val)
+        }
+        return nil
+    }
+    res["registry-artifact-version-tagging"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryArtifactVersionTagging(val)
+        }
+        return nil
+    }
+    res["registry-usage-control"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryUsageControl(val)
         }
         return nil
     }
@@ -535,6 +613,16 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["scim"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetScim(val)
+        }
+        return nil
+    }
     res["self-serve-billing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -572,6 +660,26 @@ func (m *FeatureSets_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetStacks(val)
+        }
+        return nil
+    }
+    res["supports-concurrency-add-ons"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSupportsConcurrencyAddOns(val)
+        }
+        return nil
+    }
+    res["supports-subscription-concurrency-overrides"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSupportsSubscriptionConcurrencyOverrides(val)
         }
         return nil
     }
@@ -682,6 +790,16 @@ func (m *FeatureSets_attributes) GetHyok()(*bool) {
 func (m *FeatureSets_attributes) GetIdentifier()(*string) {
     return m.identifier
 }
+// GetInfragraph gets the infragraph property value. Whether the feature set includes Infragraph
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetInfragraph()(*bool) {
+    return m.infragraph
+}
+// GetInfragraphWithNrtu gets the infragraph-with-nrtu property value. Whether the feature set includes Infragraph with non-resource-under-management (NRTU) billing
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetInfragraphWithNrtu()(*bool) {
+    return m.infragraphWithNrtu
+}
 // GetIsCurrent gets the is-current property value. Whether this is a current/active feature set
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetIsCurrent()(*bool) {
@@ -696,6 +814,11 @@ func (m *FeatureSets_attributes) GetIsFreeTier()(*bool) {
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetIsManagedResourcePlan()(*bool) {
     return m.isManagedResourcePlan
+}
+// GetMetricsServiceTokenManagement gets the metrics-service-token-management property value. Whether the feature set includes metrics service token management
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetMetricsServiceTokenManagement()(*bool) {
+    return m.metricsServiceTokenManagement
 }
 // GetModuleDeprecations gets the module-deprecations property value. Whether this feature set includes module deprecations
 // returns a *bool when successful
@@ -777,10 +900,25 @@ func (m *FeatureSets_attributes) GetPrivateRunTasks()(*bool) {
 func (m *FeatureSets_attributes) GetPrivateVcs()(*bool) {
     return m.privateVcs
 }
+// GetProjectNotifications gets the project-notifications property value. Whether the feature set includes project-level notifications
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetProjectNotifications()(*bool) {
+    return m.projectNotifications
+}
 // GetRecoverableItems gets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetRecoverableItems()(*bool) {
     return m.recoverableItems
+}
+// GetRegistryArtifactVersionTagging gets the registry-artifact-version-tagging property value. Whether the feature set includes registry artifact version tagging
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetRegistryArtifactVersionTagging()(*bool) {
+    return m.registryArtifactVersionTagging
+}
+// GetRegistryUsageControl gets the registry-usage-control property value. Whether the feature set includes registry usage control
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetRegistryUsageControl()(*bool) {
+    return m.registryUsageControl
 }
 // GetRunTaskLimit gets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
 // returns a *float64 when successful
@@ -802,6 +940,11 @@ func (m *FeatureSets_attributes) GetRunTasks()(*bool) {
 func (m *FeatureSets_attributes) GetRunTaskWorkspaceLimit()(*float64) {
     return m.runTaskWorkspaceLimit
 }
+// GetScim gets the scim property value. Whether the feature set includes SCIM provisioning
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetScim()(*bool) {
+    return m.scim
+}
 // GetSelfServeBilling gets the self-serve-billing property value. Whether the feature set supports self-serve billing
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetSelfServeBilling()(*bool) {
@@ -821,6 +964,16 @@ func (m *FeatureSets_attributes) GetSso()(*bool) {
 // returns a *bool when successful
 func (m *FeatureSets_attributes) GetStacks()(*bool) {
     return m.stacks
+}
+// GetSupportsConcurrencyAddOns gets the supports-concurrency-add-ons property value. Whether this feature set supports concurrency add-ons
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetSupportsConcurrencyAddOns()(*bool) {
+    return m.supportsConcurrencyAddOns
+}
+// GetSupportsSubscriptionConcurrencyOverrides gets the supports-subscription-concurrency-overrides property value. Whether subscriptions on this feature set support concurrency overrides
+// returns a *bool when successful
+func (m *FeatureSets_attributes) GetSupportsSubscriptionConcurrencyOverrides()(*bool) {
+    return m.supportsSubscriptionConcurrencyOverrides
 }
 // GetTaskProjectScoping gets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
 // returns a *bool when successful
@@ -942,6 +1095,18 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("infragraph", m.GetInfragraph())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("infragraph-with-nrtu", m.GetInfragraphWithNrtu())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("is-current", m.GetIsCurrent())
         if err != nil {
             return err
@@ -955,6 +1120,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
     }
     {
         err := writer.WriteBoolValue("is-managed-resource-plan", m.GetIsManagedResourcePlan())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("metrics-service-token-management", m.GetMetricsServiceTokenManagement())
         if err != nil {
             return err
         }
@@ -1056,7 +1227,25 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteBoolValue("project-notifications", m.GetProjectNotifications())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("recoverable-items", m.GetRecoverableItems())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("registry-artifact-version-tagging", m.GetRegistryArtifactVersionTagging())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("registry-usage-control", m.GetRegistryUsageControl())
         if err != nil {
             return err
         }
@@ -1081,6 +1270,12 @@ func (m *FeatureSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
     }
     {
         err := writer.WriteFloat64Value("run-task-workspace-limit", m.GetRunTaskWorkspaceLimit())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("scim", m.GetScim())
         if err != nil {
             return err
         }
@@ -1223,6 +1418,14 @@ func (m *FeatureSets_attributes) SetHyok(value *bool)() {
 func (m *FeatureSets_attributes) SetIdentifier(value *string)() {
     m.identifier = value
 }
+// SetInfragraph sets the infragraph property value. Whether the feature set includes Infragraph
+func (m *FeatureSets_attributes) SetInfragraph(value *bool)() {
+    m.infragraph = value
+}
+// SetInfragraphWithNrtu sets the infragraph-with-nrtu property value. Whether the feature set includes Infragraph with non-resource-under-management (NRTU) billing
+func (m *FeatureSets_attributes) SetInfragraphWithNrtu(value *bool)() {
+    m.infragraphWithNrtu = value
+}
 // SetIsCurrent sets the is-current property value. Whether this is a current/active feature set
 func (m *FeatureSets_attributes) SetIsCurrent(value *bool)() {
     m.isCurrent = value
@@ -1234,6 +1437,10 @@ func (m *FeatureSets_attributes) SetIsFreeTier(value *bool)() {
 // SetIsManagedResourcePlan sets the is-managed-resource-plan property value. Whether this is a managed resource plan
 func (m *FeatureSets_attributes) SetIsManagedResourcePlan(value *bool)() {
     m.isManagedResourcePlan = value
+}
+// SetMetricsServiceTokenManagement sets the metrics-service-token-management property value. Whether the feature set includes metrics service token management
+func (m *FeatureSets_attributes) SetMetricsServiceTokenManagement(value *bool)() {
+    m.metricsServiceTokenManagement = value
 }
 // SetModuleDeprecations sets the module-deprecations property value. Whether this feature set includes module deprecations
 func (m *FeatureSets_attributes) SetModuleDeprecations(value *bool)() {
@@ -1299,9 +1506,21 @@ func (m *FeatureSets_attributes) SetPrivateRunTasks(value *bool)() {
 func (m *FeatureSets_attributes) SetPrivateVcs(value *bool)() {
     m.privateVcs = value
 }
+// SetProjectNotifications sets the project-notifications property value. Whether the feature set includes project-level notifications
+func (m *FeatureSets_attributes) SetProjectNotifications(value *bool)() {
+    m.projectNotifications = value
+}
 // SetRecoverableItems sets the recoverable-items property value. Whether the feature set allows enabling of recoverable itemsThis attribute is considered BETA, is SUBJECT TO CHANGE, and may be unavailable to some users.
 func (m *FeatureSets_attributes) SetRecoverableItems(value *bool)() {
     m.recoverableItems = value
+}
+// SetRegistryArtifactVersionTagging sets the registry-artifact-version-tagging property value. Whether the feature set includes registry artifact version tagging
+func (m *FeatureSets_attributes) SetRegistryArtifactVersionTagging(value *bool)() {
+    m.registryArtifactVersionTagging = value
+}
+// SetRegistryUsageControl sets the registry-usage-control property value. Whether the feature set includes registry usage control
+func (m *FeatureSets_attributes) SetRegistryUsageControl(value *bool)() {
+    m.registryUsageControl = value
 }
 // SetRunTaskLimit sets the run-task-limit property value. Maximum number of run tasks (null means unlimited)
 func (m *FeatureSets_attributes) SetRunTaskLimit(value *float64)() {
@@ -1319,6 +1538,10 @@ func (m *FeatureSets_attributes) SetRunTasks(value *bool)() {
 func (m *FeatureSets_attributes) SetRunTaskWorkspaceLimit(value *float64)() {
     m.runTaskWorkspaceLimit = value
 }
+// SetScim sets the scim property value. Whether the feature set includes SCIM provisioning
+func (m *FeatureSets_attributes) SetScim(value *bool)() {
+    m.scim = value
+}
 // SetSelfServeBilling sets the self-serve-billing property value. Whether the feature set supports self-serve billing
 func (m *FeatureSets_attributes) SetSelfServeBilling(value *bool)() {
     m.selfServeBilling = value
@@ -1334,6 +1557,14 @@ func (m *FeatureSets_attributes) SetSso(value *bool)() {
 // SetStacks sets the stacks property value. Whether the feature set includes stacks
 func (m *FeatureSets_attributes) SetStacks(value *bool)() {
     m.stacks = value
+}
+// SetSupportsConcurrencyAddOns sets the supports-concurrency-add-ons property value. Whether this feature set supports concurrency add-ons
+func (m *FeatureSets_attributes) SetSupportsConcurrencyAddOns(value *bool)() {
+    m.supportsConcurrencyAddOns = value
+}
+// SetSupportsSubscriptionConcurrencyOverrides sets the supports-subscription-concurrency-overrides property value. Whether subscriptions on this feature set support concurrency overrides
+func (m *FeatureSets_attributes) SetSupportsSubscriptionConcurrencyOverrides(value *bool)() {
+    m.supportsSubscriptionConcurrencyOverrides = value
 }
 // SetTaskProjectScoping sets the task-project-scoping property value. Whether the feature set includes the ability to scope tasks to projects
 func (m *FeatureSets_attributes) SetTaskProjectScoping(value *bool)() {
@@ -1386,9 +1617,12 @@ type FeatureSets_attributesable interface {
     GetGlobalRunTasks()(*bool)
     GetHyok()(*bool)
     GetIdentifier()(*string)
+    GetInfragraph()(*bool)
+    GetInfragraphWithNrtu()(*bool)
     GetIsCurrent()(*bool)
     GetIsFreeTier()(*bool)
     GetIsManagedResourcePlan()(*bool)
+    GetMetricsServiceTokenManagement()(*bool)
     GetModuleDeprecations()(*bool)
     GetModuleRevocations()(*bool)
     GetModuleTestsAgentSupport()(*bool)
@@ -1405,15 +1639,21 @@ type FeatureSets_attributesable interface {
     GetPrivatePolicyAgents()(*bool)
     GetPrivateRunTasks()(*bool)
     GetPrivateVcs()(*bool)
+    GetProjectNotifications()(*bool)
     GetRecoverableItems()(*bool)
+    GetRegistryArtifactVersionTagging()(*bool)
+    GetRegistryUsageControl()(*bool)
     GetRunTaskLimit()(*float64)
     GetRunTaskMandatoryEnforcementLimit()(*float64)
     GetRunTasks()(*bool)
     GetRunTaskWorkspaceLimit()(*float64)
+    GetScim()(*bool)
     GetSelfServeBilling()(*bool)
     GetSentinel()(*bool)
     GetSso()(*bool)
     GetStacks()(*bool)
+    GetSupportsConcurrencyAddOns()(*bool)
+    GetSupportsSubscriptionConcurrencyOverrides()(*bool)
     GetTaskProjectScoping()(*bool)
     GetTeams()(*bool)
     GetTerraformActions()(*bool)
@@ -1435,9 +1675,12 @@ type FeatureSets_attributesable interface {
     SetGlobalRunTasks(value *bool)()
     SetHyok(value *bool)()
     SetIdentifier(value *string)()
+    SetInfragraph(value *bool)()
+    SetInfragraphWithNrtu(value *bool)()
     SetIsCurrent(value *bool)()
     SetIsFreeTier(value *bool)()
     SetIsManagedResourcePlan(value *bool)()
+    SetMetricsServiceTokenManagement(value *bool)()
     SetModuleDeprecations(value *bool)()
     SetModuleRevocations(value *bool)()
     SetModuleTestsAgentSupport(value *bool)()
@@ -1454,15 +1697,21 @@ type FeatureSets_attributesable interface {
     SetPrivatePolicyAgents(value *bool)()
     SetPrivateRunTasks(value *bool)()
     SetPrivateVcs(value *bool)()
+    SetProjectNotifications(value *bool)()
     SetRecoverableItems(value *bool)()
+    SetRegistryArtifactVersionTagging(value *bool)()
+    SetRegistryUsageControl(value *bool)()
     SetRunTaskLimit(value *float64)()
     SetRunTaskMandatoryEnforcementLimit(value *float64)()
     SetRunTasks(value *bool)()
     SetRunTaskWorkspaceLimit(value *float64)()
+    SetScim(value *bool)()
     SetSelfServeBilling(value *bool)()
     SetSentinel(value *bool)()
     SetSso(value *bool)()
     SetStacks(value *bool)()
+    SetSupportsConcurrencyAddOns(value *bool)()
+    SetSupportsSubscriptionConcurrencyOverrides(value *bool)()
     SetTaskProjectScoping(value *bool)()
     SetTeams(value *bool)()
     SetTerraformActions(value *bool)()
