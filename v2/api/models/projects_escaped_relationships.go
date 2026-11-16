@@ -14,6 +14,8 @@ type Projects_relationships struct {
     defaultAgentPool AgentPoolsHasOneable
     // The defaultHyokConfiguration property
     defaultHyokConfiguration HyokConfigurationsHasOneable
+    // The effectiveTagBindings property
+    effectiveTagBindings EffectiveTagBindingsHasManyable
     // The organization property
     organization OrganizationsHasOneable
     // The stacksDefaultAgentPool property
@@ -48,6 +50,11 @@ func (m *Projects_relationships) GetDefaultAgentPool()(AgentPoolsHasOneable) {
 func (m *Projects_relationships) GetDefaultHyokConfiguration()(HyokConfigurationsHasOneable) {
     return m.defaultHyokConfiguration
 }
+// GetEffectiveTagBindings gets the effective-tag-bindings property value. The effectiveTagBindings property
+// returns a EffectiveTagBindingsHasManyable when successful
+func (m *Projects_relationships) GetEffectiveTagBindings()(EffectiveTagBindingsHasManyable) {
+    return m.effectiveTagBindings
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Projects_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -69,6 +76,16 @@ func (m *Projects_relationships) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetDefaultHyokConfiguration(val.(HyokConfigurationsHasOneable))
+        }
+        return nil
+    }
+    res["effective-tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateEffectiveTagBindingsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveTagBindings(val.(EffectiveTagBindingsHasManyable))
         }
         return nil
     }
@@ -134,6 +151,12 @@ func (m *Projects_relationships) Serialize(writer i878a80d2330e89d26896388a3f487
         }
     }
     {
+        err := writer.WriteObjectValue("effective-tag-bindings", m.GetEffectiveTagBindings())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
         if err != nil {
             return err
@@ -171,6 +194,10 @@ func (m *Projects_relationships) SetDefaultAgentPool(value AgentPoolsHasOneable)
 func (m *Projects_relationships) SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable)() {
     m.defaultHyokConfiguration = value
 }
+// SetEffectiveTagBindings sets the effective-tag-bindings property value. The effectiveTagBindings property
+func (m *Projects_relationships) SetEffectiveTagBindings(value EffectiveTagBindingsHasManyable)() {
+    m.effectiveTagBindings = value
+}
 // SetOrganization sets the organization property value. The organization property
 func (m *Projects_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
@@ -188,11 +215,13 @@ type Projects_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetDefaultAgentPool()(AgentPoolsHasOneable)
     GetDefaultHyokConfiguration()(HyokConfigurationsHasOneable)
+    GetEffectiveTagBindings()(EffectiveTagBindingsHasManyable)
     GetOrganization()(OrganizationsHasOneable)
     GetStacksDefaultAgentPool()(AgentPoolsHasOneable)
     GetTagBindings()(Projects_relationships_tagBindingsable)
     SetDefaultAgentPool(value AgentPoolsHasOneable)()
     SetDefaultHyokConfiguration(value HyokConfigurationsHasOneable)()
+    SetEffectiveTagBindings(value EffectiveTagBindingsHasManyable)()
     SetOrganization(value OrganizationsHasOneable)()
     SetStacksDefaultAgentPool(value AgentPoolsHasOneable)()
     SetTagBindings(value Projects_relationships_tagBindingsable)()
